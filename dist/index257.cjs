@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});function t(e,r){return`Week ${e}`}exports.labelWeekNumber=t;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});function o(t){return"Choose the Month"}exports.labelMonthDropdown=o;
 //# sourceMappingURL=index257.cjs.map

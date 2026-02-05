@@ -1,7 +1,10 @@
-function t(o) {
-  return "Go to the Previous Month";
+import { DateLib as r } from "./index222.mjs";
+function e(t, o, n) {
+  return (n ?? new r(o)).formatMonthYear(t);
 }
+const l = e;
 export {
-  t as labelPrevious
+  l as labelCaption,
+  e as labelGrid
 };
 //# sourceMappingURL=index255.mjs.map

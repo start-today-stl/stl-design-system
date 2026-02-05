@@ -1,27 +1,22 @@
-import * as f from "react";
-import { assignRef as o } from "./index366.mjs";
-import { useCallbackRef as l } from "./index367.mjs";
-var s = typeof window < "u" ? f.useLayoutEffect : f.useEffect, c = /* @__PURE__ */ new WeakMap();
-function v(e, m) {
-  var t = l(null, function(n) {
-    return e.forEach(function(u) {
-      return o(u, n);
-    });
-  });
-  return s(function() {
-    var n = c.get(t);
-    if (n) {
-      var u = new Set(n), r = new Set(e), i = t.current;
-      u.forEach(function(a) {
-        r.has(a) || o(a, null);
-      }), r.forEach(function(a) {
-        u.has(a) || o(a, i);
-      });
-    }
-    c.set(t, e);
-  }, [e]), t;
+import { useControlledValue as q } from "./index332.mjs";
+function M(u, r) {
+  const { selected: e, required: m, onSelect: l } = u, [c, a] = q(e, l ? e : void 0), n = l ? e : c, { isSameDay: f } = r, s = (t) => (n == null ? void 0 : n.some((o) => f(o, t))) ?? !1, { min: S, max: h } = u;
+  return {
+    selected: n,
+    select: (t, o, y) => {
+      let i = [...n ?? []];
+      if (s(t)) {
+        if ((n == null ? void 0 : n.length) === S || m && (n == null ? void 0 : n.length) === 1)
+          return;
+        i = n == null ? void 0 : n.filter((x) => !f(x, t));
+      } else
+        (n == null ? void 0 : n.length) === h ? i = [t] : i = [...i, t];
+      return l || a(i), l == null || l(i, t, o, y), i;
+    },
+    isSelected: s
+  };
 }
 export {
-  v as useMergeRefs
+  M as useMulti
 };
 //# sourceMappingURL=index335.mjs.map

@@ -1,9 +1,12 @@
-import n from "react";
-function d(t) {
-  const { calendarMonth: o, displayIndex: r, ...e } = t;
-  return n.createElement("div", { ...e });
+import e from "react";
+function s(u) {
+  const { day: n, modifiers: t, ...r } = u, o = e.useRef(null);
+  return e.useEffect(() => {
+    var f;
+    t.focused && ((f = o.current) == null || f.focus());
+  }, [t.focused]), e.createElement("button", { ref: o, ...r });
 }
 export {
-  d as MonthCaption
+  s as DayButton
 };
 //# sourceMappingURL=index200.mjs.map

@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const i=require("./index229.cjs");function f(o,r,n={}){return Object.entries(o).filter(([,t])=>t===!0).reduce((t,[e])=>(n[e]?t.push(n[e]):r[i.DayFlag[e]]?t.push(r[i.DayFlag[e]]):r[i.SelectionState[e]]&&t.push(r[i.SelectionState[e]]),t),[r[i.UI.Day]])}exports.getClassNamesForModifiers=f;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const r=require("react");function t(e){return r.createElement("th",{...e})}exports.WeekNumberHeader=t;
 //# sourceMappingURL=index219.cjs.map

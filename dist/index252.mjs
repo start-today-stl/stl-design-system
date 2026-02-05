@@ -1,7 +1,10 @@
-function n(o) {
-  return "Choose the Month";
+import { defaultDateLib as t } from "./index222.mjs";
+function a(o, r = t) {
+  return r.format(o, "yyyy");
 }
+const f = a;
 export {
-  n as labelMonthDropdown
+  f as formatYearCaption,
+  a as formatYearDropdown
 };
 //# sourceMappingURL=index252.mjs.map

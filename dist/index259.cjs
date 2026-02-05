@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});function e(o){return"Choose the Year"}exports.labelYearDropdown=e;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const t="Go to the Next Month";function e(o,l){return t}exports.labelNext=e;
 //# sourceMappingURL=index259.cjs.map

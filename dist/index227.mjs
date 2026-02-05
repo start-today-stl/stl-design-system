@@ -1,17 +1,11 @@
-function p(e, r, s, t, f = !1) {
-  if (!e || !r)
-    return;
-  const { startOfYear: o, endOfYear: i, eachYearOfInterval: l, getYear: u } = t, Y = o(e), c = i(r), a = l({ start: Y, end: c });
-  return f && a.reverse(), a.map((n) => {
-    const d = s.formatYearDropdown(n, t);
-    return {
-      value: u(n),
-      label: d,
-      disabled: !1
-    };
-  });
+import * as f from "./index245.mjs";
+function i(n) {
+  return n != null && n.formatMonthCaption && !n.formatCaption && (n.formatCaption = n.formatMonthCaption), n != null && n.formatYearCaption && !n.formatYearDropdown && (n.formatYearDropdown = n.formatYearCaption), {
+    ...f,
+    ...n
+  };
 }
 export {
-  p as getYearOptions
+  i as getFormatters
 };
 //# sourceMappingURL=index227.mjs.map

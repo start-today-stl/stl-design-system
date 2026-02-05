@@ -1,14 +1,11 @@
-import { UI as u } from "./index229.mjs";
-function p(o, r = {}, n = {}) {
-  let t = { ...r == null ? void 0 : r[u.Day] };
-  return Object.entries(o).filter(([, c]) => c === !0).forEach(([c]) => {
-    t = {
-      ...t,
-      ...n == null ? void 0 : n[c]
-    };
-  }), t;
+import * as t from "./index195.mjs";
+function n(o) {
+  return {
+    ...t,
+    ...o
+  };
 }
 export {
-  p as getStyleForModifiers
+  n as getComponents
 };
 //# sourceMappingURL=index225.mjs.map

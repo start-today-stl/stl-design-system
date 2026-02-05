@@ -1,4 +1,4 @@
-import { defaultDateLib as o } from "./index217.mjs";
+import { defaultDateLib as o } from "./index222.mjs";
 class y {
   constructor(t, i, s = o) {
     this.date = t, this.displayMonth = i, this.outside = !!(i && !s.isSameMonth(t, i)), this.dateLib = s, this.isoDate = s.format(t, "yyyy-MM-dd"), this.displayMonthId = s.format(i, "yyyy-MM"), this.dateMonthId = s.format(t, "yyyy-MM");

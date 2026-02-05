@@ -1,9 +1,9 @@
 import r from "react";
-function c(e) {
-  const { week: o, ...t } = e;
-  return r.createElement("th", { ...t });
+function n(t) {
+  const { rootRef: e, ...o } = t;
+  return r.createElement("div", { ...o, ref: e });
 }
 export {
-  c as WeekNumber
+  n as Root
 };
 //# sourceMappingURL=index213.mjs.map

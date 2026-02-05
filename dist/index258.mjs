@@ -1,7 +1,7 @@
-function r(e) {
-  return "Week Number";
+function e() {
+  return "";
 }
 export {
-  r as labelWeekNumberHeader
+  e as labelNav
 };
 //# sourceMappingURL=index258.mjs.map

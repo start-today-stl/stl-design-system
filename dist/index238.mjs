@@ -1,27 +1,24 @@
-function o(e) {
-  return !!(e && typeof e == "object" && "before" in e && "after" in e);
-}
-function t(e) {
-  return !!(e && typeof e == "object" && "from" in e);
-}
-function r(e) {
-  return !!(e && typeof e == "object" && "after" in e);
-}
-function f(e) {
-  return !!(e && typeof e == "object" && "before" in e);
-}
-function i(e) {
-  return !!(e && typeof e == "object" && "dayOfWeek" in e);
-}
-function y(e, n) {
-  return Array.isArray(e) && e.every(n.isDate);
+import { useState as i } from "react";
+import { calculateFocusTarget as v } from "./index333.mjs";
+import { getNextFocus as x } from "./index334.mjs";
+function I(u, o, a, r, F) {
+  const { autoFocus: f } = u, [d, m] = i(), s = v(o.days, a, r || (() => !1), d), [t, n] = i(f ? s : void 0);
+  return {
+    isFocusTarget: (c) => !!(s != null && s.isEqualTo(c)),
+    setFocused: n,
+    focused: t,
+    blur: () => {
+      m(t), n(void 0);
+    },
+    moveFocus: (c, l) => {
+      if (!t)
+        return;
+      const e = x(c, l, t, o.navStart, o.navEnd, u, F);
+      e && (u.disableNavigation && !o.days.some((g) => g.isEqualTo(e)) || (o.goToDay(e), n(e)));
+    }
+  };
 }
 export {
-  r as isDateAfterType,
-  f as isDateBeforeType,
-  o as isDateInterval,
-  t as isDateRange,
-  y as isDatesArray,
-  i as isDayOfWeekType
+  I as useFocus
 };
 //# sourceMappingURL=index238.mjs.map

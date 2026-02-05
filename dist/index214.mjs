@@ -1,8 +1,8 @@
 import t from "react";
-function a(e) {
-  return t.createElement("th", { ...e });
+function c(e) {
+  return t.createElement("select", { ...e });
 }
 export {
-  a as WeekNumberHeader
+  c as Select
 };
 //# sourceMappingURL=index214.mjs.map

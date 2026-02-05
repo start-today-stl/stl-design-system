@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const e=require("./index217.cjs");function t(r,o=e.defaultDateLib){return o.format(r,"yyyy")}const a=t;exports.formatYearCaption=a;exports.formatYearDropdown=t;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const a=require("./index222.cjs");function o(t,e,r){return(r??new a.DateLib(e)).format(t,"d")}exports.formatDay=o;
 //# sourceMappingURL=index247.cjs.map

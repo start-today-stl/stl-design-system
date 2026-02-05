@@ -1,8 +1,9 @@
-import { DateLib as a } from "./index217.mjs";
-function f(r, t, o) {
-  return (o ?? new a(t)).format(r, "d");
+import { TZDate as r } from "./index272.mjs";
+import "./index274.mjs";
+function e(n, o) {
+  return n instanceof r && n.timeZone === o ? n : new r(n, o);
 }
 export {
-  f as formatDay
+  e as toTimeZone
 };
 //# sourceMappingURL=index242.mjs.map

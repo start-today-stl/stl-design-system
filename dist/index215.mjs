@@ -1,8 +1,9 @@
-import t from "react";
-function o(e) {
-  return t.createElement("tbody", { ...e });
+import r from "react";
+function c(e) {
+  const { week: o, ...t } = e;
+  return r.createElement("tr", { ...t });
 }
 export {
-  o as Weeks
+  c as Week
 };
 //# sourceMappingURL=index215.mjs.map

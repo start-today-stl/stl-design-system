@@ -1,18 +1,12 @@
+import { __assign as m } from "./index265.mjs";
 import * as r from "react";
-var t = 0;
-function a() {
-  r.useEffect(() => {
-    const e = document.querySelectorAll("[data-radix-focus-guard]");
-    return document.body.insertAdjacentElement("afterbegin", e[0] ?? n()), document.body.insertAdjacentElement("beforeend", e[1] ?? n()), t++, () => {
-      t === 1 && document.querySelectorAll("[data-radix-focus-guard]").forEach((o) => o.remove()), t--;
-    };
-  }, []);
-}
-function n() {
-  const e = document.createElement("span");
-  return e.setAttribute("data-radix-focus-guard", ""), e.tabIndex = 0, e.style.outline = "none", e.style.opacity = "0", e.style.position = "fixed", e.style.pointerEvents = "none", e;
-}
+import { RemoveScroll as e } from "./index266.mjs";
+import t from "./index267.mjs";
+var s = r.forwardRef(function(a, o) {
+  return r.createElement(e, m({}, a, { ref: o, sideCar: t }));
+});
+s.classNames = e.classNames;
 export {
-  a as useFocusGuards
+  s as default
 };
 //# sourceMappingURL=index160.mjs.map

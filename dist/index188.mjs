@@ -1,15 +1,12 @@
-import * as r from "react";
-import { useCallbackRef as s } from "./index152.mjs";
-function p(n, e = globalThis == null ? void 0 : globalThis.document) {
-  const t = s(n);
-  r.useEffect(() => {
-    const o = (a) => {
-      a.key === "Escape" && t(a);
-    };
-    return e.addEventListener("keydown", o, { capture: !0 }), () => e.removeEventListener("keydown", o, { capture: !0 });
-  }, [t, e]);
+import "react";
+import { jsx as e, Fragment as o } from "react/jsx-runtime";
+var l = Symbol("radix.slottable");
+// @__NO_SIDE_EFFECTS__
+function n(r) {
+  const t = ({ children: a }) => /* @__PURE__ */ e(o, { children: a });
+  return t.displayName = `${r}.Slottable`, t.__radixId = l, t;
 }
 export {
-  p as useEscapeKeydown
+  n as createSlottable
 };
 //# sourceMappingURL=index188.mjs.map

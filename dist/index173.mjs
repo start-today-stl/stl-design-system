@@ -1,9 +1,12 @@
-import { __module as r } from "./index261.mjs";
-import { __require as e } from "./index262.mjs";
-import { __require as o } from "./index263.mjs";
-process.env.NODE_ENV === "production" ? r.exports = e() : r.exports = o();
-var m = r.exports;
+import "react";
+import { jsx as e, Fragment as o } from "react/jsx-runtime";
+var l = Symbol("radix.slottable");
+// @__NO_SIDE_EFFECTS__
+function n(r) {
+  const t = ({ children: a }) => /* @__PURE__ */ e(o, { children: a });
+  return t.displayName = `${r}.Slottable`, t.__radixId = l, t;
+}
 export {
-  m as s
+  n as createSlottable
 };
 //# sourceMappingURL=index173.mjs.map

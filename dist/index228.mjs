@@ -1,107 +1,36 @@
-import { TZDate as c } from "./index272.mjs";
-import "./index274.mjs";
-import { differenceInCalendarMonths as O } from "./index286.mjs";
-import { differenceInCalendarDays as k } from "./index285.mjs";
-import { getISOWeek as w } from "./index293.mjs";
-import { getWeek as M } from "./index296.mjs";
-function I(o, d = {}) {
-  var l;
-  const { weekStartsOn: h, locale: u } = d, g = h ?? ((l = u == null ? void 0 : u.options) == null ? void 0 : l.weekStartsOn) ?? 0, n = (t) => {
-    const e = typeof t == "number" || typeof t == "string" ? new Date(t) : t;
-    return new c(e.getFullYear(), e.getMonth(), e.getDate(), 12, 0, 0, o);
-  }, f = (t) => {
-    const e = n(t);
-    return new Date(e.getFullYear(), e.getMonth(), e.getDate(), 0, 0, 0, 0);
-  };
+import * as d from "./index253.mjs";
+import { labelWeekday as p } from "./index261.mjs";
+import { labelWeekNumberHeader as f } from "./index263.mjs";
+import { labelNav as N } from "./index258.mjs";
+import { labelGridcell as k } from "./index256.mjs";
+import { labelGrid as D } from "./index255.mjs";
+import { labelYearDropdown as W } from "./index264.mjs";
+import { labelWeekNumber as a } from "./index262.mjs";
+import { labelPrevious as v } from "./index260.mjs";
+import { labelNext as y } from "./index259.mjs";
+import { labelMonthDropdown as w } from "./index257.mjs";
+import { labelDayButton as G } from "./index254.mjs";
+const l = (r, i, e) => i || (e ? typeof e == "function" ? e : (...n) => e : r);
+function q(r, i) {
+  var n;
+  const e = ((n = i.locale) == null ? void 0 : n.labels) ?? {};
   return {
-    today: () => n(c.tz(o)),
-    newDate: (t, e, r) => new c(t, e, r, 12, 0, 0, o),
-    startOfDay: (t) => n(t),
-    startOfWeek: (t, e) => {
-      const r = n(t), a = (e == null ? void 0 : e.weekStartsOn) ?? g, s = (r.getDay() - a + 7) % 7;
-      return r.setDate(r.getDate() - s), r;
-    },
-    startOfISOWeek: (t) => {
-      const e = n(t), r = (e.getDay() - 1 + 7) % 7;
-      return e.setDate(e.getDate() - r), e;
-    },
-    startOfMonth: (t) => {
-      const e = n(t);
-      return e.setDate(1), e;
-    },
-    startOfYear: (t) => {
-      const e = n(t);
-      return e.setMonth(0, 1), e;
-    },
-    endOfWeek: (t, e) => {
-      const r = n(t), D = ((((e == null ? void 0 : e.weekStartsOn) ?? g) + 6) % 7 - r.getDay() + 7) % 7;
-      return r.setDate(r.getDate() + D), r;
-    },
-    endOfISOWeek: (t) => {
-      const e = n(t), r = (7 - e.getDay()) % 7;
-      return e.setDate(e.getDate() + r), e;
-    },
-    endOfMonth: (t) => {
-      const e = n(t);
-      return e.setMonth(e.getMonth() + 1, 0), e;
-    },
-    endOfYear: (t) => {
-      const e = n(t);
-      return e.setMonth(11, 31), e;
-    },
-    eachMonthOfInterval: (t) => {
-      const e = n(t.start), r = n(t.end), a = [], s = new c(e.getFullYear(), e.getMonth(), 1, 12, 0, 0, o), D = r.getFullYear() * 12 + r.getMonth();
-      for (; s.getFullYear() * 12 + s.getMonth() <= D; )
-        a.push(new c(s, o)), s.setMonth(s.getMonth() + 1, 1);
-      return a;
-    },
-    // Normalize to noon once before arithmetic (avoid DST/midnight edge cases),
-    // mutate the same TZDate, and return it.
-    addDays: (t, e) => {
-      const r = n(t);
-      return r.setDate(r.getDate() + e), r;
-    },
-    addWeeks: (t, e) => {
-      const r = n(t);
-      return r.setDate(r.getDate() + e * 7), r;
-    },
-    addMonths: (t, e) => {
-      const r = n(t);
-      return r.setMonth(r.getMonth() + e), r;
-    },
-    addYears: (t, e) => {
-      const r = n(t);
-      return r.setFullYear(r.getFullYear() + e), r;
-    },
-    eachYearOfInterval: (t) => {
-      const e = n(t.start), r = n(t.end), a = [], s = new c(e.getFullYear(), 0, 1, 12, 0, 0, o);
-      for (; s.getFullYear() <= r.getFullYear(); )
-        a.push(new c(s, o)), s.setFullYear(s.getFullYear() + 1, 0, 1);
-      return a;
-    },
-    getWeek: (t, e) => {
-      var a;
-      const r = f(t);
-      return M(r, {
-        weekStartsOn: (e == null ? void 0 : e.weekStartsOn) ?? g,
-        firstWeekContainsDate: (e == null ? void 0 : e.firstWeekContainsDate) ?? ((a = u == null ? void 0 : u.options) == null ? void 0 : a.firstWeekContainsDate) ?? 1
-      });
-    },
-    getISOWeek: (t) => {
-      const e = f(t);
-      return w(e);
-    },
-    differenceInCalendarDays: (t, e) => {
-      const r = f(t), a = f(e);
-      return k(r, a);
-    },
-    differenceInCalendarMonths: (t, e) => {
-      const r = f(t), a = f(e);
-      return O(r, a);
-    }
+    ...d,
+    ...r ?? {},
+    labelDayButton: l(G, r == null ? void 0 : r.labelDayButton, e.labelDayButton),
+    labelMonthDropdown: l(w, r == null ? void 0 : r.labelMonthDropdown, e.labelMonthDropdown),
+    labelNext: l(y, r == null ? void 0 : r.labelNext, e.labelNext),
+    labelPrevious: l(v, r == null ? void 0 : r.labelPrevious, e.labelPrevious),
+    labelWeekNumber: l(a, r == null ? void 0 : r.labelWeekNumber, e.labelWeekNumber),
+    labelYearDropdown: l(W, r == null ? void 0 : r.labelYearDropdown, e.labelYearDropdown),
+    labelGrid: l(D, r == null ? void 0 : r.labelGrid, e.labelGrid),
+    labelGridcell: l(k, r == null ? void 0 : r.labelGridcell, e.labelGridcell),
+    labelNav: l(N, r == null ? void 0 : r.labelNav, e.labelNav),
+    labelWeekNumberHeader: l(f, r == null ? void 0 : r.labelWeekNumberHeader, e.labelWeekNumberHeader),
+    labelWeekday: l(p, r == null ? void 0 : r.labelWeekday, e.labelWeekday)
   };
 }
 export {
-  I as createNoonOverrides
+  q as getLabels
 };
 //# sourceMappingURL=index228.mjs.map

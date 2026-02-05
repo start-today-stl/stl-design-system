@@ -1,13 +1,17 @@
-import { createContext as t, useContext as n } from "react";
-const o = t(void 0);
-function c() {
-  const e = n(o);
-  if (e === void 0)
-    throw new Error("useDayPicker() must be used within a custom component.");
-  return e;
+function p(e, r, s, t, f = !1) {
+  if (!e || !r)
+    return;
+  const { startOfYear: o, endOfYear: i, eachYearOfInterval: l, getYear: u } = t, Y = o(e), c = i(r), a = l({ start: Y, end: c });
+  return f && a.reverse(), a.map((n) => {
+    const d = s.formatYearDropdown(n, t);
+    return {
+      value: u(n),
+      label: d,
+      disabled: !1
+    };
+  });
 }
 export {
-  o as dayPickerContext,
-  c as useDayPicker
+  p as getYearOptions
 };
 //# sourceMappingURL=index232.mjs.map

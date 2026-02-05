@@ -1,11 +1,8 @@
-import * as t from "./index190.mjs";
-function n(o) {
-  return {
-    ...t,
-    ...o
-  };
+import t from "react";
+function o(e) {
+  return t.createElement("tbody", { ...e });
 }
 export {
-  n as getComponents
+  o as Weeks
 };
 //# sourceMappingURL=index220.mjs.map

@@ -1,32 +1,51 @@
-import { __rest as E, __assign as r } from "./index267.mjs";
-import * as a from "react";
-import { zeroRightClassName as I, fullWidthClassName as Z } from "./index333.mjs";
-import { effectCar as W } from "./index334.mjs";
-import { useMergeRefs as z } from "./index335.mjs";
-var l = function() {
-}, m = a.forwardRef(function(e, d) {
-  var o = a.useRef(null), n = a.useState({
-    onScrollCapture: l,
-    onWheelCapture: l,
-    onTouchMoveCapture: l
-  }), f = n[0], v = n[1], h = e.forwardProps, t = e.children, u = e.className, C = e.removeScrollBar, R = e.enabled, g = e.shards, P = e.sideCar, S = e.noRelative, b = e.noIsolation, w = e.inert, N = e.allowPinchZoom, i = e.as, M = i === void 0 ? "div" : i, _ = e.gapMode, B = E(e, ["forwardProps", "children", "className", "removeScrollBar", "enabled", "shards", "sideCar", "noRelative", "noIsolation", "inert", "allowPinchZoom", "as", "gapMode"]), k = P, s = z([o, d]), c = r(r({}, B), f);
-  return a.createElement(
-    a.Fragment,
-    null,
-    R && a.createElement(k, { sideCar: W, removeScrollBar: C, shards: g, noRelative: S, noIsolation: b, inert: w, setCallbacks: v, allowPinchZoom: !!N, lockRef: o, gapMode: _ }),
-    h ? a.cloneElement(a.Children.only(t), r(r({}, c), { ref: s })) : a.createElement(M, r({}, c, { className: u, ref: s }), t)
-  );
-});
-m.defaultProps = {
-  enabled: !0,
-  removeScrollBar: !0,
-  inert: !1
-};
-m.classNames = {
-  fullWidth: Z,
-  zeroRight: I
-};
+import * as l from "react";
+import { composeRefs as m } from "./index148.mjs";
+import { jsx as u } from "react/jsx-runtime";
+// @__NO_SIDE_EFFECTS__
+function b(e) {
+  const n = /* @__PURE__ */ y(e), o = l.forwardRef((t, r) => {
+    const { children: i, ...c } = t, s = l.Children.toArray(i), a = s.find(E);
+    if (a) {
+      const f = a.props.children, d = s.map((p) => p === a ? l.Children.count(f) > 1 ? l.Children.only(null) : l.isValidElement(f) ? f.props.children : null : p);
+      return /* @__PURE__ */ u(n, { ...c, ref: r, children: l.isValidElement(f) ? l.cloneElement(f, void 0, d) : null });
+    }
+    return /* @__PURE__ */ u(n, { ...c, ref: r, children: i });
+  });
+  return o.displayName = `${e}.Slot`, o;
+}
+// @__NO_SIDE_EFFECTS__
+function y(e) {
+  const n = l.forwardRef((o, t) => {
+    const { children: r, ...i } = o;
+    if (l.isValidElement(r)) {
+      const c = S(r), s = C(i, r.props);
+      return r.type !== l.Fragment && (s.ref = t ? m(t, c) : c), l.cloneElement(r, s);
+    }
+    return l.Children.count(r) > 1 ? l.Children.only(null) : null;
+  });
+  return n.displayName = `${e}.SlotClone`, n;
+}
+var g = Symbol("radix.slottable");
+function E(e) {
+  return l.isValidElement(e) && typeof e.type == "function" && "__radixId" in e.type && e.type.__radixId === g;
+}
+function C(e, n) {
+  const o = { ...n };
+  for (const t in n) {
+    const r = e[t], i = n[t];
+    /^on[A-Z]/.test(t) ? r && i ? o[t] = (...s) => {
+      const a = i(...s);
+      return r(...s), a;
+    } : r && (o[t] = r) : t === "style" ? o[t] = { ...r, ...i } : t === "className" && (o[t] = [r, i].filter(Boolean).join(" "));
+  }
+  return { ...e, ...o };
+}
+function S(e) {
+  var t, r;
+  let n = (t = Object.getOwnPropertyDescriptor(e.props, "ref")) == null ? void 0 : t.get, o = n && "isReactWarning" in n && n.isReactWarning;
+  return o ? e.ref : (n = (r = Object.getOwnPropertyDescriptor(e, "ref")) == null ? void 0 : r.get, o = n && "isReactWarning" in n && n.isReactWarning, o ? e.props.ref : e.props.ref || e.ref);
+}
 export {
-  m as RemoveScroll
+  b as createSlot
 };
 //# sourceMappingURL=index268.mjs.map

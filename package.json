@@ -84,7 +84,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "tsc -p tsconfig.build.json --noEmit && vite build",
+    "build": "tsc -p tsconfig.build.json --noEmit && vite build && node scripts/copy-assets.cjs",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "test": "vitest",

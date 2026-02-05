@@ -1,12 +1,10 @@
 import e from "react";
-function a(t) {
-  return e.createElement(
-    "thead",
-    { "aria-hidden": !0 },
-    e.createElement("tr", { ...t })
-  );
+import { useDayPicker as n } from "./index237.mjs";
+function c(t) {
+  const { components: o } = n();
+  return e.createElement(o.Button, { ...t });
 }
 export {
-  a as Weekdays
+  c as PreviousMonthButton
 };
 //# sourceMappingURL=index212.mjs.map

@@ -1,14 +1,8 @@
-function d(o, n, s, a, e) {
-  const { startOfMonth: r, startOfYear: c, endOfYear: f, eachMonthOfInterval: l, getMonth: p } = e;
-  return l({
-    start: c(o),
-    end: f(o)
-  }).map((t) => {
-    const O = a.formatMonthDropdown(t, e), h = p(t), u = n && t < r(n) || s && t > r(s) || !1;
-    return { value: h, label: O, disabled: u };
-  });
+import { DayFlag as e, SelectionState as n, UI as d } from "./index234.mjs";
+function p(o, i, f = {}) {
+  return Object.entries(o).filter(([, t]) => t === !0).reduce((t, [r]) => (f[r] ? t.push(f[r]) : i[e[r]] ? t.push(i[e[r]]) : i[n[r]] && t.push(i[n[r]]), t), [i[d.Day]]);
 }
 export {
-  d as getMonthOptions
+  p as getClassNamesForModifiers
 };
 //# sourceMappingURL=index224.mjs.map

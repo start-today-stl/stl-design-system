@@ -1,128 +1,138 @@
-import * as n from "react";
-import { composeEventHandlers as m } from "./index144.mjs";
-import { Primitive as g, dispatchDiscreteCustomEvent as k } from "./index146.mjs";
-import { useComposedRefs as R } from "./index143.mjs";
-import { useCallbackRef as w } from "./index152.mjs";
-import { useEscapeKeydown as U } from "./index188.mjs";
-import { jsx as T } from "react/jsx-runtime";
-var z = "DismissableLayer", y = "dismissableLayer.update", H = "dismissableLayer.pointerDownOutside", M = "dismissableLayer.focusOutside", L, B = n.createContext({
-  layers: /* @__PURE__ */ new Set(),
-  layersWithOutsidePointerEventsDisabled: /* @__PURE__ */ new Set(),
-  branches: /* @__PURE__ */ new Set()
-}), j = n.forwardRef(
-  (r, e) => {
-    const {
-      disableOutsidePointerEvents: i = !1,
-      onEscapeKeyDown: o,
-      onPointerDownOutside: t,
-      onFocusOutside: a,
-      onInteractOutside: l,
-      onDismiss: d,
-      ...v
-    } = r, c = n.useContext(B), [u, S] = n.useState(null), f = (u == null ? void 0 : u.ownerDocument) ?? (globalThis == null ? void 0 : globalThis.document), [, F] = n.useState({}), W = R(e, (s) => S(s)), p = Array.from(c.layers), [A] = [...c.layersWithOutsidePointerEventsDisabled].slice(-1), N = p.indexOf(A), b = u ? p.indexOf(u) : -1, I = c.layersWithOutsidePointerEventsDisabled.size > 0, P = b >= N, _ = q((s) => {
-      const E = s.target, C = [...c.branches].some((h) => h.contains(E));
-      !P || C || (t == null || t(s), l == null || l(s), s.defaultPrevented || d == null || d());
-    }, f), D = G((s) => {
-      const E = s.target;
-      [...c.branches].some((h) => h.contains(E)) || (a == null || a(s), l == null || l(s), s.defaultPrevented || d == null || d());
-    }, f);
-    return U((s) => {
-      b === c.layers.size - 1 && (o == null || o(s), !s.defaultPrevented && d && (s.preventDefault(), d()));
-    }, f), n.useEffect(() => {
-      if (u)
-        return i && (c.layersWithOutsidePointerEventsDisabled.size === 0 && (L = f.body.style.pointerEvents, f.body.style.pointerEvents = "none"), c.layersWithOutsidePointerEventsDisabled.add(u)), c.layers.add(u), O(), () => {
-          i && c.layersWithOutsidePointerEventsDisabled.size === 1 && (f.body.style.pointerEvents = L);
-        };
-    }, [u, f, i, c]), n.useEffect(() => () => {
-      u && (c.layers.delete(u), c.layersWithOutsidePointerEventsDisabled.delete(u), O());
-    }, [u, c]), n.useEffect(() => {
-      const s = () => F({});
-      return document.addEventListener(y, s), () => document.removeEventListener(y, s);
-    }, []), /* @__PURE__ */ T(
-      g.div,
-      {
-        ...v,
-        ref: W,
-        style: {
-          pointerEvents: I ? P ? "auto" : "none" : void 0,
-          ...r.style
-        },
-        onFocusCapture: m(r.onFocusCapture, D.onFocusCapture),
-        onBlurCapture: m(r.onBlurCapture, D.onBlurCapture),
-        onPointerDownCapture: m(
-          r.onPointerDownCapture,
-          _.onPointerDownCapture
-        )
-      }
-    );
-  }
-);
-j.displayName = z;
-var X = "DismissableLayerBranch", Y = n.forwardRef((r, e) => {
-  const i = n.useContext(B), o = n.useRef(null), t = R(e, o);
-  return n.useEffect(() => {
-    const a = o.current;
-    if (a)
-      return i.branches.add(a), () => {
-        i.branches.delete(a);
+import * as d from "react";
+import { useComposedRefs as R } from "./index148.mjs";
+import { Primitive as M } from "./index151.mjs";
+import { useCallbackRef as y } from "./index142.mjs";
+import { jsx as _ } from "react/jsx-runtime";
+var F = "focusScope.autoFocusOnMount", T = "focusScope.autoFocusOnUnmount", N = { bubbles: !1, cancelable: !0 }, K = "FocusScope", k = d.forwardRef((e, n) => {
+  const {
+    loop: t = !1,
+    trapped: u = !1,
+    onMountAutoFocus: p,
+    onUnmountAutoFocus: L,
+    ...g
+  } = e, [o, U] = d.useState(null), E = y(p), v = y(L), b = d.useRef(null), A = R(n, (s) => U(s)), a = d.useRef({
+    paused: !1,
+    pause() {
+      this.paused = !0;
+    },
+    resume() {
+      this.paused = !1;
+    }
+  }).current;
+  d.useEffect(() => {
+    if (u) {
+      let s = function(i) {
+        if (a.paused || !o) return;
+        const c = i.target;
+        o.contains(c) ? b.current = c : f(b.current, { select: !0 });
+      }, l = function(i) {
+        if (a.paused || !o) return;
+        const c = i.relatedTarget;
+        c !== null && (o.contains(c) || f(b.current, { select: !0 }));
+      }, r = function(i) {
+        if (document.activeElement === document.body)
+          for (const h of i)
+            h.removedNodes.length > 0 && f(o);
       };
-  }, [i.branches]), /* @__PURE__ */ T(g.div, { ...r, ref: t });
+      document.addEventListener("focusin", s), document.addEventListener("focusout", l);
+      const m = new MutationObserver(r);
+      return o && m.observe(o, { childList: !0, subtree: !0 }), () => {
+        document.removeEventListener("focusin", s), document.removeEventListener("focusout", l), m.disconnect();
+      };
+    }
+  }, [u, o, a.paused]), d.useEffect(() => {
+    if (o) {
+      S.add(a);
+      const s = document.activeElement;
+      if (!o.contains(s)) {
+        const r = new CustomEvent(F, N);
+        o.addEventListener(F, E), o.dispatchEvent(r), r.defaultPrevented || (w(W(I(o)), { select: !0 }), document.activeElement === s && f(o));
+      }
+      return () => {
+        o.removeEventListener(F, E), setTimeout(() => {
+          const r = new CustomEvent(T, N);
+          o.addEventListener(T, v), o.dispatchEvent(r), r.defaultPrevented || f(s ?? document.body, { select: !0 }), o.removeEventListener(T, v), S.remove(a);
+        }, 0);
+      };
+    }
+  }, [o, E, v, a]);
+  const P = d.useCallback(
+    (s) => {
+      if (!t && !u || a.paused) return;
+      const l = s.key === "Tab" && !s.altKey && !s.ctrlKey && !s.metaKey, r = document.activeElement;
+      if (l && r) {
+        const m = s.currentTarget, [i, c] = x(m);
+        i && c ? !s.shiftKey && r === c ? (s.preventDefault(), t && f(i, { select: !0 })) : s.shiftKey && r === i && (s.preventDefault(), t && f(c, { select: !0 })) : r === m && s.preventDefault();
+      }
+    },
+    [t, u, a.paused]
+  );
+  return /* @__PURE__ */ _(M.div, { tabIndex: -1, ...g, ref: A, onKeyDown: P });
 });
-Y.displayName = X;
-function q(r, e = globalThis == null ? void 0 : globalThis.document) {
-  const i = w(r), o = n.useRef(!1), t = n.useRef(() => {
+k.displayName = K;
+function w(e, { select: n = !1 } = {}) {
+  const t = document.activeElement;
+  for (const u of e)
+    if (f(u, { select: n }), document.activeElement !== t) return;
+}
+function x(e) {
+  const n = I(e), t = O(n, e), u = O(n.reverse(), e);
+  return [t, u];
+}
+function I(e) {
+  const n = [], t = document.createTreeWalker(e, NodeFilter.SHOW_ELEMENT, {
+    acceptNode: (u) => {
+      const p = u.tagName === "INPUT" && u.type === "hidden";
+      return u.disabled || u.hidden || p ? NodeFilter.FILTER_SKIP : u.tabIndex >= 0 ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP;
+    }
   });
-  return n.useEffect(() => {
-    const a = (d) => {
-      if (d.target && !o.current) {
-        let v = function() {
-          x(
-            H,
-            i,
-            c,
-            { discrete: !0 }
-          );
-        };
-        const c = { originalEvent: d };
-        d.pointerType === "touch" ? (e.removeEventListener("click", t.current), t.current = v, e.addEventListener("click", t.current, { once: !0 })) : v();
-      } else
-        e.removeEventListener("click", t.current);
-      o.current = !1;
-    }, l = window.setTimeout(() => {
-      e.addEventListener("pointerdown", a);
-    }, 0);
-    return () => {
-      window.clearTimeout(l), e.removeEventListener("pointerdown", a), e.removeEventListener("click", t.current);
-    };
-  }, [e, i]), {
-    // ensures we check React component tree (not just DOM tree)
-    onPointerDownCapture: () => o.current = !0
+  for (; t.nextNode(); ) n.push(t.currentNode);
+  return n;
+}
+function O(e, n) {
+  for (const t of e)
+    if (!D(t, { upTo: n })) return t;
+}
+function D(e, { upTo: n }) {
+  if (getComputedStyle(e).visibility === "hidden") return !0;
+  for (; e; ) {
+    if (n !== void 0 && e === n) return !1;
+    if (getComputedStyle(e).display === "none") return !0;
+    e = e.parentElement;
+  }
+  return !1;
+}
+function H(e) {
+  return e instanceof HTMLInputElement && "select" in e;
+}
+function f(e, { select: n = !1 } = {}) {
+  if (e && e.focus) {
+    const t = document.activeElement;
+    e.focus({ preventScroll: !0 }), e !== t && H(e) && n && e.select();
+  }
+}
+var S = V();
+function V() {
+  let e = [];
+  return {
+    add(n) {
+      const t = e[0];
+      n !== t && (t == null || t.pause()), e = C(e, n), e.unshift(n);
+    },
+    remove(n) {
+      var t;
+      e = C(e, n), (t = e[0]) == null || t.resume();
+    }
   };
 }
-function G(r, e = globalThis == null ? void 0 : globalThis.document) {
-  const i = w(r), o = n.useRef(!1);
-  return n.useEffect(() => {
-    const t = (a) => {
-      a.target && !o.current && x(M, i, { originalEvent: a }, {
-        discrete: !1
-      });
-    };
-    return e.addEventListener("focusin", t), () => e.removeEventListener("focusin", t);
-  }, [e, i]), {
-    onFocusCapture: () => o.current = !0,
-    onBlurCapture: () => o.current = !1
-  };
+function C(e, n) {
+  const t = [...e], u = t.indexOf(n);
+  return u !== -1 && t.splice(u, 1), t;
 }
-function O() {
-  const r = new CustomEvent(y);
-  document.dispatchEvent(r);
-}
-function x(r, e, i, { discrete: o }) {
-  const t = i.originalEvent.target, a = new CustomEvent(r, { bubbles: !1, cancelable: !0, detail: i });
-  e && t.addEventListener(r, e, { once: !0 }), o ? k(t, a) : t.dispatchEvent(a);
+function W(e) {
+  return e.filter((n) => n.tagName !== "A");
 }
 export {
-  j as DismissableLayer,
-  Y as DismissableLayerBranch
+  k as FocusScope
 };
 //# sourceMappingURL=index156.mjs.map

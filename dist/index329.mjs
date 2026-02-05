@@ -1,13 +1,13 @@
-import { dateMatchModifiers as u } from "./index314.mjs";
-import { getFocusableDate as g } from "./index340.mjs";
-import { CalendarDay as m } from "./index276.mjs";
-function h(t, i, a, d, f, e, n, s = 0) {
-  if (s > 365)
+function h(n, t, e, s) {
+  if (e.disableNavigation)
     return;
-  const o = g(t, i, a.date, d, f, e, n), r = !!(e.disabled && u(o, e.disabled, n)), l = !!(e.hidden && u(o, e.hidden, n)), D = o, c = new m(o, D, n);
-  return !r && !l ? c : h(t, i, c, d, f, e, n, s + 1);
+  const { pagedNavigation: u, numberOfMonths: f = 1 } = e, { startOfMonth: a, addMonths: o, differenceInCalendarMonths: d } = s, i = u ? f : 1, r = a(n);
+  if (!t)
+    return o(r, i);
+  if (!(d(t, n) < f))
+    return o(r, i);
 }
 export {
-  h as getNextFocus
+  h as getNextMonth
 };
 //# sourceMappingURL=index329.mjs.map

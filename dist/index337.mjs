@@ -1,19 +1,16 @@
-import { __rest as o, __assign as d } from "./index267.mjs";
-import * as n from "react";
-var i = function(r) {
-  var e = r.sideCar, a = o(r, ["sideCar"]);
-  if (!e)
-    throw new Error("Sidecar: please provide `sideCar` property to import the right car");
-  var t = e.read();
-  if (!t)
-    throw new Error("Sidecar medium not found");
-  return n.createElement(t, d({}, a));
-};
-i.isSideCarExport = !0;
-function p(r, e) {
-  return r.useMedium(e), i;
+import { useControlledValue as S } from "./index332.mjs";
+function q(o, f) {
+  const { selected: s, required: c, onSelect: e } = o, [r, a] = S(s, e ? s : void 0), n = e ? s : r, { isSameDay: d } = f;
+  return {
+    selected: n,
+    select: (t, i, u) => {
+      let l = t;
+      return !c && n && n && d(t, n) && (l = void 0), e || a(l), e == null || e(l, t, i, u), l;
+    },
+    isSelected: (t) => n ? d(n, t) : !1
+  };
 }
 export {
-  p as exportSidecar
+  q as useSingle
 };
 //# sourceMappingURL=index337.mjs.map

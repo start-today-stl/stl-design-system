@@ -1,25 +1,28 @@
-import * as n from "react";
-import { Primitive as p } from "./index146.mjs";
-import { jsx as o } from "react/jsx-runtime";
-var v = "Arrow", e = n.forwardRef((r, i) => {
-  const { children: t, width: a = 10, height: s = 5, ...m } = r;
-  return /* @__PURE__ */ o(
-    p.svg,
-    {
-      ...m,
-      ref: i,
-      width: a,
-      height: s,
-      viewBox: "0 0 30 10",
-      preserveAspectRatio: "none",
-      children: r.asChild ? t : /* @__PURE__ */ o("polygon", { points: "0,0 30,0 15,10" })
+var p = function() {
+  return p = Object.assign || function(e) {
+    for (var n, r = 1, o = arguments.length; r < o; r++) {
+      n = arguments[r];
+      for (var a in n) Object.prototype.hasOwnProperty.call(n, a) && (e[a] = n[a]);
     }
-  );
-});
-e.displayName = v;
-var h = e;
+    return e;
+  }, p.apply(this, arguments);
+};
+function c(t, e) {
+  var n = {};
+  for (var r in t) Object.prototype.hasOwnProperty.call(t, r) && e.indexOf(r) < 0 && (n[r] = t[r]);
+  if (t != null && typeof Object.getOwnPropertySymbols == "function")
+    for (var o = 0, r = Object.getOwnPropertySymbols(t); o < r.length; o++)
+      e.indexOf(r[o]) < 0 && Object.prototype.propertyIsEnumerable.call(t, r[o]) && (n[r[o]] = t[r[o]]);
+  return n;
+}
+function l(t, e, n) {
+  if (n || arguments.length === 2) for (var r = 0, o = e.length, a; r < o; r++)
+    (a || !(r in e)) && (a || (a = Array.prototype.slice.call(e, 0, r)), a[r] = e[r]);
+  return t.concat(a || Array.prototype.slice.call(e));
+}
 export {
-  e as Arrow,
-  h as Root
+  p as __assign,
+  c as __rest,
+  l as __spreadArray
 };
 //# sourceMappingURL=index265.mjs.map

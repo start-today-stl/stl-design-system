@@ -1,8 +1,8 @@
-import t from "react";
-function a(e) {
-  return t.createElement("th", { ...e });
+import e from "react";
+function n(t) {
+  return e.createElement("option", { ...t });
 }
 export {
-  a as Weekday
+  n as Option
 };
 //# sourceMappingURL=index211.mjs.map

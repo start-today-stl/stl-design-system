@@ -1,7 +1,8 @@
-function e(o) {
-  return "Choose the Year";
+const t = "Go to the Next Month";
+function n(o, e) {
+  return t;
 }
 export {
-  e as labelYearDropdown
+  n as labelNext
 };
 //# sourceMappingURL=index259.mjs.map

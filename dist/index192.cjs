@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const t=require("react");function n(e){return t.createElement("span",{...e})}exports.CaptionLabel=n;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});var e={};exports.__exports=e;
 //# sourceMappingURL=index192.cjs.map

@@ -1,13 +1,14 @@
-function c(i, t, e, s) {
-  if (e.disableNavigation)
-    return;
-  const { pagedNavigation: r, numberOfMonths: d } = e, { startOfMonth: u, addMonths: f, differenceInCalendarMonths: a } = s, o = r ? d ?? 1 : 1, n = u(i);
-  if (!t)
-    return f(n, -o);
-  if (!(a(n, t) <= 0))
-    return f(n, -o);
+function i(e, o, h, r) {
+  const { numberOfMonths: f = 1 } = h, n = [];
+  for (let t = 0; t < f; t++) {
+    const s = r.addMonths(e, t);
+    if (o && s > o)
+      break;
+    n.push(s);
+  }
+  return n;
 }
 export {
-  c as getPreviousMonth
+  i as getDisplayMonths
 };
 //# sourceMappingURL=index325.mjs.map

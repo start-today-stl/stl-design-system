@@ -1,33 +1,33 @@
-import * as f from "react";
-import "react-dom";
-import { createSlot as l } from "./index109.mjs";
-import { jsx as n } from "react/jsx-runtime";
-var u = [
-  "a",
-  "button",
-  "div",
-  "form",
-  "h2",
-  "h3",
-  "img",
-  "input",
-  "label",
-  "li",
-  "nav",
-  "ol",
-  "p",
-  "select",
-  "span",
-  "svg",
-  "ul"
-], w = u.reduce((t, i) => {
-  const o = l(`Primitive.${i}`), r = f.forwardRef((e, m) => {
-    const { asChild: a, ...p } = e, s = a ? o : i;
-    return typeof window < "u" && (window[Symbol.for("radix-ui")] = !0), /* @__PURE__ */ n(s, { ...p, ref: m });
-  });
-  return r.displayName = `Primitive.${i}`, { ...t, [i]: r };
-}, {});
+import * as a from "react";
+import { Primitive as o } from "./index151.mjs";
+import { jsx as t } from "react/jsx-runtime";
+var d = Object.freeze({
+  // See: https://github.com/twbs/bootstrap/blob/main/scss/mixins/_visually-hidden.scss
+  position: "absolute",
+  border: 0,
+  width: 1,
+  height: 1,
+  padding: 0,
+  margin: -1,
+  overflow: "hidden",
+  clip: "rect(0, 0, 0, 0)",
+  whiteSpace: "nowrap",
+  wordWrap: "normal"
+}), l = "VisuallyHidden", e = a.forwardRef(
+  (r, i) => /* @__PURE__ */ t(
+    o.span,
+    {
+      ...r,
+      ref: i,
+      style: { ...d, ...r.style }
+    }
+  )
+);
+e.displayName = l;
+var p = e;
 export {
-  w as Primitive
+  p as Root,
+  d as VISUALLY_HIDDEN_STYLES,
+  e as VisuallyHidden
 };
 //# sourceMappingURL=index187.mjs.map

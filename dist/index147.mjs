@@ -1,121 +1,49 @@
-import * as o from "react";
-import { composeEventHandlers as T } from "./index144.mjs";
-import { createContextScope as S } from "./index141.mjs";
-import { useControllableState as D } from "./index145.mjs";
-import { useLayoutEffect as L } from "./index153.mjs";
-import { useComposedRefs as M } from "./index143.mjs";
-import { Primitive as v } from "./index146.mjs";
-import { Presence as k } from "./index159.mjs";
-import { useId as F } from "./index148.mjs";
-import { jsx as c } from "react/jsx-runtime";
-var u = "Collapsible", [B, W] = S(u), [G, g] = B(u), w = o.forwardRef(
-  (e, a) => {
-    const {
-      __scopeCollapsible: i,
-      open: r,
-      defaultOpen: t,
-      disabled: l,
-      onOpenChange: s,
-      ...m
-    } = e, [d, p] = D({
-      prop: r,
-      defaultProp: t ?? !1,
-      onChange: s,
-      caller: u
-    });
-    return /* @__PURE__ */ c(
-      G,
-      {
-        scope: i,
-        disabled: l,
-        contentId: F(),
-        open: d,
-        onOpenToggle: o.useCallback(() => p((C) => !C), [p]),
-        children: /* @__PURE__ */ c(
-          v.div,
-          {
-            "data-state": h(d),
-            "data-disabled": l ? "" : void 0,
-            ...m,
-            ref: a
-          }
-        )
-      }
-    );
-  }
-);
-w.displayName = u;
-var A = "CollapsibleTrigger", I = o.forwardRef(
-  (e, a) => {
-    const { __scopeCollapsible: i, ...r } = e, t = g(A, i);
-    return /* @__PURE__ */ c(
-      v.button,
-      {
-        type: "button",
-        "aria-controls": t.contentId,
-        "aria-expanded": t.open || !1,
-        "data-state": h(t.open),
-        "data-disabled": t.disabled ? "" : void 0,
-        disabled: t.disabled,
-        ...r,
-        ref: a,
-        onClick: T(e.onClick, t.onOpenToggle)
-      }
-    );
-  }
-);
-I.displayName = A;
-var R = "CollapsibleContent", O = o.forwardRef(
-  (e, a) => {
-    const { forceMount: i, ...r } = e, t = g(R, e.__scopeCollapsible);
-    return /* @__PURE__ */ c(k, { present: i || t.open, children: ({ present: l }) => /* @__PURE__ */ c($, { ...r, ref: a, present: l }) });
-  }
-);
-O.displayName = R;
-var $ = o.forwardRef((e, a) => {
-  const { __scopeCollapsible: i, present: r, children: t, ...l } = e, s = g(R, i), [m, d] = o.useState(r), p = o.useRef(null), C = M(a, p), y = o.useRef(0), x = y.current, N = o.useRef(0), P = N.current, b = s.open || m, _ = o.useRef(b), f = o.useRef(void 0);
-  return o.useEffect(() => {
-    const n = requestAnimationFrame(() => _.current = !1);
-    return () => cancelAnimationFrame(n);
-  }, []), L(() => {
-    const n = p.current;
-    if (n) {
-      f.current = f.current || {
-        transitionDuration: n.style.transitionDuration,
-        animationName: n.style.animationName
-      }, n.style.transitionDuration = "0s", n.style.animationName = "none";
-      const E = n.getBoundingClientRect();
-      y.current = E.height, N.current = E.width, _.current || (n.style.transitionDuration = f.current.transitionDuration, n.style.animationName = f.current.animationName), d(r);
-    }
-  }, [s.open, r]), /* @__PURE__ */ c(
-    v.div,
-    {
-      "data-state": h(s.open),
-      "data-disabled": s.disabled ? "" : void 0,
-      id: s.contentId,
-      hidden: !b,
-      ...l,
-      ref: C,
-      style: {
-        "--radix-collapsible-content-height": x ? `${x}px` : void 0,
-        "--radix-collapsible-content-width": P ? `${P}px` : void 0,
-        ...e.style
-      },
-      children: b && t
+import r from "react";
+import { createContextScope as y } from "./index146.mjs";
+import { useComposedRefs as M } from "./index148.mjs";
+import { createSlot as x } from "./index164.mjs";
+import { jsx as u } from "react/jsx-runtime";
+function g(s) {
+  const m = s + "CollectionProvider", [A, N] = y(m), [_, f] = A(
+    m,
+    { collectionRef: { current: null }, itemMap: /* @__PURE__ */ new Map() }
+  ), p = (c) => {
+    const { scope: e, children: l } = c, o = r.useRef(null), t = r.useRef(/* @__PURE__ */ new Map()).current;
+    return /* @__PURE__ */ u(_, { scope: e, itemMap: t, collectionRef: o, children: l });
+  };
+  p.displayName = m;
+  const a = s + "CollectionSlot", E = x(a), C = r.forwardRef(
+    (c, e) => {
+      const { scope: l, children: o } = c, t = f(a, l), n = M(e, t.collectionRef);
+      return /* @__PURE__ */ u(E, { ref: n, children: o });
     }
   );
-});
-function h(e) {
-  return e ? "open" : "closed";
+  C.displayName = a;
+  const d = s + "CollectionItemSlot", R = "data-radix-collection-item", T = x(d), I = r.forwardRef(
+    (c, e) => {
+      const { scope: l, children: o, ...t } = c, n = r.useRef(null), S = M(e, n), i = f(d, l);
+      return r.useEffect(() => (i.itemMap.set(n, { ref: n, ...t }), () => void i.itemMap.delete(n))), /* @__PURE__ */ u(T, { [R]: "", ref: S, children: o });
+    }
+  );
+  I.displayName = d;
+  function O(c) {
+    const e = f(s + "CollectionConsumer", c);
+    return r.useCallback(() => {
+      const o = e.collectionRef.current;
+      if (!o) return [];
+      const t = Array.from(o.querySelectorAll(`[${R}]`));
+      return Array.from(e.itemMap.values()).sort(
+        (i, v) => t.indexOf(i.ref.current) - t.indexOf(v.ref.current)
+      );
+    }, [e.collectionRef, e.itemMap]);
+  }
+  return [
+    { Provider: p, Slot: C, ItemSlot: I },
+    O,
+    N
+  ];
 }
-var X = w, Y = I, Z = O;
 export {
-  w as Collapsible,
-  O as CollapsibleContent,
-  I as CollapsibleTrigger,
-  Z as Content,
-  X as Root,
-  Y as Trigger,
-  W as createCollapsibleScope
+  g as createCollection
 };
 //# sourceMappingURL=index147.mjs.map

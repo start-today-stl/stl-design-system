@@ -1,22 +1,13 @@
-import { useControlledValue as q } from "./index327.mjs";
-function M(u, r) {
-  const { selected: e, required: m, onSelect: l } = u, [c, a] = q(e, l ? e : void 0), n = l ? e : c, { isSameDay: f } = r, s = (t) => (n == null ? void 0 : n.some((o) => f(o, t))) ?? !1, { min: S, max: h } = u;
-  return {
-    selected: n,
-    select: (t, o, y) => {
-      let i = [...n ?? []];
-      if (s(t)) {
-        if ((n == null ? void 0 : n.length) === S || m && (n == null ? void 0 : n.length) === 1)
-          return;
-        i = n == null ? void 0 : n.filter((x) => !f(x, t));
-      } else
-        (n == null ? void 0 : n.length) === h ? i = [t] : i = [...i, t];
-      return l || a(i), l == null || l(i, t, o, y), i;
-    },
-    isSelected: s
-  };
+function c(i, t, e, s) {
+  if (e.disableNavigation)
+    return;
+  const { pagedNavigation: r, numberOfMonths: d } = e, { startOfMonth: u, addMonths: f, differenceInCalendarMonths: a } = s, o = r ? d ?? 1 : 1, n = u(i);
+  if (!t)
+    return f(n, -o);
+  if (!(a(n, t) <= 0))
+    return f(n, -o);
 }
 export {
-  M as useMulti
+  c as getPreviousMonth
 };
 //# sourceMappingURL=index330.mjs.map

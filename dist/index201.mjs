@@ -1,8 +1,20 @@
-import e from "react";
-function n(t) {
-  return e.createElement("table", { ...t });
+import a from "react";
+import { UI as n } from "./index234.mjs";
+function f(c) {
+  const { options: e, className: m, components: l, classNames: t, ...o } = c, d = [t[n.Dropdown], m].join(" "), r = e == null ? void 0 : e.find(({ value: s }) => s === o.value);
+  return a.createElement(
+    "span",
+    { "data-disabled": o.disabled, className: t[n.DropdownRoot] },
+    a.createElement(l.Select, { className: d, ...o }, e == null ? void 0 : e.map(({ value: s, label: i, disabled: p }) => a.createElement(l.Option, { key: s, value: s, disabled: p }, i))),
+    a.createElement(
+      "span",
+      { className: t[n.CaptionLabel], "aria-hidden": !0 },
+      r == null ? void 0 : r.label,
+      a.createElement(l.Chevron, { orientation: "down", size: 18, className: t[n.Chevron] })
+    )
+  );
 }
 export {
-  n as MonthGrid
+  f as Dropdown
 };
 //# sourceMappingURL=index201.mjs.map

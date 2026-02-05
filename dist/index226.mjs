@@ -1,12 +1,17 @@
-function y(t, o, a, n) {
-  const s = n ?? t.today(), c = a ? t.startOfBroadcastWeek(s, t) : o ? t.startOfISOWeek(s) : t.startOfWeek(s), r = [];
-  for (let e = 0; e < 7; e++) {
-    const f = t.addDays(c, e);
-    r.push(f);
-  }
-  return r;
+function n(e) {
+  const t = {
+    "data-mode": e.mode ?? void 0,
+    "data-required": "required" in e ? e.required : void 0,
+    "data-multiple-months": e.numberOfMonths && e.numberOfMonths > 1 || void 0,
+    "data-week-numbers": e.showWeekNumber || void 0,
+    "data-broadcast-calendar": e.broadcastCalendar || void 0,
+    "data-nav-layout": e.navLayout || void 0
+  };
+  return Object.entries(e).forEach(([a, d]) => {
+    a.startsWith("data-") && (t[a] = d);
+  }), t;
 }
 export {
-  y as getWeekdays
+  n as getDataAttributes
 };
 //# sourceMappingURL=index226.mjs.map

@@ -1,19 +1,27 @@
-import { formatCaption as t, formatMonthCaption as e } from "./index241.mjs";
-import { formatDay as a } from "./index242.mjs";
-import { formatMonthDropdown as p } from "./index243.mjs";
-import { formatWeekdayName as x } from "./index244.mjs";
-import { formatWeekNumber as i } from "./index245.mjs";
-import { formatWeekNumberHeader as C } from "./index246.mjs";
-import { formatYearCaption as N, formatYearDropdown as W } from "./index247.mjs";
+import "./index274.mjs";
+import { toTimeZone as i } from "./index242.mjs";
+import { isDateRange as e, isDateInterval as p, isDateAfterType as y, isDateBeforeType as D } from "./index243.mjs";
+function n(o, f, u) {
+  return i(o, f);
+}
+function t(o, f, u) {
+  return typeof o == "boolean" || typeof o == "function" ? o : o instanceof Date ? n(o, f) : Array.isArray(o) ? o.map((r) => r instanceof Date ? n(r, f) : r) : e(o) ? {
+    ...o,
+    from: o.from ? i(o.from, f) : o.from,
+    to: o.to ? i(o.to, f) : o.to
+  } : p(o) ? {
+    before: n(o.before, f),
+    after: n(o.after, f)
+  } : y(o) ? {
+    after: n(o.after, f)
+  } : D(o) ? {
+    before: n(o.before, f)
+  } : o;
+}
+function T(o, f, u) {
+  return o && (Array.isArray(o) ? o.map((r) => t(r, f)) : t(o, f));
+}
 export {
-  t as formatCaption,
-  a as formatDay,
-  e as formatMonthCaption,
-  p as formatMonthDropdown,
-  i as formatWeekNumber,
-  C as formatWeekNumberHeader,
-  x as formatWeekdayName,
-  N as formatYearCaption,
-  W as formatYearDropdown
+  T as convertMatchersToTimeZone
 };
 //# sourceMappingURL=index240.mjs.map

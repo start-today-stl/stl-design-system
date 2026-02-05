@@ -1,17 +1,10 @@
-function n(e) {
-  const t = {
-    "data-mode": e.mode ?? void 0,
-    "data-required": "required" in e ? e.required : void 0,
-    "data-multiple-months": e.numberOfMonths && e.numberOfMonths > 1 || void 0,
-    "data-week-numbers": e.showWeekNumber || void 0,
-    "data-broadcast-calendar": e.broadcastCalendar || void 0,
-    "data-nav-layout": e.navLayout || void 0
-  };
-  return Object.entries(e).forEach(([a, d]) => {
-    a.startsWith("data-") && (t[a] = d);
-  }), t;
+import r from "react";
+import { useDayPicker as t } from "./index237.mjs";
+function m(o) {
+  const { components: e } = t();
+  return r.createElement(e.Dropdown, { ...o });
 }
 export {
-  n as getDataAttributes
+  m as YearsDropdown
 };
 //# sourceMappingURL=index221.mjs.map

@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const n=require("react"),o=require("./index232.cjs");function r(t){const{components:e}=o.useDayPicker();return n.createElement(e.Button,{...t})}exports.NextMonthButton=r;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const n=require("react");function o(t){const{calendarMonth:r,displayIndex:i,...e}=t;return n.createElement("div",{...e})}exports.MonthCaption=o;
 //# sourceMappingURL=index205.cjs.map

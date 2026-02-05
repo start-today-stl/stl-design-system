@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const n=require("react");function o(t){const{calendarMonth:r,displayIndex:i,...e}=t;return n.createElement("div",{...e})}exports.MonthCaption=o;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const e=require("react");function c(n){const{day:f,modifiers:t,...r}=n,o=e.useRef(null);return e.useEffect(()=>{var u;t.focused&&((u=o.current)==null||u.focus())},[t.focused]),e.createElement("button",{ref:o,...r})}exports.DayButton=c;
 //# sourceMappingURL=index200.cjs.map

@@ -1,16 +1,9 @@
-import { useControlledValue as S } from "./index327.mjs";
-function q(o, f) {
-  const { selected: s, required: c, onSelect: e } = o, [r, a] = S(s, e ? s : void 0), n = e ? s : r, { isSameDay: d } = f;
-  return {
-    selected: n,
-    select: (t, i, u) => {
-      let l = t;
-      return !c && n && n && d(t, n) && (l = void 0), e || a(l), e == null || e(l, t, i, u), l;
-    },
-    isSelected: (t) => n ? d(n, t) : !1
-  };
+import { useState as o } from "react";
+function a(t, e) {
+  const [u, n] = o(t);
+  return [e === void 0 ? u : e, n];
 }
 export {
-  q as useSingle
+  a as useControlledValue
 };
 //# sourceMappingURL=index332.mjs.map

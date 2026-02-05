@@ -1,8 +1,8 @@
 import t from "react";
-function o(e) {
-  return t.createElement("div", { ...e });
+function n(e) {
+  return t.createElement("span", { ...e });
 }
 export {
-  o as DropdownNav
+  n as CaptionLabel
 };
 //# sourceMappingURL=index197.mjs.map

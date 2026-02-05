@@ -1,36 +1,43 @@
-import * as d from "./index248.mjs";
-import { labelWeekday as p } from "./index256.mjs";
-import { labelWeekNumberHeader as f } from "./index258.mjs";
-import { labelNav as N } from "./index253.mjs";
-import { labelGridcell as k } from "./index251.mjs";
-import { labelGrid as D } from "./index250.mjs";
-import { labelYearDropdown as W } from "./index259.mjs";
-import { labelWeekNumber as a } from "./index257.mjs";
-import { labelPrevious as v } from "./index255.mjs";
-import { labelNext as y } from "./index254.mjs";
-import { labelMonthDropdown as w } from "./index252.mjs";
-import { labelDayButton as G } from "./index249.mjs";
-const l = (r, i, e) => i || (e ? typeof e == "function" ? e : (...n) => e : r);
-function q(r, i) {
-  var n;
-  const e = ((n = i.locale) == null ? void 0 : n.labels) ?? {};
-  return {
-    ...d,
-    ...r ?? {},
-    labelDayButton: l(G, r == null ? void 0 : r.labelDayButton, e.labelDayButton),
-    labelMonthDropdown: l(w, r == null ? void 0 : r.labelMonthDropdown, e.labelMonthDropdown),
-    labelNext: l(y, r == null ? void 0 : r.labelNext, e.labelNext),
-    labelPrevious: l(v, r == null ? void 0 : r.labelPrevious, e.labelPrevious),
-    labelWeekNumber: l(a, r == null ? void 0 : r.labelWeekNumber, e.labelWeekNumber),
-    labelYearDropdown: l(W, r == null ? void 0 : r.labelYearDropdown, e.labelYearDropdown),
-    labelGrid: l(D, r == null ? void 0 : r.labelGrid, e.labelGrid),
-    labelGridcell: l(k, r == null ? void 0 : r.labelGridcell, e.labelGridcell),
-    labelNav: l(N, r == null ? void 0 : r.labelNav, e.labelNav),
-    labelWeekNumberHeader: l(f, r == null ? void 0 : r.labelWeekNumberHeader, e.labelWeekNumberHeader),
-    labelWeekday: l(p, r == null ? void 0 : r.labelWeekday, e.labelWeekday)
+import { DayFlag as e } from "./index234.mjs";
+import { dateMatchModifiers as u } from "./index314.mjs";
+function V(b, S, h, M, i) {
+  const { disabled: p, hidden: y, modifiers: d, showOutsideDays: m, broadcastCalendar: B, today: g = i.today() } = S, { isSameDay: v, isSameMonth: A, startOfMonth: E, isBefore: F, endOfMonth: j, isAfter: k } = i, O = h && E(h), D = M && j(M), a = {
+    [e.focused]: [],
+    [e.outside]: [],
+    [e.disabled]: [],
+    [e.hidden]: [],
+    [e.today]: []
+  }, n = {};
+  for (const s of b) {
+    const { date: o, displayMonth: c } = s, t = !!(c && !A(o, c)), f = !!(O && F(o, O)), l = !!(D && k(o, D)), w = !!(p && u(o, p, i)), x = !!(y && u(o, y, i)) || f || l || // Broadcast calendar will show outside days as default
+    !B && !m && t || B && m === !1 && t, C = v(o, g);
+    t && a.outside.push(s), w && a.disabled.push(s), x && a.hidden.push(s), C && a.today.push(s), d && Object.keys(d).forEach((r) => {
+      const N = d == null ? void 0 : d[r];
+      N && u(o, N, i) && (n[r] ? n[r].push(s) : n[r] = [s]);
+    });
+  }
+  return (s) => {
+    const o = {
+      [e.focused]: !1,
+      [e.disabled]: !1,
+      [e.hidden]: !1,
+      [e.outside]: !1,
+      [e.today]: !1
+    }, c = {};
+    for (const t in a) {
+      const f = a[t];
+      o[t] = f.some((l) => l === s);
+    }
+    for (const t in n)
+      c[t] = n[t].some((f) => f === s);
+    return {
+      ...o,
+      // custom modifiers should override all the previous ones
+      ...c
+    };
   };
 }
 export {
-  q as getLabels
+  V as createGetModifiers
 };
 //# sourceMappingURL=index223.mjs.map

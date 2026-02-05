@@ -1,71 +1,58 @@
-import * as u from "react";
-import { jsx as h } from "react/jsx-runtime";
-function w(e, c) {
-  const o = u.createContext(c), a = (r) => {
-    const { children: t, ...n } = r, s = u.useMemo(() => n, Object.values(n));
-    return /* @__PURE__ */ h(o.Provider, { value: s, children: t });
-  };
-  a.displayName = e + "Provider";
-  function i(r) {
-    const t = u.useContext(o);
-    if (t) return t;
-    if (c !== void 0) return c;
-    throw new Error(`\`${r}\` must be used within \`${e}\``);
-  }
-  return [a, i];
-}
-function _(e, c = []) {
+import * as i from "react";
+import { jsx as _ } from "react/jsx-runtime";
+function $(e, x = []) {
   let o = [];
-  function a(r, t) {
-    const n = u.createContext(t), s = o.length;
-    o = [...o, t];
-    const p = (d) => {
-      var S;
-      const { scope: x, children: C, ...m } = d, v = ((S = x == null ? void 0 : x[e]) == null ? void 0 : S[s]) || n, P = u.useMemo(() => m, Object.values(m));
-      return /* @__PURE__ */ h(v.Provider, { value: P, children: C });
+  function f(r, n) {
+    const t = i.createContext(n);
+    t.displayName = r + "Context";
+    const c = o.length;
+    o = [...o, n];
+    const m = (a) => {
+      var l;
+      const { scope: s, children: C, ...p } = a, d = ((l = s == null ? void 0 : s[e]) == null ? void 0 : l[c]) || t, v = i.useMemo(() => p, Object.values(p));
+      return /* @__PURE__ */ _(d.Provider, { value: v, children: C });
     };
-    p.displayName = r + "Provider";
-    function f(d, x) {
-      var v;
-      const C = ((v = x == null ? void 0 : x[e]) == null ? void 0 : v[s]) || n, m = u.useContext(C);
-      if (m) return m;
-      if (t !== void 0) return t;
-      throw new Error(`\`${d}\` must be used within \`${r}\``);
+    m.displayName = r + "Provider";
+    function S(a, s) {
+      var d;
+      const C = ((d = s == null ? void 0 : s[e]) == null ? void 0 : d[c]) || t, p = i.useContext(C);
+      if (p) return p;
+      if (n !== void 0) return n;
+      throw new Error(`\`${a}\` must be used within \`${r}\``);
     }
-    return [p, f];
+    return [m, S];
   }
-  const i = () => {
-    const r = o.map((t) => u.createContext(t));
-    return function(n) {
-      const s = (n == null ? void 0 : n[e]) || r;
-      return u.useMemo(
-        () => ({ [`__scope${e}`]: { ...n, [e]: s } }),
-        [n, s]
+  const u = () => {
+    const r = o.map((n) => i.createContext(n));
+    return function(t) {
+      const c = (t == null ? void 0 : t[e]) || r;
+      return i.useMemo(
+        () => ({ [`__scope${e}`]: { ...t, [e]: c } }),
+        [t, c]
       );
     };
   };
-  return i.scopeName = e, [a, l(i, ...c)];
+  return u.scopeName = e, [f, h(u, ...x)];
 }
-function l(...e) {
-  const c = e[0];
-  if (e.length === 1) return c;
+function h(...e) {
+  const x = e[0];
+  if (e.length === 1) return x;
   const o = () => {
-    const a = e.map((i) => ({
-      useScope: i(),
-      scopeName: i.scopeName
+    const f = e.map((u) => ({
+      useScope: u(),
+      scopeName: u.scopeName
     }));
     return function(r) {
-      const t = a.reduce((n, { useScope: s, scopeName: p }) => {
-        const d = s(r)[`__scope${p}`];
-        return { ...n, ...d };
+      const n = f.reduce((t, { useScope: c, scopeName: m }) => {
+        const a = c(r)[`__scope${m}`];
+        return { ...t, ...a };
       }, {});
-      return u.useMemo(() => ({ [`__scope${c.scopeName}`]: t }), [t]);
+      return i.useMemo(() => ({ [`__scope${x.scopeName}`]: n }), [n]);
     };
   };
-  return o.scopeName = c.scopeName, o;
+  return o.scopeName = x.scopeName, o;
 }
 export {
-  w as createContext,
-  _ as createContextScope
+  $ as createContextScope
 };
 //# sourceMappingURL=index141.mjs.map

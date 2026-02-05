@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const e=require("./index217.cjs");function t(o,n,a){return(a??new e.DateLib(n)).formatMonthYear(o)}const r=t;exports.formatCaption=t;exports.formatMonthCaption=r;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const o=require("./index222.cjs");function u(s,r,t=!1,f=o.defaultDateLib){let{from:e,to:n}=s;const{differenceInCalendarDays:a,isSameDay:i}=f;return e&&n?(a(n,e)<0&&([e,n]=[n,e]),a(r,e)>=(t?1:0)&&a(n,r)>=(t?1:0)):!t&&n?i(n,r):!t&&e?i(e,r):!1}exports.rangeIncludesDate=u;
 //# sourceMappingURL=index241.cjs.map

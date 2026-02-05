@@ -1,8 +1,20 @@
-var r = "right-scroll-bar-position", a = "width-before-scroll-bar", l = "with-scroll-bars-hidden", e = "--removed-body-scroll-bar-size";
+import { DayFlag as n } from "./index234.mjs";
+var d;
+(function(e) {
+  e[e.Today = 0] = "Today", e[e.Selected = 1] = "Selected", e[e.LastFocused = 2] = "LastFocused", e[e.FocusedModifier = 3] = "FocusedModifier";
+})(d || (d = {}));
+function i(e) {
+  return !e[n.disabled] && !e[n.hidden] && !e[n.outside];
+}
+function L(e, l, t, a) {
+  let c, o = -1;
+  for (const f of e) {
+    const u = l(f);
+    i(u) && (u[n.focused] && o < d.FocusedModifier ? (c = f, o = d.FocusedModifier) : a != null && a.isEqualTo(f) && o < d.LastFocused ? (c = f, o = d.LastFocused) : t(f.date) && o < d.Selected ? (c = f, o = d.Selected) : u[n.today] && o < d.Today && (c = f, o = d.Today));
+  }
+  return c || (c = e.find((f) => i(l(f)))), c;
+}
 export {
-  a as fullWidthClassName,
-  l as noScrollbarsClassName,
-  e as removedBarSizeVariable,
-  r as zeroRightClassName
+  L as calculateFocusTarget
 };
 //# sourceMappingURL=index333.mjs.map

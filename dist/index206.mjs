@@ -1,8 +1,8 @@
 import e from "react";
 function n(t) {
-  return e.createElement("option", { ...t });
+  return e.createElement("table", { ...t });
 }
 export {
-  n as Option
+  n as MonthGrid
 };
 //# sourceMappingURL=index206.mjs.map

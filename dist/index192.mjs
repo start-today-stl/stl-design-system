@@ -1,8 +1,5 @@
-import t from "react";
-function n(e) {
-  return t.createElement("span", { ...e });
-}
+var r = {};
 export {
-  n as CaptionLabel
+  r as __exports
 };
 //# sourceMappingURL=index192.mjs.map

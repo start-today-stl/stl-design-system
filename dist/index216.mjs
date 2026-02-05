@@ -1,10 +1,8 @@
-import r from "react";
-import { useDayPicker as t } from "./index232.mjs";
-function m(o) {
-  const { components: e } = t();
-  return r.createElement(e.Dropdown, { ...o });
+import t from "react";
+function a(e) {
+  return t.createElement("th", { ...e });
 }
 export {
-  m as YearsDropdown
+  a as Weekday
 };
 //# sourceMappingURL=index216.mjs.map

@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});function c(f,t,e,r){if(e.disableNavigation)return;const{pagedNavigation:s,numberOfMonths:u}=e,{startOfMonth:d,addMonths:o,differenceInCalendarMonths:a}=r,i=s?u??1:1,n=d(f);if(!t)return o(n,-i);if(!(a(n,t)<=0))return o(n,-i)}exports.getPreviousMonth=c;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});function h(n,o,i,r){const{numberOfMonths:u=1}=i,s=[];for(let t=0;t<u;t++){const e=r.addMonths(n,t);if(o&&e>o)break;s.push(e)}return s}exports.getDisplayMonths=h;
 //# sourceMappingURL=index325.cjs.map

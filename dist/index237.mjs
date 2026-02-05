@@ -1,9 +1,13 @@
-import { TZDate as r } from "./index272.mjs";
-import "./index274.mjs";
-function e(n, o) {
-  return n instanceof r && n.timeZone === o ? n : new r(n, o);
+import { createContext as t, useContext as n } from "react";
+const o = t(void 0);
+function c() {
+  const e = n(o);
+  if (e === void 0)
+    throw new Error("useDayPicker() must be used within a custom component.");
+  return e;
 }
 export {
-  e as toTimeZone
+  o as dayPickerContext,
+  c as useDayPicker
 };
 //# sourceMappingURL=index237.mjs.map
