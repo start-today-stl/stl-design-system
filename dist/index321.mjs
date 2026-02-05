@@ -1,14 +1,9 @@
-function u(i, o, n, e) {
-  const { month: s, defaultMonth: M, today: c = e.today(), numberOfMonths: f = 1 } = i;
-  let t = s || M || c;
-  const { differenceInCalendarMonths: h, addMonths: l, startOfMonth: r } = e;
-  if (n && h(n, t) < f - 1) {
-    const d = -1 * (f - 1);
-    t = l(n, d);
-  }
-  return o && h(t, o) < 0 && (t = o), r(t);
+import { rangeIncludesDate as m } from "./index228.mjs";
+import { defaultDateLib as r } from "./index209.mjs";
+function u(o, f, l = r) {
+  return m(o, f.from, !1, l) || m(o, f.to, !1, l) || m(f, o.from, !1, l) || m(f, o.to, !1, l);
 }
 export {
-  u as getInitialMonth
+  u as rangeOverlaps
 };
 //# sourceMappingURL=index321.mjs.map

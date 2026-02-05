@@ -1,9 +1,27 @@
-import { toDate as a } from "./index350.mjs";
-function u(e, r) {
-  const t = a(e, r == null ? void 0 : r.in);
-  return t.setHours(0, 0, 0, 0), t;
+import { defaultDateLib as A } from "./index209.mjs";
+import { rangeIncludesDate as p } from "./index228.mjs";
+import { isDatesArray as a, isDateRange as I, isDayOfWeekType as g, isDateInterval as k, isDateAfterType as O, isDateBeforeType as W } from "./index230.mjs";
+function b(f, n, r = A) {
+  const t = Array.isArray(n) ? n : [n], { isSameDay: o, differenceInCalendarDays: i, isAfter: D } = r;
+  return t.some((e) => {
+    if (typeof e == "boolean")
+      return e;
+    if (r.isDate(e))
+      return o(f, e);
+    if (a(e, r))
+      return e.some((s) => o(f, s));
+    if (I(e))
+      return p(e, f, !1, r);
+    if (g(e))
+      return Array.isArray(e.dayOfWeek) ? e.dayOfWeek.includes(f.getDay()) : e.dayOfWeek === f.getDay();
+    if (k(e)) {
+      const s = i(e.before, f), l = i(e.after, f), y = s > 0, u = l < 0;
+      return D(e.before, e.after) ? u && y : y || u;
+    }
+    return O(e) ? i(f, e.after) > 0 : W(e) ? i(e.before, f) > 0 : typeof e == "function" ? e(f) : !1;
+  });
 }
 export {
-  u as startOfDay
+  b as dateMatchModifiers
 };
 //# sourceMappingURL=index302.mjs.map

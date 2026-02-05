@@ -1,7 +1,15 @@
-function m(t, [a, n]) {
-  return Math.min(n, Math.max(a, t));
-}
+import { toCamelCase as t } from "./index260.mjs";
+/**
+ * @license lucide-react v0.563.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const s = (a) => {
+  const e = t(a);
+  return e.charAt(0).toUpperCase() + e.slice(1);
+};
 export {
-  m as clamp
+  s as toPascalCase
 };
 //# sourceMappingURL=index178.mjs.map

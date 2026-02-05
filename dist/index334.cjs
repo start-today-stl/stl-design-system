@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const e=require("./index366.cjs"),t=require("./index367.cjs"),o=require("./index368.cjs"),a=require("./index369.cjs"),r=require("./index370.cjs"),n={code:"en-US",formatDistance:e.formatDistance,formatLong:t.formatLong,formatRelative:o.formatRelative,localize:a.localize,match:r.match,options:{weekStartsOn:0,firstWeekContainsDate:1}};exports.enUS=n;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const r=require("./index365.cjs");var i=function(){var t=r.styleHookSingleton(),n=function(e){var l=e.styles,o=e.dynamic;return t(l,o),null};return n};exports.styleSingleton=i;
 //# sourceMappingURL=index334.cjs.map

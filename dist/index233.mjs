@@ -1,20 +1,10 @@
-import { useMulti as i } from "./index330.mjs";
-import { useRange as o } from "./index331.mjs";
-import { useSingle as s } from "./index332.mjs";
-function f(e, n) {
-  const t = s(e, n), r = i(e, n), u = o(e, n);
-  switch (e.mode) {
-    case "single":
-      return t;
-    case "multiple":
-      return r;
-    case "range":
-      return u;
-    default:
-      return;
-  }
+import { DateLib as r } from "./index209.mjs";
+function a(t, o, n) {
+  return (n ?? new r(o)).formatMonthYear(t);
 }
+const f = a;
 export {
-  f as useSelection
+  a as formatCaption,
+  f as formatMonthCaption
 };
 //# sourceMappingURL=index233.mjs.map

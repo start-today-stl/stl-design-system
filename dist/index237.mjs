@@ -1,27 +1,8 @@
-function o(e) {
-  return !!(e && typeof e == "object" && "before" in e && "after" in e);
-}
-function t(e) {
-  return !!(e && typeof e == "object" && "from" in e);
-}
-function r(e) {
-  return !!(e && typeof e == "object" && "after" in e);
-}
-function f(e) {
-  return !!(e && typeof e == "object" && "before" in e);
-}
-function i(e) {
-  return !!(e && typeof e == "object" && "dayOfWeek" in e);
-}
-function y(e, n) {
-  return Array.isArray(e) && e.every(n.isDate);
+import { defaultDateLib as o } from "./index209.mjs";
+function a(r, t = o) {
+  return r < 10 ? t.formatNumber(`0${r.toLocaleString()}`) : t.formatNumber(`${r.toLocaleString()}`);
 }
 export {
-  r as isDateAfterType,
-  f as isDateBeforeType,
-  o as isDateInterval,
-  t as isDateRange,
-  y as isDatesArray,
-  i as isDayOfWeekType
+  a as formatWeekNumber
 };
 //# sourceMappingURL=index237.mjs.map

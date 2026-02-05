@@ -1,8 +1,8 @@
-import { addDays as o } from "./index276.mjs";
-function a(r, d, e) {
-  return o(r, d * 7, e);
+import { endOfWeek as r } from "./index280.mjs";
+function f(e, n) {
+  return r(e, { ...n, weekStartsOn: 1 });
 }
 export {
-  a as addWeeks
+  f as endOfISOWeek
 };
 //# sourceMappingURL=index278.mjs.map

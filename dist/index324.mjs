@@ -1,13 +1,27 @@
-function h(n, t, e, s) {
-  if (e.disableNavigation)
-    return;
-  const { pagedNavigation: u, numberOfMonths: f = 1 } = e, { startOfMonth: a, addMonths: o, differenceInCalendarMonths: d } = s, i = u ? f : 1, r = a(n);
-  if (!t)
-    return o(r, i);
-  if (!(d(t, n) < f))
-    return o(r, i);
+import * as f from "react";
+import { assignRef as o } from "./index355.mjs";
+import { useCallbackRef as l } from "./index356.mjs";
+var s = typeof window < "u" ? f.useLayoutEffect : f.useEffect, c = /* @__PURE__ */ new WeakMap();
+function v(e, m) {
+  var t = l(null, function(n) {
+    return e.forEach(function(u) {
+      return o(u, n);
+    });
+  });
+  return s(function() {
+    var n = c.get(t);
+    if (n) {
+      var u = new Set(n), r = new Set(e), i = t.current;
+      u.forEach(function(a) {
+        r.has(a) || o(a, null);
+      }), r.forEach(function(a) {
+        u.has(a) || o(a, i);
+      });
+    }
+    c.set(t, e);
+  }, [e]), t;
 }
 export {
-  h as getNextMonth
+  v as useMergeRefs
 };
 //# sourceMappingURL=index324.mjs.map

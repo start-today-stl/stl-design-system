@@ -1,8 +1,13 @@
-function n(s, e) {
-  const t = e.startOfMonth(s), r = t.getDay();
-  return r === 1 ? t : r === 0 ? e.addDays(t, -1 * 6) : e.addDays(t, -1 * (r - 1));
+import { normalizeDates as c } from "./index342.mjs";
+function g(a, n, e) {
+  const [t, r] = c(
+    e == null ? void 0 : e.in,
+    a,
+    n
+  ), f = t.getFullYear() - r.getFullYear(), l = t.getMonth() - r.getMonth();
+  return f * 12 + l;
 }
 export {
-  n as startOfBroadcastWeek
+  g as differenceInCalendarMonths
 };
 //# sourceMappingURL=index275.mjs.map

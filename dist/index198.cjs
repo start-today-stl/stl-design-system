@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const n=require("react");function r(e){const{calendarMonth:o,displayIndex:c,...t}=e;return n.createElement("div",{...t},e.children)}exports.Month=r;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const t=require("react");function n(e){return t.createElement("option",{...e})}exports.Option=n;
 //# sourceMappingURL=index198.cjs.map

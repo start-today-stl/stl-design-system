@@ -1,9 +1,8 @@
-import n from "react";
-function a(e) {
-  const { calendarMonth: r, displayIndex: d, ...t } = e;
-  return n.createElement("div", { ...t }, e.children);
+import e from "react";
+function n(t) {
+  return e.createElement("option", { ...t });
 }
 export {
-  a as Month
+  n as Option
 };
 //# sourceMappingURL=index198.mjs.map

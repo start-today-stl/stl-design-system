@@ -1,8 +1,9 @@
-import e from "react";
+import r from "react";
 function n(t) {
-  return e.createElement("table", { ...t });
+  const { rootRef: e, ...o } = t;
+  return r.createElement("div", { ...o, ref: e });
 }
 export {
-  n as MonthGrid
+  n as Root
 };
 //# sourceMappingURL=index200.mjs.map

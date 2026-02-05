@@ -1,33 +1,9 @@
-import * as f from "react";
-import "react-dom";
-import { createSlot as l } from "./index109.mjs";
-import { jsx as n } from "react/jsx-runtime";
-var u = [
-  "a",
-  "button",
-  "div",
-  "form",
-  "h2",
-  "h3",
-  "img",
-  "input",
-  "label",
-  "li",
-  "nav",
-  "ol",
-  "p",
-  "select",
-  "span",
-  "svg",
-  "ul"
-], w = u.reduce((t, i) => {
-  const o = l(`Primitive.${i}`), r = f.forwardRef((e, m) => {
-    const { asChild: a, ...p } = e, s = a ? o : i;
-    return typeof window < "u" && (window[Symbol.for("radix-ui")] = !0), /* @__PURE__ */ n(s, { ...p, ref: m });
-  });
-  return r.displayName = `Primitive.${i}`, { ...t, [i]: r };
-}, {});
+import r from "react";
+function n(t) {
+  const { day: o, modifiers: a, ...e } = t;
+  return r.createElement("td", { ...e });
+}
 export {
-  w as Primitive
+  n as Day
 };
 //# sourceMappingURL=index186.mjs.map

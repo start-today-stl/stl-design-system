@@ -1,7 +1,5 @@
-function e(o) {
-  return "Choose the Year";
-}
+var r = {};
 export {
-  e as labelYearDropdown
+  r as __exports
 };
 //# sourceMappingURL=index258.mjs.map

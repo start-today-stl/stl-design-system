@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const i=require("./index330.cjs"),r=require("./index331.cjs"),c=require("./index332.cjs");function l(e,n){const u=c.useSingle(e,n),t=i.useMulti(e,n),s=r.useRange(e,n);switch(e.mode){case"single":return u;case"multiple":return t;case"range":return s;default:return}}exports.useSelection=l;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const e=require("./index209.cjs");function t(o,n,a){return(a??new e.DateLib(n)).formatMonthYear(o)}const r=t;exports.formatCaption=t;exports.formatMonthCaption=r;
 //# sourceMappingURL=index233.cjs.map

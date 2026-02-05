@@ -1,25 +1,62 @@
-import * as n from "react";
-import { Primitive as p } from "./index146.mjs";
-import { jsx as o } from "react/jsx-runtime";
-var v = "Arrow", e = n.forwardRef((r, i) => {
-  const { children: t, width: a = 10, height: s = 5, ...m } = r;
-  return /* @__PURE__ */ o(
-    p.svg,
-    {
-      ...m,
-      ref: i,
-      width: a,
-      height: s,
-      viewBox: "0 0 30 10",
-      preserveAspectRatio: "none",
-      children: r.asChild ? t : /* @__PURE__ */ o("polygon", { points: "0,0 30,0 15,10" })
-    }
-  );
-});
-e.displayName = v;
-var h = e;
+import { tzName as o } from "./index262.mjs";
+import { TZDateMini as s } from "./index263.mjs";
+class i extends s {
+  //#region static
+  static tz(e, ...t) {
+    return t.length ? new i(...t, e) : new i(Date.now(), e);
+  }
+  //#endregion
+  //#region representation
+  toISOString() {
+    const [e, t, n] = this.tzComponents(), r = `${e}${t}:${n}`;
+    return this.internal.toISOString().slice(0, -1) + r;
+  }
+  toString() {
+    return `${this.toDateString()} ${this.toTimeString()}`;
+  }
+  toDateString() {
+    const [e, t, n, r] = this.internal.toUTCString().split(" ");
+    return `${e == null ? void 0 : e.slice(0, -1)} ${n} ${t} ${r}`;
+  }
+  toTimeString() {
+    const e = this.internal.toUTCString().split(" ")[4], [t, n, r] = this.tzComponents();
+    return `${e} GMT${t}${n}${r} (${o(this.timeZone, this)})`;
+  }
+  toLocaleString(e, t) {
+    return Date.prototype.toLocaleString.call(this, e, {
+      ...t,
+      timeZone: (t == null ? void 0 : t.timeZone) || this.timeZone
+    });
+  }
+  toLocaleDateString(e, t) {
+    return Date.prototype.toLocaleDateString.call(this, e, {
+      ...t,
+      timeZone: (t == null ? void 0 : t.timeZone) || this.timeZone
+    });
+  }
+  toLocaleTimeString(e, t) {
+    return Date.prototype.toLocaleTimeString.call(this, e, {
+      ...t,
+      timeZone: (t == null ? void 0 : t.timeZone) || this.timeZone
+    });
+  }
+  //#endregion
+  //#region private
+  tzComponents() {
+    const e = this.getTimezoneOffset(), t = e > 0 ? "-" : "+", n = String(Math.floor(Math.abs(e) / 60)).padStart(2, "0"), r = String(Math.abs(e) % 60).padStart(2, "0");
+    return [t, n, r];
+  }
+  //#endregion
+  withTimeZone(e) {
+    return new i(+this, e);
+  }
+  //#region date-fns integration
+  [Symbol.for("constructDateFrom")](e) {
+    return new i(+new Date(e), this.timeZone);
+  }
+  //#endregion
+}
 export {
-  e as Arrow,
-  h as Root
+  i as TZDate
 };
 //# sourceMappingURL=index261.mjs.map

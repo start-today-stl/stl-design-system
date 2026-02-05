@@ -1,18 +1,15 @@
 import * as r from "react";
-var t = 0;
-function a() {
+import { useCallbackRef as s } from "./index160.mjs";
+function p(n, e = globalThis == null ? void 0 : globalThis.document) {
+  const t = s(n);
   r.useEffect(() => {
-    const e = document.querySelectorAll("[data-radix-focus-guard]");
-    return document.body.insertAdjacentElement("afterbegin", e[0] ?? n()), document.body.insertAdjacentElement("beforeend", e[1] ?? n()), t++, () => {
-      t === 1 && document.querySelectorAll("[data-radix-focus-guard]").forEach((o) => o.remove()), t--;
+    const o = (a) => {
+      a.key === "Escape" && t(a);
     };
-  }, []);
-}
-function n() {
-  const e = document.createElement("span");
-  return e.setAttribute("data-radix-focus-guard", ""), e.tabIndex = 0, e.style.outline = "none", e.style.opacity = "0", e.style.position = "fixed", e.style.pointerEvents = "none", e;
+    return e.addEventListener("keydown", o, { capture: !0 }), () => e.removeEventListener("keydown", o, { capture: !0 });
+  }, [t, e]);
 }
 export {
-  a as useFocusGuards
+  p as useEscapeKeydown
 };
 //# sourceMappingURL=index171.mjs.map

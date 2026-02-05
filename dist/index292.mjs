@@ -1,8 +1,14 @@
-import { toDate as t } from "./index350.mjs";
-function f(r, o) {
-  return +t(r) > +t(o);
+import { constructFrom as m } from "./index338.mjs";
+import { toDate as l } from "./index339.mjs";
+function a(o, e) {
+  let t, r = e == null ? void 0 : e.in;
+  return o.forEach((c) => {
+    !r && typeof c == "object" && (r = m.bind(null, c));
+    const f = l(c, r);
+    (!t || t < f || isNaN(+f)) && (t = f);
+  }), m(r, t || NaN);
 }
 export {
-  f as isAfter
+  a as max
 };
 //# sourceMappingURL=index292.mjs.map

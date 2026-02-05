@@ -1,12 +1,8 @@
-import e from "react";
-function a(t) {
-  return e.createElement(
-    "thead",
-    { "aria-hidden": !0 },
-    e.createElement("tr", { ...t })
-  );
+import { DayFlag as e, SelectionState as n, UI as d } from "./index221.mjs";
+function p(o, i, f = {}) {
+  return Object.entries(o).filter(([, t]) => t === !0).reduce((t, [r]) => (f[r] ? t.push(f[r]) : i[e[r]] ? t.push(i[e[r]]) : i[n[r]] && t.push(i[n[r]]), t), [i[d.Day]]);
 }
 export {
-  a as Weekdays
+  p as getClassNamesForModifiers
 };
 //# sourceMappingURL=index211.mjs.map

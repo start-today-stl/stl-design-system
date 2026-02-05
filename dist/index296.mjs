@@ -1,13 +1,9 @@
-import { normalizeDates as n } from "./index353.mjs";
-function m(a, l, e) {
-  const [t, r] = n(
-    e == null ? void 0 : e.in,
-    a,
-    l
-  );
-  return t.getFullYear() === r.getFullYear() && t.getMonth() === r.getMonth();
+import { toDate as a } from "./index339.mjs";
+function u(e, r) {
+  const t = a(e, r == null ? void 0 : r.in);
+  return t.setHours(0, 0, 0, 0), t;
 }
 export {
-  m as isSameMonth
+  u as startOfDay
 };
 //# sourceMappingURL=index296.mjs.map

@@ -1,9 +1,8 @@
-import r from "react";
+import e from "react";
 function n(t) {
-  const { day: o, modifiers: a, ...e } = t;
-  return r.createElement("td", { ...e });
+  return e.createElement("table", { ...t });
 }
 export {
-  n as Day
+  n as MonthGrid
 };
 //# sourceMappingURL=index193.mjs.map

@@ -1,8 +1,11 @@
-import t from "react";
-function o(e) {
-  return t.createElement("tbody", { ...e });
+import * as f from "./index232.mjs";
+function i(n) {
+  return n != null && n.formatMonthCaption && !n.formatCaption && (n.formatCaption = n.formatMonthCaption), n != null && n.formatYearCaption && !n.formatYearDropdown && (n.formatYearDropdown = n.formatYearCaption), {
+    ...f,
+    ...n
+  };
 }
 export {
-  o as Weeks
+  i as getFormatters
 };
 //# sourceMappingURL=index214.mjs.map

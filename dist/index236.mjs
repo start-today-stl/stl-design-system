@@ -1,9 +1,8 @@
-import { TZDate as r } from "./index272.mjs";
-import "./index273.mjs";
-function e(n, o) {
-  return n instanceof r && n.timeZone === o ? n : new r(n, o);
+import { DateLib as t } from "./index209.mjs";
+function a(c, e, r) {
+  return (r ?? new t(e)).format(c, "cccccc");
 }
 export {
-  e as toTimeZone
+  a as formatWeekdayName
 };
 //# sourceMappingURL=index236.mjs.map

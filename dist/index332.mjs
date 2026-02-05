@@ -1,16 +1,16 @@
-import { useControlledValue as S } from "./index327.mjs";
-function q(o, f) {
-  const { selected: s, required: c, onSelect: e } = o, [r, a] = S(s, e ? s : void 0), n = e ? s : r, { isSameDay: d } = f;
-  return {
-    selected: n,
-    select: (t, i, u) => {
-      let l = t;
-      return !c && n && n && d(t, n) && (l = void 0), e || a(l), e == null || e(l, t, i, u), l;
-    },
-    isSelected: (t) => n ? d(n, t) : !1
-  };
+function g(d, s, k, t, f, O, n) {
+  const { ISOWeek: o, broadcastCalendar: r } = O, { addDays: W, addMonths: c, addWeeks: l, addYears: u, endOfBroadcastWeek: b, endOfISOWeek: m, endOfWeek: y, max: F, min: I, startOfBroadcastWeek: h, startOfISOWeek: x, startOfWeek: B } = n;
+  let a = {
+    day: W,
+    week: l,
+    month: c,
+    year: u,
+    startOfWeek: (e) => r ? h(e, n) : o ? x(e) : B(e),
+    endOfWeek: (e) => r ? b(e) : o ? m(e) : y(e)
+  }[d](k, s === "after" ? 1 : -1);
+  return s === "before" && t ? a = F([t, a]) : s === "after" && f && (a = I([f, a])), a;
 }
 export {
-  q as useSingle
+  g as getFocusableDate
 };
 //# sourceMappingURL=index332.mjs.map

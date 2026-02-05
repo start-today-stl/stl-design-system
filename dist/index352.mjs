@@ -1,19 +1,15 @@
-import { toDate as o } from "./index350.mjs";
-function l(t) {
-  const e = o(t), n = new Date(
-    Date.UTC(
-      e.getFullYear(),
-      e.getMonth(),
-      e.getDate(),
-      e.getHours(),
-      e.getMinutes(),
-      e.getSeconds(),
-      e.getMilliseconds()
-    )
-  );
-  return n.setUTCFullYear(e.getFullYear()), +t - +n;
+import { constructFrom as f } from "./index338.mjs";
+import { startOfISOWeek as u } from "./index297.mjs";
+import { toDate as c } from "./index339.mjs";
+function Y(o, r) {
+  const e = c(o, r == null ? void 0 : r.in), t = e.getFullYear(), a = f(e, 0);
+  a.setFullYear(t + 1, 0, 4), a.setHours(0, 0, 0, 0);
+  const m = u(a), s = f(e, 0);
+  s.setFullYear(t, 0, 4), s.setHours(0, 0, 0, 0);
+  const n = u(s);
+  return e.getTime() >= m.getTime() ? t + 1 : e.getTime() >= n.getTime() ? t : t - 1;
 }
 export {
-  l as getTimezoneOffsetInMilliseconds
+  Y as getISOWeekYear
 };
 //# sourceMappingURL=index352.mjs.map

@@ -1,36 +1,57 @@
-import * as d from "./index247.mjs";
-import { labelWeekday as p } from "./index255.mjs";
-import { labelWeekNumberHeader as f } from "./index257.mjs";
-import { labelNav as N } from "./index252.mjs";
-import { labelGridcell as k } from "./index250.mjs";
-import { labelGrid as D } from "./index249.mjs";
-import { labelYearDropdown as W } from "./index258.mjs";
-import { labelWeekNumber as a } from "./index256.mjs";
-import { labelPrevious as v } from "./index254.mjs";
-import { labelNext as y } from "./index253.mjs";
-import { labelMonthDropdown as w } from "./index251.mjs";
-import { labelDayButton as G } from "./index248.mjs";
-const l = (r, i, e) => i || (e ? typeof e == "function" ? e : (...n) => e : r);
-function q(r, i) {
-  var n;
-  const e = ((n = i.locale) == null ? void 0 : n.labels) ?? {};
-  return {
-    ...d,
-    ...r ?? {},
-    labelDayButton: l(G, r == null ? void 0 : r.labelDayButton, e.labelDayButton),
-    labelMonthDropdown: l(w, r == null ? void 0 : r.labelMonthDropdown, e.labelMonthDropdown),
-    labelNext: l(y, r == null ? void 0 : r.labelNext, e.labelNext),
-    labelPrevious: l(v, r == null ? void 0 : r.labelPrevious, e.labelPrevious),
-    labelWeekNumber: l(a, r == null ? void 0 : r.labelWeekNumber, e.labelWeekNumber),
-    labelYearDropdown: l(W, r == null ? void 0 : r.labelYearDropdown, e.labelYearDropdown),
-    labelGrid: l(D, r == null ? void 0 : r.labelGrid, e.labelGrid),
-    labelGridcell: l(k, r == null ? void 0 : r.labelGridcell, e.labelGridcell),
-    labelNav: l(N, r == null ? void 0 : r.labelNav, e.labelNav),
-    labelWeekNumberHeader: l(f, r == null ? void 0 : r.labelWeekNumberHeader, e.labelWeekNumberHeader),
-    labelWeekday: l(p, r == null ? void 0 : r.labelWeekday, e.labelWeekday)
-  };
+import { useRef as q, useLayoutEffect as z } from "react";
+import { Animation as o } from "./index221.mjs";
+const l = (e) => e instanceof HTMLElement ? e : null, w = (e) => [
+  ...e.querySelectorAll("[data-animated-month]") ?? []
+], I = (e) => l(e.querySelector("[data-animated-month]")), S = (e) => l(e.querySelector("[data-animated-caption]")), A = (e) => l(e.querySelector("[data-animated-weeks]")), B = (e) => l(e.querySelector("[data-animated-nav]")), P = (e) => l(e.querySelector("[data-animated-weekdays]"));
+function D(e, b, { classNames: s, months: a, focused: g, dateLib: H }) {
+  const p = q(null), h = q(a), v = q(!1);
+  z(() => {
+    const f = h.current;
+    if (h.current = a, !b || !e.current || // safety check because the ref can be set to anything by consumers
+    !(e.current instanceof HTMLElement) || // validation required for the animation to work as expected
+    a.length === 0 || f.length === 0 || a.length !== f.length)
+      return;
+    const M = H.isSameMonth(a[0].date, f[0].date), u = H.isAfter(a[0].date, f[0].date), m = u ? s[o.caption_after_enter] : s[o.caption_before_enter], L = u ? s[o.weeks_after_enter] : s[o.weeks_before_enter], x = p.current, _ = e.current.cloneNode(!0);
+    if (_ instanceof HTMLElement ? (w(_).forEach((t) => {
+      if (!(t instanceof HTMLElement))
+        return;
+      const c = I(t);
+      c && t.contains(c) && t.removeChild(c);
+      const n = S(t);
+      n && n.classList.remove(m);
+      const r = A(t);
+      r && r.classList.remove(L);
+    }), p.current = _) : p.current = null, v.current || M || // skip animation if a day is focused because it can cause issues to the animation and is better for a11y
+    g)
+      return;
+    const k = x instanceof HTMLElement ? w(x) : [], d = w(e.current);
+    if (d != null && d.every((i) => i instanceof HTMLElement) && k && k.every((i) => i instanceof HTMLElement)) {
+      v.current = !0, e.current.style.isolation = "isolate";
+      const i = B(e.current);
+      i && (i.style.zIndex = "1"), d.forEach((t, c) => {
+        const n = k[c];
+        if (!n)
+          return;
+        t.style.position = "relative", t.style.overflow = "hidden";
+        const r = S(t);
+        r && r.classList.add(m);
+        const y = A(t);
+        y && y.classList.add(L);
+        const W = () => {
+          v.current = !1, e.current && (e.current.style.isolation = ""), i && (i.style.zIndex = ""), r && r.classList.remove(m), y && y.classList.remove(L), t.style.position = "", t.style.overflow = "", t.contains(n) && t.removeChild(n);
+        };
+        n.style.pointerEvents = "none", n.style.position = "absolute", n.style.overflow = "hidden", n.setAttribute("aria-hidden", "true");
+        const C = P(n);
+        C && (C.style.opacity = "0");
+        const E = S(n);
+        E && (E.classList.add(u ? s[o.caption_before_exit] : s[o.caption_after_exit]), E.addEventListener("animationend", W));
+        const T = A(n);
+        T && T.classList.add(u ? s[o.weeks_before_exit] : s[o.weeks_after_exit]), t.insertBefore(n, t.firstChild);
+      });
+    }
+  });
 }
 export {
-  q as getLabels
+  D as useAnimation
 };
 //# sourceMappingURL=index222.mjs.map

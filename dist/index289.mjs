@@ -1,8 +1,14 @@
-import { toDate as r } from "./index350.mjs";
-function g(e, t) {
-  return r(e, t == null ? void 0 : t.in).getMonth();
+import { normalizeDates as i } from "./index342.mjs";
+import { startOfDay as t } from "./index296.mjs";
+function d(a, e, r) {
+  const [m, f] = i(
+    r == null ? void 0 : r.in,
+    a,
+    e
+  );
+  return +t(m) == +t(f);
 }
 export {
-  g as getMonth
+  d as isSameDay
 };
 //# sourceMappingURL=index289.mjs.map

@@ -1,8 +1,10 @@
-import { defaultDateLib as r } from "./index216.mjs";
-function n(o, t = r) {
-  return t.format(o, "LLLL");
+import { DateLib as r } from "./index209.mjs";
+function e(t, o, n) {
+  return (n ?? new r(o)).formatMonthYear(t);
 }
+const l = e;
 export {
-  n as formatMonthDropdown
+  l as labelCaption,
+  e as labelGrid
 };
 //# sourceMappingURL=index242.mjs.map

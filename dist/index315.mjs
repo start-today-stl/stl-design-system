@@ -1,28 +1,22 @@
-var p = function() {
-  return p = Object.assign || function(e) {
-    for (var n, r = 1, o = arguments.length; r < o; r++) {
-      n = arguments[r];
-      for (var a in n) Object.prototype.hasOwnProperty.call(n, a) && (e[a] = n[a]);
-    }
-    return e;
-  }, p.apply(this, arguments);
-};
-function c(t, e) {
-  var n = {};
-  for (var r in t) Object.prototype.hasOwnProperty.call(t, r) && e.indexOf(r) < 0 && (n[r] = t[r]);
-  if (t != null && typeof Object.getOwnPropertySymbols == "function")
-    for (var o = 0, r = Object.getOwnPropertySymbols(t); o < r.length; o++)
-      e.indexOf(r[o]) < 0 && Object.prototype.propertyIsEnumerable.call(t, r[o]) && (n[r[o]] = t[r[o]]);
-  return n;
-}
-function l(t, e, n) {
-  if (n || arguments.length === 2) for (var r = 0, o = e.length, a; r < o; r++)
-    (a || !(r in e)) && (a || (a = Array.prototype.slice.call(e, 0, r)), a[r] = e[r]);
-  return t.concat(a || Array.prototype.slice.call(e));
+import { useControlledValue as q } from "./index312.mjs";
+function M(u, r) {
+  const { selected: e, required: m, onSelect: l } = u, [c, a] = q(e, l ? e : void 0), n = l ? e : c, { isSameDay: f } = r, s = (t) => (n == null ? void 0 : n.some((o) => f(o, t))) ?? !1, { min: S, max: h } = u;
+  return {
+    selected: n,
+    select: (t, o, y) => {
+      let i = [...n ?? []];
+      if (s(t)) {
+        if ((n == null ? void 0 : n.length) === S || m && (n == null ? void 0 : n.length) === 1)
+          return;
+        i = n == null ? void 0 : n.filter((x) => !f(x, t));
+      } else
+        (n == null ? void 0 : n.length) === h ? i = [t] : i = [...i, t];
+      return l || a(i), l == null || l(i, t, o, y), i;
+    },
+    isSelected: s
+  };
 }
 export {
-  p as __assign,
-  c as __rest,
-  l as __spreadArray
+  M as useMulti
 };
 //# sourceMappingURL=index315.mjs.map

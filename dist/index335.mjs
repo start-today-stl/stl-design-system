@@ -1,8 +1,17 @@
-var r = "right-scroll-bar-position", a = "width-before-scroll-bar", l = "with-scroll-bars-hidden", e = "--removed-body-scroll-bar-size";
+var r = !1;
+if (typeof window < "u")
+  try {
+    var e = Object.defineProperty({}, "passive", {
+      get: function() {
+        return r = !0, !0;
+      }
+    });
+    window.addEventListener("test", e, e), window.removeEventListener("test", e, e);
+  } catch {
+    r = !1;
+  }
+var a = r ? { passive: !1 } : !1;
 export {
-  a as fullWidthClassName,
-  l as noScrollbarsClassName,
-  e as removedBarSizeVariable,
-  r as zeroRightClassName
+  a as nonPassive
 };
 //# sourceMappingURL=index335.mjs.map

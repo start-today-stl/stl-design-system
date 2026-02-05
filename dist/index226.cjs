@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});function O(e,r,s,t,o=!1){if(!e||!r)return;const{startOfYear:f,endOfYear:i,eachYearOfInterval:l,getYear:u}=t,c=f(e),d=i(r),a=l({start:c,end:d});return o&&a.reverse(),a.map(n=>{const Y=s.formatYearDropdown(n,t);return{value:u(n),label:Y,disabled:!1}})}exports.getYearOptions=O;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const i=require("./index315.cjs"),r=require("./index316.cjs"),c=require("./index317.cjs");function l(e,n){const u=c.useSingle(e,n),t=i.useMulti(e,n),s=r.useRange(e,n);switch(e.mode){case"single":return u;case"multiple":return t;case"range":return s;default:return}}exports.useSelection=l;
 //# sourceMappingURL=index226.cjs.map

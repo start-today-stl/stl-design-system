@@ -1,15 +1,9 @@
-import { toCamelCase as t } from "./index188.mjs";
-/**
- * @license lucide-react v0.563.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const s = (a) => {
-  const e = t(a);
-  return e.charAt(0).toUpperCase() + e.slice(1);
-};
+import * as u from "react";
+function t(r) {
+  const e = u.useRef({ value: r, previous: r });
+  return u.useMemo(() => (e.current.value !== r && (e.current.previous = e.current.value, e.current.value = r), e.current.previous), [r]);
+}
 export {
-  s as toPascalCase
+  t as usePrevious
 };
 //# sourceMappingURL=index164.mjs.map

@@ -1,14 +1,20 @@
-/**
- * @license lucide-react v0.563.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const s = (a) => a.replace(
-  /^([A-Z])|[\s-_]+(\w)/g,
-  (t, o, e) => e ? e.toUpperCase() : o.toLowerCase()
-);
+import a from "react";
+import { UI as n } from "./index221.mjs";
+function f(c) {
+  const { options: e, className: m, components: l, classNames: t, ...o } = c, d = [t[n.Dropdown], m].join(" "), r = e == null ? void 0 : e.find(({ value: s }) => s === o.value);
+  return a.createElement(
+    "span",
+    { "data-disabled": o.disabled, className: t[n.DropdownRoot] },
+    a.createElement(l.Select, { className: d, ...o }, e == null ? void 0 : e.map(({ value: s, label: i, disabled: p }) => a.createElement(l.Option, { key: s, value: s, disabled: p }, i))),
+    a.createElement(
+      "span",
+      { className: t[n.CaptionLabel], "aria-hidden": !0 },
+      r == null ? void 0 : r.label,
+      a.createElement(l.Chevron, { orientation: "down", size: 18, className: t[n.Chevron] })
+    )
+  );
+}
 export {
-  s as toCamelCase
+  f as Dropdown
 };
 //# sourceMappingURL=index188.mjs.map

@@ -1,9 +1,7 @@
-import { DateLib as P } from "./index216.mjs";
-function o(a, t, e, n) {
-  let l = (n ?? new P(e)).format(a, "PPPP");
-  return t != null && t.today && (l = `Today, ${l}`), l;
+function r(e) {
+  return "Week Number";
 }
 export {
-  o as labelGridcell
+  r as labelWeekNumberHeader
 };
 //# sourceMappingURL=index250.mjs.map

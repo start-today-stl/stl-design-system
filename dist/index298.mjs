@@ -1,14 +1,9 @@
-import { constructFrom as m } from "./index349.mjs";
-import { toDate as l } from "./index350.mjs";
-function a(o, e) {
-  let t, r = e == null ? void 0 : e.in;
-  return o.forEach((c) => {
-    !r && typeof c == "object" && (r = m.bind(null, c));
-    const f = l(c, r);
-    (!t || t < f || isNaN(+f)) && (t = f);
-  }), m(r, t || NaN);
+import { toDate as a } from "./index339.mjs";
+function u(r, t) {
+  const e = a(r, t == null ? void 0 : t.in);
+  return e.setDate(1), e.setHours(0, 0, 0, 0), e;
 }
 export {
-  a as max
+  u as startOfMonth
 };
 //# sourceMappingURL=index298.mjs.map

@@ -1,27 +1,8 @@
-import { defaultDateLib as A } from "./index216.mjs";
-import { rangeIncludesDate as p } from "./index235.mjs";
-import { isDatesArray as a, isDateRange as I, isDayOfWeekType as g, isDateInterval as k, isDateAfterType as O, isDateBeforeType as W } from "./index237.mjs";
-function b(f, n, r = A) {
-  const t = Array.isArray(n) ? n : [n], { isSameDay: o, differenceInCalendarDays: i, isAfter: D } = r;
-  return t.some((e) => {
-    if (typeof e == "boolean")
-      return e;
-    if (r.isDate(e))
-      return o(f, e);
-    if (a(e, r))
-      return e.some((s) => o(f, s));
-    if (I(e))
-      return p(e, f, !1, r);
-    if (g(e))
-      return Array.isArray(e.dayOfWeek) ? e.dayOfWeek.includes(f.getDay()) : e.dayOfWeek === f.getDay();
-    if (k(e)) {
-      const s = i(e.before, f), l = i(e.after, f), y = s > 0, u = l < 0;
-      return D(e.before, e.after) ? u && y : y || u;
-    }
-    return O(e) ? i(f, e.after) > 0 : W(e) ? i(e.before, f) > 0 : typeof e == "function" ? e(f) : !1;
-  });
+function i(e) {
+  const t = [];
+  return e.reduce((c, n) => c.concat(n.weeks.slice()), t.slice());
 }
 export {
-  b as dateMatchModifiers
+  i as getWeeks
 };
 //# sourceMappingURL=index311.mjs.map

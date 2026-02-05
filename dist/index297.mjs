@@ -1,13 +1,8 @@
-import { normalizeDates as m } from "./index353.mjs";
-function D(r, a, e) {
-  const [l, t] = m(
-    e == null ? void 0 : e.in,
-    r,
-    a
-  );
-  return l.getFullYear() === t.getFullYear();
+import { startOfWeek as r } from "./index299.mjs";
+function n(t, e) {
+  return r(t, { ...e, weekStartsOn: 1 });
 }
 export {
-  D as isSameYear
+  n as startOfISOWeek
 };
 //# sourceMappingURL=index297.mjs.map

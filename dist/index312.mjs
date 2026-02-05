@@ -1,16 +1,9 @@
-import { defaultDateLib as f } from "./index216.mjs";
-function y(t, r, e = f) {
-  const n = Array.isArray(r) ? r : [r];
-  let a = t.from;
-  const i = e.differenceInCalendarDays(t.to, t.from), s = Math.min(i, 6);
-  for (let o = 0; o <= s; o++) {
-    if (n.includes(a.getDay()))
-      return !0;
-    a = e.addDays(a, 1);
-  }
-  return !1;
+import { useState as o } from "react";
+function a(t, e) {
+  const [u, n] = o(t);
+  return [e === void 0 ? u : e, n];
 }
 export {
-  y as rangeContainsDayOfWeek
+  a as useControlledValue
 };
 //# sourceMappingURL=index312.mjs.map

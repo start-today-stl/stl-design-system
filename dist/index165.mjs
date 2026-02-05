@@ -1,43 +1,28 @@
-import { forwardRef as l, createElement as a } from "react";
-import A from "./index166.mjs";
-import { hasA11yProp as b } from "./index167.mjs";
-import { mergeClasses as c } from "./index162.mjs";
-/**
- * @license lucide-react v0.563.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const n = l(
-  ({
-    color: m = "currentColor",
-    size: t = 24,
-    strokeWidth: o = 2,
-    absoluteStrokeWidth: s,
-    className: f = "",
-    children: r,
-    iconNode: u,
-    ...e
-  }, p) => a(
-    "svg",
-    {
-      ref: p,
-      ...A,
-      width: t,
-      height: t,
-      stroke: m,
-      strokeWidth: s ? Number(o) * 24 / Number(t) : o,
-      className: c("lucide", f),
-      ...!r && !b(e) && { "aria-hidden": "true" },
-      ...e
-    },
-    [
-      ...u.map(([i, d]) => a(i, d)),
-      ...Array.isArray(r) ? r : [r]
-    ]
-  )
-);
+import * as h from "react";
+import { useLayoutEffect as z } from "./index161.mjs";
+function c(r) {
+  const [d, e] = h.useState(void 0);
+  return z(() => {
+    if (r) {
+      e({ width: r.offsetWidth, height: r.offsetHeight });
+      const f = new ResizeObserver((i) => {
+        if (!Array.isArray(i) || !i.length)
+          return;
+        const b = i[0];
+        let o, t;
+        if ("borderBoxSize" in b) {
+          const s = b.borderBoxSize, u = Array.isArray(s) ? s[0] : s;
+          o = u.inlineSize, t = u.blockSize;
+        } else
+          o = r.offsetWidth, t = r.offsetHeight;
+        e({ width: o, height: t });
+      });
+      return f.observe(r, { box: "border-box" }), () => f.unobserve(r);
+    } else
+      e(void 0);
+  }, [r]), d;
+}
 export {
-  n as default
+  c as useSize
 };
 //# sourceMappingURL=index165.mjs.map

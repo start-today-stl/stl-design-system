@@ -1,5 +1,9 @@
-var r = {};
+class t {
+  constructor(e, s) {
+    this.days = s, this.weekNumber = e;
+  }
+}
 export {
-  r as __exports
+  t as CalendarWeek
 };
 //# sourceMappingURL=index267.mjs.map

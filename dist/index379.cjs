@@ -1,2 +1,0 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});function i(e){return(a,t)=>{const c=t!=null&&t.context?String(t.context):"standalone";let d;if(c==="formatting"&&e.formattingValues){const l=e.defaultFormattingWidth||e.defaultWidth,u=t!=null&&t.width?String(t.width):l;d=e.formattingValues[u]||e.formattingValues[l]}else{const l=e.defaultWidth,u=t!=null&&t.width?String(t.width):e.defaultWidth;d=e.values[u]||e.values[l]}const f=e.argumentCallback?e.argumentCallback(a):a;return d[f]}}exports.buildLocalizeFn=i;
-//# sourceMappingURL=index379.cjs.map

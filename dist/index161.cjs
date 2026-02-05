@@ -1,7 +1,2 @@
-"use strict";const a=require("react"),l=require("./index162.cjs"),u=require("./index163.cjs"),t=require("./index164.cjs"),i=require("./index165.cjs");/**
- * @license lucide-react v0.563.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */const C=(e,r)=>{const s=a.forwardRef(({className:c,...o},n)=>a.createElement(i,{ref:n,iconNode:r,className:l.mergeClasses(`lucide-${u.toKebabCase(t.toPascalCase(e))}`,`lucide-${e}`,c),...o}));return s.displayName=t.toPascalCase(e),s};module.exports=C;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const r=require("react");function u(e){const o=Object.create(null,{[Symbol.toStringTag]:{value:"Module"}});if(e){for(const t in e)if(t!=="default"){const c=Object.getOwnPropertyDescriptor(e,t);Object.defineProperty(o,t,c.get?c:{enumerable:!0,get:()=>e[t]})}}return o.default=e,Object.freeze(o)}const a=u(r);var n=globalThis!=null&&globalThis.document?a.useLayoutEffect:()=>{};exports.useLayoutEffect=n;
 //# sourceMappingURL=index161.cjs.map

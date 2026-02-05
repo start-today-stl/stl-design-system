@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});function d(s,o,n,e){const{month:h,defaultMonth:l,today:M=e.today(),numberOfMonths:i=1}=s;let t=h||l||M;const{differenceInCalendarMonths:f,addMonths:r,startOfMonth:c}=e;if(n&&f(n,t)<i-1){const u=-1*(i-1);t=r(n,u)}return o&&f(t,o)<0&&(t=o),c(t)}exports.getInitialMonth=d;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const s=require("./index228.cjs"),a=require("./index209.cjs");function n(e,l,r=a.defaultDateLib){return s.rangeIncludesDate(e,l.from,!1,r)||s.rangeIncludesDate(e,l.to,!1,r)||s.rangeIncludesDate(l,e.from,!1,r)||s.rangeIncludesDate(l,e.to,!1,r)}exports.rangeOverlaps=n;
 //# sourceMappingURL=index321.cjs.map

@@ -1,9 +1,12 @@
-import { isDate as r } from "./index294.mjs";
-import { toDate as i } from "./index350.mjs";
-function e(o) {
-  return !(!r(o) && typeof o != "number" || isNaN(+i(o)));
-}
+const t = {
+  lastWeek: "'last' eeee 'at' p",
+  yesterday: "'yesterday at' p",
+  today: "'today at' p",
+  tomorrow: "'tomorrow at' p",
+  nextWeek: "eeee 'at' p",
+  other: "P"
+}, s = (e, a, o, r) => t[e];
 export {
-  e as isValid
+  s as formatRelative
 };
 //# sourceMappingURL=index359.mjs.map

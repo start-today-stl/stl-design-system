@@ -1,20 +1,33 @@
-function j(r, n, I, W) {
-  const s = r[0], o = r[r.length - 1], { ISOWeek: c, fixedWeeks: u, broadcastCalendar: a } = I ?? {}, { addDays: i, differenceInCalendarDays: M, differenceInCalendarMonths: C, endOfBroadcastWeek: O, endOfISOWeek: k, endOfMonth: h, endOfWeek: l, isAfter: E, startOfBroadcastWeek: F, startOfISOWeek: S, startOfWeek: p } = W, g = a ? F(s, W) : c ? S(s) : p(s), D = a ? O(o) : c ? k(h(o)) : l(h(o)), f = n && (a ? O(n) : c ? k(n) : l(n)), x = f && E(D, f) ? f : D, A = M(x, g), B = C(o, s) + 1, e = [];
-  for (let t = 0; t <= A; t++) {
-    const d = i(g, t);
-    e.push(d);
+import { defaultDateLib as p } from "./index209.mjs";
+function y(o, D, s = 0, l = 0, r = !1, u = p) {
+  const { from: e, to: i } = D || {}, { isSameDay: n, isAfter: m, isBefore: c } = u;
+  let f;
+  if (!e && !i)
+    f = { from: o, to: s > 0 ? void 0 : o };
+  else if (e && !i)
+    n(e, o) ? s === 0 ? f = { from: e, to: o } : r ? f = { from: e, to: void 0 } : f = void 0 : c(o, e) ? f = { from: o, to: e } : f = { from: e, to: o };
+  else if (e && i)
+    if (n(e, o) && n(i, o))
+      r ? f = { from: e, to: i } : f = void 0;
+    else if (n(e, o))
+      f = { from: e, to: s > 0 ? void 0 : o };
+    else if (n(i, o))
+      f = { from: o, to: s > 0 ? void 0 : o };
+    else if (c(o, e))
+      f = { from: o, to: i };
+    else if (m(o, e))
+      f = { from: e, to: o };
+    else if (m(o, i))
+      f = { from: e, to: o };
+    else
+      throw new Error("Invalid range");
+  if (f != null && f.from && (f != null && f.to)) {
+    const t = u.differenceInCalendarDays(f.to, f.from);
+    l > 0 && t > l ? f = { from: o, to: void 0 } : s > 1 && t < s && (f = { from: o, to: void 0 });
   }
-  const y = (a ? 35 : 42) * B;
-  if (u && e.length < y) {
-    const t = y - e.length;
-    for (let d = 0; d < t; d++) {
-      const T = i(e[e.length - 1], 1);
-      e.push(T);
-    }
-  }
-  return e;
+  return f;
 }
 export {
-  j as getDates
+  y as addToRange
 };
 //# sourceMappingURL=index318.mjs.map

@@ -1,11 +1,14 @@
-import { getDefaultOptions as D } from "./index355.mjs";
-import { toDate as S } from "./index350.mjs";
-function n(u, e) {
-  var f, O, k, l;
-  const a = D(), r = (e == null ? void 0 : e.weekStartsOn) ?? ((O = (f = e == null ? void 0 : e.locale) == null ? void 0 : f.options) == null ? void 0 : O.weekStartsOn) ?? a.weekStartsOn ?? ((l = (k = a.locale) == null ? void 0 : k.options) == null ? void 0 : l.weekStartsOn) ?? 0, t = S(u, e == null ? void 0 : e.in), c = t.getDay(), w = (c < r ? 7 : 0) + c - r;
-  return t.setDate(t.getDate() - w), t.setHours(0, 0, 0, 0), t;
+function i(e, o, h, r) {
+  const { numberOfMonths: f = 1 } = h, n = [];
+  for (let t = 0; t < f; t++) {
+    const s = r.addMonths(e, t);
+    if (o && s > o)
+      break;
+    n.push(s);
+  }
+  return n;
 }
 export {
-  n as startOfWeek
+  i as getDisplayMonths
 };
 //# sourceMappingURL=index305.mjs.map

@@ -1,17 +1,53 @@
-var r = !1;
-if (typeof window < "u")
-  try {
-    var e = Object.defineProperty({}, "passive", {
-      get: function() {
-        return r = !0, !0;
-      }
-    });
-    window.addEventListener("test", e, e), window.removeEventListener("test", e, e);
-  } catch {
-    r = !1;
+const s = (t, e) => {
+  switch (t) {
+    case "P":
+      return e.date({ width: "short" });
+    case "PP":
+      return e.date({ width: "medium" });
+    case "PPP":
+      return e.date({ width: "long" });
+    case "PPPP":
+    default:
+      return e.date({ width: "full" });
   }
-var a = r ? { passive: !1 } : !1;
+}, c = (t, e) => {
+  switch (t) {
+    case "p":
+      return e.time({ width: "short" });
+    case "pp":
+      return e.time({ width: "medium" });
+    case "ppp":
+      return e.time({ width: "long" });
+    case "pppp":
+    default:
+      return e.time({ width: "full" });
+  }
+}, P = (t, e) => {
+  const d = t.match(/(P+)(p+)?/) || [], a = d[1], r = d[2];
+  if (!r)
+    return s(t, e);
+  let i;
+  switch (a) {
+    case "P":
+      i = e.dateTime({ width: "short" });
+      break;
+    case "PP":
+      i = e.dateTime({ width: "medium" });
+      break;
+    case "PPP":
+      i = e.dateTime({ width: "long" });
+      break;
+    case "PPPP":
+    default:
+      i = e.dateTime({ width: "full" });
+      break;
+  }
+  return i.replace("{{date}}", s(a, e)).replace("{{time}}", c(r, e));
+}, h = {
+  p: c,
+  P
+};
 export {
-  a as nonPassive
+  h as longFormatters
 };
 //# sourceMappingURL=index346.mjs.map

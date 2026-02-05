@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const e=require("./index216.cjs");function o(t,r=e.defaultDateLib){return t<10?r.formatNumber(`0${t.toLocaleString()}`):r.formatNumber(`${t.toLocaleString()}`)}exports.formatWeekNumber=o;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});function o(t){return"Choose the Month"}exports.labelMonthDropdown=o;
 //# sourceMappingURL=index244.cjs.map

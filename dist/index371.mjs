@@ -1,8 +1,10 @@
-function r(t, n) {
-  const o = t < 0 ? "-" : "", a = Math.abs(t).toString().padStart(n, "0");
-  return o + a;
+function r(t) {
+  return (d = {}) => {
+    const n = d.width ? String(d.width) : t.defaultWidth;
+    return t.formats[n] || t.formats[t.defaultWidth];
+  };
 }
 export {
-  r as addLeadingZeros
+  r as buildFormatLongFn
 };
 //# sourceMappingURL=index371.mjs.map

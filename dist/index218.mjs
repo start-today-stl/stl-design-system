@@ -1,8 +1,12 @@
-import { DayFlag as e, SelectionState as n, UI as d } from "./index228.mjs";
-function p(o, i, f = {}) {
-  return Object.entries(o).filter(([, t]) => t === !0).reduce((t, [r]) => (f[r] ? t.push(f[r]) : i[e[r]] ? t.push(i[e[r]]) : i[n[r]] && t.push(i[n[r]]), t), [i[d.Day]]);
+function y(t, o, a, n) {
+  const s = n ?? t.today(), c = a ? t.startOfBroadcastWeek(s, t) : o ? t.startOfISOWeek(s) : t.startOfWeek(s), r = [];
+  for (let e = 0; e < 7; e++) {
+    const f = t.addDays(c, e);
+    r.push(f);
+  }
+  return r;
 }
 export {
-  p as getClassNamesForModifiers
+  y as getWeekdays
 };
 //# sourceMappingURL=index218.mjs.map

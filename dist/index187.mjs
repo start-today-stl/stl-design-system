@@ -1,12 +1,12 @@
-import "react";
-import { jsx as e, Fragment as o } from "react/jsx-runtime";
-var l = Symbol("radix.slottable");
-// @__NO_SIDE_EFFECTS__
-function n(r) {
-  const t = ({ children: a }) => /* @__PURE__ */ e(o, { children: a });
-  return t.displayName = `${r}.Slottable`, t.__radixId = l, t;
+import e from "react";
+function s(u) {
+  const { day: n, modifiers: t, ...r } = u, o = e.useRef(null);
+  return e.useEffect(() => {
+    var f;
+    t.focused && ((f = o.current) == null || f.focus());
+  }, [t.focused]), e.createElement("button", { ref: o, ...r });
 }
 export {
-  n as createSlottable
+  s as DayButton
 };
 //# sourceMappingURL=index187.mjs.map

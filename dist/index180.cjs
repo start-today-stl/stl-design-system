@@ -1,2 +1,7 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const o=require("react"),l=require("./index146.cjs"),c=require("react/jsx-runtime");function d(e){const t=Object.create(null,{[Symbol.toStringTag]:{value:"Module"}});if(e){for(const r in e)if(r!=="default"){const n=Object.getOwnPropertyDescriptor(e,r);Object.defineProperty(t,r,n.get?n:{enumerable:!0,get:()=>e[r]})}}return t.default=e,Object.freeze(t)}const s=d(o);var a=Object.freeze({position:"absolute",border:0,width:1,height:1,padding:0,margin:-1,overflow:"hidden",clip:"rect(0, 0, 0, 0)",whiteSpace:"nowrap",wordWrap:"normal"}),u="VisuallyHidden",i=s.forwardRef((e,t)=>c.jsx(l.Primitive.span,{...e,ref:t,style:{...a,...e.style}}));i.displayName=u;var f=i;exports.Root=f;exports.VISUALLY_HIDDEN_STYLES=a;exports.VisuallyHidden=i;
+"use strict";/**
+ * @license lucide-react v0.563.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */var t={xmlns:"http://www.w3.org/2000/svg",width:24,height:24,viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:2,strokeLinecap:"round",strokeLinejoin:"round"};module.exports=t;
 //# sourceMappingURL=index180.cjs.map

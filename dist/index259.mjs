@@ -1,15 +1,5 @@
-import * as r from "react";
-import { useCallbackRef as s } from "./index152.mjs";
-function p(n, e = globalThis == null ? void 0 : globalThis.document) {
-  const t = s(n);
-  r.useEffect(() => {
-    const o = (a) => {
-      a.key === "Escape" && t(a);
-    };
-    return e.addEventListener("keydown", o, { capture: !0 }), () => e.removeEventListener("keydown", o, { capture: !0 });
-  }, [t, e]);
-}
+var e = {};
 export {
-  p as useEscapeKeydown
+  e as __exports
 };
 //# sourceMappingURL=index259.mjs.map

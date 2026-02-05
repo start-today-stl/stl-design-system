@@ -1,10 +1,17 @@
-import { constructFrom as f } from "./index349.mjs";
-import { toDate as c } from "./index350.mjs";
-function i(a, t, e) {
-  const r = c(a, e == null ? void 0 : e.in);
-  return isNaN(t) ? f(a, NaN) : (t && r.setDate(r.getDate() + t), r);
+import { normalizeInterval as h } from "./index343.mjs";
+import { constructFrom as l } from "./index338.mjs";
+function f(a, r) {
+  const { start: t, end: n } = h(r == null ? void 0 : r.in, a);
+  let s = +t > +n;
+  const c = s ? +t : +n, e = s ? n : t;
+  e.setHours(0, 0, 0, 0), e.setDate(1);
+  let m = 1;
+  const o = [];
+  for (; +e <= c; )
+    o.push(l(t, e)), e.setMonth(e.getMonth() + m);
+  return s ? o.reverse() : o;
 }
 export {
-  i as addDays
+  f as eachMonthOfInterval
 };
 //# sourceMappingURL=index276.mjs.map

@@ -1,2 +1,7 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const s=require("react");require("react-dom");const l=require("./index109.cjs"),f=require("react/jsx-runtime");function d(t){const e=Object.create(null,{[Symbol.toStringTag]:{value:"Module"}});if(t){for(const r in t)if(r!=="default"){const i=Object.getOwnPropertyDescriptor(t,r);Object.defineProperty(e,r,i.get?i:{enumerable:!0,get:()=>t[r]})}}return e.default=t,Object.freeze(e)}const m=d(s);var p=["a","button","div","form","h2","h3","img","input","label","li","nav","ol","p","select","span","svg","ul"],v=p.reduce((t,e)=>{const r=l.createSlot(`Primitive.${e}`),i=m.forwardRef((o,n)=>{const{asChild:a,...c}=o,u=a?r:e;return typeof window<"u"&&(window[Symbol.for("radix-ui")]=!0),f.jsx(u,{...c,ref:n})});return i.displayName=`Primitive.${e}`,{...t,[e]:i}},{});exports.Primitive=v;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});/**
+ * @license lucide-react v0.563.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */const e=t=>{for(const r in t)if(r.startsWith("aria-")||r==="role"||r==="title")return!0;return!1};exports.hasA11yProp=e;
 //# sourceMappingURL=index181.cjs.map

@@ -1,29 +1,20 @@
-import { defaultDateLib as p } from "./index216.mjs";
-import { dateMatchModifiers as s } from "./index311.mjs";
-import { rangeContainsDayOfWeek as M } from "./index312.mjs";
-import { rangeIncludesDate as l } from "./index235.mjs";
-import { rangeOverlaps as y } from "./index314.mjs";
-import { isDatesArray as a, isDateRange as A, isDayOfWeekType as C, isDateInterval as I, isDateAfterType as v, isDateBeforeType as F } from "./index237.mjs";
-function d(n, t, f = p) {
-  const e = Array.isArray(t) ? t : [t];
-  if (e.filter((o) => typeof o != "function").some((o) => typeof o == "boolean" ? o : f.isDate(o) ? l(n, o, !1, f) : a(o, f) ? o.some((r) => l(n, r, !1, f)) : A(o) ? o.from && o.to ? y(n, { from: o.from, to: o.to }, f) : !1 : C(o) ? M(n, o.dayOfWeek, f) : I(o) ? f.isAfter(o.before, o.after) ? y(n, {
-    from: f.addDays(o.after, 1),
-    to: f.addDays(o.before, -1)
-  }, f) : s(n.from, o, f) || s(n.to, o, f) : v(o) || F(o) ? s(n.from, o, f) || s(n.to, o, f) : !1))
-    return !0;
-  const i = e.filter((o) => typeof o == "function");
-  if (i.length) {
-    let o = n.from;
-    const r = f.differenceInCalendarDays(n.to, n.from);
-    for (let u = 0; u <= r; u++) {
-      if (i.some((D) => D(o)))
-        return !0;
-      o = f.addDays(o, 1);
-    }
+import { DayFlag as n } from "./index221.mjs";
+var d;
+(function(e) {
+  e[e.Today = 0] = "Today", e[e.Selected = 1] = "Selected", e[e.LastFocused = 2] = "LastFocused", e[e.FocusedModifier = 3] = "FocusedModifier";
+})(d || (d = {}));
+function i(e) {
+  return !e[n.disabled] && !e[n.hidden] && !e[n.outside];
+}
+function L(e, l, t, a) {
+  let c, o = -1;
+  for (const f of e) {
+    const u = l(f);
+    i(u) && (u[n.focused] && o < d.FocusedModifier ? (c = f, o = d.FocusedModifier) : a != null && a.isEqualTo(f) && o < d.LastFocused ? (c = f, o = d.LastFocused) : t(f.date) && o < d.Selected ? (c = f, o = d.Selected) : u[n.today] && o < d.Today && (c = f, o = d.Today));
   }
-  return !1;
+  return c || (c = e.find((f) => i(l(f)))), c;
 }
 export {
-  d as rangeContainsModifiers
+  L as calculateFocusTarget
 };
 //# sourceMappingURL=index313.mjs.map

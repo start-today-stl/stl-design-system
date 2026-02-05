@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const r=require("./index277.cjs");function a(e,t,d){return r.addMonths(e,t*12,d)}exports.addYears=a;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const u=require("./index339.cjs");function a(n,t){const e=u.toDate(n,t==null?void 0:t.in),r=e.getMonth();return e.setFullYear(e.getFullYear(),r+1,0),e.setHours(23,59,59,999),e}exports.endOfMonth=a;
 //# sourceMappingURL=index279.cjs.map

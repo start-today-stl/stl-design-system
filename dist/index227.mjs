@@ -1,107 +1,27 @@
-import { TZDate as c } from "./index272.mjs";
-import "./index273.mjs";
-import { differenceInCalendarMonths as O } from "./index281.mjs";
-import { differenceInCalendarDays as k } from "./index280.mjs";
-import { getISOWeek as w } from "./index288.mjs";
-import { getWeek as M } from "./index291.mjs";
-function I(o, d = {}) {
-  var l;
-  const { weekStartsOn: h, locale: u } = d, g = h ?? ((l = u == null ? void 0 : u.options) == null ? void 0 : l.weekStartsOn) ?? 0, n = (t) => {
-    const e = typeof t == "number" || typeof t == "string" ? new Date(t) : t;
-    return new c(e.getFullYear(), e.getMonth(), e.getDate(), 12, 0, 0, o);
-  }, f = (t) => {
-    const e = n(t);
-    return new Date(e.getFullYear(), e.getMonth(), e.getDate(), 0, 0, 0, 0);
-  };
-  return {
-    today: () => n(c.tz(o)),
-    newDate: (t, e, r) => new c(t, e, r, 12, 0, 0, o),
-    startOfDay: (t) => n(t),
-    startOfWeek: (t, e) => {
-      const r = n(t), a = (e == null ? void 0 : e.weekStartsOn) ?? g, s = (r.getDay() - a + 7) % 7;
-      return r.setDate(r.getDate() - s), r;
-    },
-    startOfISOWeek: (t) => {
-      const e = n(t), r = (e.getDay() - 1 + 7) % 7;
-      return e.setDate(e.getDate() - r), e;
-    },
-    startOfMonth: (t) => {
-      const e = n(t);
-      return e.setDate(1), e;
-    },
-    startOfYear: (t) => {
-      const e = n(t);
-      return e.setMonth(0, 1), e;
-    },
-    endOfWeek: (t, e) => {
-      const r = n(t), D = ((((e == null ? void 0 : e.weekStartsOn) ?? g) + 6) % 7 - r.getDay() + 7) % 7;
-      return r.setDate(r.getDate() + D), r;
-    },
-    endOfISOWeek: (t) => {
-      const e = n(t), r = (7 - e.getDay()) % 7;
-      return e.setDate(e.getDate() + r), e;
-    },
-    endOfMonth: (t) => {
-      const e = n(t);
-      return e.setMonth(e.getMonth() + 1, 0), e;
-    },
-    endOfYear: (t) => {
-      const e = n(t);
-      return e.setMonth(11, 31), e;
-    },
-    eachMonthOfInterval: (t) => {
-      const e = n(t.start), r = n(t.end), a = [], s = new c(e.getFullYear(), e.getMonth(), 1, 12, 0, 0, o), D = r.getFullYear() * 12 + r.getMonth();
-      for (; s.getFullYear() * 12 + s.getMonth() <= D; )
-        a.push(new c(s, o)), s.setMonth(s.getMonth() + 1, 1);
-      return a;
-    },
-    // Normalize to noon once before arithmetic (avoid DST/midnight edge cases),
-    // mutate the same TZDate, and return it.
-    addDays: (t, e) => {
-      const r = n(t);
-      return r.setDate(r.getDate() + e), r;
-    },
-    addWeeks: (t, e) => {
-      const r = n(t);
-      return r.setDate(r.getDate() + e * 7), r;
-    },
-    addMonths: (t, e) => {
-      const r = n(t);
-      return r.setMonth(r.getMonth() + e), r;
-    },
-    addYears: (t, e) => {
-      const r = n(t);
-      return r.setFullYear(r.getFullYear() + e), r;
-    },
-    eachYearOfInterval: (t) => {
-      const e = n(t.start), r = n(t.end), a = [], s = new c(e.getFullYear(), 0, 1, 12, 0, 0, o);
-      for (; s.getFullYear() <= r.getFullYear(); )
-        a.push(new c(s, o)), s.setFullYear(s.getFullYear() + 1, 0, 1);
-      return a;
-    },
-    getWeek: (t, e) => {
-      var a;
-      const r = f(t);
-      return M(r, {
-        weekStartsOn: (e == null ? void 0 : e.weekStartsOn) ?? g,
-        firstWeekContainsDate: (e == null ? void 0 : e.firstWeekContainsDate) ?? ((a = u == null ? void 0 : u.options) == null ? void 0 : a.firstWeekContainsDate) ?? 1
-      });
-    },
-    getISOWeek: (t) => {
-      const e = f(t);
-      return w(e);
-    },
-    differenceInCalendarDays: (t, e) => {
-      const r = f(t), a = f(e);
-      return k(r, a);
-    },
-    differenceInCalendarMonths: (t, e) => {
-      const r = f(t), a = f(e);
-      return O(r, a);
-    }
-  };
+import "./index263.mjs";
+import { toTimeZone as i } from "./index229.mjs";
+import { isDateRange as e, isDateInterval as p, isDateAfterType as y, isDateBeforeType as D } from "./index230.mjs";
+function n(o, f, u) {
+  return i(o, f);
+}
+function t(o, f, u) {
+  return typeof o == "boolean" || typeof o == "function" ? o : o instanceof Date ? n(o, f) : Array.isArray(o) ? o.map((r) => r instanceof Date ? n(r, f) : r) : e(o) ? {
+    ...o,
+    from: o.from ? i(o.from, f) : o.from,
+    to: o.to ? i(o.to, f) : o.to
+  } : p(o) ? {
+    before: n(o.before, f),
+    after: n(o.after, f)
+  } : y(o) ? {
+    after: n(o.after, f)
+  } : D(o) ? {
+    before: n(o.before, f)
+  } : o;
+}
+function T(o, f, u) {
+  return o && (Array.isArray(o) ? o.map((r) => t(r, f)) : t(o, f));
 }
 export {
-  I as createNoonOverrides
+  T as convertMatchersToTimeZone
 };
 //# sourceMappingURL=index227.mjs.map

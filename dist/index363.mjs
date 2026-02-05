@@ -1,15 +1,60 @@
-import { constructFrom as f } from "./index349.mjs";
-import { startOfISOWeek as u } from "./index303.mjs";
-import { toDate as c } from "./index350.mjs";
-function Y(o, r) {
-  const e = c(o, r == null ? void 0 : r.in), t = e.getFullYear(), a = f(e, 0);
-  a.setFullYear(t + 1, 0, 4), a.setHours(0, 0, 0, 0);
-  const m = u(a), s = f(e, 0);
-  s.setFullYear(t, 0, 4), s.setHours(0, 0, 0, 0);
-  const n = u(s);
-  return e.getTime() >= m.getTime() ? t + 1 : e.getTime() >= n.getTime() ? t : t - 1;
-}
+import { addLeadingZeros as n } from "./index362.mjs";
+const g = {
+  // Year
+  y(e, t) {
+    const r = e.getFullYear(), a = r > 0 ? r : 1 - r;
+    return n(t === "yy" ? a % 100 : a, t.length);
+  },
+  // Month
+  M(e, t) {
+    const r = e.getMonth();
+    return t === "M" ? String(r + 1) : n(r + 1, 2);
+  },
+  // Day of the month
+  d(e, t) {
+    return n(e.getDate(), t.length);
+  },
+  // AM or PM
+  a(e, t) {
+    const r = e.getHours() / 12 >= 1 ? "pm" : "am";
+    switch (t) {
+      case "a":
+      case "aa":
+        return r.toUpperCase();
+      case "aaa":
+        return r;
+      case "aaaaa":
+        return r[0];
+      case "aaaa":
+      default:
+        return r === "am" ? "a.m." : "p.m.";
+    }
+  },
+  // Hour [1-12]
+  h(e, t) {
+    return n(e.getHours() % 12 || 12, t.length);
+  },
+  // Hour [0-23]
+  H(e, t) {
+    return n(e.getHours(), t.length);
+  },
+  // Minute
+  m(e, t) {
+    return n(e.getMinutes(), t.length);
+  },
+  // Second
+  s(e, t) {
+    return n(e.getSeconds(), t.length);
+  },
+  // Fraction of second
+  S(e, t) {
+    const r = t.length, a = e.getMilliseconds(), s = Math.trunc(
+      a * Math.pow(10, r - 3)
+    );
+    return n(s, t.length);
+  }
+};
 export {
-  Y as getISOWeekYear
+  g as lightFormatters
 };
 //# sourceMappingURL=index363.mjs.map

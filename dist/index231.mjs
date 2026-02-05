@@ -1,13 +1,38 @@
-import { createContext as t, useContext as n } from "react";
-const o = t(void 0);
-function c() {
-  const e = n(o);
-  if (e === void 0)
-    throw new Error("useDayPicker() must be used within a custom component.");
-  return e;
-}
+import { enUS as n } from "./index331.mjs";
+import { format as f } from "./index301.mjs";
+const b = {
+  ...n,
+  labels: {
+    labelDayButton: (r, a, l, e) => {
+      let t;
+      e && typeof e.format == "function" ? t = e.format.bind(e) : t = (c, m) => f(c, m, { locale: n, ...l });
+      let o = t(r, "PPPP");
+      return a.today && (o = `Today, ${o}`), a.selected && (o = `${o}, selected`), o;
+    },
+    labelMonthDropdown: "Choose the Month",
+    labelNext: "Go to the Next Month",
+    labelPrevious: "Go to the Previous Month",
+    labelWeekNumber: (r) => `Week ${r}`,
+    labelYearDropdown: "Choose the Year",
+    labelGrid: (r, a, l) => {
+      let e;
+      return l && typeof l.format == "function" ? e = l.format.bind(l) : e = (t, o) => f(t, o, { locale: n, ...a }), e(r, "LLLL yyyy");
+    },
+    labelGridcell: (r, a, l, e) => {
+      let t;
+      e && typeof e.format == "function" ? t = e.format.bind(e) : t = (c, m) => f(c, m, { locale: n, ...l });
+      let o = t(r, "PPPP");
+      return a != null && a.today && (o = `Today, ${o}`), o;
+    },
+    labelNav: "Navigation bar",
+    labelWeekNumberHeader: "Week Number",
+    labelWeekday: (r, a, l) => {
+      let e;
+      return l && typeof l.format == "function" ? e = l.format.bind(l) : e = (t, o) => f(t, o, { locale: n, ...a }), e(r, "cccc");
+    }
+  }
+};
 export {
-  o as dayPickerContext,
-  c as useDayPicker
+  b as enUS
 };
 //# sourceMappingURL=index231.mjs.map

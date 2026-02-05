@@ -1,58 +1,19 @@
-import * as i from "react";
-import { jsx as _ } from "react/jsx-runtime";
-function $(e, x = []) {
-  let o = [];
-  function f(r, n) {
-    const t = i.createContext(n);
-    t.displayName = r + "Context";
-    const c = o.length;
-    o = [...o, n];
-    const m = (a) => {
-      var l;
-      const { scope: s, children: C, ...p } = a, d = ((l = s == null ? void 0 : s[e]) == null ? void 0 : l[c]) || t, v = i.useMemo(() => p, Object.values(p));
-      return /* @__PURE__ */ _(d.Provider, { value: v, children: C });
-    };
-    m.displayName = r + "Provider";
-    function S(a, s) {
-      var d;
-      const C = ((d = s == null ? void 0 : s[e]) == null ? void 0 : d[c]) || t, p = i.useContext(C);
-      if (p) return p;
-      if (n !== void 0) return n;
-      throw new Error(`\`${a}\` must be used within \`${r}\``);
-    }
-    return [m, S];
-  }
-  const u = () => {
-    const r = o.map((n) => i.createContext(n));
-    return function(t) {
-      const c = (t == null ? void 0 : t[e]) || r;
-      return i.useMemo(
-        () => ({ [`__scope${e}`]: { ...t, [e]: c } }),
-        [t, c]
-      );
-    };
-  };
-  return u.scopeName = e, [f, h(u, ...x)];
-}
-function h(...e) {
-  const x = e[0];
-  if (e.length === 1) return x;
-  const o = () => {
-    const f = e.map((u) => ({
-      useScope: u(),
-      scopeName: u.scopeName
-    }));
-    return function(r) {
-      const n = f.reduce((t, { useScope: c, scopeName: m }) => {
-        const a = c(r)[`__scope${m}`];
-        return { ...t, ...a };
-      }, {});
-      return i.useMemo(() => ({ [`__scope${x.scopeName}`]: n }), [n]);
-    };
-  };
-  return o.scopeName = x.scopeName, o;
+import e from "react";
+function r(n) {
+  const { size: o = 24, orientation: t = "left", className: l } = n;
+  return (
+    // biome-ignore lint/a11y/noSvgWithoutTitle: handled by the parent component
+    e.createElement(
+      "svg",
+      { className: l, width: o, height: o, viewBox: "0 0 24 24" },
+      t === "up" && e.createElement("polygon", { points: "6.77 17 12.5 11.43 18.24 17 20 15.28 12.5 8 5 15.28" }),
+      t === "down" && e.createElement("polygon", { points: "6.77 8 12.5 13.57 18.24 8 20 9.72 12.5 17 5 9.72" }),
+      t === "left" && e.createElement("polygon", { points: "16 18.112 9.81111111 12 16 5.87733333 14.0888889 4 6 12 14.0888889 20" }),
+      t === "right" && e.createElement("polygon", { points: "8 18.112 14.18888889 12 8 5.87733333 9.91111111 4 18 12 9.91111111 20" })
+    )
+  );
 }
 export {
-  $ as createContextScope
+  r as Chevron
 };
 //# sourceMappingURL=index185.mjs.map

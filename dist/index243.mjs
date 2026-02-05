@@ -1,8 +1,9 @@
-import { DateLib as t } from "./index216.mjs";
-function a(c, e, r) {
-  return (r ?? new t(e)).format(c, "cccccc");
+import { DateLib as P } from "./index209.mjs";
+function o(a, t, e, n) {
+  let l = (n ?? new P(e)).format(a, "PPPP");
+  return t != null && t.today && (l = `Today, ${l}`), l;
 }
 export {
-  a as formatWeekdayName
+  o as labelGridcell
 };
 //# sourceMappingURL=index243.mjs.map

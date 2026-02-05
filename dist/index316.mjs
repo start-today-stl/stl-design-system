@@ -1,32 +1,19 @@
-import { __rest as E, __assign as r } from "./index315.mjs";
-import * as a from "react";
-import { zeroRightClassName as I, fullWidthClassName as Z } from "./index335.mjs";
-import { effectCar as W } from "./index336.mjs";
-import { useMergeRefs as z } from "./index337.mjs";
-var l = function() {
-}, m = a.forwardRef(function(e, d) {
-  var o = a.useRef(null), n = a.useState({
-    onScrollCapture: l,
-    onWheelCapture: l,
-    onTouchMoveCapture: l
-  }), f = n[0], v = n[1], h = e.forwardProps, t = e.children, u = e.className, C = e.removeScrollBar, R = e.enabled, g = e.shards, P = e.sideCar, S = e.noRelative, b = e.noIsolation, w = e.inert, N = e.allowPinchZoom, i = e.as, M = i === void 0 ? "div" : i, _ = e.gapMode, B = E(e, ["forwardProps", "children", "className", "removeScrollBar", "enabled", "shards", "sideCar", "noRelative", "noIsolation", "inert", "allowPinchZoom", "as", "gapMode"]), k = P, s = z([o, d]), c = r(r({}, B), f);
-  return a.createElement(
-    a.Fragment,
-    null,
-    R && a.createElement(k, { sideCar: W, removeScrollBar: C, shards: g, noRelative: S, noIsolation: b, inert: w, setCallbacks: v, allowPinchZoom: !!N, lockRef: o, gapMode: _ }),
-    h ? a.cloneElement(a.Children.only(t), r(r({}, c), { ref: s })) : a.createElement(M, r({}, c, { className: u, ref: s }), t)
-  );
-});
-m.defaultProps = {
-  enabled: !0,
-  removeScrollBar: !0,
-  inert: !1
-};
-m.classNames = {
-  fullWidth: Z,
-  zeroRight: I
-};
+import { useControlledValue as x } from "./index312.mjs";
+import { rangeIncludesDate as y } from "./index228.mjs";
+import { addToRange as C } from "./index318.mjs";
+import { rangeContainsModifiers as q } from "./index320.mjs";
+function h(l, d) {
+  const { disabled: i, excludeDisabled: c, selected: s, required: f, onSelect: o } = l, [r, m] = x(s, o ? s : void 0), t = o ? s : r;
+  return {
+    selected: t,
+    select: (n, u, a) => {
+      const { min: S, max: p } = l, e = n ? C(n, t, S, p, f, d) : void 0;
+      return c && i && (e != null && e.from) && e.to && q({ from: e.from, to: e.to }, i, d) && (e.from = n, e.to = void 0), o || m(e), o == null || o(e, n, u, a), e;
+    },
+    isSelected: (n) => t && y(t, n, !1, d)
+  };
+}
 export {
-  m as RemoveScroll
+  h as useRange
 };
 //# sourceMappingURL=index316.mjs.map

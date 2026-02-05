@@ -1,19 +1,21 @@
-import { useControlledValue as x } from "./index327.mjs";
-import { rangeIncludesDate as y } from "./index235.mjs";
-import { addToRange as C } from "./index310.mjs";
-import { rangeContainsModifiers as q } from "./index313.mjs";
-function h(l, d) {
-  const { disabled: i, excludeDisabled: c, selected: s, required: f, onSelect: o } = l, [r, m] = x(s, o ? s : void 0), t = o ? s : r;
-  return {
-    selected: t,
-    select: (n, u, a) => {
-      const { min: S, max: p } = l, e = n ? C(n, t, S, p, f, d) : void 0;
-      return c && i && (e != null && e.from) && e.to && q({ from: e.from, to: e.to }, i, d) && (e.from = n, e.to = void 0), o || m(e), o == null || o(e, n, u, a), e;
-    },
-    isSelected: (n) => t && y(t, n, !1, d)
-  };
-}
+import { formatDistance as o } from "./index357.mjs";
+import { formatLong as t } from "./index358.mjs";
+import { formatRelative as r } from "./index359.mjs";
+import { localize as m } from "./index360.mjs";
+import { match as a } from "./index361.mjs";
+const p = {
+  code: "en-US",
+  formatDistance: o,
+  formatLong: t,
+  formatRelative: r,
+  localize: m,
+  match: a,
+  options: {
+    weekStartsOn: 0,
+    firstWeekContainsDate: 1
+  }
+};
 export {
-  h as useRange
+  p as enUS
 };
 //# sourceMappingURL=index331.mjs.map

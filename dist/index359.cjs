@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const t=require("./index294.cjs"),i=require("./index350.cjs");function r(e){return!(!t.isDate(e)&&typeof e!="number"||isNaN(+i.toDate(e)))}exports.isValid=r;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const t={lastWeek:"'last' eeee 'at' p",yesterday:"'yesterday at' p",today:"'today at' p",tomorrow:"'tomorrow at' p",nextWeek:"eeee 'at' p",other:"P"},a=(e,o,r,s)=>t[e];exports.formatRelative=a;
 //# sourceMappingURL=index359.cjs.map

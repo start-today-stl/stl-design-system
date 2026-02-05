@@ -1,9 +1,14 @@
-import { toDate as a } from "./index350.mjs";
-function l(t, r) {
-  const e = a(t, r == null ? void 0 : r.in);
-  return e.setFullYear(e.getFullYear(), 0, 1), e.setHours(0, 0, 0, 0), e;
+function u(i, o, n, e) {
+  const { month: s, defaultMonth: M, today: c = e.today(), numberOfMonths: f = 1 } = i;
+  let t = s || M || c;
+  const { differenceInCalendarMonths: h, addMonths: l, startOfMonth: r } = e;
+  if (n && h(n, t) < f - 1) {
+    const d = -1 * (f - 1);
+    t = l(n, d);
+  }
+  return o && h(t, o) < 0 && (t = o), r(t);
 }
 export {
-  l as startOfYear
+  u as getInitialMonth
 };
 //# sourceMappingURL=index306.mjs.map

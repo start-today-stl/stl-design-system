@@ -1,30 +1,7 @@
-import { forwardRef as c, createElement as f } from "react";
-import { mergeClasses as l } from "./index162.mjs";
-import { toKebabCase as p } from "./index163.mjs";
-import { toPascalCase as r } from "./index164.mjs";
-import i from "./index165.mjs";
-/**
- * @license lucide-react v0.563.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const I = (e, t) => {
-  const o = c(
-    ({ className: a, ...m }, s) => f(i, {
-      ref: s,
-      iconNode: t,
-      className: l(
-        `lucide-${p(r(e))}`,
-        `lucide-${e}`,
-        a
-      ),
-      ...m
-    })
-  );
-  return o.displayName = r(e), o;
+import * as t from "react";
+var e = globalThis != null && globalThis.document ? t.useLayoutEffect : () => {
 };
 export {
-  I as default
+  e as useLayoutEffect
 };
 //# sourceMappingURL=index161.mjs.map

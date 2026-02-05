@@ -1,10 +1,16 @@
-import { getBroadcastWeeksInMonth as n } from "./index333.mjs";
-import { startOfBroadcastWeek as s } from "./index275.mjs";
-function d(e, t) {
-  const o = s(e, t), r = n(e, t);
-  return t.addDays(o, r * 7 - 1);
+import { getTimezoneOffsetInMilliseconds as a } from "./index341.mjs";
+import { normalizeDates as c } from "./index342.mjs";
+import { millisecondsInDay as D } from "./index340.mjs";
+import { startOfDay as m } from "./index296.mjs";
+function u(n, i, e) {
+  const [f, l] = c(
+    e == null ? void 0 : e.in,
+    n,
+    i
+  ), r = m(f), t = m(l), o = +r - a(r), s = +t - a(t);
+  return Math.round((o - s) / D);
 }
 export {
-  d as endOfBroadcastWeek
+  u as differenceInCalendarDays
 };
 //# sourceMappingURL=index274.mjs.map

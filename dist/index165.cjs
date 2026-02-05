@@ -1,7 +1,2 @@
-"use strict";const t=require("react"),A=require("./index166.cjs"),g=require("./index167.cjs"),p=require("./index162.cjs");/**
- * @license lucide-react v0.563.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */const q=t.forwardRef(({color:o="currentColor",size:r=24,strokeWidth:s=2,absoluteStrokeWidth:u,className:c="",children:e,iconNode:m,...a},i)=>t.createElement("svg",{ref:i,...A,width:r,height:r,stroke:o,strokeWidth:u?Number(s)*24/Number(r):s,className:p.mergeClasses("lucide",c),...!e&&!g.hasA11yProp(a)&&{"aria-hidden":"true"},...a},[...m.map(([n,l])=>t.createElement(n,l)),...Array.isArray(e)?e:[e]]));module.exports=q;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const a=require("react"),b=require("./index161.cjs");function d(e){const r=Object.create(null,{[Symbol.toStringTag]:{value:"Module"}});if(e){for(const t in e)if(t!=="default"){const i=Object.getOwnPropertyDescriptor(e,t);Object.defineProperty(r,t,i.get?i:{enumerable:!0,get:()=>e[t]})}}return r.default=e,Object.freeze(r)}const S=d(a);function z(e){const[r,t]=S.useState(void 0);return b.useLayoutEffect(()=>{if(e){t({width:e.offsetWidth,height:e.offsetHeight});const i=new ResizeObserver(o=>{if(!Array.isArray(o)||!o.length)return;const u=o[0];let s,n;if("borderBoxSize"in u){const c=u.borderBoxSize,f=Array.isArray(c)?c[0]:c;s=f.inlineSize,n=f.blockSize}else s=e.offsetWidth,n=e.offsetHeight;t({width:s,height:n})});return i.observe(e,{box:"border-box"}),()=>i.unobserve(e)}else t(void 0)},[e]),r}exports.useSize=z;
 //# sourceMappingURL=index165.cjs.map

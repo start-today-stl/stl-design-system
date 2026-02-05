@@ -1,8 +1,7 @@
-import { defaultDateLib as o } from "./index216.mjs";
-function a(r, t = o) {
-  return r < 10 ? t.formatNumber(`0${r.toLocaleString()}`) : t.formatNumber(`${r.toLocaleString()}`);
+function n(o) {
+  return "Choose the Month";
 }
 export {
-  a as formatWeekNumber
+  n as labelMonthDropdown
 };
 //# sourceMappingURL=index244.mjs.map

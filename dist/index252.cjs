@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});function e(){return""}exports.labelNav=e;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});var e={exports:{}};exports.__module=e;
 //# sourceMappingURL=index252.cjs.map

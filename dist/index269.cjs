@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const a=require("./index216.cjs");class e{constructor(t,i,s=a.defaultDateLib){this.date=t,this.displayMonth=i,this.outside=!!(i&&!s.isSameMonth(t,i)),this.dateLib=s,this.isoDate=s.format(t,"yyyy-MM-dd"),this.displayMonthId=s.format(i,"yyyy-MM"),this.dateMonthId=s.format(t,"yyyy-MM")}isEqualTo(t){return this.dateLib.isSameDay(t.date,this.date)&&this.dateLib.isSameMonth(t.displayMonth,this.displayMonth)}}exports.CalendarDay=e;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});function a(s,e){const t=e.startOfMonth(s),r=t.getDay();return r===1?t:r===0?e.addDays(t,-1*6):e.addDays(t,-1*(r-1))}exports.startOfBroadcastWeek=a;
 //# sourceMappingURL=index269.cjs.map

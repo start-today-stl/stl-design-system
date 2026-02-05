@@ -1,10 +1,8 @@
-import { defaultDateLib as s } from "./index216.mjs";
-function u(f, r, t = !1, o = s) {
-  let { from: n, to: e } = f;
-  const { differenceInCalendarDays: i, isSameDay: a } = o;
-  return n && e ? (i(e, n) < 0 && ([n, e] = [e, n]), i(r, n) >= (t ? 1 : 0) && i(e, r) >= (t ? 1 : 0)) : !t && e ? a(e, r) : !t && n ? a(n, r) : !1;
+import { defaultDateLib as r } from "./index209.mjs";
+function n(o, t = r) {
+  return t.format(o, "LLLL");
 }
 export {
-  u as rangeIncludesDate
+  n as formatMonthDropdown
 };
 //# sourceMappingURL=index235.mjs.map

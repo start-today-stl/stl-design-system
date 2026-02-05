@@ -1,2 +1,7 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const e=require("./index263.cjs"),r=require("./index264.cjs"),o=require("./index265.cjs");process.env.NODE_ENV==="production"?e.__module.exports=r.__require():e.__module.exports=o.__require();var t=e.__module.exports;exports.shimExports=t;
+"use strict";const a=require("react"),l=require("./index176.cjs"),u=require("./index177.cjs"),t=require("./index178.cjs"),i=require("./index179.cjs");/**
+ * @license lucide-react v0.563.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */const C=(e,r)=>{const s=a.forwardRef(({className:c,...o},n)=>a.createElement(i,{ref:n,iconNode:r,className:l.mergeClasses(`lucide-${u.toKebabCase(t.toPascalCase(e))}`,`lucide-${e}`,c),...o}));return s.displayName=t.toPascalCase(e),s};module.exports=C;
 //# sourceMappingURL=index175.cjs.map

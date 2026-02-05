@@ -1,17 +1,20 @@
-function p(e, r, s, t, f = !1) {
-  if (!e || !r)
-    return;
-  const { startOfYear: o, endOfYear: i, eachYearOfInterval: l, getYear: u } = t, Y = o(e), c = i(r), a = l({ start: Y, end: c });
-  return f && a.reverse(), a.map((n) => {
-    const d = s.formatYearDropdown(n, t);
-    return {
-      value: u(n),
-      label: d,
-      disabled: !1
-    };
-  });
+import { useMulti as i } from "./index315.mjs";
+import { useRange as o } from "./index316.mjs";
+import { useSingle as s } from "./index317.mjs";
+function f(e, n) {
+  const t = s(e, n), r = i(e, n), u = o(e, n);
+  switch (e.mode) {
+    case "single":
+      return t;
+    case "multiple":
+      return r;
+    case "range":
+      return u;
+    default:
+      return;
+  }
 }
 export {
-  p as getYearOptions
+  f as useSelection
 };
 //# sourceMappingURL=index226.mjs.map

@@ -1,13 +1,9 @@
-import { normalizeDates as c } from "./index353.mjs";
-function g(a, n, e) {
-  const [t, r] = c(
-    e == null ? void 0 : e.in,
-    a,
-    n
-  ), f = t.getFullYear() - r.getFullYear(), l = t.getMonth() - r.getMonth();
-  return f * 12 + l;
+import { toDate as u } from "./index339.mjs";
+function c(t, r) {
+  const e = u(t, r == null ? void 0 : r.in), a = e.getFullYear();
+  return e.setFullYear(a + 1, 0, 0), e.setHours(23, 59, 59, 999), e;
 }
 export {
-  g as differenceInCalendarMonths
+  c as endOfYear
 };
 //# sourceMappingURL=index281.mjs.map

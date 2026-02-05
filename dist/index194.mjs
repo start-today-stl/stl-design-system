@@ -1,12 +1,8 @@
 import e from "react";
-function s(u) {
-  const { day: n, modifiers: t, ...r } = u, o = e.useRef(null);
-  return e.useEffect(() => {
-    var f;
-    t.focused && ((f = o.current) == null || f.focus());
-  }, [t.focused]), e.createElement("button", { ref: o, ...r });
+function n(t) {
+  return e.createElement("div", { ...t });
 }
 export {
-  s as DayButton
+  n as Months
 };
 //# sourceMappingURL=index194.mjs.map

@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const o=require("react"),n=require("./index231.cjs");function r(e){const{components:t}=n.useDayPicker();return o.createElement(t.Button,{...e})}exports.PreviousMonthButton=r;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const r=require("react");function t(e){return r.createElement("th",{...e})}exports.WeekNumberHeader=t;
 //# sourceMappingURL=index206.cjs.map

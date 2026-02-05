@@ -1,8 +1,8 @@
-import e from "react";
-function n(t) {
-  return e.createElement("div", { ...t });
+import t from "react";
+function c(e) {
+  return t.createElement("select", { ...e });
 }
 export {
-  n as Months
+  c as Select
 };
 //# sourceMappingURL=index201.mjs.map

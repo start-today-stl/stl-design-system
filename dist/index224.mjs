@@ -1,14 +1,13 @@
-import { UI as u } from "./index228.mjs";
-function p(o, r = {}, n = {}) {
-  let t = { ...r == null ? void 0 : r[u.Day] };
-  return Object.entries(o).filter(([, c]) => c === !0).forEach(([c]) => {
-    t = {
-      ...t,
-      ...n == null ? void 0 : n[c]
-    };
-  }), t;
+import { createContext as t, useContext as n } from "react";
+const o = t(void 0);
+function c() {
+  const e = n(o);
+  if (e === void 0)
+    throw new Error("useDayPicker() must be used within a custom component.");
+  return e;
 }
 export {
-  p as getStyleForModifiers
+  o as dayPickerContext,
+  c as useDayPicker
 };
 //# sourceMappingURL=index224.mjs.map

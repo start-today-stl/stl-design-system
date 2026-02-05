@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});class a{constructor(t,e){this.date=t,this.weeks=e}}exports.CalendarMonth=a;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const c=require("./index338.cjs"),u=require("./index339.cjs");function n(a,t,r){const e=u.toDate(a,r==null?void 0:r.in);return isNaN(t)?c.constructFrom(a,NaN):(t&&e.setDate(e.getDate()+t),e)}exports.addDays=n;
 //# sourceMappingURL=index270.cjs.map

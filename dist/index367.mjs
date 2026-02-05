@@ -1,34 +1,8 @@
-import { buildFormatLongFn as t } from "./index382.mjs";
-const m = {
-  full: "EEEE, MMMM do, y",
-  long: "MMMM do, y",
-  medium: "MMM d, y",
-  short: "MM/dd/yyyy"
-}, a = {
-  full: "h:mm:ss a zzzz",
-  long: "h:mm:ss a z",
-  medium: "h:mm:ss a",
-  short: "h:mm a"
-}, o = {
-  full: "{{date}} 'at' {{time}}",
-  long: "{{date}} 'at' {{time}}",
-  medium: "{{date}}, {{time}}",
-  short: "{{date}}, {{time}}"
-}, e = {
-  date: t({
-    formats: m,
-    defaultWidth: "full"
-  }),
-  time: t({
-    formats: a,
-    defaultWidth: "full"
-  }),
-  dateTime: t({
-    formats: o,
-    defaultWidth: "full"
-  })
+var e = function() {
+  if (typeof __webpack_nonce__ < "u")
+    return __webpack_nonce__;
 };
 export {
-  e as formatLong
+  e as getNonce
 };
 //# sourceMappingURL=index367.mjs.map

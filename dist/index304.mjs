@@ -1,9 +1,11 @@
-import { toDate as a } from "./index350.mjs";
-function u(r, t) {
-  const e = a(r, t == null ? void 0 : t.in);
-  return e.setDate(1), e.setHours(0, 0, 0, 0), e;
+function a(c) {
+  const e = [];
+  return c.reduce((s, t) => {
+    const n = t.weeks.reduce((r, i) => r.concat(i.days.slice()), e.slice());
+    return s.concat(n.slice());
+  }, e.slice());
 }
 export {
-  u as startOfMonth
+  a as getDays
 };
 //# sourceMappingURL=index304.mjs.map

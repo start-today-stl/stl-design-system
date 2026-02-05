@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});function e(o){return"Choose the Year"}exports.labelYearDropdown=e;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});var e={};exports.__exports=e;
 //# sourceMappingURL=index258.cjs.map

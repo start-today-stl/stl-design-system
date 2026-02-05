@@ -1,8 +1,8 @@
-import { endOfWeek as r } from "./index286.mjs";
-function f(e, n) {
-  return r(e, { ...n, weekStartsOn: 1 });
+import { toDate as t } from "./index339.mjs";
+function u(r, e) {
+  return t(r, e == null ? void 0 : e.in).getFullYear();
 }
 export {
-  f as endOfISOWeek
+  u as getYear
 };
 //# sourceMappingURL=index284.mjs.map

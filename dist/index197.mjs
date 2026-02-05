@@ -1,8 +1,10 @@
-import t from "react";
-function o(e) {
-  return t.createElement("div", { ...e });
+import o from "react";
+import { useDayPicker as n } from "./index224.mjs";
+function m(t) {
+  const { components: e } = n();
+  return o.createElement(e.Button, { ...t });
 }
 export {
-  o as Footer
+  m as NextMonthButton
 };
 //# sourceMappingURL=index197.mjs.map

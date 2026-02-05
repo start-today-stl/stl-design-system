@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const a=require("./index276.cjs");function r(e,d,t){return a.addDays(e,d*7,t)}exports.addWeeks=r;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const t=require("./index280.cjs");function r(e,n){return t.endOfWeek(e,{...n,weekStartsOn:1})}exports.endOfISOWeek=r;
 //# sourceMappingURL=index278.cjs.map

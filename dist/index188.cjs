@@ -1,7 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});/**
- * @license lucide-react v0.563.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */const o=t=>t.replace(/^([A-Z])|[\s-_]+(\w)/g,(s,a,e)=>e?e.toUpperCase():a.toLowerCase());exports.toCamelCase=o;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const a=require("react"),s=require("./index221.cjs");function p(o){const{options:e,className:d,components:r,classNames:t,...c}=o,i=[t[s.UI.Dropdown],d].join(" "),l=e==null?void 0:e.find(({value:n})=>n===c.value);return a.createElement("span",{"data-disabled":c.disabled,className:t[s.UI.DropdownRoot]},a.createElement(r.Select,{className:i,...c},e==null?void 0:e.map(({value:n,label:m,disabled:u})=>a.createElement(r.Option,{key:n,value:n,disabled:u},m))),a.createElement("span",{className:t[s.UI.CaptionLabel],"aria-hidden":!0},l==null?void 0:l.label,a.createElement(r.Chevron,{orientation:"down",size:18,className:t[s.UI.Chevron]})))}exports.Dropdown=p;
 //# sourceMappingURL=index188.cjs.map

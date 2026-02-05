@@ -1,11 +1,8 @@
-import { constructFrom as f } from "./index349.mjs";
-import { getISOWeekYear as s } from "./index363.mjs";
-import { startOfISOWeek as a } from "./index303.mjs";
-function O(t, e) {
-  const o = s(t, e), r = f(t, 0);
-  return r.setFullYear(o, 0, 4), r.setHours(0, 0, 0, 0), a(r);
+function r(t, n) {
+  const o = t < 0 ? "-" : "", a = Math.abs(t).toString().padStart(n, "0");
+  return o + a;
 }
 export {
-  O as startOfISOWeekYear
+  r as addLeadingZeros
 };
 //# sourceMappingURL=index362.mjs.map

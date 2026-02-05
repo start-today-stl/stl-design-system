@@ -1,8 +1,9 @@
-import t from "react";
-function n(e) {
-  return t.createElement("span", { ...e });
+import n from "react";
+function a(e) {
+  const { calendarMonth: r, displayIndex: d, ...t } = e;
+  return n.createElement("div", { ...t }, e.children);
 }
 export {
-  n as CaptionLabel
+  a as Month
 };
 //# sourceMappingURL=index191.mjs.map

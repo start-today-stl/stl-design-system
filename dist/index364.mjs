@@ -1,13 +1,26 @@
-import { getDefaultOptions as l } from "./index355.mjs";
-import { constructFrom as n } from "./index349.mjs";
-import { getWeekYear as u } from "./index365.mjs";
-import { startOfWeek as D } from "./index305.mjs";
-function g(r, e) {
-  var f, c, s, k;
-  const a = l(), m = (e == null ? void 0 : e.firstWeekContainsDate) ?? ((c = (f = e == null ? void 0 : e.locale) == null ? void 0 : f.options) == null ? void 0 : c.firstWeekContainsDate) ?? a.firstWeekContainsDate ?? ((k = (s = a.locale) == null ? void 0 : s.options) == null ? void 0 : k.firstWeekContainsDate) ?? 1, W = u(r, e), t = n((e == null ? void 0 : e.in) || r, 0);
-  return t.setFullYear(W, 0, m), t.setHours(0, 0, 0, 0), D(t, e);
-}
+var a = {
+  left: 0,
+  top: 0,
+  right: 0,
+  gap: 0
+}, e = function(t) {
+  return parseInt(t || "", 10) || 0;
+}, o = function(t) {
+  var n = window.getComputedStyle(document.body), i = n[t === "padding" ? "paddingLeft" : "marginLeft"], r = n[t === "padding" ? "paddingTop" : "marginTop"], d = n[t === "padding" ? "paddingRight" : "marginRight"];
+  return [e(i), e(r), e(d)];
+}, f = function(t) {
+  if (t === void 0 && (t = "margin"), typeof window > "u")
+    return a;
+  var n = o(t), i = document.documentElement.clientWidth, r = window.innerWidth;
+  return {
+    left: n[0],
+    top: n[1],
+    right: n[2],
+    gap: Math.max(0, r - i + n[2] - n[0])
+  };
+};
 export {
-  g as startOfWeekYear
+  f as getGapWidth,
+  a as zeroGap
 };
 //# sourceMappingURL=index364.mjs.map

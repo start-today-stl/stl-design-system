@@ -1,10 +1,8 @@
-import { defaultDateLib as t } from "./index216.mjs";
-function a(o, r = t) {
-  return r.format(o, "yyyy");
+const t = "Go to the Next Month";
+function n(o, e) {
+  return t;
 }
-const f = a;
 export {
-  f as formatYearCaption,
-  a as formatYearDropdown
+  n as labelNext
 };
 //# sourceMappingURL=index246.mjs.map

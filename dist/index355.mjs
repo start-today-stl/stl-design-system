@@ -1,8 +1,7 @@
-let t = {};
-function e() {
-  return t;
+function i(n, t) {
+  return typeof n == "function" ? n(t) : n && (n.current = t), n;
 }
 export {
-  e as getDefaultOptions
+  i as assignRef
 };
 //# sourceMappingURL=index355.mjs.map

@@ -1,33 +1,13 @@
-import { defaultDateLib as p } from "./index216.mjs";
-function y(o, D, s = 0, l = 0, r = !1, u = p) {
-  const { from: e, to: i } = D || {}, { isSameDay: n, isAfter: m, isBefore: c } = u;
-  let f;
-  if (!e && !i)
-    f = { from: o, to: s > 0 ? void 0 : o };
-  else if (e && !i)
-    n(e, o) ? s === 0 ? f = { from: e, to: o } : r ? f = { from: e, to: void 0 } : f = void 0 : c(o, e) ? f = { from: o, to: e } : f = { from: e, to: o };
-  else if (e && i)
-    if (n(e, o) && n(i, o))
-      r ? f = { from: e, to: i } : f = void 0;
-    else if (n(e, o))
-      f = { from: e, to: s > 0 ? void 0 : o };
-    else if (n(i, o))
-      f = { from: o, to: s > 0 ? void 0 : o };
-    else if (c(o, e))
-      f = { from: o, to: i };
-    else if (m(o, e))
-      f = { from: e, to: o };
-    else if (m(o, i))
-      f = { from: e, to: o };
-    else
-      throw new Error("Invalid range");
-  if (f != null && f.from && (f != null && f.to)) {
-    const t = u.differenceInCalendarDays(f.to, f.from);
-    l > 0 && t > l ? f = { from: o, to: void 0 } : s > 1 && t < s && (f = { from: o, to: void 0 });
-  }
-  return f;
+function c(i, t, e, s) {
+  if (e.disableNavigation)
+    return;
+  const { pagedNavigation: r, numberOfMonths: d } = e, { startOfMonth: u, addMonths: f, differenceInCalendarMonths: a } = s, o = r ? d ?? 1 : 1, n = u(i);
+  if (!t)
+    return f(n, -o);
+  if (!(a(n, t) <= 0))
+    return f(n, -o);
 }
 export {
-  y as addToRange
+  c as getPreviousMonth
 };
 //# sourceMappingURL=index310.mjs.map

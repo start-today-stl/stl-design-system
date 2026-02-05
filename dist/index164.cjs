@@ -1,7 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const t=require("./index188.cjs");/**
- * @license lucide-react v0.563.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */const s=a=>{const e=t.toCamelCase(a);return e.charAt(0).toUpperCase()+e.slice(1)};exports.toPascalCase=s;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const o=require("react");function c(e){const t=Object.create(null,{[Symbol.toStringTag]:{value:"Module"}});if(e){for(const r in e)if(r!=="default"){const u=Object.getOwnPropertyDescriptor(e,r);Object.defineProperty(t,r,u.get?u:{enumerable:!0,get:()=>e[r]})}}return t.default=e,Object.freeze(t)}const n=c(o);function s(e){const t=n.useRef({value:e,previous:e});return n.useMemo(()=>(t.current.value!==e&&(t.current.previous=t.current.value,t.current.value=e),t.current.previous),[e])}exports.usePrevious=s;
 //# sourceMappingURL=index164.cjs.map

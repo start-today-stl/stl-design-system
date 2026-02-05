@@ -1,23 +1,13 @@
-const n = {}, f = {};
-function d(t, c) {
-  try {
-    const r = (n[t] || (n[t] = new Intl.DateTimeFormat("en-US", {
-      timeZone: t,
-      timeZoneName: "longOffset"
-    }).format))(c).split("GMT")[1];
-    return r in f ? f[r] : a(r, r.split(":"));
-  } catch {
-    if (t in f) return f[t];
-    const s = t == null ? void 0 : t.match(o);
-    return s ? a(t, s.slice(1)) : NaN;
-  }
-}
-const o = /([+-]\d\d):?(\d\d)?/;
-function a(t, c) {
-  const s = +(c[0] || 0), r = +(c[1] || 0), u = +(c[2] || 0) / 60;
-  return f[t] = s * 60 + r > 0 ? s * 60 + r + u : s * 60 - r - u;
+function h(n, t, e, s) {
+  if (e.disableNavigation)
+    return;
+  const { pagedNavigation: u, numberOfMonths: f = 1 } = e, { startOfMonth: a, addMonths: o, differenceInCalendarMonths: d } = s, i = u ? f : 1, r = a(n);
+  if (!t)
+    return o(r, i);
+  if (!(d(t, n) < f))
+    return o(r, i);
 }
 export {
-  d as tzOffset
+  h as getNextMonth
 };
 //# sourceMappingURL=index309.mjs.map

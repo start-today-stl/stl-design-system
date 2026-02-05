@@ -1,9 +1,13 @@
-import { rangeIncludesDate as m } from "./index235.mjs";
-import { defaultDateLib as r } from "./index216.mjs";
-function u(o, f, l = r) {
-  return m(o, f.from, !1, l) || m(o, f.to, !1, l) || m(f, o.from, !1, l) || m(f, o.to, !1, l);
+import { dateMatchModifiers as u } from "./index302.mjs";
+import { getFocusableDate as g } from "./index332.mjs";
+import { CalendarDay as m } from "./index265.mjs";
+function h(t, i, a, d, f, e, n, s = 0) {
+  if (s > 365)
+    return;
+  const o = g(t, i, a.date, d, f, e, n), r = !!(e.disabled && u(o, e.disabled, n)), l = !!(e.hidden && u(o, e.hidden, n)), D = o, c = new m(o, D, n);
+  return !r && !l ? c : h(t, i, c, d, f, e, n, s + 1);
 }
 export {
-  u as rangeOverlaps
+  h as getNextFocus
 };
 //# sourceMappingURL=index314.mjs.map

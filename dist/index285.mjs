@@ -1,9 +1,12 @@
-import { toDate as u } from "./index350.mjs";
-function l(r, e) {
-  const t = u(r, e == null ? void 0 : e.in), n = t.getMonth();
-  return t.setFullYear(t.getFullYear(), n + 1, 0), t.setHours(23, 59, 59, 999), t;
+import { millisecondsInWeek as m } from "./index340.mjs";
+import { startOfWeek as a } from "./index299.mjs";
+import { startOfWeekYear as c } from "./index353.mjs";
+import { toDate as d } from "./index339.mjs";
+function o(t, e) {
+  const r = d(t, e == null ? void 0 : e.in), f = +a(r, e) - +c(r, e);
+  return Math.round(f / m) + 1;
 }
 export {
-  l as endOfMonth
+  o as getWeek
 };
 //# sourceMappingURL=index285.mjs.map

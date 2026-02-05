@@ -1,14 +1,11 @@
-import { constructFrom as m } from "./index349.mjs";
-import { toDate as o } from "./index350.mjs";
-function u(n, e) {
-  let t, r = e == null ? void 0 : e.in;
-  return n.forEach((c) => {
-    !r && typeof c == "object" && (r = m.bind(null, c));
-    const f = o(c, r);
-    (!t || t > f || isNaN(+f)) && (t = f);
-  }), m(r, t || NaN);
+import { getDefaultOptions as D } from "./index344.mjs";
+import { toDate as S } from "./index339.mjs";
+function n(u, e) {
+  var f, O, k, l;
+  const a = D(), r = (e == null ? void 0 : e.weekStartsOn) ?? ((O = (f = e == null ? void 0 : e.locale) == null ? void 0 : f.options) == null ? void 0 : O.weekStartsOn) ?? a.weekStartsOn ?? ((l = (k = a.locale) == null ? void 0 : k.options) == null ? void 0 : l.weekStartsOn) ?? 0, t = S(u, e == null ? void 0 : e.in), c = t.getDay(), w = (c < r ? 7 : 0) + c - r;
+  return t.setDate(t.getDate() - w), t.setHours(0, 0, 0, 0), t;
 }
 export {
-  u as min
+  n as startOfWeek
 };
 //# sourceMappingURL=index299.mjs.map

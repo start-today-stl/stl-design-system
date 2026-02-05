@@ -1,9 +1,30 @@
-import { __module as r } from "./index263.mjs";
-import { __require as e } from "./index264.mjs";
-import { __require as o } from "./index265.mjs";
-process.env.NODE_ENV === "production" ? r.exports = e() : r.exports = o();
-var m = r.exports;
+import { forwardRef as c, createElement as f } from "react";
+import { mergeClasses as l } from "./index176.mjs";
+import { toKebabCase as p } from "./index177.mjs";
+import { toPascalCase as r } from "./index178.mjs";
+import i from "./index179.mjs";
+/**
+ * @license lucide-react v0.563.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const I = (e, t) => {
+  const o = c(
+    ({ className: a, ...m }, s) => f(i, {
+      ref: s,
+      iconNode: t,
+      className: l(
+        `lucide-${p(r(e))}`,
+        `lucide-${e}`,
+        a
+      ),
+      ...m
+    })
+  );
+  return o.displayName = r(e), o;
+};
 export {
-  m as s
+  I as default
 };
 //# sourceMappingURL=index175.mjs.map
