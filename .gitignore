@@ -1,0 +1,43 @@
+# Dependencies
+node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Build (Storybook)
+storybook-static/
+
+# Cache
+.cache/
+*.tsbuildinfo
+
+# Test
+coverage/
+
+# Misc
+*.local
+
+# Documentation (내부 문서)
+docs/
+
+# Claude
+.claude/
+
+# dist는 포함 (Git URL 설치 방식을 위해 커밋 필요)
+# dist/

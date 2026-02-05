@@ -1,0 +1,2 @@
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const o=require("./index350.cjs");function s(t){const e=o.toDate(t),n=new Date(Date.UTC(e.getFullYear(),e.getMonth(),e.getDate(),e.getHours(),e.getMinutes(),e.getSeconds(),e.getMilliseconds()));return n.setUTCFullYear(e.getFullYear()),+t-+n}exports.getTimezoneOffsetInMilliseconds=s;
+//# sourceMappingURL=index352.cjs.map

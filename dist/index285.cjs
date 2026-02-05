@@ -1,0 +1,2 @@
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const r=require("./index352.cjs"),D=require("./index353.cjs"),d=require("./index351.cjs"),n=require("./index307.cjs");function m(s,i,e){const[l,c]=D.normalizeDates(e==null?void 0:e.in,s,i),t=n.startOfDay(l),a=n.startOfDay(c),f=+t-r.getTimezoneOffsetInMilliseconds(t),o=+a-r.getTimezoneOffsetInMilliseconds(a);return Math.round((f-o)/d.millisecondsInDay)}exports.differenceInCalendarDays=m;
+//# sourceMappingURL=index285.cjs.map

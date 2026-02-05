@@ -1,0 +1,18 @@
+import type { IconProps } from './types'
+
+// 메인 화면 전용 아이콘 (100x100 고정)
+export function MainChatIcon({ size = 100, className, ...props }: IconProps) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 100 100"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      {...props}
+    >
+      <path d="M75.498 65.499H35.2676L25.4141 80.2764L24.498 81.6504V24.498H75.498V65.499ZM25.498 78.3477L34.584 64.7217L34.7324 64.499H74.498V25.498H25.498V78.3477ZM64.999 55.4971H35V54.4971H64.999V55.4971ZM64.999 45.499H35V44.499H64.999V45.499ZM64.999 35.5H35V34.5H64.999V35.5Z" fill="currentColor"/>
+    </svg>
+  )
+}

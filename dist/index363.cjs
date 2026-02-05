@@ -1,0 +1,2 @@
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const u=require("./index349.cjs"),c=require("./index308.cjs"),O=require("./index350.cjs");function i(n,r){const e=O.toDate(n,r==null?void 0:r.in),t=e.getFullYear(),s=u.constructFrom(e,0);s.setFullYear(t+1,0,4),s.setHours(0,0,0,0);const o=c.startOfISOWeek(s),a=u.constructFrom(e,0);a.setFullYear(t,0,4),a.setHours(0,0,0,0);const f=c.startOfISOWeek(a);return e.getTime()>=o.getTime()?t+1:e.getTime()>=f.getTime()?t:t-1}exports.getISOWeekYear=i;
+//# sourceMappingURL=index363.cjs.map

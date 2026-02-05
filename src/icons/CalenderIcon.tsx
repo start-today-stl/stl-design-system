@@ -1,0 +1,36 @@
+import type { IconProps } from './types'
+
+export function CalenderIcon({ size = 24, className, ...props }: IconProps) {
+  // 24 이하: 24x24 아이콘 사용, 24 초과: 32x32 아이콘 사용
+  const useSmall = size <= 24
+
+  if (useSmall) {
+    return (
+      <svg
+        width={size}
+        height={size}
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className={className}
+        {...props}
+      >
+        <path d="M6.37573 17.6245H17.6248V9.6001H18.3748V17.9995L17.9998 18.3745H6.00073L5.62573 17.9995V9.6001H6.37573V17.6245ZM12.3738 11.6235H14.3992V12.3735H12.3738V14.3989H11.6238V12.3735H9.60034V11.6235H11.6238V9.6001H12.3738V11.6235ZM8.77417 5.62549H15.2234V3.6001H15.9734V5.62549H17.9998L18.3748 6.00049V8.39893H17.6248V6.37549H15.9734V8.39893H15.2234V6.37549H8.77417V8.39893H8.02417V6.37549H6.37573V8.39893H5.62573V6.00049L6.00073 5.62549H8.02417V3.6001H8.77417V5.62549Z" fill="currentColor"/>
+      </svg>
+    )
+  }
+
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 32 32"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      {...props}
+    >
+      <path d="M8.50098 23.499H23.499V12.8008H24.499V23.999L23.999 24.499H8.00098L7.50098 23.999V12.8008H8.50098V23.499ZM16.498 15.498H19.1992V16.498H16.498V19.1992H15.498V16.498H12.8008V15.498H15.498V12.8008H16.498V15.498ZM11.6982 7.50098H20.2988V4.7998H21.2988V7.50098H23.999L24.499 8.00098V11.1992H23.499V8.50098H21.2988V11.1982H20.2988V8.50098H11.6982V11.1982H10.6982V8.50098H8.50098V11.1992H7.50098V8.00098L8.00098 7.50098H10.6982V4.7998H11.6982V7.50098Z" fill="currentColor"/>
+    </svg>
+  )
+}

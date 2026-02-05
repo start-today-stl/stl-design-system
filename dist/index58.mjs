@@ -1,0 +1,32 @@
+import { jsx as l } from "react/jsx-runtime";
+function V({ size: t = 24, className: n, ...r }) {
+  return t <= 24 ? /* @__PURE__ */ l(
+    "svg",
+    {
+      width: t,
+      height: t,
+      viewBox: "0 0 24 24",
+      fill: "none",
+      xmlns: "http://www.w3.org/2000/svg",
+      className: n,
+      ...r,
+      children: /* @__PURE__ */ l("path", { d: "M18.5 7.2002V19.2002L18 19.7002H9.59961V18.7002H17.5V7.2002H18.5ZM15.5996 4.2998L16.0996 4.7998V16.7998L15.5996 17.2998H7.2002L6.7002 16.7998V4.7998L7.2002 4.2998H15.5996ZM7.7002 5.2998V16.2998H15.0996V5.2998H7.7002Z", fill: "currentColor" })
+    }
+  ) : /* @__PURE__ */ l(
+    "svg",
+    {
+      width: t,
+      height: t,
+      viewBox: "0 0 32 32",
+      fill: "none",
+      xmlns: "http://www.w3.org/2000/svg",
+      className: n,
+      ...r,
+      children: /* @__PURE__ */ l("path", { d: "M24.499 25.6006L23.999 26.1006H12.8008V25.1006H23.499V9.60254H24.499V25.6006ZM21.2979 6.40137V22.3994L20.7979 22.8994H9.59961L9.09961 22.3994V6.40137L9.59961 5.90137H20.7979L21.2979 6.40137ZM10.0996 21.8994H20.2979V6.90137H10.0996V21.8994Z", fill: "currentColor" })
+    }
+  );
+}
+export {
+  V as PageIcon
+};
+//# sourceMappingURL=index58.mjs.map

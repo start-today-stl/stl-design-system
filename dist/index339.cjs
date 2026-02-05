@@ -1,0 +1,2 @@
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const e=require("./index370.cjs"),t=require("./index371.cjs"),o=require("./index372.cjs"),a=require("./index373.cjs"),r=require("./index374.cjs"),n={code:"en-US",formatDistance:e.formatDistance,formatLong:t.formatLong,formatRelative:o.formatRelative,localize:a.localize,match:r.match,options:{weekStartsOn:0,firstWeekContainsDate:1}};exports.enUS=n;
+//# sourceMappingURL=index339.cjs.map

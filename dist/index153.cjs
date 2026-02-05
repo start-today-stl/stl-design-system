@@ -1,0 +1,2 @@
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const r=require("react");function u(e){const o=Object.create(null,{[Symbol.toStringTag]:{value:"Module"}});if(e){for(const t in e)if(t!=="default"){const c=Object.getOwnPropertyDescriptor(e,t);Object.defineProperty(o,t,c.get?c:{enumerable:!0,get:()=>e[t]})}}return o.default=e,Object.freeze(o)}const a=u(r);var n=globalThis!=null&&globalThis.document?a.useLayoutEffect:()=>{};exports.useLayoutEffect=n;
+//# sourceMappingURL=index153.cjs.map
