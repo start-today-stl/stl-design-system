@@ -1,8 +1,8 @@
-import e from "react";
-function o(t) {
-  return e.createElement("button", { ...t });
+import t from "react";
+function o(e) {
+  return t.createElement("div", { ...e });
 }
 export {
-  o as Button
+  o as DropdownNav
 };
 //# sourceMappingURL=index196.mjs.map

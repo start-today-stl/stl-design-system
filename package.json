@@ -11,6 +11,7 @@
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
     },
+    "./tokens": "./dist/styles/tokens.css",
     "./styles": "./dist/styles/globals.css",
     "./preset": {
       "types": "./dist/preset.d.ts",

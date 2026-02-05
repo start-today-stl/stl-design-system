@@ -1,29 +1,32 @@
-import { defaultDateLib as p } from "./index222.mjs";
-import { dateMatchModifiers as s } from "./index314.mjs";
-import { rangeContainsDayOfWeek as M } from "./index315.mjs";
-import { rangeIncludesDate as l } from "./index241.mjs";
-import { rangeOverlaps as y } from "./index317.mjs";
-import { isDatesArray as a, isDateRange as A, isDayOfWeekType as C, isDateInterval as I, isDateAfterType as v, isDateBeforeType as F } from "./index243.mjs";
-function d(n, t, f = p) {
-  const e = Array.isArray(t) ? t : [t];
-  if (e.filter((o) => typeof o != "function").some((o) => typeof o == "boolean" ? o : f.isDate(o) ? l(n, o, !1, f) : a(o, f) ? o.some((r) => l(n, r, !1, f)) : A(o) ? o.from && o.to ? y(n, { from: o.from, to: o.to }, f) : !1 : C(o) ? M(n, o.dayOfWeek, f) : I(o) ? f.isAfter(o.before, o.after) ? y(n, {
-    from: f.addDays(o.after, 1),
-    to: f.addDays(o.before, -1)
-  }, f) : s(n.from, o, f) || s(n.to, o, f) : v(o) || F(o) ? s(n.from, o, f) || s(n.to, o, f) : !1))
-    return !0;
-  const i = e.filter((o) => typeof o == "function");
-  if (i.length) {
-    let o = n.from;
-    const r = f.differenceInCalendarDays(n.to, n.from);
-    for (let u = 0; u <= r; u++) {
-      if (i.some((D) => D(o)))
-        return !0;
-      o = f.addDays(o, 1);
-    }
-  }
-  return !1;
-}
+import { __rest as E, __assign as r } from "./index315.mjs";
+import * as a from "react";
+import { zeroRightClassName as I, fullWidthClassName as Z } from "./index335.mjs";
+import { effectCar as W } from "./index336.mjs";
+import { useMergeRefs as z } from "./index337.mjs";
+var l = function() {
+}, m = a.forwardRef(function(e, d) {
+  var o = a.useRef(null), n = a.useState({
+    onScrollCapture: l,
+    onWheelCapture: l,
+    onTouchMoveCapture: l
+  }), f = n[0], v = n[1], h = e.forwardProps, t = e.children, u = e.className, C = e.removeScrollBar, R = e.enabled, g = e.shards, P = e.sideCar, S = e.noRelative, b = e.noIsolation, w = e.inert, N = e.allowPinchZoom, i = e.as, M = i === void 0 ? "div" : i, _ = e.gapMode, B = E(e, ["forwardProps", "children", "className", "removeScrollBar", "enabled", "shards", "sideCar", "noRelative", "noIsolation", "inert", "allowPinchZoom", "as", "gapMode"]), k = P, s = z([o, d]), c = r(r({}, B), f);
+  return a.createElement(
+    a.Fragment,
+    null,
+    R && a.createElement(k, { sideCar: W, removeScrollBar: C, shards: g, noRelative: S, noIsolation: b, inert: w, setCallbacks: v, allowPinchZoom: !!N, lockRef: o, gapMode: _ }),
+    h ? a.cloneElement(a.Children.only(t), r(r({}, c), { ref: s })) : a.createElement(M, r({}, c, { className: u, ref: s }), t)
+  );
+});
+m.defaultProps = {
+  enabled: !0,
+  removeScrollBar: !0,
+  inert: !1
+};
+m.classNames = {
+  fullWidth: Z,
+  zeroRight: I
+};
 export {
-  d as rangeContainsModifiers
+  m as RemoveScroll
 };
 //# sourceMappingURL=index316.mjs.map

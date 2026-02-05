@@ -1,1 +1,1 @@
-{"version":3,"file":"index267.cjs","sources":["../node_modules/react-remove-scroll/dist/es2015/sidecar.js"],"sourcesContent":["import { exportSidecar } from 'use-sidecar';\nimport { RemoveScrollSideCar } from './SideEffect';\nimport { effectCar } from './medium';\nexport default exportSidecar(effectCar, RemoveScrollSideCar);\n"],"names":["SideCar","exportSidecar","effectCar","RemoveScrollSideCar"],"mappings":"uGAGAA,EAAeC,EAAAA,cAAcC,EAAAA,UAAWC,qBAAmB","x_google_ignoreList":[0]}
+{"version":3,"file":"index267.cjs","sources":[],"sourcesContent":[],"names":[],"mappings":""}

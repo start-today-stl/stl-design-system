@@ -1,8 +1,7 @@
-function r(t, n) {
-  const o = t < 0 ? "-" : "", a = Math.abs(t).toString().padStart(n, "0");
-  return o + a;
+function i(n, t) {
+  return typeof n == "function" ? n(t) : n && (n.current = t), n;
 }
 export {
-  r as addLeadingZeros
+  i as assignRef
 };
 //# sourceMappingURL=index373.mjs.map

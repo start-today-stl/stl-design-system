@@ -1,10 +1,8 @@
-import { getBroadcastWeeksInMonth as n } from "./index338.mjs";
-import { startOfBroadcastWeek as s } from "./index280.mjs";
-function d(e, t) {
-  const o = s(e, t), r = n(e, t);
-  return t.addDays(o, r * 7 - 1);
+import { addMonths as d } from "./index277.mjs";
+function a(r, o, t) {
+  return d(r, o * 12, t);
 }
 export {
-  d as endOfBroadcastWeek
+  a as addYears
 };
 //# sourceMappingURL=index279.mjs.map

@@ -1,14 +1,20 @@
-function O(o, r) {
-  let { startMonth: t, endMonth: e } = o;
-  const { startOfYear: M, startOfDay: d, startOfMonth: c, endOfMonth: Y, addYears: l, endOfYear: w, newDate: f, today: i } = r, { fromYear: a, toYear: n, fromMonth: s, toMonth: h } = o;
-  !t && s && (t = s), !t && a && (t = r.newDate(a, 0, 1)), !e && h && (e = h), !e && n && (e = f(n, 11, 31));
-  const y = o.captionLayout === "dropdown" || o.captionLayout === "dropdown-years";
-  return t ? t = c(t) : a ? t = f(a, 0, 1) : !t && y && (t = M(l(o.today ?? i(), -100))), e ? e = Y(e) : n ? e = f(n, 11, 31) : !e && y && (e = w(o.today ?? i())), [
-    t && d(t),
-    e && d(e)
-  ];
+import { DayFlag as n } from "./index228.mjs";
+var d;
+(function(e) {
+  e[e.Today = 0] = "Today", e[e.Selected = 1] = "Selected", e[e.LastFocused = 2] = "LastFocused", e[e.FocusedModifier = 3] = "FocusedModifier";
+})(d || (d = {}));
+function i(e) {
+  return !e[n.disabled] && !e[n.hidden] && !e[n.outside];
+}
+function L(e, l, t, a) {
+  let c, o = -1;
+  for (const f of e) {
+    const u = l(f);
+    i(u) && (u[n.focused] && o < d.FocusedModifier ? (c = f, o = d.FocusedModifier) : a != null && a.isEqualTo(f) && o < d.LastFocused ? (c = f, o = d.LastFocused) : t(f.date) && o < d.Selected ? (c = f, o = d.Selected) : u[n.today] && o < d.Today && (c = f, o = d.Today));
+  }
+  return c || (c = e.find((f) => i(l(f)))), c;
 }
 export {
-  O as getNavMonths
+  L as calculateFocusTarget
 };
 //# sourceMappingURL=index328.mjs.map

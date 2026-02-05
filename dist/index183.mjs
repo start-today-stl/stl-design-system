@@ -1,28 +1,33 @@
-import * as h from "react";
-import { useLayoutEffect as z } from "./index143.mjs";
-function c(r) {
-  const [d, e] = h.useState(void 0);
-  return z(() => {
-    if (r) {
-      e({ width: r.offsetWidth, height: r.offsetHeight });
-      const f = new ResizeObserver((i) => {
-        if (!Array.isArray(i) || !i.length)
-          return;
-        const b = i[0];
-        let o, t;
-        if ("borderBoxSize" in b) {
-          const s = b.borderBoxSize, u = Array.isArray(s) ? s[0] : s;
-          o = u.inlineSize, t = u.blockSize;
-        } else
-          o = r.offsetWidth, t = r.offsetHeight;
-        e({ width: o, height: t });
-      });
-      return f.observe(r, { box: "border-box" }), () => f.unobserve(r);
-    } else
-      e(void 0);
-  }, [r]), d;
-}
+import * as f from "react";
+import "react-dom";
+import { createSlot as l } from "./index109.mjs";
+import { jsx as n } from "react/jsx-runtime";
+var u = [
+  "a",
+  "button",
+  "div",
+  "form",
+  "h2",
+  "h3",
+  "img",
+  "input",
+  "label",
+  "li",
+  "nav",
+  "ol",
+  "p",
+  "select",
+  "span",
+  "svg",
+  "ul"
+], w = u.reduce((t, i) => {
+  const o = l(`Primitive.${i}`), r = f.forwardRef((e, m) => {
+    const { asChild: a, ...p } = e, s = a ? o : i;
+    return typeof window < "u" && (window[Symbol.for("radix-ui")] = !0), /* @__PURE__ */ n(s, { ...p, ref: m });
+  });
+  return r.displayName = `Primitive.${i}`, { ...t, [i]: r };
+}, {});
 export {
-  c as useSize
+  w as Primitive
 };
 //# sourceMappingURL=index183.mjs.map

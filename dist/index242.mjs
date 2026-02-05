@@ -1,9 +1,8 @@
-import { TZDate as r } from "./index272.mjs";
-import "./index274.mjs";
-function e(n, o) {
-  return n instanceof r && n.timeZone === o ? n : new r(n, o);
+import { defaultDateLib as r } from "./index216.mjs";
+function n(o, t = r) {
+  return t.format(o, "LLLL");
 }
 export {
-  e as toTimeZone
+  n as formatMonthDropdown
 };
 //# sourceMappingURL=index242.mjs.map

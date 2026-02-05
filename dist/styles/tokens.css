@@ -1,0 +1,200 @@
+/**
+ * STL Design System - Theme Tokens
+ *
+ * 사용법 (소비자 프로젝트):
+ *
+ * index.css:
+ * @import "tailwindcss";
+ * @import "stl-design-system/tokens";
+ */
+
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css');
+
+/* Tailwind v4: dark 모드 설정 */
+@custom-variant dark (&:where(.dark, .dark *), @media (prefers-color-scheme: dark));
+
+@theme {
+  /* ========================================
+     STL Design System Tokens
+     ======================================== */
+
+  /* Primary (Blue) */
+  --color-primary-500: #002084;
+  --color-primary-400: #1776ff;
+  --color-primary-300: #78c2ff;
+  --color-primary-200: #c4e2fa;
+  --color-primary-100: #e7f2fa;
+
+  /* Semantic (Green) */
+  --color-semantic-500: #094b2a;
+  --color-semantic-400: #0e794c;
+  --color-semantic-300: #0fbd00;
+  --color-semantic-200: #85e97c;
+  --color-semantic-100: #d6ffb2;
+
+  /* Danger (Red) */
+  --color-danger-500: #4a0f1a;
+  --color-danger-400: #9e2f22;
+  --color-danger-300: #eb3e3a;
+  --color-danger-200: #ffb1a8;
+  --color-danger-100: #fbe0dd;
+  --color-danger: var(--color-danger-300);
+
+  /* Darkmode Background */
+  --color-dark-500: #2f3542;
+  --color-dark-400: #474e5d;
+  --color-dark-300: #6b7487;
+  --color-dark-200: #7d879b;
+  --color-dark-100: #9ba5bb;
+
+  /* Cool Tone (푸른빛 회색) */
+  --color-cool-50: #f6f7f9;
+
+  /* Black & White (Grayscale) */
+  --color-gray-950: #000000;
+  --color-gray-900: #1a1a1a;
+  --color-gray-800: #333333;
+  --color-gray-700: #4d4d4d;
+  --color-gray-600: #666666;
+  --color-gray-500: #808080;
+  --color-gray-400: #999999;
+  --color-gray-300: #b3b3b3;
+  --color-gray-200: #cccccc;
+  --color-gray-100: #e6e6e6;
+  --color-gray-50: #f5f5f5;
+  --color-white: #ffffff;
+
+  /* Semantic Aliases */
+  --color-background: var(--color-white);
+  --color-foreground: var(--color-gray-900);
+  --color-primary: var(--color-primary-400);
+  --color-primary-foreground: var(--color-white);
+  --color-secondary: var(--color-gray-100);
+  --color-secondary-foreground: var(--color-gray-900);
+  --color-muted: var(--color-gray-100);
+  --color-muted-foreground: var(--color-gray-500);
+  --color-accent: var(--color-primary-100);
+  --color-accent-foreground: var(--color-primary-500);
+  --color-destructive: var(--color-danger-300);
+  --color-destructive-foreground: var(--color-white);
+  --color-success: var(--color-semantic-300);
+  --color-success-foreground: var(--color-white);
+
+  /* Icon Colors */
+  --color-icon: var(--color-gray-500);
+  --color-icon-dark: var(--color-gray-50);
+  --color-border: var(--color-gray-200);
+  --color-input: var(--color-gray-200);
+  --color-ring: var(--color-primary-400);
+
+  /* Border Radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+
+  /* Spacing Scale */
+  --spacing-0: 0px;
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-5: 20px;
+  --spacing-6: 24px;
+  --spacing-8: 32px;
+  --spacing-10: 40px;
+  --spacing-12: 48px;
+  --spacing-16: 64px;
+
+  /* Semantic Spacing */
+  --gap-button: var(--spacing-2);      /* 8px - 버튼 사이 간격 */
+  --gap-form-field: var(--spacing-4);  /* 16px - 폼 필드 사이 간격 */
+  --gap-section: var(--spacing-6);     /* 24px - 섹션 사이 간격 */
+  --padding-card: var(--spacing-4);    /* 16px - 카드 내부 패딩 */
+  --padding-page: var(--spacing-5);    /* 20px - 페이지 컨텐츠 패딩 */
+
+  /* Typography - Font Family */
+  --font-heading: 'STL Gothic R', sans-serif;
+  --font-sans: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+
+  /* Typography - Font Size */
+  --text-headline-1: 48px;
+  --text-headline-1-sm: 32px;
+  --text-headline-2: 28px;
+  --text-headline-3: 20px;
+  --text-headline-4: 16px;
+  --text-body-1: 14px;
+  --text-body-2: 12px;
+  --text-body-3: 10px;
+  --text-caption-1: 8px;
+  --text-caption-2: 6px;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-sans);
+  }
+
+  /* 숫자, 디스플레이 텍스트에 STL Gothic R 적용 */
+  .font-heading {
+    font-family: var(--font-heading);
+  }
+}
+
+@layer utilities {
+  /* 스크롤바 숨기기 */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ========================================
+   Dark Mode
+   ======================================== */
+.dark {
+  --color-background: var(--color-dark-500);
+  --color-foreground: var(--color-gray-50);
+  --color-primary-foreground: var(--color-white);
+  --color-secondary: var(--color-dark-400);
+  --color-secondary-foreground: var(--color-gray-50);
+  --color-muted: var(--color-dark-400);
+  --color-muted-foreground: var(--color-dark-100);
+  --color-accent: var(--color-dark-300);
+  --color-accent-foreground: var(--color-primary-300);
+  --color-destructive-foreground: var(--color-white);
+  --color-success-foreground: var(--color-white);
+  --color-icon: var(--color-gray-50);
+  --color-border: var(--color-dark-300);
+  --color-input: var(--color-dark-400);
+  --color-ring: var(--color-primary-300);
+}
+
+/* 시스템 설정 따르기 (선택사항) */
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    --color-background: var(--color-dark-500);
+    --color-foreground: var(--color-gray-50);
+    --color-primary-foreground: var(--color-white);
+    --color-secondary: var(--color-dark-400);
+    --color-secondary-foreground: var(--color-gray-50);
+    --color-muted: var(--color-dark-400);
+    --color-muted-foreground: var(--color-dark-100);
+    --color-accent: var(--color-dark-300);
+    --color-accent-foreground: var(--color-primary-300);
+    --color-destructive-foreground: var(--color-white);
+    --color-success-foreground: var(--color-white);
+    --color-icon: var(--color-gray-50);
+    --color-border: var(--color-dark-300);
+    --color-input: var(--color-dark-400);
+    --color-ring: var(--color-primary-300);
+  }
+}

@@ -1,8 +1,11 @@
-import t from "react";
-function a(e) {
-  return t.createElement("th", { ...e });
+import * as t from "./index189.mjs";
+function n(o) {
+  return {
+    ...t,
+    ...o
+  };
 }
 export {
-  a as WeekNumberHeader
+  n as getComponents
 };
 //# sourceMappingURL=index219.mjs.map

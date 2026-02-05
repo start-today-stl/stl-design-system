@@ -1,9 +1,8 @@
-class t {
-  constructor(e, s) {
-    this.days = s, this.weekNumber = e;
-  }
+import { addDays as o } from "./index276.mjs";
+function a(r, d, e) {
+  return o(r, d * 7, e);
 }
 export {
-  t as CalendarWeek
+  a as addWeeks
 };
 //# sourceMappingURL=index278.mjs.map

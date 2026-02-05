@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const b=require("./index222.cjs");function a(l,t,o,n){let e=(n??new b.DateLib(o)).format(l,"PPPP");return t.today&&(e=`Today, ${e}`),t.selected&&(e=`${e}, selected`),e}const r=a;exports.labelDay=r;exports.labelDayButton=a;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});function e(o){return"Go to the Previous Month"}exports.labelPrevious=e;
 //# sourceMappingURL=index254.cjs.map

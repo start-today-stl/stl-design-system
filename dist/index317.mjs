@@ -1,9 +1,8 @@
-import { rangeIncludesDate as m } from "./index241.mjs";
-import { defaultDateLib as r } from "./index222.mjs";
-function u(o, f, l = r) {
-  return m(o, f.from, !1, l) || m(o, f.to, !1, l) || m(f, o.from, !1, l) || m(f, o.to, !1, l);
-}
+import { RemoveScrollSideCar as r } from "./index338.mjs";
+import { effectCar as o } from "./index336.mjs";
+import { exportSidecar as e } from "./index339.mjs";
+const f = e(o, r);
 export {
-  u as rangeOverlaps
+  f as default
 };
 //# sourceMappingURL=index317.mjs.map

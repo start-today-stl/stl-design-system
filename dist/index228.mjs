@@ -1,36 +1,23 @@
-import * as d from "./index253.mjs";
-import { labelWeekday as p } from "./index261.mjs";
-import { labelWeekNumberHeader as f } from "./index263.mjs";
-import { labelNav as N } from "./index258.mjs";
-import { labelGridcell as k } from "./index256.mjs";
-import { labelGrid as D } from "./index255.mjs";
-import { labelYearDropdown as W } from "./index264.mjs";
-import { labelWeekNumber as a } from "./index262.mjs";
-import { labelPrevious as v } from "./index260.mjs";
-import { labelNext as y } from "./index259.mjs";
-import { labelMonthDropdown as w } from "./index257.mjs";
-import { labelDayButton as G } from "./index254.mjs";
-const l = (r, i, e) => i || (e ? typeof e == "function" ? e : (...n) => e : r);
-function q(r, i) {
-  var n;
-  const e = ((n = i.locale) == null ? void 0 : n.labels) ?? {};
-  return {
-    ...d,
-    ...r ?? {},
-    labelDayButton: l(G, r == null ? void 0 : r.labelDayButton, e.labelDayButton),
-    labelMonthDropdown: l(w, r == null ? void 0 : r.labelMonthDropdown, e.labelMonthDropdown),
-    labelNext: l(y, r == null ? void 0 : r.labelNext, e.labelNext),
-    labelPrevious: l(v, r == null ? void 0 : r.labelPrevious, e.labelPrevious),
-    labelWeekNumber: l(a, r == null ? void 0 : r.labelWeekNumber, e.labelWeekNumber),
-    labelYearDropdown: l(W, r == null ? void 0 : r.labelYearDropdown, e.labelYearDropdown),
-    labelGrid: l(D, r == null ? void 0 : r.labelGrid, e.labelGrid),
-    labelGridcell: l(k, r == null ? void 0 : r.labelGridcell, e.labelGridcell),
-    labelNav: l(N, r == null ? void 0 : r.labelNav, e.labelNav),
-    labelWeekNumberHeader: l(f, r == null ? void 0 : r.labelWeekNumberHeader, e.labelWeekNumberHeader),
-    labelWeekday: l(p, r == null ? void 0 : r.labelWeekday, e.labelWeekday)
-  };
-}
+var o;
+(function(e) {
+  e.Root = "root", e.Chevron = "chevron", e.Day = "day", e.DayButton = "day_button", e.CaptionLabel = "caption_label", e.Dropdowns = "dropdowns", e.Dropdown = "dropdown", e.DropdownRoot = "dropdown_root", e.Footer = "footer", e.MonthGrid = "month_grid", e.MonthCaption = "month_caption", e.MonthsDropdown = "months_dropdown", e.Month = "month", e.Months = "months", e.Nav = "nav", e.NextMonthButton = "button_next", e.PreviousMonthButton = "button_previous", e.Week = "week", e.Weeks = "weeks", e.Weekday = "weekday", e.Weekdays = "weekdays", e.WeekNumber = "week_number", e.WeekNumberHeader = "week_number_header", e.YearsDropdown = "years_dropdown";
+})(o || (o = {}));
+var t;
+(function(e) {
+  e.disabled = "disabled", e.hidden = "hidden", e.outside = "outside", e.focused = "focused", e.today = "today";
+})(t || (t = {}));
+var r;
+(function(e) {
+  e.range_end = "range_end", e.range_middle = "range_middle", e.range_start = "range_start", e.selected = "selected";
+})(r || (r = {}));
+var n;
+(function(e) {
+  e.weeks_before_enter = "weeks_before_enter", e.weeks_before_exit = "weeks_before_exit", e.weeks_after_enter = "weeks_after_enter", e.weeks_after_exit = "weeks_after_exit", e.caption_after_enter = "caption_after_enter", e.caption_after_exit = "caption_after_exit", e.caption_before_enter = "caption_before_enter", e.caption_before_exit = "caption_before_exit";
+})(n || (n = {}));
 export {
-  q as getLabels
+  n as Animation,
+  t as DayFlag,
+  r as SelectionState,
+  o as UI
 };
 //# sourceMappingURL=index228.mjs.map

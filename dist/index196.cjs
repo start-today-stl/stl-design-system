@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const e=require("react");function n(t){return e.createElement("button",{...t})}exports.Button=n;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const t=require("react");function r(e){return t.createElement("div",{...e})}exports.DropdownNav=r;
 //# sourceMappingURL=index196.cjs.map

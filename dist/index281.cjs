@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const c=require("./index349.cjs"),u=require("./index350.cjs");function n(a,t,r){const e=u.toDate(a,r==null?void 0:r.in);return isNaN(t)?c.constructFrom(a,NaN):(t&&e.setDate(e.getDate()+t),e)}exports.addDays=n;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const c=require("./index353.cjs");function i(n,a,e){const[t,r]=c.normalizeDates(e==null?void 0:e.in,n,a),l=t.getFullYear()-r.getFullYear(),f=t.getMonth()-r.getMonth();return l*12+f}exports.differenceInCalendarMonths=i;
 //# sourceMappingURL=index281.cjs.map

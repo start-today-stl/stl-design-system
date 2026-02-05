@@ -1,9 +1,11 @@
-import { __module as r } from "./index189.mjs";
-import { __require as e } from "./index190.mjs";
-import { __require as o } from "./index191.mjs";
-process.env.NODE_ENV === "production" ? r.exports = e() : r.exports = o();
-var m = r.exports;
+/**
+ * @license lucide-react v0.563.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const a = (e) => e.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
 export {
-  m as s
+  a as toKebabCase
 };
 //# sourceMappingURL=index163.mjs.map

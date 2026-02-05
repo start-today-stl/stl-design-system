@@ -1,7 +1,7 @@
-function n(o) {
-  return "Choose the Month";
+function r(e) {
+  return "Week Number";
 }
 export {
-  n as labelMonthDropdown
+  r as labelWeekNumberHeader
 };
 //# sourceMappingURL=index257.mjs.map

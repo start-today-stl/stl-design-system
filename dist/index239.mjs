@@ -1,20 +1,19 @@
-import { useMulti as i } from "./index335.mjs";
-import { useRange as o } from "./index336.mjs";
-import { useSingle as s } from "./index337.mjs";
-function f(e, n) {
-  const t = s(e, n), r = i(e, n), u = o(e, n);
-  switch (e.mode) {
-    case "single":
-      return t;
-    case "multiple":
-      return r;
-    case "range":
-      return u;
-    default:
-      return;
-  }
-}
+import { formatCaption as t, formatMonthCaption as e } from "./index240.mjs";
+import { formatDay as a } from "./index241.mjs";
+import { formatMonthDropdown as p } from "./index242.mjs";
+import { formatWeekdayName as x } from "./index243.mjs";
+import { formatWeekNumber as i } from "./index244.mjs";
+import { formatWeekNumberHeader as C } from "./index245.mjs";
+import { formatYearCaption as N, formatYearDropdown as W } from "./index246.mjs";
 export {
-  f as useSelection
+  t as formatCaption,
+  a as formatDay,
+  e as formatMonthCaption,
+  p as formatMonthDropdown,
+  i as formatWeekNumber,
+  C as formatWeekNumberHeader,
+  x as formatWeekdayName,
+  N as formatYearCaption,
+  W as formatYearDropdown
 };
 //# sourceMappingURL=index239.mjs.map

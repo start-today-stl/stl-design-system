@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const i=require("./index234.cjs");function f(o,r,n={}){return Object.entries(o).filter(([,t])=>t===!0).reduce((t,[e])=>(n[e]?t.push(n[e]):r[i.DayFlag[e]]?t.push(r[i.DayFlag[e]]):r[i.SelectionState[e]]&&t.push(r[i.SelectionState[e]]),t),[r[i.UI.Day]])}exports.getClassNamesForModifiers=f;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const u=require("./index228.cjs");function c(o,r={},e={}){let t={...r==null?void 0:r[u.UI.Day]};return Object.entries(o).filter(([,n])=>n===!0).forEach(([n])=>{t={...t,...e==null?void 0:e[n]}}),t}exports.getStyleForModifiers=c;
 //# sourceMappingURL=index224.cjs.map

@@ -1,9 +1,9 @@
-import r from "react";
-function n(t) {
-  const { day: o, modifiers: a, ...e } = t;
-  return r.createElement("td", { ...e });
+import n from "react";
+function d(t) {
+  const { calendarMonth: o, displayIndex: r, ...e } = t;
+  return n.createElement("div", { ...e });
 }
 export {
-  n as Day
+  d as MonthCaption
 };
 //# sourceMappingURL=index199.mjs.map

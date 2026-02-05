@@ -1,10 +1,10 @@
-import { DateLib as r } from "./index222.mjs";
-function a(t, o, n) {
-  return (n ?? new r(o)).formatMonthYear(t);
+import { defaultDateLib as t } from "./index216.mjs";
+function a(o, r = t) {
+  return r.format(o, "yyyy");
 }
 const f = a;
 export {
-  a as formatCaption,
-  f as formatMonthCaption
+  f as formatYearCaption,
+  a as formatYearDropdown
 };
 //# sourceMappingURL=index246.mjs.map

@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});function e(){return""}exports.labelNav=e;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});function e(o){return"Choose the Year"}exports.labelYearDropdown=e;
 //# sourceMappingURL=index258.cjs.map

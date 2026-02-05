@@ -1,12 +1,13 @@
-function y(t, o, a, n) {
-  const s = n ?? t.today(), c = a ? t.startOfBroadcastWeek(s, t) : o ? t.startOfISOWeek(s) : t.startOfWeek(s), r = [];
-  for (let e = 0; e < 7; e++) {
-    const f = t.addDays(c, e);
-    r.push(f);
-  }
-  return r;
+import { createContext as t, useContext as n } from "react";
+const o = t(void 0);
+function c() {
+  const e = n(o);
+  if (e === void 0)
+    throw new Error("useDayPicker() must be used within a custom component.");
+  return e;
 }
 export {
-  y as getWeekdays
+  o as dayPickerContext,
+  c as useDayPicker
 };
 //# sourceMappingURL=index231.mjs.map

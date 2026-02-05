@@ -1,20 +1,8 @@
-import { DayFlag as n } from "./index234.mjs";
-var d;
-(function(e) {
-  e[e.Today = 0] = "Today", e[e.Selected = 1] = "Selected", e[e.LastFocused = 2] = "LastFocused", e[e.FocusedModifier = 3] = "FocusedModifier";
-})(d || (d = {}));
-function i(e) {
-  return !e[n.disabled] && !e[n.hidden] && !e[n.outside];
-}
-function L(e, l, t, a) {
-  let c, o = -1;
-  for (const f of e) {
-    const u = l(f);
-    i(u) && (u[n.focused] && o < d.FocusedModifier ? (c = f, o = d.FocusedModifier) : a != null && a.isEqualTo(f) && o < d.LastFocused ? (c = f, o = d.LastFocused) : t(f.date) && o < d.Selected ? (c = f, o = d.Selected) : u[n.today] && o < d.Today && (c = f, o = d.Today));
-  }
-  return c || (c = e.find((f) => i(l(f)))), c;
+function r(s, t) {
+  const e = t.startOfMonth(s), n = e.getDay() > 0 ? e.getDay() : 7, a = t.addDays(s, -n + 1), o = t.addDays(a, 5 * 7 - 1);
+  return t.getMonth(s) === t.getMonth(o) ? 5 : 4;
 }
 export {
-  L as calculateFocusTarget
+  r as getBroadcastWeeksInMonth
 };
 //# sourceMappingURL=index333.mjs.map

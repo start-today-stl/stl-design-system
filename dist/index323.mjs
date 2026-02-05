@@ -1,20 +1,14 @@
-function j(r, n, I, W) {
-  const s = r[0], o = r[r.length - 1], { ISOWeek: c, fixedWeeks: u, broadcastCalendar: a } = I ?? {}, { addDays: i, differenceInCalendarDays: M, differenceInCalendarMonths: C, endOfBroadcastWeek: O, endOfISOWeek: k, endOfMonth: h, endOfWeek: l, isAfter: E, startOfBroadcastWeek: F, startOfISOWeek: S, startOfWeek: p } = W, g = a ? F(s, W) : c ? S(s) : p(s), D = a ? O(o) : c ? k(h(o)) : l(h(o)), f = n && (a ? O(n) : c ? k(n) : l(n)), x = f && E(D, f) ? f : D, A = M(x, g), B = C(o, s) + 1, e = [];
-  for (let t = 0; t <= A; t++) {
-    const d = i(g, t);
-    e.push(d);
-  }
-  const y = (a ? 35 : 42) * B;
-  if (u && e.length < y) {
-    const t = y - e.length;
-    for (let d = 0; d < t; d++) {
-      const T = i(e[e.length - 1], 1);
-      e.push(T);
-    }
-  }
-  return e;
+function O(o, r) {
+  let { startMonth: t, endMonth: e } = o;
+  const { startOfYear: M, startOfDay: d, startOfMonth: c, endOfMonth: Y, addYears: l, endOfYear: w, newDate: f, today: i } = r, { fromYear: a, toYear: n, fromMonth: s, toMonth: h } = o;
+  !t && s && (t = s), !t && a && (t = r.newDate(a, 0, 1)), !e && h && (e = h), !e && n && (e = f(n, 11, 31));
+  const y = o.captionLayout === "dropdown" || o.captionLayout === "dropdown-years";
+  return t ? t = c(t) : a ? t = f(a, 0, 1) : !t && y && (t = M(l(o.today ?? i(), -100))), e ? e = Y(e) : n ? e = f(n, 11, 31) : !e && y && (e = w(o.today ?? i())), [
+    t && d(t),
+    e && d(e)
+  ];
 }
 export {
-  j as getDates
+  O as getNavMonths
 };
 //# sourceMappingURL=index323.mjs.map

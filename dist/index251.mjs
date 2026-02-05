@@ -1,7 +1,7 @@
-function e() {
-  return "";
+function n(o) {
+  return "Choose the Month";
 }
 export {
-  e as formatWeekNumberHeader
+  n as labelMonthDropdown
 };
 //# sourceMappingURL=index251.mjs.map

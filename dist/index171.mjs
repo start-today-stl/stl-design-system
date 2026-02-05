@@ -1,21 +1,18 @@
-/**
- * @license lucide-react v0.563.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-var t = {
-  xmlns: "http://www.w3.org/2000/svg",
-  width: 24,
-  height: 24,
-  viewBox: "0 0 24 24",
-  fill: "none",
-  stroke: "currentColor",
-  strokeWidth: 2,
-  strokeLinecap: "round",
-  strokeLinejoin: "round"
-};
+import * as r from "react";
+var t = 0;
+function a() {
+  r.useEffect(() => {
+    const e = document.querySelectorAll("[data-radix-focus-guard]");
+    return document.body.insertAdjacentElement("afterbegin", e[0] ?? n()), document.body.insertAdjacentElement("beforeend", e[1] ?? n()), t++, () => {
+      t === 1 && document.querySelectorAll("[data-radix-focus-guard]").forEach((o) => o.remove()), t--;
+    };
+  }, []);
+}
+function n() {
+  const e = document.createElement("span");
+  return e.setAttribute("data-radix-focus-guard", ""), e.tabIndex = 0, e.style.outline = "none", e.style.opacity = "0", e.style.position = "fixed", e.style.pointerEvents = "none", e;
+}
 export {
-  t as default
+  a as useFocusGuards
 };
 //# sourceMappingURL=index171.mjs.map

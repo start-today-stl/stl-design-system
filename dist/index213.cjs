@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const r=require("react");function n(e){const{rootRef:t,...o}=e;return r.createElement("div",{...o,ref:t})}exports.Root=n;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const r=require("react");function t(e){return r.createElement("th",{...e})}exports.WeekNumberHeader=t;
 //# sourceMappingURL=index213.cjs.map

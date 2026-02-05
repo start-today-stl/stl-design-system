@@ -1,11 +1,7 @@
-import { DateLib as n } from "./index222.mjs";
-function r(a, t, l, o) {
-  let e = (o ?? new n(l)).format(a, "PPPP");
-  return t.today && (e = `Today, ${e}`), t.selected && (e = `${e}, selected`), e;
+function t(o) {
+  return "Go to the Previous Month";
 }
-const c = r;
 export {
-  c as labelDay,
-  r as labelDayButton
+  t as labelPrevious
 };
 //# sourceMappingURL=index254.mjs.map

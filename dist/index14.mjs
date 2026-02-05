@@ -6,7 +6,7 @@ import { getDefaultClassNames as p } from "./index110.mjs";
 import { DayPicker as w } from "./index111.mjs";
 import h from "./index112.mjs";
 import _ from "./index113.mjs";
-import y from "./index105.mjs";
+import y from "./index106.mjs";
 function B({
   className: i,
   classNames: m,

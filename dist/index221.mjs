@@ -1,10 +1,11 @@
-import r from "react";
-import { useDayPicker as t } from "./index237.mjs";
-function m(o) {
-  const { components: e } = t();
-  return r.createElement(e.Dropdown, { ...o });
+import * as f from "./index239.mjs";
+function i(n) {
+  return n != null && n.formatMonthCaption && !n.formatCaption && (n.formatCaption = n.formatMonthCaption), n != null && n.formatYearCaption && !n.formatYearDropdown && (n.formatYearDropdown = n.formatYearCaption), {
+    ...f,
+    ...n
+  };
 }
 export {
-  m as YearsDropdown
+  i as getFormatters
 };
 //# sourceMappingURL=index221.mjs.map

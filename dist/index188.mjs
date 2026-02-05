@@ -1,12 +1,14 @@
-import "react";
-import { jsx as e, Fragment as o } from "react/jsx-runtime";
-var l = Symbol("radix.slottable");
-// @__NO_SIDE_EFFECTS__
-function n(r) {
-  const t = ({ children: a }) => /* @__PURE__ */ e(o, { children: a });
-  return t.displayName = `${r}.Slottable`, t.__radixId = l, t;
-}
+/**
+ * @license lucide-react v0.563.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const s = (a) => a.replace(
+  /^([A-Z])|[\s-_]+(\w)/g,
+  (t, o, e) => e ? e.toUpperCase() : o.toLowerCase()
+);
 export {
-  n as createSlottable
+  s as toCamelCase
 };
 //# sourceMappingURL=index188.mjs.map

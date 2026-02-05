@@ -1,6 +1,11 @@
-import { createSidecarMedium as e } from "./index344.mjs";
-var a = e();
+function a(c) {
+  const e = [];
+  return c.reduce((s, t) => {
+    const n = t.weeks.reduce((r, i) => r.concat(i.days.slice()), e.slice());
+    return s.concat(n.slice());
+  }, e.slice());
+}
 export {
-  a as effectCar
+  a as getDays
 };
 //# sourceMappingURL=index319.mjs.map

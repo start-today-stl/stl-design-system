@@ -1,17 +1,28 @@
-import * as r from "react";
-import s from "react-dom";
-import { Primitive as c } from "./index151.mjs";
-import { useLayoutEffect as u } from "./index143.mjs";
-import { jsx as l } from "react/jsx-runtime";
-var p = "Portal", d = r.forwardRef((e, a) => {
-  var o;
-  const { container: f, ...i } = e, [m, n] = r.useState(!1);
-  u(() => n(!0), []);
-  const t = f || m && ((o = globalThis == null ? void 0 : globalThis.document) == null ? void 0 : o.body);
-  return t ? s.createPortal(/* @__PURE__ */ l(c.div, { ...i, ref: a }), t) : null;
-});
-d.displayName = p;
+import * as h from "react";
+import { useLayoutEffect as z } from "./index153.mjs";
+function c(r) {
+  const [d, e] = h.useState(void 0);
+  return z(() => {
+    if (r) {
+      e({ width: r.offsetWidth, height: r.offsetHeight });
+      const f = new ResizeObserver((i) => {
+        if (!Array.isArray(i) || !i.length)
+          return;
+        const b = i[0];
+        let o, t;
+        if ("borderBoxSize" in b) {
+          const s = b.borderBoxSize, u = Array.isArray(s) ? s[0] : s;
+          o = u.inlineSize, t = u.blockSize;
+        } else
+          o = r.offsetWidth, t = r.offsetHeight;
+        e({ width: o, height: t });
+      });
+      return f.observe(r, { box: "border-box" }), () => f.unobserve(r);
+    } else
+      e(void 0);
+  }, [r]), d;
+}
 export {
-  d as Portal
+  c as useSize
 };
 //# sourceMappingURL=index157.mjs.map

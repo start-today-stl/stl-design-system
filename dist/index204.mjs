@@ -1,9 +1,10 @@
-import n from "react";
-function a(e) {
-  const { calendarMonth: r, displayIndex: d, ...t } = e;
-  return n.createElement("div", { ...t }, e.children);
+import o from "react";
+import { useDayPicker as n } from "./index231.mjs";
+function m(t) {
+  const { components: e } = n();
+  return o.createElement(e.Button, { ...t });
 }
 export {
-  a as Month
+  m as NextMonthButton
 };
 //# sourceMappingURL=index204.mjs.map

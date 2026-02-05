@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const r=require("./index222.cjs");function c(e,t,a){return(a??new r.DateLib(t)).format(e,"cccccc")}exports.formatWeekdayName=c;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const a=require("./index216.cjs");function e(t,i,l){return(l??new a.DateLib(i)).formatMonthYear(t)}const n=e;exports.labelCaption=n;exports.labelGrid=e;
 //# sourceMappingURL=index249.cjs.map

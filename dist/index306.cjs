@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const c=require("./index349.cjs"),a=require("./index350.cjs");function n(t,u,e){const r=a.toDate(t,e==null?void 0:e.in);return isNaN(+r)?c.constructFrom(t,NaN):(r.setFullYear(u),r)}exports.setYear=n;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const a=require("./index350.cjs");function u(r,t){const e=a.toDate(r,t==null?void 0:t.in);return e.setFullYear(e.getFullYear(),0,1),e.setHours(0,0,0,0),e}exports.startOfYear=u;
 //# sourceMappingURL=index306.cjs.map

@@ -1,24 +1,38 @@
-import { useState as i } from "react";
-import { calculateFocusTarget as v } from "./index333.mjs";
-import { getNextFocus as x } from "./index334.mjs";
-function I(u, o, a, r, F) {
-  const { autoFocus: f } = u, [d, m] = i(), s = v(o.days, a, r || (() => !1), d), [t, n] = i(f ? s : void 0);
-  return {
-    isFocusTarget: (c) => !!(s != null && s.isEqualTo(c)),
-    setFocused: n,
-    focused: t,
-    blur: () => {
-      m(t), n(void 0);
+import { enUS as n } from "./index334.mjs";
+import { format as f } from "./index307.mjs";
+const b = {
+  ...n,
+  labels: {
+    labelDayButton: (r, a, l, e) => {
+      let t;
+      e && typeof e.format == "function" ? t = e.format.bind(e) : t = (c, m) => f(c, m, { locale: n, ...l });
+      let o = t(r, "PPPP");
+      return a.today && (o = `Today, ${o}`), a.selected && (o = `${o}, selected`), o;
     },
-    moveFocus: (c, l) => {
-      if (!t)
-        return;
-      const e = x(c, l, t, o.navStart, o.navEnd, u, F);
-      e && (u.disableNavigation && !o.days.some((g) => g.isEqualTo(e)) || (o.goToDay(e), n(e)));
+    labelMonthDropdown: "Choose the Month",
+    labelNext: "Go to the Next Month",
+    labelPrevious: "Go to the Previous Month",
+    labelWeekNumber: (r) => `Week ${r}`,
+    labelYearDropdown: "Choose the Year",
+    labelGrid: (r, a, l) => {
+      let e;
+      return l && typeof l.format == "function" ? e = l.format.bind(l) : e = (t, o) => f(t, o, { locale: n, ...a }), e(r, "LLLL yyyy");
+    },
+    labelGridcell: (r, a, l, e) => {
+      let t;
+      e && typeof e.format == "function" ? t = e.format.bind(e) : t = (c, m) => f(c, m, { locale: n, ...l });
+      let o = t(r, "PPPP");
+      return a != null && a.today && (o = `Today, ${o}`), o;
+    },
+    labelNav: "Navigation bar",
+    labelWeekNumberHeader: "Week Number",
+    labelWeekday: (r, a, l) => {
+      let e;
+      return l && typeof l.format == "function" ? e = l.format.bind(l) : e = (t, o) => f(t, o, { locale: n, ...a }), e(r, "cccc");
     }
-  };
-}
+  }
+};
 export {
-  I as useFocus
+  b as enUS
 };
 //# sourceMappingURL=index238.mjs.map

@@ -1,2 +1,2 @@
-"use strict";const e=require("./index321.cjs"),r=require("./index319.cjs"),t=require("./index322.cjs"),c=t.exportSidecar(r.effectCar,e.RemoveScrollSideCar);module.exports=c;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});var e={};exports.__exports=e;
 //# sourceMappingURL=index267.cjs.map

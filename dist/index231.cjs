@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});function f(e,o,a,n){const t=n??e.today(),c=a?e.startOfBroadcastWeek(t,e):o?e.startOfISOWeek(t):e.startOfWeek(t),r=[];for(let s=0;s<7;s++){const y=e.addDays(c,s);r.push(y)}return r}exports.getWeekdays=f;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const t=require("react"),n=t.createContext(void 0);function o(){const e=t.useContext(n);if(e===void 0)throw new Error("useDayPicker() must be used within a custom component.");return e}exports.dayPickerContext=n;exports.useDayPicker=o;
 //# sourceMappingURL=index231.cjs.map

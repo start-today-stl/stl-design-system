@@ -1,8 +1,8 @@
 import t from "react";
-function c(e) {
-  return t.createElement("select", { ...e });
+function o(e) {
+  return t.createElement("tbody", { ...e });
 }
 export {
-  c as Select
+  o as Weeks
 };
 //# sourceMappingURL=index214.mjs.map

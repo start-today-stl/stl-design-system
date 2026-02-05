@@ -1,8 +1,12 @@
 import e from "react";
-function n(t) {
-  return e.createElement("option", { ...t });
+function a(t) {
+  return e.createElement(
+    "thead",
+    { "aria-hidden": !0 },
+    e.createElement("tr", { ...t })
+  );
 }
 export {
-  n as Option
+  a as Weekdays
 };
 //# sourceMappingURL=index211.mjs.map

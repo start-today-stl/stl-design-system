@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const l=require("react");function o(t,e){const[u,n]=l.useState(t);return[e===void 0?u:e,n]}exports.useControlledValue=o;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const S=require("./index327.cjs");function y(o,r){const{selected:s,required:u,onSelect:e}=o,[a,f]=S.useControlledValue(s,e?s:void 0),l=e?s:a,{isSameDay:c}=r;return{selected:l,select:(t,d,i)=>{let n=t;return!u&&l&&l&&c(t,l)&&(n=void 0),e||f(n),e==null||e(n,t,d,i),n},isSelected:t=>l?c(l,t):!1}}exports.useSingle=y;
 //# sourceMappingURL=index332.cjs.map

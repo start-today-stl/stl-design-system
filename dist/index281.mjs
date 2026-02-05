@@ -1,10 +1,13 @@
-import { constructFrom as f } from "./index349.mjs";
-import { toDate as c } from "./index350.mjs";
-function i(a, t, e) {
-  const r = c(a, e == null ? void 0 : e.in);
-  return isNaN(t) ? f(a, NaN) : (t && r.setDate(r.getDate() + t), r);
+import { normalizeDates as c } from "./index353.mjs";
+function g(a, n, e) {
+  const [t, r] = c(
+    e == null ? void 0 : e.in,
+    a,
+    n
+  ), f = t.getFullYear() - r.getFullYear(), l = t.getMonth() - r.getMonth();
+  return f * 12 + l;
 }
 export {
-  i as addDays
+  g as differenceInCalendarMonths
 };
 //# sourceMappingURL=index281.mjs.map

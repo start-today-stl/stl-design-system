@@ -1,13 +1,9 @@
-import { normalizeDates as m } from "./index353.mjs";
-function D(r, a, e) {
-  const [l, t] = m(
-    e == null ? void 0 : e.in,
-    r,
-    a
-  );
-  return l.getFullYear() === t.getFullYear();
+import { toDate as a } from "./index350.mjs";
+function u(e, r) {
+  const t = a(e, r == null ? void 0 : r.in);
+  return t.setHours(0, 0, 0, 0), t;
 }
 export {
-  D as isSameYear
+  u as startOfDay
 };
 //# sourceMappingURL=index302.mjs.map

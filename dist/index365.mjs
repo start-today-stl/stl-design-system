@@ -1,6 +1,6 @@
 import { getDefaultOptions as C } from "./index355.mjs";
 import { constructFrom as Y } from "./index349.mjs";
-import { startOfWeek as D } from "./index310.mjs";
+import { startOfWeek as D } from "./index305.mjs";
 import { toDate as F } from "./index350.mjs";
 function H(t, e) {
   var u, k, m, W;

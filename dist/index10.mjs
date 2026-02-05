@@ -1,5 +1,5 @@
 import { jsx as a } from "react/jsx-runtime";
-import { cva as i } from "./index106.mjs";
+import { cva as i } from "./index103.mjs";
 import { cn as n } from "./index104.mjs";
 const d = i(
   "inline-flex items-center justify-center whitespace-nowrap font-medium transition-colors rounded-[4px] p-[5px] text-[10px] tracking-[-0.15px]",

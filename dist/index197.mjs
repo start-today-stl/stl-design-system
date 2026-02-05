@@ -1,8 +1,8 @@
 import t from "react";
-function n(e) {
-  return t.createElement("span", { ...e });
+function o(e) {
+  return t.createElement("div", { ...e });
 }
 export {
-  n as CaptionLabel
+  o as Footer
 };
 //# sourceMappingURL=index197.mjs.map

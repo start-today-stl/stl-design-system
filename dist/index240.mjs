@@ -1,27 +1,10 @@
-import "./index274.mjs";
-import { toTimeZone as i } from "./index242.mjs";
-import { isDateRange as e, isDateInterval as p, isDateAfterType as y, isDateBeforeType as D } from "./index243.mjs";
-function n(o, f, u) {
-  return i(o, f);
+import { DateLib as r } from "./index216.mjs";
+function a(t, o, n) {
+  return (n ?? new r(o)).formatMonthYear(t);
 }
-function t(o, f, u) {
-  return typeof o == "boolean" || typeof o == "function" ? o : o instanceof Date ? n(o, f) : Array.isArray(o) ? o.map((r) => r instanceof Date ? n(r, f) : r) : e(o) ? {
-    ...o,
-    from: o.from ? i(o.from, f) : o.from,
-    to: o.to ? i(o.to, f) : o.to
-  } : p(o) ? {
-    before: n(o.before, f),
-    after: n(o.after, f)
-  } : y(o) ? {
-    after: n(o.after, f)
-  } : D(o) ? {
-    before: n(o.before, f)
-  } : o;
-}
-function T(o, f, u) {
-  return o && (Array.isArray(o) ? o.map((r) => t(r, f)) : t(o, f));
-}
+const f = a;
 export {
-  T as convertMatchersToTimeZone
+  a as formatCaption,
+  f as formatMonthCaption
 };
 //# sourceMappingURL=index240.mjs.map

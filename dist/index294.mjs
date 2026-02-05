@@ -1,8 +1,7 @@
-import { toDate as r } from "./index350.mjs";
-function g(e, t) {
-  return r(e, t == null ? void 0 : t.in).getMonth();
+function e(t) {
+  return t instanceof Date || typeof t == "object" && Object.prototype.toString.call(t) === "[object Date]";
 }
 export {
-  g as getMonth
+  e as isDate
 };
 //# sourceMappingURL=index294.mjs.map

@@ -1,5 +1,5 @@
 import * as i from "react";
-import { Primitive as f } from "./index176.mjs";
+import { Primitive as f } from "./index183.mjs";
 import { jsx as l } from "react/jsx-runtime";
 var m = "Label", r = i.forwardRef((e, o) => /* @__PURE__ */ l(
   f.label,

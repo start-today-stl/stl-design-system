@@ -1,8 +1,9 @@
-import e from "react";
+import r from "react";
 function n(t) {
-  return e.createElement("div", { ...t });
+  const { rootRef: e, ...o } = t;
+  return r.createElement("div", { ...o, ref: e });
 }
 export {
-  n as Months
+  n as Root
 };
 //# sourceMappingURL=index207.mjs.map

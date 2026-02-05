@@ -1,5 +1,9 @@
-var e = {};
+import r from "react";
+function n(t) {
+  const { day: o, modifiers: a, ...e } = t;
+  return r.createElement("td", { ...e });
+}
 export {
-  e as __exports
+  n as Day
 };
 //# sourceMappingURL=index193.mjs.map

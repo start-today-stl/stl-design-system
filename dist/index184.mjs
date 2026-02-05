@@ -1,184 +1,653 @@
-import * as c from "react";
-import { composeEventHandlers as p } from "./index149.mjs";
-import { createCollection as V } from "./index147.mjs";
-import { useComposedRefs as j } from "./index148.mjs";
-import { createContextScope as z } from "./index146.mjs";
-import { useId as q } from "./index153.mjs";
-import { Primitive as G } from "./index151.mjs";
-import { useCallbackRef as J } from "./index142.mjs";
-import { useControllableState as Q } from "./index150.mjs";
-import { useDirection as W } from "./index154.mjs";
-import { jsx as d } from "react/jsx-runtime";
-var y = "rovingFocusGroup.onEntryFocus", X = { bubbles: !1, cancelable: !0 }, I = "RovingFocusGroup", [D, N, Z] = V(I), [$, Fe] = z(
-  I,
-  [Z]
-), [ee, oe] = $(I), O = c.forwardRef(
-  (e, r) => /* @__PURE__ */ d(D.Provider, { scope: e.__scopeRovingFocusGroup, children: /* @__PURE__ */ d(D.Slot, { scope: e.__scopeRovingFocusGroup, children: /* @__PURE__ */ d(te, { ...e, ref: r }) }) })
-);
-O.displayName = I;
-var te = c.forwardRef((e, r) => {
-  const {
-    __scopeRovingFocusGroup: s,
-    orientation: o,
-    loop: T = !1,
-    dir: w,
-    currentTabStopId: v,
-    defaultCurrentTabStopId: C,
-    onCurrentTabStopIdChange: S,
-    onEntryFocus: m,
-    preventScrollOnEntryFocus: u = !1,
-    ...b
-  } = e, F = c.useRef(null), g = j(r, F), R = W(w), [E, t] = Q({
-    prop: v,
-    defaultProp: C ?? null,
-    onChange: S,
-    caller: I
-  }), [i, h] = c.useState(!1), a = J(m), l = N(s), A = c.useRef(!1), [L, P] = c.useState(0);
-  return c.useEffect(() => {
-    const n = F.current;
-    if (n)
-      return n.addEventListener(y, a), () => n.removeEventListener(y, a);
-  }, [a]), /* @__PURE__ */ d(
-    ee,
+import * as r from "react";
+import { composeEventHandlers as h } from "./index144.mjs";
+import { createCollection as $e } from "./index142.mjs";
+import { useComposedRefs as N, composeRefs as qe } from "./index143.mjs";
+import { createContextScope as Je } from "./index141.mjs";
+import { useDirection as Qe } from "./index149.mjs";
+import { DismissableLayer as et } from "./index168.mjs";
+import { useFocusGuards as tt } from "./index171.mjs";
+import { FocusScope as nt } from "./index169.mjs";
+import { useId as Me } from "./index148.mjs";
+import { Root as ve, Anchor as ot, createPopperScope as Ce, Content as rt, Arrow as ct } from "./index176.mjs";
+import { Portal as at } from "./index170.mjs";
+import { Presence as W } from "./index158.mjs";
+import { Primitive as F, dispatchDiscreteCustomEvent as st } from "./index146.mjs";
+import { createRovingFocusGroupScope as ge, Item as ut, Root as it } from "./index182.mjs";
+import { createSlot as lt } from "./index266.mjs";
+import { useCallbackRef as ee } from "./index152.mjs";
+import { hideOthers as dt } from "./index173.mjs";
+import ft from "./index172.mjs";
+import { jsx as u } from "react/jsx-runtime";
+var Q = ["Enter", " "], mt = ["ArrowDown", "PageUp", "Home"], _e = ["ArrowUp", "PageDown", "End"], pt = [...mt, ..._e], Mt = {
+  ltr: [...Q, "ArrowRight"],
+  rtl: [...Q, "ArrowLeft"]
+}, ht = {
+  ltr: ["ArrowLeft"],
+  rtl: ["ArrowRight"]
+}, L = "Menu", [D, vt, Ct] = $e(L), [I, cn] = Je(L, [
+  Ct,
+  Ce,
+  ge
+]), K = Ce(), Re = ge(), [Se, E] = I(L), [gt, G] = I(L), Pe = (e) => {
+  const { __scopeMenu: n, open: t = !1, children: o, dir: s, onOpenChange: a, modal: l = !0 } = e, p = K(n), [M, m] = r.useState(null), f = r.useRef(!1), c = ee(a), d = Qe(s);
+  return r.useEffect(() => {
+    const C = () => {
+      f.current = !0, document.addEventListener("pointerdown", v, { capture: !0, once: !0 }), document.addEventListener("pointermove", v, { capture: !0, once: !0 });
+    }, v = () => f.current = !1;
+    return document.addEventListener("keydown", C, { capture: !0 }), () => {
+      document.removeEventListener("keydown", C, { capture: !0 }), document.removeEventListener("pointerdown", v, { capture: !0 }), document.removeEventListener("pointermove", v, { capture: !0 });
+    };
+  }, []), /* @__PURE__ */ u(ve, { ...p, children: /* @__PURE__ */ u(
+    Se,
     {
-      scope: s,
-      orientation: o,
-      dir: R,
-      loop: T,
-      currentTabStopId: E,
-      onItemFocus: c.useCallback(
-        (n) => t(n),
-        [t]
-      ),
-      onItemShiftTab: c.useCallback(() => h(!0), []),
-      onFocusableItemAdd: c.useCallback(
-        () => P((n) => n + 1),
-        []
-      ),
-      onFocusableItemRemove: c.useCallback(
-        () => P((n) => n - 1),
-        []
-      ),
-      children: /* @__PURE__ */ d(
-        G.div,
+      scope: n,
+      open: t,
+      onOpenChange: c,
+      content: M,
+      onContentChange: m,
+      children: /* @__PURE__ */ u(
+        gt,
         {
-          tabIndex: i || L === 0 ? -1 : 0,
-          "data-orientation": o,
-          ...b,
-          ref: g,
-          style: { outline: "none", ...e.style },
-          onMouseDown: p(e.onMouseDown, () => {
-            A.current = !0;
-          }),
-          onFocus: p(e.onFocus, (n) => {
-            const U = !A.current;
-            if (n.target === n.currentTarget && U && !i) {
-              const x = new CustomEvent(y, X);
-              if (n.currentTarget.dispatchEvent(x), !x.defaultPrevented) {
-                const _ = l().filter((f) => f.focusable), B = _.find((f) => f.active), Y = _.find((f) => f.id === E), H = [B, Y, ..._].filter(
-                  Boolean
-                ).map((f) => f.ref.current);
-                k(H, u);
-              }
-            }
-            A.current = !1;
-          }),
-          onBlur: p(e.onBlur, () => h(!1))
+          scope: n,
+          onClose: r.useCallback(() => c(!1), [c]),
+          isUsingKeyboardRef: f,
+          dir: d,
+          modal: l,
+          children: o
         }
       )
     }
+  ) });
+};
+Pe.displayName = L;
+var _t = "MenuAnchor", te = r.forwardRef(
+  (e, n) => {
+    const { __scopeMenu: t, ...o } = e, s = K(t);
+    return /* @__PURE__ */ u(ot, { ...s, ...o, ref: n });
+  }
+);
+te.displayName = _t;
+var ne = "MenuPortal", [Rt, Ee] = I(ne, {
+  forceMount: void 0
+}), we = (e) => {
+  const { __scopeMenu: n, forceMount: t, children: o, container: s } = e, a = E(ne, n);
+  return /* @__PURE__ */ u(Rt, { scope: n, forceMount: t, children: /* @__PURE__ */ u(W, { present: t || a.open, children: /* @__PURE__ */ u(at, { asChild: !0, container: s, children: o }) }) });
+};
+we.displayName = ne;
+var _ = "MenuContent", [St, oe] = I(_), Ie = r.forwardRef(
+  (e, n) => {
+    const t = Ee(_, e.__scopeMenu), { forceMount: o = t.forceMount, ...s } = e, a = E(_, e.__scopeMenu), l = G(_, e.__scopeMenu);
+    return /* @__PURE__ */ u(D.Provider, { scope: e.__scopeMenu, children: /* @__PURE__ */ u(W, { present: o || a.open, children: /* @__PURE__ */ u(D.Slot, { scope: e.__scopeMenu, children: l.modal ? /* @__PURE__ */ u(Pt, { ...s, ref: n }) : /* @__PURE__ */ u(Et, { ...s, ref: n }) }) }) });
+  }
+), Pt = r.forwardRef(
+  (e, n) => {
+    const t = E(_, e.__scopeMenu), o = r.useRef(null), s = N(n, o);
+    return r.useEffect(() => {
+      const a = o.current;
+      if (a) return dt(a);
+    }, []), /* @__PURE__ */ u(
+      re,
+      {
+        ...e,
+        ref: s,
+        trapFocus: t.open,
+        disableOutsidePointerEvents: t.open,
+        disableOutsideScroll: !0,
+        onFocusOutside: h(
+          e.onFocusOutside,
+          (a) => a.preventDefault(),
+          { checkForDefaultPrevented: !1 }
+        ),
+        onDismiss: () => t.onOpenChange(!1)
+      }
+    );
+  }
+), Et = r.forwardRef((e, n) => {
+  const t = E(_, e.__scopeMenu);
+  return /* @__PURE__ */ u(
+    re,
+    {
+      ...e,
+      ref: n,
+      trapFocus: !1,
+      disableOutsidePointerEvents: !1,
+      disableOutsideScroll: !1,
+      onDismiss: () => t.onOpenChange(!1)
+    }
   );
-}), K = "RovingFocusGroupItem", M = c.forwardRef(
-  (e, r) => {
+}), wt = lt("MenuContent.ScrollLock"), re = r.forwardRef(
+  (e, n) => {
     const {
-      __scopeRovingFocusGroup: s,
-      focusable: o = !0,
-      active: T = !1,
-      tabStopId: w,
-      children: v,
-      ...C
-    } = e, S = q(), m = w || S, u = oe(K, s), b = u.currentTabStopId === m, F = N(s), { onFocusableItemAdd: g, onFocusableItemRemove: R, currentTabStopId: E } = u;
-    return c.useEffect(() => {
-      if (o)
-        return g(), () => R();
-    }, [o, g, R]), /* @__PURE__ */ d(
+      __scopeMenu: t,
+      loop: o = !1,
+      trapFocus: s,
+      onOpenAutoFocus: a,
+      onCloseAutoFocus: l,
+      disableOutsidePointerEvents: p,
+      onEntryFocus: M,
+      onEscapeKeyDown: m,
+      onPointerDownOutside: f,
+      onFocusOutside: c,
+      onInteractOutside: d,
+      onDismiss: C,
+      disableOutsideScroll: v,
+      ...w
+    } = e, y = E(_, t), T = G(_, t), U = K(t), B = Re(t), ie = vt(t), [Xe, le] = r.useState(null), V = r.useRef(null), je = N(n, V, y.onContentChange), Y = r.useRef(0), X = r.useRef(""), He = r.useRef(0), Z = r.useRef(null), de = r.useRef("right"), $ = r.useRef(0), We = v ? ft : r.Fragment, ze = v ? { as: wt, allowPinchZoom: !0 } : void 0, Ze = (i) => {
+      var b, me;
+      const g = X.current + i, R = ie().filter((S) => !S.disabled), P = document.activeElement, q = (b = R.find((S) => S.ref.current === P)) == null ? void 0 : b.textValue, J = R.map((S) => S.textValue), fe = Lt(J, g, q), A = (me = R.find((S) => S.textValue === fe)) == null ? void 0 : me.ref.current;
+      (function S(pe) {
+        X.current = pe, window.clearTimeout(Y.current), pe !== "" && (Y.current = window.setTimeout(() => S(""), 1e3));
+      })(g), A && setTimeout(() => A.focus());
+    };
+    r.useEffect(() => () => window.clearTimeout(Y.current), []), tt();
+    const x = r.useCallback((i) => {
+      var R, P;
+      return de.current === ((R = Z.current) == null ? void 0 : R.side) && Gt(i, (P = Z.current) == null ? void 0 : P.area);
+    }, []);
+    return /* @__PURE__ */ u(
+      St,
+      {
+        scope: t,
+        searchRef: X,
+        onItemEnter: r.useCallback(
+          (i) => {
+            x(i) && i.preventDefault();
+          },
+          [x]
+        ),
+        onItemLeave: r.useCallback(
+          (i) => {
+            var g;
+            x(i) || ((g = V.current) == null || g.focus(), le(null));
+          },
+          [x]
+        ),
+        onTriggerLeave: r.useCallback(
+          (i) => {
+            x(i) && i.preventDefault();
+          },
+          [x]
+        ),
+        pointerGraceTimerRef: He,
+        onPointerGraceIntentChange: r.useCallback((i) => {
+          Z.current = i;
+        }, []),
+        children: /* @__PURE__ */ u(We, { ...ze, children: /* @__PURE__ */ u(
+          nt,
+          {
+            asChild: !0,
+            trapped: s,
+            onMountAutoFocus: h(a, (i) => {
+              var g;
+              i.preventDefault(), (g = V.current) == null || g.focus({ preventScroll: !0 });
+            }),
+            onUnmountAutoFocus: l,
+            children: /* @__PURE__ */ u(
+              et,
+              {
+                asChild: !0,
+                disableOutsidePointerEvents: p,
+                onEscapeKeyDown: m,
+                onPointerDownOutside: f,
+                onFocusOutside: c,
+                onInteractOutside: d,
+                onDismiss: C,
+                children: /* @__PURE__ */ u(
+                  it,
+                  {
+                    asChild: !0,
+                    ...B,
+                    dir: T.dir,
+                    orientation: "vertical",
+                    loop: o,
+                    currentTabStopId: Xe,
+                    onCurrentTabStopIdChange: le,
+                    onEntryFocus: h(M, (i) => {
+                      T.isUsingKeyboardRef.current || i.preventDefault();
+                    }),
+                    preventScrollOnEntryFocus: !0,
+                    children: /* @__PURE__ */ u(
+                      rt,
+                      {
+                        role: "menu",
+                        "aria-orientation": "vertical",
+                        "data-state": Ye(y.open),
+                        "data-radix-menu-content": "",
+                        dir: T.dir,
+                        ...U,
+                        ...w,
+                        ref: je,
+                        style: { outline: "none", ...w.style },
+                        onKeyDown: h(w.onKeyDown, (i) => {
+                          const R = i.target.closest("[data-radix-menu-content]") === i.currentTarget, P = i.ctrlKey || i.altKey || i.metaKey, q = i.key.length === 1;
+                          R && (i.key === "Tab" && i.preventDefault(), !P && q && Ze(i.key));
+                          const J = V.current;
+                          if (i.target !== J || !pt.includes(i.key)) return;
+                          i.preventDefault();
+                          const A = ie().filter((b) => !b.disabled).map((b) => b.ref.current);
+                          _e.includes(i.key) && A.reverse(), Nt(A);
+                        }),
+                        onBlur: h(e.onBlur, (i) => {
+                          i.currentTarget.contains(i.target) || (window.clearTimeout(Y.current), X.current = "");
+                        }),
+                        onPointerMove: h(
+                          e.onPointerMove,
+                          k((i) => {
+                            const g = i.target, R = $.current !== i.clientX;
+                            if (i.currentTarget.contains(g) && R) {
+                              const P = i.clientX > $.current ? "right" : "left";
+                              de.current = P, $.current = i.clientX;
+                            }
+                          })
+                        )
+                      }
+                    )
+                  }
+                )
+              }
+            )
+          }
+        ) })
+      }
+    );
+  }
+);
+Ie.displayName = _;
+var It = "MenuGroup", ce = r.forwardRef(
+  (e, n) => {
+    const { __scopeMenu: t, ...o } = e;
+    return /* @__PURE__ */ u(F.div, { role: "group", ...o, ref: n });
+  }
+);
+ce.displayName = It;
+var yt = "MenuLabel", ye = r.forwardRef(
+  (e, n) => {
+    const { __scopeMenu: t, ...o } = e;
+    return /* @__PURE__ */ u(F.div, { ...o, ref: n });
+  }
+);
+ye.displayName = yt;
+var j = "MenuItem", he = "menu.itemSelect", z = r.forwardRef(
+  (e, n) => {
+    const { disabled: t = !1, onSelect: o, ...s } = e, a = r.useRef(null), l = G(j, e.__scopeMenu), p = oe(j, e.__scopeMenu), M = N(n, a), m = r.useRef(!1), f = () => {
+      const c = a.current;
+      if (!t && c) {
+        const d = new CustomEvent(he, { bubbles: !0, cancelable: !0 });
+        c.addEventListener(he, (C) => o == null ? void 0 : o(C), { once: !0 }), st(c, d), d.defaultPrevented ? m.current = !1 : l.onClose();
+      }
+    };
+    return /* @__PURE__ */ u(
+      xe,
+      {
+        ...s,
+        ref: M,
+        disabled: t,
+        onClick: h(e.onClick, f),
+        onPointerDown: (c) => {
+          var d;
+          (d = e.onPointerDown) == null || d.call(e, c), m.current = !0;
+        },
+        onPointerUp: h(e.onPointerUp, (c) => {
+          var d;
+          m.current || (d = c.currentTarget) == null || d.click();
+        }),
+        onKeyDown: h(e.onKeyDown, (c) => {
+          const d = p.searchRef.current !== "";
+          t || d && c.key === " " || Q.includes(c.key) && (c.currentTarget.click(), c.preventDefault());
+        })
+      }
+    );
+  }
+);
+z.displayName = j;
+var xe = r.forwardRef(
+  (e, n) => {
+    const { __scopeMenu: t, disabled: o = !1, textValue: s, ...a } = e, l = oe(j, t), p = Re(t), M = r.useRef(null), m = N(n, M), [f, c] = r.useState(!1), [d, C] = r.useState("");
+    return r.useEffect(() => {
+      const v = M.current;
+      v && C((v.textContent ?? "").trim());
+    }, [a.children]), /* @__PURE__ */ u(
       D.ItemSlot,
       {
-        scope: s,
-        id: m,
-        focusable: o,
-        active: T,
-        children: /* @__PURE__ */ d(
-          G.span,
+        scope: t,
+        disabled: o,
+        textValue: s ?? d,
+        children: /* @__PURE__ */ u(ut, { asChild: !0, ...p, focusable: !o, children: /* @__PURE__ */ u(
+          F.div,
           {
-            tabIndex: b ? 0 : -1,
-            "data-orientation": u.orientation,
-            ...C,
-            ref: r,
-            onMouseDown: p(e.onMouseDown, (t) => {
-              o ? u.onItemFocus(m) : t.preventDefault();
-            }),
-            onFocus: p(e.onFocus, () => u.onItemFocus(m)),
-            onKeyDown: p(e.onKeyDown, (t) => {
-              if (t.key === "Tab" && t.shiftKey) {
-                u.onItemShiftTab();
-                return;
-              }
-              if (t.target !== t.currentTarget) return;
-              const i = ce(t, u.orientation, u.dir);
-              if (i !== void 0) {
-                if (t.metaKey || t.ctrlKey || t.altKey || t.shiftKey) return;
-                t.preventDefault();
-                let a = F().filter((l) => l.focusable).map((l) => l.ref.current);
-                if (i === "last") a.reverse();
-                else if (i === "prev" || i === "next") {
-                  i === "prev" && a.reverse();
-                  const l = a.indexOf(t.currentTarget);
-                  a = u.loop ? se(a, l + 1) : a.slice(l + 1);
-                }
-                setTimeout(() => k(a));
-              }
-            }),
-            children: typeof v == "function" ? v({ isCurrentTabStop: b, hasTabStop: E != null }) : v
+            role: "menuitem",
+            "data-highlighted": f ? "" : void 0,
+            "aria-disabled": o || void 0,
+            "data-disabled": o ? "" : void 0,
+            ...a,
+            ref: m,
+            onPointerMove: h(
+              e.onPointerMove,
+              k((v) => {
+                o ? l.onItemLeave(v) : (l.onItemEnter(v), v.defaultPrevented || v.currentTarget.focus({ preventScroll: !0 }));
+              })
+            ),
+            onPointerLeave: h(
+              e.onPointerLeave,
+              k((v) => l.onItemLeave(v))
+            ),
+            onFocus: h(e.onFocus, () => c(!0)),
+            onBlur: h(e.onBlur, () => c(!1))
+          }
+        ) })
+      }
+    );
+  }
+), xt = "MenuCheckboxItem", be = r.forwardRef(
+  (e, n) => {
+    const { checked: t = !1, onCheckedChange: o, ...s } = e;
+    return /* @__PURE__ */ u(ke, { scope: e.__scopeMenu, checked: t, children: /* @__PURE__ */ u(
+      z,
+      {
+        role: "menuitemcheckbox",
+        "aria-checked": H(t) ? "mixed" : t,
+        ...s,
+        ref: n,
+        "data-state": ue(t),
+        onSelect: h(
+          s.onSelect,
+          () => o == null ? void 0 : o(H(t) ? !0 : !t),
+          { checkForDefaultPrevented: !1 }
+        )
+      }
+    ) });
+  }
+);
+be.displayName = xt;
+var Te = "MenuRadioGroup", [bt, Tt] = I(
+  Te,
+  { value: void 0, onValueChange: () => {
+  } }
+), Ae = r.forwardRef(
+  (e, n) => {
+    const { value: t, onValueChange: o, ...s } = e, a = ee(o);
+    return /* @__PURE__ */ u(bt, { scope: e.__scopeMenu, value: t, onValueChange: a, children: /* @__PURE__ */ u(ce, { ...s, ref: n }) });
+  }
+);
+Ae.displayName = Te;
+var Oe = "MenuRadioItem", De = r.forwardRef(
+  (e, n) => {
+    const { value: t, ...o } = e, s = Tt(Oe, e.__scopeMenu), a = t === s.value;
+    return /* @__PURE__ */ u(ke, { scope: e.__scopeMenu, checked: a, children: /* @__PURE__ */ u(
+      z,
+      {
+        role: "menuitemradio",
+        "aria-checked": a,
+        ...o,
+        ref: n,
+        "data-state": ue(a),
+        onSelect: h(
+          o.onSelect,
+          () => {
+            var l;
+            return (l = s.onValueChange) == null ? void 0 : l.call(s, t);
+          },
+          { checkForDefaultPrevented: !1 }
+        )
+      }
+    ) });
+  }
+);
+De.displayName = Oe;
+var ae = "MenuItemIndicator", [ke, At] = I(
+  ae,
+  { checked: !1 }
+), Ne = r.forwardRef(
+  (e, n) => {
+    const { __scopeMenu: t, forceMount: o, ...s } = e, a = At(ae, t);
+    return /* @__PURE__ */ u(
+      W,
+      {
+        present: o || H(a.checked) || a.checked === !0,
+        children: /* @__PURE__ */ u(
+          F.span,
+          {
+            ...s,
+            ref: n,
+            "data-state": ue(a.checked)
           }
         )
       }
     );
   }
 );
-M.displayName = K;
-var re = {
-  ArrowLeft: "prev",
-  ArrowUp: "prev",
-  ArrowRight: "next",
-  ArrowDown: "next",
-  PageUp: "first",
-  Home: "first",
-  PageDown: "last",
-  End: "last"
+Ne.displayName = ae;
+var Ot = "MenuSeparator", Fe = r.forwardRef(
+  (e, n) => {
+    const { __scopeMenu: t, ...o } = e;
+    return /* @__PURE__ */ u(
+      F.div,
+      {
+        role: "separator",
+        "aria-orientation": "horizontal",
+        ...o,
+        ref: n
+      }
+    );
+  }
+);
+Fe.displayName = Ot;
+var Dt = "MenuArrow", Le = r.forwardRef(
+  (e, n) => {
+    const { __scopeMenu: t, ...o } = e, s = K(t);
+    return /* @__PURE__ */ u(ct, { ...s, ...o, ref: n });
+  }
+);
+Le.displayName = Dt;
+var se = "MenuSub", [kt, Ke] = I(se), Ge = (e) => {
+  const { __scopeMenu: n, children: t, open: o = !1, onOpenChange: s } = e, a = E(se, n), l = K(n), [p, M] = r.useState(null), [m, f] = r.useState(null), c = ee(s);
+  return r.useEffect(() => (a.open === !1 && c(!1), () => c(!1)), [a.open, c]), /* @__PURE__ */ u(ve, { ...l, children: /* @__PURE__ */ u(
+    Se,
+    {
+      scope: n,
+      open: o,
+      onOpenChange: c,
+      content: m,
+      onContentChange: f,
+      children: /* @__PURE__ */ u(
+        kt,
+        {
+          scope: n,
+          contentId: Me(),
+          triggerId: Me(),
+          trigger: p,
+          onTriggerChange: M,
+          children: t
+        }
+      )
+    }
+  ) });
 };
-function ne(e, r) {
-  return r !== "rtl" ? e : e === "ArrowLeft" ? "ArrowRight" : e === "ArrowRight" ? "ArrowLeft" : e;
+Ge.displayName = se;
+var O = "MenuSubTrigger", Ue = r.forwardRef(
+  (e, n) => {
+    const t = E(O, e.__scopeMenu), o = G(O, e.__scopeMenu), s = Ke(O, e.__scopeMenu), a = oe(O, e.__scopeMenu), l = r.useRef(null), { pointerGraceTimerRef: p, onPointerGraceIntentChange: M } = a, m = { __scopeMenu: e.__scopeMenu }, f = r.useCallback(() => {
+      l.current && window.clearTimeout(l.current), l.current = null;
+    }, []);
+    return r.useEffect(() => f, [f]), r.useEffect(() => {
+      const c = p.current;
+      return () => {
+        window.clearTimeout(c), M(null);
+      };
+    }, [p, M]), /* @__PURE__ */ u(te, { asChild: !0, ...m, children: /* @__PURE__ */ u(
+      xe,
+      {
+        id: s.triggerId,
+        "aria-haspopup": "menu",
+        "aria-expanded": t.open,
+        "aria-controls": s.contentId,
+        "data-state": Ye(t.open),
+        ...e,
+        ref: qe(n, s.onTriggerChange),
+        onClick: (c) => {
+          var d;
+          (d = e.onClick) == null || d.call(e, c), !(e.disabled || c.defaultPrevented) && (c.currentTarget.focus(), t.open || t.onOpenChange(!0));
+        },
+        onPointerMove: h(
+          e.onPointerMove,
+          k((c) => {
+            a.onItemEnter(c), !c.defaultPrevented && !e.disabled && !t.open && !l.current && (a.onPointerGraceIntentChange(null), l.current = window.setTimeout(() => {
+              t.onOpenChange(!0), f();
+            }, 100));
+          })
+        ),
+        onPointerLeave: h(
+          e.onPointerLeave,
+          k((c) => {
+            var C, v;
+            f();
+            const d = (C = t.content) == null ? void 0 : C.getBoundingClientRect();
+            if (d) {
+              const w = (v = t.content) == null ? void 0 : v.dataset.side, y = w === "right", T = y ? -5 : 5, U = d[y ? "left" : "right"], B = d[y ? "right" : "left"];
+              a.onPointerGraceIntentChange({
+                area: [
+                  // Apply a bleed on clientX to ensure that our exit point is
+                  // consistently within polygon bounds
+                  { x: c.clientX + T, y: c.clientY },
+                  { x: U, y: d.top },
+                  { x: B, y: d.top },
+                  { x: B, y: d.bottom },
+                  { x: U, y: d.bottom }
+                ],
+                side: w
+              }), window.clearTimeout(p.current), p.current = window.setTimeout(
+                () => a.onPointerGraceIntentChange(null),
+                300
+              );
+            } else {
+              if (a.onTriggerLeave(c), c.defaultPrevented) return;
+              a.onPointerGraceIntentChange(null);
+            }
+          })
+        ),
+        onKeyDown: h(e.onKeyDown, (c) => {
+          var C;
+          const d = a.searchRef.current !== "";
+          e.disabled || d && c.key === " " || Mt[o.dir].includes(c.key) && (t.onOpenChange(!0), (C = t.content) == null || C.focus(), c.preventDefault());
+        })
+      }
+    ) });
+  }
+);
+Ue.displayName = O;
+var Be = "MenuSubContent", Ve = r.forwardRef(
+  (e, n) => {
+    const t = Ee(_, e.__scopeMenu), { forceMount: o = t.forceMount, ...s } = e, a = E(_, e.__scopeMenu), l = G(_, e.__scopeMenu), p = Ke(Be, e.__scopeMenu), M = r.useRef(null), m = N(n, M);
+    return /* @__PURE__ */ u(D.Provider, { scope: e.__scopeMenu, children: /* @__PURE__ */ u(W, { present: o || a.open, children: /* @__PURE__ */ u(D.Slot, { scope: e.__scopeMenu, children: /* @__PURE__ */ u(
+      re,
+      {
+        id: p.contentId,
+        "aria-labelledby": p.triggerId,
+        ...s,
+        ref: m,
+        align: "start",
+        side: l.dir === "rtl" ? "left" : "right",
+        disableOutsidePointerEvents: !1,
+        disableOutsideScroll: !1,
+        trapFocus: !1,
+        onOpenAutoFocus: (f) => {
+          var c;
+          l.isUsingKeyboardRef.current && ((c = M.current) == null || c.focus()), f.preventDefault();
+        },
+        onCloseAutoFocus: (f) => f.preventDefault(),
+        onFocusOutside: h(e.onFocusOutside, (f) => {
+          f.target !== p.trigger && a.onOpenChange(!1);
+        }),
+        onEscapeKeyDown: h(e.onEscapeKeyDown, (f) => {
+          l.onClose(), f.preventDefault();
+        }),
+        onKeyDown: h(e.onKeyDown, (f) => {
+          var C;
+          const c = f.currentTarget.contains(f.target), d = ht[l.dir].includes(f.key);
+          c && d && (a.onOpenChange(!1), (C = p.trigger) == null || C.focus(), f.preventDefault());
+        })
+      }
+    ) }) }) });
+  }
+);
+Ve.displayName = Be;
+function Ye(e) {
+  return e ? "open" : "closed";
 }
-function ce(e, r, s) {
-  const o = ne(e.key, s);
-  if (!(r === "vertical" && ["ArrowLeft", "ArrowRight"].includes(o)) && !(r === "horizontal" && ["ArrowUp", "ArrowDown"].includes(o)))
-    return re[o];
+function H(e) {
+  return e === "indeterminate";
 }
-function k(e, r = !1) {
-  const s = document.activeElement;
-  for (const o of e)
-    if (o === s || (o.focus({ preventScroll: r }), document.activeElement !== s)) return;
+function ue(e) {
+  return H(e) ? "indeterminate" : e ? "checked" : "unchecked";
 }
-function se(e, r) {
-  return e.map((s, o) => e[(r + o) % e.length]);
+function Nt(e) {
+  const n = document.activeElement;
+  for (const t of e)
+    if (t === n || (t.focus(), document.activeElement !== n)) return;
 }
-var ge = O, Re = M;
+function Ft(e, n) {
+  return e.map((t, o) => e[(n + o) % e.length]);
+}
+function Lt(e, n, t) {
+  const s = n.length > 1 && Array.from(n).every((m) => m === n[0]) ? n[0] : n, a = t ? e.indexOf(t) : -1;
+  let l = Ft(e, Math.max(a, 0));
+  s.length === 1 && (l = l.filter((m) => m !== t));
+  const M = l.find(
+    (m) => m.toLowerCase().startsWith(s.toLowerCase())
+  );
+  return M !== t ? M : void 0;
+}
+function Kt(e, n) {
+  const { x: t, y: o } = e;
+  let s = !1;
+  for (let a = 0, l = n.length - 1; a < n.length; l = a++) {
+    const p = n[a], M = n[l], m = p.x, f = p.y, c = M.x, d = M.y;
+    f > o != d > o && t < (c - m) * (o - f) / (d - f) + m && (s = !s);
+  }
+  return s;
+}
+function Gt(e, n) {
+  if (!n) return !1;
+  const t = { x: e.clientX, y: e.clientY };
+  return Kt(t, n);
+}
+function k(e) {
+  return (n) => n.pointerType === "mouse" ? e(n) : void 0;
+}
+var an = Pe, sn = te, un = we, ln = Ie, dn = ce, fn = ye, mn = z, pn = be, Mn = Ae, hn = De, vn = Ne, Cn = Fe, gn = Le, _n = Ge, Rn = Ue, Sn = Ve;
 export {
-  Re as Item,
-  ge as Root,
-  O as RovingFocusGroup,
-  M as RovingFocusGroupItem,
-  Fe as createRovingFocusGroupScope
+  sn as Anchor,
+  gn as Arrow,
+  pn as CheckboxItem,
+  ln as Content,
+  dn as Group,
+  mn as Item,
+  vn as ItemIndicator,
+  fn as Label,
+  Pe as Menu,
+  te as MenuAnchor,
+  Le as MenuArrow,
+  be as MenuCheckboxItem,
+  Ie as MenuContent,
+  ce as MenuGroup,
+  z as MenuItem,
+  Ne as MenuItemIndicator,
+  ye as MenuLabel,
+  we as MenuPortal,
+  Ae as MenuRadioGroup,
+  De as MenuRadioItem,
+  Fe as MenuSeparator,
+  Ge as MenuSub,
+  Ve as MenuSubContent,
+  Ue as MenuSubTrigger,
+  un as Portal,
+  Mn as RadioGroup,
+  hn as RadioItem,
+  an as Root,
+  Cn as Separator,
+  _n as Sub,
+  Sn as SubContent,
+  Rn as SubTrigger,
+  cn as createMenuScope
 };
 //# sourceMappingURL=index184.mjs.map

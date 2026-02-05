@@ -1,33 +1,12 @@
-import * as a from "react";
-import { Primitive as o } from "./index151.mjs";
-import { jsx as t } from "react/jsx-runtime";
-var d = Object.freeze({
-  // See: https://github.com/twbs/bootstrap/blob/main/scss/mixins/_visually-hidden.scss
-  position: "absolute",
-  border: 0,
-  width: 1,
-  height: 1,
-  padding: 0,
-  margin: -1,
-  overflow: "hidden",
-  clip: "rect(0, 0, 0, 0)",
-  whiteSpace: "nowrap",
-  wordWrap: "normal"
-}), l = "VisuallyHidden", e = a.forwardRef(
-  (r, i) => /* @__PURE__ */ t(
-    o.span,
-    {
-      ...r,
-      ref: i,
-      style: { ...d, ...r.style }
-    }
-  )
-);
-e.displayName = l;
-var p = e;
+import "react";
+import { jsx as e, Fragment as o } from "react/jsx-runtime";
+var l = Symbol("radix.slottable");
+// @__NO_SIDE_EFFECTS__
+function n(r) {
+  const t = ({ children: a }) => /* @__PURE__ */ e(o, { children: a });
+  return t.displayName = `${r}.Slottable`, t.__radixId = l, t;
+}
 export {
-  p as Root,
-  d as VISUALLY_HIDDEN_STYLES,
-  e as VisuallyHidden
+  n as createSlottable
 };
 //# sourceMappingURL=index187.mjs.map

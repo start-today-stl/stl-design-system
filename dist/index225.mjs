@@ -1,11 +1,12 @@
-import * as t from "./index195.mjs";
-function n(o) {
-  return {
-    ...t,
-    ...o
-  };
+function y(t, o, a, n) {
+  const s = n ?? t.today(), c = a ? t.startOfBroadcastWeek(s, t) : o ? t.startOfISOWeek(s) : t.startOfWeek(s), r = [];
+  for (let e = 0; e < 7; e++) {
+    const f = t.addDays(c, e);
+    r.push(f);
+  }
+  return r;
 }
 export {
-  n as getComponents
+  y as getWeekdays
 };
 //# sourceMappingURL=index225.mjs.map

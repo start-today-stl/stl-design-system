@@ -18,6 +18,12 @@ fs.copyFileSync(
 )
 console.log('✓ Copied globals.css')
 
+fs.copyFileSync(
+  path.join(rootDir, 'src', 'styles', 'tokens.css'),
+  path.join(stylesDir, 'tokens.css')
+)
+console.log('✓ Copied tokens.css')
+
 // 폰트 복사
 fs.copyFileSync(
   path.join(rootDir, 'src', 'assets', 'fonts', 'STLgothicR.woff2'),

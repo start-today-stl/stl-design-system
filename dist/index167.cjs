@@ -3,5 +3,5 @@
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
- */const o=(...r)=>r.filter((e,t,i)=>!!e&&e.trim()!==""&&i.indexOf(e)===t).join(" ").trim();exports.mergeClasses=o;
+ */const e=t=>{for(const r in t)if(r.startsWith("aria-")||r==="role"||r==="title")return!0;return!1};exports.hasA11yProp=e;
 //# sourceMappingURL=index167.cjs.map

@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const u=require("./index354.cjs"),h=require("./index349.cjs");function d(a,r){const{start:t,end:n}=u.normalizeInterval(r==null?void 0:r.in,a);let s=+t>+n;const o=s?+t:+n,e=s?n:t;e.setHours(0,0,0,0),e.setDate(1);let l=1;const c=[];for(;+e<=o;)c.push(h.constructFrom(t,e)),e.setMonth(e.getMonth()+l);return s?c.reverse():c}exports.eachMonthOfInterval=d;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const u=require("./index350.cjs");function l(r,t){const e=u.toDate(r,t==null?void 0:t.in),a=e.getFullYear();return e.setFullYear(a+1,0,0),e.setHours(23,59,59,999),e}exports.endOfYear=l;
 //# sourceMappingURL=index287.cjs.map

@@ -1,7 +1,7 @@
-"use strict";const a=require("react"),l=require("./index167.cjs"),u=require("./index168.cjs"),t=require("./index169.cjs"),i=require("./index170.cjs");/**
+"use strict";/**
  * @license lucide-react v0.563.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
- */const C=(e,r)=>{const s=a.forwardRef(({className:c,...o},n)=>a.createElement(i,{ref:n,iconNode:r,className:l.mergeClasses(`lucide-${u.toKebabCase(t.toPascalCase(e))}`,`lucide-${e}`,c),...o}));return s.displayName=t.toPascalCase(e),s};module.exports=C;
+ */var t={xmlns:"http://www.w3.org/2000/svg",width:24,height:24,viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:2,strokeLinecap:"round",strokeLinejoin:"round"};module.exports=t;
 //# sourceMappingURL=index166.cjs.map

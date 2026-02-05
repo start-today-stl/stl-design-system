@@ -1,10 +1,9 @@
-import { constructFrom as m } from "./index349.mjs";
-import { toDate as u } from "./index350.mjs";
-function N(e, a, r) {
-  const t = u(e, r == null ? void 0 : r.in);
-  return isNaN(+t) ? m(e, NaN) : (t.setFullYear(a), t);
+import { toDate as a } from "./index350.mjs";
+function l(t, r) {
+  const e = a(t, r == null ? void 0 : r.in);
+  return e.setFullYear(e.getFullYear(), 0, 1), e.setHours(0, 0, 0, 0), e;
 }
 export {
-  N as setYear
+  l as startOfYear
 };
 //# sourceMappingURL=index306.mjs.map

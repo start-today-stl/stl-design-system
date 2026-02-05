@@ -1,21 +1,19 @@
-import { formatDistance as o } from "./index368.mjs";
-import { formatLong as t } from "./index369.mjs";
-import { formatRelative as r } from "./index370.mjs";
-import { localize as m } from "./index371.mjs";
-import { match as a } from "./index372.mjs";
-const p = {
-  code: "en-US",
-  formatDistance: o,
-  formatLong: t,
-  formatRelative: r,
-  localize: m,
-  match: a,
-  options: {
-    weekStartsOn: 0,
-    firstWeekContainsDate: 1
-  }
+import { __rest as o, __assign as d } from "./index315.mjs";
+import * as n from "react";
+var i = function(r) {
+  var e = r.sideCar, a = o(r, ["sideCar"]);
+  if (!e)
+    throw new Error("Sidecar: please provide `sideCar` property to import the right car");
+  var t = e.read();
+  if (!t)
+    throw new Error("Sidecar medium not found");
+  return n.createElement(t, d({}, a));
 };
+i.isSideCarExport = !0;
+function p(r, e) {
+  return r.useMedium(e), i;
+}
 export {
-  p as enUS
+  p as exportSidecar
 };
 //# sourceMappingURL=index339.mjs.map

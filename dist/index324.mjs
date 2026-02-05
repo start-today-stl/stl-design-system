@@ -1,11 +1,13 @@
-function a(c) {
-  const e = [];
-  return c.reduce((s, t) => {
-    const n = t.weeks.reduce((r, i) => r.concat(i.days.slice()), e.slice());
-    return s.concat(n.slice());
-  }, e.slice());
+function h(n, t, e, s) {
+  if (e.disableNavigation)
+    return;
+  const { pagedNavigation: u, numberOfMonths: f = 1 } = e, { startOfMonth: a, addMonths: o, differenceInCalendarMonths: d } = s, i = u ? f : 1, r = a(n);
+  if (!t)
+    return o(r, i);
+  if (!(d(t, n) < f))
+    return o(r, i);
 }
 export {
-  a as getDays
+  h as getNextMonth
 };
 //# sourceMappingURL=index324.mjs.map

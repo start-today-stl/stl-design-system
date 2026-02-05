@@ -1,30 +1,14 @@
-import * as f from "react";
-function l(n, o) {
-  if (typeof n == "function")
-    return n(o);
-  n != null && (n.current = o);
-}
-function i(...n) {
-  return (o) => {
-    let u = !1;
-    const c = n.map((t) => {
-      const e = l(t, o);
-      return !u && typeof e == "function" && (u = !0), e;
-    });
-    if (u)
-      return () => {
-        for (let t = 0; t < c.length; t++) {
-          const e = c[t];
-          typeof e == "function" ? e() : l(n[t], null);
-        }
-      };
-  };
-}
-function s(...n) {
-  return f.useCallback(i(...n), n);
+import * as o from "react";
+import { useLayoutEffect as a } from "./index153.mjs";
+var s = o[" useId ".trim().toString()] || (() => {
+}), f = 0;
+function i(t) {
+  const [e, r] = o.useState(s());
+  return a(() => {
+    r((u) => u ?? String(f++));
+  }, [t]), t || (e ? `radix-${e}` : "");
 }
 export {
-  i as composeRefs,
-  s as useComposedRefs
+  i as useId
 };
 //# sourceMappingURL=index148.mjs.map

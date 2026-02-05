@@ -1,8 +1,10 @@
 import e from "react";
-function n(t) {
-  return e.createElement("table", { ...t });
+import { useDayPicker as n } from "./index231.mjs";
+function c(t) {
+  const { components: o } = n();
+  return e.createElement(o.Button, { ...t });
 }
 export {
-  n as MonthGrid
+  c as PreviousMonthButton
 };
 //# sourceMappingURL=index206.mjs.map

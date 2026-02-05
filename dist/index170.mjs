@@ -1,43 +1,17 @@
-import { forwardRef as l, createElement as a } from "react";
-import A from "./index171.mjs";
-import { hasA11yProp as b } from "./index172.mjs";
-import { mergeClasses as c } from "./index167.mjs";
-/**
- * @license lucide-react v0.563.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const n = l(
-  ({
-    color: m = "currentColor",
-    size: t = 24,
-    strokeWidth: o = 2,
-    absoluteStrokeWidth: s,
-    className: f = "",
-    children: r,
-    iconNode: u,
-    ...e
-  }, p) => a(
-    "svg",
-    {
-      ref: p,
-      ...A,
-      width: t,
-      height: t,
-      stroke: m,
-      strokeWidth: s ? Number(o) * 24 / Number(t) : o,
-      className: c("lucide", f),
-      ...!r && !b(e) && { "aria-hidden": "true" },
-      ...e
-    },
-    [
-      ...u.map(([i, d]) => a(i, d)),
-      ...Array.isArray(r) ? r : [r]
-    ]
-  )
-);
+import * as r from "react";
+import s from "react-dom";
+import { Primitive as c } from "./index146.mjs";
+import { useLayoutEffect as u } from "./index153.mjs";
+import { jsx as l } from "react/jsx-runtime";
+var p = "Portal", d = r.forwardRef((e, a) => {
+  var o;
+  const { container: f, ...i } = e, [m, n] = r.useState(!1);
+  u(() => n(!0), []);
+  const t = f || m && ((o = globalThis == null ? void 0 : globalThis.document) == null ? void 0 : o.body);
+  return t ? s.createPortal(/* @__PURE__ */ l(c.div, { ...i, ref: a }), t) : null;
+});
+d.displayName = p;
 export {
-  n as default
+  d as Portal
 };
 //# sourceMappingURL=index170.mjs.map

@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});function a(s,e){const t=e.startOfMonth(s),r=t.getDay();return r===1?t:r===0?e.addDays(t,-1*6):e.addDays(t,-1*(r-1))}exports.startOfBroadcastWeek=a;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const r=require("./index352.cjs"),D=require("./index353.cjs"),d=require("./index351.cjs"),n=require("./index302.cjs");function m(s,i,e){const[l,c]=D.normalizeDates(e==null?void 0:e.in,s,i),t=n.startOfDay(l),a=n.startOfDay(c),f=+t-r.getTimezoneOffsetInMilliseconds(t),o=+a-r.getTimezoneOffsetInMilliseconds(a);return Math.round((f-o)/d.millisecondsInDay)}exports.differenceInCalendarDays=m;
 //# sourceMappingURL=index280.cjs.map

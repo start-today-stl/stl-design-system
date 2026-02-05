@@ -1,72 +1,16 @@
-import * as d from "react";
-import { styleSingleton as f } from "./index341.mjs";
-import { noScrollbarsClassName as p, zeroRightClassName as g, fullWidthClassName as l, removedBarSizeVariable as v } from "./index318.mjs";
-import { getGapWidth as m } from "./index378.mjs";
-var b = f(), e = "data-scroll-locked", h = function(n, a, o, t) {
-  var r = n.left, i = n.top, s = n.right, c = n.gap;
-  return o === void 0 && (o = "margin"), `
-  .`.concat(p, ` {
-   overflow: hidden `).concat(t, `;
-   padding-right: `).concat(c, "px ").concat(t, `;
-  }
-  body[`).concat(e, `] {
-    overflow: hidden `).concat(t, `;
-    overscroll-behavior: contain;
-    `).concat([
-    a && "position: relative ".concat(t, ";"),
-    o === "margin" && `
-    padding-left: `.concat(r, `px;
-    padding-top: `).concat(i, `px;
-    padding-right: `).concat(s, `px;
-    margin-left:0;
-    margin-top:0;
-    margin-right: `).concat(c, "px ").concat(t, `;
-    `),
-    o === "padding" && "padding-right: ".concat(c, "px ").concat(t, ";")
-  ].filter(Boolean).join(""), `
-  }
-  
-  .`).concat(g, ` {
-    right: `).concat(c, "px ").concat(t, `;
-  }
-  
-  .`).concat(l, ` {
-    margin-right: `).concat(c, "px ").concat(t, `;
-  }
-  
-  .`).concat(g, " .").concat(g, ` {
-    right: 0 `).concat(t, `;
-  }
-  
-  .`).concat(l, " .").concat(l, ` {
-    margin-right: 0 `).concat(t, `;
-  }
-  
-  body[`).concat(e, `] {
-    `).concat(v, ": ").concat(c, `px;
-  }
-`);
-}, u = function() {
-  var n = parseInt(document.body.getAttribute(e) || "0", 10);
-  return isFinite(n) ? n : 0;
-}, x = function() {
-  d.useEffect(function() {
-    return document.body.setAttribute(e, (u() + 1).toString()), function() {
-      var n = u() - 1;
-      n <= 0 ? document.body.removeAttribute(e) : document.body.setAttribute(e, n.toString());
-    };
-  }, []);
-}, C = function(n) {
-  var a = n.noRelative, o = n.noImportant, t = n.gapMode, r = t === void 0 ? "margin" : t;
-  x();
-  var i = d.useMemo(function() {
-    return m(r);
-  }, [r]);
-  return d.createElement(b, { styles: h(i, !a, r, o ? "" : "!important") });
-};
+function g(d, s, k, t, f, O, n) {
+  const { ISOWeek: o, broadcastCalendar: r } = O, { addDays: W, addMonths: c, addWeeks: l, addYears: u, endOfBroadcastWeek: b, endOfISOWeek: m, endOfWeek: y, max: F, min: I, startOfBroadcastWeek: h, startOfISOWeek: x, startOfWeek: B } = n;
+  let a = {
+    day: W,
+    week: l,
+    month: c,
+    year: u,
+    startOfWeek: (e) => r ? h(e, n) : o ? x(e) : B(e),
+    endOfWeek: (e) => r ? b(e) : o ? m(e) : y(e)
+  }[d](k, s === "after" ? 1 : -1);
+  return s === "before" && t ? a = F([t, a]) : s === "after" && f && (a = I([f, a])), a;
+}
 export {
-  C as RemoveScrollBar,
-  e as lockAttribute,
-  x as useLockAttribute
+  g as getFocusableDate
 };
 //# sourceMappingURL=index340.mjs.map

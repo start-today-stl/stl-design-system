@@ -1,16 +1,27 @@
-import { useControlledValue as S } from "./index332.mjs";
-function q(o, f) {
-  const { selected: s, required: c, onSelect: e } = o, [r, a] = S(s, e ? s : void 0), n = e ? s : r, { isSameDay: d } = f;
-  return {
-    selected: n,
-    select: (t, i, u) => {
-      let l = t;
-      return !c && n && n && d(t, n) && (l = void 0), e || a(l), e == null || e(l, t, i, u), l;
-    },
-    isSelected: (t) => n ? d(n, t) : !1
-  };
+import * as f from "react";
+import { assignRef as o } from "./index373.mjs";
+import { useCallbackRef as l } from "./index374.mjs";
+var s = typeof window < "u" ? f.useLayoutEffect : f.useEffect, c = /* @__PURE__ */ new WeakMap();
+function v(e, m) {
+  var t = l(null, function(n) {
+    return e.forEach(function(u) {
+      return o(u, n);
+    });
+  });
+  return s(function() {
+    var n = c.get(t);
+    if (n) {
+      var u = new Set(n), r = new Set(e), i = t.current;
+      u.forEach(function(a) {
+        r.has(a) || o(a, null);
+      }), r.forEach(function(a) {
+        u.has(a) || o(a, i);
+      });
+    }
+    c.set(t, e);
+  }, [e]), t;
 }
 export {
-  q as useSingle
+  v as useMergeRefs
 };
 //# sourceMappingURL=index337.mjs.map

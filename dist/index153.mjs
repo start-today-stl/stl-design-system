@@ -1,14 +1,7 @@
-import * as o from "react";
-import { useLayoutEffect as a } from "./index143.mjs";
-var s = o[" useId ".trim().toString()] || (() => {
-}), f = 0;
-function i(t) {
-  const [e, r] = o.useState(s());
-  return a(() => {
-    r((u) => u ?? String(f++));
-  }, [t]), t || (e ? `radix-${e}` : "");
-}
+import * as t from "react";
+var e = globalThis != null && globalThis.document ? t.useLayoutEffect : () => {
+};
 export {
-  i as useId
+  e as useLayoutEffect
 };
 //# sourceMappingURL=index153.mjs.map

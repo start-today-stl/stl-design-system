@@ -1,16 +1,9 @@
-import { getTimezoneOffsetInMilliseconds as a } from "./index352.mjs";
-import { normalizeDates as c } from "./index353.mjs";
-import { millisecondsInDay as D } from "./index351.mjs";
-import { startOfDay as m } from "./index307.mjs";
-function u(n, i, e) {
-  const [f, l] = c(
-    e == null ? void 0 : e.in,
-    n,
-    i
-  ), r = m(f), t = m(l), o = +r - a(r), s = +t - a(t);
-  return Math.round((o - s) / D);
+import { toDate as u } from "./index350.mjs";
+function l(r, e) {
+  const t = u(r, e == null ? void 0 : e.in), n = t.getMonth();
+  return t.setFullYear(t.getFullYear(), n + 1, 0), t.setHours(23, 59, 59, 999), t;
 }
 export {
-  u as differenceInCalendarDays
+  l as endOfMonth
 };
 //# sourceMappingURL=index285.mjs.map

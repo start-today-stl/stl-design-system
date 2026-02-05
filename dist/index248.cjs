@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const e=require("./index222.cjs");function r(t,o=e.defaultDateLib){return o.format(t,"LLLL")}exports.formatMonthDropdown=r;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const b=require("./index216.cjs");function a(l,t,o,n){let e=(n??new b.DateLib(o)).format(l,"PPPP");return t.today&&(e=`Today, ${e}`),t.selected&&(e=`${e}, selected`),e}const r=a;exports.labelDay=r;exports.labelDayButton=a;
 //# sourceMappingURL=index248.cjs.map

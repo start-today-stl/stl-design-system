@@ -1,13 +1,21 @@
-import { dateMatchModifiers as u } from "./index314.mjs";
-import { getFocusableDate as g } from "./index345.mjs";
-import { CalendarDay as m } from "./index276.mjs";
-function h(t, i, a, d, f, e, n, s = 0) {
-  if (s > 365)
-    return;
-  const o = g(t, i, a.date, d, f, e, n), r = !!(e.disabled && u(o, e.disabled, n)), l = !!(e.hidden && u(o, e.hidden, n)), D = o, c = new m(o, D, n);
-  return !r && !l ? c : h(t, i, c, d, f, e, n, s + 1);
-}
+import { formatDistance as o } from "./index366.mjs";
+import { formatLong as t } from "./index367.mjs";
+import { formatRelative as r } from "./index368.mjs";
+import { localize as m } from "./index369.mjs";
+import { match as a } from "./index370.mjs";
+const p = {
+  code: "en-US",
+  formatDistance: o,
+  formatLong: t,
+  formatRelative: r,
+  localize: m,
+  match: a,
+  options: {
+    weekStartsOn: 0,
+    firstWeekContainsDate: 1
+  }
+};
 export {
-  h as getNextFocus
+  p as enUS
 };
 //# sourceMappingURL=index334.mjs.map

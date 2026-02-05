@@ -1,11 +1,12 @@
-import { getDefaultOptions as u } from "./index355.mjs";
-import { toDate as w } from "./index350.mjs";
-function m(d, e) {
-  var f, O, k, l;
-  const a = u(), r = (e == null ? void 0 : e.weekStartsOn) ?? ((O = (f = e == null ? void 0 : e.locale) == null ? void 0 : f.options) == null ? void 0 : O.weekStartsOn) ?? a.weekStartsOn ?? ((l = (k = a.locale) == null ? void 0 : k.options) == null ? void 0 : l.weekStartsOn) ?? 0, t = w(d, e == null ? void 0 : e.in), c = t.getDay(), n = (c < r ? -7 : 0) + 6 - (c - r);
-  return t.setDate(t.getDate() + n), t.setHours(23, 59, 59, 999), t;
+import { millisecondsInWeek as m } from "./index351.mjs";
+import { startOfWeek as a } from "./index305.mjs";
+import { startOfWeekYear as c } from "./index364.mjs";
+import { toDate as d } from "./index350.mjs";
+function o(t, e) {
+  const r = d(t, e == null ? void 0 : e.in), f = +a(r, e) - +c(r, e);
+  return Math.round(f / m) + 1;
 }
 export {
-  m as endOfWeek
+  o as getWeek
 };
 //# sourceMappingURL=index291.mjs.map

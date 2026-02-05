@@ -1,8 +1,8 @@
-import { endOfWeek as r } from "./index291.mjs";
-function f(e, n) {
-  return r(e, { ...n, weekStartsOn: 1 });
+import { toDate as r } from "./index350.mjs";
+function g(e, t) {
+  return r(e, t == null ? void 0 : t.in).getMonth();
 }
 export {
-  f as endOfISOWeek
+  g as getMonth
 };
 //# sourceMappingURL=index289.mjs.map

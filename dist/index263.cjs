@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});function e(r){return"Week Number"}exports.labelWeekNumberHeader=e;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});var e={exports:{}};exports.__module=e;
 //# sourceMappingURL=index263.cjs.map

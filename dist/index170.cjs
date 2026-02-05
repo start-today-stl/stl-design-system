@@ -1,7 +1,2 @@
-"use strict";const t=require("react"),A=require("./index171.cjs"),g=require("./index172.cjs"),p=require("./index167.cjs");/**
- * @license lucide-react v0.563.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */const q=t.forwardRef(({color:o="currentColor",size:r=24,strokeWidth:s=2,absoluteStrokeWidth:u,className:c="",children:e,iconNode:m,...a},i)=>t.createElement("svg",{ref:i,...A,width:r,height:r,stroke:o,strokeWidth:u?Number(s)*24/Number(r):s,className:p.mergeClasses("lucide",c),...!e&&!g.hasA11yProp(a)&&{"aria-hidden":"true"},...a},[...m.map(([n,l])=>t.createElement(n,l)),...Array.isArray(e)?e:[e]]));module.exports=q;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const l=require("react"),d=require("react-dom"),f=require("./index146.cjs"),p=require("./index153.cjs"),P=require("react/jsx-runtime");function b(e){const r=Object.create(null,{[Symbol.toStringTag]:{value:"Module"}});if(e){for(const t in e)if(t!=="default"){const o=Object.getOwnPropertyDescriptor(e,t);Object.defineProperty(r,t,o.get?o:{enumerable:!0,get:()=>e[t]})}}return r.default=e,Object.freeze(r)}const c=b(l);var m="Portal",i=c.forwardRef((e,r)=>{var a;const{container:t,...o}=e,[u,s]=c.useState(!1);p.useLayoutEffect(()=>s(!0),[]);const n=t||u&&((a=globalThis==null?void 0:globalThis.document)==null?void 0:a.body);return n?d.createPortal(P.jsx(f.Primitive.div,{...o,ref:r}),n):null});i.displayName=m;exports.Portal=i;
 //# sourceMappingURL=index170.cjs.map
