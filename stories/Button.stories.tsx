@@ -20,7 +20,7 @@ const meta = {
     },
     size: {
       control: 'select',
-      options: ['default', 'sm', 'with-icon', 'with-icon-sm', 'icon', 'icon-sm'],
+      options: ['default', 'sm', 'icon', 'icon-sm'],
       description: '버튼 크기',
     },
     disabled: {
@@ -113,16 +113,16 @@ export const WithIcon: Story = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
       <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-        <span style={{ width: '100px', fontSize: '12px', color: '#666' }}>with-icon</span>
-        <Button variant="basic" size="with-icon"><UploadIcon size={24} /> Buttons</Button>
-        <Button variant="negative" size="with-icon"><DeleteIcon size={24} /> Buttons</Button>
-        <Button variant="action" size="with-icon"><SearchIcon size={24} /> Buttons</Button>
+        <span style={{ width: '80px', fontSize: '12px', color: '#666' }}>default</span>
+        <Button variant="basic"><UploadIcon size={24} /> Buttons</Button>
+        <Button variant="negative"><DeleteIcon size={24} /> Buttons</Button>
+        <Button variant="action"><SearchIcon size={24} /> Buttons</Button>
       </div>
       <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-        <span style={{ width: '100px', fontSize: '12px', color: '#666' }}>with-icon-sm</span>
-        <Button variant="basic" size="with-icon-sm"><UploadIcon size={18} /> Buttons</Button>
-        <Button variant="negative" size="with-icon-sm"><DeleteIcon size={18} /> Buttons</Button>
-        <Button variant="action" size="with-icon-sm"><SearchIcon size={18} /> Buttons</Button>
+        <span style={{ width: '80px', fontSize: '12px', color: '#666' }}>sm</span>
+        <Button variant="basic" size="sm"><UploadIcon size={16} /> Buttons</Button>
+        <Button variant="negative" size="sm"><DeleteIcon size={16} /> Buttons</Button>
+        <Button variant="action" size="sm"><SearchIcon size={16} /> Buttons</Button>
       </div>
     </div>
   ),
