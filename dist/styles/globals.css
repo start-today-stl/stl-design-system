@@ -166,6 +166,48 @@
 }
 
 /* ========================================
+   Scrollbar Styling
+   ======================================== */
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-gray-300) transparent;
+}
+
+/* Chrome, Safari, Edge */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-gray-300);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-gray-400);
+}
+
+/* Dark mode scrollbar */
+.dark *,
+.dark {
+  scrollbar-color: var(--color-dark-300) transparent;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background-color: var(--color-dark-300);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-dark-200);
+}
+
+/* ========================================
    Dark Mode
    ======================================== */
 .dark {
