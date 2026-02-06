@@ -9,7 +9,7 @@ import {
   type TopLevelNavItem,
   type TopLevelNavGroup,
   isNavGroup,
-} from "@/config/navigation"
+} from "./types"
 
 export interface NavRendererProps {
   /** 네비게이션 설정 데이터 */

@@ -31,5 +31,3 @@ export interface TopLevelNavGroup extends NavGroupConfig {
 export type NavigationConfig = (TopLevelNavItem | TopLevelNavGroup)[];
 /** 그룹인지 확인하는 타입 가드 */
 export declare function isNavGroup(item: NavItemConfig | NavGroupConfig | TopLevelNavItem | TopLevelNavGroup): item is NavGroupConfig | TopLevelNavGroup;
-/** 샘플 네비게이션 설정 */
-export declare const sampleNavigation: NavigationConfig;

@@ -8,5 +8,7 @@ export * from './nav-group';
 export * from './nav-info';
 export * from './nav-renderer';
 export * from './notice';
+export type { NavigationConfig, NavItemConfig, NavGroupConfig, TopLevelNavItem, TopLevelNavGroup, } from './types';
+export { isNavGroup } from './types';
 export * from './search-bar';
 export * from './visit-tag';

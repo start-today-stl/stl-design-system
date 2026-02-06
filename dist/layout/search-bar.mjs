@@ -74,7 +74,7 @@ const _ = o.forwardRef(
         "div",
         {
           className: n(
-            "absolute left-0 right-0 top-full mt-[13px] z-50",
+            "absolute left-0 right-0 top-full mt-[13px] z-[100]",
             "overflow-hidden rounded-[5px] border",
             "border-gray-100 dark:border-dark-200",
             "bg-white/50 dark:bg-dark-400/50 backdrop-blur-[12px]",

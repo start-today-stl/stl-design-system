@@ -4,4 +4,4 @@ function n(r) {
 export {
   n as isNavGroup
 };
-//# sourceMappingURL=navigation.mjs.map
+//# sourceMappingURL=types.mjs.map

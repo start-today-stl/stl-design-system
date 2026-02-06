@@ -1,4 +1,4 @@
-import { NavigationConfig } from '../config/navigation';
+import { NavigationConfig } from './types';
 export interface NavRendererProps {
     /** 네비게이션 설정 데이터 */
     items: NavigationConfig;

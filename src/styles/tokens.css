@@ -1,14 +1,17 @@
 /**
  * STL Design System - Theme Tokens
  *
- * 사용법 (소비자 프로젝트):
+ * 사용법:
  *
- * index.css:
- * @import "tailwindcss";
- * @import "stl-design-system/tokens";
+ * 1. index.html에 Pretendard 폰트 추가:
+ *    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+ *
+ * 2. index.css에 토큰 import:
+ *    @import "tailwindcss";
+ *    @import "stl-design-system/tokens";
+ *
+ * ⚠️ Pretendard는 HTML <link> 태그로 로드해야 CSS @import 순서 문제를 방지할 수 있습니다.
  */
-
-@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css');
 
 /* STL Gothic R 폰트 (base64 인라인 - Vite node_modules 경로 이슈 해결) */
 @font-face {

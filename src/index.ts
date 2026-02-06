@@ -12,6 +12,3 @@ export * from './layout'
 
 // Icons
 export * from './icons'
-
-// Config
-export * from './config'

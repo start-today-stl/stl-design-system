@@ -63,7 +63,7 @@ const AppShellRoot = React.forwardRef<HTMLDivElement, AppShellProps>(
           {/* 메인 영역 (헤더 + 콘텐츠) */}
           <div className="flex flex-col flex-1 min-w-0 bg-cool-50 dark:bg-dark-400 rounded-tl-[20px]">
             {/* 헤더 */}
-            {header && <header className="flex-shrink-0">{header}</header>}
+            {header && <header className="flex-shrink-0 relative z-10">{header}</header>}
 
             {/* 콘텐츠 */}
             <main className="flex-1 overflow-auto">{content}</main>

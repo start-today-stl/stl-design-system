@@ -2,7 +2,7 @@ import { jsx as r, Fragment as u } from "react/jsx-runtime";
 import { NavGroup as m } from "./nav-group.mjs";
 import { NavItem as s } from "./nav-item.mjs";
 import { STLArrowIcon as I } from "../icons/STLArrowIcon.mjs";
-import { isNavGroup as b } from "../config/navigation.mjs";
+import { isNavGroup as b } from "./types.mjs";
 function f(i) {
   if (!(i <= 1))
     return i >= 3 ? 3 : i;

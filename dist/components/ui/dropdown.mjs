@@ -95,7 +95,7 @@ const C = {
                           "hover:bg-gray-100 dark:hover:bg-dark-300",
                           "focus:bg-gray-100 dark:focus:bg-dark-300",
                           "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
-                          "data-[state=checked]:text-gray-900 dark:data-[state=checked]:text-gray-100"
+                          "data-[state=checked]:bg-accent data-[state=checked]:text-accent-foreground"
                         ),
                         children: /* @__PURE__ */ e(_, { children: a.label })
                       },
