@@ -1,114 +1,114 @@
-import { jsx as o, jsxs as g } from "react/jsx-runtime";
-import * as l from "react";
-import { Root as N, Portal as y, Trigger as x, Action as i, Cancel as r, Content as d, Description as n, Overlay as m, Title as c } from "../../node_modules/@radix-ui/react-alert-dialog/dist/index.mjs";
+import { jsx as l, jsxs as n } from "react/jsx-runtime";
+import * as i from "react";
+import * as t from "@radix-ui/react-alert-dialog";
 import { cn as s } from "../../lib/utils.mjs";
-import { buttonVariants as f } from "./button.mjs";
-const P = N, h = x, u = y, p = l.forwardRef(({ className: a, ...t }, e) => /* @__PURE__ */ o(
-  m,
+import { buttonVariants as r } from "./button.mjs";
+const w = t.Root, v = t.Trigger, m = t.Portal, d = i.forwardRef(({ className: a, ...e }, o) => /* @__PURE__ */ l(
+  t.Overlay,
   {
     className: s(
       "fixed inset-0 z-50 bg-black/80  data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
       a
     ),
-    ...t,
-    ref: e
+    ...e,
+    ref: o
   }
 ));
-p.displayName = m.displayName;
-const D = l.forwardRef(({ className: a, ...t }, e) => /* @__PURE__ */ g(u, { children: [
-  /* @__PURE__ */ o(p, {}),
-  /* @__PURE__ */ o(
-    d,
+d.displayName = t.Overlay.displayName;
+const c = i.forwardRef(({ className: a, ...e }, o) => /* @__PURE__ */ n(m, { children: [
+  /* @__PURE__ */ l(d, {}),
+  /* @__PURE__ */ l(
+    t.Content,
     {
-      ref: e,
+      ref: o,
       className: s(
         "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg",
         a
       ),
-      ...t
+      ...e
     }
   )
 ] }));
-D.displayName = d.displayName;
-const A = ({
+c.displayName = t.Content.displayName;
+const f = ({
   className: a,
-  ...t
-}) => /* @__PURE__ */ o(
+  ...e
+}) => /* @__PURE__ */ l(
   "div",
   {
     className: s(
       "flex flex-col space-y-2 text-center sm:text-left",
       a
     ),
-    ...t
+    ...e
   }
 );
-A.displayName = "AlertDialogHeader";
-const w = ({
+f.displayName = "AlertDialogHeader";
+const p = ({
   className: a,
-  ...t
-}) => /* @__PURE__ */ o(
+  ...e
+}) => /* @__PURE__ */ l(
   "div",
   {
     className: s(
       "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
       a
     ),
-    ...t
+    ...e
   }
 );
-w.displayName = "AlertDialogFooter";
-const R = l.forwardRef(({ className: a, ...t }, e) => /* @__PURE__ */ o(
-  c,
+p.displayName = "AlertDialogFooter";
+const g = i.forwardRef(({ className: a, ...e }, o) => /* @__PURE__ */ l(
+  t.Title,
   {
-    ref: e,
+    ref: o,
     className: s("text-lg font-semibold", a),
-    ...t
+    ...e
   }
 ));
-R.displayName = c.displayName;
-const b = l.forwardRef(({ className: a, ...t }, e) => /* @__PURE__ */ o(
-  n,
+g.displayName = t.Title.displayName;
+const N = i.forwardRef(({ className: a, ...e }, o) => /* @__PURE__ */ l(
+  t.Description,
   {
-    ref: e,
+    ref: o,
     className: s("text-sm text-muted-foreground", a),
-    ...t
+    ...e
   }
 ));
-b.displayName = n.displayName;
-const v = l.forwardRef(({ className: a, ...t }, e) => /* @__PURE__ */ o(
-  i,
+N.displayName = t.Description.displayName;
+const y = i.forwardRef(({ className: a, ...e }, o) => /* @__PURE__ */ l(
+  t.Action,
   {
-    ref: e,
-    className: s(f(), a),
-    ...t
+    ref: o,
+    className: s(r(), a),
+    ...e
   }
 ));
-v.displayName = i.displayName;
-const T = l.forwardRef(({ className: a, ...t }, e) => /* @__PURE__ */ o(
-  r,
+y.displayName = t.Action.displayName;
+const x = i.forwardRef(({ className: a, ...e }, o) => /* @__PURE__ */ l(
+  t.Cancel,
   {
-    ref: e,
+    ref: o,
     className: s(
-      f({ variant: "outline" }),
+      r({ variant: "outline" }),
       "mt-2 sm:mt-0",
       a
     ),
-    ...t
+    ...e
   }
 ));
-T.displayName = r.displayName;
+x.displayName = t.Cancel.displayName;
 export {
-  P as AlertDialog,
-  v as AlertDialogAction,
-  T as AlertDialogCancel,
-  D as AlertDialogContent,
-  b as AlertDialogDescription,
-  w as AlertDialogFooter,
-  A as AlertDialogHeader,
-  p as AlertDialogOverlay,
-  u as AlertDialogPortal,
-  R as AlertDialogTitle,
-  h as AlertDialogTrigger
+  w as AlertDialog,
+  y as AlertDialogAction,
+  x as AlertDialogCancel,
+  c as AlertDialogContent,
+  N as AlertDialogDescription,
+  p as AlertDialogFooter,
+  f as AlertDialogHeader,
+  d as AlertDialogOverlay,
+  m as AlertDialogPortal,
+  g as AlertDialogTitle,
+  v as AlertDialogTrigger
 };
 //# sourceMappingURL=alert-dialog.mjs.map

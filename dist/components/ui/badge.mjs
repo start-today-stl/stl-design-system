@@ -1,5 +1,5 @@
 import { jsx as a } from "react/jsx-runtime";
-import { cva as i } from "../../node_modules/class-variance-authority/dist/index.mjs";
+import { cva as i } from "class-variance-authority";
 import { cn as n } from "../../lib/utils.mjs";
 const d = i(
   "inline-flex items-center justify-center whitespace-nowrap font-medium transition-colors rounded-[4px] p-[5px] text-[10px] tracking-[-0.15px]",

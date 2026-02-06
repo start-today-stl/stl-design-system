@@ -1,15 +1,12 @@
 import { jsx as n } from "react/jsx-runtime";
-import * as g from "react";
+import * as m from "react";
+import { ChevronLeftIcon as b, ChevronRightIcon as w, ChevronDownIcon as h } from "lucide-react";
+import { getDefaultClassNames as p, DayPicker as _ } from "react-day-picker";
 import { cn as e } from "../../lib/utils.mjs";
-import { buttonVariants as f, Button as b } from "./button.mjs";
-import { getDefaultClassNames as p } from "../../node_modules/react-day-picker/dist/esm/helpers/getDefaultClassNames.mjs";
-import { DayPicker as w } from "../../node_modules/react-day-picker/dist/esm/DayPicker.mjs";
-import h from "../../node_modules/lucide-react/dist/esm/icons/chevron-left.mjs";
-import _ from "../../node_modules/lucide-react/dist/esm/icons/chevron-right.mjs";
-import y from "../../node_modules/lucide-react/dist/esm/icons/chevron-down.mjs";
-function B({
+import { buttonVariants as f, Button as y } from "./button.mjs";
+function j({
   className: i,
-  classNames: m,
+  classNames: g,
   showOutsideDays: r = !0,
   captionLayout: l = "label",
   buttonVariant: s = "ghost",
@@ -19,7 +16,7 @@ function B({
 }) {
   const t = p();
   return /* @__PURE__ */ n(
-    w,
+    _,
     {
       showOutsideDays: r,
       className: e(
@@ -113,7 +110,7 @@ function B({
           t.disabled
         ),
         hidden: e("invisible", t.hidden),
-        ...m
+        ...g
       },
       components: {
         Root: ({ className: a, rootRef: d, ...o }) => /* @__PURE__ */ n(
@@ -125,13 +122,13 @@ function B({
             ...o
           }
         ),
-        Chevron: ({ className: a, orientation: d, ...o }) => d === "left" ? /* @__PURE__ */ n(h, { className: e("size-4", a), ...o }) : d === "right" ? /* @__PURE__ */ n(
-          _,
+        Chevron: ({ className: a, orientation: d, ...o }) => d === "left" ? /* @__PURE__ */ n(b, { className: e("size-4", a), ...o }) : d === "right" ? /* @__PURE__ */ n(
+          w,
           {
             className: e("size-4", a),
             ...o
           }
-        ) : /* @__PURE__ */ n(y, { className: e("size-4", a), ...o }),
+        ) : /* @__PURE__ */ n(h, { className: e("size-4", a), ...o }),
         DayButton: v,
         WeekNumber: ({ children: a, ...d }) => /* @__PURE__ */ n("td", { ...d, children: /* @__PURE__ */ n("div", { className: "flex size-[--cell-size] items-center justify-center text-center", children: a }) }),
         ...c
@@ -142,21 +139,21 @@ function B({
 }
 function v({
   className: i,
-  day: m,
+  day: g,
   modifiers: r,
   ...l
 }) {
-  const s = p(), u = g.useRef(null);
-  return g.useEffect(() => {
+  const s = p(), u = m.useRef(null);
+  return m.useEffect(() => {
     var c;
     r.focused && ((c = u.current) == null || c.focus());
   }, [r.focused]), /* @__PURE__ */ n(
-    b,
+    y,
     {
       ref: u,
       variant: "ghost",
       size: "icon",
-      "data-day": m.date.toLocaleDateString(),
+      "data-day": g.date.toLocaleDateString(),
       "data-selected-single": r.selected && !r.range_start && !r.range_end && !r.range_middle,
       "data-range-start": r.range_start,
       "data-range-end": r.range_end,
@@ -171,7 +168,7 @@ function v({
   );
 }
 export {
-  B as Calendar,
+  j as Calendar,
   v as CalendarDayButton
 };
 //# sourceMappingURL=calendar.mjs.map

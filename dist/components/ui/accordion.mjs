@@ -1,47 +1,47 @@
-import { jsx as t, jsxs as d } from "react/jsx-runtime";
-import * as n from "react";
-import { Root as m, Content as i, Item as l, Header as f, Trigger as c } from "../../node_modules/@radix-ui/react-accordion/dist/index.mjs";
+import { jsx as t, jsxs as c } from "react/jsx-runtime";
+import * as i from "react";
+import * as e from "@radix-ui/react-accordion";
+import { ChevronDown as d } from "lucide-react";
 import { cn as s } from "../../lib/utils.mjs";
-import p from "../../node_modules/lucide-react/dist/esm/icons/chevron-down.mjs";
-const u = m, N = n.forwardRef(({ className: e, ...o }, a) => /* @__PURE__ */ t(
-  l,
-  {
-    ref: a,
-    className: s("border-b", e),
-    ...o
-  }
-));
-N.displayName = "AccordionItem";
-const h = n.forwardRef(({ className: e, children: o, ...a }, r) => /* @__PURE__ */ t(f, { className: "flex", children: /* @__PURE__ */ d(
-  c,
+const w = e.Root, m = i.forwardRef(({ className: o, ...a }, r) => /* @__PURE__ */ t(
+  e.Item,
   {
     ref: r,
+    className: s("border-b", o),
+    ...a
+  }
+));
+m.displayName = "AccordionItem";
+const l = i.forwardRef(({ className: o, children: a, ...r }, n) => /* @__PURE__ */ t(e.Header, { className: "flex", children: /* @__PURE__ */ c(
+  e.Trigger,
+  {
+    ref: n,
     className: s(
       "flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180",
-      e
+      o
     ),
-    ...a,
+    ...r,
     children: [
-      o,
-      /* @__PURE__ */ t(p, { className: "h-4 w-4 shrink-0 transition-transform duration-200" })
+      a,
+      /* @__PURE__ */ t(d, { className: "h-4 w-4 shrink-0 transition-transform duration-200" })
     ]
   }
 ) }));
-h.displayName = c.displayName;
-const w = n.forwardRef(({ className: e, children: o, ...a }, r) => /* @__PURE__ */ t(
-  i,
+l.displayName = e.Trigger.displayName;
+const f = i.forwardRef(({ className: o, children: a, ...r }, n) => /* @__PURE__ */ t(
+  e.Content,
   {
-    ref: r,
+    ref: n,
     className: "overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down",
-    ...a,
-    children: /* @__PURE__ */ t("div", { className: s("pb-4 pt-0", e), children: o })
+    ...r,
+    children: /* @__PURE__ */ t("div", { className: s("pb-4 pt-0", o), children: a })
   }
 ));
-w.displayName = i.displayName;
+f.displayName = e.Content.displayName;
 export {
-  u as Accordion,
-  w as AccordionContent,
-  N as AccordionItem,
-  h as AccordionTrigger
+  w as Accordion,
+  f as AccordionContent,
+  m as AccordionItem,
+  l as AccordionTrigger
 };
 //# sourceMappingURL=accordion.mjs.map

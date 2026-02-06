@@ -1,32 +1,32 @@
-import { jsx as r } from "react/jsx-runtime";
-import * as a from "react";
-import { Root as s, Item as t, Indicator as l } from "../../node_modules/@radix-ui/react-radio-group/dist/index.mjs";
-import { cn as c } from "../../lib/utils.mjs";
-import m from "../../node_modules/lucide-react/dist/esm/icons/circle.mjs";
-const n = a.forwardRef(({ className: e, ...o }, i) => /* @__PURE__ */ r(
-  s,
+import { jsx as e } from "react/jsx-runtime";
+import * as t from "react";
+import * as r from "@radix-ui/react-radio-group";
+import { Circle as m } from "lucide-react";
+import { cn as s } from "../../lib/utils.mjs";
+const c = t.forwardRef(({ className: o, ...i }, a) => /* @__PURE__ */ e(
+  r.Root,
   {
-    className: c("grid gap-2", e),
-    ...o,
-    ref: i
+    className: s("grid gap-2", o),
+    ...i,
+    ref: a
   }
 ));
-n.displayName = s.displayName;
-const d = a.forwardRef(({ className: e, ...o }, i) => /* @__PURE__ */ r(
-  t,
+c.displayName = r.Root.displayName;
+const l = t.forwardRef(({ className: o, ...i }, a) => /* @__PURE__ */ e(
+  r.Item,
   {
-    ref: i,
-    className: c(
+    ref: a,
+    className: s(
       "aspect-square h-4 w-4 rounded-full border border-primary text-primary ring-offset-background focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
-      e
+      o
     ),
-    ...o,
-    children: /* @__PURE__ */ r(l, { className: "flex items-center justify-center", children: /* @__PURE__ */ r(m, { className: "h-2.5 w-2.5 fill-current text-current" }) })
+    ...i,
+    children: /* @__PURE__ */ e(r.Indicator, { className: "flex items-center justify-center", children: /* @__PURE__ */ e(m, { className: "h-2.5 w-2.5 fill-current text-current" }) })
   }
 ));
-d.displayName = t.displayName;
+l.displayName = r.Item.displayName;
 export {
-  n as RadioGroup,
-  d as RadioGroupItem
+  c as RadioGroup,
+  l as RadioGroupItem
 };
 //# sourceMappingURL=radio-group.mjs.map

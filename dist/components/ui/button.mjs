@@ -1,7 +1,7 @@
 import { jsx as n } from "react/jsx-runtime";
 import * as g from "react";
-import { Root as d } from "../../node_modules/@radix-ui/react-slot/dist/index.mjs";
-import { cva as s } from "../../node_modules/class-variance-authority/dist/index.mjs";
+import { Slot as d } from "@radix-ui/react-slot";
+import { cva as s } from "class-variance-authority";
 import { cn as c } from "../../lib/utils.mjs";
 const b = s(
   "inline-flex items-center justify-center gap-0.5 whitespace-nowrap font-normal transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-30 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:-ml-1",

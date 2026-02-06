@@ -1,8 +1,8 @@
-import { jsx as e, jsxs as o } from "react/jsx-runtime";
+import { jsx as e, jsxs as c } from "react/jsx-runtime";
 import * as n from "react";
-import { Checkbox as a, CheckboxIndicator as d } from "../../node_modules/@radix-ui/react-checkbox/dist/index.mjs";
-import { cn as l } from "../../lib/utils.mjs";
-const h = () => /* @__PURE__ */ e(
+import * as r from "@radix-ui/react-checkbox";
+import { cn as d } from "../../lib/utils.mjs";
+const l = () => /* @__PURE__ */ e(
   "svg",
   {
     width: "10",
@@ -19,12 +19,12 @@ const h = () => /* @__PURE__ */ e(
       }
     )
   }
-), g = n.forwardRef(({ className: i, label: r, ...s }, c) => {
-  const t = /* @__PURE__ */ e(
-    a,
+), h = n.forwardRef(({ className: i, label: t, ...o }, s) => {
+  const a = /* @__PURE__ */ e(
+    r.Root,
     {
-      ref: c,
-      className: l(
+      ref: s,
+      className: d(
         // 기본 스타일 (20x20, 2px radius)
         "peer h-5 w-5 shrink-0 rounded-[2px] border-[0.75px] flex items-center justify-center cursor-pointer",
         // 미체크 상태
@@ -39,17 +39,17 @@ const h = () => /* @__PURE__ */ e(
         "dark:border-gray-200 dark:bg-dark-500 dark:data-[state=checked]:bg-primary dark:data-[state=checked]:border-gray-200",
         i
       ),
-      ...s,
-      children: /* @__PURE__ */ e(d, { className: "flex items-center justify-center text-current", children: /* @__PURE__ */ e(h, {}) })
+      ...o,
+      children: /* @__PURE__ */ e(r.Indicator, { className: "flex items-center justify-center text-current", children: /* @__PURE__ */ e(l, {}) })
     }
   );
-  return r ? /* @__PURE__ */ o("label", { className: "inline-flex items-center gap-1.5 cursor-pointer align-middle", children: [
-    t,
-    /* @__PURE__ */ e("span", { className: "text-xs text-gray-600 tracking-[-0.12px] dark:text-gray-200 leading-none", children: r })
-  ] }) : t;
+  return t ? /* @__PURE__ */ c("label", { className: "inline-flex items-center gap-1.5 cursor-pointer align-middle", children: [
+    a,
+    /* @__PURE__ */ e("span", { className: "text-xs text-gray-600 tracking-[-0.12px] dark:text-gray-200 leading-none", children: t })
+  ] }) : a;
 });
-g.displayName = a.displayName;
+h.displayName = r.Root.displayName;
 export {
-  g as Checkbox
+  h as Checkbox
 };
 //# sourceMappingURL=checkbox.mjs.map

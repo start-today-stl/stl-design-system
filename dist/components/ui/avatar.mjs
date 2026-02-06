@@ -1,43 +1,43 @@
-import { jsx as r } from "react/jsx-runtime";
-import * as s from "react";
-import { Root as o, Fallback as f, Image as t } from "../../node_modules/@radix-ui/react-avatar/dist/index.mjs";
-import { cn as m } from "../../lib/utils.mjs";
-const d = s.forwardRef(({ className: a, ...e }, l) => /* @__PURE__ */ r(
-  o,
+import { jsx as m } from "react/jsx-runtime";
+import * as o from "react";
+import * as a from "@radix-ui/react-avatar";
+import { cn as s } from "../../lib/utils.mjs";
+const t = o.forwardRef(({ className: e, ...l }, r) => /* @__PURE__ */ m(
+  a.Root,
   {
-    ref: l,
-    className: m(
+    ref: r,
+    className: s(
       "relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full",
-      a
+      e
     ),
-    ...e
+    ...l
   }
 ));
-d.displayName = o.displayName;
-const i = s.forwardRef(({ className: a, ...e }, l) => /* @__PURE__ */ r(
-  t,
+t.displayName = a.Root.displayName;
+const f = o.forwardRef(({ className: e, ...l }, r) => /* @__PURE__ */ m(
+  a.Image,
   {
-    ref: l,
-    className: m("aspect-square h-full w-full", a),
-    ...e
+    ref: r,
+    className: s("aspect-square h-full w-full", e),
+    ...l
   }
 ));
-i.displayName = t.displayName;
-const c = s.forwardRef(({ className: a, ...e }, l) => /* @__PURE__ */ r(
-  f,
+f.displayName = a.Image.displayName;
+const i = o.forwardRef(({ className: e, ...l }, r) => /* @__PURE__ */ m(
+  a.Fallback,
   {
-    ref: l,
-    className: m(
+    ref: r,
+    className: s(
       "flex h-full w-full items-center justify-center rounded-full bg-muted",
-      a
+      e
     ),
-    ...e
+    ...l
   }
 ));
-c.displayName = f.displayName;
+i.displayName = a.Fallback.displayName;
 export {
-  d as Avatar,
-  c as AvatarFallback,
-  i as AvatarImage
+  t as Avatar,
+  i as AvatarFallback,
+  f as AvatarImage
 };
 //# sourceMappingURL=avatar.mjs.map

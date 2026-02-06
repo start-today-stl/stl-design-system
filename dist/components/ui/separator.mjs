@@ -1,24 +1,24 @@
-import { jsx as l } from "react/jsx-runtime";
-import * as e from "react";
-import { Root as o } from "../../node_modules/@radix-ui/react-separator/dist/index.mjs";
-import { cn as f } from "../../lib/utils.mjs";
-const s = e.forwardRef(
-  ({ className: a, orientation: r = "horizontal", decorative: m = !0, ...p }, t) => /* @__PURE__ */ l(
-    o,
+import { jsx as e } from "react/jsx-runtime";
+import * as i from "react";
+import * as o from "@radix-ui/react-separator";
+import { cn as l } from "../../lib/utils.mjs";
+const s = i.forwardRef(
+  ({ className: a, orientation: r = "horizontal", decorative: t = !0, ...m }, p) => /* @__PURE__ */ e(
+    o.Root,
     {
-      ref: t,
-      decorative: m,
+      ref: p,
+      decorative: t,
       orientation: r,
-      className: f(
+      className: l(
         "shrink-0 bg-border",
         r === "horizontal" ? "h-[1px] w-full" : "h-full w-[1px]",
         a
       ),
-      ...p
+      ...m
     }
   )
 );
-s.displayName = o.displayName;
+s.displayName = o.Root.displayName;
 export {
   s as Separator
 };

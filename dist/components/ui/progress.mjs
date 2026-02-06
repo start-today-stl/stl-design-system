@@ -1,27 +1,27 @@
-import { jsx as r } from "react/jsx-runtime";
+import { jsx as o } from "react/jsx-runtime";
 import * as t from "react";
-import { Root as o, Indicator as m } from "../../node_modules/@radix-ui/react-progress/dist/index.mjs";
-import { cn as f } from "../../lib/utils.mjs";
-const i = t.forwardRef(({ className: a, value: l, ...e }, s) => /* @__PURE__ */ r(
-  o,
+import * as r from "@radix-ui/react-progress";
+import { cn as i } from "../../lib/utils.mjs";
+const m = t.forwardRef(({ className: a, value: e, ...l }, s) => /* @__PURE__ */ o(
+  r.Root,
   {
     ref: s,
-    className: f(
+    className: i(
       "relative h-4 w-full overflow-hidden rounded-full bg-secondary",
       a
     ),
-    ...e,
-    children: /* @__PURE__ */ r(
-      m,
+    ...l,
+    children: /* @__PURE__ */ o(
+      r.Indicator,
       {
         className: "h-full w-full flex-1 bg-primary transition-all",
-        style: { transform: `translateX(-${100 - (l || 0)}%)` }
+        style: { transform: `translateX(-${100 - (e || 0)}%)` }
       }
     )
   }
 ));
-i.displayName = o.displayName;
+m.displayName = r.Root.displayName;
 export {
-  i as Progress
+  m as Progress
 };
 //# sourceMappingURL=progress.mjs.map

@@ -1,6 +1,6 @@
 import { jsxs as c, jsx as r } from "react/jsx-runtime";
 import * as p from "react";
-import { cva as l } from "../node_modules/class-variance-authority/dist/index.mjs";
+import { cva as l } from "class-variance-authority";
 import { cn as i } from "../lib/utils.mjs";
 import { RightIcon as f } from "../icons/RightIcon.mjs";
 const d = l(

@@ -1,5 +1,5 @@
-import { clsx as o } from "../node_modules/clsx/dist/clsx.mjs";
-import { twMerge as t } from "../node_modules/tailwind-merge/dist/bundle-mjs.mjs";
+import { clsx as o } from "clsx";
+import { twMerge as t } from "tailwind-merge";
 function n(...r) {
   return t(o(r));
 }

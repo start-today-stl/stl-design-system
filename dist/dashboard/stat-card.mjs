@@ -1,6 +1,6 @@
 import { jsx as r, jsxs as t } from "react/jsx-runtime";
 import * as g from "react";
-import { cva as b } from "../node_modules/class-variance-authority/dist/index.mjs";
+import { cva as b } from "class-variance-authority";
 import { cn as a } from "../lib/utils.mjs";
 const v = {
   main: "bg-gradient-to-b from-[#f7f9ff] to-white hover:from-[#f6f7f9] hover:to-[#f6f7f9] active:from-primary-200 active:to-primary-200 dark:from-[#2a3348] dark:to-dark-400 dark:hover:from-dark-300 dark:hover:to-dark-300 dark:active:from-primary-200 dark:active:to-primary-200",

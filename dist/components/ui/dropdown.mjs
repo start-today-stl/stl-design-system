@@ -1,78 +1,78 @@
-import { jsxs as d, jsx as e } from "react/jsx-runtime";
-import * as i from "react";
-import { Root as k, Trigger as y, Value as w, Icon as v, Portal as N, Content as z, Viewport as I, Item as R, ItemText as _ } from "../../node_modules/@radix-ui/react-select/dist/index.mjs";
-import { cn as t } from "../../lib/utils.mjs";
-import { DownIcon as j } from "../../icons/DownIcon.mjs";
-const C = {
+import { jsxs as o, jsx as e } from "react/jsx-runtime";
+import * as n from "react";
+import * as a from "@radix-ui/react-select";
+import { cn as r } from "../../lib/utils.mjs";
+import { DownIcon as y } from "../../icons/DownIcon.mjs";
+const w = {
   sm: "w-[160px]",
   md: "w-[260px]",
   lg: "w-[360px]",
   full: "w-full"
-}, D = i.forwardRef(
+}, v = n.forwardRef(
   ({
-    label: o,
-    placeholder: n = "선택하세요",
-    options: c,
-    value: p,
-    defaultValue: x,
-    onValueChange: m,
-    size: b = "full",
-    error: r,
-    errorMessage: l,
-    disabled: g,
-    className: u,
-    "aria-label": f
-  }, h) => {
-    const s = i.useId();
-    return /* @__PURE__ */ d(
+    label: l,
+    placeholder: c = "선택하세요",
+    options: p,
+    value: x,
+    defaultValue: m,
+    onValueChange: b,
+    size: g = "full",
+    error: d,
+    errorMessage: s,
+    disabled: u,
+    className: f,
+    "aria-label": h
+  }, k) => {
+    const i = n.useId();
+    return /* @__PURE__ */ o(
       "div",
       {
-        className: t(
+        className: r(
           "flex flex-col gap-1",
-          C[b],
-          u
+          w[g],
+          f
         ),
         children: [
-          o && /* @__PURE__ */ e(
+          l && /* @__PURE__ */ e(
             "label",
             {
-              htmlFor: s,
+              htmlFor: i,
               className: "text-xs text-gray-600 dark:text-gray-50",
-              children: o
+              children: l
             }
           ),
-          /* @__PURE__ */ d(
-            k,
+          /* @__PURE__ */ o(
+            a.Root,
             {
-              value: p,
-              defaultValue: x,
-              onValueChange: m,
-              disabled: g,
+              value: x,
+              defaultValue: m,
+              onValueChange: b,
+              disabled: u,
               children: [
-                /* @__PURE__ */ d(
-                  y,
+                /* @__PURE__ */ o(
+                  a.Trigger,
                   {
-                    ref: h,
-                    id: s,
-                    className: t(
+                    ref: k,
+                    id: i,
+                    className: r(
                       "flex h-9 w-full items-center justify-between rounded-[5px] border bg-white dark:bg-dark-400",
                       "px-3 text-xs outline-none transition-colors cursor-pointer",
                       "disabled:cursor-not-allowed disabled:opacity-50",
-                      r ? "border-destructive dark:border-red-500" : "border-gray-100 dark:border-dark-200 focus:border-gray-500 dark:focus:border-gray-100",
+                      d ? "border-destructive dark:border-red-500" : "border-gray-100 dark:border-dark-200 focus:border-gray-500 dark:focus:border-gray-100",
                       "data-[placeholder]:text-gray-500 dark:data-[placeholder]:text-gray-50"
                     ),
-                    "aria-invalid": r,
-                    "aria-label": f,
+                    "aria-invalid": d,
+                    "aria-label": h,
                     children: [
-                      /* @__PURE__ */ e(w, { placeholder: n }),
-                      /* @__PURE__ */ e(v, { asChild: !0, children: /* @__PURE__ */ e(j, { size: 24, className: "text-gray-500 dark:text-gray-50" }) })
+                      /* @__PURE__ */ e(a.Value, { placeholder: c }),
+                      /* @__PURE__ */ e(a.Icon, { asChild: !0, children: /* @__PURE__ */ e(y, { size: 24, className: "text-gray-500 dark:text-gray-50" }) })
                     ]
                   }
                 ),
-                /* @__PURE__ */ e(N, { children: /* @__PURE__ */ e(
-                  z,
+                /* @__PURE__ */ e(a.Portal, { children: /* @__PURE__ */ e(
+                  a.Content,
                   {
-                    className: t(
+                    className: r(
                       "relative z-50 overflow-hidden rounded-[5px] border border-gray-100 dark:border-dark-200 w-[var(--radix-select-trigger-width)]",
                       "bg-white/50 dark:bg-dark-400/30 backdrop-blur-[12px]",
                       "shadow-[10px_10px_10px_0px_rgba(0,0,0,0.05)]",
@@ -84,12 +84,12 @@ const C = {
                     ),
                     position: "popper",
                     sideOffset: 4,
-                    children: /* @__PURE__ */ e(I, { className: "flex flex-col gap-[5px]", children: c.map((a) => /* @__PURE__ */ e(
-                      R,
+                    children: /* @__PURE__ */ e(a.Viewport, { className: "flex flex-col gap-[5px]", children: p.map((t) => /* @__PURE__ */ e(
+                      a.Item,
                       {
-                        value: a.value,
-                        disabled: a.disabled,
-                        className: t(
+                        value: t.value,
+                        disabled: t.disabled,
+                        className: r(
                           "relative flex h-[29px] cursor-pointer select-none items-center rounded-[2px] px-[5px] py-[5px]",
                           "text-xs text-gray-500 dark:text-gray-50 outline-none",
                           "hover:bg-gray-100 dark:hover:bg-dark-300",
@@ -97,24 +97,24 @@ const C = {
                           "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
                           "data-[state=checked]:bg-accent data-[state=checked]:text-accent-foreground"
                         ),
-                        children: /* @__PURE__ */ e(_, { children: a.label })
+                        children: /* @__PURE__ */ e(a.ItemText, { children: t.label })
                       },
-                      a.value
+                      t.value
                     )) })
                   }
                 ) })
               ]
             }
           ),
-          r && l && /* @__PURE__ */ e("span", { className: "text-xs text-destructive dark:text-red-400", children: l })
+          d && s && /* @__PURE__ */ e("span", { className: "text-xs text-destructive dark:text-red-400", children: s })
         ]
       }
     );
   }
 );
-D.displayName = "Dropdown";
+v.displayName = "Dropdown";
 export {
-  D as Dropdown,
-  C as dropdownSizeStyles
+  v as Dropdown,
+  w as dropdownSizeStyles
 };
 //# sourceMappingURL=dropdown.mjs.map

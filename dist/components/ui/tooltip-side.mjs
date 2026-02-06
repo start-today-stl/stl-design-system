@@ -1,13 +1,13 @@
 import { jsx as o } from "react/jsx-runtime";
 import * as d from "react";
-import { Content as f } from "../../node_modules/@radix-ui/react-tooltip/dist/index.mjs";
-import { cn as i } from "../../lib/utils.mjs";
+import * as i from "@radix-ui/react-tooltip";
+import { cn as f } from "../../lib/utils.mjs";
 const b = d.forwardRef(({ className: t, sideOffset: e = 4, ...r }, a) => /* @__PURE__ */ o(
-  f,
+  i.Content,
   {
     ref: a,
     sideOffset: e + 14,
-    className: i(
+    className: f(
       "z-50 rounded-md border bg-popover px-4 py-2.5 text-sm text-popover-foreground shadow-[10px_10px_10px_0px_#0000001A] animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-tooltip-content-transform-origin]",
       "relative overflow-visible",
       "after:absolute after:border-[10px] after:border-transparent after:content-['']",

@@ -1,39 +1,39 @@
-import { jsxs as m, jsx as e } from "react/jsx-runtime";
+import { jsxs as d, jsx as e } from "react/jsx-runtime";
 import * as s from "react";
-import { Root as t, Viewport as n, Corner as f, ScrollAreaScrollbar as c, ScrollAreaThumb as p } from "../../node_modules/@radix-ui/react-scroll-area/dist/index.mjs";
-import { cn as d } from "../../lib/utils.mjs";
-const h = s.forwardRef(({ className: l, children: r, ...o }, a) => /* @__PURE__ */ m(
-  t,
+import * as r from "@radix-ui/react-scroll-area";
+import { cn as t } from "../../lib/utils.mjs";
+const m = s.forwardRef(({ className: o, children: l, ...a }, c) => /* @__PURE__ */ d(
+  r.Root,
   {
-    ref: a,
-    className: d("relative overflow-hidden", l),
-    ...o,
+    ref: c,
+    className: t("relative overflow-hidden", o),
+    ...a,
     children: [
-      /* @__PURE__ */ e(n, { className: "h-full w-full rounded-[inherit]", children: r }),
+      /* @__PURE__ */ e(r.Viewport, { className: "h-full w-full rounded-[inherit]", children: l }),
       /* @__PURE__ */ e(i, {}),
-      /* @__PURE__ */ e(f, {})
+      /* @__PURE__ */ e(r.Corner, {})
     ]
   }
 ));
-h.displayName = t.displayName;
-const i = s.forwardRef(({ className: l, orientation: r = "vertical", ...o }, a) => /* @__PURE__ */ e(
-  c,
+m.displayName = r.Root.displayName;
+const i = s.forwardRef(({ className: o, orientation: l = "vertical", ...a }, c) => /* @__PURE__ */ e(
+  r.ScrollAreaScrollbar,
   {
-    ref: a,
-    orientation: r,
-    className: d(
+    ref: c,
+    orientation: l,
+    className: t(
       "flex touch-none select-none transition-colors",
-      r === "vertical" && "h-full w-2.5 border-l border-l-transparent p-[1px]",
-      r === "horizontal" && "h-2.5 flex-col border-t border-t-transparent p-[1px]",
-      l
+      l === "vertical" && "h-full w-2.5 border-l border-l-transparent p-[1px]",
+      l === "horizontal" && "h-2.5 flex-col border-t border-t-transparent p-[1px]",
+      o
     ),
-    ...o,
-    children: /* @__PURE__ */ e(p, { className: "relative flex-1 rounded-full bg-border" })
+    ...a,
+    children: /* @__PURE__ */ e(r.ScrollAreaThumb, { className: "relative flex-1 rounded-full bg-border" })
   }
 ));
-i.displayName = c.displayName;
+i.displayName = r.ScrollAreaScrollbar.displayName;
 export {
-  h as ScrollArea,
+  m as ScrollArea,
   i as ScrollBar
 };
 //# sourceMappingURL=scroll-area.mjs.map
