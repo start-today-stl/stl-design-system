@@ -2,7 +2,6 @@ import * as React from "react";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 
 const TooltipProvider = TooltipPrimitive.Provider;
 
@@ -10,7 +9,8 @@ const Tooltip = TooltipPrimitive.Root;
 
 const TooltipTrigger = TooltipPrimitive.Trigger;
 
-const TooltipContent = React.forwardRef<
+/** 말풍선 화살표가 있는 TooltipContent (tooltip.tsx의 기본 TooltipContent와 다름) */
+const TooltipArrowContent = React.forwardRef<
   React.ElementRef<typeof TooltipPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>
 >(({ className, sideOffset = 4, ...props }, ref) => (
@@ -33,55 +33,13 @@ const TooltipContent = React.forwardRef<
       className,
     )}
     {...props}
-  >
-    {props.children}
-  </TooltipPrimitive.Content>
+  />
 ));
-TooltipContent.displayName = TooltipPrimitive.Content.displayName;
-
-function TooltipSides() {
-  return (
-    <TooltipProvider>
-      <div className="flex flex-wrap gap-2">
-        {(["left", "top", "bottom", "right"] as const).map((side) => (
-          <Tooltip key={side}>
-            <TooltipTrigger asChild>
-              <Button variant="outline" className="w-fit capitalize">
-                {side}
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent side={side}>
-              <p>Contents Name</p>
-            </TooltipContent>
-          </Tooltip>
-        ))}
-      </div>
-    </TooltipProvider>
-  );
-}
-
-function TooltipSide({ side }: { side: "top" | "right" | "bottom" | "left" }) {
-  return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button variant="outline" className="w-fit capitalize">
-            {side}
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent side={side}>
-          <p>Contents Name</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
-  );
-}
+TooltipArrowContent.displayName = "TooltipArrowContent";
 
 export {
   Tooltip,
   TooltipTrigger,
-  TooltipContent,
+  TooltipArrowContent,
   TooltipProvider,
-  TooltipSides,
-  TooltipSide,
 };
