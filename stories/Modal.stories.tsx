@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
+// TODO: DatePicker 컴포넌트 구현 시 CalenderIcon으로 교체
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
@@ -10,6 +11,7 @@ import { Dropdown } from "@/components/ui/dropdown";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
+import { STLArrowIcon } from "@/icons";
 
 const meta = {
   title: "Components/Modal",
@@ -87,6 +89,42 @@ export const SingleButton: Story = {
           footer={<Button variant="action" onClick={() => setOpen(false)}>확인</Button>}
         >
           <p className="text-sm text-gray-500">성공적으로 처리되었습니다.</p>
+        </Modal>
+      </>
+    );
+  },
+};
+
+/** 헤더에 아이콘이 포함된 모달 */
+export const WithHeaderIcon: Story = {
+  render: function Render() {
+    const [open, setOpen] = useState(false);
+
+    return (
+      <>
+        <Button onClick={() => setOpen(true)}>비밀번호 변경</Button>
+        <Modal
+          open={open}
+          onOpenChange={setOpen}
+          size="s"
+          title={
+            <span className="flex items-center justify-between w-full">
+              비밀번호 변경
+              <STLArrowIcon size={29} className="text-gray-100" />
+            </span>
+          }
+          footer={
+            <>
+              <Button variant="basic" onClick={() => setOpen(false)}>닫기</Button>
+              <Button variant="action">변경</Button>
+            </>
+          }
+        >
+          <div className="flex flex-col gap-4">
+            <InputField label="기존 비밀번호" placeholder="내용을 입력하세요." />
+            <InputField label="새 비밀번호" placeholder="내용을 입력하세요." />
+            <InputField label="비밀번호 확인" placeholder="내용을 입력하세요." />
+          </div>
         </Modal>
       </>
     );

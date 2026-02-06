@@ -32,7 +32,7 @@ const NavMenu = React.forwardRef<HTMLDivElement, NavMenuProps>(
             type="button"
             onClick={onToggle}
             className={cn(
-              "absolute flex items-center justify-center z-10",
+              "absolute flex items-center justify-center z-20",
               "w-8 h-8 rounded-[20px] border border-gray-100 dark:border-gray-700",
               "bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800",
               "transition-colors cursor-pointer",

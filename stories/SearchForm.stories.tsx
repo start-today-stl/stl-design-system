@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Search } from "lucide-react";
 import { SearchForm } from "@/components/patterns/search-form";
+import { SearchIcon } from "@/icons";
 import { InputField } from "@/components/ui/input";
 import { Dropdown } from "@/components/ui/dropdown";
 import { Button } from "@/components/ui/button";
@@ -32,7 +32,7 @@ export const Default: Story = {
         <>
           <Button variant="action" className="w-24">초기화</Button>
           <Button className="w-24">
-            <Search className="mr-2 h-4 w-4" />
+            <SearchIcon size={16} className="mr-2" />
             검색
           </Button>
         </>

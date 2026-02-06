@@ -14,7 +14,7 @@ export interface SearchFormProps extends Omit<React.HTMLAttributes<HTMLDivElemen
 export const SearchForm = React.forwardRef<HTMLDivElement, SearchFormProps>(
   ({ className, title, children, actions, ...props }, ref) => {
     return (
-      <Card ref={ref} className={cn("w-full bg-card", className)} {...props}>
+      <Card ref={ref} className={cn("w-full", className)} {...props}>
         {title && (
           <CardHeader className="border-b px-6 py-4">
             <CardTitle className="text-lg">{title}</CardTitle>
