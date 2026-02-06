@@ -53,6 +53,7 @@
   --color-danger: var(--color-danger-300);
 
   /* Darkmode Background */
+  --color-dark-600: #20242d;
   --color-dark-500: #2f3542;
   --color-dark-400: #474e5d;
   --color-dark-300: #6b7487;
@@ -79,6 +80,10 @@
   /* Semantic Aliases */
   --color-background: var(--color-white);
   --color-foreground: var(--color-gray-900);
+  --color-card: var(--color-white);
+  --color-card-foreground: var(--color-gray-900);
+  --color-popover: var(--color-white);
+  --color-popover-foreground: var(--color-gray-900);
   --color-primary: var(--color-primary-400);
   --color-primary-foreground: var(--color-white);
   --color-secondary: var(--color-gray-100);
@@ -173,8 +178,12 @@
    Dark Mode
    ======================================== */
 .dark {
-  --color-background: var(--color-dark-500);
+  --color-background: var(--color-dark-600);
   --color-foreground: var(--color-gray-50);
+  --color-card: var(--color-dark-500);
+  --color-card-foreground: var(--color-gray-50);
+  --color-popover: var(--color-dark-500);
+  --color-popover-foreground: var(--color-gray-50);
   --color-primary-foreground: var(--color-white);
   --color-secondary: var(--color-dark-400);
   --color-secondary-foreground: var(--color-gray-50);
@@ -193,8 +202,12 @@
 /* 시스템 설정 따르기 (선택사항) */
 @media (prefers-color-scheme: dark) {
   :root:not(.light) {
-    --color-background: var(--color-dark-500);
+    --color-background: var(--color-dark-600);
     --color-foreground: var(--color-gray-50);
+    --color-card: var(--color-dark-500);
+    --color-card-foreground: var(--color-gray-50);
+    --color-popover: var(--color-dark-500);
+    --color-popover-foreground: var(--color-gray-50);
     --color-primary-foreground: var(--color-white);
     --color-secondary: var(--color-dark-400);
     --color-secondary-foreground: var(--color-gray-50);
