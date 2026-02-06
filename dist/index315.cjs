@@ -1,2 +1,0 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const f=require("./index213.cjs");function l(t,e,r=f.defaultDateLib){const o=Array.isArray(e)?e:[e];let a=t.from;const i=r.differenceInCalendarDays(t.to,t.from),s=Math.min(i,6);for(let n=0;n<=s;n++){if(o.includes(a.getDay()))return!0;a=r.addDays(a,1)}return!1}exports.rangeContainsDayOfWeek=l;
-//# sourceMappingURL=index315.cjs.map

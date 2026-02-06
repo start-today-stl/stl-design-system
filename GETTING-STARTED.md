@@ -26,6 +26,27 @@ GitHub에서 직접 설치:
 npm install github:start-today-stl/stl-design-system
 ```
 
+### 로컬 개발 (npm link)
+
+디자인 시스템을 수정하면서 바로 테스트하고 싶다면 `npm link`를 사용하세요:
+
+```bash
+# 1. 디자인 시스템 프로젝트에서 (1회)
+cd stl-design-system
+npm link
+
+# 2. 사용할 프로젝트에서 (1회)
+cd my-project
+npm link stl-design-system
+```
+
+이후 워크플로우:
+1. 디자인 시스템에서 코드 수정
+2. `npm run build` 실행
+3. 사용 프로젝트에서 바로 반영됨 (dev 서버 새로고침만 하면 됨)
+
+> **참고**: `npm link`는 심볼릭 링크를 생성하므로, 재설치 없이 빌드만 하면 변경사항이 즉시 반영됩니다.
+
 ---
 
 ## 2. CSS 설정 (필수)
@@ -197,6 +218,14 @@ function Layout({ children }) {
 
 ### 디자인 시스템 업데이트 후 반영 안 됨
 
+**npm link 사용 시:**
+```bash
+# 디자인 시스템에서 빌드만 하면 됨
+cd stl-design-system
+npm run build
+```
+
+**GitHub 설치 사용 시:**
 ```bash
 # 캐시 삭제 후 재설치
 rm -rf node_modules/.cache

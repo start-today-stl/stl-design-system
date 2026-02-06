@@ -23,10 +23,16 @@ export default defineConfig({
   },
   build: {
     lib: {
-      entry: resolve(__dirname, 'src/index.ts'),
+      entry: {
+        index: resolve(__dirname, 'src/index.ts'),
+        components: resolve(__dirname, 'src/components/index.ts'),
+        layout: resolve(__dirname, 'src/layout/index.ts'),
+        dashboard: resolve(__dirname, 'src/dashboard/index.ts'),
+        icons: resolve(__dirname, 'src/icons/index.ts'),
+      },
       name: 'STLDesignSystem',
       formats: ['es', 'cjs'],
-      fileName: (format) => `index.${format === 'es' ? 'mjs' : 'cjs'}`,
+      fileName: (format, entryName) => `${entryName}.${format === 'es' ? 'mjs' : 'cjs'}`,
     },
     rollupOptions: {
       external: ['react', 'react-dom', 'react/jsx-runtime'],

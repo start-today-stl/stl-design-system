@@ -11,6 +11,26 @@
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
     },
+    "./components": {
+      "types": "./dist/components/index.d.ts",
+      "import": "./dist/components.mjs",
+      "require": "./dist/components.cjs"
+    },
+    "./layout": {
+      "types": "./dist/layout/index.d.ts",
+      "import": "./dist/layout.mjs",
+      "require": "./dist/layout.cjs"
+    },
+    "./dashboard": {
+      "types": "./dist/dashboard/index.d.ts",
+      "import": "./dist/dashboard.mjs",
+      "require": "./dist/dashboard.cjs"
+    },
+    "./icons": {
+      "types": "./dist/icons/index.d.ts",
+      "import": "./dist/icons.mjs",
+      "require": "./dist/icons.cjs"
+    },
     "./tokens": "./dist/styles/tokens.css",
     "./styles": "./dist/styles/globals.css",
     "./preset": {

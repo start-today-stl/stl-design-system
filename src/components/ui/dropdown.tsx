@@ -1,51 +1,51 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import * as SelectPrimitive from "@radix-ui/react-select"
+import * as React from "react";
+import * as SelectPrimitive from "@radix-ui/react-select";
 
-import { cn } from "@/lib/utils"
-import { DownIcon } from "@/icons"
+import { cn } from "@/lib/utils";
+import { DownIcon } from "@/icons";
 
 const dropdownSizeStyles = {
   sm: "w-[160px]",
   md: "w-[260px]",
   lg: "w-[360px]",
   full: "w-full",
-} as const
+} as const;
 
-export type DropdownSize = keyof typeof dropdownSizeStyles
+export type DropdownSize = keyof typeof dropdownSizeStyles;
 
 export interface DropdownOption {
-  label: string
-  value: string
-  disabled?: boolean
+  label: string;
+  value: string;
+  disabled?: boolean;
 }
 
 export interface DropdownProps {
   /** 라벨 텍스트 */
-  label?: string
+  label?: string;
   /** 플레이스홀더 */
-  placeholder?: string
+  placeholder?: string;
   /** 옵션 목록 */
-  options: DropdownOption[]
+  options: DropdownOption[];
   /** 선택된 값 */
-  value?: string
+  value?: string;
   /** 기본 선택 값 */
-  defaultValue?: string
+  defaultValue?: string;
   /** 값 변경 핸들러 */
-  onValueChange?: (value: string) => void
+  onValueChange?: (value: string) => void;
   /** 너비 크기 */
-  size?: DropdownSize
+  size?: DropdownSize;
   /** 에러 상태 */
-  error?: boolean
+  error?: boolean;
   /** 에러 메시지 */
-  errorMessage?: string
+  errorMessage?: string;
   /** 비활성화 */
-  disabled?: boolean
+  disabled?: boolean;
   /** 추가 className */
-  className?: string
+  className?: string;
   /** 접근성 라벨 (label이 없을 때 사용) */
-  "aria-label"?: string
+  "aria-label"?: string;
 }
 
 const Dropdown = React.forwardRef<HTMLButtonElement, DropdownProps>(
@@ -64,12 +64,18 @@ const Dropdown = React.forwardRef<HTMLButtonElement, DropdownProps>(
       className,
       "aria-label": ariaLabel,
     },
-    ref
+    ref,
   ) => {
-    const id = React.useId()
+    const id = React.useId();
 
     return (
-      <div className={cn("flex flex-col gap-1", dropdownSizeStyles[size], className)}>
+      <div
+        className={cn(
+          "flex flex-col gap-1",
+          dropdownSizeStyles[size],
+          className,
+        )}
+      >
         {label && (
           <label
             htmlFor={id}
@@ -94,7 +100,7 @@ const Dropdown = React.forwardRef<HTMLButtonElement, DropdownProps>(
               error
                 ? "border-destructive dark:border-red-500"
                 : "border-gray-100 dark:border-dark-200 focus:border-gray-500 dark:focus:border-gray-100",
-              "data-[placeholder]:text-gray-500 dark:data-[placeholder]:text-gray-50"
+              "data-[placeholder]:text-gray-500 dark:data-[placeholder]:text-gray-50",
             )}
             aria-invalid={error}
             aria-label={ariaLabel}
@@ -115,7 +121,7 @@ const Dropdown = React.forwardRef<HTMLButtonElement, DropdownProps>(
                 "data-[state=open]:animate-in data-[state=closed]:animate-out",
                 "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
                 "data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
-                "data-[side=bottom]:slide-in-from-top-2 data-[side=top]:slide-in-from-bottom-2"
+                "data-[side=bottom]:slide-in-from-top-2 data-[side=top]:slide-in-from-bottom-2",
               )}
               position="popper"
               sideOffset={4}
@@ -132,10 +138,12 @@ const Dropdown = React.forwardRef<HTMLButtonElement, DropdownProps>(
                       "hover:bg-gray-100 dark:hover:bg-dark-300",
                       "focus:bg-gray-100 dark:focus:bg-dark-300",
                       "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
-                      "data-[state=checked]:text-gray-900 dark:data-[state=checked]:text-gray-100"
+                      "data-[state=checked]:text-gray-900 dark:data-[state=checked]:text-gray-100",
                     )}
                   >
-                    <SelectPrimitive.ItemText>{option.label}</SelectPrimitive.ItemText>
+                    <SelectPrimitive.ItemText>
+                      {option.label}
+                    </SelectPrimitive.ItemText>
                   </SelectPrimitive.Item>
                 ))}
               </SelectPrimitive.Viewport>
@@ -148,9 +156,9 @@ const Dropdown = React.forwardRef<HTMLButtonElement, DropdownProps>(
           </span>
         )}
       </div>
-    )
-  }
-)
-Dropdown.displayName = "Dropdown"
+    );
+  },
+);
+Dropdown.displayName = "Dropdown";
 
-export { Dropdown, dropdownSizeStyles }
+export { Dropdown, dropdownSizeStyles };

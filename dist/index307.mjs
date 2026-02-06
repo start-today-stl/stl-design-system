@@ -1,9 +1,0 @@
-import { toDate as a } from "./index351.mjs";
-function u(e, r) {
-  const t = a(e, r == null ? void 0 : r.in);
-  return t.setHours(0, 0, 0, 0), t;
-}
-export {
-  u as startOfDay
-};
-//# sourceMappingURL=index307.mjs.map

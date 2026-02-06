@@ -1,0 +1,2 @@
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const o=require("react/jsx-runtime");function n({size:t=24,className:e,...r}){return o.jsx("svg",{width:t,height:t,viewBox:"0 0 24 24",fill:"none",xmlns:"http://www.w3.org/2000/svg",className:e,...r,children:o.jsx("path",{d:"M18 18.5L18.5 18V6L18 5.5H6L5.5 6V18L6 18.5H18ZM14.4 9.1V10.1H9.6V9.1H14.4Z",fill:"currentColor"})})}exports.SolidProductIcon=n;
+//# sourceMappingURL=SolidProductIcon.cjs.map

@@ -1,9 +1,0 @@
-import { isDate as r } from "./index299.mjs";
-import { toDate as i } from "./index351.mjs";
-function e(o) {
-  return !(!r(o) && typeof o != "number" || isNaN(+i(o)));
-}
-export {
-  e as isValid
-};
-//# sourceMappingURL=index360.mjs.map

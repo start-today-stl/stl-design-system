@@ -1,7 +1,0 @@
-function e(t) {
-  return t instanceof Date || typeof t == "object" && Object.prototype.toString.call(t) === "[object Date]";
-}
-export {
-  e as isDate
-};
-//# sourceMappingURL=index299.mjs.map

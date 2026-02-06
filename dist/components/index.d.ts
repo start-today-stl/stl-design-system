@@ -28,3 +28,6 @@ export * from './ui/table';
 export * from './ui/tabs';
 export * from './ui/textarea';
 export * from './ui/tooltip';
+export { TooltipSide, TooltipSides } from './ui/tooltip-side';
+export * from './ui/modal';
+export * from './patterns';

@@ -1,2 +1,0 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const o=require("react/jsx-runtime");function i({size:e=24,className:t,...n}){return o.jsx("svg",{width:e,height:e,viewBox:"0 0 24 24",fill:"none",xmlns:"http://www.w3.org/2000/svg",className:t,...n,children:o.jsx("path",{d:"M9.60005 19.7L10.1 19.2V11.3H13.9V19.2L14.4 19.7H19.2L19.7 19.2V9.60001L19.48 9.18001L12.28 4.38H11.72L4.52005 9.18001L4.30005 9.60001V19.2L4.80005 19.7H9.60005Z",fill:"currentColor"})})}exports.SolidHomeIcon=i;
-//# sourceMappingURL=index82.cjs.map
