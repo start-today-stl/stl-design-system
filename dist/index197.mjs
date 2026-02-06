@@ -1,8 +1,8 @@
-import t from "react";
-function o(e) {
-  return t.createElement("div", { ...e });
+import e from "react";
+function n(t) {
+  return e.createElement("table", { ...t });
 }
 export {
-  o as Footer
+  n as MonthGrid
 };
 //# sourceMappingURL=index197.mjs.map

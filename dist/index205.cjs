@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const t=require("react");function n(e){return t.createElement("option",{...e})}exports.Option=n;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const t=require("react");function c(e){return t.createElement("select",{...e})}exports.Select=c;
 //# sourceMappingURL=index205.cjs.map

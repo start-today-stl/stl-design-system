@@ -1,8 +1,8 @@
-import e from "react";
-function n(t) {
-  return e.createElement("option", { ...t });
+import t from "react";
+function c(e) {
+  return t.createElement("select", { ...e });
 }
 export {
-  n as Option
+  c as Select
 };
 //# sourceMappingURL=index205.mjs.map

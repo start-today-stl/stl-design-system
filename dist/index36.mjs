@@ -1,24 +1,38 @@
-import { jsxs as n, jsx as o } from "react/jsx-runtime";
-function s({ size: e = 24, className: r, ...t }) {
-  return /* @__PURE__ */ n(
-    "svg",
-    {
-      width: e,
-      height: e,
-      viewBox: "0 0 24 24",
-      fill: "none",
-      xmlns: "http://www.w3.org/2000/svg",
-      className: r,
-      ...t,
-      children: [
-        /* @__PURE__ */ o("path", { d: "M7.22211 6.02765V17.9723", stroke: "currentColor", strokeLinejoin: "bevel" }),
-        /* @__PURE__ */ o("path", { d: "M12 6.02765V17.9723", stroke: "currentColor", strokeLinejoin: "bevel" }),
-        /* @__PURE__ */ o("path", { d: "M16.7779 6.02765V17.9723", stroke: "currentColor", strokeLinejoin: "bevel" })
-      ]
-    }
-  );
-}
+import { jsxs as p, jsx as t } from "react/jsx-runtime";
+import * as o from "react";
+import { cn as d } from "./index105.mjs";
+import { inputSizeStyles as x } from "./index35.mjs";
+const u = o.forwardRef(
+  ({ className: l, label: e, error: n, errorMessage: r, size: a = "full", children: s, ...i }, c) => {
+    const m = o.useId();
+    return /* @__PURE__ */ p("div", { ref: c, className: d("flex flex-col gap-1", x[a], l), ...i, children: [
+      e && /* @__PURE__ */ t(
+        "label",
+        {
+          htmlFor: m,
+          className: "text-[length:var(--text-body-2)] text-gray-600 dark:text-gray-50",
+          children: e
+        }
+      ),
+      /* @__PURE__ */ t(
+        "div",
+        {
+          className: d(
+            "flex",
+            "[&>*:first-child]:rounded-r-none",
+            "[&>*:last-child]:rounded-l-none",
+            "[&>*:not(:first-child):not(:last-child)]:rounded-none",
+            "[&>*:not(:last-child)]:border-r-0"
+          ),
+          children: s
+        }
+      ),
+      n && r && /* @__PURE__ */ t("span", { className: "text-[length:var(--text-body-2)] text-destructive dark:text-red-400", children: r })
+    ] });
+  }
+);
+u.displayName = "InputGroup";
 export {
-  s as IsolationModeIcon
+  u as InputGroup
 };
 //# sourceMappingURL=index36.mjs.map

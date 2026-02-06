@@ -11,21 +11,24 @@ export interface DashboardCardProps extends React.HTMLAttributes<HTMLDivElement>
   headerAction?: React.ReactNode
   /** 카드 내용 */
   children: React.ReactNode
+  /** 컨테이너 높이에 맞춤 (h-full) */
+  stretch?: boolean
 }
 
 const DashboardCard = React.forwardRef<HTMLDivElement, DashboardCardProps>(
-  ({ className, icon, title, headerAction, children, ...props }, ref) => {
+  ({ className, icon, title, headerAction, children, stretch = false, ...props }, ref) => {
     return (
       <div
         ref={ref}
         className={cn(
-          "bg-white border border-gray-100 rounded-[10px] dark:bg-dark-400 dark:border-dark-300",
+          "bg-white border border-gray-100 rounded-[10px] dark:bg-dark-400 dark:border-dark-300 flex flex-col",
+          stretch && "h-full",
           className
         )}
         {...props}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-[10px] pt-[10px]">
+        <div className="flex items-center justify-between px-[10px] pt-[10px] flex-shrink-0">
           {/* 좌측: 아이콘 + 타이틀 */}
           <div className="flex items-center gap-0.5">
             {icon && (
@@ -44,8 +47,8 @@ const DashboardCard = React.forwardRef<HTMLDivElement, DashboardCardProps>(
             </div>
           )}
         </div>
-        {/* Body */}
-        <div className="p-[10px]">
+        {/* Body - flex-1로 남은 공간 채움 */}
+        <div className={cn("p-[10px]", stretch && "flex-1 flex flex-col")}>
           {children}
         </div>
       </div>

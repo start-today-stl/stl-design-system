@@ -1,32 +1,110 @@
-import { jsx as t } from "react/jsx-runtime";
-function h({ size: C = 24, className: l, ...r }) {
-  return C <= 24 ? /* @__PURE__ */ t(
-    "svg",
-    {
-      width: C,
-      height: C,
-      viewBox: "0 0 24 24",
-      fill: "none",
-      xmlns: "http://www.w3.org/2000/svg",
-      className: l,
-      ...r,
-      children: /* @__PURE__ */ t("path", { d: "M10.8096 4.2998C14.3896 4.2998 17.3096 7.2198 17.3096 10.7998C17.3096 12.4097 16.7201 13.8796 15.7402 15.0195L19.5596 18.8398L18.8496 19.5498L15.0303 15.7295C13.8914 16.7085 12.4129 17.2977 10.8047 17.2988C7.22711 17.2959 4.30957 14.378 4.30957 10.7998C4.30957 7.21995 7.22977 4.30004 10.8096 4.2998ZM10.8096 17.2998H10.7998C10.8014 17.2998 10.8031 17.2988 10.8047 17.2988C10.8063 17.2988 10.8079 17.2998 10.8096 17.2998ZM10.7998 5.2998C7.76989 5.2999 5.2998 7.76987 5.2998 10.7998C5.2998 13.8297 7.76989 16.2997 10.7998 16.2998C13.8298 16.2998 16.2998 13.8298 16.2998 10.7998C16.2998 7.7698 13.8298 5.2998 10.7998 5.2998Z", fill: "currentColor" })
-    }
-  ) : /* @__PURE__ */ t(
-    "svg",
-    {
-      width: C,
-      height: C,
-      viewBox: "0 0 32 32",
-      fill: "none",
-      xmlns: "http://www.w3.org/2000/svg",
-      className: l,
-      ...r,
-      children: /* @__PURE__ */ t("path", { d: "M14.3994 5.89844C19.094 5.89856 22.9002 9.7048 22.9004 14.3994C22.9003 16.5661 22.0885 18.5426 20.7539 20.0439L25.9551 25.2451L25.248 25.9521L20.0469 20.751C18.5451 22.0872 16.5676 22.9003 14.3994 22.9004C9.7048 22.9002 5.89856 19.094 5.89844 14.3994C5.89861 9.70484 9.70484 5.89861 14.3994 5.89844ZM14.3994 6.89844C10.2571 6.89861 6.89861 10.2571 6.89844 14.3994C6.89856 18.5418 10.2571 21.9002 14.3994 21.9004C18.5418 21.9003 21.9003 18.5418 21.9004 14.3994C21.9002 10.2571 18.5418 6.89856 14.3994 6.89844Z", fill: "currentColor" })
-    }
-  );
-}
+import { jsxs as y, jsx as a } from "react/jsx-runtime";
+import * as o from "react";
+import { cn as n } from "./index105.mjs";
+import { SearchIcon as z } from "./index73.mjs";
+import { STLArrowIcon as V } from "./index69.mjs";
+const _ = o.forwardRef(
+  ({
+    placeholder: g = "검색어를 입력하세요",
+    value: s,
+    onChange: e,
+    onSearch: i,
+    recentSearches: u = [],
+    onRecentSearchClick: l,
+    className: b,
+    disabled: c
+  }, k) => {
+    const [p, t] = o.useState(!1), [w, f] = o.useState(""), x = o.useRef(null), m = s !== void 0 ? s : w, h = (r) => {
+      const d = r.target.value;
+      s === void 0 && f(d), e == null || e(d);
+    }, v = (r) => {
+      r.key === "Enter" && (i == null || i(m), t(!1)), r.key === "Escape" && t(!1);
+    }, N = (r) => {
+      s === void 0 && f(r.text), e == null || e(r.text), l == null || l(r), t(!1);
+    };
+    o.useEffect(() => {
+      const r = (d) => {
+        x.current && !x.current.contains(d.target) && t(!1);
+      };
+      return p && document.addEventListener("mousedown", r), () => {
+        document.removeEventListener("mousedown", r);
+      };
+    }, [p]);
+    const E = p && u.length > 0;
+    return /* @__PURE__ */ y("div", { ref: x, className: "relative", children: [
+      /* @__PURE__ */ y(
+        "div",
+        {
+          className: n(
+            "relative flex h-9 items-center gap-2 rounded-[20px] border",
+            "bg-white dark:bg-dark-400",
+            "border-gray-100 dark:border-dark-200",
+            "px-3 cursor-text",
+            "focus-within:border-gray-500 dark:focus-within:border-gray-100",
+            "transition-colors",
+            c && "opacity-50 cursor-not-allowed",
+            b
+          ),
+          children: [
+            /* @__PURE__ */ a(z, { size: 20, className: "text-gray-500 dark:text-gray-50 shrink-0" }),
+            /* @__PURE__ */ a(
+              "input",
+              {
+                ref: k,
+                type: "text",
+                value: m,
+                onChange: h,
+                onKeyDown: v,
+                onFocus: () => !c && t(!0),
+                placeholder: g,
+                disabled: c,
+                className: n(
+                  "flex-1 bg-transparent text-xs outline-none",
+                  "text-gray-900 dark:text-gray-50",
+                  "placeholder:text-gray-300 dark:placeholder:text-gray-50",
+                  "disabled:cursor-not-allowed"
+                )
+              }
+            ),
+            /* @__PURE__ */ a(V, { size: 24, className: "text-primary dark:text-gray-50 shrink-0" })
+          ]
+        }
+      ),
+      E && /* @__PURE__ */ a(
+        "div",
+        {
+          className: n(
+            "absolute left-0 right-0 top-full mt-[13px] z-50",
+            "overflow-hidden rounded-[5px] border",
+            "border-gray-100 dark:border-dark-200",
+            "bg-white/50 dark:bg-dark-400/50 backdrop-blur-[12px]",
+            "shadow-[10px_10px_10px_0px_rgba(0,0,0,0.05)]",
+            "p-[5px]",
+            "animate-in fade-in-0 zoom-in-95 slide-in-from-top-2"
+          ),
+          children: u.map((r) => /* @__PURE__ */ a(
+            "button",
+            {
+              type: "button",
+              onClick: () => N(r),
+              className: n(
+                "flex h-[29px] w-full cursor-pointer select-none items-center rounded-[2px] px-[5px] py-[5px]",
+                "text-xs text-gray-500 dark:text-gray-300 text-left",
+                "hover:bg-gray-100 dark:hover:bg-dark-300",
+                "focus:bg-gray-100 dark:focus:bg-dark-300 outline-none",
+                "transition-colors"
+              ),
+              children: r.text
+            },
+            r.id
+          ))
+        }
+      )
+    ] });
+  }
+);
+_.displayName = "SearchBar";
 export {
-  h as SearchIcon
+  _ as SearchBar
 };
 //# sourceMappingURL=index72.mjs.map

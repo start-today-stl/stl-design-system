@@ -2,7 +2,7 @@ import * as React from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 
 import { DashboardCard } from '../src/dashboard/dashboard-card'
-import { FilterTabs } from '../src/dashboard/filter-tabs'
+import { CardAction, CardActionGroup } from '../src/dashboard'
 import { StatCard } from '../src/dashboard/stat-card'
 import { Badge } from '../src/components/ui/badge'
 import { InformationIcon } from '../src/icons'
@@ -52,7 +52,7 @@ export const WithFilterTabs: Story = {
           icon={<InformationIcon size={24} />}
           title="전체"
           headerAction={
-            <FilterTabs
+            <CardActionGroup
               options={['최근 7일', '최근 15일', '최근 30일']}
               value={filter}
               onValueChange={setFilter}
@@ -78,7 +78,7 @@ export const WithMainStatCard: Story = {
           icon={<InformationIcon size={24} />}
           title="전체"
           headerAction={
-            <FilterTabs
+            <CardActionGroup
               options={['최근 7일', '최근 15일', '최근 30일']}
               value={filter}
               onValueChange={setFilter}
@@ -136,11 +136,7 @@ export const WithSmallStatCards: Story = {
       <DashboardCard
         icon={<InformationIcon size={24} />}
         title="필수 확인사항"
-        headerAction={
-          <button className="h-[18px] px-[5px] rounded-[2px] border border-gray-200 text-[10px] tracking-[-0.1px] text-gray-700 transition-colors cursor-pointer hover:bg-gray-50 dark:border-dark-300 dark:text-gray-100 dark:hover:bg-dark-400">
-            새로고침
-          </button>
-        }
+        headerAction={<CardAction>새로고침</CardAction>}
       >
         <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
           <StatCard variant="small" icon={<InformationIcon size={24} />} count="0건" label="주소지 오류" />
@@ -162,7 +158,7 @@ export const CSStatusLayout: Story = {
           icon={<InformationIcon size={24} />}
           title="CS 현황"
           headerAction={
-            <FilterTabs
+            <CardActionGroup
               options={['최근 7일', '최근 15일', '최근 30일']}
               value={filter}
               onValueChange={setFilter}
@@ -215,7 +211,7 @@ export const DashboardLayout: Story = {
             icon={<InformationIcon size={24} />}
             title="전체"
             headerAction={
-              <FilterTabs
+              <CardActionGroup
                 options={['최근 7일', '최근 15일', '최근 30일']}
                 value={filter}
                 onValueChange={setFilter}
@@ -262,11 +258,7 @@ export const DashboardLayout: Story = {
           <DashboardCard
             icon={<InformationIcon size={24} />}
             title="필수 확인사항"
-            headerAction={
-          <button className="h-[18px] px-[5px] rounded-[2px] border border-gray-200 text-[10px] tracking-[-0.1px] text-gray-700 transition-colors cursor-pointer hover:bg-gray-50 dark:border-dark-300 dark:text-gray-100 dark:hover:bg-dark-400">
-            새로고침
-          </button>
-        }
+            headerAction={<CardAction>새로고침</CardAction>}
           >
             <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
               <StatCard variant="small" icon={<InformationIcon size={24} />} count="0건" label="주소지 오류" />

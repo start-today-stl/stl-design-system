@@ -1,2 +1,7 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const l=require("react"),d=require("react-dom"),f=require("./index146.cjs"),p=require("./index153.cjs"),P=require("react/jsx-runtime");function b(e){const r=Object.create(null,{[Symbol.toStringTag]:{value:"Module"}});if(e){for(const t in e)if(t!=="default"){const o=Object.getOwnPropertyDescriptor(e,t);Object.defineProperty(r,t,o.get?o:{enumerable:!0,get:()=>e[t]})}}return r.default=e,Object.freeze(r)}const c=b(l);var m="Portal",i=c.forwardRef((e,r)=>{var a;const{container:t,...o}=e,[u,s]=c.useState(!1);p.useLayoutEffect(()=>s(!0),[]);const n=t||u&&((a=globalThis==null?void 0:globalThis.document)==null?void 0:a.body);return n?d.createPortal(P.jsx(f.Primitive.div,{...o,ref:r}),n):null});i.displayName=m;exports.Portal=i;
+"use strict";const a=require("react"),l=require("./index171.cjs"),u=require("./index172.cjs"),t=require("./index173.cjs"),i=require("./index174.cjs");/**
+ * @license lucide-react v0.563.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */const C=(e,r)=>{const s=a.forwardRef(({className:c,...o},n)=>a.createElement(i,{ref:n,iconNode:r,className:l.mergeClasses(`lucide-${u.toKebabCase(t.toPascalCase(e))}`,`lucide-${e}`,c),...o}));return s.displayName=t.toPascalCase(e),s};module.exports=C;
 //# sourceMappingURL=index170.cjs.map

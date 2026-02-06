@@ -1,9 +1,8 @@
-class t {
-  constructor(e, s) {
-    this.days = s, this.weekNumber = e;
-  }
-}
+import { RemoveScrollSideCar as r } from "./index337.mjs";
+import { effectCar as o } from "./index335.mjs";
+import { exportSidecar as e } from "./index338.mjs";
+const f = e(o, r);
 export {
-  t as CalendarWeek
+  f as default
 };
 //# sourceMappingURL=index271.mjs.map

@@ -1,2 +1,39 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const P=["top","right","bottom","left"],f=Math.min,p=Math.max,O=Math.round,S=Math.floor,y=t=>({x:t,y:t}),M={left:"right",right:"left",bottom:"top",top:"bottom"},j={start:"end",end:"start"};function w(t,e,n){return p(t,f(e,n))}function C(t,e){return typeof t=="function"?t(e):t}function l(t){return t.split("-")[0]}function a(t){return t.split("-")[1]}function d(t){return t==="x"?"y":"x"}function h(t){return t==="y"?"height":"width"}const L=new Set(["top","bottom"]);function x(t){return L.has(l(t))?"y":"x"}function A(t){return d(x(t))}function T(t,e,n){n===void 0&&(n=!1);const r=a(t),i=A(t),o=h(i);let s=i==="x"?r===(n?"end":"start")?"right":"left":r==="start"?"bottom":"top";return e.reference[o]>e.floating[o]&&(s=g(s)),[s,g(s)]}function E(t){const e=g(t);return[c(t),e,c(e)]}function c(t){return t.replace(/start|end/g,e=>j[e])}const m=["left","right"],u=["right","left"],R=["top","bottom"],v=["bottom","top"];function k(t,e,n){switch(t){case"top":case"bottom":return n?e?u:m:e?m:u;case"left":case"right":return e?R:v;default:return[]}}function q(t,e,n,r){const i=a(t);let o=k(l(t),n==="start",r);return i&&(o=o.map(s=>s+"-"+i),e&&(o=o.concat(o.map(c)))),o}function g(t){return t.replace(/left|right|bottom|top/g,e=>M[e])}function b(t){return{top:0,right:0,bottom:0,left:0,...t}}function z(t){return typeof t!="number"?b(t):{top:t,right:t,bottom:t,left:t}}function B(t){const{x:e,y:n,width:r,height:i}=t;return{width:r,height:i,top:n,left:e,right:e+r,bottom:n+i,x:e,y:n}}exports.clamp=w;exports.createCoords=y;exports.evaluate=C;exports.expandPaddingObject=b;exports.floor=S;exports.getAlignment=a;exports.getAlignmentAxis=A;exports.getAlignmentSides=T;exports.getAxisLength=h;exports.getExpandedPlacements=E;exports.getOppositeAlignmentPlacement=c;exports.getOppositeAxis=d;exports.getOppositeAxisPlacements=q;exports.getOppositePlacement=g;exports.getPaddingObject=z;exports.getSide=l;exports.getSideAxis=x;exports.max=p;exports.min=f;exports.rectToClientRect=B;exports.round=O;exports.sides=P;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const f=require("react"),b=require("./index343.cjs"),o=require("./index334.cjs"),p=require("./index379.cjs");function v(t){const c=Object.create(null,{[Symbol.toStringTag]:{value:"Module"}});if(t){for(const e in t)if(e!=="default"){const n=Object.getOwnPropertyDescriptor(t,e);Object.defineProperty(c,e,n.get?n:{enumerable:!0,get:()=>t[e]})}}return c.default=t,Object.freeze(c)}const u=v(f);var m=b.styleSingleton(),r="data-scroll-locked",h=function(t,c,e,n){var i=t.left,l=t.top,d=t.right,a=t.gap;return e===void 0&&(e="margin"),`
+  .`.concat(o.noScrollbarsClassName,` {
+   overflow: hidden `).concat(n,`;
+   padding-right: `).concat(a,"px ").concat(n,`;
+  }
+  body[`).concat(r,`] {
+    overflow: hidden `).concat(n,`;
+    overscroll-behavior: contain;
+    `).concat([c&&"position: relative ".concat(n,";"),e==="margin"&&`
+    padding-left: `.concat(i,`px;
+    padding-top: `).concat(l,`px;
+    padding-right: `).concat(d,`px;
+    margin-left:0;
+    margin-top:0;
+    margin-right: `).concat(a,"px ").concat(n,`;
+    `),e==="padding"&&"padding-right: ".concat(a,"px ").concat(n,";")].filter(Boolean).join(""),`
+  }
+  
+  .`).concat(o.zeroRightClassName,` {
+    right: `).concat(a,"px ").concat(n,`;
+  }
+  
+  .`).concat(o.fullWidthClassName,` {
+    margin-right: `).concat(a,"px ").concat(n,`;
+  }
+  
+  .`).concat(o.zeroRightClassName," .").concat(o.zeroRightClassName,` {
+    right: 0 `).concat(n,`;
+  }
+  
+  .`).concat(o.fullWidthClassName," .").concat(o.fullWidthClassName,` {
+    margin-right: 0 `).concat(n,`;
+  }
+  
+  body[`).concat(r,`] {
+    `).concat(o.removedBarSizeVariable,": ").concat(a,`px;
+  }
+`)},s=function(){var t=parseInt(document.body.getAttribute(r)||"0",10);return isFinite(t)?t:0},g=function(){u.useEffect(function(){return document.body.setAttribute(r,(s()+1).toString()),function(){var t=s()-1;t<=0?document.body.removeAttribute(r):document.body.setAttribute(r,t.toString())}},[])},y=function(t){var c=t.noRelative,e=t.noImportant,n=t.gapMode,i=n===void 0?"margin":n;g();var l=u.useMemo(function(){return p.getGapWidth(i)},[i]);return u.createElement(m,{styles:h(l,!c,i,e?"":"!important")})};exports.RemoveScrollBar=y;exports.lockAttribute=r;exports.useLockAttribute=g;
 //# sourceMappingURL=index342.cjs.map

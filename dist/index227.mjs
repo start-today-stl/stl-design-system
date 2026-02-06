@@ -1,107 +1,77 @@
-import { TZDate as c } from "./index272.mjs";
-import "./index273.mjs";
-import { differenceInCalendarMonths as O } from "./index281.mjs";
-import { differenceInCalendarDays as k } from "./index280.mjs";
-import { getISOWeek as w } from "./index288.mjs";
-import { getWeek as M } from "./index291.mjs";
-function I(o, d = {}) {
+import { useEffect as N, useMemo as w } from "react";
+import { getDates as S } from "./index318.mjs";
+import { getDays as b } from "./index319.mjs";
+import { getDisplayMonths as q } from "./index320.mjs";
+import { getInitialMonth as g } from "./index321.mjs";
+import { getMonths as E } from "./index322.mjs";
+import { getNavMonths as F } from "./index323.mjs";
+import { getNextMonth as P } from "./index324.mjs";
+import { getPreviousMonth as V } from "./index325.mjs";
+import { getWeeks as Z } from "./index326.mjs";
+import { useControlledValue as j } from "./index327.mjs";
+function $(e, o) {
   var l;
-  const { weekStartsOn: h, locale: u } = d, g = h ?? ((l = u == null ? void 0 : u.options) == null ? void 0 : l.weekStartsOn) ?? 0, n = (t) => {
-    const e = typeof t == "number" || typeof t == "string" ? new Date(t) : t;
-    return new c(e.getFullYear(), e.getMonth(), e.getDate(), 12, 0, 0, o);
-  }, f = (t) => {
-    const e = n(t);
-    return new Date(e.getFullYear(), e.getMonth(), e.getDate(), 0, 0, 0, 0);
+  const [s, t] = F(e, o), { startOfMonth: a, endOfMonth: u } = o, h = g(e, s, t, o), [r, M] = j(
+    h,
+    // initialMonth is always computed from props.month if provided
+    e.month ? h : void 0
+  );
+  N(() => {
+    const n = g(e, s, t, o);
+    M(n);
+  }, [e.timeZone]);
+  const { months: k, weeks: c, days: W, previousMonth: O, nextMonth: x } = w(() => {
+    const n = q(r, t, { numberOfMonths: e.numberOfMonths }, o), i = S(n, e.endMonth ? u(e.endMonth) : void 0, {
+      ISOWeek: e.ISOWeek,
+      fixedWeeks: e.fixedWeeks,
+      broadcastCalendar: e.broadcastCalendar
+    }, o), m = E(n, i, {
+      broadcastCalendar: e.broadcastCalendar,
+      fixedWeeks: e.fixedWeeks,
+      ISOWeek: e.ISOWeek,
+      reverseMonths: e.reverseMonths
+    }, o), I = Z(m), T = b(m), C = V(r, s, e, o), D = P(r, t, e, o);
+    return {
+      months: m,
+      weeks: I,
+      days: T,
+      previousMonth: C,
+      nextMonth: D
+    };
+  }, [
+    o,
+    r.getTime(),
+    t == null ? void 0 : t.getTime(),
+    s == null ? void 0 : s.getTime(),
+    e.disableNavigation,
+    e.broadcastCalendar,
+    (l = e.endMonth) == null ? void 0 : l.getTime(),
+    e.fixedWeeks,
+    e.ISOWeek,
+    e.numberOfMonths,
+    e.pagedNavigation,
+    e.reverseMonths
+  ]), { disableNavigation: v, onMonthChange: f } = e, y = (n) => c.some((i) => i.days.some((m) => m.isEqualTo(n))), d = (n) => {
+    if (v)
+      return;
+    let i = a(n);
+    s && i < a(s) && (i = a(s)), t && i > a(t) && (i = a(t)), M(i), f == null || f(i);
   };
   return {
-    today: () => n(c.tz(o)),
-    newDate: (t, e, r) => new c(t, e, r, 12, 0, 0, o),
-    startOfDay: (t) => n(t),
-    startOfWeek: (t, e) => {
-      const r = n(t), a = (e == null ? void 0 : e.weekStartsOn) ?? g, s = (r.getDay() - a + 7) % 7;
-      return r.setDate(r.getDate() - s), r;
-    },
-    startOfISOWeek: (t) => {
-      const e = n(t), r = (e.getDay() - 1 + 7) % 7;
-      return e.setDate(e.getDate() - r), e;
-    },
-    startOfMonth: (t) => {
-      const e = n(t);
-      return e.setDate(1), e;
-    },
-    startOfYear: (t) => {
-      const e = n(t);
-      return e.setMonth(0, 1), e;
-    },
-    endOfWeek: (t, e) => {
-      const r = n(t), D = ((((e == null ? void 0 : e.weekStartsOn) ?? g) + 6) % 7 - r.getDay() + 7) % 7;
-      return r.setDate(r.getDate() + D), r;
-    },
-    endOfISOWeek: (t) => {
-      const e = n(t), r = (7 - e.getDay()) % 7;
-      return e.setDate(e.getDate() + r), e;
-    },
-    endOfMonth: (t) => {
-      const e = n(t);
-      return e.setMonth(e.getMonth() + 1, 0), e;
-    },
-    endOfYear: (t) => {
-      const e = n(t);
-      return e.setMonth(11, 31), e;
-    },
-    eachMonthOfInterval: (t) => {
-      const e = n(t.start), r = n(t.end), a = [], s = new c(e.getFullYear(), e.getMonth(), 1, 12, 0, 0, o), D = r.getFullYear() * 12 + r.getMonth();
-      for (; s.getFullYear() * 12 + s.getMonth() <= D; )
-        a.push(new c(s, o)), s.setMonth(s.getMonth() + 1, 1);
-      return a;
-    },
-    // Normalize to noon once before arithmetic (avoid DST/midnight edge cases),
-    // mutate the same TZDate, and return it.
-    addDays: (t, e) => {
-      const r = n(t);
-      return r.setDate(r.getDate() + e), r;
-    },
-    addWeeks: (t, e) => {
-      const r = n(t);
-      return r.setDate(r.getDate() + e * 7), r;
-    },
-    addMonths: (t, e) => {
-      const r = n(t);
-      return r.setMonth(r.getMonth() + e), r;
-    },
-    addYears: (t, e) => {
-      const r = n(t);
-      return r.setFullYear(r.getFullYear() + e), r;
-    },
-    eachYearOfInterval: (t) => {
-      const e = n(t.start), r = n(t.end), a = [], s = new c(e.getFullYear(), 0, 1, 12, 0, 0, o);
-      for (; s.getFullYear() <= r.getFullYear(); )
-        a.push(new c(s, o)), s.setFullYear(s.getFullYear() + 1, 0, 1);
-      return a;
-    },
-    getWeek: (t, e) => {
-      var a;
-      const r = f(t);
-      return M(r, {
-        weekStartsOn: (e == null ? void 0 : e.weekStartsOn) ?? g,
-        firstWeekContainsDate: (e == null ? void 0 : e.firstWeekContainsDate) ?? ((a = u == null ? void 0 : u.options) == null ? void 0 : a.firstWeekContainsDate) ?? 1
-      });
-    },
-    getISOWeek: (t) => {
-      const e = f(t);
-      return w(e);
-    },
-    differenceInCalendarDays: (t, e) => {
-      const r = f(t), a = f(e);
-      return k(r, a);
-    },
-    differenceInCalendarMonths: (t, e) => {
-      const r = f(t), a = f(e);
-      return O(r, a);
+    months: k,
+    weeks: c,
+    days: W,
+    navStart: s,
+    navEnd: t,
+    previousMonth: O,
+    nextMonth: x,
+    goToMonth: d,
+    goToDay: (n) => {
+      y(n) || d(n.date);
     }
   };
 }
 export {
-  I as createNoonOverrides
+  $ as useCalendar
 };
 //# sourceMappingURL=index227.mjs.map

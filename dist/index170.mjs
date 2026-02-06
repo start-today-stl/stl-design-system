@@ -1,17 +1,30 @@
-import * as r from "react";
-import s from "react-dom";
-import { Primitive as c } from "./index146.mjs";
-import { useLayoutEffect as u } from "./index153.mjs";
-import { jsx as l } from "react/jsx-runtime";
-var p = "Portal", d = r.forwardRef((e, a) => {
-  var o;
-  const { container: f, ...i } = e, [m, n] = r.useState(!1);
-  u(() => n(!0), []);
-  const t = f || m && ((o = globalThis == null ? void 0 : globalThis.document) == null ? void 0 : o.body);
-  return t ? s.createPortal(/* @__PURE__ */ l(c.div, { ...i, ref: a }), t) : null;
-});
-d.displayName = p;
+import { forwardRef as c, createElement as f } from "react";
+import { mergeClasses as l } from "./index171.mjs";
+import { toKebabCase as p } from "./index172.mjs";
+import { toPascalCase as r } from "./index173.mjs";
+import i from "./index174.mjs";
+/**
+ * @license lucide-react v0.563.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const I = (e, t) => {
+  const o = c(
+    ({ className: a, ...m }, s) => f(i, {
+      ref: s,
+      iconNode: t,
+      className: l(
+        `lucide-${p(r(e))}`,
+        `lucide-${e}`,
+        a
+      ),
+      ...m
+    })
+  );
+  return o.displayName = r(e), o;
+};
 export {
-  d as Portal
+  I as default
 };
 //# sourceMappingURL=index170.mjs.map

@@ -1,88 +1,28 @@
-import { jsx as t } from "react/jsx-runtime";
-import * as l from "react";
-import { cn as r } from "./index104.mjs";
-const d = l.forwardRef(({ className: e, ...a }, o) => /* @__PURE__ */ t("div", { className: "relative w-full overflow-auto", children: /* @__PURE__ */ t(
-  "table",
+import { jsx as e } from "react/jsx-runtime";
+import * as s from "react";
+import { Root as o, Thumb as n } from "./index137.mjs";
+import { cn as r } from "./index105.mjs";
+const c = s.forwardRef(({ className: t, ...a }, i) => /* @__PURE__ */ e(
+  o,
   {
-    ref: o,
-    className: r("w-full caption-bottom text-sm", e),
-    ...a
-  }
-) }));
-d.displayName = "Table";
-const s = l.forwardRef(({ className: e, ...a }, o) => /* @__PURE__ */ t("thead", { ref: o, className: r("[&_tr]:border-b", e), ...a }));
-s.displayName = "TableHeader";
-const m = l.forwardRef(({ className: e, ...a }, o) => /* @__PURE__ */ t(
-  "tbody",
-  {
-    ref: o,
-    className: r("[&_tr:last-child]:border-0", e),
-    ...a
-  }
-));
-m.displayName = "TableBody";
-const b = l.forwardRef(({ className: e, ...a }, o) => /* @__PURE__ */ t(
-  "tfoot",
-  {
-    ref: o,
     className: r(
-      "border-t bg-muted/50 font-medium [&>tr]:last:border-b-0",
-      e
+      "peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=unchecked]:bg-input",
+      t
     ),
-    ...a
+    ...a,
+    ref: i,
+    children: /* @__PURE__ */ e(
+      n,
+      {
+        className: r(
+          "pointer-events-none block h-5 w-5 rounded-full bg-background shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0"
+        )
+      }
+    )
   }
 ));
-b.displayName = "TableFooter";
-const c = l.forwardRef(({ className: e, ...a }, o) => /* @__PURE__ */ t(
-  "tr",
-  {
-    ref: o,
-    className: r(
-      "border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted",
-      e
-    ),
-    ...a
-  }
-));
-c.displayName = "TableRow";
-const f = l.forwardRef(({ className: e, ...a }, o) => /* @__PURE__ */ t(
-  "th",
-  {
-    ref: o,
-    className: r(
-      "h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0",
-      e
-    ),
-    ...a
-  }
-));
-f.displayName = "TableHead";
-const i = l.forwardRef(({ className: e, ...a }, o) => /* @__PURE__ */ t(
-  "td",
-  {
-    ref: o,
-    className: r("p-4 align-middle [&:has([role=checkbox])]:pr-0", e),
-    ...a
-  }
-));
-i.displayName = "TableCell";
-const n = l.forwardRef(({ className: e, ...a }, o) => /* @__PURE__ */ t(
-  "caption",
-  {
-    ref: o,
-    className: r("mt-4 text-sm text-muted-foreground", e),
-    ...a
-  }
-));
-n.displayName = "TableCaption";
+c.displayName = o.displayName;
 export {
-  d as Table,
-  m as TableBody,
-  n as TableCaption,
-  i as TableCell,
-  b as TableFooter,
-  f as TableHead,
-  s as TableHeader,
-  c as TableRow
+  c as Switch
 };
 //# sourceMappingURL=index89.mjs.map

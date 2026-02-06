@@ -1,51 +1,72 @@
-import * as l from "react";
-import { composeRefs as m } from "./index143.mjs";
-import { jsx as u } from "react/jsx-runtime";
-// @__NO_SIDE_EFFECTS__
-function b(e) {
-  const n = /* @__PURE__ */ y(e), o = l.forwardRef((t, r) => {
-    const { children: i, ...c } = t, s = l.Children.toArray(i), a = s.find(E);
-    if (a) {
-      const f = a.props.children, d = s.map((p) => p === a ? l.Children.count(f) > 1 ? l.Children.only(null) : l.isValidElement(f) ? f.props.children : null : p);
-      return /* @__PURE__ */ u(n, { ...c, ref: r, children: l.isValidElement(f) ? l.cloneElement(f, void 0, d) : null });
+import * as a from "react";
+import { useComposedRefs as E } from "./index143.mjs";
+import { useLayoutEffect as A } from "./index148.mjs";
+function T(n, e) {
+  return a.useReducer((r, t) => e[r][t] ?? r, n);
+}
+var R = (n) => {
+  const { present: e, children: r } = n, t = v(e), i = typeof r == "function" ? r({ present: t.isPresent }) : a.Children.only(r), c = E(t.ref, P(i));
+  return typeof r == "function" || t.isPresent ? a.cloneElement(i, { ref: c }) : null;
+};
+R.displayName = "Presence";
+function v(n) {
+  const [e, r] = a.useState(), t = a.useRef(null), i = a.useRef(n), c = a.useRef("none"), p = n ? "mounted" : "unmounted", [N, s] = T(p, {
+    mounted: {
+      UNMOUNT: "unmounted",
+      ANIMATION_OUT: "unmountSuspended"
+    },
+    unmountSuspended: {
+      MOUNT: "mounted",
+      ANIMATION_END: "unmounted"
+    },
+    unmounted: {
+      MOUNT: "mounted"
     }
-    return /* @__PURE__ */ u(n, { ...c, ref: r, children: i });
   });
-  return o.displayName = `${e}.Slot`, o;
-}
-// @__NO_SIDE_EFFECTS__
-function y(e) {
-  const n = l.forwardRef((o, t) => {
-    const { children: r, ...i } = o;
-    if (l.isValidElement(r)) {
-      const c = S(r), s = C(i, r.props);
-      return r.type !== l.Fragment && (s.ref = t ? m(t, c) : c), l.cloneElement(r, s);
+  return a.useEffect(() => {
+    const o = l(t.current);
+    c.current = N === "mounted" ? o : "none";
+  }, [N]), A(() => {
+    const o = t.current, m = i.current;
+    if (m !== n) {
+      const f = c.current, u = l(o);
+      n ? s("MOUNT") : u === "none" || (o == null ? void 0 : o.display) === "none" ? s("UNMOUNT") : s(m && f !== u ? "ANIMATION_OUT" : "UNMOUNT"), i.current = n;
     }
-    return l.Children.count(r) > 1 ? l.Children.only(null) : null;
-  });
-  return n.displayName = `${e}.SlotClone`, n;
+  }, [n, s]), A(() => {
+    if (e) {
+      let o;
+      const m = e.ownerDocument.defaultView ?? window, d = (u) => {
+        const g = l(t.current).includes(CSS.escape(u.animationName));
+        if (u.target === e && g && (s("ANIMATION_END"), !i.current)) {
+          const O = e.style.animationFillMode;
+          e.style.animationFillMode = "forwards", o = m.setTimeout(() => {
+            e.style.animationFillMode === "forwards" && (e.style.animationFillMode = O);
+          });
+        }
+      }, f = (u) => {
+        u.target === e && (c.current = l(t.current));
+      };
+      return e.addEventListener("animationstart", f), e.addEventListener("animationcancel", d), e.addEventListener("animationend", d), () => {
+        m.clearTimeout(o), e.removeEventListener("animationstart", f), e.removeEventListener("animationcancel", d), e.removeEventListener("animationend", d);
+      };
+    } else
+      s("ANIMATION_END");
+  }, [e, s]), {
+    isPresent: ["mounted", "unmountSuspended"].includes(N),
+    ref: a.useCallback((o) => {
+      t.current = o ? getComputedStyle(o) : null, r(o);
+    }, [])
+  };
 }
-var g = Symbol("radix.slottable");
-function E(e) {
-  return l.isValidElement(e) && typeof e.type == "function" && "__radixId" in e.type && e.type.__radixId === g;
+function l(n) {
+  return (n == null ? void 0 : n.animationName) || "none";
 }
-function C(e, n) {
-  const o = { ...n };
-  for (const t in n) {
-    const r = e[t], i = n[t];
-    /^on[A-Z]/.test(t) ? r && i ? o[t] = (...s) => {
-      const a = i(...s);
-      return r(...s), a;
-    } : r && (o[t] = r) : t === "style" ? o[t] = { ...r, ...i } : t === "className" && (o[t] = [r, i].filter(Boolean).join(" "));
-  }
-  return { ...e, ...o };
-}
-function S(e) {
-  var t, r;
-  let n = (t = Object.getOwnPropertyDescriptor(e.props, "ref")) == null ? void 0 : t.get, o = n && "isReactWarning" in n && n.isReactWarning;
-  return o ? e.ref : (n = (r = Object.getOwnPropertyDescriptor(e, "ref")) == null ? void 0 : r.get, o = n && "isReactWarning" in n && n.isReactWarning, o ? e.props.ref : e.props.ref || e.ref);
+function P(n) {
+  var t, i;
+  let e = (t = Object.getOwnPropertyDescriptor(n.props, "ref")) == null ? void 0 : t.get, r = e && "isReactWarning" in e && e.isReactWarning;
+  return r ? n.ref : (e = (i = Object.getOwnPropertyDescriptor(n, "ref")) == null ? void 0 : i.get, r = e && "isReactWarning" in e && e.isReactWarning, r ? n.props.ref : n.props.ref || n.ref);
 }
 export {
-  b as createSlot
+  R as Presence
 };
 //# sourceMappingURL=index159.mjs.map

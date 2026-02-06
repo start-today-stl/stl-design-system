@@ -1,20 +1,9 @@
-import { useMulti as i } from "./index330.mjs";
-import { useRange as o } from "./index331.mjs";
-import { useSingle as s } from "./index332.mjs";
-function f(e, n) {
-  const t = s(e, n), r = i(e, n), u = o(e, n);
-  switch (e.mode) {
-    case "single":
-      return t;
-    case "multiple":
-      return r;
-    case "range":
-      return u;
-    default:
-      return;
-  }
+import { TZDate as r } from "./index272.mjs";
+import "./index274.mjs";
+function e(n, o) {
+  return n instanceof r && n.timeZone === o ? n : new r(n, o);
 }
 export {
-  f as useSelection
+  e as toTimeZone
 };
 //# sourceMappingURL=index233.mjs.map

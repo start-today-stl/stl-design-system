@@ -1,27 +1,51 @@
-import { jsxs as i, jsx as e } from "react/jsx-runtime";
-import * as m from "react";
-import { cn as g } from "./index104.mjs";
-const n = m.forwardRef(
-  ({ className: s, icon: r, title: a, description: t, children: x, ...d }, c) => /* @__PURE__ */ i(
-    "div",
-    {
-      ref: c,
-      className: g(
-        "w-[276px] p-2.5 bg-gray-50 dark:bg-gray-800 rounded-[10px]",
-        s
-      ),
-      ...d,
-      children: [
-        r && /* @__PURE__ */ e("div", { className: "mb-2.5 w-6 h-6 flex items-center justify-center text-gray-500 dark:text-gray-400", children: r }),
-        a && /* @__PURE__ */ e("p", { className: "mb-1 text-xs font-semibold text-gray-700 dark:text-gray-200 leading-[1.5] tracking-[-0.12px]", children: a }),
-        t && /* @__PURE__ */ e("p", { className: "text-xs text-gray-500 dark:text-gray-400 leading-[1.5] tracking-[-0.12px]", children: t }),
-        x
-      ]
+import { jsx as r, Fragment as u } from "react/jsx-runtime";
+import { NavGroup as m } from "./index51.mjs";
+import { NavItem as s } from "./index53.mjs";
+import { isNavGroup as I } from "./index103.mjs";
+import { STLArrowIcon as b } from "./index69.mjs";
+function f(i) {
+  if (!(i <= 1))
+    return i >= 3 ? 3 : i;
+}
+function E({
+  items: i,
+  iconSize: t = 24,
+  indicatorSize: l = 24,
+  collapsed: a
+}) {
+  const c = (o, e = 1) => {
+    if (I(o)) {
+      const v = "icon" in o ? o.icon : void 0;
+      return /* @__PURE__ */ r(
+        m,
+        {
+          icon: v ? /* @__PURE__ */ r(v, { size: t }) : void 0,
+          label: o.label,
+          depth: f(e),
+          defaultExpanded: o.defaultExpanded,
+          collapsed: a,
+          children: o.children.map((p) => c(p, e + 1))
+        },
+        o.id
+      );
     }
-  )
-);
-n.displayName = "Notice";
+    const n = o, d = "icon" in n ? n.icon : void 0;
+    return /* @__PURE__ */ r(
+      s,
+      {
+        icon: d ? /* @__PURE__ */ r(d, { size: t }) : void 0,
+        label: n.label,
+        active: n.active,
+        depth: f(e),
+        collapsed: a,
+        indicator: n.hasIndicator ? /* @__PURE__ */ r(b, { size: l }) : void 0
+      },
+      n.id
+    );
+  };
+  return /* @__PURE__ */ r(u, { children: i.map((o) => c(o)) });
+}
 export {
-  n as Notice
+  E as NavRenderer
 };
 //# sourceMappingURL=index55.mjs.map

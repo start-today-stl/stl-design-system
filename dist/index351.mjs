@@ -1,7 +1,8 @@
-const o = 6048e5, c = 864e5, n = Symbol.for("constructDateFrom");
+import { constructFrom as r } from "./index350.mjs";
+function n(o, t) {
+  return r(t || o, o);
+}
 export {
-  n as constructFromSymbol,
-  c as millisecondsInDay,
-  o as millisecondsInWeek
+  n as toDate
 };
 //# sourceMappingURL=index351.mjs.map

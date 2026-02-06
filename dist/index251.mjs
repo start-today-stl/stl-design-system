@@ -1,7 +1,7 @@
-function n(o) {
-  return "Choose the Month";
+function t(o) {
+  return "Go to the Previous Month";
 }
 export {
-  n as labelMonthDropdown
+  t as labelPrevious
 };
 //# sourceMappingURL=index251.mjs.map

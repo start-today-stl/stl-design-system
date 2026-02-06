@@ -1,263 +1,252 @@
 import * as s from "react";
-import { composeEventHandlers as p } from "./index144.mjs";
-import { useComposedRefs as _ } from "./index143.mjs";
-import { createContextScope as V, createContext as q } from "./index141.mjs";
-import { useId as R } from "./index148.mjs";
-import { useControllableState as K } from "./index145.mjs";
-import { DismissableLayer as U } from "./index168.mjs";
-import { FocusScope as Y } from "./index169.mjs";
-import { Portal as Z } from "./index170.mjs";
-import { Presence as h } from "./index158.mjs";
-import { Primitive as m } from "./index146.mjs";
-import { useFocusGuards as z } from "./index171.mjs";
-import J from "./index172.mjs";
-import { hideOthers as Q } from "./index173.mjs";
-import { createSlot as X } from "./index174.mjs";
-import { jsx as i, jsxs as P, Fragment as O } from "react/jsx-runtime";
-var v = "Dialog", [I, Ne] = V(v), [ee, u] = I(v), x = (e) => {
+import { useComposedRefs as B } from "./index143.mjs";
+import { createContextScope as L } from "./index142.mjs";
+import { composeEventHandlers as S } from "./index144.mjs";
+import { useControllableState as O } from "./index152.mjs";
+import { usePrevious as j } from "./index157.mjs";
+import { useSize as H } from "./index158.mjs";
+import { Presence as z } from "./index159.mjs";
+import { Primitive as P } from "./index153.mjs";
+import { jsx as b, jsxs as G, Fragment as K } from "react/jsx-runtime";
+var g = "Checkbox", [U] = L(g), [X, E] = U(g);
+function J(t) {
   const {
-    __scopeDialog: o,
-    children: n,
-    open: a,
-    defaultOpen: r,
-    onOpenChange: t,
-    modal: c = !0
-  } = e, l = s.useRef(null), d = s.useRef(null), [g, C] = K({
-    prop: a,
+    __scopeCheckbox: a,
+    checked: c,
+    children: u,
+    defaultChecked: r,
+    disabled: e,
+    form: p,
+    name: f,
+    onCheckedChange: i,
+    required: m,
+    value: C = "on",
+    // @ts-expect-error
+    internal_do_not_use_render: d
+  } = t, [l, v] = O({
+    prop: c,
     defaultProp: r ?? !1,
-    onChange: t,
-    caller: v
-  });
-  return /* @__PURE__ */ i(
-    ee,
+    onChange: i,
+    caller: g
+  }), [k, x] = s.useState(null), [_, o] = s.useState(null), n = s.useRef(!1), I = k ? !!p || !!k.closest("form") : (
+    // We set this to true by default so that events bubble to forms without JS (SSR)
+    !0
+  ), R = {
+    checked: l,
+    disabled: e,
+    setChecked: v,
+    control: k,
+    setControl: x,
+    name: f,
+    form: p,
+    value: C,
+    hasConsumerStoppedPropagationRef: n,
+    required: m,
+    defaultChecked: h(r) ? !1 : r,
+    isFormControl: I,
+    bubbleInput: _,
+    setBubbleInput: o
+  };
+  return /* @__PURE__ */ b(
+    X,
     {
-      scope: o,
-      triggerRef: l,
-      contentRef: d,
-      contentId: R(),
-      titleId: R(),
-      descriptionId: R(),
-      open: g,
-      onOpenChange: C,
-      onOpenToggle: s.useCallback(() => C((H) => !H), [C]),
-      modal: c,
-      children: n
+      scope: a,
+      ...R,
+      children: W(d) ? d(R) : u
     }
   );
-};
-x.displayName = v;
-var A = "DialogTrigger", T = s.forwardRef(
-  (e, o) => {
-    const { __scopeDialog: n, ...a } = e, r = u(A, n), t = _(o, r.triggerRef);
-    return /* @__PURE__ */ i(
-      m.button,
+}
+var N = "CheckboxTrigger", w = s.forwardRef(
+  ({ __scopeCheckbox: t, onKeyDown: a, onClick: c, ...u }, r) => {
+    const {
+      control: e,
+      value: p,
+      disabled: f,
+      checked: i,
+      required: m,
+      setControl: C,
+      setChecked: d,
+      hasConsumerStoppedPropagationRef: l,
+      isFormControl: v,
+      bubbleInput: k
+    } = E(N, t), x = B(r, C), _ = s.useRef(i);
+    return s.useEffect(() => {
+      const o = e == null ? void 0 : e.form;
+      if (o) {
+        const n = () => d(_.current);
+        return o.addEventListener("reset", n), () => o.removeEventListener("reset", n);
+      }
+    }, [e, d]), /* @__PURE__ */ b(
+      P.button,
       {
         type: "button",
-        "aria-haspopup": "dialog",
-        "aria-expanded": r.open,
-        "aria-controls": r.contentId,
-        "data-state": N(r.open),
-        ...a,
-        ref: t,
-        onClick: p(e.onClick, r.onOpenToggle)
+        role: "checkbox",
+        "aria-checked": h(i) ? "mixed" : i,
+        "aria-required": m,
+        "data-state": A(i),
+        "data-disabled": f ? "" : void 0,
+        disabled: f,
+        value: p,
+        ...u,
+        ref: x,
+        onKeyDown: S(a, (o) => {
+          o.key === "Enter" && o.preventDefault();
+        }),
+        onClick: S(c, (o) => {
+          d((n) => h(n) ? !0 : !n), k && v && (l.current = o.isPropagationStopped(), l.current || o.stopPropagation());
+        })
       }
     );
   }
 );
-T.displayName = A;
-var E = "DialogPortal", [te, b] = I(E, {
-  forceMount: void 0
-}), M = (e) => {
-  const { __scopeDialog: o, forceMount: n, children: a, container: r } = e, t = u(E, o);
-  return /* @__PURE__ */ i(te, { scope: o, forceMount: n, children: s.Children.map(a, (c) => /* @__PURE__ */ i(h, { present: n || t.open, children: /* @__PURE__ */ i(Z, { asChild: !0, container: r, children: c }) })) });
-};
-M.displayName = E;
-var D = "DialogOverlay", w = s.forwardRef(
-  (e, o) => {
-    const n = b(D, e.__scopeDialog), { forceMount: a = n.forceMount, ...r } = e, t = u(D, e.__scopeDialog);
-    return t.modal ? /* @__PURE__ */ i(h, { present: a || t.open, children: /* @__PURE__ */ i(re, { ...r, ref: o }) }) : null;
-  }
-);
-w.displayName = D;
-var oe = X("DialogOverlay.RemoveScroll"), re = s.forwardRef(
-  (e, o) => {
-    const { __scopeDialog: n, ...a } = e, r = u(D, n);
-    return (
-      // Make sure `Content` is scrollable even when it doesn't live inside `RemoveScroll`
-      // ie. when `Overlay` and `Content` are siblings
-      /* @__PURE__ */ i(J, { as: oe, allowPinchZoom: !0, shards: [r.contentRef], children: /* @__PURE__ */ i(
-        m.div,
-        {
-          "data-state": N(r.open),
-          ...a,
-          ref: o,
-          style: { pointerEvents: "auto", ...a.style }
-        }
-      ) })
+w.displayName = N;
+var Q = s.forwardRef(
+  (t, a) => {
+    const {
+      __scopeCheckbox: c,
+      name: u,
+      checked: r,
+      defaultChecked: e,
+      required: p,
+      disabled: f,
+      value: i,
+      onCheckedChange: m,
+      form: C,
+      ...d
+    } = t;
+    return /* @__PURE__ */ b(
+      J,
+      {
+        __scopeCheckbox: c,
+        checked: r,
+        defaultChecked: e,
+        disabled: f,
+        required: p,
+        onCheckedChange: m,
+        name: u,
+        form: C,
+        value: i,
+        internal_do_not_use_render: ({ isFormControl: l }) => /* @__PURE__ */ G(K, { children: [
+          /* @__PURE__ */ b(
+            w,
+            {
+              ...d,
+              ref: a,
+              __scopeCheckbox: c
+            }
+          ),
+          l && /* @__PURE__ */ b(
+            q,
+            {
+              __scopeCheckbox: c
+            }
+          )
+        ] })
+      }
     );
   }
-), f = "DialogContent", S = s.forwardRef(
-  (e, o) => {
-    const n = b(f, e.__scopeDialog), { forceMount: a = n.forceMount, ...r } = e, t = u(f, e.__scopeDialog);
-    return /* @__PURE__ */ i(h, { present: a || t.open, children: t.modal ? /* @__PURE__ */ i(ne, { ...r, ref: o }) : /* @__PURE__ */ i(ae, { ...r, ref: o }) });
-  }
 );
-S.displayName = f;
-var ne = s.forwardRef(
-  (e, o) => {
-    const n = u(f, e.__scopeDialog), a = s.useRef(null), r = _(o, n.contentRef, a);
-    return s.useEffect(() => {
-      const t = a.current;
-      if (t) return Q(t);
-    }, []), /* @__PURE__ */ i(
-      F,
+Q.displayName = g;
+var T = "CheckboxIndicator", V = s.forwardRef(
+  (t, a) => {
+    const { __scopeCheckbox: c, forceMount: u, ...r } = t, e = E(T, c);
+    return /* @__PURE__ */ b(
+      z,
       {
-        ...e,
-        ref: r,
-        trapFocus: n.open,
-        disableOutsidePointerEvents: !0,
-        onCloseAutoFocus: p(e.onCloseAutoFocus, (t) => {
-          var c;
-          t.preventDefault(), (c = n.triggerRef.current) == null || c.focus();
-        }),
-        onPointerDownOutside: p(e.onPointerDownOutside, (t) => {
-          const c = t.detail.originalEvent, l = c.button === 0 && c.ctrlKey === !0;
-          (c.button === 2 || l) && t.preventDefault();
-        }),
-        onFocusOutside: p(
-          e.onFocusOutside,
-          (t) => t.preventDefault()
+        present: u || h(e.checked) || e.checked === !0,
+        children: /* @__PURE__ */ b(
+          P.span,
+          {
+            "data-state": A(e.checked),
+            "data-disabled": e.disabled ? "" : void 0,
+            ...r,
+            ref: a,
+            style: { pointerEvents: "none", ...t.style }
+          }
         )
       }
     );
   }
-), ae = s.forwardRef(
-  (e, o) => {
-    const n = u(f, e.__scopeDialog), a = s.useRef(!1), r = s.useRef(!1);
-    return /* @__PURE__ */ i(
-      F,
-      {
-        ...e,
-        ref: o,
-        trapFocus: !1,
-        disableOutsidePointerEvents: !1,
-        onCloseAutoFocus: (t) => {
-          var c, l;
-          (c = e.onCloseAutoFocus) == null || c.call(e, t), t.defaultPrevented || (a.current || (l = n.triggerRef.current) == null || l.focus(), t.preventDefault()), a.current = !1, r.current = !1;
-        },
-        onInteractOutside: (t) => {
-          var d, g;
-          (d = e.onInteractOutside) == null || d.call(e, t), t.defaultPrevented || (a.current = !0, t.detail.originalEvent.type === "pointerdown" && (r.current = !0));
-          const c = t.target;
-          ((g = n.triggerRef.current) == null ? void 0 : g.contains(c)) && t.preventDefault(), t.detail.originalEvent.type === "focusin" && r.current && t.preventDefault();
-        }
+);
+V.displayName = T;
+var M = "CheckboxBubbleInput", q = s.forwardRef(
+  ({ __scopeCheckbox: t, ...a }, c) => {
+    const {
+      control: u,
+      hasConsumerStoppedPropagationRef: r,
+      checked: e,
+      defaultChecked: p,
+      required: f,
+      disabled: i,
+      name: m,
+      value: C,
+      form: d,
+      bubbleInput: l,
+      setBubbleInput: v
+    } = E(M, t), k = B(c, v), x = j(e), _ = H(u);
+    s.useEffect(() => {
+      const n = l;
+      if (!n) return;
+      const I = window.HTMLInputElement.prototype, y = Object.getOwnPropertyDescriptor(
+        I,
+        "checked"
+      ).set, D = !r.current;
+      if (x !== e && y) {
+        const F = new Event("click", { bubbles: D });
+        n.indeterminate = h(e), y.call(n, h(e) ? !1 : e), n.dispatchEvent(F);
       }
-    );
-  }
-), F = s.forwardRef(
-  (e, o) => {
-    const { __scopeDialog: n, trapFocus: a, onOpenAutoFocus: r, onCloseAutoFocus: t, ...c } = e, l = u(f, n), d = s.useRef(null), g = _(o, d);
-    return z(), /* @__PURE__ */ P(O, { children: [
-      /* @__PURE__ */ i(
-        Y,
-        {
-          asChild: !0,
-          loop: !0,
-          trapped: a,
-          onMountAutoFocus: r,
-          onUnmountAutoFocus: t,
-          children: /* @__PURE__ */ i(
-            U,
-            {
-              role: "dialog",
-              id: l.contentId,
-              "aria-describedby": l.descriptionId,
-              "aria-labelledby": l.titleId,
-              "data-state": N(l.open),
-              ...c,
-              ref: g,
-              onDismiss: () => l.onOpenChange(!1)
-            }
-          )
-        }
-      ),
-      /* @__PURE__ */ P(O, { children: [
-        /* @__PURE__ */ i(ie, { titleId: l.titleId }),
-        /* @__PURE__ */ i(ce, { contentRef: d, descriptionId: l.descriptionId })
-      ] })
-    ] });
-  }
-), y = "DialogTitle", W = s.forwardRef(
-  (e, o) => {
-    const { __scopeDialog: n, ...a } = e, r = u(y, n);
-    return /* @__PURE__ */ i(m.h2, { id: r.titleId, ...a, ref: o });
-  }
-);
-W.displayName = y;
-var k = "DialogDescription", G = s.forwardRef(
-  (e, o) => {
-    const { __scopeDialog: n, ...a } = e, r = u(k, n);
-    return /* @__PURE__ */ i(m.p, { id: r.descriptionId, ...a, ref: o });
-  }
-);
-G.displayName = k;
-var L = "DialogClose", $ = s.forwardRef(
-  (e, o) => {
-    const { __scopeDialog: n, ...a } = e, r = u(L, n);
-    return /* @__PURE__ */ i(
-      m.button,
+    }, [l, x, e, r]);
+    const o = s.useRef(h(e) ? !1 : e);
+    return /* @__PURE__ */ b(
+      P.input,
       {
-        type: "button",
+        type: "checkbox",
+        "aria-hidden": !0,
+        defaultChecked: p ?? o.current,
+        required: f,
+        disabled: i,
+        name: m,
+        value: C,
+        form: d,
         ...a,
-        ref: o,
-        onClick: p(e.onClick, () => r.onOpenChange(!1))
+        tabIndex: -1,
+        ref: k,
+        style: {
+          ...a.style,
+          ..._,
+          position: "absolute",
+          pointerEvents: "none",
+          opacity: 0,
+          margin: 0,
+          // We transform because the input is absolutely positioned but we have
+          // rendered it **after** the button. This pulls it back to sit on top
+          // of the button.
+          transform: "translateX(-100%)"
+        }
       }
     );
   }
 );
-$.displayName = L;
-function N(e) {
-  return e ? "open" : "closed";
+q.displayName = M;
+function W(t) {
+  return typeof t == "function";
 }
-var B = "DialogTitleWarning", [Pe, j] = q(B, {
-  contentName: f,
-  titleName: y,
-  docsSlug: "dialog"
-}), ie = ({ titleId: e }) => {
-  const o = j(B), n = `\`${o.contentName}\` requires a \`${o.titleName}\` for the component to be accessible for screen reader users.
-
-If you want to hide the \`${o.titleName}\`, you can wrap it with our VisuallyHidden component.
-
-For more information, see https://radix-ui.com/primitives/docs/components/${o.docsSlug}`;
-  return s.useEffect(() => {
-    e && (document.getElementById(e) || console.error(n));
-  }, [n, e]), null;
-}, se = "DialogDescriptionWarning", ce = ({ contentRef: e, descriptionId: o }) => {
-  const a = `Warning: Missing \`Description\` or \`aria-describedby={undefined}\` for {${j(se).contentName}}.`;
-  return s.useEffect(() => {
-    var t;
-    const r = (t = e.current) == null ? void 0 : t.getAttribute("aria-describedby");
-    o && r && (document.getElementById(o) || console.warn(a));
-  }, [a, e, o]), null;
-}, Oe = x, Ie = T, xe = M, Ae = w, Te = S, be = W, Me = G, we = $;
+function h(t) {
+  return t === "indeterminate";
+}
+function A(t) {
+  return h(t) ? "indeterminate" : t ? "checked" : "unchecked";
+}
 export {
-  we as Close,
-  Te as Content,
-  Me as Description,
-  x as Dialog,
-  $ as DialogClose,
-  S as DialogContent,
-  G as DialogDescription,
-  w as DialogOverlay,
-  M as DialogPortal,
-  W as DialogTitle,
-  T as DialogTrigger,
-  Ae as Overlay,
-  xe as Portal,
-  Oe as Root,
-  be as Title,
-  Ie as Trigger,
-  Pe as WarningProvider,
-  Ne as createDialogScope
+  Q as Checkbox,
+  V as CheckboxIndicator,
+  V as Indicator,
+  Q as Root,
+  q as unstable_BubbleInput,
+  q as unstable_CheckboxBubbleInput,
+  J as unstable_CheckboxProvider,
+  w as unstable_CheckboxTrigger,
+  J as unstable_Provider,
+  w as unstable_Trigger
 };
 //# sourceMappingURL=index115.mjs.map

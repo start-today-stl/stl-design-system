@@ -1,16 +1,9 @@
-/**
- * @license lucide-react v0.563.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const e = (t) => {
-  for (const r in t)
-    if (r.startsWith("aria-") || r === "role" || r === "title")
-      return !0;
-  return !1;
-};
+import { __module as r } from "./index256.mjs";
+import { __require as e } from "./index257.mjs";
+import { __require as o } from "./index258.mjs";
+process.env.NODE_ENV === "production" ? r.exports = e() : r.exports = o();
+var m = r.exports;
 export {
-  e as hasA11yProp
+  m as s
 };
 //# sourceMappingURL=index167.mjs.map

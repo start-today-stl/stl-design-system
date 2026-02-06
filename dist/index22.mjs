@@ -1,27 +1,23 @@
-import { jsxs as m, jsx as r } from "react/jsx-runtime";
-import * as o from "react";
-import { cn as n } from "./index104.mjs";
-const p = o.forwardRef(
-  ({ className: a, date: e, title: s, extra: t, ...i }, x) => /* @__PURE__ */ m(
+import { jsx as a } from "react/jsx-runtime";
+import * as n from "react";
+import { cn as f } from "./index105.mjs";
+const p = n.forwardRef(
+  ({ className: r, padded: t = !0, children: o, ...e }, m) => /* @__PURE__ */ a(
     "div",
     {
-      ref: x,
-      className: n(
-        "flex items-center gap-[22px] h-[28px] px-[10px] cursor-pointer transition-colors",
-        "hover:bg-primary-100 dark:hover:bg-dark-300",
-        a
+      ref: m,
+      className: f(
+        "h-full",
+        t && "p-4",
+        r
       ),
-      ...i,
-      children: [
-        /* @__PURE__ */ r("span", { className: "w-[108px] shrink-0 text-sm text-gray-400 dark:text-gray-300", children: e }),
-        /* @__PURE__ */ r("span", { className: "flex-1 text-sm text-gray-700 truncate dark:text-gray-100", children: s }),
-        t && /* @__PURE__ */ r("span", { className: "shrink-0 text-sm text-gray-400 text-right dark:text-gray-300", children: t })
-      ]
+      ...e,
+      children: o
     }
   )
 );
-p.displayName = "DashboardListItem";
+p.displayName = "Content";
 export {
-  p as DashboardListItem
+  p as Content
 };
 //# sourceMappingURL=index22.mjs.map

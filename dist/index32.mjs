@@ -1,32 +1,86 @@
-import { jsx as V } from "react/jsx-runtime";
-function o({ size: L = 24, className: H, ...t }) {
-  return L <= 24 ? /* @__PURE__ */ V(
-    "svg",
-    {
-      width: L,
-      height: L,
-      viewBox: "0 0 24 24",
-      fill: "none",
-      xmlns: "http://www.w3.org/2000/svg",
-      className: H,
-      ...t,
-      children: /* @__PURE__ */ V("path", { d: "M12.2803 4.37988L19.4805 9.18945L19.71 9.59961V19.2002L19.21 19.7002H15.5996V18.7002H18.71V9.87012L12 5.39941L5.2998 9.87012V18.7002H8.40039V19.7002H4.7998L4.2998 19.2002V9.59961L4.53027 9.18945L11.7305 4.37988H12.2803ZM14.4004 10.2998L14.9004 10.7998V18H13.9004V11.2998H10.1104V18H9.11035V10.7998L9.61035 10.2998H14.4004Z", fill: "currentColor" })
-    }
-  ) : /* @__PURE__ */ V(
-    "svg",
-    {
-      width: L,
-      height: L,
-      viewBox: "0 0 32 32",
-      fill: "none",
-      xmlns: "http://www.w3.org/2000/svg",
-      className: H,
-      ...t,
-      children: /* @__PURE__ */ V("path", { d: "M25.8779 12.3838L26.1006 12.7998V25.6006L25.6006 26.1006H20.7979V25.1006H25.1006V13.0674L15.998 6.99902L6.89844 13.0664V25.1006H11.1982V26.1006H6.39844L5.89844 25.6006V12.7998L6.12109 12.3838L15.7207 5.98242H16.2754L25.8779 12.3838ZM19.6992 14.3994V23.999H18.6992V14.8994H13.3008V23.999H12.3008V14.3994L12.8008 13.8994H19.1992L19.6992 14.3994Z", fill: "currentColor" })
-    }
-  );
-}
+import { jsxs as o, jsx as r } from "react/jsx-runtime";
+import * as l from "react";
+import { cn as w } from "./index105.mjs";
+import { LeftIcon as y } from "./index40.mjs";
+import { RightIcon as N } from "./index68.mjs";
+const R = l.forwardRef(
+  ({ className: x, search: m, recentVisits: s, actions: i, children: h, ...d }, p) => {
+    const c = l.useRef(null), [u, g] = l.useState(!1), [b, v] = l.useState(!1), a = l.useCallback(() => {
+      const t = c.current;
+      if (!t) return;
+      const { scrollLeft: e, scrollWidth: n, clientWidth: k } = t;
+      g(e > 0), v(e < n - k - 1);
+    }, []);
+    l.useEffect(() => {
+      a();
+      const t = c.current;
+      if (!t) return;
+      const e = new ResizeObserver(a);
+      return e.observe(t), () => e.disconnect();
+    }, [a, s]);
+    const f = (t) => {
+      const e = c.current;
+      if (!e) return;
+      const n = 100;
+      e.scrollBy({
+        left: t === "left" ? -n : n,
+        behavior: "smooth"
+      });
+    };
+    return /* @__PURE__ */ o(
+      "div",
+      {
+        ref: p,
+        className: w(
+          "flex items-center gap-4 w-full h-[100px] px-6 pt-8 pb-4",
+          "bg-cool-50 dark:bg-dark-400 backdrop-blur-[16px]",
+          x
+        ),
+        ...d,
+        children: [
+          /* @__PURE__ */ r("div", { className: "flex-1 min-w-[200px] max-w-[593px]", children: m || h }),
+          s && /* @__PURE__ */ o("div", { className: "flex items-center gap-1.5 flex-1 min-w-[150px] max-w-[400px]", children: [
+            /* @__PURE__ */ r("span", { className: "text-xs text-gray-700 dark:text-gray-300 tracking-[-0.12px] whitespace-nowrap", children: "최근 방문" }),
+            /* @__PURE__ */ o("div", { className: "flex items-center gap-1 flex-1 min-w-0", children: [
+              u && /* @__PURE__ */ r(
+                "button",
+                {
+                  type: "button",
+                  onClick: () => f("left"),
+                  className: "flex-shrink-0 flex items-center justify-center w-6 h-6 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300",
+                  "aria-label": "스크롤 왼쪽",
+                  children: /* @__PURE__ */ r(y, { size: 24 })
+                }
+              ),
+              /* @__PURE__ */ r(
+                "div",
+                {
+                  ref: c,
+                  onScroll: a,
+                  className: "flex items-center gap-1.5 overflow-x-auto scrollbar-hide flex-1 min-w-0",
+                  children: s
+                }
+              ),
+              b && /* @__PURE__ */ r(
+                "button",
+                {
+                  type: "button",
+                  onClick: () => f("right"),
+                  className: "flex-shrink-0 flex items-center justify-center w-6 h-6 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300",
+                  "aria-label": "스크롤 오른쪽",
+                  children: /* @__PURE__ */ r(N, { size: 24 })
+                }
+              )
+            ] })
+          ] }),
+          i && /* @__PURE__ */ r("div", { className: "flex items-center gap-2 flex-shrink-0 ml-auto", children: i })
+        ]
+      }
+    );
+  }
+);
+R.displayName = "Header";
 export {
-  o as HomeIcon
+  R as Header
 };
 //# sourceMappingURL=index32.mjs.map

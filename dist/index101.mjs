@@ -1,6 +1,6 @@
-import { jsx as l } from "react/jsx-runtime";
-function r({ size: L = 24, className: n, ...t }) {
-  return L <= 24 ? /* @__PURE__ */ l(
+import { jsx as t } from "react/jsx-runtime";
+function h({ size: L = 24, className: l, ...r }) {
+  return L <= 24 ? /* @__PURE__ */ t(
     "svg",
     {
       width: L,
@@ -8,25 +8,25 @@ function r({ size: L = 24, className: n, ...t }) {
       viewBox: "0 0 24 24",
       fill: "none",
       xmlns: "http://www.w3.org/2000/svg",
-      className: n,
-      ...t,
-      children: /* @__PURE__ */ l("path", { fillRule: "evenodd", clipRule: "evenodd", d: "M17.1504 7.5498L12.71 12L17.1504 16.4404L16.4502 17.1504L12 12.71L7.5498 17.1504L6.84961 16.4404L11.29 12L6.84961 7.5498L7.5498 6.84961L12 11.29L16.4502 6.84961L17.1504 7.5498Z", fill: "currentColor" })
+      className: l,
+      ...r,
+      children: /* @__PURE__ */ t("path", { d: "M19.4651 9.33521V9.86548L9.86548 19.4651L9.59985 19.5754H4.80005L4.42505 19.2004V14.3997L4.53442 14.135L14.135 4.53442H14.6653L19.4651 9.33521ZM5.17505 18.8254H8.69556L5.17505 15.3049V18.8254ZM12.5305 7.19946L15.8958 10.5657L15.6301 10.8303L15.3655 11.0959L11.9993 7.73071L5.33032 14.3997L9.59985 18.6692L18.6692 9.59985L14.3997 5.33032L12.5305 7.19946Z", fill: "currentColor" })
     }
-  ) : /* @__PURE__ */ l(
+  ) : /* @__PURE__ */ t(
     "svg",
     {
       width: L,
       height: L,
-      viewBox: "8.5 8.5 15 15",
+      viewBox: "0 0 32 32",
       fill: "none",
       xmlns: "http://www.w3.org/2000/svg",
-      className: n,
-      ...t,
-      children: /* @__PURE__ */ l("path", { d: "M22.7529 9.95312L16.7061 15.999L22.7529 22.0459L22.0459 22.7529L15.999 16.7061L9.95312 22.7529L9.24609 22.0459L15.292 15.999L9.24609 9.95312L9.95312 9.24609L15.999 15.292L22.0459 9.24609L22.7529 9.95312Z", fill: "currentColor" })
+      className: l,
+      ...r,
+      children: /* @__PURE__ */ t("path", { d: "M25.9541 12.4473V13.1543L13.1543 25.9541L12.8008 26.1006H6.40039L5.90039 25.6006V19.2002L6.04688 18.8467L18.8467 6.04688H19.5537L25.9541 12.4473ZM6.90039 25.1006H11.5938L6.90039 20.4072V25.1006ZM16.707 9.59961L21.1934 14.0859L20.4863 14.793L16 10.3066L7.10645 19.1992L12.8008 24.8936L24.8936 12.8008L19.2002 7.10742L16.707 9.59961Z", fill: "currentColor" })
     }
   );
 }
 export {
-  r as XIcon
+  h as WriteIcon
 };
 //# sourceMappingURL=index101.mjs.map

@@ -1,29 +1,33 @@
-import { defaultDateLib as p } from "./index216.mjs";
-import { dateMatchModifiers as s } from "./index311.mjs";
-import { rangeContainsDayOfWeek as M } from "./index312.mjs";
-import { rangeIncludesDate as l } from "./index235.mjs";
-import { rangeOverlaps as y } from "./index314.mjs";
-import { isDatesArray as a, isDateRange as A, isDayOfWeekType as C, isDateInterval as I, isDateAfterType as v, isDateBeforeType as F } from "./index237.mjs";
-function d(n, t, f = p) {
-  const e = Array.isArray(t) ? t : [t];
-  if (e.filter((o) => typeof o != "function").some((o) => typeof o == "boolean" ? o : f.isDate(o) ? l(n, o, !1, f) : a(o, f) ? o.some((r) => l(n, r, !1, f)) : A(o) ? o.from && o.to ? y(n, { from: o.from, to: o.to }, f) : !1 : C(o) ? M(n, o.dayOfWeek, f) : I(o) ? f.isAfter(o.before, o.after) ? y(n, {
-    from: f.addDays(o.after, 1),
-    to: f.addDays(o.before, -1)
-  }, f) : s(n.from, o, f) || s(n.to, o, f) : v(o) || F(o) ? s(n.from, o, f) || s(n.to, o, f) : !1))
-    return !0;
-  const i = e.filter((o) => typeof o == "function");
-  if (i.length) {
-    let o = n.from;
-    const r = f.differenceInCalendarDays(n.to, n.from);
-    for (let u = 0; u <= r; u++) {
-      if (i.some((D) => D(o)))
-        return !0;
-      o = f.addDays(o, 1);
-    }
+import { defaultDateLib as p } from "./index213.mjs";
+function y(o, D, s = 0, l = 0, r = !1, u = p) {
+  const { from: e, to: i } = D || {}, { isSameDay: n, isAfter: m, isBefore: c } = u;
+  let f;
+  if (!e && !i)
+    f = { from: o, to: s > 0 ? void 0 : o };
+  else if (e && !i)
+    n(e, o) ? s === 0 ? f = { from: e, to: o } : r ? f = { from: e, to: void 0 } : f = void 0 : c(o, e) ? f = { from: o, to: e } : f = { from: e, to: o };
+  else if (e && i)
+    if (n(e, o) && n(i, o))
+      r ? f = { from: e, to: i } : f = void 0;
+    else if (n(e, o))
+      f = { from: e, to: s > 0 ? void 0 : o };
+    else if (n(i, o))
+      f = { from: o, to: s > 0 ? void 0 : o };
+    else if (c(o, e))
+      f = { from: o, to: i };
+    else if (m(o, e))
+      f = { from: e, to: o };
+    else if (m(o, i))
+      f = { from: e, to: o };
+    else
+      throw new Error("Invalid range");
+  if (f != null && f.from && (f != null && f.to)) {
+    const t = u.differenceInCalendarDays(f.to, f.from);
+    l > 0 && t > l ? f = { from: o, to: void 0 } : s > 1 && t < s && (f = { from: o, to: void 0 });
   }
-  return !1;
+  return f;
 }
 export {
-  d as rangeContainsModifiers
+  y as addToRange
 };
 //# sourceMappingURL=index313.mjs.map

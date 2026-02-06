@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const n=require("./index349.cjs");function r(c,...t){const e=n.constructFrom.bind(null,t.find(o=>typeof o=="object"));return t.map(e)}exports.normalizeDates=r;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const o=require("./index351.cjs");function s(t){const e=o.toDate(t),n=new Date(Date.UTC(e.getFullYear(),e.getMonth(),e.getDate(),e.getHours(),e.getMinutes(),e.getSeconds(),e.getMilliseconds()));return n.setUTCFullYear(e.getFullYear()),+t-+n}exports.getTimezoneOffsetInMilliseconds=s;
 //# sourceMappingURL=index353.cjs.map

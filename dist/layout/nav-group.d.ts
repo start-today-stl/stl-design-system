@@ -16,6 +16,8 @@ export interface NavGroupProps extends React.HTMLAttributes<HTMLDivElement> {
     collapsed?: boolean;
     /** 뎁스 레벨 */
     depth?: 1 | 2 | 3;
+    /** @internal 플라이아웃 내부 여부 (collapsed 모드에서 중첩 NavGroup 처리용) */
+    _inFlyout?: boolean;
 }
 declare const NavGroup: React.ForwardRefExoticComponent<NavGroupProps & React.RefAttributes<HTMLDivElement>>;
 export { NavGroup };

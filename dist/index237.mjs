@@ -1,27 +1,10 @@
-function o(e) {
-  return !!(e && typeof e == "object" && "before" in e && "after" in e);
+import { DateLib as r } from "./index213.mjs";
+function a(t, o, n) {
+  return (n ?? new r(o)).formatMonthYear(t);
 }
-function t(e) {
-  return !!(e && typeof e == "object" && "from" in e);
-}
-function r(e) {
-  return !!(e && typeof e == "object" && "after" in e);
-}
-function f(e) {
-  return !!(e && typeof e == "object" && "before" in e);
-}
-function i(e) {
-  return !!(e && typeof e == "object" && "dayOfWeek" in e);
-}
-function y(e, n) {
-  return Array.isArray(e) && e.every(n.isDate);
-}
+const f = a;
 export {
-  r as isDateAfterType,
-  f as isDateBeforeType,
-  o as isDateInterval,
-  t as isDateRange,
-  y as isDatesArray,
-  i as isDayOfWeekType
+  a as formatCaption,
+  f as formatMonthCaption
 };
 //# sourceMappingURL=index237.mjs.map

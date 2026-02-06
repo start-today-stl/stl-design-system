@@ -1,12 +1,17 @@
-import { millisecondsInWeek as m } from "./index351.mjs";
-import { startOfISOWeek as o } from "./index303.mjs";
-import { startOfISOWeekYear as a } from "./index362.mjs";
-import { toDate as i } from "./index350.mjs";
-function k(t, e) {
-  const r = i(t, e == null ? void 0 : e.in), f = +o(r) - +a(r);
-  return Math.round(f / m) + 1;
+import { normalizeInterval as o } from "./index355.mjs";
+import { constructFrom as u } from "./index350.mjs";
+function h(l, t) {
+  const { start: r, end: n } = o(t == null ? void 0 : t.in, l);
+  let s = +r > +n;
+  const c = s ? +r : +n, e = s ? n : r;
+  e.setHours(0, 0, 0, 0), e.setMonth(0, 1);
+  let m = 1;
+  const a = [];
+  for (; +e <= c; )
+    a.push(u(r, e)), e.setFullYear(e.getFullYear() + m);
+  return s ? a.reverse() : a;
 }
 export {
-  k as getISOWeek
+  h as eachYearOfInterval
 };
 //# sourceMappingURL=index288.mjs.map

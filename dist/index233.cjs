@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const i=require("./index330.cjs"),r=require("./index331.cjs"),c=require("./index332.cjs");function l(e,n){const u=c.useSingle(e,n),t=i.useMulti(e,n),s=r.useRange(e,n);switch(e.mode){case"single":return u;case"multiple":return t;case"range":return s;default:return}}exports.useSelection=l;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const r=require("./index272.cjs");require("./index274.cjs");function t(e,n){return e instanceof r.TZDate&&e.timeZone===n?e:new r.TZDate(e,n)}exports.toTimeZone=t;
 //# sourceMappingURL=index233.cjs.map

@@ -1,15 +1,11 @@
-import { constructFrom as f } from "./index349.mjs";
-import { startOfISOWeek as u } from "./index303.mjs";
-import { toDate as c } from "./index350.mjs";
-function Y(o, r) {
-  const e = c(o, r == null ? void 0 : r.in), t = e.getFullYear(), a = f(e, 0);
-  a.setFullYear(t + 1, 0, 4), a.setHours(0, 0, 0, 0);
-  const m = u(a), s = f(e, 0);
-  s.setFullYear(t, 0, 4), s.setHours(0, 0, 0, 0);
-  const n = u(s);
-  return e.getTime() >= m.getTime() ? t + 1 : e.getTime() >= n.getTime() ? t : t - 1;
+import { constructFrom as f } from "./index350.mjs";
+import { getISOWeekYear as s } from "./index364.mjs";
+import { startOfISOWeek as a } from "./index308.mjs";
+function O(t, e) {
+  const o = s(t, e), r = f(t, 0);
+  return r.setFullYear(o, 0, 4), r.setHours(0, 0, 0, 0), a(r);
 }
 export {
-  Y as getISOWeekYear
+  O as startOfISOWeekYear
 };
 //# sourceMappingURL=index363.mjs.map

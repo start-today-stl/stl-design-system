@@ -22,6 +22,8 @@ export interface NavGroupProps extends React.HTMLAttributes<HTMLDivElement> {
   collapsed?: boolean
   /** 뎁스 레벨 */
   depth?: 1 | 2 | 3
+  /** @internal 플라이아웃 내부 여부 (collapsed 모드에서 중첩 NavGroup 처리용) */
+  _inFlyout?: boolean
 }
 
 const NavGroup = React.forwardRef<HTMLDivElement, NavGroupProps>(
@@ -36,6 +38,7 @@ const NavGroup = React.forwardRef<HTMLDivElement, NavGroupProps>(
       onExpandedChange,
       collapsed,
       depth = 1,
+      _inFlyout = false,
       children,
       ...props
     },
@@ -48,6 +51,39 @@ const NavGroup = React.forwardRef<HTMLDivElement, NavGroupProps>(
       const newExpanded = !isExpanded
       setExpandedState(newExpanded)
       onExpandedChange?.(newExpanded)
+    }
+
+    // 플라이아웃 내부의 중첩 NavGroup: 일반 펼침/접힘 (새 flyout 생성 안함)
+    if (_inFlyout) {
+      return (
+        <div ref={ref} className={cn("flex flex-col gap-0.5", className)} {...props}>
+          {/* 2-depth 메뉴 아이템 (화살표 + 클릭 펼침) */}
+          <NavItem
+            icon={icon}
+            label={label}
+            active={active}
+            depth={depth}
+            hasChildren
+            expanded={isExpanded}
+            onClick={handleToggle}
+          />
+          {/* 하위 메뉴 */}
+          {isExpanded && (
+            <div className="flex flex-col gap-0.5">
+              {React.Children.map(children, (child) => {
+                if (React.isValidElement(child)) {
+                  return React.cloneElement(child as React.ReactElement<{ collapsed?: boolean; depth?: number; _inFlyout?: boolean }>, {
+                    collapsed: false,
+                    depth: (depth || 1) + 1 as 1 | 2 | 3,
+                    _inFlyout: true,
+                  })
+                }
+                return child
+              })}
+            </div>
+          )}
+        </div>
+      )
     }
 
     // 축소 모드에서는 아이콘만 표시 + 호버 시 플라이아웃
@@ -76,10 +112,11 @@ const NavGroup = React.forwardRef<HTMLDivElement, NavGroupProps>(
             <div className="flex flex-col gap-0.5">
               {React.Children.map(children, (child) => {
                 if (React.isValidElement(child)) {
-                  // 하위 메뉴는 collapsed 해제하고 depth 조정
-                  return React.cloneElement(child as React.ReactElement<{ collapsed?: boolean; depth?: number }>, {
+                  // 하위 메뉴는 collapsed 해제하고 depth 조정, 플라이아웃 내부 표시
+                  return React.cloneElement(child as React.ReactElement<{ collapsed?: boolean; depth?: number; _inFlyout?: boolean }>, {
                     collapsed: false,
                     depth: 2,
+                    _inFlyout: true,
                   })
                 }
                 return child

@@ -1,19 +1,47 @@
 import { jsx as t } from "react/jsx-runtime";
-import * as i from "react";
-import { cn as a } from "./index104.mjs";
-const s = i.forwardRef(({ className: e, ...r }, o) => /* @__PURE__ */ t(
-  "textarea",
+import * as o from "react";
+import { Root as d, Content as n, List as r, Trigger as f } from "./index138.mjs";
+import { cn as a } from "./index105.mjs";
+const p = d, c = o.forwardRef(({ className: e, ...i }, s) => /* @__PURE__ */ t(
+  r,
   {
+    ref: s,
     className: a(
-      "flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+      "inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground",
       e
     ),
-    ref: o,
-    ...r
+    ...i
   }
 ));
-s.displayName = "Textarea";
+c.displayName = r.displayName;
+const m = o.forwardRef(({ className: e, ...i }, s) => /* @__PURE__ */ t(
+  f,
+  {
+    ref: s,
+    className: a(
+      "inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm",
+      e
+    ),
+    ...i
+  }
+));
+m.displayName = f.displayName;
+const l = o.forwardRef(({ className: e, ...i }, s) => /* @__PURE__ */ t(
+  n,
+  {
+    ref: s,
+    className: a(
+      "mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+      e
+    ),
+    ...i
+  }
+));
+l.displayName = n.displayName;
 export {
-  s as Textarea
+  p as Tabs,
+  l as TabsContent,
+  c as TabsList,
+  m as TabsTrigger
 };
 //# sourceMappingURL=index91.mjs.map

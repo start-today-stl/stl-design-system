@@ -1,10 +1,20 @@
-import { constructFrom as f } from "./index349.mjs";
-import { toDate as c } from "./index350.mjs";
-function i(a, t, e) {
-  const r = c(a, e == null ? void 0 : e.in);
-  return isNaN(t) ? f(a, NaN) : (t && r.setDate(r.getDate() + t), r);
+import { defaultDateLib as o } from "./index213.mjs";
+class y {
+  constructor(t, i, s = o) {
+    this.date = t, this.displayMonth = i, this.outside = !!(i && !s.isSameMonth(t, i)), this.dateLib = s, this.isoDate = s.format(t, "yyyy-MM-dd"), this.displayMonthId = s.format(i, "yyyy-MM"), this.dateMonthId = s.format(t, "yyyy-MM");
+  }
+  /**
+   * Checks if this day is equal to another `CalendarDay`, considering both the
+   * date and the displayed month.
+   *
+   * @param day The `CalendarDay` to compare with.
+   * @returns `true` if the days are equal, otherwise `false`.
+   */
+  isEqualTo(t) {
+    return this.dateLib.isSameDay(t.date, this.date) && this.dateLib.isSameMonth(t.displayMonth, this.displayMonth);
+  }
 }
 export {
-  i as addDays
+  y as CalendarDay
 };
 //# sourceMappingURL=index276.mjs.map

@@ -3,6 +3,6 @@ function a(e) {
   return t.createElement("th", { ...e });
 }
 export {
-  a as Weekday
+  a as WeekNumberHeader
 };
 //# sourceMappingURL=index210.mjs.map

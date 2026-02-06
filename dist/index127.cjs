@@ -1,2 +1,7 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const l=require("react"),u=require("./index181.cjs"),d=require("react/jsx-runtime");function p(t){const r=Object.create(null,{[Symbol.toStringTag]:{value:"Module"}});if(t){for(const e in t)if(e!=="default"){const o=Object.getOwnPropertyDescriptor(t,e);Object.defineProperty(r,e,o.get?o:{enumerable:!0,get:()=>t[e]})}}return r.default=t,Object.freeze(r)}const f=p(l);var v="Separator",i="horizontal",O=["horizontal","vertical"],n=f.forwardRef((t,r)=>{const{decorative:e,orientation:o=i,...c}=t,a=m(o)?o:i,s=e?{role:"none"}:{"aria-orientation":a==="vertical"?a:void 0,role:"separator"};return d.jsx(u.Primitive.div,{"data-orientation":a,...s,...c,ref:r})});n.displayName=v;function m(t){return O.includes(t)}var b=n;exports.Root=b;exports.Separator=n;
+"use strict";Object.defineProperties(exports,{__esModule:{value:!0},[Symbol.toStringTag]:{value:"Module"}});const o=require("./index170.cjs");/**
+ * @license lucide-react v0.563.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */const e=[["path",{d:"m18 15-6-6-6 6",key:"153udz"}]],t=o("chevron-up",e);exports.__iconNode=e;exports.default=t;
 //# sourceMappingURL=index127.cjs.map

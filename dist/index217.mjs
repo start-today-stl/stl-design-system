@@ -1,43 +1,17 @@
-import { DayFlag as e } from "./index228.mjs";
-import { dateMatchModifiers as u } from "./index311.mjs";
-function V(b, S, h, M, i) {
-  const { disabled: p, hidden: y, modifiers: d, showOutsideDays: m, broadcastCalendar: B, today: g = i.today() } = S, { isSameDay: v, isSameMonth: A, startOfMonth: E, isBefore: F, endOfMonth: j, isAfter: k } = i, O = h && E(h), D = M && j(M), a = {
-    [e.focused]: [],
-    [e.outside]: [],
-    [e.disabled]: [],
-    [e.hidden]: [],
-    [e.today]: []
-  }, n = {};
-  for (const s of b) {
-    const { date: o, displayMonth: c } = s, t = !!(c && !A(o, c)), f = !!(O && F(o, O)), l = !!(D && k(o, D)), w = !!(p && u(o, p, i)), x = !!(y && u(o, y, i)) || f || l || // Broadcast calendar will show outside days as default
-    !B && !m && t || B && m === !1 && t, C = v(o, g);
-    t && a.outside.push(s), w && a.disabled.push(s), x && a.hidden.push(s), C && a.today.push(s), d && Object.keys(d).forEach((r) => {
-      const N = d == null ? void 0 : d[r];
-      N && u(o, N, i) && (n[r] ? n[r].push(s) : n[r] = [s]);
-    });
-  }
-  return (s) => {
-    const o = {
-      [e.focused]: !1,
-      [e.disabled]: !1,
-      [e.hidden]: !1,
-      [e.outside]: !1,
-      [e.today]: !1
-    }, c = {};
-    for (const t in a) {
-      const f = a[t];
-      o[t] = f.some((l) => l === s);
-    }
-    for (const t in n)
-      c[t] = n[t].some((f) => f === s);
-    return {
-      ...o,
-      // custom modifiers should override all the previous ones
-      ...c
-    };
+function n(e) {
+  const t = {
+    "data-mode": e.mode ?? void 0,
+    "data-required": "required" in e ? e.required : void 0,
+    "data-multiple-months": e.numberOfMonths && e.numberOfMonths > 1 || void 0,
+    "data-week-numbers": e.showWeekNumber || void 0,
+    "data-broadcast-calendar": e.broadcastCalendar || void 0,
+    "data-nav-layout": e.navLayout || void 0
   };
+  return Object.entries(e).forEach(([a, d]) => {
+    a.startsWith("data-") && (t[a] = d);
+  }), t;
 }
 export {
-  V as createGetModifiers
+  n as getDataAttributes
 };
 //# sourceMappingURL=index217.mjs.map

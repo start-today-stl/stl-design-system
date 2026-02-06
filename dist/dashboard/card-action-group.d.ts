@@ -1,6 +1,6 @@
 import * as React from "react";
-export interface FilterTabsProps extends React.HTMLAttributes<HTMLDivElement> {
-    /** 탭 옵션 목록 */
+export interface CardActionGroupProps extends React.HTMLAttributes<HTMLDivElement> {
+    /** 옵션 목록 */
     options: string[];
     /** 선택된 값 */
     value?: string;
@@ -9,5 +9,5 @@ export interface FilterTabsProps extends React.HTMLAttributes<HTMLDivElement> {
     /** 기본 선택 값 (비제어 컴포넌트용) */
     defaultValue?: string;
 }
-declare const FilterTabs: React.ForwardRefExoticComponent<FilterTabsProps & React.RefAttributes<HTMLDivElement>>;
-export { FilterTabs };
+declare const CardActionGroup: React.ForwardRefExoticComponent<CardActionGroupProps & React.RefAttributes<HTMLDivElement>>;
+export { CardActionGroup };

@@ -1,7 +1,5 @@
-function o(e, n) {
-  return `Week ${e}`;
-}
+var e = { exports: {} };
 export {
-  o as labelWeekNumber
+  e as __module
 };
 //# sourceMappingURL=index256.mjs.map

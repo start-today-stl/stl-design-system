@@ -1,11 +1,17 @@
-/**
- * @license lucide-react v0.563.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const n = (...e) => e.filter((r, t, i) => !!r && r.trim() !== "" && i.indexOf(r) === t).join(" ").trim();
+import * as r from "react";
+import s from "react-dom";
+import { Primitive as c } from "./index153.mjs";
+import { useLayoutEffect as u } from "./index148.mjs";
+import { jsx as l } from "react/jsx-runtime";
+var p = "Portal", d = r.forwardRef((e, a) => {
+  var o;
+  const { container: f, ...i } = e, [m, n] = r.useState(!1);
+  u(() => n(!0), []);
+  const t = f || m && ((o = globalThis == null ? void 0 : globalThis.document) == null ? void 0 : o.body);
+  return t ? s.createPortal(/* @__PURE__ */ l(c.div, { ...i, ref: a }), t) : null;
+});
+d.displayName = p;
 export {
-  n as mergeClasses
+  d as Portal
 };
 //# sourceMappingURL=index162.mjs.map

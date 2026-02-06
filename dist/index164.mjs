@@ -1,15 +1,12 @@
-import { toCamelCase as t } from "./index188.mjs";
-/**
- * @license lucide-react v0.563.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const s = (a) => {
-  const e = t(a);
-  return e.charAt(0).toUpperCase() + e.slice(1);
-};
+import { __assign as m } from "./index269.mjs";
+import * as r from "react";
+import { RemoveScroll as e } from "./index270.mjs";
+import t from "./index271.mjs";
+var s = r.forwardRef(function(a, o) {
+  return r.createElement(e, m({}, a, { ref: o, sideCar: t }));
+});
+s.classNames = e.classNames;
 export {
-  s as toPascalCase
+  s as default
 };
 //# sourceMappingURL=index164.mjs.map

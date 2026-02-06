@@ -1,12 +1,8 @@
-import "react";
-import { jsx as e, Fragment as o } from "react/jsx-runtime";
-var l = Symbol("radix.slottable");
-// @__NO_SIDE_EFFECTS__
-function n(r) {
-  const t = ({ children: a }) => /* @__PURE__ */ e(o, { children: a });
-  return t.displayName = `${r}.Slottable`, t.__radixId = l, t;
+import e from "react";
+function o(t) {
+  return e.createElement("button", { ...t });
 }
 export {
-  n as createSlottable
+  o as Button
 };
 //# sourceMappingURL=index187.mjs.map

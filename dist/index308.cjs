@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});function o(e,t,n="long"){return new Intl.DateTimeFormat("en-US",{hour:"numeric",timeZone:e,timeZoneName:n}).format(t).split(/\s/g).slice(2).join(" ")}exports.tzName=o;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const r=require("./index310.cjs");function s(e,t){return r.startOfWeek(e,{...t,weekStartsOn:1})}exports.startOfISOWeek=s;
 //# sourceMappingURL=index308.cjs.map

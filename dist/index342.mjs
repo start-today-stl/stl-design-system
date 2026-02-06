@@ -1,131 +1,72 @@
-const j = ["top", "right", "bottom", "left"], m = Math.min, p = Math.max, C = Math.round, L = Math.floor, E = (t) => ({
-  x: t,
-  y: t
-}), h = {
-  left: "right",
-  right: "left",
-  bottom: "top",
-  top: "bottom"
-}, x = {
-  start: "end",
-  end: "start"
-};
-function R(t, e, n) {
-  return p(t, m(e, n));
-}
-function T(t, e) {
-  return typeof t == "function" ? t(e) : t;
-}
-function g(t) {
-  return t.split("-")[0];
-}
-function a(t) {
-  return t.split("-")[1];
-}
-function b(t) {
-  return t === "x" ? "y" : "x";
-}
-function d(t) {
-  return t === "y" ? "height" : "width";
-}
-const A = /* @__PURE__ */ new Set(["top", "bottom"]);
-function P(t) {
-  return A.has(g(t)) ? "y" : "x";
-}
-function y(t) {
-  return b(P(t));
-}
-function k(t, e, n) {
-  n === void 0 && (n = !1);
-  const r = a(t), i = y(t), o = d(i);
-  let c = i === "x" ? r === (n ? "end" : "start") ? "right" : "left" : r === "start" ? "bottom" : "top";
-  return e.reference[o] > e.floating[o] && (c = f(c)), [c, f(c)];
-}
-function q(t) {
-  const e = f(t);
-  return [s(t), e, s(e)];
-}
-function s(t) {
-  return t.replace(/start|end/g, (e) => x[e]);
-}
-const u = ["left", "right"], l = ["right", "left"], M = ["top", "bottom"], O = ["bottom", "top"];
-function S(t, e, n) {
-  switch (t) {
-    case "top":
-    case "bottom":
-      return n ? e ? l : u : e ? u : l;
-    case "left":
-    case "right":
-      return e ? M : O;
-    default:
-      return [];
+import * as d from "react";
+import { styleSingleton as f } from "./index343.mjs";
+import { noScrollbarsClassName as p, zeroRightClassName as g, fullWidthClassName as l, removedBarSizeVariable as v } from "./index334.mjs";
+import { getGapWidth as m } from "./index379.mjs";
+var b = f(), e = "data-scroll-locked", h = function(n, a, o, t) {
+  var r = n.left, i = n.top, s = n.right, c = n.gap;
+  return o === void 0 && (o = "margin"), `
+  .`.concat(p, ` {
+   overflow: hidden `).concat(t, `;
+   padding-right: `).concat(c, "px ").concat(t, `;
   }
-}
-function z(t, e, n, r) {
-  const i = a(t);
-  let o = S(g(t), n === "start", r);
-  return i && (o = o.map((c) => c + "-" + i), e && (o = o.concat(o.map(s)))), o;
-}
-function f(t) {
-  return t.replace(/left|right|bottom|top/g, (e) => h[e]);
-}
-function w(t) {
-  return {
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
-    ...t
-  };
-}
-function B(t) {
-  return typeof t != "number" ? w(t) : {
-    top: t,
-    right: t,
-    bottom: t,
-    left: t
-  };
-}
-function D(t) {
-  const {
-    x: e,
-    y: n,
-    width: r,
-    height: i
-  } = t;
-  return {
-    width: r,
-    height: i,
-    top: n,
-    left: e,
-    right: e + r,
-    bottom: n + i,
-    x: e,
-    y: n
-  };
-}
+  body[`).concat(e, `] {
+    overflow: hidden `).concat(t, `;
+    overscroll-behavior: contain;
+    `).concat([
+    a && "position: relative ".concat(t, ";"),
+    o === "margin" && `
+    padding-left: `.concat(r, `px;
+    padding-top: `).concat(i, `px;
+    padding-right: `).concat(s, `px;
+    margin-left:0;
+    margin-top:0;
+    margin-right: `).concat(c, "px ").concat(t, `;
+    `),
+    o === "padding" && "padding-right: ".concat(c, "px ").concat(t, ";")
+  ].filter(Boolean).join(""), `
+  }
+  
+  .`).concat(g, ` {
+    right: `).concat(c, "px ").concat(t, `;
+  }
+  
+  .`).concat(l, ` {
+    margin-right: `).concat(c, "px ").concat(t, `;
+  }
+  
+  .`).concat(g, " .").concat(g, ` {
+    right: 0 `).concat(t, `;
+  }
+  
+  .`).concat(l, " .").concat(l, ` {
+    margin-right: 0 `).concat(t, `;
+  }
+  
+  body[`).concat(e, `] {
+    `).concat(v, ": ").concat(c, `px;
+  }
+`);
+}, u = function() {
+  var n = parseInt(document.body.getAttribute(e) || "0", 10);
+  return isFinite(n) ? n : 0;
+}, x = function() {
+  d.useEffect(function() {
+    return document.body.setAttribute(e, (u() + 1).toString()), function() {
+      var n = u() - 1;
+      n <= 0 ? document.body.removeAttribute(e) : document.body.setAttribute(e, n.toString());
+    };
+  }, []);
+}, C = function(n) {
+  var a = n.noRelative, o = n.noImportant, t = n.gapMode, r = t === void 0 ? "margin" : t;
+  x();
+  var i = d.useMemo(function() {
+    return m(r);
+  }, [r]);
+  return d.createElement(b, { styles: h(i, !a, r, o ? "" : "!important") });
+};
 export {
-  R as clamp,
-  E as createCoords,
-  T as evaluate,
-  w as expandPaddingObject,
-  L as floor,
-  a as getAlignment,
-  y as getAlignmentAxis,
-  k as getAlignmentSides,
-  d as getAxisLength,
-  q as getExpandedPlacements,
-  s as getOppositeAlignmentPlacement,
-  b as getOppositeAxis,
-  z as getOppositeAxisPlacements,
-  f as getOppositePlacement,
-  B as getPaddingObject,
-  g as getSide,
-  P as getSideAxis,
-  p as max,
-  m as min,
-  D as rectToClientRect,
-  C as round,
-  j as sides
+  C as RemoveScrollBar,
+  e as lockAttribute,
+  x as useLockAttribute
 };
 //# sourceMappingURL=index342.mjs.map

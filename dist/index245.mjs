@@ -1,7 +1,11 @@
-function e() {
-  return "";
+import { DateLib as n } from "./index213.mjs";
+function r(a, t, l, o) {
+  let e = (o ?? new n(l)).format(a, "PPPP");
+  return t.today && (e = `Today, ${e}`), t.selected && (e = `${e}, selected`), e;
 }
+const c = r;
 export {
-  e as formatWeekNumberHeader
+  c as labelDay,
+  r as labelDayButton
 };
 //# sourceMappingURL=index245.mjs.map

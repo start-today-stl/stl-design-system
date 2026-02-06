@@ -1,7 +1,8 @@
-function e() {
-  return "";
+import { DateLib as c } from "./index213.mjs";
+function a(e, r, t) {
+  return (t ?? new c(r)).format(e, "cccc");
 }
 export {
-  e as labelNav
+  a as labelWeekday
 };
 //# sourceMappingURL=index252.mjs.map

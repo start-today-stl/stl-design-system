@@ -1,13 +1,15 @@
-import { getDefaultOptions as l } from "./index355.mjs";
-import { constructFrom as n } from "./index349.mjs";
-import { getWeekYear as u } from "./index365.mjs";
-import { startOfWeek as D } from "./index305.mjs";
-function g(r, e) {
-  var f, c, s, k;
-  const a = l(), m = (e == null ? void 0 : e.firstWeekContainsDate) ?? ((c = (f = e == null ? void 0 : e.locale) == null ? void 0 : f.options) == null ? void 0 : c.firstWeekContainsDate) ?? a.firstWeekContainsDate ?? ((k = (s = a.locale) == null ? void 0 : s.options) == null ? void 0 : k.firstWeekContainsDate) ?? 1, W = u(r, e), t = n((e == null ? void 0 : e.in) || r, 0);
-  return t.setFullYear(W, 0, m), t.setHours(0, 0, 0, 0), D(t, e);
+import { constructFrom as f } from "./index350.mjs";
+import { startOfISOWeek as u } from "./index308.mjs";
+import { toDate as c } from "./index351.mjs";
+function Y(o, r) {
+  const e = c(o, r == null ? void 0 : r.in), t = e.getFullYear(), a = f(e, 0);
+  a.setFullYear(t + 1, 0, 4), a.setHours(0, 0, 0, 0);
+  const m = u(a), s = f(e, 0);
+  s.setFullYear(t, 0, 4), s.setHours(0, 0, 0, 0);
+  const n = u(s);
+  return e.getTime() >= m.getTime() ? t + 1 : e.getTime() >= n.getTime() ? t : t - 1;
 }
 export {
-  g as startOfWeekYear
+  Y as getISOWeekYear
 };
 //# sourceMappingURL=index364.mjs.map

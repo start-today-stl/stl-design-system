@@ -1,19 +1,20 @@
-import e from "react";
-function r(n) {
-  const { size: o = 24, orientation: t = "left", className: l } = n;
-  return (
-    // biome-ignore lint/a11y/noSvgWithoutTitle: handled by the parent component
-    e.createElement(
-      "svg",
-      { className: l, width: o, height: o, viewBox: "0 0 24 24" },
-      t === "up" && e.createElement("polygon", { points: "6.77 17 12.5 11.43 18.24 17 20 15.28 12.5 8 5 15.28" }),
-      t === "down" && e.createElement("polygon", { points: "6.77 8 12.5 13.57 18.24 8 20 9.72 12.5 17 5 9.72" }),
-      t === "left" && e.createElement("polygon", { points: "16 18.112 9.81111111 12 16 5.87733333 14.0888889 4 6 12 14.0888889 20" }),
-      t === "right" && e.createElement("polygon", { points: "8 18.112 14.18888889 12 8 5.87733333 9.91111111 4 18 12 9.91111111 20" })
+import a from "react";
+import { UI as n } from "./index225.mjs";
+function f(c) {
+  const { options: e, className: m, components: l, classNames: t, ...o } = c, d = [t[n.Dropdown], m].join(" "), r = e == null ? void 0 : e.find(({ value: s }) => s === o.value);
+  return a.createElement(
+    "span",
+    { "data-disabled": o.disabled, className: t[n.DropdownRoot] },
+    a.createElement(l.Select, { className: d, ...o }, e == null ? void 0 : e.map(({ value: s, label: i, disabled: p }) => a.createElement(l.Option, { key: s, value: s, disabled: p }, i))),
+    a.createElement(
+      "span",
+      { className: t[n.CaptionLabel], "aria-hidden": !0 },
+      r == null ? void 0 : r.label,
+      a.createElement(l.Chevron, { orientation: "down", size: 18, className: t[n.Chevron] })
     )
   );
 }
 export {
-  r as Chevron
+  f as Dropdown
 };
 //# sourceMappingURL=index192.mjs.map

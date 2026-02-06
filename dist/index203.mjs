@@ -1,28 +1,10 @@
-import n, { useCallback as d } from "react";
-import { UI as l } from "./index228.mjs";
-import { useDayPicker as v } from "./index231.mjs";
-function C(u) {
-  const { onPreviousClick: a, onNextClick: o, previousMonth: e, nextMonth: t, ...c } = u, { components: r, classNames: i, labels: { labelPrevious: m, labelNext: b } } = v(), f = d((s) => {
-    t && (o == null || o(s));
-  }, [t, o]), h = d((s) => {
-    e && (a == null || a(s));
-  }, [e, a]);
-  return n.createElement(
-    "nav",
-    { ...c },
-    n.createElement(
-      r.PreviousMonthButton,
-      { type: "button", className: i[l.PreviousMonthButton], tabIndex: e ? void 0 : -1, "aria-disabled": e ? void 0 : !0, "aria-label": m(e), onClick: h },
-      n.createElement(r.Chevron, { disabled: e ? void 0 : !0, className: i[l.Chevron], orientation: "left" })
-    ),
-    n.createElement(
-      r.NextMonthButton,
-      { type: "button", className: i[l.NextMonthButton], tabIndex: t ? void 0 : -1, "aria-disabled": t ? void 0 : !0, "aria-label": b(t), onClick: f },
-      n.createElement(r.Chevron, { disabled: t ? void 0 : !0, orientation: "right", className: i[l.Chevron] })
-    )
-  );
+import e from "react";
+import { useDayPicker as n } from "./index228.mjs";
+function c(t) {
+  const { components: o } = n();
+  return e.createElement(o.Button, { ...t });
 }
 export {
-  C as Nav
+  c as PreviousMonthButton
 };
 //# sourceMappingURL=index203.mjs.map

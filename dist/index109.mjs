@@ -1,63 +1,76 @@
-import * as o from "react";
-import { composeRefs as S } from "./index143.mjs";
-import { jsx as y } from "react/jsx-runtime";
-var E = Symbol.for("react.lazy"), p = o[" use ".trim().toString()];
-function g(t) {
-  return typeof t == "object" && t !== null && "then" in t;
-}
-function d(t) {
-  return t != null && typeof t == "object" && "$$typeof" in t && t.$$typeof === E && "_payload" in t && g(t._payload);
-}
-// @__NO_SIDE_EFFECTS__
-function C(t) {
-  const n = /* @__PURE__ */ R(t), i = o.forwardRef((e, r) => {
-    let { children: l, ...a } = e;
-    d(l) && typeof p == "function" && (l = p(l._payload));
-    const s = o.Children.toArray(l), f = s.find(b);
-    if (f) {
-      const c = f.props.children, m = s.map((u) => u === f ? o.Children.count(c) > 1 ? o.Children.only(null) : o.isValidElement(c) ? c.props.children : null : u);
-      return /* @__PURE__ */ y(n, { ...a, ref: r, children: o.isValidElement(c) ? o.cloneElement(c, void 0, m) : null });
-    }
-    return /* @__PURE__ */ y(n, { ...a, ref: r, children: l });
-  });
-  return i.displayName = `${t}.Slot`, i;
-}
-var V = /* @__PURE__ */ C("Slot");
-// @__NO_SIDE_EFFECTS__
-function R(t) {
-  const n = o.forwardRef((i, e) => {
-    let { children: r, ...l } = i;
-    if (d(r) && typeof p == "function" && (r = p(r._payload)), o.isValidElement(r)) {
-      const a = P(r), s = h(l, r.props);
-      return r.type !== o.Fragment && (s.ref = e ? S(e, a) : a), o.cloneElement(r, s);
-    }
-    return o.Children.count(r) > 1 ? o.Children.only(null) : null;
-  });
-  return n.displayName = `${t}.SlotClone`, n;
-}
-var _ = Symbol("radix.slottable");
-function b(t) {
-  return o.isValidElement(t) && typeof t.type == "function" && "__radixId" in t.type && t.type.__radixId === _;
-}
-function h(t, n) {
-  const i = { ...n };
-  for (const e in n) {
-    const r = t[e], l = n[e];
-    /^on[A-Z]/.test(e) ? r && l ? i[e] = (...s) => {
-      const f = l(...s);
-      return r(...s), f;
-    } : r && (i[e] = r) : e === "style" ? i[e] = { ...r, ...l } : e === "className" && (i[e] = [r, l].filter(Boolean).join(" "));
+import * as i from "react";
+import { createContextScope as C } from "./index146.mjs";
+import { useCallbackRef as h } from "./index147.mjs";
+import { useLayoutEffect as f } from "./index148.mjs";
+import { Primitive as m } from "./index149.mjs";
+import { useIsHydrated as _ } from "./index150.mjs";
+import { jsx as l } from "react/jsx-runtime";
+var v = "Avatar", [y] = C(v), [x, A] = y(v), L = i.forwardRef(
+  (t, e) => {
+    const { __scopeAvatar: o, ...r } = t, [n, a] = i.useState("idle");
+    return /* @__PURE__ */ l(
+      x,
+      {
+        scope: o,
+        imageLoadingStatus: n,
+        onImageLoadingStatusChange: a,
+        children: /* @__PURE__ */ l(m.span, { ...r, ref: e })
+      }
+    );
   }
-  return { ...t, ...i };
+);
+L.displayName = v;
+var S = "AvatarImage", E = i.forwardRef(
+  (t, e) => {
+    const { __scopeAvatar: o, src: r, onLoadingStatusChange: n = () => {
+    }, ...a } = t, u = A(S, o), s = N(r, a), d = h((c) => {
+      n(c), u.onImageLoadingStatusChange(c);
+    });
+    return f(() => {
+      s !== "idle" && d(s);
+    }, [s, d]), s === "loaded" ? /* @__PURE__ */ l(m.img, { ...a, ref: e, src: r }) : null;
+  }
+);
+E.displayName = S;
+var I = "AvatarFallback", R = i.forwardRef(
+  (t, e) => {
+    const { __scopeAvatar: o, delayMs: r, ...n } = t, a = A(I, o), [u, s] = i.useState(r === void 0);
+    return i.useEffect(() => {
+      if (r !== void 0) {
+        const d = window.setTimeout(() => s(!0), r);
+        return () => window.clearTimeout(d);
+      }
+    }, [r]), u && a.imageLoadingStatus !== "loaded" ? /* @__PURE__ */ l(m.span, { ...n, ref: e }) : null;
+  }
+);
+R.displayName = I;
+function p(t, e) {
+  return t ? e ? (t.src !== e && (t.src = e), t.complete && t.naturalWidth > 0 ? "loaded" : "loading") : "error" : "idle";
 }
-function P(t) {
-  var e, r;
-  let n = (e = Object.getOwnPropertyDescriptor(t.props, "ref")) == null ? void 0 : e.get, i = n && "isReactWarning" in n && n.isReactWarning;
-  return i ? t.ref : (n = (r = Object.getOwnPropertyDescriptor(t, "ref")) == null ? void 0 : r.get, i = n && "isReactWarning" in n && n.isReactWarning, i ? t.props.ref : t.props.ref || t.ref);
+function N(t, { referrerPolicy: e, crossOrigin: o }) {
+  const r = _(), n = i.useRef(null), a = r ? (n.current || (n.current = new window.Image()), n.current) : null, [u, s] = i.useState(
+    () => p(a, t)
+  );
+  return f(() => {
+    s(p(a, t));
+  }, [a, t]), f(() => {
+    const d = (w) => () => {
+      s(w);
+    };
+    if (!a) return;
+    const c = d("loaded"), g = d("error");
+    return a.addEventListener("load", c), a.addEventListener("error", g), e && (a.referrerPolicy = e), typeof o == "string" && (a.crossOrigin = o), () => {
+      a.removeEventListener("load", c), a.removeEventListener("error", g);
+    };
+  }, [a, o, e]), u;
 }
+var H = L, j = E, B = R;
 export {
-  V as Root,
-  V as Slot,
-  C as createSlot
+  L as Avatar,
+  R as AvatarFallback,
+  E as AvatarImage,
+  B as Fallback,
+  j as Image,
+  H as Root
 };
 //# sourceMappingURL=index109.mjs.map

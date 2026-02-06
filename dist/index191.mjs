@@ -1,8 +1,12 @@
-import t from "react";
-function n(e) {
-  return t.createElement("span", { ...e });
+import e from "react";
+function s(u) {
+  const { day: n, modifiers: t, ...r } = u, o = e.useRef(null);
+  return e.useEffect(() => {
+    var f;
+    t.focused && ((f = o.current) == null || f.focus());
+  }, [t.focused]), e.createElement("button", { ref: o, ...r });
 }
 export {
-  n as CaptionLabel
+  s as DayButton
 };
 //# sourceMappingURL=index191.mjs.map

@@ -1,8 +1,7 @@
-const t = "Go to the Next Month";
-function n(o, e) {
-  return t;
+function o(e, n) {
+  return `Week ${e}`;
 }
 export {
-  n as labelNext
+  o as labelWeekNumber
 };
 //# sourceMappingURL=index253.mjs.map

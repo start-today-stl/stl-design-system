@@ -1,24 +1,10 @@
-import { useState as i } from "react";
-import { calculateFocusTarget as v } from "./index328.mjs";
-import { getNextFocus as x } from "./index329.mjs";
-function I(u, o, a, r, F) {
-  const { autoFocus: f } = u, [d, m] = i(), s = v(o.days, a, r || (() => !1), d), [t, n] = i(f ? s : void 0);
-  return {
-    isFocusTarget: (c) => !!(s != null && s.isEqualTo(c)),
-    setFocused: n,
-    focused: t,
-    blur: () => {
-      m(t), n(void 0);
-    },
-    moveFocus: (c, l) => {
-      if (!t)
-        return;
-      const e = x(c, l, t, o.navStart, o.navEnd, u, F);
-      e && (u.disableNavigation && !o.days.some((g) => g.isEqualTo(e)) || (o.goToDay(e), n(e)));
-    }
-  };
+import { defaultDateLib as s } from "./index213.mjs";
+function u(f, r, t = !1, o = s) {
+  let { from: n, to: e } = f;
+  const { differenceInCalendarDays: i, isSameDay: a } = o;
+  return n && e ? (i(e, n) < 0 && ([n, e] = [e, n]), i(r, n) >= (t ? 1 : 0) && i(e, r) >= (t ? 1 : 0)) : !t && e ? a(e, r) : !t && n ? a(n, r) : !1;
 }
 export {
-  I as useFocus
+  u as rangeIncludesDate
 };
 //# sourceMappingURL=index232.mjs.map

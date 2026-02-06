@@ -1,9 +1,21 @@
-import { __module as r } from "./index263.mjs";
-import { __require as e } from "./index264.mjs";
-import { __require as o } from "./index265.mjs";
-process.env.NODE_ENV === "production" ? r.exports = e() : r.exports = o();
-var m = r.exports;
+/**
+ * @license lucide-react v0.563.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+var t = {
+  xmlns: "http://www.w3.org/2000/svg",
+  width: 24,
+  height: 24,
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: 2,
+  strokeLinecap: "round",
+  strokeLinejoin: "round"
+};
 export {
-  m as s
+  t as default
 };
 //# sourceMappingURL=index175.mjs.map

@@ -1,11 +1,9 @@
-import { differenceInCalendarDays as e } from "./index280.mjs";
-import { startOfYear as t } from "./index306.mjs";
-import { toDate as d } from "./index350.mjs";
-function y(a, r) {
-  const f = d(a, r == null ? void 0 : r.in);
-  return e(f, t(f)) + 1;
+import { isDate as r } from "./index299.mjs";
+import { toDate as i } from "./index351.mjs";
+function e(o) {
+  return !(!r(o) && typeof o != "number" || isNaN(+i(o)));
 }
 export {
-  y as getDayOfYear
+  e as isValid
 };
 //# sourceMappingURL=index360.mjs.map

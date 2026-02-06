@@ -1,70 +1,32 @@
-import { jsx as a, jsxs as x } from "react/jsx-runtime";
-import * as l from "react";
-import { cn as o } from "./index104.mjs";
-const f = [
-  "flex rounded-[5px] border bg-gray-50/50 dark:bg-dark-400",
-  "h-9 px-3 text-xs text-gray-900 dark:text-gray-100",
-  "outline-none transition-colors",
-  "disabled:cursor-not-allowed disabled:opacity-50"
-].join(" "), y = [
-  "border-gray-100 dark:border-dark-100",
-  "placeholder:text-gray-300 dark:placeholder:text-gray-100",
-  "focus:border-gray-500 dark:focus:border-gray-100"
-].join(" "), m = [
-  "border-destructive dark:border-red-500",
-  "placeholder:text-destructive dark:placeholder:text-red-400",
-  "focus:border-destructive dark:focus:border-red-500"
-].join(" "), b = {
-  sm: "w-[160px]",
-  md: "w-[260px]",
-  lg: "w-[360px]",
-  full: "w-full"
-}, n = l.forwardRef(
-  ({ className: d, error: e, ...t }, r) => /* @__PURE__ */ a(
-    "input",
+import { jsx as t } from "react/jsx-runtime";
+function h({ size: C = 24, className: n, ...l }) {
+  return C <= 24 ? /* @__PURE__ */ t(
+    "svg",
     {
-      ref: r,
-      className: o(
-        f,
-        e ? m : y,
-        d
-      ),
-      "aria-invalid": e,
-      ...t
+      width: C,
+      height: C,
+      viewBox: "0 0 24 24",
+      fill: "none",
+      xmlns: "http://www.w3.org/2000/svg",
+      className: n,
+      ...l,
+      children: /* @__PURE__ */ t("path", { d: "M12 4.2998C16.25 4.29981 19.7002 7.75 19.7002 12C19.7001 16.2499 16.2499 19.7002 12 19.7002C7.75006 19.7002 4.29991 16.2499 4.2998 12C4.2998 7.75 7.75 4.2998 12 4.2998ZM12 5.2998C8.31 5.2998 5.2998 8.31 5.2998 12C5.29991 15.6899 8.31006 18.7002 12 18.7002C15.6899 18.7002 18.7001 15.6899 18.7002 12C18.7002 8.31 15.69 5.29981 12 5.2998ZM12.5 10.7998V16.7998H11.5V10.7998H12.5ZM12 7.60059C12.44 7.60059 12.7998 7.96039 12.7998 8.40039C12.7996 8.84026 12.4399 9.2002 12 9.2002C11.5601 9.20019 11.2004 8.84025 11.2002 8.40039C11.2002 7.96039 11.56 7.60059 12 7.60059Z", fill: "currentColor" })
     }
-  )
-);
-n.displayName = "Input";
-const g = l.forwardRef(
-  ({ className: d, label: e, error: t, errorMessage: r, size: i = "full", id: c, ...p }, u) => {
-    const s = c || l.useId();
-    return /* @__PURE__ */ x("div", { className: o("flex flex-col gap-1", b[i]), children: [
-      e && /* @__PURE__ */ a(
-        "label",
-        {
-          htmlFor: s,
-          className: "text-[length:var(--text-body-2)] text-gray-600 dark:text-gray-50",
-          children: e
-        }
-      ),
-      /* @__PURE__ */ a(
-        n,
-        {
-          id: s,
-          ref: u,
-          error: t,
-          className: o("w-full", d),
-          ...p
-        }
-      ),
-      t && r && /* @__PURE__ */ a("span", { className: "text-[length:var(--text-body-2)] text-destructive dark:text-red-400", children: r })
-    ] });
-  }
-);
-g.displayName = "InputField";
+  ) : /* @__PURE__ */ t(
+    "svg",
+    {
+      width: C,
+      height: C,
+      viewBox: "0 0 32 32",
+      fill: "none",
+      xmlns: "http://www.w3.org/2000/svg",
+      className: n,
+      ...l,
+      children: /* @__PURE__ */ t("path", { d: "M16 5.94434C21.5523 5.94442 26.0556 10.4476 26.0557 16C26.0557 21.5524 21.5524 26.0556 16 26.0557C10.4445 26.0556 5.94434 21.5523 5.94434 16C5.94439 10.4476 10.4476 5.94439 16 5.94434ZM16 6.94434C10.9999 6.94439 6.94439 10.9999 6.94434 16C6.94434 21.0002 10.997 25.0556 16 25.0557C21.0001 25.0556 25.0557 21.0001 25.0557 16C25.0556 10.9999 21.0001 6.94442 16 6.94434ZM16.5 22.3672H15.5V14.4072H16.5V22.3672ZM16.0908 10.3291C16.5408 10.3747 16.8975 10.7541 16.8975 11.2227C16.8972 11.7197 16.4971 12.12 16 12.1201C15.5339 12.12 15.1524 11.7681 15.1064 11.3145L15.1016 11.2227L15.1064 11.1309C15.1522 10.6811 15.5317 10.3243 16 10.3242L16.0908 10.3291Z", fill: "currentColor" })
+    }
+  );
+}
 export {
-  n as Input,
-  g as InputField,
-  b as inputSizeStyles
+  h as InformationIcon
 };
 //# sourceMappingURL=index34.mjs.map

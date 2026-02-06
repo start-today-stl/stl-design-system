@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const e=require("react");function r(t){return e.createElement("thead",{"aria-hidden":!0},e.createElement("tr",{...t}))}exports.Weekdays=r;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const t=require("react");function r(e){return t.createElement("tbody",{...e})}exports.Weeks=r;
 //# sourceMappingURL=index211.cjs.map

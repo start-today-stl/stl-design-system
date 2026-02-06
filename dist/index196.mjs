@@ -1,8 +1,9 @@
-import t from "react";
-function o(e) {
-  return t.createElement("div", { ...e });
+import n from "react";
+function d(t) {
+  const { calendarMonth: o, displayIndex: r, ...e } = t;
+  return n.createElement("div", { ...e });
 }
 export {
-  o as DropdownNav
+  d as MonthCaption
 };
 //# sourceMappingURL=index196.mjs.map

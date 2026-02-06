@@ -1,2 +1,7 @@
-"use strict";const a=require("./index315.cjs"),l=require("react"),s=require("./index316.cjs"),i=require("./index317.cjs");function u(e){const t=Object.create(null,{[Symbol.toStringTag]:{value:"Module"}});if(e){for(const r in e)if(r!=="default"){const c=Object.getOwnPropertyDescriptor(e,r);Object.defineProperty(t,r,c.get?c:{enumerable:!0,get:()=>e[r]})}}return t.default=e,Object.freeze(t)}const o=u(l);var n=o.forwardRef(function(e,t){return o.createElement(s.RemoveScroll,a.__assign({},e,{ref:t,sideCar:i}))});n.classNames=s.RemoveScroll.classNames;module.exports=n;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});/**
+ * @license lucide-react v0.563.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */const t=e=>e.replace(/([a-z0-9])([A-Z])/g,"$1-$2").toLowerCase();exports.toKebabCase=t;
 //# sourceMappingURL=index172.cjs.map

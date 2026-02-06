@@ -1,138 +1,51 @@
-import * as d from "react";
-import { useComposedRefs as R } from "./index143.mjs";
-import { Primitive as M } from "./index146.mjs";
-import { useCallbackRef as y } from "./index152.mjs";
-import { jsx as _ } from "react/jsx-runtime";
-var F = "focusScope.autoFocusOnMount", T = "focusScope.autoFocusOnUnmount", N = { bubbles: !1, cancelable: !0 }, K = "FocusScope", k = d.forwardRef((e, n) => {
-  const {
-    loop: t = !1,
-    trapped: u = !1,
-    onMountAutoFocus: p,
-    onUnmountAutoFocus: L,
-    ...g
-  } = e, [o, U] = d.useState(null), E = y(p), v = y(L), b = d.useRef(null), A = R(n, (s) => U(s)), a = d.useRef({
-    paused: !1,
-    pause() {
-      this.paused = !0;
-    },
-    resume() {
-      this.paused = !1;
+import * as l from "react";
+import { composeRefs as m } from "./index143.mjs";
+import { jsx as u } from "react/jsx-runtime";
+// @__NO_SIDE_EFFECTS__
+function b(e) {
+  const n = /* @__PURE__ */ y(e), o = l.forwardRef((t, r) => {
+    const { children: i, ...c } = t, s = l.Children.toArray(i), a = s.find(E);
+    if (a) {
+      const f = a.props.children, d = s.map((p) => p === a ? l.Children.count(f) > 1 ? l.Children.only(null) : l.isValidElement(f) ? f.props.children : null : p);
+      return /* @__PURE__ */ u(n, { ...c, ref: r, children: l.isValidElement(f) ? l.cloneElement(f, void 0, d) : null });
     }
-  }).current;
-  d.useEffect(() => {
-    if (u) {
-      let s = function(i) {
-        if (a.paused || !o) return;
-        const c = i.target;
-        o.contains(c) ? b.current = c : f(b.current, { select: !0 });
-      }, l = function(i) {
-        if (a.paused || !o) return;
-        const c = i.relatedTarget;
-        c !== null && (o.contains(c) || f(b.current, { select: !0 }));
-      }, r = function(i) {
-        if (document.activeElement === document.body)
-          for (const h of i)
-            h.removedNodes.length > 0 && f(o);
-      };
-      document.addEventListener("focusin", s), document.addEventListener("focusout", l);
-      const m = new MutationObserver(r);
-      return o && m.observe(o, { childList: !0, subtree: !0 }), () => {
-        document.removeEventListener("focusin", s), document.removeEventListener("focusout", l), m.disconnect();
-      };
-    }
-  }, [u, o, a.paused]), d.useEffect(() => {
-    if (o) {
-      S.add(a);
-      const s = document.activeElement;
-      if (!o.contains(s)) {
-        const r = new CustomEvent(F, N);
-        o.addEventListener(F, E), o.dispatchEvent(r), r.defaultPrevented || (w(W(I(o)), { select: !0 }), document.activeElement === s && f(o));
-      }
-      return () => {
-        o.removeEventListener(F, E), setTimeout(() => {
-          const r = new CustomEvent(T, N);
-          o.addEventListener(T, v), o.dispatchEvent(r), r.defaultPrevented || f(s ?? document.body, { select: !0 }), o.removeEventListener(T, v), S.remove(a);
-        }, 0);
-      };
-    }
-  }, [o, E, v, a]);
-  const P = d.useCallback(
-    (s) => {
-      if (!t && !u || a.paused) return;
-      const l = s.key === "Tab" && !s.altKey && !s.ctrlKey && !s.metaKey, r = document.activeElement;
-      if (l && r) {
-        const m = s.currentTarget, [i, c] = x(m);
-        i && c ? !s.shiftKey && r === c ? (s.preventDefault(), t && f(i, { select: !0 })) : s.shiftKey && r === i && (s.preventDefault(), t && f(c, { select: !0 })) : r === m && s.preventDefault();
-      }
-    },
-    [t, u, a.paused]
-  );
-  return /* @__PURE__ */ _(M.div, { tabIndex: -1, ...g, ref: A, onKeyDown: P });
-});
-k.displayName = K;
-function w(e, { select: n = !1 } = {}) {
-  const t = document.activeElement;
-  for (const u of e)
-    if (f(u, { select: n }), document.activeElement !== t) return;
-}
-function x(e) {
-  const n = I(e), t = O(n, e), u = O(n.reverse(), e);
-  return [t, u];
-}
-function I(e) {
-  const n = [], t = document.createTreeWalker(e, NodeFilter.SHOW_ELEMENT, {
-    acceptNode: (u) => {
-      const p = u.tagName === "INPUT" && u.type === "hidden";
-      return u.disabled || u.hidden || p ? NodeFilter.FILTER_SKIP : u.tabIndex >= 0 ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP;
-    }
+    return /* @__PURE__ */ u(n, { ...c, ref: r, children: i });
   });
-  for (; t.nextNode(); ) n.push(t.currentNode);
-  return n;
+  return o.displayName = `${e}.Slot`, o;
 }
-function O(e, n) {
-  for (const t of e)
-    if (!D(t, { upTo: n })) return t;
-}
-function D(e, { upTo: n }) {
-  if (getComputedStyle(e).visibility === "hidden") return !0;
-  for (; e; ) {
-    if (n !== void 0 && e === n) return !1;
-    if (getComputedStyle(e).display === "none") return !0;
-    e = e.parentElement;
-  }
-  return !1;
-}
-function H(e) {
-  return e instanceof HTMLInputElement && "select" in e;
-}
-function f(e, { select: n = !1 } = {}) {
-  if (e && e.focus) {
-    const t = document.activeElement;
-    e.focus({ preventScroll: !0 }), e !== t && H(e) && n && e.select();
-  }
-}
-var S = V();
-function V() {
-  let e = [];
-  return {
-    add(n) {
-      const t = e[0];
-      n !== t && (t == null || t.pause()), e = C(e, n), e.unshift(n);
-    },
-    remove(n) {
-      var t;
-      e = C(e, n), (t = e[0]) == null || t.resume();
+// @__NO_SIDE_EFFECTS__
+function y(e) {
+  const n = l.forwardRef((o, t) => {
+    const { children: r, ...i } = o;
+    if (l.isValidElement(r)) {
+      const c = S(r), s = C(i, r.props);
+      return r.type !== l.Fragment && (s.ref = t ? m(t, c) : c), l.cloneElement(r, s);
     }
-  };
+    return l.Children.count(r) > 1 ? l.Children.only(null) : null;
+  });
+  return n.displayName = `${e}.SlotClone`, n;
+}
+var g = Symbol("radix.slottable");
+function E(e) {
+  return l.isValidElement(e) && typeof e.type == "function" && "__radixId" in e.type && e.type.__radixId === g;
 }
 function C(e, n) {
-  const t = [...e], u = t.indexOf(n);
-  return u !== -1 && t.splice(u, 1), t;
+  const o = { ...n };
+  for (const t in n) {
+    const r = e[t], i = n[t];
+    /^on[A-Z]/.test(t) ? r && i ? o[t] = (...s) => {
+      const a = i(...s);
+      return r(...s), a;
+    } : r && (o[t] = r) : t === "style" ? o[t] = { ...r, ...i } : t === "className" && (o[t] = [r, i].filter(Boolean).join(" "));
+  }
+  return { ...e, ...o };
 }
-function W(e) {
-  return e.filter((n) => n.tagName !== "A");
+function S(e) {
+  var t, r;
+  let n = (t = Object.getOwnPropertyDescriptor(e.props, "ref")) == null ? void 0 : t.get, o = n && "isReactWarning" in n && n.isReactWarning;
+  return o ? e.ref : (n = (r = Object.getOwnPropertyDescriptor(e, "ref")) == null ? void 0 : r.get, o = n && "isReactWarning" in n && n.isReactWarning, o ? e.props.ref : e.props.ref || e.ref);
 }
 export {
-  k as FocusScope
+  b as createSlot
 };
 //# sourceMappingURL=index169.mjs.map

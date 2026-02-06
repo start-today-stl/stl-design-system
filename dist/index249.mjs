@@ -1,10 +1,7 @@
-import { DateLib as r } from "./index216.mjs";
-function e(t, o, n) {
-  return (n ?? new r(o)).formatMonthYear(t);
+function e() {
+  return "";
 }
-const l = e;
 export {
-  l as labelCaption,
-  e as labelGrid
+  e as labelNav
 };
 //# sourceMappingURL=index249.mjs.map

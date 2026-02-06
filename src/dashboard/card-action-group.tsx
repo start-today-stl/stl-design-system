@@ -1,9 +1,10 @@
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
+import { CardAction } from "./card-action"
 
-export interface FilterTabsProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** 탭 옵션 목록 */
+export interface CardActionGroupProps extends React.HTMLAttributes<HTMLDivElement> {
+  /** 옵션 목록 */
   options: string[]
   /** 선택된 값 */
   value?: string
@@ -13,7 +14,7 @@ export interface FilterTabsProps extends React.HTMLAttributes<HTMLDivElement> {
   defaultValue?: string
 }
 
-const FilterTabs = React.forwardRef<HTMLDivElement, FilterTabsProps>(
+const CardActionGroup = React.forwardRef<HTMLDivElement, CardActionGroupProps>(
   ({ className, options, value, onValueChange, defaultValue, ...props }, ref) => {
     const [internalValue, setInternalValue] = React.useState(defaultValue || options[0])
     const currentValue = value !== undefined ? value : internalValue
@@ -32,25 +33,18 @@ const FilterTabs = React.forwardRef<HTMLDivElement, FilterTabsProps>(
         {...props}
       >
         {options.map((option) => (
-          <button
+          <CardAction
             key={option}
-            type="button"
+            selected={currentValue === option}
             onClick={() => handleClick(option)}
-            className={cn(
-              "h-[18px] px-[5px] rounded-[2px] border border-gray-200 text-[10px] tracking-[-0.1px] text-gray-700 transition-colors cursor-pointer",
-              "dark:border-dark-300 dark:text-gray-100",
-              currentValue === option
-                ? "bg-gray-100 dark:bg-dark-300"
-                : "hover:bg-gray-50 dark:hover:bg-dark-400"
-            )}
           >
             {option}
-          </button>
+          </CardAction>
         ))}
       </div>
     )
   }
 )
-FilterTabs.displayName = "FilterTabs"
+CardActionGroup.displayName = "CardActionGroup"
 
-export { FilterTabs }
+export { CardActionGroup }

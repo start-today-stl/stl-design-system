@@ -1,12 +1,8 @@
-import e from "react";
-function a(t) {
-  return e.createElement(
-    "thead",
-    { "aria-hidden": !0 },
-    e.createElement("tr", { ...t })
-  );
+import t from "react";
+function o(e) {
+  return t.createElement("tbody", { ...e });
 }
 export {
-  a as Weekdays
+  o as Weeks
 };
 //# sourceMappingURL=index211.mjs.map

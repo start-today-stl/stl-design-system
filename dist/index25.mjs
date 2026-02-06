@@ -1,32 +1,32 @@
-import { jsx as l } from "react/jsx-runtime";
-function L({ size: t = 24, className: n, ...o }) {
-  return t <= 24 ? /* @__PURE__ */ l(
+import { jsx as V } from "react/jsx-runtime";
+function o({ size: H = 24, className: t, ...l }) {
+  return H <= 24 ? /* @__PURE__ */ V(
     "svg",
     {
-      width: t,
-      height: t,
+      width: H,
+      height: H,
       viewBox: "0 0 24 24",
       fill: "none",
       xmlns: "http://www.w3.org/2000/svg",
-      className: n,
-      ...o,
-      children: /* @__PURE__ */ l("path", { d: "M17.1504 9.9502L12 15.1104L6.83984 9.9502L7.5498 9.25L12 13.6904L16.4404 9.25L17.1504 9.9502Z", fill: "currentColor" })
+      className: t,
+      ...l,
+      children: /* @__PURE__ */ V("path", { d: "M7.7002 18.7002H16.2998V9.60059H17.2998V19.2002L16.7998 19.7002H7.2002L6.7002 19.2002V9.60059H7.7002V18.7002ZM10.0996 16.7998H9.09961V9.60059H10.0996V16.7998ZM12.5 16.7998H11.5V9.60059H12.5V16.7998ZM14.9004 16.7998H13.9004V9.60059H14.9004V16.7998ZM18.5 7.2002V9.60059H17.5V7.7002H6.5V9.60059H5.5V7.2002L6 6.7002H18L18.5 7.2002ZM14.4004 4.2998V5.2998H9.59961V4.2998H14.4004Z", fill: "currentColor" })
     }
-  ) : /* @__PURE__ */ l(
+  ) : /* @__PURE__ */ V(
     "svg",
     {
-      width: t,
-      height: t,
+      width: H,
+      height: H,
       viewBox: "0 0 32 32",
       fill: "none",
       xmlns: "http://www.w3.org/2000/svg",
-      className: n,
-      ...o,
-      children: /* @__PURE__ */ l("path", { d: "M22.7539 13.1533L16 19.9072L15.6465 19.5537L9.24707 13.1533L9.9541 12.4463L16.001 18.4922L22.0469 12.4463L22.7539 13.1533Z", fill: "currentColor" })
+      className: t,
+      ...l,
+      children: /* @__PURE__ */ V("path", { d: "M10.1002 25.0979H21.901V12.8H22.901V25.5979L22.401 26.0979H9.60022L9.10022 25.5979V12.8H10.1002V25.0979ZM13.3004 22.3997H12.3004V12.8H13.3004V22.3997ZM16.4987 22.3997H15.4987V12.8H16.4987V22.3997ZM19.6998 22.3997H18.6998V12.8H19.6998V22.3997ZM24.4987 9.59985V12.801H23.4987V10.0999H8.50061V12.801H7.50061V9.59985L8.00061 9.09985H23.9987L24.4987 9.59985ZM19.1989 6.89868H12.8004V5.89868H19.1989V6.89868Z", fill: "currentColor" })
     }
   );
 }
 export {
-  L as DownIcon
+  o as DeleteIcon
 };
 //# sourceMappingURL=index25.mjs.map

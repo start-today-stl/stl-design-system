@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});function e(t,n){return typeof t=="function"?t(n):t&&(t.current=n),t}exports.assignRef=e;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const t={lastWeek:"'last' eeee 'at' p",yesterday:"'yesterday at' p",today:"'today at' p",tomorrow:"'tomorrow at' p",nextWeek:"eeee 'at' p",other:"P"},a=(e,o,r,s)=>t[e];exports.formatRelative=a;
 //# sourceMappingURL=index373.cjs.map

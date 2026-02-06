@@ -1,32 +1,54 @@
-import { jsx as t } from "react/jsx-runtime";
-function h({ size: L = 24, className: l, ...r }) {
-  return L <= 24 ? /* @__PURE__ */ t(
-    "svg",
-    {
-      width: L,
-      height: L,
-      viewBox: "0 0 24 24",
-      fill: "none",
-      xmlns: "http://www.w3.org/2000/svg",
-      className: l,
-      ...r,
-      children: /* @__PURE__ */ t("path", { d: "M19.4651 9.33521V9.86548L9.86548 19.4651L9.59985 19.5754H4.80005L4.42505 19.2004V14.3997L4.53442 14.135L14.135 4.53442H14.6653L19.4651 9.33521ZM5.17505 18.8254H8.69556L5.17505 15.3049V18.8254ZM12.5305 7.19946L15.8958 10.5657L15.6301 10.8303L15.3655 11.0959L11.9993 7.73071L5.33032 14.3997L9.59985 18.6692L18.6692 9.59985L14.3997 5.33032L12.5305 7.19946Z", fill: "currentColor" })
-    }
-  ) : /* @__PURE__ */ t(
-    "svg",
-    {
-      width: L,
-      height: L,
-      viewBox: "0 0 32 32",
-      fill: "none",
-      xmlns: "http://www.w3.org/2000/svg",
-      className: l,
-      ...r,
-      children: /* @__PURE__ */ t("path", { d: "M25.9541 12.4473V13.1543L13.1543 25.9541L12.8008 26.1006H6.40039L5.90039 25.6006V19.2002L6.04688 18.8467L18.8467 6.04688H19.5537L25.9541 12.4473ZM6.90039 25.1006H11.5938L6.90039 20.4072V25.1006ZM16.707 9.59961L21.1934 14.0859L20.4863 14.793L16 10.3066L7.10645 19.1992L12.8008 24.8936L24.8936 12.8008L19.2002 7.10742L16.707 9.59961Z", fill: "currentColor" })
-    }
-  );
-}
+import { jsxs as l, jsx as r } from "react/jsx-runtime";
+import * as p from "react";
+import { cn as x } from "./index105.mjs";
+import { XIcon as g } from "./index102.mjs";
+const y = p.forwardRef(
+  ({ className: i, label: t, href: e, onNavigate: a, onRemove: o, ...n }, s) => {
+    const d = () => {
+      e ? window.location.href = e : a && a();
+    };
+    return /* @__PURE__ */ l(
+      "div",
+      {
+        ref: s,
+        className: x(
+          "inline-flex h-9 items-center justify-center gap-0.5 p-2 rounded-[5px] whitespace-nowrap flex-shrink-0",
+          "border-[0.75px] border-gray-100 dark:border-gray-700",
+          "bg-white dark:bg-dark-500",
+          "text-xs text-gray-700 dark:text-gray-300 tracking-[-0.12px]",
+          "hover:border-gray-200 dark:hover:border-gray-600 transition-colors",
+          i
+        ),
+        ...n,
+        children: [
+          /* @__PURE__ */ r(
+            "button",
+            {
+              type: "button",
+              onClick: d,
+              className: "hover:text-primary dark:hover:text-primary-300 transition-colors",
+              children: t
+            }
+          ),
+          o && /* @__PURE__ */ r(
+            "button",
+            {
+              type: "button",
+              onClick: (c) => {
+                c.stopPropagation(), o();
+              },
+              className: "flex-shrink-0 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition-colors",
+              "aria-label": `${t} 삭제`,
+              children: /* @__PURE__ */ r(g, { size: 20 })
+            }
+          )
+        ]
+      }
+    );
+  }
+);
+y.displayName = "VisitTag";
 export {
-  h as WriteIcon
+  y as VisitTag
 };
 //# sourceMappingURL=index100.mjs.map

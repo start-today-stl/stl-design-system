@@ -1,9 +1,10 @@
 import r from "react";
-function c(e) {
-  const { week: o, ...t } = e;
-  return r.createElement("th", { ...t });
+import { useDayPicker as t } from "./index228.mjs";
+function m(o) {
+  const { components: e } = t();
+  return r.createElement(e.Dropdown, { ...o });
 }
 export {
-  c as WeekNumber
+  m as YearsDropdown
 };
 //# sourceMappingURL=index212.mjs.map

@@ -1,19 +1,8 @@
-import { formatCaption as t, formatMonthCaption as e } from "./index240.mjs";
-import { formatDay as a } from "./index241.mjs";
-import { formatMonthDropdown as p } from "./index242.mjs";
-import { formatWeekdayName as x } from "./index243.mjs";
-import { formatWeekNumber as i } from "./index244.mjs";
-import { formatWeekNumberHeader as C } from "./index245.mjs";
-import { formatYearCaption as N, formatYearDropdown as W } from "./index246.mjs";
+import { defaultDateLib as r } from "./index213.mjs";
+function n(o, t = r) {
+  return t.format(o, "LLLL");
+}
 export {
-  t as formatCaption,
-  a as formatDay,
-  e as formatMonthCaption,
-  p as formatMonthDropdown,
-  i as formatWeekNumber,
-  C as formatWeekNumberHeader,
-  x as formatWeekdayName,
-  N as formatYearCaption,
-  W as formatYearDropdown
+  n as formatMonthDropdown
 };
 //# sourceMappingURL=index239.mjs.map

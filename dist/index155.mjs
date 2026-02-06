@@ -1,16 +1,14 @@
-import { s as r } from "./index175.mjs";
-function s() {
-  return r.useSyncExternalStore(
-    e,
-    () => !0,
-    () => !1
-  );
-}
-function e() {
-  return () => {
-  };
+import * as o from "react";
+import { useLayoutEffect as a } from "./index148.mjs";
+var s = o[" useId ".trim().toString()] || (() => {
+}), f = 0;
+function i(t) {
+  const [e, r] = o.useState(s());
+  return a(() => {
+    r((u) => u ?? String(f++));
+  }, [t]), t || (e ? `radix-${e}` : "");
 }
 export {
-  s as useIsHydrated
+  i as useId
 };
 //# sourceMappingURL=index155.mjs.map

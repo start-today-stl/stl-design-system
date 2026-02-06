@@ -1,7 +1,12 @@
-function i(n, t) {
-  return typeof n == "function" ? n(t) : n && (n.current = t), n;
-}
+const t = {
+  lastWeek: "'last' eeee 'at' p",
+  yesterday: "'yesterday at' p",
+  today: "'today at' p",
+  tomorrow: "'tomorrow at' p",
+  nextWeek: "eeee 'at' p",
+  other: "P"
+}, s = (e, a, o, r) => t[e];
 export {
-  i as assignRef
+  s as formatRelative
 };
 //# sourceMappingURL=index373.mjs.map

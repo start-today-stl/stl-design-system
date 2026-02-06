@@ -1,51 +1,54 @@
-import { jsx as r, Fragment as u } from "react/jsx-runtime";
-import { NavGroup as m } from "./index50.mjs";
-import { NavItem as s } from "./index52.mjs";
-import { isNavGroup as I } from "./index102.mjs";
-import { STLArrowIcon as b } from "./index68.mjs";
-function f(i) {
-  if (!(i <= 1))
-    return i >= 3 ? 3 : i;
-}
-function E({
-  items: i,
-  iconSize: t = 24,
-  indicatorSize: l = 24,
-  collapsed: a
-}) {
-  const c = (o, e = 1) => {
-    if (I(o)) {
-      const v = "icon" in o ? o.icon : void 0;
-      return /* @__PURE__ */ r(
-        m,
-        {
-          icon: v ? /* @__PURE__ */ r(v, { size: t }) : void 0,
-          label: o.label,
-          depth: f(e),
-          defaultExpanded: o.defaultExpanded,
-          collapsed: a,
-          children: o.children.map((p) => c(p, e + 1))
-        },
-        o.id
-      );
+import { jsxs as c, jsx as t } from "react/jsx-runtime";
+import * as r from "react";
+import { cn as a } from "./index105.mjs";
+import { IsolationModeIcon as b } from "./index37.mjs";
+const d = r.forwardRef(
+  ({ className: n, collapsed: e, showToggle: i = !1, scrollable: l = !1, onToggle: s, children: m, ...f }, x) => /* @__PURE__ */ c(
+    "nav",
+    {
+      ref: x,
+      className: a(
+        "relative flex flex-col min-h-0",
+        e ? "w-[88px] items-center" : "w-[276px]",
+        n
+      ),
+      ...f,
+      children: [
+        i && /* @__PURE__ */ t(
+          "button",
+          {
+            type: "button",
+            onClick: s,
+            className: a(
+              "absolute flex items-center justify-center z-10",
+              "w-8 h-8 rounded-[20px] border border-gray-100 dark:border-gray-700",
+              "bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800",
+              "transition-colors cursor-pointer",
+              e ? "top-[-60px] -right-4" : "top-[-50px] -right-[48px]"
+            ),
+            "aria-label": e ? "메뉴 펼치기" : "메뉴 접기",
+            children: /* @__PURE__ */ t(b, { size: 24, className: "text-gray-500" })
+          }
+        ),
+        /* @__PURE__ */ t(
+          "div",
+          {
+            className: a(
+              "flex flex-col",
+              e ? "items-center gap-0.5 w-full overflow-visible" : "gap-0.5",
+              l && !e && "flex-1 min-h-0 overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+            ),
+            children: r.Children.map(m, (o) => r.isValidElement(o) ? r.cloneElement(o, {
+              collapsed: e
+            }) : o)
+          }
+        )
+      ]
     }
-    const n = o, d = "icon" in n ? n.icon : void 0;
-    return /* @__PURE__ */ r(
-      s,
-      {
-        icon: d ? /* @__PURE__ */ r(d, { size: t }) : void 0,
-        label: n.label,
-        active: n.active,
-        depth: f(e),
-        collapsed: a,
-        indicator: n.hasIndicator ? /* @__PURE__ */ r(b, { size: l }) : void 0
-      },
-      n.id
-    );
-  };
-  return /* @__PURE__ */ r(u, { children: i.map((o) => c(o)) });
-}
+  )
+);
+d.displayName = "NavMenu";
 export {
-  E as NavRenderer
+  d as NavMenu
 };
 //# sourceMappingURL=index54.mjs.map

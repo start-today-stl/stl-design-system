@@ -1,31 +1,55 @@
-import { jsxs as e, jsx as r } from "react/jsx-runtime";
-import * as m from "react";
-import { cn as x } from "./index104.mjs";
-const n = m.forwardRef(
-  ({ className: d, icon: a, title: t, headerAction: s, children: i, ...c }, l) => /* @__PURE__ */ e(
-    "div",
+import { jsx as e, jsxs as o } from "react/jsx-runtime";
+import * as n from "react";
+import { Checkbox as a, CheckboxIndicator as d } from "./index115.mjs";
+import { cn as l } from "./index105.mjs";
+const h = () => /* @__PURE__ */ e(
+  "svg",
+  {
+    width: "10",
+    height: "9",
+    viewBox: "0 0 10 9",
+    fill: "none",
+    xmlns: "http://www.w3.org/2000/svg",
+    children: /* @__PURE__ */ e(
+      "path",
+      {
+        d: "M0.295898 3.7124L3.7959 8.2124L9.2959 0.212402",
+        stroke: "currentColor",
+        strokeWidth: "0.75"
+      }
+    )
+  }
+), g = n.forwardRef(({ className: i, label: r, ...s }, c) => {
+  const t = /* @__PURE__ */ e(
+    a,
     {
-      ref: l,
-      className: x(
-        "bg-white border border-gray-100 rounded-[10px] dark:bg-dark-400 dark:border-dark-300",
-        d
+      ref: c,
+      className: l(
+        // 기본 스타일 (20x20, 2px radius)
+        "peer h-5 w-5 shrink-0 rounded-[2px] border-[0.75px] flex items-center justify-center cursor-pointer",
+        // 미체크 상태
+        "border-gray-500 bg-white",
+        // 체크 상태
+        "data-[state=checked]:bg-primary data-[state=checked]:border-gray-500 data-[state=checked]:text-white",
+        // 포커스 상태 (inset ring으로 레이아웃 시프트 방지)
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset",
+        // 비활성화 상태
+        "disabled:cursor-not-allowed disabled:opacity-30",
+        // 다크모드
+        "dark:border-gray-200 dark:bg-dark-500 dark:data-[state=checked]:bg-primary dark:data-[state=checked]:border-gray-200",
+        i
       ),
-      ...c,
-      children: [
-        /* @__PURE__ */ e("div", { className: "flex items-center justify-between px-[10px] pt-[10px]", children: [
-          /* @__PURE__ */ e("div", { className: "flex items-center gap-0.5", children: [
-            a && /* @__PURE__ */ r("span", { className: "flex-shrink-0 text-gray-700 dark:text-gray-100", children: a }),
-            /* @__PURE__ */ r("span", { className: "text-sm tracking-[-0.14px] text-gray-700 dark:text-gray-100", children: t })
-          ] }),
-          s && /* @__PURE__ */ r("div", { className: "flex items-center", children: s })
-        ] }),
-        /* @__PURE__ */ r("div", { className: "p-[10px]", children: i })
-      ]
+      ...s,
+      children: /* @__PURE__ */ e(d, { className: "flex items-center justify-center text-current", children: /* @__PURE__ */ e(h, {}) })
     }
-  )
-);
-n.displayName = "DashboardCard";
+  );
+  return r ? /* @__PURE__ */ o("label", { className: "inline-flex items-center gap-1.5 cursor-pointer align-middle", children: [
+    t,
+    /* @__PURE__ */ e("span", { className: "text-xs text-gray-600 tracking-[-0.12px] dark:text-gray-200 leading-none", children: r })
+  ] }) : t;
+});
+g.displayName = a.displayName;
 export {
-  n as DashboardCard
+  g as Checkbox
 };
 //# sourceMappingURL=index21.mjs.map

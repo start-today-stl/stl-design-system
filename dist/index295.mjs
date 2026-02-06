@@ -1,14 +1,8 @@
-import { normalizeDates as i } from "./index353.mjs";
-import { startOfDay as t } from "./index302.mjs";
-function d(a, e, r) {
-  const [m, f] = i(
-    r == null ? void 0 : r.in,
-    a,
-    e
-  );
-  return +t(m) == +t(f);
+import { toDate as t } from "./index351.mjs";
+function u(r, e) {
+  return t(r, e == null ? void 0 : e.in).getFullYear();
 }
 export {
-  d as isSameDay
+  u as getYear
 };
 //# sourceMappingURL=index295.mjs.map

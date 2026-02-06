@@ -1,7 +1,7 @@
-function t(o) {
-  return "Go to the Previous Month";
+function r(e) {
+  return "Week Number";
 }
 export {
-  t as labelPrevious
+  r as labelWeekNumberHeader
 };
 //# sourceMappingURL=index254.mjs.map

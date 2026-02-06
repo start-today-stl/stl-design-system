@@ -1,14 +1,17 @@
-function d(o, n, s, a, e) {
-  const { startOfMonth: r, startOfYear: c, endOfYear: f, eachMonthOfInterval: l, getMonth: p } = e;
-  return l({
-    start: c(o),
-    end: f(o)
-  }).map((t) => {
-    const O = a.formatMonthDropdown(t, e), h = p(t), u = n && t < r(n) || s && t > r(s) || !1;
-    return { value: h, label: O, disabled: u };
+function p(e, r, s, t, f = !1) {
+  if (!e || !r)
+    return;
+  const { startOfYear: o, endOfYear: i, eachYearOfInterval: l, getYear: u } = t, Y = o(e), c = i(r), a = l({ start: Y, end: c });
+  return f && a.reverse(), a.map((n) => {
+    const d = s.formatYearDropdown(n, t);
+    return {
+      value: u(n),
+      label: d,
+      disabled: !1
+    };
   });
 }
 export {
-  d as getMonthOptions
+  p as getYearOptions
 };
 //# sourceMappingURL=index223.mjs.map

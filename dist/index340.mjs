@@ -1,16 +1,21 @@
-function g(d, s, k, t, f, O, n) {
-  const { ISOWeek: o, broadcastCalendar: r } = O, { addDays: W, addMonths: c, addWeeks: l, addYears: u, endOfBroadcastWeek: b, endOfISOWeek: m, endOfWeek: y, max: F, min: I, startOfBroadcastWeek: h, startOfISOWeek: x, startOfWeek: B } = n;
-  let a = {
-    day: W,
-    week: l,
-    month: c,
-    year: u,
-    startOfWeek: (e) => r ? h(e, n) : o ? x(e) : B(e),
-    endOfWeek: (e) => r ? b(e) : o ? m(e) : y(e)
-  }[d](k, s === "after" ? 1 : -1);
-  return s === "before" && t ? a = F([t, a]) : s === "after" && f && (a = I([f, a])), a;
-}
+import { formatDistance as o } from "./index371.mjs";
+import { formatLong as t } from "./index372.mjs";
+import { formatRelative as r } from "./index373.mjs";
+import { localize as m } from "./index374.mjs";
+import { match as a } from "./index375.mjs";
+const p = {
+  code: "en-US",
+  formatDistance: o,
+  formatLong: t,
+  formatRelative: r,
+  localize: m,
+  match: a,
+  options: {
+    weekStartsOn: 0,
+    firstWeekContainsDate: 1
+  }
+};
 export {
-  g as getFocusableDate
+  p as enUS
 };
 //# sourceMappingURL=index340.mjs.map

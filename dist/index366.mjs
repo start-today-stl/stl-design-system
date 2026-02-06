@@ -1,71 +1,17 @@
-const a = {
-  lessThanXSeconds: {
-    one: "less than a second",
-    other: "less than {{count}} seconds"
-  },
-  xSeconds: {
-    one: "1 second",
-    other: "{{count}} seconds"
-  },
-  halfAMinute: "half a minute",
-  lessThanXMinutes: {
-    one: "less than a minute",
-    other: "less than {{count}} minutes"
-  },
-  xMinutes: {
-    one: "1 minute",
-    other: "{{count}} minutes"
-  },
-  aboutXHours: {
-    one: "about 1 hour",
-    other: "about {{count}} hours"
-  },
-  xHours: {
-    one: "1 hour",
-    other: "{{count}} hours"
-  },
-  xDays: {
-    one: "1 day",
-    other: "{{count}} days"
-  },
-  aboutXWeeks: {
-    one: "about 1 week",
-    other: "about {{count}} weeks"
-  },
-  xWeeks: {
-    one: "1 week",
-    other: "{{count}} weeks"
-  },
-  aboutXMonths: {
-    one: "about 1 month",
-    other: "about {{count}} months"
-  },
-  xMonths: {
-    one: "1 month",
-    other: "{{count}} months"
-  },
-  aboutXYears: {
-    one: "about 1 year",
-    other: "about {{count}} years"
-  },
-  xYears: {
-    one: "1 year",
-    other: "{{count}} years"
-  },
-  overXYears: {
-    one: "over 1 year",
-    other: "over {{count}} years"
-  },
-  almostXYears: {
-    one: "almost 1 year",
-    other: "almost {{count}} years"
-  }
-}, r = (s, n, o) => {
-  let e;
-  const t = a[s];
-  return typeof t == "string" ? e = t : n === 1 ? e = t.one : e = t.other.replace("{{count}}", n.toString()), o != null && o.addSuffix ? o.comparison && o.comparison > 0 ? "in " + e : e + " ago" : e;
-};
+import { getDefaultOptions as C } from "./index356.mjs";
+import { constructFrom as Y } from "./index350.mjs";
+import { startOfWeek as D } from "./index310.mjs";
+import { toDate as F } from "./index351.mjs";
+function H(t, e) {
+  var u, k, m, W;
+  const a = F(t, e == null ? void 0 : e.in), r = a.getFullYear(), c = C(), s = (e == null ? void 0 : e.firstWeekContainsDate) ?? ((k = (u = e == null ? void 0 : e.locale) == null ? void 0 : u.options) == null ? void 0 : k.firstWeekContainsDate) ?? c.firstWeekContainsDate ?? ((W = (m = c.locale) == null ? void 0 : m.options) == null ? void 0 : W.firstWeekContainsDate) ?? 1, f = Y((e == null ? void 0 : e.in) || t, 0);
+  f.setFullYear(r + 1, 0, s), f.setHours(0, 0, 0, 0);
+  const O = D(f, e), l = Y((e == null ? void 0 : e.in) || t, 0);
+  l.setFullYear(r, 0, s), l.setHours(0, 0, 0, 0);
+  const n = D(l, e);
+  return +a >= +O ? r + 1 : +a >= +n ? r : r - 1;
+}
 export {
-  r as formatDistance
+  H as getWeekYear
 };
 //# sourceMappingURL=index366.mjs.map

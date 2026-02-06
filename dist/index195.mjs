@@ -1,20 +1,9 @@
-import a from "react";
-import { UI as n } from "./index228.mjs";
-function f(c) {
-  const { options: e, className: m, components: l, classNames: t, ...o } = c, d = [t[n.Dropdown], m].join(" "), r = e == null ? void 0 : e.find(({ value: s }) => s === o.value);
-  return a.createElement(
-    "span",
-    { "data-disabled": o.disabled, className: t[n.DropdownRoot] },
-    a.createElement(l.Select, { className: d, ...o }, e == null ? void 0 : e.map(({ value: s, label: i, disabled: p }) => a.createElement(l.Option, { key: s, value: s, disabled: p }, i))),
-    a.createElement(
-      "span",
-      { className: t[n.CaptionLabel], "aria-hidden": !0 },
-      r == null ? void 0 : r.label,
-      a.createElement(l.Chevron, { orientation: "down", size: 18, className: t[n.Chevron] })
-    )
-  );
+import n from "react";
+function a(e) {
+  const { calendarMonth: r, displayIndex: d, ...t } = e;
+  return n.createElement("div", { ...t }, e.children);
 }
 export {
-  f as Dropdown
+  a as Month
 };
 //# sourceMappingURL=index195.mjs.map

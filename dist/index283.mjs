@@ -1,17 +1,8 @@
-import { normalizeInterval as o } from "./index354.mjs";
-import { constructFrom as u } from "./index349.mjs";
-function h(l, t) {
-  const { start: r, end: n } = o(t == null ? void 0 : t.in, l);
-  let s = +r > +n;
-  const c = s ? +r : +n, e = s ? n : r;
-  e.setHours(0, 0, 0, 0), e.setMonth(0, 1);
-  let m = 1;
-  const a = [];
-  for (; +e <= c; )
-    a.push(u(r, e)), e.setFullYear(e.getFullYear() + m);
-  return s ? a.reverse() : a;
+import { addDays as o } from "./index281.mjs";
+function a(r, d, e) {
+  return o(r, d * 7, e);
 }
 export {
-  h as eachYearOfInterval
+  a as addWeeks
 };
 //# sourceMappingURL=index283.mjs.map

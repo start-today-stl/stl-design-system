@@ -1,10 +1,11 @@
-import { constructFrom as c } from "./index349.mjs";
-import { toDate as m } from "./index350.mjs";
-function l(n, t) {
-  const e = m(n, t == null ? void 0 : t.in), o = e.getFullYear(), a = e.getMonth(), r = c(e, 0);
-  return r.setFullYear(o, a + 1, 0), r.setHours(0, 0, 0, 0), r.getDate();
+import { differenceInCalendarDays as e } from "./index285.mjs";
+import { startOfYear as t } from "./index311.mjs";
+import { toDate as d } from "./index351.mjs";
+function y(a, r) {
+  const f = d(a, r == null ? void 0 : r.in);
+  return e(f, t(f)) + 1;
 }
 export {
-  l as getDaysInMonth
+  y as getDayOfYear
 };
 //# sourceMappingURL=index361.mjs.map

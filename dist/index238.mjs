@@ -1,38 +1,8 @@
-import { enUS as n } from "./index334.mjs";
-import { format as f } from "./index307.mjs";
-const b = {
-  ...n,
-  labels: {
-    labelDayButton: (r, a, l, e) => {
-      let t;
-      e && typeof e.format == "function" ? t = e.format.bind(e) : t = (c, m) => f(c, m, { locale: n, ...l });
-      let o = t(r, "PPPP");
-      return a.today && (o = `Today, ${o}`), a.selected && (o = `${o}, selected`), o;
-    },
-    labelMonthDropdown: "Choose the Month",
-    labelNext: "Go to the Next Month",
-    labelPrevious: "Go to the Previous Month",
-    labelWeekNumber: (r) => `Week ${r}`,
-    labelYearDropdown: "Choose the Year",
-    labelGrid: (r, a, l) => {
-      let e;
-      return l && typeof l.format == "function" ? e = l.format.bind(l) : e = (t, o) => f(t, o, { locale: n, ...a }), e(r, "LLLL yyyy");
-    },
-    labelGridcell: (r, a, l, e) => {
-      let t;
-      e && typeof e.format == "function" ? t = e.format.bind(e) : t = (c, m) => f(c, m, { locale: n, ...l });
-      let o = t(r, "PPPP");
-      return a != null && a.today && (o = `Today, ${o}`), o;
-    },
-    labelNav: "Navigation bar",
-    labelWeekNumberHeader: "Week Number",
-    labelWeekday: (r, a, l) => {
-      let e;
-      return l && typeof l.format == "function" ? e = l.format.bind(l) : e = (t, o) => f(t, o, { locale: n, ...a }), e(r, "cccc");
-    }
-  }
-};
+import { DateLib as a } from "./index213.mjs";
+function f(r, t, o) {
+  return (o ?? new a(t)).format(r, "d");
+}
 export {
-  b as enUS
+  f as formatDay
 };
 //# sourceMappingURL=index238.mjs.map

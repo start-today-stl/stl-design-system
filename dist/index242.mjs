@@ -1,8 +1,7 @@
-import { defaultDateLib as r } from "./index216.mjs";
-function n(o, t = r) {
-  return t.format(o, "LLLL");
+function e() {
+  return "";
 }
 export {
-  n as formatMonthDropdown
+  e as formatWeekNumberHeader
 };
 //# sourceMappingURL=index242.mjs.map

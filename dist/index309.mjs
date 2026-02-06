@@ -1,23 +1,9 @@
-const n = {}, f = {};
-function d(t, c) {
-  try {
-    const r = (n[t] || (n[t] = new Intl.DateTimeFormat("en-US", {
-      timeZone: t,
-      timeZoneName: "longOffset"
-    }).format))(c).split("GMT")[1];
-    return r in f ? f[r] : a(r, r.split(":"));
-  } catch {
-    if (t in f) return f[t];
-    const s = t == null ? void 0 : t.match(o);
-    return s ? a(t, s.slice(1)) : NaN;
-  }
-}
-const o = /([+-]\d\d):?(\d\d)?/;
-function a(t, c) {
-  const s = +(c[0] || 0), r = +(c[1] || 0), u = +(c[2] || 0) / 60;
-  return f[t] = s * 60 + r > 0 ? s * 60 + r + u : s * 60 - r - u;
+import { toDate as a } from "./index351.mjs";
+function u(r, t) {
+  const e = a(r, t == null ? void 0 : t.in);
+  return e.setDate(1), e.setHours(0, 0, 0, 0), e;
 }
 export {
-  d as tzOffset
+  u as startOfMonth
 };
 //# sourceMappingURL=index309.mjs.map

@@ -1,57 +1,24 @@
-import { useRef as q, useLayoutEffect as z } from "react";
-import { Animation as o } from "./index228.mjs";
-const l = (e) => e instanceof HTMLElement ? e : null, w = (e) => [
-  ...e.querySelectorAll("[data-animated-month]") ?? []
-], I = (e) => l(e.querySelector("[data-animated-month]")), S = (e) => l(e.querySelector("[data-animated-caption]")), A = (e) => l(e.querySelector("[data-animated-weeks]")), B = (e) => l(e.querySelector("[data-animated-nav]")), P = (e) => l(e.querySelector("[data-animated-weekdays]"));
-function D(e, b, { classNames: s, months: a, focused: g, dateLib: H }) {
-  const p = q(null), h = q(a), v = q(!1);
-  z(() => {
-    const f = h.current;
-    if (h.current = a, !b || !e.current || // safety check because the ref can be set to anything by consumers
-    !(e.current instanceof HTMLElement) || // validation required for the animation to work as expected
-    a.length === 0 || f.length === 0 || a.length !== f.length)
-      return;
-    const M = H.isSameMonth(a[0].date, f[0].date), u = H.isAfter(a[0].date, f[0].date), m = u ? s[o.caption_after_enter] : s[o.caption_before_enter], L = u ? s[o.weeks_after_enter] : s[o.weeks_before_enter], x = p.current, _ = e.current.cloneNode(!0);
-    if (_ instanceof HTMLElement ? (w(_).forEach((t) => {
-      if (!(t instanceof HTMLElement))
+import { useState as i } from "react";
+import { calculateFocusTarget as v } from "./index328.mjs";
+import { getNextFocus as x } from "./index329.mjs";
+function I(u, o, a, r, F) {
+  const { autoFocus: f } = u, [d, m] = i(), s = v(o.days, a, r || (() => !1), d), [t, n] = i(f ? s : void 0);
+  return {
+    isFocusTarget: (c) => !!(s != null && s.isEqualTo(c)),
+    setFocused: n,
+    focused: t,
+    blur: () => {
+      m(t), n(void 0);
+    },
+    moveFocus: (c, l) => {
+      if (!t)
         return;
-      const c = I(t);
-      c && t.contains(c) && t.removeChild(c);
-      const n = S(t);
-      n && n.classList.remove(m);
-      const r = A(t);
-      r && r.classList.remove(L);
-    }), p.current = _) : p.current = null, v.current || M || // skip animation if a day is focused because it can cause issues to the animation and is better for a11y
-    g)
-      return;
-    const k = x instanceof HTMLElement ? w(x) : [], d = w(e.current);
-    if (d != null && d.every((i) => i instanceof HTMLElement) && k && k.every((i) => i instanceof HTMLElement)) {
-      v.current = !0, e.current.style.isolation = "isolate";
-      const i = B(e.current);
-      i && (i.style.zIndex = "1"), d.forEach((t, c) => {
-        const n = k[c];
-        if (!n)
-          return;
-        t.style.position = "relative", t.style.overflow = "hidden";
-        const r = S(t);
-        r && r.classList.add(m);
-        const y = A(t);
-        y && y.classList.add(L);
-        const W = () => {
-          v.current = !1, e.current && (e.current.style.isolation = ""), i && (i.style.zIndex = ""), r && r.classList.remove(m), y && y.classList.remove(L), t.style.position = "", t.style.overflow = "", t.contains(n) && t.removeChild(n);
-        };
-        n.style.pointerEvents = "none", n.style.position = "absolute", n.style.overflow = "hidden", n.setAttribute("aria-hidden", "true");
-        const C = P(n);
-        C && (C.style.opacity = "0");
-        const E = S(n);
-        E && (E.classList.add(u ? s[o.caption_before_exit] : s[o.caption_after_exit]), E.addEventListener("animationend", W));
-        const T = A(n);
-        T && T.classList.add(u ? s[o.weeks_before_exit] : s[o.weeks_after_exit]), t.insertBefore(n, t.firstChild);
-      });
+      const e = x(c, l, t, o.navStart, o.navEnd, u, F);
+      e && (u.disableNavigation && !o.days.some((g) => g.isEqualTo(e)) || (o.goToDay(e), n(e)));
     }
-  });
+  };
 }
 export {
-  D as useAnimation
+  I as useFocus
 };
 //# sourceMappingURL=index229.mjs.map

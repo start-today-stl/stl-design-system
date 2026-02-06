@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});function e(){return""}exports.formatWeekNumberHeader=e;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const b=require("./index213.cjs");function a(l,t,o,n){let e=(n??new b.DateLib(o)).format(l,"PPPP");return t.today&&(e=`Today, ${e}`),t.selected&&(e=`${e}, selected`),e}const r=a;exports.labelDay=r;exports.labelDayButton=a;
 //# sourceMappingURL=index245.cjs.map

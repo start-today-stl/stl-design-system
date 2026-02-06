@@ -1,8 +1,12 @@
-import t from "react";
-function c(e) {
-  return t.createElement("select", { ...e });
+import e from "react";
+function a(t) {
+  return e.createElement(
+    "thead",
+    { "aria-hidden": !0 },
+    e.createElement("tr", { ...t })
+  );
 }
 export {
-  c as Select
+  a as Weekdays
 };
 //# sourceMappingURL=index208.mjs.map

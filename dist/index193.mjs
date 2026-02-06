@@ -1,9 +1,8 @@
-import r from "react";
-function n(t) {
-  const { day: o, modifiers: a, ...e } = t;
-  return r.createElement("td", { ...e });
+import t from "react";
+function o(e) {
+  return t.createElement("div", { ...e });
 }
 export {
-  n as Day
+  o as DropdownNav
 };
 //# sourceMappingURL=index193.mjs.map

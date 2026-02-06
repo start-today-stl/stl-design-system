@@ -1,209 +1,653 @@
-import { computePosition as I, offset as J, shift as K, flip as N, size as Q, hide as T, arrow as z, limitShift as X } from "./index262.mjs";
-import { autoUpdate as pe, platform as ge } from "./index262.mjs";
-import * as o from "react";
-import { useLayoutEffect as Y } from "react";
-import * as Z from "react-dom";
-var b = typeof document < "u", ee = function() {
-}, w = b ? Y : ee;
-function R(e, t) {
-  if (e === t)
-    return !0;
-  if (typeof e != typeof t)
-    return !1;
-  if (typeof e == "function" && e.toString() === t.toString())
-    return !0;
-  let n, r, i;
-  if (e && t && typeof e == "object") {
-    if (Array.isArray(e)) {
-      if (n = e.length, n !== t.length) return !1;
-      for (r = n; r-- !== 0; )
-        if (!R(e[r], t[r]))
-          return !1;
-      return !0;
+import * as r from "react";
+import { composeEventHandlers as h } from "./index144.mjs";
+import { createCollection as $e } from "./index151.mjs";
+import { useComposedRefs as N, composeRefs as qe } from "./index143.mjs";
+import { createContextScope as Je } from "./index142.mjs";
+import { useDirection as Qe } from "./index156.mjs";
+import { DismissableLayer as et } from "./index160.mjs";
+import { useFocusGuards as tt } from "./index163.mjs";
+import { FocusScope as nt } from "./index161.mjs";
+import { useId as Me } from "./index155.mjs";
+import { Root as ve, Anchor as ot, createPopperScope as Ce, Content as rt, Arrow as ct } from "./index178.mjs";
+import { Portal as at } from "./index162.mjs";
+import { Presence as W } from "./index159.mjs";
+import { Primitive as F, dispatchDiscreteCustomEvent as st } from "./index153.mjs";
+import { createRovingFocusGroupScope as ge, Item as ut, Root as it } from "./index259.mjs";
+import { createSlot as lt } from "./index333.mjs";
+import { useCallbackRef as ee } from "./index147.mjs";
+import { hideOthers as dt } from "./index165.mjs";
+import ft from "./index164.mjs";
+import { jsx as u } from "react/jsx-runtime";
+var Q = ["Enter", " "], mt = ["ArrowDown", "PageUp", "Home"], _e = ["ArrowUp", "PageDown", "End"], pt = [...mt, ..._e], Mt = {
+  ltr: [...Q, "ArrowRight"],
+  rtl: [...Q, "ArrowLeft"]
+}, ht = {
+  ltr: ["ArrowLeft"],
+  rtl: ["ArrowRight"]
+}, L = "Menu", [D, vt, Ct] = $e(L), [I, cn] = Je(L, [
+  Ct,
+  Ce,
+  ge
+]), K = Ce(), Re = ge(), [Se, E] = I(L), [gt, G] = I(L), Pe = (e) => {
+  const { __scopeMenu: n, open: t = !1, children: o, dir: s, onOpenChange: a, modal: l = !0 } = e, p = K(n), [M, m] = r.useState(null), f = r.useRef(!1), c = ee(a), d = Qe(s);
+  return r.useEffect(() => {
+    const C = () => {
+      f.current = !0, document.addEventListener("pointerdown", v, { capture: !0, once: !0 }), document.addEventListener("pointermove", v, { capture: !0, once: !0 });
+    }, v = () => f.current = !1;
+    return document.addEventListener("keydown", C, { capture: !0 }), () => {
+      document.removeEventListener("keydown", C, { capture: !0 }), document.removeEventListener("pointerdown", v, { capture: !0 }), document.removeEventListener("pointermove", v, { capture: !0 });
+    };
+  }, []), /* @__PURE__ */ u(ve, { ...p, children: /* @__PURE__ */ u(
+    Se,
+    {
+      scope: n,
+      open: t,
+      onOpenChange: c,
+      content: M,
+      onContentChange: m,
+      children: /* @__PURE__ */ u(
+        gt,
+        {
+          scope: n,
+          onClose: r.useCallback(() => c(!1), [c]),
+          isUsingKeyboardRef: f,
+          dir: d,
+          modal: l,
+          children: o
+        }
+      )
     }
-    if (i = Object.keys(e), n = i.length, n !== Object.keys(t).length)
-      return !1;
-    for (r = n; r-- !== 0; )
-      if (!{}.hasOwnProperty.call(t, i[r]))
-        return !1;
-    for (r = n; r-- !== 0; ) {
-      const p = i[r];
-      if (!(p === "_owner" && e.$$typeof) && !R(e[p], t[p]))
-        return !1;
-    }
-    return !0;
+  ) });
+};
+Pe.displayName = L;
+var _t = "MenuAnchor", te = r.forwardRef(
+  (e, n) => {
+    const { __scopeMenu: t, ...o } = e, s = K(t);
+    return /* @__PURE__ */ u(ot, { ...s, ...o, ref: n });
   }
-  return e !== e && t !== t;
+);
+te.displayName = _t;
+var ne = "MenuPortal", [Rt, Ee] = I(ne, {
+  forceMount: void 0
+}), we = (e) => {
+  const { __scopeMenu: n, forceMount: t, children: o, container: s } = e, a = E(ne, n);
+  return /* @__PURE__ */ u(Rt, { scope: n, forceMount: t, children: /* @__PURE__ */ u(W, { present: t || a.open, children: /* @__PURE__ */ u(at, { asChild: !0, container: s, children: o }) }) });
+};
+we.displayName = ne;
+var _ = "MenuContent", [St, oe] = I(_), Ie = r.forwardRef(
+  (e, n) => {
+    const t = Ee(_, e.__scopeMenu), { forceMount: o = t.forceMount, ...s } = e, a = E(_, e.__scopeMenu), l = G(_, e.__scopeMenu);
+    return /* @__PURE__ */ u(D.Provider, { scope: e.__scopeMenu, children: /* @__PURE__ */ u(W, { present: o || a.open, children: /* @__PURE__ */ u(D.Slot, { scope: e.__scopeMenu, children: l.modal ? /* @__PURE__ */ u(Pt, { ...s, ref: n }) : /* @__PURE__ */ u(Et, { ...s, ref: n }) }) }) });
+  }
+), Pt = r.forwardRef(
+  (e, n) => {
+    const t = E(_, e.__scopeMenu), o = r.useRef(null), s = N(n, o);
+    return r.useEffect(() => {
+      const a = o.current;
+      if (a) return dt(a);
+    }, []), /* @__PURE__ */ u(
+      re,
+      {
+        ...e,
+        ref: s,
+        trapFocus: t.open,
+        disableOutsidePointerEvents: t.open,
+        disableOutsideScroll: !0,
+        onFocusOutside: h(
+          e.onFocusOutside,
+          (a) => a.preventDefault(),
+          { checkForDefaultPrevented: !1 }
+        ),
+        onDismiss: () => t.onOpenChange(!1)
+      }
+    );
+  }
+), Et = r.forwardRef((e, n) => {
+  const t = E(_, e.__scopeMenu);
+  return /* @__PURE__ */ u(
+    re,
+    {
+      ...e,
+      ref: n,
+      trapFocus: !1,
+      disableOutsidePointerEvents: !1,
+      disableOutsideScroll: !1,
+      onDismiss: () => t.onOpenChange(!1)
+    }
+  );
+}), wt = lt("MenuContent.ScrollLock"), re = r.forwardRef(
+  (e, n) => {
+    const {
+      __scopeMenu: t,
+      loop: o = !1,
+      trapFocus: s,
+      onOpenAutoFocus: a,
+      onCloseAutoFocus: l,
+      disableOutsidePointerEvents: p,
+      onEntryFocus: M,
+      onEscapeKeyDown: m,
+      onPointerDownOutside: f,
+      onFocusOutside: c,
+      onInteractOutside: d,
+      onDismiss: C,
+      disableOutsideScroll: v,
+      ...w
+    } = e, y = E(_, t), T = G(_, t), U = K(t), B = Re(t), ie = vt(t), [Xe, le] = r.useState(null), V = r.useRef(null), je = N(n, V, y.onContentChange), Y = r.useRef(0), X = r.useRef(""), He = r.useRef(0), Z = r.useRef(null), de = r.useRef("right"), $ = r.useRef(0), We = v ? ft : r.Fragment, ze = v ? { as: wt, allowPinchZoom: !0 } : void 0, Ze = (i) => {
+      var b, me;
+      const g = X.current + i, R = ie().filter((S) => !S.disabled), P = document.activeElement, q = (b = R.find((S) => S.ref.current === P)) == null ? void 0 : b.textValue, J = R.map((S) => S.textValue), fe = Lt(J, g, q), A = (me = R.find((S) => S.textValue === fe)) == null ? void 0 : me.ref.current;
+      (function S(pe) {
+        X.current = pe, window.clearTimeout(Y.current), pe !== "" && (Y.current = window.setTimeout(() => S(""), 1e3));
+      })(g), A && setTimeout(() => A.focus());
+    };
+    r.useEffect(() => () => window.clearTimeout(Y.current), []), tt();
+    const x = r.useCallback((i) => {
+      var R, P;
+      return de.current === ((R = Z.current) == null ? void 0 : R.side) && Gt(i, (P = Z.current) == null ? void 0 : P.area);
+    }, []);
+    return /* @__PURE__ */ u(
+      St,
+      {
+        scope: t,
+        searchRef: X,
+        onItemEnter: r.useCallback(
+          (i) => {
+            x(i) && i.preventDefault();
+          },
+          [x]
+        ),
+        onItemLeave: r.useCallback(
+          (i) => {
+            var g;
+            x(i) || ((g = V.current) == null || g.focus(), le(null));
+          },
+          [x]
+        ),
+        onTriggerLeave: r.useCallback(
+          (i) => {
+            x(i) && i.preventDefault();
+          },
+          [x]
+        ),
+        pointerGraceTimerRef: He,
+        onPointerGraceIntentChange: r.useCallback((i) => {
+          Z.current = i;
+        }, []),
+        children: /* @__PURE__ */ u(We, { ...ze, children: /* @__PURE__ */ u(
+          nt,
+          {
+            asChild: !0,
+            trapped: s,
+            onMountAutoFocus: h(a, (i) => {
+              var g;
+              i.preventDefault(), (g = V.current) == null || g.focus({ preventScroll: !0 });
+            }),
+            onUnmountAutoFocus: l,
+            children: /* @__PURE__ */ u(
+              et,
+              {
+                asChild: !0,
+                disableOutsidePointerEvents: p,
+                onEscapeKeyDown: m,
+                onPointerDownOutside: f,
+                onFocusOutside: c,
+                onInteractOutside: d,
+                onDismiss: C,
+                children: /* @__PURE__ */ u(
+                  it,
+                  {
+                    asChild: !0,
+                    ...B,
+                    dir: T.dir,
+                    orientation: "vertical",
+                    loop: o,
+                    currentTabStopId: Xe,
+                    onCurrentTabStopIdChange: le,
+                    onEntryFocus: h(M, (i) => {
+                      T.isUsingKeyboardRef.current || i.preventDefault();
+                    }),
+                    preventScrollOnEntryFocus: !0,
+                    children: /* @__PURE__ */ u(
+                      rt,
+                      {
+                        role: "menu",
+                        "aria-orientation": "vertical",
+                        "data-state": Ye(y.open),
+                        "data-radix-menu-content": "",
+                        dir: T.dir,
+                        ...U,
+                        ...w,
+                        ref: je,
+                        style: { outline: "none", ...w.style },
+                        onKeyDown: h(w.onKeyDown, (i) => {
+                          const R = i.target.closest("[data-radix-menu-content]") === i.currentTarget, P = i.ctrlKey || i.altKey || i.metaKey, q = i.key.length === 1;
+                          R && (i.key === "Tab" && i.preventDefault(), !P && q && Ze(i.key));
+                          const J = V.current;
+                          if (i.target !== J || !pt.includes(i.key)) return;
+                          i.preventDefault();
+                          const A = ie().filter((b) => !b.disabled).map((b) => b.ref.current);
+                          _e.includes(i.key) && A.reverse(), Nt(A);
+                        }),
+                        onBlur: h(e.onBlur, (i) => {
+                          i.currentTarget.contains(i.target) || (window.clearTimeout(Y.current), X.current = "");
+                        }),
+                        onPointerMove: h(
+                          e.onPointerMove,
+                          k((i) => {
+                            const g = i.target, R = $.current !== i.clientX;
+                            if (i.currentTarget.contains(g) && R) {
+                              const P = i.clientX > $.current ? "right" : "left";
+                              de.current = P, $.current = i.clientX;
+                            }
+                          })
+                        )
+                      }
+                    )
+                  }
+                )
+              }
+            )
+          }
+        ) })
+      }
+    );
+  }
+);
+Ie.displayName = _;
+var It = "MenuGroup", ce = r.forwardRef(
+  (e, n) => {
+    const { __scopeMenu: t, ...o } = e;
+    return /* @__PURE__ */ u(F.div, { role: "group", ...o, ref: n });
+  }
+);
+ce.displayName = It;
+var yt = "MenuLabel", ye = r.forwardRef(
+  (e, n) => {
+    const { __scopeMenu: t, ...o } = e;
+    return /* @__PURE__ */ u(F.div, { ...o, ref: n });
+  }
+);
+ye.displayName = yt;
+var j = "MenuItem", he = "menu.itemSelect", z = r.forwardRef(
+  (e, n) => {
+    const { disabled: t = !1, onSelect: o, ...s } = e, a = r.useRef(null), l = G(j, e.__scopeMenu), p = oe(j, e.__scopeMenu), M = N(n, a), m = r.useRef(!1), f = () => {
+      const c = a.current;
+      if (!t && c) {
+        const d = new CustomEvent(he, { bubbles: !0, cancelable: !0 });
+        c.addEventListener(he, (C) => o == null ? void 0 : o(C), { once: !0 }), st(c, d), d.defaultPrevented ? m.current = !1 : l.onClose();
+      }
+    };
+    return /* @__PURE__ */ u(
+      xe,
+      {
+        ...s,
+        ref: M,
+        disabled: t,
+        onClick: h(e.onClick, f),
+        onPointerDown: (c) => {
+          var d;
+          (d = e.onPointerDown) == null || d.call(e, c), m.current = !0;
+        },
+        onPointerUp: h(e.onPointerUp, (c) => {
+          var d;
+          m.current || (d = c.currentTarget) == null || d.click();
+        }),
+        onKeyDown: h(e.onKeyDown, (c) => {
+          const d = p.searchRef.current !== "";
+          t || d && c.key === " " || Q.includes(c.key) && (c.currentTarget.click(), c.preventDefault());
+        })
+      }
+    );
+  }
+);
+z.displayName = j;
+var xe = r.forwardRef(
+  (e, n) => {
+    const { __scopeMenu: t, disabled: o = !1, textValue: s, ...a } = e, l = oe(j, t), p = Re(t), M = r.useRef(null), m = N(n, M), [f, c] = r.useState(!1), [d, C] = r.useState("");
+    return r.useEffect(() => {
+      const v = M.current;
+      v && C((v.textContent ?? "").trim());
+    }, [a.children]), /* @__PURE__ */ u(
+      D.ItemSlot,
+      {
+        scope: t,
+        disabled: o,
+        textValue: s ?? d,
+        children: /* @__PURE__ */ u(ut, { asChild: !0, ...p, focusable: !o, children: /* @__PURE__ */ u(
+          F.div,
+          {
+            role: "menuitem",
+            "data-highlighted": f ? "" : void 0,
+            "aria-disabled": o || void 0,
+            "data-disabled": o ? "" : void 0,
+            ...a,
+            ref: m,
+            onPointerMove: h(
+              e.onPointerMove,
+              k((v) => {
+                o ? l.onItemLeave(v) : (l.onItemEnter(v), v.defaultPrevented || v.currentTarget.focus({ preventScroll: !0 }));
+              })
+            ),
+            onPointerLeave: h(
+              e.onPointerLeave,
+              k((v) => l.onItemLeave(v))
+            ),
+            onFocus: h(e.onFocus, () => c(!0)),
+            onBlur: h(e.onBlur, () => c(!1))
+          }
+        ) })
+      }
+    );
+  }
+), xt = "MenuCheckboxItem", be = r.forwardRef(
+  (e, n) => {
+    const { checked: t = !1, onCheckedChange: o, ...s } = e;
+    return /* @__PURE__ */ u(ke, { scope: e.__scopeMenu, checked: t, children: /* @__PURE__ */ u(
+      z,
+      {
+        role: "menuitemcheckbox",
+        "aria-checked": H(t) ? "mixed" : t,
+        ...s,
+        ref: n,
+        "data-state": ue(t),
+        onSelect: h(
+          s.onSelect,
+          () => o == null ? void 0 : o(H(t) ? !0 : !t),
+          { checkForDefaultPrevented: !1 }
+        )
+      }
+    ) });
+  }
+);
+be.displayName = xt;
+var Te = "MenuRadioGroup", [bt, Tt] = I(
+  Te,
+  { value: void 0, onValueChange: () => {
+  } }
+), Ae = r.forwardRef(
+  (e, n) => {
+    const { value: t, onValueChange: o, ...s } = e, a = ee(o);
+    return /* @__PURE__ */ u(bt, { scope: e.__scopeMenu, value: t, onValueChange: a, children: /* @__PURE__ */ u(ce, { ...s, ref: n }) });
+  }
+);
+Ae.displayName = Te;
+var Oe = "MenuRadioItem", De = r.forwardRef(
+  (e, n) => {
+    const { value: t, ...o } = e, s = Tt(Oe, e.__scopeMenu), a = t === s.value;
+    return /* @__PURE__ */ u(ke, { scope: e.__scopeMenu, checked: a, children: /* @__PURE__ */ u(
+      z,
+      {
+        role: "menuitemradio",
+        "aria-checked": a,
+        ...o,
+        ref: n,
+        "data-state": ue(a),
+        onSelect: h(
+          o.onSelect,
+          () => {
+            var l;
+            return (l = s.onValueChange) == null ? void 0 : l.call(s, t);
+          },
+          { checkForDefaultPrevented: !1 }
+        )
+      }
+    ) });
+  }
+);
+De.displayName = Oe;
+var ae = "MenuItemIndicator", [ke, At] = I(
+  ae,
+  { checked: !1 }
+), Ne = r.forwardRef(
+  (e, n) => {
+    const { __scopeMenu: t, forceMount: o, ...s } = e, a = At(ae, t);
+    return /* @__PURE__ */ u(
+      W,
+      {
+        present: o || H(a.checked) || a.checked === !0,
+        children: /* @__PURE__ */ u(
+          F.span,
+          {
+            ...s,
+            ref: n,
+            "data-state": ue(a.checked)
+          }
+        )
+      }
+    );
+  }
+);
+Ne.displayName = ae;
+var Ot = "MenuSeparator", Fe = r.forwardRef(
+  (e, n) => {
+    const { __scopeMenu: t, ...o } = e;
+    return /* @__PURE__ */ u(
+      F.div,
+      {
+        role: "separator",
+        "aria-orientation": "horizontal",
+        ...o,
+        ref: n
+      }
+    );
+  }
+);
+Fe.displayName = Ot;
+var Dt = "MenuArrow", Le = r.forwardRef(
+  (e, n) => {
+    const { __scopeMenu: t, ...o } = e, s = K(t);
+    return /* @__PURE__ */ u(ct, { ...s, ...o, ref: n });
+  }
+);
+Le.displayName = Dt;
+var se = "MenuSub", [kt, Ke] = I(se), Ge = (e) => {
+  const { __scopeMenu: n, children: t, open: o = !1, onOpenChange: s } = e, a = E(se, n), l = K(n), [p, M] = r.useState(null), [m, f] = r.useState(null), c = ee(s);
+  return r.useEffect(() => (a.open === !1 && c(!1), () => c(!1)), [a.open, c]), /* @__PURE__ */ u(ve, { ...l, children: /* @__PURE__ */ u(
+    Se,
+    {
+      scope: n,
+      open: o,
+      onOpenChange: c,
+      content: m,
+      onContentChange: f,
+      children: /* @__PURE__ */ u(
+        kt,
+        {
+          scope: n,
+          contentId: Me(),
+          triggerId: Me(),
+          trigger: p,
+          onTriggerChange: M,
+          children: t
+        }
+      )
+    }
+  ) });
+};
+Ge.displayName = se;
+var O = "MenuSubTrigger", Ue = r.forwardRef(
+  (e, n) => {
+    const t = E(O, e.__scopeMenu), o = G(O, e.__scopeMenu), s = Ke(O, e.__scopeMenu), a = oe(O, e.__scopeMenu), l = r.useRef(null), { pointerGraceTimerRef: p, onPointerGraceIntentChange: M } = a, m = { __scopeMenu: e.__scopeMenu }, f = r.useCallback(() => {
+      l.current && window.clearTimeout(l.current), l.current = null;
+    }, []);
+    return r.useEffect(() => f, [f]), r.useEffect(() => {
+      const c = p.current;
+      return () => {
+        window.clearTimeout(c), M(null);
+      };
+    }, [p, M]), /* @__PURE__ */ u(te, { asChild: !0, ...m, children: /* @__PURE__ */ u(
+      xe,
+      {
+        id: s.triggerId,
+        "aria-haspopup": "menu",
+        "aria-expanded": t.open,
+        "aria-controls": s.contentId,
+        "data-state": Ye(t.open),
+        ...e,
+        ref: qe(n, s.onTriggerChange),
+        onClick: (c) => {
+          var d;
+          (d = e.onClick) == null || d.call(e, c), !(e.disabled || c.defaultPrevented) && (c.currentTarget.focus(), t.open || t.onOpenChange(!0));
+        },
+        onPointerMove: h(
+          e.onPointerMove,
+          k((c) => {
+            a.onItemEnter(c), !c.defaultPrevented && !e.disabled && !t.open && !l.current && (a.onPointerGraceIntentChange(null), l.current = window.setTimeout(() => {
+              t.onOpenChange(!0), f();
+            }, 100));
+          })
+        ),
+        onPointerLeave: h(
+          e.onPointerLeave,
+          k((c) => {
+            var C, v;
+            f();
+            const d = (C = t.content) == null ? void 0 : C.getBoundingClientRect();
+            if (d) {
+              const w = (v = t.content) == null ? void 0 : v.dataset.side, y = w === "right", T = y ? -5 : 5, U = d[y ? "left" : "right"], B = d[y ? "right" : "left"];
+              a.onPointerGraceIntentChange({
+                area: [
+                  // Apply a bleed on clientX to ensure that our exit point is
+                  // consistently within polygon bounds
+                  { x: c.clientX + T, y: c.clientY },
+                  { x: U, y: d.top },
+                  { x: B, y: d.top },
+                  { x: B, y: d.bottom },
+                  { x: U, y: d.bottom }
+                ],
+                side: w
+              }), window.clearTimeout(p.current), p.current = window.setTimeout(
+                () => a.onPointerGraceIntentChange(null),
+                300
+              );
+            } else {
+              if (a.onTriggerLeave(c), c.defaultPrevented) return;
+              a.onPointerGraceIntentChange(null);
+            }
+          })
+        ),
+        onKeyDown: h(e.onKeyDown, (c) => {
+          var C;
+          const d = a.searchRef.current !== "";
+          e.disabled || d && c.key === " " || Mt[o.dir].includes(c.key) && (t.onOpenChange(!0), (C = t.content) == null || C.focus(), c.preventDefault());
+        })
+      }
+    ) });
+  }
+);
+Ue.displayName = O;
+var Be = "MenuSubContent", Ve = r.forwardRef(
+  (e, n) => {
+    const t = Ee(_, e.__scopeMenu), { forceMount: o = t.forceMount, ...s } = e, a = E(_, e.__scopeMenu), l = G(_, e.__scopeMenu), p = Ke(Be, e.__scopeMenu), M = r.useRef(null), m = N(n, M);
+    return /* @__PURE__ */ u(D.Provider, { scope: e.__scopeMenu, children: /* @__PURE__ */ u(W, { present: o || a.open, children: /* @__PURE__ */ u(D.Slot, { scope: e.__scopeMenu, children: /* @__PURE__ */ u(
+      re,
+      {
+        id: p.contentId,
+        "aria-labelledby": p.triggerId,
+        ...s,
+        ref: m,
+        align: "start",
+        side: l.dir === "rtl" ? "left" : "right",
+        disableOutsidePointerEvents: !1,
+        disableOutsideScroll: !1,
+        trapFocus: !1,
+        onOpenAutoFocus: (f) => {
+          var c;
+          l.isUsingKeyboardRef.current && ((c = M.current) == null || c.focus()), f.preventDefault();
+        },
+        onCloseAutoFocus: (f) => f.preventDefault(),
+        onFocusOutside: h(e.onFocusOutside, (f) => {
+          f.target !== p.trigger && a.onOpenChange(!1);
+        }),
+        onEscapeKeyDown: h(e.onEscapeKeyDown, (f) => {
+          l.onClose(), f.preventDefault();
+        }),
+        onKeyDown: h(e.onKeyDown, (f) => {
+          var C;
+          const c = f.currentTarget.contains(f.target), d = ht[l.dir].includes(f.key);
+          c && d && (a.onOpenChange(!1), (C = p.trigger) == null || C.focus(), f.preventDefault());
+        })
+      }
+    ) }) }) });
+  }
+);
+Ve.displayName = Be;
+function Ye(e) {
+  return e ? "open" : "closed";
 }
-function A(e) {
-  return typeof window > "u" ? 1 : (e.ownerDocument.defaultView || window).devicePixelRatio || 1;
+function H(e) {
+  return e === "indeterminate";
 }
-function L(e, t) {
-  const n = A(e);
-  return Math.round(t * n) / n;
+function ue(e) {
+  return H(e) ? "indeterminate" : e ? "checked" : "unchecked";
+}
+function Nt(e) {
+  const n = document.activeElement;
+  for (const t of e)
+    if (t === n || (t.focus(), document.activeElement !== n)) return;
+}
+function Ft(e, n) {
+  return e.map((t, o) => e[(n + o) % e.length]);
+}
+function Lt(e, n, t) {
+  const s = n.length > 1 && Array.from(n).every((m) => m === n[0]) ? n[0] : n, a = t ? e.indexOf(t) : -1;
+  let l = Ft(e, Math.max(a, 0));
+  s.length === 1 && (l = l.filter((m) => m !== t));
+  const M = l.find(
+    (m) => m.toLowerCase().startsWith(s.toLowerCase())
+  );
+  return M !== t ? M : void 0;
+}
+function Kt(e, n) {
+  const { x: t, y: o } = e;
+  let s = !1;
+  for (let a = 0, l = n.length - 1; a < n.length; l = a++) {
+    const p = n[a], M = n[l], m = p.x, f = p.y, c = M.x, d = M.y;
+    f > o != d > o && t < (c - m) * (o - f) / (d - f) + m && (s = !s);
+  }
+  return s;
+}
+function Gt(e, n) {
+  if (!n) return !1;
+  const t = { x: e.clientX, y: e.clientY };
+  return Kt(t, n);
 }
 function k(e) {
-  const t = o.useRef(e);
-  return w(() => {
-    t.current = e;
-  }), t;
+  return (n) => n.pointerType === "mouse" ? e(n) : void 0;
 }
-function oe(e) {
-  e === void 0 && (e = {});
-  const {
-    placement: t = "bottom",
-    strategy: n = "absolute",
-    middleware: r = [],
-    platform: i,
-    elements: {
-      reference: p,
-      floating: q
-    } = {},
-    transform: D = !0,
-    whileElementsMounted: E,
-    open: x
-  } = e, [s, C] = o.useState({
-    x: 0,
-    y: 0,
-    strategy: n,
-    placement: t,
-    middlewareData: {},
-    isPositioned: !1
-  }), [M, B] = o.useState(r);
-  R(M, r) || B(r);
-  const [U, V] = o.useState(null), [W, G] = o.useState(null), O = o.useCallback((f) => {
-    f !== a.current && (a.current = f, V(f));
-  }, []), _ = o.useCallback((f) => {
-    f !== d.current && (d.current = f, G(f));
-  }, []), u = p || U, l = q || W, a = o.useRef(null), d = o.useRef(null), y = o.useRef(s), H = E != null, S = k(E), P = k(i), v = k(x), g = o.useCallback(() => {
-    if (!a.current || !d.current)
-      return;
-    const f = {
-      placement: t,
-      strategy: n,
-      middleware: M
-    };
-    P.current && (f.platform = P.current), I(a.current, d.current, f).then((h) => {
-      const m = {
-        ...h,
-        // The floating element's position may be recomputed while it's closed
-        // but still mounted (such as when transitioning out). To ensure
-        // `isPositioned` will be `false` initially on the next open, avoid
-        // setting it to `true` when `open === false` (must be specified).
-        isPositioned: v.current !== !1
-      };
-      $.current && !R(y.current, m) && (y.current = m, Z.flushSync(() => {
-        C(m);
-      }));
-    });
-  }, [M, t, n, P, v]);
-  w(() => {
-    x === !1 && y.current.isPositioned && (y.current.isPositioned = !1, C((f) => ({
-      ...f,
-      isPositioned: !1
-    })));
-  }, [x]);
-  const $ = o.useRef(!1);
-  w(() => ($.current = !0, () => {
-    $.current = !1;
-  }), []), w(() => {
-    if (u && (a.current = u), l && (d.current = l), u && l) {
-      if (S.current)
-        return S.current(u, l, g);
-      g();
-    }
-  }, [u, l, g, S, H]);
-  const F = o.useMemo(() => ({
-    reference: a,
-    floating: d,
-    setReference: O,
-    setFloating: _
-  }), [O, _]), c = o.useMemo(() => ({
-    reference: u,
-    floating: l
-  }), [u, l]), j = o.useMemo(() => {
-    const f = {
-      position: n,
-      left: 0,
-      top: 0
-    };
-    if (!c.floating)
-      return f;
-    const h = L(c.floating, s.x), m = L(c.floating, s.y);
-    return D ? {
-      ...f,
-      transform: "translate(" + h + "px, " + m + "px)",
-      ...A(c.floating) >= 1.5 && {
-        willChange: "transform"
-      }
-    } : {
-      position: n,
-      left: h,
-      top: m
-    };
-  }, [n, D, c.floating, s.x, s.y]);
-  return o.useMemo(() => ({
-    ...s,
-    update: g,
-    refs: F,
-    elements: c,
-    floatingStyles: j
-  }), [s, g, F, c, j]);
-}
-const te = (e) => {
-  function t(n) {
-    return {}.hasOwnProperty.call(n, "current");
-  }
-  return {
-    name: "arrow",
-    options: e,
-    fn(n) {
-      const {
-        element: r,
-        padding: i
-      } = typeof e == "function" ? e(n) : e;
-      return r && t(r) ? r.current != null ? z({
-        element: r.current,
-        padding: i
-      }).fn(n) : {} : r ? z({
-        element: r,
-        padding: i
-      }).fn(n) : {};
-    }
-  };
-}, fe = (e, t) => ({
-  ...J(e),
-  options: [e, t]
-}), ie = (e, t) => ({
-  ...K(e),
-  options: [e, t]
-}), se = (e, t) => ({
-  ...X(e),
-  options: [e, t]
-}), ue = (e, t) => ({
-  ...N(e),
-  options: [e, t]
-}), le = (e, t) => ({
-  ...Q(e),
-  options: [e, t]
-}), ce = (e, t) => ({
-  ...T(e),
-  options: [e, t]
-}), ae = (e, t) => ({
-  ...te(e),
-  options: [e, t]
-});
+var an = Pe, sn = te, un = we, ln = Ie, dn = ce, fn = ye, mn = z, pn = be, Mn = Ae, hn = De, vn = Ne, Cn = Fe, gn = Le, _n = Ge, Rn = Ue, Sn = Ve;
 export {
-  ae as arrow,
-  pe as autoUpdate,
-  I as computePosition,
-  ue as flip,
-  ce as hide,
-  se as limitShift,
-  fe as offset,
-  ge as platform,
-  ie as shift,
-  le as size,
-  oe as useFloating
+  sn as Anchor,
+  gn as Arrow,
+  pn as CheckboxItem,
+  ln as Content,
+  dn as Group,
+  mn as Item,
+  vn as ItemIndicator,
+  fn as Label,
+  Pe as Menu,
+  te as MenuAnchor,
+  Le as MenuArrow,
+  be as MenuCheckboxItem,
+  Ie as MenuContent,
+  ce as MenuGroup,
+  z as MenuItem,
+  Ne as MenuItemIndicator,
+  ye as MenuLabel,
+  we as MenuPortal,
+  Ae as MenuRadioGroup,
+  De as MenuRadioItem,
+  Fe as MenuSeparator,
+  Ge as MenuSub,
+  Ve as MenuSubContent,
+  Ue as MenuSubTrigger,
+  un as Portal,
+  Mn as RadioGroup,
+  hn as RadioItem,
+  an as Root,
+  Cn as Separator,
+  _n as Sub,
+  Sn as SubContent,
+  Rn as SubTrigger,
+  cn as createMenuScope
 };
 //# sourceMappingURL=index260.mjs.map

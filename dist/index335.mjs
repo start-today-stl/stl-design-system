@@ -1,8 +1,6 @@
-var r = "right-scroll-bar-position", a = "width-before-scroll-bar", l = "with-scroll-bars-hidden", e = "--removed-body-scroll-bar-size";
+import { createSidecarMedium as e } from "./index346.mjs";
+var a = e();
 export {
-  a as fullWidthClassName,
-  l as noScrollbarsClassName,
-  e as removedBarSizeVariable,
-  r as zeroRightClassName
+  a as effectCar
 };
 //# sourceMappingURL=index335.mjs.map

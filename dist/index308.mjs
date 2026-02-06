@@ -1,12 +1,8 @@
-function o(e, n, t = "long") {
-  return new Intl.DateTimeFormat("en-US", {
-    // Enforces engine to render the time. Without the option JavaScriptCore omits it.
-    hour: "numeric",
-    timeZone: e,
-    timeZoneName: t
-  }).format(n).split(/\s/g).slice(2).join(" ");
+import { startOfWeek as r } from "./index310.mjs";
+function n(t, e) {
+  return r(t, { ...e, weekStartsOn: 1 });
 }
 export {
-  o as tzName
+  n as startOfISOWeek
 };
 //# sourceMappingURL=index308.mjs.map

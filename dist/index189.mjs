@@ -1,55 +1,19 @@
-import { Button as e } from "./index190.mjs";
-import { CaptionLabel as p } from "./index191.mjs";
-import { Chevron as x } from "./index192.mjs";
-import { Day as n } from "./index193.mjs";
-import { DayButton as d } from "./index194.mjs";
-import { Dropdown as u } from "./index195.mjs";
-import { DropdownNav as k } from "./index196.mjs";
-import { Footer as D } from "./index197.mjs";
-import { Month as i } from "./index198.mjs";
-import { MonthCaption as v } from "./index199.mjs";
-import { MonthGrid as y } from "./index200.mjs";
-import { Months as b } from "./index201.mjs";
-import { MonthsDropdown as l } from "./index202.mjs";
-import { Nav as F } from "./index203.mjs";
-import { NextMonthButton as H } from "./index204.mjs";
-import { Option as O } from "./index205.mjs";
-import { PreviousMonthButton as R } from "./index206.mjs";
-import { Root as Y } from "./index207.mjs";
-import { Select as j } from "./index208.mjs";
-import { Week as z } from "./index209.mjs";
-import { Weekday as E } from "./index210.mjs";
-import { Weekdays as J } from "./index211.mjs";
-import { WeekNumber as Q } from "./index212.mjs";
-import { WeekNumberHeader as U } from "./index213.mjs";
-import { Weeks as X } from "./index214.mjs";
-import { YearsDropdown as _ } from "./index215.mjs";
+import e from "react";
+function r(n) {
+  const { size: o = 24, orientation: t = "left", className: l } = n;
+  return (
+    // biome-ignore lint/a11y/noSvgWithoutTitle: handled by the parent component
+    e.createElement(
+      "svg",
+      { className: l, width: o, height: o, viewBox: "0 0 24 24" },
+      t === "up" && e.createElement("polygon", { points: "6.77 17 12.5 11.43 18.24 17 20 15.28 12.5 8 5 15.28" }),
+      t === "down" && e.createElement("polygon", { points: "6.77 8 12.5 13.57 18.24 8 20 9.72 12.5 17 5 9.72" }),
+      t === "left" && e.createElement("polygon", { points: "16 18.112 9.81111111 12 16 5.87733333 14.0888889 4 6 12 14.0888889 20" }),
+      t === "right" && e.createElement("polygon", { points: "8 18.112 14.18888889 12 8 5.87733333 9.91111111 4 18 12 9.91111111 20" })
+    )
+  );
+}
 export {
-  e as Button,
-  p as CaptionLabel,
-  x as Chevron,
-  n as Day,
-  d as DayButton,
-  u as Dropdown,
-  k as DropdownNav,
-  D as Footer,
-  i as Month,
-  v as MonthCaption,
-  y as MonthGrid,
-  b as Months,
-  l as MonthsDropdown,
-  F as Nav,
-  H as NextMonthButton,
-  O as Option,
-  R as PreviousMonthButton,
-  Y as Root,
-  j as Select,
-  z as Week,
-  Q as WeekNumber,
-  U as WeekNumberHeader,
-  E as Weekday,
-  J as Weekdays,
-  X as Weeks,
-  _ as YearsDropdown
+  r as Chevron
 };
 //# sourceMappingURL=index189.mjs.map

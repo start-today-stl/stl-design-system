@@ -1,239 +1,85 @@
-import * as i from "react";
-import { composeEventHandlers as I } from "./index144.mjs";
-import { useComposedRefs as E } from "./index143.mjs";
-import { createContextScope as w } from "./index141.mjs";
-import { Primitive as b } from "./index146.mjs";
-import { Root as B, Item as q, createRovingFocusGroupScope as P } from "./index182.mjs";
-import { useControllableState as K } from "./index145.mjs";
-import { useDirection as T } from "./index149.mjs";
-import { useSize as U } from "./index157.mjs";
-import { usePrevious as V } from "./index156.mjs";
-import { Presence as j } from "./index158.mjs";
-import { jsx as p, jsxs as z } from "react/jsx-runtime";
-var _ = "Radio", [H, g] = w(_), [W, X] = H(_), k = i.forwardRef(
-  (a, d) => {
+import * as m from "react";
+import { createContextScope as $ } from "./index182.mjs";
+import { Primitive as c } from "./index183.mjs";
+import { jsx as l } from "react/jsx-runtime";
+var u = "Progress", d = 100, [h] = $(u), [R, _] = h(u), f = m.forwardRef(
+  (r, e) => {
     const {
-      __scopeRadio: o,
-      name: s,
-      checked: e = !1,
-      required: r,
-      disabled: n,
-      value: f = "on",
-      onCheck: c,
-      form: m,
-      ...R
-    } = a, [l, v] = i.useState(null), t = E(d, (y) => v(y)), u = i.useRef(!1), h = l ? m || !!l.closest("form") : !0;
-    return /* @__PURE__ */ z(W, { scope: o, checked: e, disabled: n, children: [
-      /* @__PURE__ */ p(
-        b.button,
-        {
-          type: "button",
-          role: "radio",
-          "aria-checked": e,
-          "data-state": N(e),
-          "data-disabled": n ? "" : void 0,
-          disabled: n,
-          value: f,
-          ...R,
-          ref: t,
-          onClick: I(a.onClick, (y) => {
-            e || c == null || c(), h && (u.current = y.isPropagationStopped(), u.current || y.stopPropagation());
-          })
-        }
-      ),
-      h && /* @__PURE__ */ p(
-        A,
-        {
-          control: l,
-          bubbles: !u.current,
-          name: s,
-          value: f,
-          checked: e,
-          required: r,
-          disabled: n,
-          form: m,
-          style: { transform: "translateX(-100%)" }
-        }
-      )
-    ] });
-  }
-);
-k.displayName = _;
-var G = "RadioIndicator", S = i.forwardRef(
-  (a, d) => {
-    const { __scopeRadio: o, forceMount: s, ...e } = a, r = X(G, o);
-    return /* @__PURE__ */ p(j, { present: s || r.checked, children: /* @__PURE__ */ p(
-      b.span,
+      __scopeProgress: i,
+      value: o = null,
+      max: a,
+      getValueLabel: N = E,
+      ...b
+    } = r;
+    (a || a === 0) && !v(a) && console.error(M(`${a}`, "Progress"));
+    const t = v(a) ? a : d;
+    o !== null && !p(o, t) && console.error(V(`${o}`, "Progress"));
+    const n = p(o, t) ? o : null, I = s(n) ? N(n, t) : void 0;
+    return /* @__PURE__ */ l(R, { scope: i, value: n, max: t, children: /* @__PURE__ */ l(
+      c.div,
       {
-        "data-state": N(r.checked),
-        "data-disabled": r.disabled ? "" : void 0,
-        ...e,
-        ref: d
+        "aria-valuemax": t,
+        "aria-valuemin": 0,
+        "aria-valuenow": s(n) ? n : void 0,
+        "aria-valuetext": I,
+        role: "progressbar",
+        "data-state": P(n, t),
+        "data-value": n ?? void 0,
+        "data-max": t,
+        ...b,
+        ref: e
       }
     ) });
   }
 );
-S.displayName = G;
-var Y = "RadioBubbleInput", A = i.forwardRef(
-  ({
-    __scopeRadio: a,
-    control: d,
-    checked: o,
-    bubbles: s = !0,
-    ...e
-  }, r) => {
-    const n = i.useRef(null), f = E(n, r), c = V(o), m = U(d);
-    return i.useEffect(() => {
-      const R = n.current;
-      if (!R) return;
-      const l = window.HTMLInputElement.prototype, t = Object.getOwnPropertyDescriptor(
-        l,
-        "checked"
-      ).set;
-      if (c !== o && t) {
-        const u = new Event("click", { bubbles: s });
-        t.call(R, o), R.dispatchEvent(u);
-      }
-    }, [c, o, s]), /* @__PURE__ */ p(
-      b.input,
+f.displayName = u;
+var g = "ProgressIndicator", x = m.forwardRef(
+  (r, e) => {
+    const { __scopeProgress: i, ...o } = r, a = _(g, i);
+    return /* @__PURE__ */ l(
+      c.div,
       {
-        type: "radio",
-        "aria-hidden": !0,
-        defaultChecked: o,
-        ...e,
-        tabIndex: -1,
-        ref: f,
-        style: {
-          ...e.style,
-          ...m,
-          position: "absolute",
-          pointerEvents: "none",
-          opacity: 0,
-          margin: 0
-        }
+        "data-state": P(a.value, a.max),
+        "data-value": a.value ?? void 0,
+        "data-max": a.max,
+        ...o,
+        ref: e
       }
     );
   }
 );
-A.displayName = Y;
-function N(a) {
-  return a ? "checked" : "unchecked";
+x.displayName = g;
+function E(r, e) {
+  return `${Math.round(r / e * 100)}%`;
 }
-var J = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"], C = "RadioGroup", [Q] = w(C, [
-  P,
-  g
-]), x = P(), D = g(), [Z, $] = Q(C), M = i.forwardRef(
-  (a, d) => {
-    const {
-      __scopeRadioGroup: o,
-      name: s,
-      defaultValue: e,
-      value: r,
-      required: n = !1,
-      disabled: f = !1,
-      orientation: c,
-      dir: m,
-      loop: R = !0,
-      onValueChange: l,
-      ...v
-    } = a, t = x(o), u = T(m), [h, y] = K({
-      prop: r,
-      defaultProp: e ?? null,
-      onChange: l,
-      caller: C
-    });
-    return /* @__PURE__ */ p(
-      Z,
-      {
-        scope: o,
-        name: s,
-        required: n,
-        disabled: f,
-        value: h,
-        onValueChange: y,
-        children: /* @__PURE__ */ p(
-          B,
-          {
-            asChild: !0,
-            ...t,
-            orientation: c,
-            dir: u,
-            loop: R,
-            children: /* @__PURE__ */ p(
-              b.div,
-              {
-                role: "radiogroup",
-                "aria-required": n,
-                "aria-orientation": c,
-                "data-disabled": f ? "" : void 0,
-                dir: u,
-                ...v,
-                ref: d
-              }
-            )
-          }
-        )
-      }
-    );
-  }
-);
-M.displayName = C;
-var O = "RadioGroupItem", F = i.forwardRef(
-  (a, d) => {
-    const { __scopeRadioGroup: o, disabled: s, ...e } = a, r = $(O, o), n = r.disabled || s, f = x(o), c = D(o), m = i.useRef(null), R = E(d, m), l = r.value === e.value, v = i.useRef(!1);
-    return i.useEffect(() => {
-      const t = (h) => {
-        J.includes(h.key) && (v.current = !0);
-      }, u = () => v.current = !1;
-      return document.addEventListener("keydown", t), document.addEventListener("keyup", u), () => {
-        document.removeEventListener("keydown", t), document.removeEventListener("keyup", u);
-      };
-    }, []), /* @__PURE__ */ p(
-      q,
-      {
-        asChild: !0,
-        ...f,
-        focusable: !n,
-        active: l,
-        children: /* @__PURE__ */ p(
-          k,
-          {
-            disabled: n,
-            required: r.required,
-            checked: l,
-            ...c,
-            ...e,
-            name: r.name,
-            ref: R,
-            onCheck: () => r.onValueChange(e.value),
-            onKeyDown: I((t) => {
-              t.key === "Enter" && t.preventDefault();
-            }),
-            onFocus: I(e.onFocus, () => {
-              var t;
-              v.current && ((t = m.current) == null || t.click());
-            })
-          }
-        )
-      }
-    );
-  }
-);
-F.displayName = O;
-var ee = "RadioGroupIndicator", L = i.forwardRef(
-  (a, d) => {
-    const { __scopeRadioGroup: o, ...s } = a, e = D(o);
-    return /* @__PURE__ */ p(S, { ...e, ...s, ref: d });
-  }
-);
-L.displayName = ee;
-var le = M, fe = F, me = L;
+function P(r, e) {
+  return r == null ? "indeterminate" : r === e ? "complete" : "loading";
+}
+function s(r) {
+  return typeof r == "number";
+}
+function v(r) {
+  return s(r) && !isNaN(r) && r > 0;
+}
+function p(r, e) {
+  return s(r) && !isNaN(r) && r <= e && r >= 0;
+}
+function M(r, e) {
+  return `Invalid prop \`max\` of value \`${r}\` supplied to \`${e}\`. Only numbers greater than 0 are valid max values. Defaulting to \`${d}\`.`;
+}
+function V(r, e) {
+  return `Invalid prop \`value\` of value \`${r}\` supplied to \`${e}\`. The \`value\` prop must be:
+  - a positive number
+  - less than the value passed to \`max\` (or ${d} if no \`max\` prop is set)
+  - \`null\` or \`undefined\` if the progress is indeterminate.
+
+Defaulting to \`null\`.`;
+}
+var D = f, L = x;
 export {
-  me as Indicator,
-  fe as Item,
-  M as RadioGroup,
-  L as RadioGroupIndicator,
-  F as RadioGroupItem,
-  le as Root
+  L as Indicator,
+  f as Progress,
+  x as ProgressIndicator,
+  D as Root
 };
 //# sourceMappingURL=index124.mjs.map

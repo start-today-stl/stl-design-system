@@ -1,66 +1,32 @@
-import { SolidHomeIcon as r } from "./index81.mjs";
-import { SolidProductIcon as i } from "./index83.mjs";
-import { SolidPostIcon as o } from "./index82.mjs";
-import { SolidShipIcon as d } from "./index84.mjs";
-import { SolidStockIcon as l } from "./index85.mjs";
-function p(e) {
-  return "children" in e && Array.isArray(e.children);
+import { jsx as l } from "react/jsx-runtime";
+function r({ size: L = 24, className: n, ...t }) {
+  return L <= 24 ? /* @__PURE__ */ l(
+    "svg",
+    {
+      width: L,
+      height: L,
+      viewBox: "0 0 24 24",
+      fill: "none",
+      xmlns: "http://www.w3.org/2000/svg",
+      className: n,
+      ...t,
+      children: /* @__PURE__ */ l("path", { fillRule: "evenodd", clipRule: "evenodd", d: "M17.1504 7.5498L12.71 12L17.1504 16.4404L16.4502 17.1504L12 12.71L7.5498 17.1504L6.84961 16.4404L11.29 12L6.84961 7.5498L7.5498 6.84961L12 11.29L16.4502 6.84961L17.1504 7.5498Z", fill: "currentColor" })
+    }
+  ) : /* @__PURE__ */ l(
+    "svg",
+    {
+      width: L,
+      height: L,
+      viewBox: "8.5 8.5 15 15",
+      fill: "none",
+      xmlns: "http://www.w3.org/2000/svg",
+      className: n,
+      ...t,
+      children: /* @__PURE__ */ l("path", { d: "M22.7529 9.95312L16.7061 15.999L22.7529 22.0459L22.0459 22.7529L15.999 16.7061L9.95312 22.7529L9.24609 22.0459L15.292 15.999L9.24609 9.95312L9.95312 9.24609L15.999 15.292L22.0459 9.24609L22.7529 9.95312Z", fill: "currentColor" })
+    }
+  );
 }
-const b = [
-  {
-    id: "dashboard",
-    label: "대시보드",
-    icon: r,
-    href: "/dashboard",
-    active: !0,
-    hasIndicator: !0
-  },
-  {
-    id: "sales",
-    label: "판매 관리",
-    icon: i,
-    children: [
-      { id: "products", label: "상품 관리", href: "/sales/products" },
-      { id: "packages", label: "패키지 관리", href: "/sales/packages" }
-    ]
-  },
-  {
-    id: "orders",
-    label: "주문 관리",
-    icon: o,
-    defaultExpanded: !0,
-    children: [
-      {
-        id: "b2c-orders",
-        label: "B2C 주문",
-        defaultExpanded: !0,
-        children: [
-          { id: "b2c-order-management", label: "B2C 주문 관리", href: "/orders/b2c" },
-          { id: "order-collection", label: "주문 수집", href: "/orders/collection" }
-        ]
-      }
-    ]
-  },
-  {
-    id: "shipping",
-    label: "배송 관리",
-    icon: d,
-    children: [
-      { id: "b2c-shipping", label: "B2C 배송 관리", href: "/shipping/b2c" }
-    ]
-  },
-  {
-    id: "inventory",
-    label: "재고 관리",
-    icon: l,
-    defaultExpanded: !0,
-    children: [
-      { id: "inbound", label: "입고 관리", href: "/inventory/inbound" }
-    ]
-  }
-];
 export {
-  p as isNavGroup,
-  b as sampleNavigation
+  r as XIcon
 };
 //# sourceMappingURL=index102.mjs.map

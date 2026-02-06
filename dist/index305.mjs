@@ -1,11 +1,13 @@
-import { getDefaultOptions as D } from "./index355.mjs";
-import { toDate as S } from "./index350.mjs";
-function n(u, e) {
-  var f, O, k, l;
-  const a = D(), r = (e == null ? void 0 : e.weekStartsOn) ?? ((O = (f = e == null ? void 0 : e.locale) == null ? void 0 : f.options) == null ? void 0 : O.weekStartsOn) ?? a.weekStartsOn ?? ((l = (k = a.locale) == null ? void 0 : k.options) == null ? void 0 : l.weekStartsOn) ?? 0, t = S(u, e == null ? void 0 : e.in), c = t.getDay(), w = (c < r ? 7 : 0) + c - r;
-  return t.setDate(t.getDate() - w), t.setHours(0, 0, 0, 0), t;
+import { constructFrom as m } from "./index350.mjs";
+import { getDaysInMonth as u } from "./index362.mjs";
+import { toDate as M } from "./index351.mjs";
+function y(n, o, r) {
+  const t = M(n, r == null ? void 0 : r.in), a = t.getFullYear(), s = t.getDate(), e = m(n, 0);
+  e.setFullYear(a, o, 15), e.setHours(0, 0, 0, 0);
+  const c = u(e);
+  return t.setMonth(o, Math.min(s, c)), t;
 }
 export {
-  n as startOfWeek
+  y as setMonth
 };
 //# sourceMappingURL=index305.mjs.map

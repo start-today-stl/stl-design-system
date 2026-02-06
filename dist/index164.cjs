@@ -1,7 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const t=require("./index188.cjs");/**
- * @license lucide-react v0.563.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */const s=a=>{const e=t.toCamelCase(a);return e.charAt(0).toUpperCase()+e.slice(1)};exports.toPascalCase=s;
+"use strict";const a=require("./index269.cjs"),l=require("react"),s=require("./index270.cjs"),i=require("./index271.cjs");function u(e){const t=Object.create(null,{[Symbol.toStringTag]:{value:"Module"}});if(e){for(const r in e)if(r!=="default"){const c=Object.getOwnPropertyDescriptor(e,r);Object.defineProperty(t,r,c.get?c:{enumerable:!0,get:()=>e[r]})}}return t.default=e,Object.freeze(t)}const o=u(l);var n=o.forwardRef(function(e,t){return o.createElement(s.RemoveScroll,a.__assign({},e,{ref:t,sideCar:i}))});n.classNames=s.RemoveScroll.classNames;module.exports=n;
 //# sourceMappingURL=index164.cjs.map

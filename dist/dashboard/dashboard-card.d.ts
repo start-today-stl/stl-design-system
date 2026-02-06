@@ -8,6 +8,8 @@ export interface DashboardCardProps extends React.HTMLAttributes<HTMLDivElement>
     headerAction?: React.ReactNode;
     /** 카드 내용 */
     children: React.ReactNode;
+    /** 컨테이너 높이에 맞춤 (h-full) */
+    stretch?: boolean;
 }
 declare const DashboardCard: React.ForwardRefExoticComponent<DashboardCardProps & React.RefAttributes<HTMLDivElement>>;
 export { DashboardCard };

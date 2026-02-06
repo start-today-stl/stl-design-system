@@ -1,12 +1,26 @@
-const t = {
-  lastWeek: "'last' eeee 'at' p",
-  yesterday: "'yesterday at' p",
-  today: "'today at' p",
-  tomorrow: "'tomorrow at' p",
-  nextWeek: "eeee 'at' p",
-  other: "P"
-}, s = (e, a, o, r) => t[e];
+import { useState as u } from "react";
+function n(c, r) {
+  var e = u(function() {
+    return {
+      // value
+      value: c,
+      // last callback
+      callback: r,
+      // "memoized" public interface
+      facade: {
+        get current() {
+          return e.value;
+        },
+        set current(a) {
+          var t = e.value;
+          t !== a && (e.value = a, e.callback(a, t));
+        }
+      }
+    };
+  })[0];
+  return e.callback = r, e.facade;
+}
 export {
-  s as formatRelative
+  n as useCallbackRef
 };
 //# sourceMappingURL=index368.mjs.map

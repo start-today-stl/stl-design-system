@@ -1,13 +1,8 @@
-import { normalizeDates as m } from "./index353.mjs";
-function D(r, a, e) {
-  const [l, t] = m(
-    e == null ? void 0 : e.in,
-    r,
-    a
-  );
-  return l.getFullYear() === t.getFullYear();
+import { toDate as t } from "./index351.mjs";
+function f(r, o) {
+  return +t(r) > +t(o);
 }
 export {
-  D as isSameYear
+  f as isAfter
 };
 //# sourceMappingURL=index297.mjs.map

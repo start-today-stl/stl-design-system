@@ -1,8 +1,8 @@
-import { DateLib as a } from "./index216.mjs";
-function f(r, t, o) {
-  return (o ?? new a(t)).format(r, "d");
+import { defaultDateLib as o } from "./index213.mjs";
+function a(r, t = o) {
+  return r < 10 ? t.formatNumber(`0${r.toLocaleString()}`) : t.formatNumber(`${r.toLocaleString()}`);
 }
 export {
-  f as formatDay
+  a as formatWeekNumber
 };
 //# sourceMappingURL=index241.mjs.map

@@ -1,9 +1,11 @@
-import * as u from "react";
-function t(r) {
-  const e = u.useRef({ value: r, previous: r });
-  return u.useMemo(() => (e.current.value !== r && (e.current.previous = e.current.value, e.current.value = r), e.current.previous), [r]);
+import * as t from "react";
+import "react/jsx-runtime";
+var r = t.createContext(void 0);
+function n(o) {
+  const e = t.useContext(r);
+  return o || e || "ltr";
 }
 export {
-  t as usePrevious
+  n as useDirection
 };
 //# sourceMappingURL=index156.mjs.map

@@ -1,8 +1,9 @@
-import { toDate as t } from "./index350.mjs";
-function u(r, e) {
-  return t(r, e == null ? void 0 : e.in).getFullYear();
+import { toDate as u } from "./index351.mjs";
+function l(r, e) {
+  const t = u(r, e == null ? void 0 : e.in), n = t.getMonth();
+  return t.setFullYear(t.getFullYear(), n + 1, 0), t.setHours(23, 59, 59, 999), t;
 }
 export {
-  u as getYear
+  l as endOfMonth
 };
 //# sourceMappingURL=index290.mjs.map

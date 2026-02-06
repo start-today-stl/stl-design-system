@@ -1,17 +1,13 @@
-import { getDefaultOptions as C } from "./index355.mjs";
-import { constructFrom as Y } from "./index349.mjs";
-import { startOfWeek as D } from "./index305.mjs";
-import { toDate as F } from "./index350.mjs";
-function H(t, e) {
-  var u, k, m, W;
-  const a = F(t, e == null ? void 0 : e.in), r = a.getFullYear(), c = C(), s = (e == null ? void 0 : e.firstWeekContainsDate) ?? ((k = (u = e == null ? void 0 : e.locale) == null ? void 0 : u.options) == null ? void 0 : k.firstWeekContainsDate) ?? c.firstWeekContainsDate ?? ((W = (m = c.locale) == null ? void 0 : m.options) == null ? void 0 : W.firstWeekContainsDate) ?? 1, f = Y((e == null ? void 0 : e.in) || t, 0);
-  f.setFullYear(r + 1, 0, s), f.setHours(0, 0, 0, 0);
-  const O = D(f, e), l = Y((e == null ? void 0 : e.in) || t, 0);
-  l.setFullYear(r, 0, s), l.setHours(0, 0, 0, 0);
-  const n = D(l, e);
-  return +a >= +O ? r + 1 : +a >= +n ? r : r - 1;
+import { getDefaultOptions as l } from "./index356.mjs";
+import { constructFrom as n } from "./index350.mjs";
+import { getWeekYear as u } from "./index366.mjs";
+import { startOfWeek as D } from "./index310.mjs";
+function g(r, e) {
+  var f, c, s, k;
+  const a = l(), m = (e == null ? void 0 : e.firstWeekContainsDate) ?? ((c = (f = e == null ? void 0 : e.locale) == null ? void 0 : f.options) == null ? void 0 : c.firstWeekContainsDate) ?? a.firstWeekContainsDate ?? ((k = (s = a.locale) == null ? void 0 : s.options) == null ? void 0 : k.firstWeekContainsDate) ?? 1, W = u(r, e), t = n((e == null ? void 0 : e.in) || r, 0);
+  return t.setFullYear(W, 0, m), t.setHours(0, 0, 0, 0), D(t, e);
 }
 export {
-  H as getWeekYear
+  g as startOfWeekYear
 };
 //# sourceMappingURL=index365.mjs.map

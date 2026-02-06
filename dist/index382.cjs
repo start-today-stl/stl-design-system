@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});function r(t){return(o={})=>{const n=o.width?String(o.width):t.defaultWidth;return t.formats[n]||t.formats[t.defaultWidth]}}exports.buildFormatLongFn=r;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});function b(t){return(l,c={})=>{const n=l.match(t.matchPattern);if(!n)return null;const u=n[0],a=l.match(t.parsePattern);if(!a)return null;let e=t.valueCallback?t.valueCallback(a[0]):a[0];e=c.valueCallback?c.valueCallback(e):e;const r=l.slice(u.length);return{value:e,rest:r}}}exports.buildMatchPatternFn=b;
 //# sourceMappingURL=index382.cjs.map

@@ -1,12 +1,19 @@
-import { constructFrom as r } from "./index349.mjs";
-function i(e, ...o) {
-  const n = r.bind(
-    null,
-    o.find((t) => typeof t == "object")
+import { toDate as o } from "./index351.mjs";
+function l(t) {
+  const e = o(t), n = new Date(
+    Date.UTC(
+      e.getFullYear(),
+      e.getMonth(),
+      e.getDate(),
+      e.getHours(),
+      e.getMinutes(),
+      e.getSeconds(),
+      e.getMilliseconds()
+    )
   );
-  return o.map(n);
+  return n.setUTCFullYear(e.getFullYear()), +t - +n;
 }
 export {
-  i as normalizeDates
+  l as getTimezoneOffsetInMilliseconds
 };
 //# sourceMappingURL=index353.mjs.map

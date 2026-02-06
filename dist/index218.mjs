@@ -1,8 +1,11 @@
-import { DayFlag as e, SelectionState as n, UI as d } from "./index228.mjs";
-function p(o, i, f = {}) {
-  return Object.entries(o).filter(([, t]) => t === !0).reduce((t, [r]) => (f[r] ? t.push(f[r]) : i[e[r]] ? t.push(i[e[r]]) : i[n[r]] && t.push(i[n[r]]), t), [i[d.Day]]);
+import * as f from "./index236.mjs";
+function i(n) {
+  return n != null && n.formatMonthCaption && !n.formatCaption && (n.formatCaption = n.formatMonthCaption), n != null && n.formatYearCaption && !n.formatYearDropdown && (n.formatYearDropdown = n.formatYearCaption), {
+    ...f,
+    ...n
+  };
 }
 export {
-  p as getClassNamesForModifiers
+  i as getFormatters
 };
 //# sourceMappingURL=index218.mjs.map

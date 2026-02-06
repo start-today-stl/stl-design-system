@@ -1,9 +1,8 @@
-import { DateLib as P } from "./index216.mjs";
-function o(a, t, e, n) {
-  let l = (n ?? new P(e)).format(a, "PPPP");
-  return t != null && t.today && (l = `Today, ${l}`), l;
+const t = "Go to the Next Month";
+function n(o, e) {
+  return t;
 }
 export {
-  o as labelGridcell
+  n as labelNext
 };
 //# sourceMappingURL=index250.mjs.map

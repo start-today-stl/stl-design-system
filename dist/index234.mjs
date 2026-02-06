@@ -1,27 +1,27 @@
-import "./index273.mjs";
-import { toTimeZone as i } from "./index236.mjs";
-import { isDateRange as e, isDateInterval as p, isDateAfterType as y, isDateBeforeType as D } from "./index237.mjs";
-function n(o, f, u) {
-  return i(o, f);
+function o(e) {
+  return !!(e && typeof e == "object" && "before" in e && "after" in e);
 }
-function t(o, f, u) {
-  return typeof o == "boolean" || typeof o == "function" ? o : o instanceof Date ? n(o, f) : Array.isArray(o) ? o.map((r) => r instanceof Date ? n(r, f) : r) : e(o) ? {
-    ...o,
-    from: o.from ? i(o.from, f) : o.from,
-    to: o.to ? i(o.to, f) : o.to
-  } : p(o) ? {
-    before: n(o.before, f),
-    after: n(o.after, f)
-  } : y(o) ? {
-    after: n(o.after, f)
-  } : D(o) ? {
-    before: n(o.before, f)
-  } : o;
+function t(e) {
+  return !!(e && typeof e == "object" && "from" in e);
 }
-function T(o, f, u) {
-  return o && (Array.isArray(o) ? o.map((r) => t(r, f)) : t(o, f));
+function r(e) {
+  return !!(e && typeof e == "object" && "after" in e);
+}
+function f(e) {
+  return !!(e && typeof e == "object" && "before" in e);
+}
+function i(e) {
+  return !!(e && typeof e == "object" && "dayOfWeek" in e);
+}
+function y(e, n) {
+  return Array.isArray(e) && e.every(n.isDate);
 }
 export {
-  T as convertMatchersToTimeZone
+  r as isDateAfterType,
+  f as isDateBeforeType,
+  o as isDateInterval,
+  t as isDateRange,
+  y as isDatesArray,
+  i as isDayOfWeekType
 };
 //# sourceMappingURL=index234.mjs.map

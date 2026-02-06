@@ -1,14 +1,7 @@
-import { constructFrom as m } from "./index349.mjs";
-import { toDate as o } from "./index350.mjs";
-function u(n, e) {
-  let t, r = e == null ? void 0 : e.in;
-  return n.forEach((c) => {
-    !r && typeof c == "object" && (r = m.bind(null, c));
-    const f = o(c, r);
-    (!t || t > f || isNaN(+f)) && (t = f);
-  }), m(r, t || NaN);
+function e(t) {
+  return t instanceof Date || typeof t == "object" && Object.prototype.toString.call(t) === "[object Date]";
 }
 export {
-  u as min
+  e as isDate
 };
 //# sourceMappingURL=index299.mjs.map

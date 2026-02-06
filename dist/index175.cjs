@@ -1,2 +1,7 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const e=require("./index263.cjs"),r=require("./index264.cjs"),o=require("./index265.cjs");process.env.NODE_ENV==="production"?e.__module.exports=r.__require():e.__module.exports=o.__require();var t=e.__module.exports;exports.shimExports=t;
+"use strict";/**
+ * @license lucide-react v0.563.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */var t={xmlns:"http://www.w3.org/2000/svg",width:24,height:24,viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:2,strokeLinecap:"round",strokeLinejoin:"round"};module.exports=t;
 //# sourceMappingURL=index175.cjs.map

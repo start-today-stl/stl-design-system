@@ -23,15 +23,20 @@ const statCardVariants = cva(
     variants: {
       variant: {
         // Main: 세로 레이아웃, 큰 숫자 (86px) - 너비 유연
-        main: "h-[160px] rounded-[10px] pt-[10px] px-[10px] pb-[18px]",
+        main: "min-h-[160px] rounded-[10px] pt-[10px] px-[10px] pb-[18px]",
         // Sub: 세로 레이아웃, 중간 숫자 (48px) + Badge - 너비 유연
-        sub: "h-[160px] rounded-[10px] p-[10px]",
+        sub: "min-h-[160px] rounded-[10px] p-[10px]",
         // Small: 가로 레이아웃, 작은 숫자 (14px) - 너비 유연
         small: "rounded-[6px] pl-[10px] pr-[12px] py-[10px]",
+      },
+      stretch: {
+        true: "h-full",
+        false: "",
       },
     },
     defaultVariants: {
       variant: "main",
+      stretch: false,
     },
   }
 )
@@ -49,10 +54,14 @@ export interface StatCardProps
   badge?: React.ReactNode
   /** 테두리 스타일 (흰색 배경 + 테두리) */
   bordered?: boolean
+  /** 헤더 우측 액션 영역 (CardActionGroup 등, main variant에서 사용) */
+  headerAction?: React.ReactNode
+  /** 컨테이너 높이에 맞춤 (h-full) */
+  stretch?: boolean
 }
 
 const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
-  ({ className, variant = "main", icon, label, count, badge, bordered = false, ...props }, ref) => {
+  ({ className, variant = "main", icon, label, count, badge, bordered = false, headerAction, stretch = false, ...props }, ref) => {
     const textColorClass = "text-gray-700 dark:text-gray-100"
     const bgStyle = bordered
       ? borderedStyles[variant || "main"]
@@ -63,20 +72,27 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
       return (
         <div
           ref={ref}
-          className={cn(statCardVariants({ variant }), bgStyle, className)}
+          className={cn(statCardVariants({ variant, stretch }), bgStyle, className)}
           {...props}
         >
           <div className="flex flex-col h-full justify-between">
-            {/* 상단: 아이콘 + 라벨 */}
-            <div className="flex items-center gap-0.5">
-              {icon && (
-                <span className={cn("flex-shrink-0", textColorClass)}>
-                  {icon}
+            {/* 상단: 아이콘 + 라벨 + 헤더 액션 */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-0.5">
+                {icon && (
+                  <span className={cn("flex-shrink-0", textColorClass)}>
+                    {icon}
+                  </span>
+                )}
+                <span className={cn("text-sm tracking-[-0.14px]", textColorClass)}>
+                  {label}
                 </span>
+              </div>
+              {headerAction && (
+                <div className="flex items-center">
+                  {headerAction}
+                </div>
               )}
-              <span className={cn("text-sm tracking-[-0.14px]", textColorClass)}>
-                {label}
-              </span>
             </div>
             {/* 하단: 큰 숫자 (STL Gothic R 폰트) */}
             <span className={cn("font-heading text-[86px] font-normal tracking-[-2.58px] leading-none", textColorClass)}>
@@ -92,7 +108,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
       return (
         <div
           ref={ref}
-          className={cn(statCardVariants({ variant }), bgStyle, className)}
+          className={cn(statCardVariants({ variant, stretch }), bgStyle, className)}
           {...props}
         >
           <div className="flex gap-0.5 h-full">
@@ -129,7 +145,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
     return (
       <div
         ref={ref}
-        className={cn(statCardVariants({ variant }), bgStyle, className)}
+        className={cn(statCardVariants({ variant, stretch }), bgStyle, className)}
         {...props}
       >
         <div className="flex items-center justify-between">

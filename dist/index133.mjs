@@ -1,23 +1,23 @@
-import e from "./index161.mjs";
+import a from "./index170.mjs";
 /**
  * @license lucide-react v0.563.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const t = [
+const o = [
+  ["path", { d: "m15 9-6 6", key: "1uzhvr" }],
   [
     "path",
     {
-      d: "m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3",
-      key: "wmoenq"
+      d: "M2.586 16.726A2 2 0 0 1 2 15.312V8.688a2 2 0 0 1 .586-1.414l4.688-4.688A2 2 0 0 1 8.688 2h6.624a2 2 0 0 1 1.414.586l4.688 4.688A2 2 0 0 1 22 8.688v6.624a2 2 0 0 1-.586 1.414l-4.688 4.688a2 2 0 0 1-1.414.586H8.688a2 2 0 0 1-1.414-.586z",
+      key: "2d38gg"
     }
   ],
-  ["path", { d: "M12 9v4", key: "juzpu7" }],
-  ["path", { d: "M12 17h.01", key: "p32p05" }]
-], o = e("triangle-alert", t);
+  ["path", { d: "m9 9 6 6", key: "z0biqf" }]
+], e = a("octagon-x", o);
 export {
-  t as __iconNode,
-  o as default
+  o as __iconNode,
+  e as default
 };
 //# sourceMappingURL=index133.mjs.map

@@ -1,9 +1,8 @@
-import r from "react";
-function n(t) {
-  const { rootRef: e, ...o } = t;
-  return r.createElement("div", { ...o, ref: e });
+import t from "react";
+function a(e) {
+  return t.createElement("th", { ...e });
 }
 export {
-  n as Root
+  a as Weekday
 };
 //# sourceMappingURL=index207.mjs.map

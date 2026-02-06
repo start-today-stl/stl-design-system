@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});function M(o,e,n,a,s){const{startOfMonth:r,startOfYear:c,endOfYear:f,eachMonthOfInterval:l,getMonth:i}=s;return l({start:c(o),end:f(o)}).map(t=>{const u=a.formatMonthDropdown(t,s),O=i(t),p=e&&t<r(e)||n&&t>r(n)||!1;return{value:O,label:u,disabled:p}})}exports.getMonthOptions=M;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});function O(e,r,s,t,o=!1){if(!e||!r)return;const{startOfYear:f,endOfYear:i,eachYearOfInterval:l,getYear:u}=t,c=f(e),d=i(r),a=l({start:c,end:d});return o&&a.reverse(),a.map(n=>{const Y=s.formatYearDropdown(n,t);return{value:u(n),label:Y,disabled:!1}})}exports.getYearOptions=O;
 //# sourceMappingURL=index223.cjs.map

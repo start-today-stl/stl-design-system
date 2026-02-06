@@ -1,8 +1,9 @@
-import e from "react";
-function o(t) {
-  return e.createElement("button", { ...t });
+import r from "react";
+function n(t) {
+  const { day: o, modifiers: a, ...e } = t;
+  return r.createElement("td", { ...e });
 }
 export {
-  o as Button
+  n as Day
 };
 //# sourceMappingURL=index190.mjs.map

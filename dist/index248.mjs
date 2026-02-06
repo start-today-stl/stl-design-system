@@ -1,11 +1,7 @@
-import { DateLib as n } from "./index216.mjs";
-function r(a, t, l, o) {
-  let e = (o ?? new n(l)).format(a, "PPPP");
-  return t.today && (e = `Today, ${e}`), t.selected && (e = `${e}, selected`), e;
+function n(o) {
+  return "Choose the Month";
 }
-const c = r;
 export {
-  c as labelDay,
-  r as labelDayButton
+  n as labelMonthDropdown
 };
 //# sourceMappingURL=index248.mjs.map

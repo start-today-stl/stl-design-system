@@ -1,12 +1,11 @@
-import { __assign as m } from "./index315.mjs";
-import * as r from "react";
-import { RemoveScroll as e } from "./index316.mjs";
-import t from "./index317.mjs";
-var s = r.forwardRef(function(a, o) {
-  return r.createElement(e, m({}, a, { ref: o, sideCar: t }));
-});
-s.classNames = e.classNames;
+/**
+ * @license lucide-react v0.563.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const a = (e) => e.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
 export {
-  s as default
+  a as toKebabCase
 };
 //# sourceMappingURL=index172.mjs.map

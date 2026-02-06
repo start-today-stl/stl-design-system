@@ -1,8 +1,10 @@
-import { DateLib as t } from "./index216.mjs";
-function a(c, e, r) {
-  return (r ?? new t(e)).format(c, "cccccc");
+import { defaultDateLib as t } from "./index213.mjs";
+function a(o, r = t) {
+  return r.format(o, "yyyy");
 }
+const f = a;
 export {
-  a as formatWeekdayName
+  f as formatYearCaption,
+  a as formatYearDropdown
 };
 //# sourceMappingURL=index243.mjs.map

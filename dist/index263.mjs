@@ -1,5 +1,5 @@
-var e = { exports: {} };
+var r = {};
 export {
-  e as __module
+  r as __exports
 };
 //# sourceMappingURL=index263.mjs.map

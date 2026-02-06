@@ -1,8 +1,7 @@
-import { DateLib as c } from "./index216.mjs";
-function a(e, r, t) {
-  return (t ?? new c(r)).format(e, "cccc");
+function e(o) {
+  return "Choose the Year";
 }
 export {
-  a as labelWeekday
+  e as labelYearDropdown
 };
 //# sourceMappingURL=index255.mjs.map

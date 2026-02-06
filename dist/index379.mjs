@@ -1,19 +1,26 @@
-function h(e) {
-  return (a, t) => {
-    const c = t != null && t.context ? String(t.context) : "standalone";
-    let l;
-    if (c === "formatting" && e.formattingValues) {
-      const d = e.defaultFormattingWidth || e.defaultWidth, u = t != null && t.width ? String(t.width) : d;
-      l = e.formattingValues[u] || e.formattingValues[d];
-    } else {
-      const d = e.defaultWidth, u = t != null && t.width ? String(t.width) : e.defaultWidth;
-      l = e.values[u] || e.values[d];
-    }
-    const f = e.argumentCallback ? e.argumentCallback(a) : a;
-    return l[f];
+var a = {
+  left: 0,
+  top: 0,
+  right: 0,
+  gap: 0
+}, e = function(t) {
+  return parseInt(t || "", 10) || 0;
+}, o = function(t) {
+  var n = window.getComputedStyle(document.body), i = n[t === "padding" ? "paddingLeft" : "marginLeft"], r = n[t === "padding" ? "paddingTop" : "marginTop"], d = n[t === "padding" ? "paddingRight" : "marginRight"];
+  return [e(i), e(r), e(d)];
+}, f = function(t) {
+  if (t === void 0 && (t = "margin"), typeof window > "u")
+    return a;
+  var n = o(t), i = document.documentElement.clientWidth, r = window.innerWidth;
+  return {
+    left: n[0],
+    top: n[1],
+    right: n[2],
+    gap: Math.max(0, r - i + n[2] - n[0])
   };
-}
+};
 export {
-  h as buildLocalizeFn
+  f as getGapWidth,
+  a as zeroGap
 };
 //# sourceMappingURL=index379.mjs.map

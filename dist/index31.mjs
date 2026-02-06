@@ -1,86 +1,32 @@
-import { jsxs as o, jsx as r } from "react/jsx-runtime";
-import * as l from "react";
-import { cn as w } from "./index104.mjs";
-import { LeftIcon as y } from "./index39.mjs";
-import { RightIcon as N } from "./index67.mjs";
-const R = l.forwardRef(
-  ({ className: x, search: m, recentVisits: s, actions: i, children: h, ...d }, p) => {
-    const c = l.useRef(null), [u, g] = l.useState(!1), [b, v] = l.useState(!1), a = l.useCallback(() => {
-      const t = c.current;
-      if (!t) return;
-      const { scrollLeft: e, scrollWidth: n, clientWidth: k } = t;
-      g(e > 0), v(e < n - k - 1);
-    }, []);
-    l.useEffect(() => {
-      a();
-      const t = c.current;
-      if (!t) return;
-      const e = new ResizeObserver(a);
-      return e.observe(t), () => e.disconnect();
-    }, [a, s]);
-    const f = (t) => {
-      const e = c.current;
-      if (!e) return;
-      const n = 100;
-      e.scrollBy({
-        left: t === "left" ? -n : n,
-        behavior: "smooth"
-      });
-    };
-    return /* @__PURE__ */ o(
-      "div",
-      {
-        ref: p,
-        className: w(
-          "flex items-center gap-4 w-full h-[100px] px-6 pt-8 pb-4",
-          "bg-cool-50 dark:bg-dark-400 backdrop-blur-[16px]",
-          x
-        ),
-        ...d,
-        children: [
-          /* @__PURE__ */ r("div", { className: "flex-1 min-w-[200px] max-w-[593px]", children: m || h }),
-          s && /* @__PURE__ */ o("div", { className: "flex items-center gap-1.5 flex-1 min-w-[150px] max-w-[400px]", children: [
-            /* @__PURE__ */ r("span", { className: "text-xs text-gray-700 dark:text-gray-300 tracking-[-0.12px] whitespace-nowrap", children: "최근 방문" }),
-            /* @__PURE__ */ o("div", { className: "flex items-center gap-1 flex-1 min-w-0", children: [
-              u && /* @__PURE__ */ r(
-                "button",
-                {
-                  type: "button",
-                  onClick: () => f("left"),
-                  className: "flex-shrink-0 flex items-center justify-center w-6 h-6 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300",
-                  "aria-label": "스크롤 왼쪽",
-                  children: /* @__PURE__ */ r(y, { size: 24 })
-                }
-              ),
-              /* @__PURE__ */ r(
-                "div",
-                {
-                  ref: c,
-                  onScroll: a,
-                  className: "flex items-center gap-1.5 overflow-x-auto scrollbar-hide flex-1 min-w-0",
-                  children: s
-                }
-              ),
-              b && /* @__PURE__ */ r(
-                "button",
-                {
-                  type: "button",
-                  onClick: () => f("right"),
-                  className: "flex-shrink-0 flex items-center justify-center w-6 h-6 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300",
-                  "aria-label": "스크롤 오른쪽",
-                  children: /* @__PURE__ */ r(N, { size: 24 })
-                }
-              )
-            ] })
-          ] }),
-          i && /* @__PURE__ */ r("div", { className: "flex items-center gap-2 flex-shrink-0 ml-auto", children: i })
-        ]
-      }
-    );
-  }
-);
-R.displayName = "Header";
+import { jsx as t } from "react/jsx-runtime";
+function n({ size: C = 24, className: H, ...V }) {
+  return C <= 24 ? /* @__PURE__ */ t(
+    "svg",
+    {
+      width: C,
+      height: C,
+      viewBox: "0 0 24 24",
+      fill: "none",
+      xmlns: "http://www.w3.org/2000/svg",
+      className: H,
+      ...V,
+      children: /* @__PURE__ */ t("path", { d: "M19.7002 6V19.2002L19.2002 19.7002H6V18.7002H18.7002V6H19.7002ZM17.2998 4.7998V16.7998L16.7998 17.2998H4.7998L4.2998 16.7998V4.7998L4.7998 4.2998H16.7998L17.2998 4.7998ZM5.2998 16.2998H16.2998V5.2998H5.2998V16.2998ZM10.7998 6.7002C13.0597 6.7002 14.9002 8.53998 14.9004 10.7998C14.9004 13.0598 13.0598 14.9004 10.7998 14.9004C8.53986 14.9003 6.7002 13.0598 6.7002 10.7998C6.70041 8.54002 8.53999 6.70026 10.7998 6.7002ZM9 13.3105C9.50993 13.6804 10.1299 13.9004 10.7998 13.9004C12.3398 13.9004 13.6096 12.7698 13.8496 11.2998H11.0098L9 13.3105ZM10.2998 7.75C8.82997 7.99002 7.70039 9.26001 7.7002 10.7998C7.7002 11.4698 7.92004 12.0906 8.29004 12.6006L10.2998 10.5898V7.75ZM11.2998 10.2998H13.8496C13.6295 8.99001 12.6097 7.95998 11.2998 7.75V10.2998Z", fill: "currentColor" })
+    }
+  ) : /* @__PURE__ */ t(
+    "svg",
+    {
+      width: C,
+      height: C,
+      viewBox: "0 0 32 32",
+      fill: "none",
+      xmlns: "http://www.w3.org/2000/svg",
+      className: H,
+      ...V,
+      children: /* @__PURE__ */ t("path", { d: "M26.1016 25.6016L25.6016 26.1016H8.00098V25.1016H25.1016V8.00098H26.1016V25.6016ZM22.9004 6.40137V22.3994L22.4004 22.8994H6.39844L5.89844 22.3994V6.40137L6.39844 5.90137H22.4004L22.9004 6.40137ZM6.89844 21.8994H21.9004V6.90137H6.89844V21.8994ZM14.3994 9.09961C17.3264 9.09961 19.6992 11.4724 19.6992 14.3994C19.6992 17.3264 17.3264 19.6992 14.3994 19.6992C11.4725 19.6992 9.09965 17.3264 9.09961 14.3994C9.09963 11.4724 11.4724 9.09966 14.3994 9.09961ZM11.7354 17.7725C12.468 18.3519 13.3928 18.6992 14.3994 18.6992C16.6049 18.6992 18.4211 17.0385 18.6689 14.8994H14.6064L11.7354 17.7725ZM13.8994 10.1289C11.7603 10.3767 10.0996 12.1939 10.0996 14.3994C10.0996 15.4071 10.4468 16.3334 11.0273 17.0664L13.8994 14.1924V10.1289ZM14.8994 13.8994H18.6689C18.4402 11.9243 16.8745 10.3576 14.8994 10.1289V13.8994Z", fill: "currentColor" })
+    }
+  );
+}
 export {
-  R as Header
+  n as GraphIcon
 };
 //# sourceMappingURL=index31.mjs.map

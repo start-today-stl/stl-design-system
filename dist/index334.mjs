@@ -1,21 +1,8 @@
-import { formatDistance as o } from "./index366.mjs";
-import { formatLong as t } from "./index367.mjs";
-import { formatRelative as r } from "./index368.mjs";
-import { localize as m } from "./index369.mjs";
-import { match as a } from "./index370.mjs";
-const p = {
-  code: "en-US",
-  formatDistance: o,
-  formatLong: t,
-  formatRelative: r,
-  localize: m,
-  match: a,
-  options: {
-    weekStartsOn: 0,
-    firstWeekContainsDate: 1
-  }
-};
+var r = "right-scroll-bar-position", a = "width-before-scroll-bar", l = "with-scroll-bars-hidden", e = "--removed-body-scroll-bar-size";
 export {
-  p as enUS
+  a as fullWidthClassName,
+  l as noScrollbarsClassName,
+  e as removedBarSizeVariable,
+  r as zeroRightClassName
 };
 //# sourceMappingURL=index334.mjs.map

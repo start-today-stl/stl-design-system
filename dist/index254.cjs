@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});function e(o){return"Go to the Previous Month"}exports.labelPrevious=e;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});function e(r){return"Week Number"}exports.labelWeekNumberHeader=e;
 //# sourceMappingURL=index254.cjs.map

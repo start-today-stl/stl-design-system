@@ -1,10 +1,16 @@
-function r(t) {
-  return (d = {}) => {
-    const n = d.width ? String(d.width) : t.defaultWidth;
-    return t.formats[n] || t.formats[t.defaultWidth];
+function h(t) {
+  return (e, c = {}) => {
+    const n = e.match(t.matchPattern);
+    if (!n) return null;
+    const u = n[0], a = e.match(t.parsePattern);
+    if (!a) return null;
+    let l = t.valueCallback ? t.valueCallback(a[0]) : a[0];
+    l = c.valueCallback ? c.valueCallback(l) : l;
+    const r = e.slice(u.length);
+    return { value: l, rest: r };
   };
 }
 export {
-  r as buildFormatLongFn
+  h as buildMatchPatternFn
 };
 //# sourceMappingURL=index382.mjs.map

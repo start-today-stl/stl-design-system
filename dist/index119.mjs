@@ -1,13 +1,13 @@
-import c from "./index161.mjs";
+import c from "./index170.mjs";
 /**
  * @license lucide-react v0.563.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const e = [["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }]], r = c("circle", e);
+const e = [["path", { d: "M20 6 9 17l-5-5", key: "1gmf2c" }]], t = c("check", e);
 export {
   e as __iconNode,
-  r as default
+  t as default
 };
 //# sourceMappingURL=index119.mjs.map

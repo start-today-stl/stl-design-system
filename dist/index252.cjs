@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});function e(){return""}exports.labelNav=e;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const r=require("./index213.cjs");function c(e,t,a){return(a??new r.DateLib(t)).format(e,"cccc")}exports.labelWeekday=c;
 //# sourceMappingURL=index252.cjs.map

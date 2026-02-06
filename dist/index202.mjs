@@ -1,10 +1,8 @@
 import e from "react";
-import { useDayPicker as r } from "./index231.mjs";
-function m(o) {
-  const { components: t } = r();
-  return e.createElement(t.Dropdown, { ...o });
+function n(t) {
+  return e.createElement("option", { ...t });
 }
 export {
-  m as MonthsDropdown
+  n as Option
 };
 //# sourceMappingURL=index202.mjs.map

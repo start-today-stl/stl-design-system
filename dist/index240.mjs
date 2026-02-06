@@ -1,10 +1,8 @@
-import { DateLib as r } from "./index216.mjs";
-function a(t, o, n) {
-  return (n ?? new r(o)).formatMonthYear(t);
+import { DateLib as t } from "./index213.mjs";
+function a(c, e, r) {
+  return (r ?? new t(e)).format(c, "cccccc");
 }
-const f = a;
 export {
-  a as formatCaption,
-  f as formatMonthCaption
+  a as formatWeekdayName
 };
 //# sourceMappingURL=index240.mjs.map
