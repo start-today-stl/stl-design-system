@@ -1,38 +1,40 @@
 import { jsx as n } from "react/jsx-runtime";
-import * as p from "react";
+import * as c from "react";
 import { ChevronDownIcon as f } from "lucide-react";
-import { getDefaultClassNames as y, DayPicker as b } from "react-day-picker";
+import { getDefaultClassNames as b, DayPicker as w } from "react-day-picker";
 import { cn as e } from "../../lib/utils.mjs";
-import { Button as w } from "./button.mjs";
-import { LeftIcon as g } from "../../icons/LeftIcon.mjs";
-function D({
+import { Button as h } from "./button.mjs";
+import { LeftIcon as p } from "../../icons/LeftIcon.mjs";
+function C({
   className: s,
   classNames: l,
-  showOutsideDays: r = !0,
-  captionLayout: i = "label",
-  buttonVariant: u = "ghost",
+  showOutsideDays: a = !0,
+  captionLayout: u = "label",
+  buttonVariant: i = "ghost",
   formatters: d,
   components: x,
+  unstyled: y = !1,
   ...m
 }) {
-  const t = y();
+  const t = b();
   return /* @__PURE__ */ n(
-    b,
+    w,
     {
-      showOutsideDays: r,
+      showOutsideDays: a,
       className: e(
+        "group/calendar",
         // 피그마: backdrop-blur, 흰색 배경, border gray-100, rounded-[5px], shadow
         // 너비 260px = Input md 사이즈와 동일
-        "group/calendar w-[260px] rounded-[5px] border border-gray-100 bg-white/95 p-3 shadow-[10px_10px_10px_0px_rgba(0,0,0,0.05)] backdrop-blur-[12px] dark:border-dark-100 dark:bg-dark-500/95",
+        !y && "w-[260px] rounded-[5px] border border-gray-100 bg-white/95 p-3 shadow-[10px_10px_10px_0px_rgba(0,0,0,0.05)] backdrop-blur-[12px] dark:border-dark-200 dark:bg-dark-500/95",
         String.raw`rtl:**:[.rdp-button\_next>svg]:rotate-180`,
         String.raw`rtl:**:[.rdp-button\_previous>svg]:rotate-180`,
         s
       ),
-      captionLayout: i,
+      captionLayout: u,
       formatters: {
-        formatMonthDropdown: (a) => a.toLocaleString("default", { month: "short" }),
+        formatMonthDropdown: (r) => r.toLocaleString("default", { month: "short" }),
         // 요일을 한 글자로 표시 (S, M, T, W, T, F, S)
-        formatWeekdayName: (a) => a.toLocaleDateString("en-US", { weekday: "narrow" }),
+        formatWeekdayName: (r) => r.toLocaleDateString("en-US", { weekday: "narrow" }),
         ...d
       },
       classNames: {
@@ -72,16 +74,16 @@ function D({
           "bg-popover absolute inset-0 opacity-0",
           t.dropdown
         ),
-        // 피그마: 12px, gray-700 (#4d4d4d)
+        // 피그마: 12px, gray-700 (#4d4d4d), 다크모드: #f5f5f5 (gray-50)
         caption_label: e(
-          "select-none text-xs font-normal text-gray-700 tracking-[-0.18px] dark:text-gray-300",
+          "select-none text-xs font-normal text-gray-700 tracking-[-0.18px] dark:text-gray-50",
           t.caption_label
         ),
         table: "w-full border-collapse mt-1",
         weekdays: e("flex gap-[2px]", t.weekdays),
-        // 피그마: 12px, gray-200 (#ccc), 셀 32px × 34px
+        // 피그마: 12px, gray-200 (#ccc), 셀 32px × 34px, 다크모드: #e6e6e6 (gray-100)
         weekday: e(
-          "h-[34px] w-[32px] select-none text-center text-xs font-normal text-gray-200 leading-[34px] tracking-[-0.18px]",
+          "h-[34px] w-[32px] select-none text-center text-xs font-normal text-gray-200 leading-[34px] tracking-[-0.18px] dark:text-gray-100",
           t.weekday
         ),
         week: e("flex gap-[2px]", t.week),
@@ -120,58 +122,63 @@ function D({
         ...l
       },
       components: {
-        Root: ({ className: a, rootRef: o, ...c }) => /* @__PURE__ */ n(
+        Root: ({ className: r, rootRef: o, ...g }) => /* @__PURE__ */ n(
           "div",
           {
             "data-slot": "calendar",
             ref: o,
-            className: e(a),
-            ...c
+            className: e(r),
+            ...g
           }
         ),
-        Chevron: ({ className: a, orientation: o, ...c }) => o === "left" ? /* @__PURE__ */ n(g, { size: 24, className: e("text-gray-400", a) }) : o === "right" ? /* @__PURE__ */ n(g, { size: 24, className: e("rotate-180 text-gray-400", a) }) : /* @__PURE__ */ n(f, { className: e("size-4", a), ...c }),
-        DayButton: h,
-        WeekNumber: ({ children: a, ...o }) => /* @__PURE__ */ n("td", { ...o, children: /* @__PURE__ */ n("div", { className: "flex size-[--cell-size] items-center justify-center text-center", children: a }) }),
+        Chevron: ({ className: r, orientation: o, ...g }) => o === "left" ? /* @__PURE__ */ n(p, { size: 24, className: e("text-gray-400 dark:text-gray-50", r) }) : o === "right" ? /* @__PURE__ */ n(p, { size: 24, className: e("rotate-180 text-gray-400 dark:text-gray-50", r) }) : /* @__PURE__ */ n(f, { className: e("size-4", r), ...g }),
+        DayButton: _,
+        WeekNumber: ({ children: r, ...o }) => /* @__PURE__ */ n("td", { ...o, children: /* @__PURE__ */ n("div", { className: "flex size-[--cell-size] items-center justify-center text-center", children: r }) }),
         ...x
       },
       ...m
     }
   );
 }
-function h({
+function _({
   className: s,
   day: l,
-  modifiers: r,
-  ...i
+  modifiers: a,
+  ...u
 }) {
-  const u = p.useRef(null);
-  return p.useEffect(() => {
+  const i = c.useRef(null);
+  return c.useEffect(() => {
     var d;
-    r.focused && ((d = u.current) == null || d.focus());
-  }, [r.focused]), /* @__PURE__ */ n(
-    w,
+    a.focused && ((d = i.current) == null || d.focus());
+  }, [a.focused]), /* @__PURE__ */ n(
+    h,
     {
-      ref: u,
+      ref: i,
       variant: "ghost",
       size: "icon",
       "data-day": l.date.toLocaleDateString(),
-      "data-today": r.today,
-      "data-outside": r.outside,
-      "data-selected-single": r.selected && !r.range_start && !r.range_end && !r.range_middle,
-      "data-range-start": r.range_start,
-      "data-range-end": r.range_end,
-      "data-range-middle": r.range_middle,
+      "data-today": a.today,
+      "data-outside": a.outside,
+      "data-selected-single": a.selected && !a.range_start && !a.range_end && !a.range_middle,
+      "data-range-start": a.range_start,
+      "data-range-end": a.range_end,
+      "data-range-middle": a.range_middle,
       className: e(
-        // 정원형 선택: 29px × 29px, 12px 폰트, gray-500 (#808080)
-        "flex size-[29px] items-center justify-center rounded-full text-xs font-normal text-gray-500 tracking-[-0.18px] transition-colors",
+        // 정원형 선택: 29px × 29px, 12px 폰트, gray-500 (#808080), 다크모드: #9ba5bb (dark-100)
+        "flex size-[29px] items-center justify-center rounded-full text-xs font-normal text-gray-500 tracking-[-0.18px] transition-colors dark:text-dark-100",
         // 호버
         "hover:bg-gray-50 dark:hover:bg-dark-400",
-        // 다른 달 날짜 (연한 색상)
-        "data-[outside=true]:text-gray-200 data-[outside=true]:hover:bg-transparent",
-        // 오늘 날짜
+        // 다른 달 날짜 (연한 색상), 다크모드: opacity-50 + #f5f5f5
+        "data-[outside=true]:text-gray-200 data-[outside=true]:opacity-50 data-[outside=true]:hover:bg-transparent dark:data-[outside=true]:text-gray-50",
+        // 오늘 날짜 (선택되지 않은 상태)
         "data-[today=true]:font-medium data-[today=true]:text-primary",
         // 단일 선택 (원형)
         "data-[selected-single=true]:bg-primary data-[selected-single=true]:text-white data-[selected-single=true]:hover:bg-primary-500",
+        // 오늘 날짜가 선택된 경우 - 선택 스타일 우선
+        "data-[today=true]:data-[selected-single=true]:text-white",
+        "data-[today=true]:data-[range-start=true]:text-white",
+        "data-[today=true]:data-[range-end=true]:text-white",
+        "data-[today=true]:data-[range-middle=true]:text-primary",
         // 범위 시작 (원형)
         "data-[range-start=true]:bg-primary data-[range-start=true]:text-white",
         // 범위 끝 (원형)
@@ -182,12 +189,12 @@ function h({
         "group-data-[focused=true]/day:relative group-data-[focused=true]/day:z-10 group-data-[focused=true]/day:ring-2 group-data-[focused=true]/day:ring-primary/50",
         s
       ),
-      ...i
+      ...u
     }
   );
 }
 export {
-  D as Calendar,
-  h as CalendarDayButton
+  C as Calendar,
+  _ as CalendarDayButton
 };
 //# sourceMappingURL=calendar.mjs.map

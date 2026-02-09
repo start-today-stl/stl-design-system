@@ -1,41 +1,27 @@
 import * as React from "react";
-declare const dropdownSizeStyles: {
-    readonly sm: "w-[160px]";
-    readonly md: "w-[260px]";
-    readonly lg: "w-[360px]";
-    readonly full: "w-full";
+import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
+declare const Dropdown: React.FC<DropdownMenuPrimitive.DropdownMenuProps>;
+declare const DropdownTrigger: React.ForwardRefExoticComponent<DropdownMenuPrimitive.DropdownMenuTriggerProps & React.RefAttributes<HTMLButtonElement>>;
+declare const DropdownGroup: React.ForwardRefExoticComponent<DropdownMenuPrimitive.DropdownMenuGroupProps & React.RefAttributes<HTMLDivElement>>;
+declare const DropdownPortal: React.FC<DropdownMenuPrimitive.DropdownMenuPortalProps>;
+declare const DropdownSub: React.FC<DropdownMenuPrimitive.DropdownMenuSubProps>;
+declare const DropdownRadioGroup: React.ForwardRefExoticComponent<DropdownMenuPrimitive.DropdownMenuRadioGroupProps & React.RefAttributes<HTMLDivElement>>;
+declare const DropdownSubTrigger: React.ForwardRefExoticComponent<Omit<DropdownMenuPrimitive.DropdownMenuSubTriggerProps & React.RefAttributes<HTMLDivElement>, "ref"> & {
+    inset?: boolean | undefined;
+} & React.RefAttributes<HTMLDivElement>>;
+declare const DropdownSubContent: React.ForwardRefExoticComponent<Omit<DropdownMenuPrimitive.DropdownMenuSubContentProps & React.RefAttributes<HTMLDivElement>, "ref"> & React.RefAttributes<HTMLDivElement>>;
+declare const DropdownContent: React.ForwardRefExoticComponent<Omit<DropdownMenuPrimitive.DropdownMenuContentProps & React.RefAttributes<HTMLDivElement>, "ref"> & React.RefAttributes<HTMLDivElement>>;
+declare const DropdownItem: React.ForwardRefExoticComponent<Omit<DropdownMenuPrimitive.DropdownMenuItemProps & React.RefAttributes<HTMLDivElement>, "ref"> & {
+    inset?: boolean | undefined;
+} & React.RefAttributes<HTMLDivElement>>;
+declare const DropdownCheckboxItem: React.ForwardRefExoticComponent<Omit<DropdownMenuPrimitive.DropdownMenuCheckboxItemProps & React.RefAttributes<HTMLDivElement>, "ref"> & React.RefAttributes<HTMLDivElement>>;
+declare const DropdownRadioItem: React.ForwardRefExoticComponent<Omit<DropdownMenuPrimitive.DropdownMenuRadioItemProps & React.RefAttributes<HTMLDivElement>, "ref"> & React.RefAttributes<HTMLDivElement>>;
+declare const DropdownLabel: React.ForwardRefExoticComponent<Omit<DropdownMenuPrimitive.DropdownMenuLabelProps & React.RefAttributes<HTMLDivElement>, "ref"> & {
+    inset?: boolean | undefined;
+} & React.RefAttributes<HTMLDivElement>>;
+declare const DropdownSeparator: React.ForwardRefExoticComponent<Omit<DropdownMenuPrimitive.DropdownMenuSeparatorProps & React.RefAttributes<HTMLDivElement>, "ref"> & React.RefAttributes<HTMLDivElement>>;
+declare const DropdownShortcut: {
+    ({ className, ...props }: React.HTMLAttributes<HTMLSpanElement>): import("react/jsx-runtime").JSX.Element;
+    displayName: string;
 };
-export type DropdownSize = keyof typeof dropdownSizeStyles;
-export interface DropdownOption {
-    label: string;
-    value: string;
-    disabled?: boolean;
-}
-export interface DropdownProps {
-    /** 라벨 텍스트 */
-    label?: string;
-    /** 플레이스홀더 */
-    placeholder?: string;
-    /** 옵션 목록 */
-    options: DropdownOption[];
-    /** 선택된 값 */
-    value?: string;
-    /** 기본 선택 값 */
-    defaultValue?: string;
-    /** 값 변경 핸들러 */
-    onValueChange?: (value: string) => void;
-    /** 너비 크기 */
-    size?: DropdownSize;
-    /** 에러 상태 */
-    error?: boolean;
-    /** 에러 메시지 */
-    errorMessage?: string;
-    /** 비활성화 */
-    disabled?: boolean;
-    /** 추가 className */
-    className?: string;
-    /** 접근성 라벨 (label이 없을 때 사용) */
-    "aria-label"?: string;
-}
-declare const Dropdown: React.ForwardRefExoticComponent<DropdownProps & React.RefAttributes<HTMLButtonElement>>;
-export { Dropdown, dropdownSizeStyles };
+export { Dropdown, DropdownTrigger, DropdownContent, DropdownItem, DropdownCheckboxItem, DropdownRadioItem, DropdownLabel, DropdownSeparator, DropdownShortcut, DropdownGroup, DropdownPortal, DropdownSub, DropdownSubContent, DropdownSubTrigger, DropdownRadioGroup, };

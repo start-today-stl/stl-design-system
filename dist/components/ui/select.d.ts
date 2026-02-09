@@ -1,13 +1,41 @@
 import * as React from "react";
-import * as SelectPrimitive from "@radix-ui/react-select";
-declare const Select: React.FC<SelectPrimitive.SelectProps>;
-declare const SelectGroup: React.ForwardRefExoticComponent<SelectPrimitive.SelectGroupProps & React.RefAttributes<HTMLDivElement>>;
-declare const SelectValue: React.ForwardRefExoticComponent<SelectPrimitive.SelectValueProps & React.RefAttributes<HTMLSpanElement>>;
-declare const SelectTrigger: React.ForwardRefExoticComponent<Omit<SelectPrimitive.SelectTriggerProps & React.RefAttributes<HTMLButtonElement>, "ref"> & React.RefAttributes<HTMLButtonElement>>;
-declare const SelectScrollUpButton: React.ForwardRefExoticComponent<Omit<SelectPrimitive.SelectScrollUpButtonProps & React.RefAttributes<HTMLDivElement>, "ref"> & React.RefAttributes<HTMLDivElement>>;
-declare const SelectScrollDownButton: React.ForwardRefExoticComponent<Omit<SelectPrimitive.SelectScrollDownButtonProps & React.RefAttributes<HTMLDivElement>, "ref"> & React.RefAttributes<HTMLDivElement>>;
-declare const SelectContent: React.ForwardRefExoticComponent<Omit<SelectPrimitive.SelectContentProps & React.RefAttributes<HTMLDivElement>, "ref"> & React.RefAttributes<HTMLDivElement>>;
-declare const SelectLabel: React.ForwardRefExoticComponent<Omit<SelectPrimitive.SelectLabelProps & React.RefAttributes<HTMLDivElement>, "ref"> & React.RefAttributes<HTMLDivElement>>;
-declare const SelectItem: React.ForwardRefExoticComponent<Omit<SelectPrimitive.SelectItemProps & React.RefAttributes<HTMLDivElement>, "ref"> & React.RefAttributes<HTMLDivElement>>;
-declare const SelectSeparator: React.ForwardRefExoticComponent<Omit<SelectPrimitive.SelectSeparatorProps & React.RefAttributes<HTMLDivElement>, "ref"> & React.RefAttributes<HTMLDivElement>>;
-export { Select, SelectGroup, SelectValue, SelectTrigger, SelectContent, SelectLabel, SelectItem, SelectSeparator, SelectScrollUpButton, SelectScrollDownButton, };
+declare const selectSizeStyles: {
+    readonly sm: "w-[160px]";
+    readonly md: "w-[260px]";
+    readonly lg: "w-[360px]";
+    readonly full: "w-full";
+};
+export type SelectSize = keyof typeof selectSizeStyles;
+export interface SelectOption {
+    label: string;
+    value: string;
+    disabled?: boolean;
+}
+export interface SelectProps {
+    /** 라벨 텍스트 */
+    label?: string;
+    /** 플레이스홀더 */
+    placeholder?: string;
+    /** 옵션 목록 */
+    options: SelectOption[];
+    /** 선택된 값 */
+    value?: string;
+    /** 기본 선택 값 */
+    defaultValue?: string;
+    /** 값 변경 핸들러 */
+    onValueChange?: (value: string) => void;
+    /** 너비 크기 */
+    size?: SelectSize;
+    /** 에러 상태 */
+    error?: boolean;
+    /** 에러 메시지 */
+    errorMessage?: string;
+    /** 비활성화 */
+    disabled?: boolean;
+    /** 추가 className */
+    className?: string;
+    /** 접근성 라벨 (label이 없을 때 사용) */
+    "aria-label"?: string;
+}
+declare const Select: React.ForwardRefExoticComponent<SelectProps & React.RefAttributes<HTMLButtonElement>>;
+export { Select, selectSizeStyles };

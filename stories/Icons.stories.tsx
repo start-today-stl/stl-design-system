@@ -2,9 +2,11 @@ import * as React from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 
 import {
+  AdjustIcon,
   AlarmIcon,
   AttachIcon,
   BoardIcon,
+  BoxIcon,
   CalenderIcon,
   CashIcon,
   ChatIcon,
@@ -35,6 +37,7 @@ import {
   ProductIcon,
   ProfileIcon,
   RightIcon,
+  SaveIcon,
   SearchIcon,
   SettingIcon,
   ShiftIcon,
@@ -51,9 +54,11 @@ import {
 
 // 일반 아이콘 (24x24 / 32x32)
 const icons = [
+  { name: 'AdjustIcon', component: AdjustIcon },
   { name: 'AlarmIcon', component: AlarmIcon },
   { name: 'AttachIcon', component: AttachIcon },
   { name: 'BoardIcon', component: BoardIcon },
+  { name: 'BoxIcon', component: BoxIcon },
   { name: 'CalenderIcon', component: CalenderIcon },
   { name: 'CashIcon', component: CashIcon },
   { name: 'ChatIcon', component: ChatIcon },
@@ -76,6 +81,7 @@ const icons = [
   { name: 'ProductIcon', component: ProductIcon },
   { name: 'ProfileIcon', component: ProfileIcon },
   { name: 'RightIcon', component: RightIcon },
+  { name: 'SaveIcon', component: SaveIcon },
   { name: 'SearchIcon', component: SearchIcon },
   { name: 'SettingIcon', component: SettingIcon },
   { name: 'ShiftIcon', component: ShiftIcon },

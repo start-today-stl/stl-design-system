@@ -12,7 +12,6 @@ export * from './ui/date-time-picker';
 export * from './ui/date-range-picker';
 export * from './ui/checkbox';
 export * from './ui/dialog';
-export * from './ui/dropdown-menu';
 export * from './ui/dropdown';
 export * from './ui/input';
 export * from './ui/input-group';
