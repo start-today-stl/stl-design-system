@@ -22,6 +22,12 @@ export interface InputFieldProps extends Omit<React.InputHTMLAttributes<HTMLInpu
     errorMessage?: string;
     /** 너비 크기 */
     size?: InputSize;
+    /** 우측 아이콘 (ReactNode) */
+    rightIcon?: React.ReactNode;
+    /** 우측 아이콘 클릭 핸들러 */
+    onRightIconClick?: () => void;
+    /** 우측 아이콘 버튼의 접근성 라벨 */
+    rightIconLabel?: string;
 }
 declare const InputField: React.ForwardRefExoticComponent<InputFieldProps & React.RefAttributes<HTMLInputElement>>;
 export { Input, InputField, inputSizeStyles };

@@ -1,13 +1,10 @@
 import * as React from "react"
-import {
-  ChevronDownIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-} from "lucide-react"
+import { ChevronDownIcon } from "lucide-react"
 import { DayButton, DayPicker, getDefaultClassNames } from "react-day-picker"
 
 import { cn } from "@/lib/utils"
-import { Button, buttonVariants } from "@/components/ui/button"
+import { Button } from "@/components/ui/button"
+import { LeftIcon } from "@/icons"
 
 function Calendar({
   className,
@@ -27,7 +24,9 @@ function Calendar({
     <DayPicker
       showOutsideDays={showOutsideDays}
       className={cn(
-        "bg-background group/calendar p-3 [--cell-size:2rem] [[data-slot=card-content]_&]:bg-transparent [[data-slot=popover-content]_&]:bg-transparent",
+        // 피그마: backdrop-blur, 흰색 배경, border gray-100, rounded-[5px], shadow
+        // 너비 260px = Input md 사이즈와 동일
+        "group/calendar w-[260px] rounded-[5px] border border-gray-100 bg-white/95 p-3 shadow-[10px_10px_10px_0px_rgba(0,0,0,0.05)] backdrop-blur-[12px] dark:border-dark-100 dark:bg-dark-500/95",
         String.raw`rtl:**:[.rdp-button\_next>svg]:rotate-180`,
         String.raw`rtl:**:[.rdp-button\_previous>svg]:rotate-180`,
         className
@@ -36,35 +35,38 @@ function Calendar({
       formatters={{
         formatMonthDropdown: (date) =>
           date.toLocaleString("default", { month: "short" }),
+        // 요일을 한 글자로 표시 (S, M, T, W, T, F, S)
+        formatWeekdayName: (date) =>
+          date.toLocaleDateString("en-US", { weekday: "narrow" }),
         ...formatters,
       }}
       classNames={{
-        root: cn("w-fit", defaultClassNames.root),
+        root: cn("w-full", defaultClassNames.root),
         months: cn(
-          "relative flex flex-col gap-4 md:flex-row",
+          "relative flex flex-col md:flex-row",
           defaultClassNames.months
         ),
-        month: cn("flex w-full flex-col gap-4", defaultClassNames.month),
+        month: cn("flex w-full flex-col", defaultClassNames.month),
+        // 피그마: 화살표 위치, month_caption과 동일한 높이로 세로 정렬
         nav: cn(
-          "absolute inset-x-0 top-0 flex w-full items-center justify-between gap-1",
+          "absolute inset-x-0 top-0 flex h-[21px] w-full items-center justify-between px-[36px]",
           defaultClassNames.nav
         ),
         button_previous: cn(
-          buttonVariants({ variant: buttonVariant }),
-          "h-[--cell-size] w-[--cell-size] select-none p-0 aria-disabled:opacity-50",
+          "flex cursor-pointer select-none items-center justify-center p-0 hover:text-gray-600 aria-disabled:opacity-50",
           defaultClassNames.button_previous
         ),
         button_next: cn(
-          buttonVariants({ variant: buttonVariant }),
-          "h-[--cell-size] w-[--cell-size] select-none p-0 aria-disabled:opacity-50",
+          "flex cursor-pointer select-none items-center justify-center p-0 hover:text-gray-600 aria-disabled:opacity-50",
           defaultClassNames.button_next
         ),
+        // 피그마: 21px 높이, 상단 9px
         month_caption: cn(
-          "flex h-[--cell-size] w-full items-center justify-center px-[--cell-size]",
+          "flex h-[21px] w-full items-center justify-center",
           defaultClassNames.month_caption
         ),
         dropdowns: cn(
-          "flex h-[--cell-size] w-full items-center justify-center gap-1.5 text-sm font-medium",
+          "flex h-[21px] w-full items-center justify-center gap-1.5 text-xs font-normal",
           defaultClassNames.dropdowns
         ),
         dropdown_root: cn(
@@ -75,48 +77,48 @@ function Calendar({
           "bg-popover absolute inset-0 opacity-0",
           defaultClassNames.dropdown
         ),
+        // 피그마: 12px, gray-700 (#4d4d4d)
         caption_label: cn(
-          "select-none font-medium",
-          captionLayout === "label"
-            ? "text-sm"
-            : "[&>svg]:text-muted-foreground flex h-8 items-center gap-1 rounded-md pl-2 pr-1 text-sm [&>svg]:size-3.5",
+          "select-none text-xs font-normal text-gray-700 tracking-[-0.18px] dark:text-gray-300",
           defaultClassNames.caption_label
         ),
-        table: "w-full border-collapse",
-        weekdays: cn("flex", defaultClassNames.weekdays),
+        table: "w-full border-collapse mt-1",
+        weekdays: cn("flex gap-[2px]", defaultClassNames.weekdays),
+        // 피그마: 12px, gray-200 (#ccc), 셀 32px × 34px
         weekday: cn(
-          "text-muted-foreground flex-1 select-none rounded-md text-[0.8rem] font-normal",
+          "h-[34px] w-[32px] select-none text-center text-xs font-normal text-gray-200 leading-[34px] tracking-[-0.18px]",
           defaultClassNames.weekday
         ),
-        week: cn("mt-2 flex w-full", defaultClassNames.week),
+        week: cn("flex gap-[2px]", defaultClassNames.week),
         week_number_header: cn(
-          "w-[--cell-size] select-none",
+          "w-[32px] select-none",
           defaultClassNames.week_number_header
         ),
         week_number: cn(
-          "text-muted-foreground select-none text-[0.8rem]",
+          "text-gray-200 select-none text-xs",
           defaultClassNames.week_number
         ),
+        // 셀 32px × 34px, 내부 버튼(29px 원형) 가운데 정렬
         day: cn(
-          "group/day relative aspect-square h-full w-full select-none p-0 text-center [&:first-child[data-selected=true]_button]:rounded-l-md [&:last-child[data-selected=true]_button]:rounded-r-md",
+          "group/day relative flex h-[34px] w-[32px] select-none items-center justify-center p-0",
           defaultClassNames.day
         ),
-        range_start: cn(
-          "bg-accent rounded-l-md",
-          defaultClassNames.range_start
-        ),
-        range_middle: cn("rounded-none", defaultClassNames.range_middle),
-        range_end: cn("bg-accent rounded-r-md", defaultClassNames.range_end),
+        // 범위 선택 배경 (모두 버튼에서 원형으로 처리)
+        range_start: cn("", defaultClassNames.range_start),
+        range_middle: cn("", defaultClassNames.range_middle),
+        range_end: cn("", defaultClassNames.range_end),
+        // 오늘 날짜
         today: cn(
-          "bg-accent text-accent-foreground rounded-md data-[selected=true]:rounded-none",
+          "font-medium",
           defaultClassNames.today
         ),
+        // 피그마: 다른 달 날짜 gray-200 (#ccc)
         outside: cn(
-          "text-muted-foreground aria-selected:text-muted-foreground",
+          "text-gray-200 aria-selected:text-gray-200",
           defaultClassNames.outside
         ),
         disabled: cn(
-          "text-muted-foreground opacity-50",
+          "text-gray-200 opacity-50",
           defaultClassNames.disabled
         ),
         hidden: cn("invisible", defaultClassNames.hidden),
@@ -136,16 +138,13 @@ function Calendar({
         Chevron: ({ className, orientation, ...props }) => {
           if (orientation === "left") {
             return (
-              <ChevronLeftIcon className={cn("size-4", className)} {...props} />
+              <LeftIcon size={24} className={cn("text-gray-400", className)} />
             )
           }
 
           if (orientation === "right") {
             return (
-              <ChevronRightIcon
-                className={cn("size-4", className)}
-                {...props}
-              />
+              <LeftIcon size={24} className={cn("rotate-180 text-gray-400", className)} />
             )
           }
 
@@ -176,8 +175,6 @@ function CalendarDayButton({
   modifiers,
   ...props
 }: React.ComponentProps<typeof DayButton>) {
-  const defaultClassNames = getDefaultClassNames()
-
   const ref = React.useRef<HTMLButtonElement>(null)
   React.useEffect(() => {
     if (modifiers.focused) ref.current?.focus()
@@ -189,6 +186,8 @@ function CalendarDayButton({
       variant="ghost"
       size="icon"
       data-day={day.date.toLocaleDateString()}
+      data-today={modifiers.today}
+      data-outside={modifiers.outside}
       data-selected-single={
         modifiers.selected &&
         !modifiers.range_start &&
@@ -199,8 +198,24 @@ function CalendarDayButton({
       data-range-end={modifiers.range_end}
       data-range-middle={modifiers.range_middle}
       className={cn(
-        "data-[selected-single=true]:bg-primary data-[selected-single=true]:text-primary-foreground data-[range-middle=true]:bg-accent data-[range-middle=true]:text-accent-foreground data-[range-start=true]:bg-primary data-[range-start=true]:text-primary-foreground data-[range-end=true]:bg-primary data-[range-end=true]:text-primary-foreground group-data-[focused=true]/day:border-ring group-data-[focused=true]/day:ring-ring/50 flex aspect-square h-auto w-full min-w-[--cell-size] flex-col gap-1 font-normal leading-none data-[range-end=true]:rounded-md data-[range-middle=true]:rounded-none data-[range-start=true]:rounded-md group-data-[focused=true]/day:relative group-data-[focused=true]/day:z-10 group-data-[focused=true]/day:ring-[3px] [&>span]:text-xs [&>span]:opacity-70",
-        defaultClassNames.day,
+        // 정원형 선택: 29px × 29px, 12px 폰트, gray-500 (#808080)
+        "flex size-[29px] items-center justify-center rounded-full text-xs font-normal text-gray-500 tracking-[-0.18px] transition-colors",
+        // 호버
+        "hover:bg-gray-50 dark:hover:bg-dark-400",
+        // 다른 달 날짜 (연한 색상)
+        "data-[outside=true]:text-gray-200 data-[outside=true]:hover:bg-transparent",
+        // 오늘 날짜
+        "data-[today=true]:font-medium data-[today=true]:text-primary",
+        // 단일 선택 (원형)
+        "data-[selected-single=true]:bg-primary data-[selected-single=true]:text-white data-[selected-single=true]:hover:bg-primary-500",
+        // 범위 시작 (원형)
+        "data-[range-start=true]:bg-primary data-[range-start=true]:text-white",
+        // 범위 끝 (원형)
+        "data-[range-end=true]:bg-primary data-[range-end=true]:text-white",
+        // 범위 중간 (원형 연한 배경)
+        "data-[range-middle=true]:bg-primary-100 data-[range-middle=true]:text-primary",
+        // 포커스
+        "group-data-[focused=true]/day:relative group-data-[focused=true]/day:z-10 group-data-[focused=true]/day:ring-2 group-data-[focused=true]/day:ring-primary/50",
         className
       )}
       {...props}

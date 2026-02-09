@@ -1,0 +1,2 @@
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const e=require("react/jsx-runtime");function o({size:t=10,className:n,...i}){return e.jsx("svg",{width:t,height:t,viewBox:"0 0 10 10",fill:"none",xmlns:"http://www.w3.org/2000/svg",className:n,...i,children:e.jsx("path",{d:"M5 10L0.669873 2.5L9.33013 2.5L5 10Z",fill:"currentColor"})})}exports.DirectionIcon=o;
+//# sourceMappingURL=DirectionIcon.cjs.map

@@ -1,16 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
-// TODO: DatePicker 컴포넌트 구현 시 CalenderIcon으로 교체
-import { CalendarIcon } from "lucide-react";
-import { format } from "date-fns";
-import { ko } from "date-fns/locale";
 import { Button } from "@/components/ui/button";
 import { Modal } from "@/components/ui/modal";
 import { InputField } from "@/components/ui/input";
 import { Dropdown } from "@/components/ui/dropdown";
-import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
+import { DatePicker } from "@/components/ui/date-picker";
 import { STLArrowIcon } from "@/icons";
 
 const meta = {
@@ -155,26 +149,13 @@ export const WithForm: Story = {
         >
           <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
             {/* DatePicker */}
-            <div className="flex flex-col gap-1">
-              <label className="text-xs text-gray-600">입고일자</label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className={cn(
-                      "w-full justify-start text-left font-normal h-9",
-                      !date && "text-muted-foreground"
-                    )}
-                  >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    {date ? format(date, "PPP", { locale: ko }) : "날짜 선택"}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar mode="single" selected={date} onSelect={setDate} initialFocus />
-                </PopoverContent>
-              </Popover>
-            </div>
+            <DatePicker
+              label="입고일자"
+              value={date}
+              onChange={setDate}
+              placeholder="날짜 선택"
+              size="full"
+            />
             {/* InputField */}
             <InputField label="입고번호" placeholder="입고번호 입력" />
             {/* Dropdown */}

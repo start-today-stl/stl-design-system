@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import { InputField } from "@/components/ui/input"
+import { CalenderIcon } from "@/icons"
 
 const meta: Meta<typeof InputField> = {
   title: "Components/InputField",
@@ -25,6 +26,14 @@ const meta: Meta<typeof InputField> = {
     errorMessage: {
       control: "text",
       description: "에러 메시지",
+    },
+    rightIcon: {
+      control: false,
+      description: "우측 아이콘 (ReactNode)",
+    },
+    onRightIconClick: {
+      action: "clicked",
+      description: "우측 아이콘 클릭 핸들러",
     },
   },
 }
@@ -132,6 +141,17 @@ export const AllSizes: Story = {
   ),
 }
 
+/** 우측 아이콘 포함 */
+export const WithRightIcon: Story = {
+  args: {
+    label: "날짜",
+    placeholder: "2025-00-00",
+    size: "md",
+    rightIcon: <CalenderIcon size={24} />,
+    onRightIconClick: () => alert("캘린더 열기"),
+  },
+}
+
 /** 모든 상태 비교 */
 export const AllStates: Story = {
   render: () => (
@@ -155,6 +175,16 @@ export const AllStates: Story = {
       <div className="flex flex-col gap-2">
         <span className="text-sm text-gray-500">Disabled</span>
         <InputField label="라벨" placeholder="내용을 입력하세요." disabled size="md" />
+      </div>
+      <div className="flex flex-col gap-2">
+        <span className="text-sm text-gray-500">With Right Icon</span>
+        <InputField
+          label="날짜"
+          placeholder="2025-00-00"
+          size="md"
+          rightIcon={<CalenderIcon size={18} />}
+          onRightIconClick={() => console.log("캘린더 열기")}
+        />
       </div>
     </div>
   ),

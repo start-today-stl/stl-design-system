@@ -67,11 +67,17 @@ export interface InputFieldProps extends Omit<
   errorMessage?: string;
   /** 너비 크기 */
   size?: InputSize;
+  /** 우측 아이콘 (ReactNode) */
+  rightIcon?: React.ReactNode;
+  /** 우측 아이콘 클릭 핸들러 */
+  onRightIconClick?: () => void;
+  /** 우측 아이콘 버튼의 접근성 라벨 */
+  rightIconLabel?: string;
 }
 
 const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
   (
-    { className, label, error, errorMessage, size = "full", id, ...props },
+    { className, label, error, errorMessage, size = "full", id, rightIcon, onRightIconClick, rightIconLabel = "아이콘 버튼", ...props },
     ref,
   ) => {
     const inputId = id || React.useId();
@@ -86,13 +92,26 @@ const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
             {label}
           </label>
         )}
-        <Input
-          id={inputId}
-          ref={ref}
-          error={error}
-          className={cn("w-full", className)}
-          {...props}
-        />
+        <div className="relative">
+          <Input
+            id={inputId}
+            ref={ref}
+            error={error}
+            className={cn("w-full", rightIcon && "pr-9", className)}
+            {...props}
+          />
+          {rightIcon && (
+            <button
+              type="button"
+              onClick={onRightIconClick}
+              aria-label={rightIconLabel}
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:text-gray-300 dark:hover:text-gray-100"
+              tabIndex={-1}
+            >
+              {rightIcon}
+            </button>
+          )}
+        </div>
         {error && errorMessage && (
           <span className="text-[length:var(--text-body-2)] text-destructive dark:text-red-400">
             {errorMessage}

@@ -6,6 +6,7 @@ export { CalenderIcon } from './CalenderIcon';
 export { CashIcon } from './CashIcon';
 export { ChatIcon } from './ChatIcon';
 export { DeleteIcon } from './DeleteIcon';
+export { DirectionIcon } from './DirectionIcon';
 export { DownIcon } from './DownIcon';
 export { FilterIcon } from './FilterIcon';
 export { GraphIcon } from './GraphIcon';
