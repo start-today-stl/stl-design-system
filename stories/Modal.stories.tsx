@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Modal } from "@/components/ui/modal";
 import { InputField } from "@/components/ui/input";
-import { Dropdown } from "@/components/ui/dropdown";
+import { Select } from "@/components/ui/select";
 import { DatePicker } from "@/components/ui/date-picker";
 import { STLArrowIcon } from "@/icons";
 
@@ -159,7 +159,7 @@ export const WithForm: Story = {
             {/* InputField */}
             <InputField label="입고번호" placeholder="입고번호 입력" />
             {/* Dropdown */}
-            <Dropdown
+            <Select
               label="센터"
               placeholder="센터 선택"
               options={[
@@ -167,7 +167,7 @@ export const WithForm: Story = {
                 { label: "B 센터", value: "center-b" },
               ]}
             />
-            <Dropdown
+            <Select
               label="파트"
               placeholder="파트 선택"
               options={[

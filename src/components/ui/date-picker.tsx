@@ -116,6 +116,7 @@ const DatePicker = ({
             errorMessage={errorMessage}
             size={size}
             disabled={disabled}
+            autoComplete="off"
             rightIcon={<CalenderIcon size={24} />}
             onRightIconClick={() => !disabled && setOpen(true)}
           />

@@ -9,11 +9,11 @@ import { Button } from "../src/components/ui/button";
 import { SearchBar } from "../src/layout/search-bar";
 import { VisitTag } from "../src/layout/visit-tag";
 import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "../src/components/ui/dropdown-menu";
+  Dropdown,
+  DropdownTrigger,
+  DropdownContent,
+  DropdownItem,
+} from "../src/components/ui/dropdown";
 import {
   SolidHomeIcon,
   SolidProductIcon,
@@ -100,8 +100,8 @@ function LanguageSelector() {
   const currentLang = languages.find((l) => l.code === language);
 
   return (
-    <DropdownMenu open={open} onOpenChange={setOpen}>
-      <DropdownMenuTrigger asChild>
+    <Dropdown open={open} onOpenChange={setOpen}>
+      <DropdownTrigger asChild>
         <button
           type="button"
           className="flex items-center gap-0.5 text-sm text-gray-700 dark:text-gray-300 tracking-[-0.14px] hover:text-primary dark:hover:text-primary-300 transition-colors"
@@ -109,19 +109,19 @@ function LanguageSelector() {
           <span>{currentLang?.label || "Language"}</span>
           {open ? <DownIcon size={24} /> : <UpIcon size={24} />}
         </button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="min-w-[100px]">
+      </DropdownTrigger>
+      <DropdownContent align="end" className="min-w-[100px]">
         {languages.map((lang) => (
-          <DropdownMenuItem
+          <DropdownItem
             key={lang.code}
             onClick={() => setLanguage(lang.code)}
             className={language === lang.code ? "bg-accent" : ""}
           >
             {lang.label}
-          </DropdownMenuItem>
+          </DropdownItem>
         ))}
-      </DropdownMenuContent>
-    </DropdownMenu>
+      </DropdownContent>
+    </Dropdown>
   );
 }
 

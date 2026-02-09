@@ -14,9 +14,12 @@ function Calendar({
   buttonVariant = "ghost",
   formatters,
   components,
+  unstyled = false,
   ...props
 }: React.ComponentProps<typeof DayPicker> & {
   buttonVariant?: React.ComponentProps<typeof Button>["variant"]
+  /** 배경/border/shadow 스타일 제거 (다른 컴포넌트에 embedded될 때 사용) */
+  unstyled?: boolean
 }) {
   const defaultClassNames = getDefaultClassNames()
 
@@ -24,9 +27,10 @@ function Calendar({
     <DayPicker
       showOutsideDays={showOutsideDays}
       className={cn(
+        "group/calendar",
         // 피그마: backdrop-blur, 흰색 배경, border gray-100, rounded-[5px], shadow
         // 너비 260px = Input md 사이즈와 동일
-        "group/calendar w-[260px] rounded-[5px] border border-gray-100 bg-white/95 p-3 shadow-[10px_10px_10px_0px_rgba(0,0,0,0.05)] backdrop-blur-[12px] dark:border-dark-100 dark:bg-dark-500/95",
+        !unstyled && "w-[260px] rounded-[5px] border border-gray-100 bg-white/95 p-3 shadow-[10px_10px_10px_0px_rgba(0,0,0,0.05)] backdrop-blur-[12px] dark:border-dark-200 dark:bg-dark-500/95",
         String.raw`rtl:**:[.rdp-button\_next>svg]:rotate-180`,
         String.raw`rtl:**:[.rdp-button\_previous>svg]:rotate-180`,
         className
@@ -77,16 +81,16 @@ function Calendar({
           "bg-popover absolute inset-0 opacity-0",
           defaultClassNames.dropdown
         ),
-        // 피그마: 12px, gray-700 (#4d4d4d)
+        // 피그마: 12px, gray-700 (#4d4d4d), 다크모드: #f5f5f5 (gray-50)
         caption_label: cn(
-          "select-none text-xs font-normal text-gray-700 tracking-[-0.18px] dark:text-gray-300",
+          "select-none text-xs font-normal text-gray-700 tracking-[-0.18px] dark:text-gray-50",
           defaultClassNames.caption_label
         ),
         table: "w-full border-collapse mt-1",
         weekdays: cn("flex gap-[2px]", defaultClassNames.weekdays),
-        // 피그마: 12px, gray-200 (#ccc), 셀 32px × 34px
+        // 피그마: 12px, gray-200 (#ccc), 셀 32px × 34px, 다크모드: #e6e6e6 (gray-100)
         weekday: cn(
-          "h-[34px] w-[32px] select-none text-center text-xs font-normal text-gray-200 leading-[34px] tracking-[-0.18px]",
+          "h-[34px] w-[32px] select-none text-center text-xs font-normal text-gray-200 leading-[34px] tracking-[-0.18px] dark:text-gray-100",
           defaultClassNames.weekday
         ),
         week: cn("flex gap-[2px]", defaultClassNames.week),
@@ -138,13 +142,13 @@ function Calendar({
         Chevron: ({ className, orientation, ...props }) => {
           if (orientation === "left") {
             return (
-              <LeftIcon size={24} className={cn("text-gray-400", className)} />
+              <LeftIcon size={24} className={cn("text-gray-400 dark:text-gray-50", className)} />
             )
           }
 
           if (orientation === "right") {
             return (
-              <LeftIcon size={24} className={cn("rotate-180 text-gray-400", className)} />
+              <LeftIcon size={24} className={cn("rotate-180 text-gray-400 dark:text-gray-50", className)} />
             )
           }
 
@@ -198,16 +202,21 @@ function CalendarDayButton({
       data-range-end={modifiers.range_end}
       data-range-middle={modifiers.range_middle}
       className={cn(
-        // 정원형 선택: 29px × 29px, 12px 폰트, gray-500 (#808080)
-        "flex size-[29px] items-center justify-center rounded-full text-xs font-normal text-gray-500 tracking-[-0.18px] transition-colors",
+        // 정원형 선택: 29px × 29px, 12px 폰트, gray-500 (#808080), 다크모드: #9ba5bb (dark-100)
+        "flex size-[29px] items-center justify-center rounded-full text-xs font-normal text-gray-500 tracking-[-0.18px] transition-colors dark:text-dark-100",
         // 호버
         "hover:bg-gray-50 dark:hover:bg-dark-400",
-        // 다른 달 날짜 (연한 색상)
-        "data-[outside=true]:text-gray-200 data-[outside=true]:hover:bg-transparent",
-        // 오늘 날짜
+        // 다른 달 날짜 (연한 색상), 다크모드: opacity-50 + #f5f5f5
+        "data-[outside=true]:text-gray-200 data-[outside=true]:opacity-50 data-[outside=true]:hover:bg-transparent dark:data-[outside=true]:text-gray-50",
+        // 오늘 날짜 (선택되지 않은 상태)
         "data-[today=true]:font-medium data-[today=true]:text-primary",
         // 단일 선택 (원형)
         "data-[selected-single=true]:bg-primary data-[selected-single=true]:text-white data-[selected-single=true]:hover:bg-primary-500",
+        // 오늘 날짜가 선택된 경우 - 선택 스타일 우선
+        "data-[today=true]:data-[selected-single=true]:text-white",
+        "data-[today=true]:data-[range-start=true]:text-white",
+        "data-[today=true]:data-[range-end=true]:text-white",
+        "data-[today=true]:data-[range-middle=true]:text-primary",
         // 범위 시작 (원형)
         "data-[range-start=true]:bg-primary data-[range-start=true]:text-white",
         // 범위 끝 (원형)

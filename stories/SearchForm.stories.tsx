@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { SearchForm } from "@/components/patterns/search-form";
 import { SearchIcon } from "@/icons";
 import { InputField } from "@/components/ui/input";
-import { Dropdown } from "@/components/ui/dropdown";
+import { Select } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 
 const meta = {
@@ -40,7 +40,7 @@ export const Default: Story = {
     >
       <InputField label="상품명" placeholder="상품명을 입력하세요" />
       <InputField label="SKU" placeholder="SKU를 입력하세요" />
-      <Dropdown
+      <Select
         label="카테고리"
         placeholder="카테고리 선택"
         options={[
@@ -49,7 +49,7 @@ export const Default: Story = {
           { label: "식품", value: "food" },
         ]}
       />
-      <Dropdown
+      <Select
         label="상태"
         placeholder="상태 선택"
         options={[
@@ -74,7 +74,7 @@ export const WithoutTitle: Story = {
       }
     >
       <InputField label="검색어" placeholder="검색어를 입력하세요" />
-      <Dropdown
+      <Select
         label="분류"
         placeholder="분류 선택"
         options={[

@@ -1,6 +1,6 @@
 import { jsxs as N, jsx as p } from "react/jsx-runtime";
 import * as c from "react";
-import { format as D, parse as w, isValid as a } from "date-fns";
+import { format as D, parse as a, isValid as w } from "date-fns";
 import { cn as h } from "../../lib/utils.mjs";
 import { InputField as z } from "./input.mjs";
 import { Calendar as q } from "./calendar.mjs";
@@ -35,8 +35,8 @@ const _ = ({
     f(r);
     const o = r.split(" - ");
     if (o.length === 2) {
-      const m = w(o[0].trim(), n, /* @__PURE__ */ new Date()), S = w(o[1].trim(), n, /* @__PURE__ */ new Date());
-      a(m) && a(S) && (e == null || e({ from: m, to: S }));
+      const m = a(o[0].trim(), n, /* @__PURE__ */ new Date()), S = a(o[1].trim(), n, /* @__PURE__ */ new Date());
+      w(m) && w(S) && (e == null || e({ from: m, to: S }));
     }
   }, B = () => {
     if (!P) {
@@ -45,8 +45,8 @@ const _ = ({
     }
     const t = P.split(" - ");
     if (t.length === 2) {
-      const r = w(t[0].trim(), n, /* @__PURE__ */ new Date()), o = w(t[1].trim(), n, /* @__PURE__ */ new Date());
-      if (a(r) && a(o)) {
+      const r = a(t[0].trim(), n, /* @__PURE__ */ new Date()), o = a(t[1].trim(), n, /* @__PURE__ */ new Date());
+      if (w(r) && w(o)) {
         f(`${D(r, n)} - ${D(o, n)}`), e == null || e({ from: r, to: o });
         return;
       }
@@ -76,6 +76,7 @@ const _ = ({
         errorMessage: M,
         size: V,
         disabled: I,
+        autoComplete: "off",
         rightIcon: /* @__PURE__ */ p(J, { size: 24 }),
         onRightIconClick: () => !I && u(!0)
       }

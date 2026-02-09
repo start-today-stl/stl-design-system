@@ -14,13 +14,13 @@ const inputBaseStyles = [
 const inputDefaultStyles = [
   "border-gray-100 dark:border-dark-100",
   "placeholder:text-gray-300 dark:placeholder:text-gray-100",
-  "focus:border-gray-500 dark:focus:border-gray-100",
+  "focus:border-primary focus:shadow-[0px_0px_6px_0px_rgba(23,118,255,0.5)]",
 ].join(" ");
 
 const inputErrorStyles = [
   "border-destructive dark:border-red-500",
   "placeholder:text-destructive dark:placeholder:text-red-400",
-  "focus:border-destructive dark:focus:border-red-500",
+  "focus:border-destructive focus:shadow-[0px_0px_6px_0px_rgba(239,68,68,0.5)] dark:focus:border-red-500",
 ].join(" ");
 
 const inputSizeStyles = {
@@ -105,7 +105,7 @@ const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
               type="button"
               onClick={onRightIconClick}
               aria-label={rightIconLabel}
-              className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:text-gray-300 dark:hover:text-gray-100"
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-900 hover:text-gray-600 dark:text-gray-50 dark:hover:text-white"
               tabIndex={-1}
             >
               {rightIcon}

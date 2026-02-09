@@ -1,4 +1,4 @@
-import { jsxs as u, jsx as c } from "react/jsx-runtime";
+import { jsxs as y, jsx as c } from "react/jsx-runtime";
 import * as p from "react";
 import { format as o, parse as M, isValid as j, setHours as H, setMinutes as I, setSeconds as z } from "date-fns";
 import { cn as K } from "../../lib/utils.mjs";
@@ -13,7 +13,7 @@ const h = ({ value: t, onChange: e, max: x, disabled: m }) => {
   }, S = () => {
     e(t <= 0 ? x : t - 1);
   };
-  return /* @__PURE__ */ u("div", { className: "flex flex-col items-center gap-1", children: [
+  return /* @__PURE__ */ y("div", { className: "flex flex-col items-center gap-1", children: [
     /* @__PURE__ */ c(
       "button",
       {
@@ -50,22 +50,22 @@ const h = ({ value: t, onChange: e, max: x, disabled: m }) => {
 }) => {
   const [T, w] = p.useState(!1), [B, g] = p.useState(t || /* @__PURE__ */ new Date()), [b, n] = p.useState(
     t ? o(t, i) : ""
-  ), [N, f] = p.useState((t == null ? void 0 : t.getHours()) ?? 0), [k, a] = p.useState((t == null ? void 0 : t.getMinutes()) ?? 0), [D, y] = p.useState((t == null ? void 0 : t.getSeconds()) ?? 0);
+  ), [N, f] = p.useState((t == null ? void 0 : t.getHours()) ?? 0), [k, a] = p.useState((t == null ? void 0 : t.getMinutes()) ?? 0), [D, u] = p.useState((t == null ? void 0 : t.getSeconds()) ?? 0);
   p.useEffect(() => {
-    n(t ? o(t, i) : ""), t && (f(t.getHours()), a(t.getMinutes()), y(t.getSeconds()));
+    n(t ? o(t, i) : ""), t && (f(t.getHours()), a(t.getMinutes()), u(t.getSeconds()));
   }, [t, i]);
   const R = (s) => {
     const r = s.target.value;
     n(r);
     const l = M(r, i, /* @__PURE__ */ new Date());
-    j(l) && r.length === i.length && (f(l.getHours()), a(l.getMinutes()), y(l.getSeconds()), e == null || e(l));
+    j(l) && r.length === i.length && (f(l.getHours()), a(l.getMinutes()), u(l.getSeconds()), e == null || e(l));
   }, E = () => {
     if (!b) {
       e == null || e(void 0);
       return;
     }
     const s = M(b, i, /* @__PURE__ */ new Date());
-    j(s) ? (n(o(s, i)), f(s.getHours()), a(s.getMinutes()), y(s.getSeconds()), e == null || e(s)) : n(t ? o(t, i) : "");
+    j(s) ? (n(o(s, i)), f(s.getHours()), a(s.getMinutes()), u(s.getSeconds()), e == null || e(s)) : n(t ? o(t, i) : "");
   }, q = (s) => {
     if (s) {
       let r = H(s, N);
@@ -82,12 +82,12 @@ const h = ({ value: t, onChange: e, max: x, disabled: m }) => {
       n(o(r, i)), e == null || e(r);
     }
   }, J = (s) => {
-    if (y(s), t) {
+    if (u(s), t) {
       const r = z(t, s);
       n(o(r, i)), e == null || e(r);
     }
   };
-  return /* @__PURE__ */ u(U, { open: T, onOpenChange: (s) => {
+  return /* @__PURE__ */ y(U, { open: T, onOpenChange: (s) => {
     w(s), s && g(t || /* @__PURE__ */ new Date());
   }, children: [
     /* @__PURE__ */ c(W, { asChild: !0, disabled: d, children: /* @__PURE__ */ c("div", { role: "combobox", "aria-haspopup": "dialog", className: K("inline-block", O), children: /* @__PURE__ */ c(
@@ -102,11 +102,12 @@ const h = ({ value: t, onChange: e, max: x, disabled: m }) => {
         errorMessage: V,
         size: _,
         disabled: d,
+        autoComplete: "off",
         rightIcon: /* @__PURE__ */ c(Y, { size: 24 }),
         onRightIconClick: () => !d && w(!0)
       }
     ) }) }),
-    /* @__PURE__ */ u(
+    /* @__PURE__ */ y(
       X,
       {
         className: "w-[260px] overflow-hidden rounded-[5px] border border-gray-100 bg-white/95 p-0 shadow-[10px_10px_10px_0px_rgba(0,0,0,0.05)] backdrop-blur-[12px] dark:border-dark-100 dark:bg-dark-500/95",
@@ -124,7 +125,7 @@ const h = ({ value: t, onChange: e, max: x, disabled: m }) => {
               className: "w-full border-0 bg-transparent shadow-none"
             }
           ),
-          /* @__PURE__ */ c("div", { className: "flex items-center justify-center px-3 pb-3 pt-1", children: /* @__PURE__ */ u("div", { className: "flex items-center", children: [
+          /* @__PURE__ */ c("div", { className: "flex items-center justify-center px-3 pb-3 pt-1", children: /* @__PURE__ */ y("div", { className: "flex items-center", children: [
             /* @__PURE__ */ c(
               h,
               {
