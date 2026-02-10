@@ -1,11 +1,12 @@
 import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { AppShell, Sidebar, Header } from "../src/layout";
+import { AppShell, Sidebar, Header, PageTitle } from "../src/layout";
 import { NavGroup } from "../src/layout/nav-group";
 import { NavItem } from "../src/layout/nav-item";
 import { NavRenderer } from "../src/layout/nav-renderer";
 import { Button } from "../src/components/ui/button";
+import { Breadcrumb } from "../src/components/ui/breadcrumb";
 import { SearchBar } from "../src/layout/search-bar";
 import { VisitTag } from "../src/layout/visit-tag";
 import {
@@ -102,13 +103,10 @@ function LanguageSelector() {
   return (
     <Dropdown open={open} onOpenChange={setOpen}>
       <DropdownTrigger asChild>
-        <button
-          type="button"
-          className="flex items-center gap-0.5 text-sm text-gray-700 dark:text-gray-300 tracking-[-0.14px] hover:text-primary dark:hover:text-primary-300 transition-colors"
-        >
+        <Button variant="text" className="text-sm tracking-[-0.14px]">
           <span>{currentLang?.label || "Language"}</span>
           {open ? <DownIcon size={24} /> : <UpIcon size={24} />}
-        </button>
+        </Button>
       </DropdownTrigger>
       <DropdownContent align="end" className="min-w-[100px]">
         {languages.map((lang) => (
@@ -153,6 +151,7 @@ export const Default: Story = {
       { id: "2", label: "STL" },
       { id: "3", label: "사은품 관리" },
     ]);
+    const [bookmarked, setBookmarked] = useState(false);
 
     const handleRemoveVisit = (id: string) => {
       setVisits(visits.filter((v) => v.id !== id));
@@ -217,11 +216,109 @@ export const Default: Story = {
           />
 
           <AppShell.Content>
-            <div className="bg-white dark:bg-dark-500 rounded-lg p-6 h-full">
-              <h1 className="text-xl font-bold mb-4">대시보드</h1>
-              <p className="text-muted-foreground">
-                여기에 대시보드 콘텐츠가 들어갑니다.
-              </p>
+            <div className="flex flex-col gap-4">
+              <PageTitle
+                title="대시보드"
+                subtitle="Dashboard"
+                bookmarked={bookmarked}
+                onBookmark={() => setBookmarked(!bookmarked)}
+              />
+              <div className="bg-white dark:bg-slate-800 rounded-lg p-6 flex-1">
+                <p className="text-muted-foreground">
+                  여기에 대시보드 콘텐츠가 들어갑니다.
+                </p>
+              </div>
+            </div>
+          </AppShell.Content>
+        </AppShell>
+      </div>
+    );
+  },
+};
+
+/** Breadcrumb + PageTitle 사용 예시 */
+export const WithBreadcrumb: Story = {
+  render: function Render() {
+    const [visits, setVisits] = useState([
+      { id: "1", label: "판매 관리" },
+      { id: "2", label: "STL" },
+    ]);
+    const [bookmarked, setBookmarked] = useState(false);
+
+    const handleRemoveVisit = (id: string) => {
+      setVisits(visits.filter((v) => v.id !== id));
+    };
+
+    return (
+      <div style={{ height: "800px" }}>
+        <AppShell>
+          <AppShell.Sidebar
+            noticeIcon={<NoticeIcon size={20} />}
+            noticeTitle="CBT 시스템 정기 점검 안내"
+            infoItems={[
+              {
+                icon: <PhoneIcon size={20} />,
+                text: "1800-4636",
+                href: "tel:1800-4636",
+              },
+            ]}
+          >
+            <NavRenderer items={sampleNavigation} />
+          </AppShell.Sidebar>
+
+          <AppShell.Header
+            search={
+              <SearchBar
+                placeholder="검색..."
+                recentSearches={sampleRecentSearches}
+                className="w-full"
+              />
+            }
+            recentVisits={
+              <div className="flex items-center gap-1.5">
+                {visits.map((visit) => (
+                  <VisitTag
+                    key={visit.id}
+                    label={visit.label}
+                    onNavigate={() => console.log(`Navigate to ${visit.label}`)}
+                    onRemove={() => handleRemoveVisit(visit.id)}
+                  />
+                ))}
+              </div>
+            }
+            actions={
+              <div className="flex items-center gap-2">
+                <Button variant="ghost" size="icon-sm" aria-label="알림">
+                  <AlarmIcon size={24} />
+                </Button>
+                <Button variant="ghost" size="icon-sm" aria-label="프로필">
+                  <ProfileIcon size={24} />
+                </Button>
+                <LanguageSelector />
+              </div>
+            }
+          />
+
+          <AppShell.Content>
+            <div className="flex flex-col gap-2">
+              <Breadcrumb
+                items={[
+                  { label: "홈", href: "/" },
+                  { label: "주문 관리", href: "/orders" },
+                  { label: "B2C 주문관리" },
+                ]}
+              />
+              <PageTitle
+                title="B2C 주문관리"
+                subtitle="B2C Order Management"
+                bookmarked={bookmarked}
+                onBookmark={() => setBookmarked(!bookmarked)}
+              />
+              <div className="bg-white dark:bg-slate-800 rounded-lg p-6 flex-1 mt-4">
+                <p className="text-muted-foreground">
+                  주문 목록 테이블이 여기에 들어갑니다.
+                </p>
+              </div>
             </div>
           </AppShell.Content>
         </AppShell>
@@ -312,7 +409,7 @@ export const HeaderOnly: Story = {
             <Button variant="ghost" size="icon-sm" aria-label="프로필">
               <ProfileIcon size={24} />
             </Button>
-            <div className="flex items-center gap-1 text-sm text-gray-700 dark:text-gray-300">
+            <div className="flex items-center gap-1 text-sm text-slate-700 dark:text-slate-300">
               <span>Language</span>
             </div>
           </div>
@@ -336,14 +433,14 @@ export const NoSidebar: Story = {
             />
           }
           actions={
-            <Button variant="action" size="sm">
+            <Button variant="primary" size="sm">
               로그인
             </Button>
           }
         />
 
         <AppShell.Content>
-          <div className="bg-white dark:bg-dark-500 rounded-lg p-4 h-full">
+          <div className="bg-white dark:bg-slate-800 rounded-lg p-4 h-full">
             <h1 className="text-xl font-bold">사이드바 없는 레이아웃</h1>
           </div>
         </AppShell.Content>

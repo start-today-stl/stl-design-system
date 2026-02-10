@@ -5,16 +5,16 @@ import { cn } from "@/lib/utils"
 
 // 기본 스타일 (그라데이션)
 const gradientStyles = {
-  main: "bg-gradient-to-b from-[#f7f9ff] to-white hover:from-[#f6f7f9] hover:to-[#f6f7f9] active:from-primary-200 active:to-primary-200 dark:from-[#2a3348] dark:to-dark-400 dark:hover:from-dark-300 dark:hover:to-dark-300 dark:active:from-primary-200 dark:active:to-primary-200",
-  sub: "bg-gradient-to-b from-[#f7f9ff] to-white hover:from-[#f6f7f9] hover:to-[#f6f7f9] active:from-primary-200 active:to-primary-200 dark:from-[#2a3348] dark:to-dark-400 dark:hover:from-dark-300 dark:hover:to-dark-300 dark:active:from-primary-200 dark:active:to-primary-200",
-  small: "bg-[#f7f9ff] hover:bg-[#f6f7f9] active:bg-primary-200 dark:bg-[#2a3348] dark:hover:bg-dark-300 dark:active:bg-primary-200",
+  main: "bg-gradient-to-b from-blue-50 to-white hover:from-slate-100 hover:to-slate-100 active:from-blue-200 active:to-blue-200 dark:from-blue-950 dark:to-slate-800 dark:hover:from-slate-700 dark:hover:to-slate-700 dark:active:from-blue-800 dark:active:to-blue-800",
+  sub: "bg-gradient-to-b from-blue-50 to-white hover:from-slate-100 hover:to-slate-100 active:from-blue-200 active:to-blue-200 dark:from-blue-950 dark:to-slate-800 dark:hover:from-slate-700 dark:hover:to-slate-700 dark:active:from-blue-800 dark:active:to-blue-800",
+  small: "bg-blue-50 hover:bg-slate-100 active:bg-blue-200 dark:bg-slate-800 dark:hover:bg-slate-700 dark:active:bg-blue-800",
 }
 
 // 테두리 스타일 (흰색 배경 + 테두리)
 const borderedStyles = {
-  main: "bg-white border border-gray-100 hover:bg-[#f6f7f9] active:bg-primary-200 dark:bg-dark-400 dark:border-dark-300 dark:hover:bg-dark-300 dark:active:bg-primary-200",
-  sub: "bg-white border border-gray-100 hover:bg-[#f6f7f9] active:bg-primary-200 dark:bg-dark-400 dark:border-dark-300 dark:hover:bg-dark-300 dark:active:bg-primary-200",
-  small: "bg-white border border-gray-100 hover:bg-[#f6f7f9] active:bg-primary-200 dark:bg-dark-400 dark:border-dark-300 dark:hover:bg-dark-300 dark:active:bg-primary-200",
+  main: "bg-white border border-slate-100 hover:bg-slate-100 active:bg-blue-200 dark:bg-slate-700 dark:border-slate-600 dark:hover:bg-slate-600 dark:active:bg-blue-800",
+  sub: "bg-white border border-slate-100 hover:bg-slate-100 active:bg-blue-200 dark:bg-slate-700 dark:border-slate-600 dark:hover:bg-slate-600 dark:active:bg-blue-800",
+  small: "bg-white border border-slate-100 hover:bg-slate-100 active:bg-blue-200 dark:bg-slate-700 dark:border-slate-600 dark:hover:bg-slate-600 dark:active:bg-blue-800",
 }
 
 const statCardVariants = cva(
@@ -62,7 +62,7 @@ export interface StatCardProps
 
 const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
   ({ className, variant = "main", icon, label, count, badge, bordered = false, headerAction, stretch = false, ...props }, ref) => {
-    const textColorClass = "text-gray-700 dark:text-gray-100"
+    const textColorClass = "text-slate-700 dark:text-slate-100"
     const bgStyle = bordered
       ? borderedStyles[variant || "main"]
       : gradientStyles[variant || "main"]

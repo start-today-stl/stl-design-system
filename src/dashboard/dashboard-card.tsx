@@ -21,7 +21,7 @@ const DashboardCard = React.forwardRef<HTMLDivElement, DashboardCardProps>(
       <div
         ref={ref}
         className={cn(
-          "bg-white border border-gray-100 rounded-[10px] dark:bg-dark-400 dark:border-dark-300 flex flex-col",
+          "bg-white border border-slate-100 rounded-[10px] dark:bg-slate-700 dark:border-slate-600 flex flex-col",
           stretch && "h-full",
           className
         )}
@@ -32,11 +32,11 @@ const DashboardCard = React.forwardRef<HTMLDivElement, DashboardCardProps>(
           {/* 좌측: 아이콘 + 타이틀 */}
           <div className="flex items-center gap-0.5">
             {icon && (
-              <span className="flex-shrink-0 text-gray-700 dark:text-gray-100">
+              <span className="flex-shrink-0 text-slate-700 dark:text-slate-100">
                 {icon}
               </span>
             )}
-            <span className="text-sm tracking-[-0.14px] text-gray-700 dark:text-gray-100">
+            <span className="text-sm tracking-[-0.14px] text-slate-700 dark:text-slate-100">
               {title}
             </span>
           </div>

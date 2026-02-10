@@ -54,7 +54,7 @@ const Header = React.forwardRef<HTMLDivElement, HeaderProps>(
         ref={ref}
         className={cn(
           "flex items-center gap-4 w-full h-[100px] px-6 pt-8 pb-4",
-          "bg-cool-50 dark:bg-dark-600 backdrop-blur-[16px]",
+          "bg-slate-50 dark:bg-slate-950 backdrop-blur-[16px]",
           className
         )}
         {...props}
@@ -67,7 +67,7 @@ const Header = React.forwardRef<HTMLDivElement, HeaderProps>(
         {/* 최근 방문 태그 영역 - 공간 있으면 늘어남 */}
         {recentVisits && (
           <div className="flex items-center gap-1.5 flex-1 min-w-[150px] max-w-[400px]">
-            <span className="text-xs text-gray-700 dark:text-gray-300 tracking-[-0.12px] whitespace-nowrap">
+            <span className="text-xs text-slate-700 dark:text-slate-300 tracking-[-0.12px] whitespace-nowrap">
               최근 방문
             </span>
             <div className="flex items-center gap-1 flex-1 min-w-0">
@@ -76,7 +76,7 @@ const Header = React.forwardRef<HTMLDivElement, HeaderProps>(
                 <button
                   type="button"
                   onClick={() => scroll("left")}
-                  className="flex-shrink-0 flex items-center justify-center w-6 h-6 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+                  className="flex-shrink-0 flex items-center justify-center w-6 h-6 text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
                   aria-label="스크롤 왼쪽"
                 >
                   <LeftIcon size={24} />
@@ -97,7 +97,7 @@ const Header = React.forwardRef<HTMLDivElement, HeaderProps>(
                 <button
                   type="button"
                   onClick={() => scroll("right")}
-                  className="flex-shrink-0 flex items-center justify-center w-6 h-6 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+                  className="flex-shrink-0 flex items-center justify-center w-6 h-6 text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
                   aria-label="스크롤 오른쪽"
                 >
                   <RightIcon size={24} />

@@ -33,14 +33,14 @@ const NavMenu = React.forwardRef<HTMLDivElement, NavMenuProps>(
             onClick={onToggle}
             className={cn(
               "absolute flex items-center justify-center z-20",
-              "w-8 h-8 rounded-[20px] border border-gray-100 dark:border-gray-700",
-              "bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800",
+              "w-8 h-8 rounded-[20px] border border-slate-100 dark:border-slate-700",
+              "bg-white dark:bg-black hover:bg-slate-50 dark:hover:bg-slate-800",
               "transition-colors cursor-pointer",
               collapsed ? "top-[-60px] -right-4" : "top-[-50px] -right-[48px]"
             )}
             aria-label={collapsed ? "메뉴 펼치기" : "메뉴 접기"}
           >
-            <IsolationModeIcon size={24} className="text-gray-500" />
+            <IsolationModeIcon size={24} className="text-slate-500" />
           </button>
         )}
 

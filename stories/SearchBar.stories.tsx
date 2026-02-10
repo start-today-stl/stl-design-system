@@ -89,8 +89,8 @@ export const Disabled: Story = {
 /** 헤더 내 사용 예시 */
 export const InHeader: Story = {
   render: () => (
-    <div className="flex items-center gap-4 bg-white dark:bg-dark-500 p-4 rounded-lg w-[800px]">
-      <div className="text-lg font-bold text-gray-900 dark:text-gray-50">Logo</div>
+    <div className="flex items-center gap-4 bg-white dark:bg-slate-800 p-4 rounded-lg w-[800px]">
+      <div className="text-lg font-bold text-slate-900 dark:text-slate-50">Logo</div>
       <div className="flex-1">
         <SearchBar
           placeholder="주문번호, 주문ID, 출고번호, 이름, 전화번호, 우편번호, 이메일, 주소"
@@ -98,7 +98,7 @@ export const InHeader: Story = {
         />
       </div>
       <div className="flex gap-2">
-        <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-dark-400" />
+        <div className="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-700" />
       </div>
     </div>
   ),

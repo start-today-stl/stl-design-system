@@ -1,26 +1,26 @@
-import { jsxs as r, jsx as e } from "react/jsx-runtime";
+import { jsxs as a, jsx as e } from "react/jsx-runtime";
 import * as m from "react";
-import { cn as d } from "../lib/utils.mjs";
+import { cn as t } from "../lib/utils.mjs";
 const n = m.forwardRef(
-  ({ className: t, icon: a, title: x, headerAction: s, children: i, stretch: l = !1, ...c }, f) => /* @__PURE__ */ r(
+  ({ className: d, icon: s, title: x, headerAction: l, children: i, stretch: r = !1, ...c }, f) => /* @__PURE__ */ a(
     "div",
     {
       ref: f,
-      className: d(
-        "bg-white border border-gray-100 rounded-[10px] dark:bg-dark-400 dark:border-dark-300 flex flex-col",
-        l && "h-full",
-        t
+      className: t(
+        "bg-white border border-slate-100 rounded-[10px] dark:bg-slate-700 dark:border-slate-600 flex flex-col",
+        r && "h-full",
+        d
       ),
       ...c,
       children: [
-        /* @__PURE__ */ r("div", { className: "flex items-center justify-between px-[10px] pt-[10px] flex-shrink-0", children: [
-          /* @__PURE__ */ r("div", { className: "flex items-center gap-0.5", children: [
-            a && /* @__PURE__ */ e("span", { className: "flex-shrink-0 text-gray-700 dark:text-gray-100", children: a }),
-            /* @__PURE__ */ e("span", { className: "text-sm tracking-[-0.14px] text-gray-700 dark:text-gray-100", children: x })
+        /* @__PURE__ */ a("div", { className: "flex items-center justify-between px-[10px] pt-[10px] flex-shrink-0", children: [
+          /* @__PURE__ */ a("div", { className: "flex items-center gap-0.5", children: [
+            s && /* @__PURE__ */ e("span", { className: "flex-shrink-0 text-slate-700 dark:text-slate-100", children: s }),
+            /* @__PURE__ */ e("span", { className: "text-sm tracking-[-0.14px] text-slate-700 dark:text-slate-100", children: x })
           ] }),
-          s && /* @__PURE__ */ e("div", { className: "flex items-center", children: s })
+          l && /* @__PURE__ */ e("div", { className: "flex items-center", children: l })
         ] }),
-        /* @__PURE__ */ e("div", { className: d("p-[10px]", l && "flex-1 flex flex-col"), children: i })
+        /* @__PURE__ */ e("div", { className: t("p-[10px]", r && "flex-1 flex flex-col"), children: i })
       ]
     }
   )

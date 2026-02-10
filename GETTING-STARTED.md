@@ -140,9 +140,10 @@ import { Button, Input, Badge } from 'stl-design-system'
 function App() {
   return (
     <div className="p-4 flex flex-col gap-4">
-      <Button variant="action">액션 버튼</Button>
-      <Button variant="basic">기본 버튼</Button>
-      <Button variant="negative">삭제</Button>
+      <Button variant="primary">주요 액션</Button>
+      <Button variant="ghost">기본 버튼</Button>
+      <Button variant="danger">삭제</Button>
+      <Button variant="success">완료</Button>
 
       <Input placeholder="입력하세요" />
       <Input state="error" placeholder="에러 상태" />

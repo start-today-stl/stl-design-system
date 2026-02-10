@@ -24,12 +24,15 @@ type Story = StoryObj<typeof meta>
 
 /** 기본 스위치 (Large) */
 export const Default: Story = {
-  args: {},
+  args: {
+    "aria-label": "스위치",
+  },
 }
 
 /** On 상태 */
 export const Checked: Story = {
   args: {
+    "aria-label": "스위치",
     defaultChecked: true,
   },
 }
@@ -37,6 +40,7 @@ export const Checked: Story = {
 /** Small 사이즈 */
 export const Small: Story = {
   args: {
+    "aria-label": "스위치",
     size: "sm",
   },
 }
@@ -44,6 +48,7 @@ export const Small: Story = {
 /** Small On 상태 */
 export const SmallChecked: Story = {
   args: {
+    "aria-label": "스위치",
     size: "sm",
     defaultChecked: true,
   },
@@ -52,6 +57,7 @@ export const SmallChecked: Story = {
 /** 비활성화 */
 export const Disabled: Story = {
   args: {
+    "aria-label": "스위치",
     disabled: true,
   },
 }
@@ -59,6 +65,7 @@ export const Disabled: Story = {
 /** 비활성화 + On */
 export const DisabledChecked: Story = {
   args: {
+    "aria-label": "스위치",
     disabled: true,
     defaultChecked: true,
   },
@@ -67,6 +74,7 @@ export const DisabledChecked: Story = {
 /** 라벨 포함 */
 export const WithLabel: Story = {
   args: {
+    "aria-label": "Setting Off",
     size: "sm",
     label: "Setting Off",
   },
@@ -75,6 +83,7 @@ export const WithLabel: Story = {
 /** 라벨 포함 + On */
 export const WithLabelChecked: Story = {
   args: {
+    "aria-label": "Setting On",
     size: "sm",
     defaultChecked: true,
     label: "Setting On",
@@ -87,27 +96,27 @@ export const AllStates: Story = {
     <div className="flex flex-col gap-6">
       {/* Large */}
       <div className="flex items-center gap-4">
-        <span className="w-20 text-sm text-gray-500">Large</span>
-        <Switch />
-        <Switch defaultChecked />
-        <Switch disabled />
-        <Switch disabled defaultChecked />
+        <span className="w-20 text-sm text-slate-500">Large</span>
+        <Switch aria-label="Large 스위치 Off" />
+        <Switch aria-label="Large 스위치 On" defaultChecked />
+        <Switch aria-label="Large 스위치 Disabled" disabled />
+        <Switch aria-label="Large 스위치 Disabled On" disabled defaultChecked />
       </div>
 
       {/* Small */}
       <div className="flex items-center gap-4">
-        <span className="w-20 text-sm text-gray-500">Small</span>
-        <Switch size="sm" />
-        <Switch size="sm" defaultChecked />
-        <Switch size="sm" disabled />
-        <Switch size="sm" disabled defaultChecked />
+        <span className="w-20 text-sm text-slate-500">Small</span>
+        <Switch aria-label="Small 스위치 Off" size="sm" />
+        <Switch aria-label="Small 스위치 On" size="sm" defaultChecked />
+        <Switch aria-label="Small 스위치 Disabled" size="sm" disabled />
+        <Switch aria-label="Small 스위치 Disabled On" size="sm" disabled defaultChecked />
       </div>
 
       {/* With Label */}
       <div className="flex items-center gap-4">
-        <span className="w-20 text-sm text-gray-500">With Label</span>
-        <Switch size="sm" label="Setting Off" />
-        <Switch size="sm" defaultChecked label="Setting On" />
+        <span className="w-20 text-sm text-slate-500">With Label</span>
+        <Switch aria-label="Setting Off" size="sm" label="Setting Off" />
+        <Switch aria-label="Setting On" size="sm" defaultChecked label="Setting On" />
       </div>
     </div>
   ),

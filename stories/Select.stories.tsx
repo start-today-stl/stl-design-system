@@ -125,19 +125,19 @@ export const AllSizes: Story = {
   render: () => (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-2">
-        <span className="text-sm text-gray-500">sm (160px)</span>
+        <span className="text-sm text-slate-500">sm (160px)</span>
         <Select placeholder="접수일" options={defaultOptions} size="sm" aria-label="접수일 선택 (sm)" />
       </div>
       <div className="flex flex-col gap-2">
-        <span className="text-sm text-gray-500">md (260px)</span>
+        <span className="text-sm text-slate-500">md (260px)</span>
         <Select placeholder="접수일" options={defaultOptions} size="md" aria-label="접수일 선택 (md)" />
       </div>
       <div className="flex flex-col gap-2">
-        <span className="text-sm text-gray-500">lg (360px)</span>
+        <span className="text-sm text-slate-500">lg (360px)</span>
         <Select placeholder="접수일" options={defaultOptions} size="lg" aria-label="접수일 선택 (lg)" />
       </div>
       <div className="flex flex-col gap-2">
-        <span className="text-sm text-gray-500">full (100%)</span>
+        <span className="text-sm text-slate-500">full (100%)</span>
         <div className="w-[400px]">
           <Select placeholder="접수일" options={defaultOptions} size="full" aria-label="접수일 선택 (full)" />
         </div>
@@ -151,23 +151,23 @@ export const AllStates: Story = {
   render: () => (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-2">
-        <span className="text-sm text-gray-500">Default</span>
+        <span className="text-sm text-slate-500">Default</span>
         <Select placeholder="접수일" options={defaultOptions} size="md" aria-label="접수일 선택" />
       </div>
       <div className="flex flex-col gap-2">
-        <span className="text-sm text-gray-500">With Label</span>
+        <span className="text-sm text-slate-500">With Label</span>
         <Select label="상품명" placeholder="접수일" options={defaultOptions} size="md" />
       </div>
       <div className="flex flex-col gap-2">
-        <span className="text-sm text-gray-500">Error</span>
+        <span className="text-sm text-slate-500">Error</span>
         <Select label="상품명" placeholder="선택하세요" options={defaultOptions} error size="md" />
       </div>
       <div className="flex flex-col gap-2">
-        <span className="text-sm text-gray-500">Error with Message</span>
+        <span className="text-sm text-slate-500">Error with Message</span>
         <Select label="상품명" placeholder="선택하세요" options={defaultOptions} error errorMessage="필수 선택 항목입니다." size="md" />
       </div>
       <div className="flex flex-col gap-2">
-        <span className="text-sm text-gray-500">Disabled</span>
+        <span className="text-sm text-slate-500">Disabled</span>
         <Select label="상품명" placeholder="접수일" options={defaultOptions} disabled size="md" />
       </div>
     </div>

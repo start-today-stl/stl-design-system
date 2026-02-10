@@ -5,7 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const switchVariants = cva(
-  "peer inline-flex shrink-0 cursor-pointer items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=unchecked]:bg-gray-100 dark:data-[state=unchecked]:bg-dark-300",
+  "peer inline-flex shrink-0 cursor-pointer items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-blue-500 data-[state=unchecked]:bg-slate-100 dark:data-[state=unchecked]:bg-slate-700",
   {
     variants: {
       size: {
@@ -59,7 +59,7 @@ const Switch = React.forwardRef<
     return (
       <div className="inline-flex items-center gap-2">
         {switchElement}
-        <span className="text-xs text-gray-500 dark:text-gray-300">{label}</span>
+        <span className="text-xs text-slate-500 dark:text-slate-300">{label}</span>
       </div>
     )
   }

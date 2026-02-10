@@ -31,12 +31,12 @@ const TimeSpinner = ({ value, onChange, max, disabled }: TimeSpinnerProps) => {
         type="button"
         onClick={increment}
         disabled={disabled}
-        className="flex size-[10px] cursor-pointer items-center justify-center text-gray-200 hover:text-gray-400 disabled:cursor-not-allowed disabled:opacity-50 dark:text-gray-100 dark:hover:text-gray-50"
+        className="flex size-[10px] cursor-pointer items-center justify-center text-slate-200 hover:text-slate-400 disabled:cursor-not-allowed disabled:opacity-50 dark:text-slate-100 dark:hover:text-slate-50"
       >
         <DirectionIcon size={10} className="rotate-180" />
       </button>
       <div className="flex h-[23px] w-[34px] items-center justify-center rounded-[2px] p-[5px]">
-        <span className="text-xs font-normal tabular-nums text-gray-500 tracking-[-0.18px] dark:text-dark-100">
+        <span className="text-xs font-normal tabular-nums text-slate-500 tracking-[-0.18px] dark:text-slate-300">
           {value.toString().padStart(2, "0")}
         </span>
       </div>
@@ -44,7 +44,7 @@ const TimeSpinner = ({ value, onChange, max, disabled }: TimeSpinnerProps) => {
         type="button"
         onClick={decrement}
         disabled={disabled}
-        className="flex size-[10px] cursor-pointer items-center justify-center text-gray-200 hover:text-gray-400 disabled:cursor-not-allowed disabled:opacity-50 dark:text-gray-100 dark:hover:text-gray-50"
+        className="flex size-[10px] cursor-pointer items-center justify-center text-slate-200 hover:text-slate-400 disabled:cursor-not-allowed disabled:opacity-50 dark:text-slate-100 dark:hover:text-slate-50"
       >
         <DirectionIcon size={10} />
       </button>
@@ -213,7 +213,7 @@ const DateTimePicker = ({
         className="w-auto border-0 bg-transparent p-0 shadow-none"
         align="start"
       >
-        <div className="w-[260px] overflow-hidden rounded-[5px] border border-gray-100 bg-white/95 shadow-[10px_10px_10px_0px_rgba(0,0,0,0.05)] backdrop-blur-[12px] dark:border-dark-200 dark:bg-dark-500/95">
+        <div className="w-[260px] overflow-hidden rounded-[5px] border border-slate-100 bg-white/95 shadow-[10px_10px_10px_0px_rgba(0,0,0,0.05)] backdrop-blur-[12px] dark:border-slate-600 dark:bg-slate-800/95">
           <Calendar
             mode="single"
             selected={value}
@@ -233,14 +233,14 @@ const DateTimePicker = ({
                 max={23}
                 disabled={disabled}
               />
-              <span className="flex h-[23px] w-[9px] items-center justify-center text-xs text-gray-500 dark:text-dark-100">:</span>
+              <span className="flex h-[23px] w-[9px] items-center justify-center text-xs text-slate-500 dark:text-slate-300">:</span>
               <TimeSpinner
                 value={minutes}
                 onChange={handleMinutesChange}
                 max={59}
                 disabled={disabled}
               />
-              <span className="flex h-[23px] w-[9px] items-center justify-center text-xs text-gray-500 dark:text-dark-100">:</span>
+              <span className="flex h-[23px] w-[9px] items-center justify-center text-xs text-slate-500 dark:text-slate-300">:</span>
               <TimeSpinner
                 value={seconds}
                 onChange={handleSecondsChange}

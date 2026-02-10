@@ -25,3 +25,6 @@ export { isNavGroup } from './types'
 // Header Components
 export * from './search-bar'
 export * from './visit-tag'
+
+// Page Components
+export * from './page-title'

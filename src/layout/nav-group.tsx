@@ -100,12 +100,12 @@ const NavGroup = React.forwardRef<HTMLDivElement, NavGroupProps>(
           {/* 호버 시 플라이아웃 메뉴 */}
           <div className={cn(
             "absolute left-full top-0 ml-2 min-w-[200px] py-2 px-3 rounded-md",
-            "bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-700",
+            "bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-700",
             "shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible",
             "transition-all duration-200 z-50"
           )}>
             {/* 그룹 라벨 */}
-            <div className="text-sm font-medium text-gray-600 dark:text-gray-300 mb-2 pb-2 border-b border-gray-100 dark:border-gray-700">
+            <div className="text-sm font-medium text-slate-600 dark:text-slate-300 mb-2 pb-2 border-b border-slate-100 dark:border-slate-700">
               {label}
             </div>
             {/* 하위 메뉴 */}

@@ -100,16 +100,16 @@ const SearchBar = React.forwardRef<HTMLInputElement, SearchBarProps>(
         <div
           className={cn(
             "relative flex h-9 items-center gap-2 rounded-[20px] border",
-            "bg-white dark:bg-dark-400",
-            "border-gray-100 dark:border-dark-200",
+            "bg-white dark:bg-slate-800",
+            "border-slate-100 dark:border-slate-600",
             "px-3 cursor-text",
-            "focus-within:border-gray-500 dark:focus-within:border-gray-100",
+            "focus-within:border-slate-500 dark:focus-within:border-slate-100",
             "transition-colors",
             disabled && "opacity-50 cursor-not-allowed",
             className
           )}
         >
-          <SearchIcon size={20} className="text-gray-500 dark:text-gray-50 shrink-0" />
+          <SearchIcon size={20} className="text-slate-500 dark:text-slate-50 shrink-0" />
           <input
             ref={ref}
             type="text"
@@ -121,12 +121,12 @@ const SearchBar = React.forwardRef<HTMLInputElement, SearchBarProps>(
             disabled={disabled}
             className={cn(
               "flex-1 bg-transparent text-xs outline-none",
-              "text-gray-900 dark:text-gray-50",
-              "placeholder:text-gray-300 dark:placeholder:text-gray-50",
+              "text-slate-900 dark:text-slate-50",
+              "placeholder:text-slate-300 dark:placeholder:text-slate-50",
               "disabled:cursor-not-allowed"
             )}
           />
-          <STLArrowIcon size={24} className="text-primary dark:text-gray-50 shrink-0" />
+          <STLArrowIcon size={24} className="text-blue-500 dark:text-slate-50 shrink-0" />
         </div>
 
         {showDropdown && (
@@ -134,8 +134,8 @@ const SearchBar = React.forwardRef<HTMLInputElement, SearchBarProps>(
             className={cn(
               "absolute left-0 right-0 top-full mt-[13px] z-[100]",
               "overflow-hidden rounded-[5px] border",
-              "border-gray-100 dark:border-dark-200",
-              "bg-white/50 dark:bg-dark-400/50 backdrop-blur-[12px]",
+              "border-slate-100 dark:border-slate-600",
+              "bg-white/50 dark:bg-slate-800/50 backdrop-blur-[12px]",
               "shadow-[10px_10px_10px_0px_rgba(0,0,0,0.05)]",
               "p-[5px]",
               "animate-in fade-in-0 zoom-in-95 slide-in-from-top-2"
@@ -148,9 +148,9 @@ const SearchBar = React.forwardRef<HTMLInputElement, SearchBarProps>(
                 onClick={() => handleRecentClick(item)}
                 className={cn(
                   "flex h-[29px] w-full cursor-pointer select-none items-center rounded-[2px] px-[5px] py-[5px]",
-                  "text-xs text-gray-500 dark:text-gray-300 text-left",
-                  "hover:bg-gray-100 dark:hover:bg-dark-300",
-                  "focus:bg-gray-100 dark:focus:bg-dark-300 outline-none",
+                  "text-xs text-slate-500 dark:text-slate-300 text-left",
+                  "hover:bg-slate-100 dark:hover:bg-slate-700",
+                  "focus:bg-slate-100 dark:focus:bg-slate-700 outline-none",
                   "transition-colors"
                 )}
               >

@@ -54,12 +54,12 @@ export const Default: Story = {
           description="모달에 대한 설명을 입력합니다."
           footer={
             <>
-              <Button variant="basic" onClick={() => setOpen(false)}>취소</Button>
-              <Button variant="action">확인</Button>
+              <Button variant="ghost-outline" onClick={() => setOpen(false)}>취소</Button>
+              <Button variant="primary">확인</Button>
             </>
           }
         >
-          <p className="text-sm text-gray-500">모달 본문 내용입니다.</p>
+          <p className="text-sm text-slate-500">모달 본문 내용입니다.</p>
         </Modal>
       </>
     );
@@ -80,9 +80,9 @@ export const SingleButton: Story = {
           size="s"
           title="알림"
           description="작업이 완료되었습니다."
-          footer={<Button variant="action" onClick={() => setOpen(false)}>확인</Button>}
+          footer={<Button variant="primary" onClick={() => setOpen(false)}>확인</Button>}
         >
-          <p className="text-sm text-gray-500">성공적으로 처리되었습니다.</p>
+          <p className="text-sm text-slate-500">성공적으로 처리되었습니다.</p>
         </Modal>
       </>
     );
@@ -104,13 +104,13 @@ export const WithHeaderIcon: Story = {
           title={
             <span className="flex items-center justify-between w-full">
               비밀번호 변경
-              <STLArrowIcon size={29} className="text-gray-100" />
+              <STLArrowIcon size={29} className="text-slate-100" />
             </span>
           }
           footer={
             <>
-              <Button variant="basic" onClick={() => setOpen(false)}>닫기</Button>
-              <Button variant="action">변경</Button>
+              <Button variant="ghost-outline" onClick={() => setOpen(false)}>닫기</Button>
+              <Button variant="primary">변경</Button>
             </>
           }
         >
@@ -142,8 +142,8 @@ export const WithForm: Story = {
           description="입고 정보를 입력하여 등록해 주세요."
           footer={
             <>
-              <Button variant="basic" onClick={() => setOpen(false)}>닫기</Button>
-              <Button variant="action">등록</Button>
+              <Button variant="ghost-outline" onClick={() => setOpen(false)}>닫기</Button>
+              <Button variant="primary">등록</Button>
             </>
           }
         >
@@ -205,12 +205,12 @@ export const Sizes: Story = {
             description="모달 크기를 확인하세요."
             footer={
               <>
-                <Button variant="basic" onClick={() => setOpenSize(null)}>닫기</Button>
-                <Button variant="action">확인</Button>
+                <Button variant="ghost-outline" onClick={() => setOpenSize(null)}>닫기</Button>
+                <Button variant="primary">확인</Button>
               </>
             }
           >
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-slate-500">
               현재 사이즈: <strong>{openSize.toUpperCase()}</strong>
             </p>
           </Modal>

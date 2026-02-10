@@ -106,19 +106,19 @@ export const AllSizes: Story = {
     return (
       <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-2">
-          <span className="text-sm text-gray-500">sm (160px)</span>
+          <span className="text-sm text-slate-500">sm (160px)</span>
           <DateRangePicker label="기간" size="sm" />
         </div>
         <div className="flex flex-col gap-2">
-          <span className="text-sm text-gray-500">md (260px)</span>
+          <span className="text-sm text-slate-500">md (260px)</span>
           <DateRangePicker label="기간" size="md" />
         </div>
         <div className="flex flex-col gap-2">
-          <span className="text-sm text-gray-500">lg (360px)</span>
+          <span className="text-sm text-slate-500">lg (360px)</span>
           <DateRangePicker label="기간" size="lg" />
         </div>
         <div className="flex flex-col gap-2">
-          <span className="text-sm text-gray-500">full (100%)</span>
+          <span className="text-sm text-slate-500">full (100%)</span>
           <div className="w-[500px]">
             <DateRangePicker label="기간" size="full" />
           </div>
@@ -142,7 +142,7 @@ export const ManualInput: Story = {
           size="lg"
           placeholder="2025-01-01 - 2025-01-31"
         />
-        <div className="text-sm text-gray-500">
+        <div className="text-sm text-slate-500">
           선택된 기간:{" "}
           {range?.from && range?.to
             ? `${range.from.toLocaleDateString("ko-KR")} ~ ${range.to.toLocaleDateString("ko-KR")}`

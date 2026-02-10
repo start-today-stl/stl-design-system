@@ -61,8 +61,8 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
       <div
         ref={ref}
         className={cn(
-          "relative flex flex-col h-full bg-white dark:bg-gray-900",
-          "pt-8 rounded-r-[40px] border border-gray-100 dark:border-gray-700",
+          "relative flex flex-col h-full bg-white dark:bg-black",
+          "pt-8 rounded-r-[40px] border border-slate-100 dark:border-slate-700",
           "shadow-[1px_0px_41.3px_1px_rgba(0,0,0,0.05)] transition-all",
           collapsed ? "w-[88px] px-0 items-center" : "w-[340px] px-8",
           className

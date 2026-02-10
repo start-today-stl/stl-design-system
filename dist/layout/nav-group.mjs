@@ -1,82 +1,82 @@
-import { jsxs as o, jsx as l } from "react/jsx-runtime";
-import * as r from "react";
+import { jsxs as s, jsx as r } from "react/jsx-runtime";
+import * as l from "react";
 import { cn as p } from "../lib/utils.mjs";
 import { NavItem as f } from "./nav-item.mjs";
-const w = r.forwardRef(
+const w = l.forwardRef(
   ({
     className: u,
-    icon: s,
-    label: t,
+    icon: o,
+    label: a,
     active: d,
-    defaultExpanded: y = !1,
+    defaultExpanded: N = !1,
     expanded: c,
     onExpandedChange: i,
-    collapsed: b,
+    collapsed: h,
     depth: n = 1,
-    _inFlyout: N = !1,
+    _inFlyout: g = !1,
     children: m,
     ...x
-  }, g) => {
-    const [h, k] = r.useState(y), a = c !== void 0 ? c : h, v = () => {
-      const e = !a;
-      k(e), i == null || i(e);
+  }, v) => {
+    const [k, y] = l.useState(N), t = c !== void 0 ? c : k, b = () => {
+      const e = !t;
+      y(e), i == null || i(e);
     };
-    return N ? /* @__PURE__ */ o("div", { ref: g, className: p("flex flex-col gap-0.5", u), ...x, children: [
-      /* @__PURE__ */ l(
+    return g ? /* @__PURE__ */ s("div", { ref: v, className: p("flex flex-col gap-0.5", u), ...x, children: [
+      /* @__PURE__ */ r(
         f,
         {
-          icon: s,
-          label: t,
+          icon: o,
+          label: a,
           active: d,
           depth: n,
           hasChildren: !0,
-          expanded: a,
-          onClick: v
+          expanded: t,
+          onClick: b
         }
       ),
-      a && /* @__PURE__ */ l("div", { className: "flex flex-col gap-0.5", children: r.Children.map(m, (e) => r.isValidElement(e) ? r.cloneElement(e, {
+      t && /* @__PURE__ */ r("div", { className: "flex flex-col gap-0.5", children: l.Children.map(m, (e) => l.isValidElement(e) ? l.cloneElement(e, {
         collapsed: !1,
         depth: (n || 1) + 1,
         _inFlyout: !0
       }) : e) })
-    ] }) : b ? /* @__PURE__ */ o("div", { className: "relative group", children: [
-      /* @__PURE__ */ l(
+    ] }) : h ? /* @__PURE__ */ s("div", { className: "relative group", children: [
+      /* @__PURE__ */ r(
         f,
         {
-          icon: s,
-          label: t,
+          icon: o,
+          label: a,
           active: d,
           collapsed: !0,
           hasChildren: !0
         }
       ),
-      /* @__PURE__ */ o("div", { className: p(
+      /* @__PURE__ */ s("div", { className: p(
         "absolute left-full top-0 ml-2 min-w-[200px] py-2 px-3 rounded-md",
-        "bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-700",
+        "bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-700",
         "shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible",
         "transition-all duration-200 z-50"
       ), children: [
-        /* @__PURE__ */ l("div", { className: "text-sm font-medium text-gray-600 dark:text-gray-300 mb-2 pb-2 border-b border-gray-100 dark:border-gray-700", children: t }),
-        /* @__PURE__ */ l("div", { className: "flex flex-col gap-0.5", children: r.Children.map(m, (e) => r.isValidElement(e) ? r.cloneElement(e, {
+        /* @__PURE__ */ r("div", { className: "text-sm font-medium text-slate-600 dark:text-slate-300 mb-2 pb-2 border-b border-slate-100 dark:border-slate-700", children: a }),
+        /* @__PURE__ */ r("div", { className: "flex flex-col gap-0.5", children: l.Children.map(m, (e) => l.isValidElement(e) ? l.cloneElement(e, {
           collapsed: !1,
           depth: 2,
           _inFlyout: !0
         }) : e) })
       ] })
-    ] }) : /* @__PURE__ */ o("div", { ref: g, className: p("flex flex-col gap-0.5", u), ...x, children: [
-      /* @__PURE__ */ l(
+    ] }) : /* @__PURE__ */ s("div", { ref: v, className: p("flex flex-col gap-0.5", u), ...x, children: [
+      /* @__PURE__ */ r(
         f,
         {
-          icon: s,
-          label: t,
+          icon: o,
+          label: a,
           active: d,
           depth: n,
           hasChildren: !0,
-          expanded: a,
-          onClick: v
+          expanded: t,
+          onClick: b
         }
       ),
-      a && /* @__PURE__ */ l("div", { className: "flex flex-col gap-0.5", children: m })
+      t && /* @__PURE__ */ r("div", { className: "flex flex-col gap-0.5", children: m })
     ] });
   }
 );

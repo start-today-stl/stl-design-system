@@ -1,83 +1,83 @@
-import { jsx as e, jsxs as n } from "react/jsx-runtime";
-import * as o from "react";
-import { cn as s } from "../../lib/utils.mjs";
-const m = [
-  "flex rounded-[5px] border bg-gray-50/50 dark:bg-dark-400",
-  "h-9 px-3 text-xs text-gray-900 dark:text-gray-100",
+import { jsx as t, jsxs as n } from "react/jsx-runtime";
+import * as d from "react";
+import { cn as o } from "../../lib/utils.mjs";
+const h = [
+  "flex rounded-[5px] border bg-slate-50/50 dark:bg-slate-800",
+  "h-9 px-3 text-xs text-slate-900 dark:text-slate-100",
   "outline-none transition-colors",
   "disabled:cursor-not-allowed disabled:opacity-50"
-].join(" "), g = [
-  "border-gray-100 dark:border-dark-100",
-  "placeholder:text-gray-300 dark:placeholder:text-gray-100",
-  "focus:border-primary focus:shadow-[0px_0px_6px_0px_rgba(23,118,255,0.5)]"
-].join(" "), h = [
+].join(" "), k = [
+  "border-slate-100 dark:border-slate-500",
+  "placeholder:text-slate-300 dark:placeholder:text-slate-100",
+  "focus:border-blue-500 focus:shadow-[0px_0px_6px_0px_rgba(23,118,255,0.5)]"
+].join(" "), v = [
   "border-destructive dark:border-red-500",
   "placeholder:text-destructive dark:placeholder:text-red-400",
   "focus:border-destructive focus:shadow-[0px_0px_6px_0px_rgba(239,68,68,0.5)] dark:focus:border-red-500"
-].join(" "), k = {
+].join(" "), w = {
   sm: "w-[160px]",
   md: "w-[260px]",
   lg: "w-[360px]",
   full: "w-full"
-}, p = o.forwardRef(
-  ({ className: d, error: t, ...r }, a) => /* @__PURE__ */ e(
+}, x = d.forwardRef(
+  ({ className: r, error: e, ...a }, l) => /* @__PURE__ */ t(
     "input",
     {
-      ref: a,
-      className: s(
-        m,
-        t ? h : g,
-        d
+      ref: l,
+      className: o(
+        h,
+        e ? v : k,
+        r
       ),
-      "aria-invalid": t,
-      ...r
+      "aria-invalid": e,
+      ...a
     }
   )
 );
-p.displayName = "Input";
-const v = o.forwardRef(
-  ({ className: d, label: t, error: r, errorMessage: a, size: x = "full", id: c, rightIcon: l, onRightIconClick: u, rightIconLabel: y = "아이콘 버튼", ...b }, f) => {
-    const i = c || o.useId();
-    return /* @__PURE__ */ n("div", { className: s("flex flex-col gap-1", k[x]), children: [
-      t && /* @__PURE__ */ e(
+x.displayName = "Input";
+const y = d.forwardRef(
+  ({ className: r, label: e, error: a, errorMessage: l, size: p = "full", id: c, rightIcon: s, onRightIconClick: u, rightIconLabel: b = "아이콘 버튼", ...f }, m) => {
+    const i = c || d.useId();
+    return /* @__PURE__ */ n("div", { className: o("flex flex-col gap-1", w[p]), children: [
+      e && /* @__PURE__ */ t(
         "label",
         {
           htmlFor: i,
-          className: "text-[length:var(--text-body-2)] text-gray-600 dark:text-gray-50",
-          children: t
+          className: "text-[length:var(--text-body-2)] text-slate-600 dark:text-slate-50",
+          children: e
         }
       ),
       /* @__PURE__ */ n("div", { className: "relative", children: [
-        /* @__PURE__ */ e(
-          p,
+        /* @__PURE__ */ t(
+          x,
           {
             id: i,
-            ref: f,
-            error: r,
-            className: s("w-full", l && "pr-9", d),
-            ...b
+            ref: m,
+            error: a,
+            className: o("w-full", s && "pr-9", r),
+            ...f
           }
         ),
-        l && /* @__PURE__ */ e(
+        s && /* @__PURE__ */ t(
           "button",
           {
             type: "button",
             onClick: u,
-            "aria-label": y,
-            className: "absolute right-2 top-1/2 -translate-y-1/2 text-gray-900 hover:text-gray-600 dark:text-gray-50 dark:hover:text-white",
+            "aria-label": b,
+            className: "absolute right-2 top-1/2 -translate-y-1/2 text-slate-900 hover:text-slate-600 dark:text-slate-50 dark:hover:text-white",
             tabIndex: -1,
-            children: l
+            children: s
           }
         )
       ] }),
-      r && a && /* @__PURE__ */ e("span", { className: "text-[length:var(--text-body-2)] text-destructive dark:text-red-400", children: a })
+      a && l && /* @__PURE__ */ t("span", { className: "text-[length:var(--text-body-2)] text-destructive dark:text-red-400", children: l })
     ] });
   }
 );
-v.displayName = "InputField";
+y.displayName = "InputField";
 export {
-  p as Input,
-  v as InputField,
-  k as inputSizeStyles
+  x as Input,
+  y as InputField,
+  w as inputSizeStyles
 };
 //# sourceMappingURL=input.mjs.map

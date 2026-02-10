@@ -79,7 +79,7 @@ const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
         {label && (
           <label
             htmlFor={id}
-            className="text-xs text-gray-600 dark:text-gray-50"
+            className="text-xs text-slate-600 dark:text-slate-50"
           >
             {label}
           </label>
@@ -94,28 +94,28 @@ const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
             ref={ref}
             id={id}
             className={cn(
-              "group flex h-9 w-full items-center justify-between rounded-[5px] border bg-white dark:bg-dark-400",
+              "group flex h-9 w-full items-center justify-between rounded-[5px] border bg-white dark:bg-slate-800",
               "px-3 text-xs outline-none transition-colors cursor-pointer",
               "disabled:cursor-not-allowed disabled:opacity-50",
               error
-                ? "border-destructive dark:border-red-500 data-[state=open]:border-destructive data-[state=open]:shadow-[0px_0px_6px_0px_rgba(239,68,68,0.5)]"
-                : "border-gray-100 dark:border-dark-200 data-[state=open]:border-primary data-[state=open]:shadow-[0px_0px_6px_0px_rgba(23,118,255,0.5)]",
-              "data-[placeholder]:text-gray-500 dark:data-[placeholder]:text-gray-50",
+                ? "border-red-500 dark:border-red-500 data-[state=open]:border-red-500 data-[state=open]:shadow-[0px_0px_6px_0px_rgba(239,68,68,0.5)]"
+                : "border-slate-100 dark:border-slate-600 data-[state=open]:border-blue-500 data-[state=open]:shadow-[0px_0px_6px_0px_rgba(23,118,255,0.5)]",
+              "data-[placeholder]:text-slate-500 dark:data-[placeholder]:text-slate-50",
             )}
             aria-invalid={error}
             aria-label={ariaLabel}
           >
             <SelectPrimitive.Value placeholder={placeholder} />
             <SelectPrimitive.Icon asChild>
-              <UpIcon size={24} className="text-gray-900 transition-transform duration-200 group-data-[state=open]:rotate-180 dark:text-gray-50" />
+              <UpIcon size={24} className="text-slate-900 transition-transform duration-200 group-data-[state=open]:rotate-180 dark:text-slate-50" />
             </SelectPrimitive.Icon>
           </SelectPrimitive.Trigger>
 
           <SelectPrimitive.Portal>
             <SelectPrimitive.Content
               className={cn(
-                "relative z-50 overflow-hidden rounded-[5px] border border-gray-100 dark:border-dark-200 w-[var(--radix-select-trigger-width)]",
-                "bg-white/50 dark:bg-dark-400/30 backdrop-blur-[12px]",
+                "relative z-50 overflow-hidden rounded-[5px] border border-slate-100 dark:border-slate-600 w-[var(--radix-select-trigger-width)]",
+                "bg-white/50 dark:bg-slate-800/30 backdrop-blur-[12px]",
                 "shadow-[10px_10px_10px_0px_rgba(0,0,0,0.05)]",
                 "p-[5px]",
                 "data-[state=open]:animate-in data-[state=closed]:animate-out",
@@ -134,9 +134,9 @@ const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
                     disabled={option.disabled}
                     className={cn(
                       "relative flex h-[29px] cursor-pointer select-none items-center rounded-[2px] px-[5px] py-[5px]",
-                      "text-xs text-gray-500 dark:text-gray-50 outline-none",
-                      "hover:bg-gray-100 dark:hover:bg-dark-300",
-                      "focus:bg-gray-100 dark:focus:bg-dark-300",
+                      "text-xs text-slate-500 dark:text-slate-50 outline-none",
+                      "hover:bg-slate-100 dark:hover:bg-slate-700",
+                      "focus:bg-slate-100 dark:focus:bg-slate-700",
                       "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
                       "data-[state=checked]:bg-accent data-[state=checked]:text-accent-foreground",
                     )}

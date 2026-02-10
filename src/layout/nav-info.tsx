@@ -20,11 +20,11 @@ const NavInfoItem = ({ icon, text, href }: NavInfoItemProps) => {
   const content = (
     <>
       {icon && (
-        <span className="flex-shrink-0 w-6 h-6 flex items-center justify-center text-gray-500">
+        <span className="flex-shrink-0 w-6 h-6 flex items-center justify-center text-slate-500">
           {icon}
         </span>
       )}
-      <span className="text-sm font-semibold text-gray-700 dark:text-gray-200 leading-[1.5] tracking-[-0.14px]">
+      <span className="text-sm font-semibold text-slate-700 dark:text-slate-200 leading-[1.5] tracking-[-0.14px]">
         {text}
       </span>
     </>
@@ -50,7 +50,7 @@ const NavInfo = React.forwardRef<HTMLDivElement, NavInfoProps>(
       <div
         ref={ref}
         className={cn(
-          "w-[276px] p-2.5 bg-gray-50 dark:bg-gray-800 rounded-[10px]",
+          "w-[276px] p-2.5 bg-slate-50 dark:bg-slate-800 rounded-[10px]",
           className
         )}
         {...props}

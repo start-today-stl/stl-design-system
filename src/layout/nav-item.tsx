@@ -6,18 +6,18 @@ import { RightIcon } from "@/icons"
 
 const navItemVariants = cva(
   // 기본: h-9(36px), p-1.5(6px), gap-0.5(2px), rounded-md(6px)
-  // 색상: gray-600 → hover:primary, bg:transparent → hover:cool-50 → active:primary-200
-  "flex items-center gap-0.5 w-full h-9 p-1.5 rounded-md cursor-pointer transition-colors text-sm font-medium tracking-[-0.14px] hover:bg-cool-50 dark:hover:bg-dark-400 active:bg-primary-200 dark:active:bg-primary-200 hover:text-primary dark:hover:text-primary-300 active:text-primary dark:active:text-primary-300 hover:[&_svg]:text-primary dark:hover:[&_svg]:text-primary-300 active:[&_svg]:text-primary dark:active:[&_svg]:text-primary-300",
+  // 색상: slate-600 → hover:blue-500, bg:transparent → hover:slate-50 → active:blue-100
+  "flex items-center gap-0.5 w-full h-9 p-1.5 rounded-md cursor-pointer transition-colors text-sm font-medium tracking-[-0.14px] hover:bg-slate-50 dark:hover:bg-slate-800 active:bg-blue-100 dark:active:bg-blue-100 hover:text-blue-500 dark:hover:text-blue-300 active:text-blue-500 dark:active:text-blue-300 hover:[&_svg]:text-blue-500 dark:hover:[&_svg]:text-blue-300 active:[&_svg]:text-blue-500 dark:active:[&_svg]:text-blue-300",
   {
     variants: {
       active: {
-        true: "text-primary dark:text-primary-300 [&_svg]:text-primary [&_svg]:dark:text-primary-300",
+        true: "text-blue-500 dark:text-blue-300 [&_svg]:text-blue-500 [&_svg]:dark:text-blue-300",
         false: "",
       },
       depth: {
-        1: "pl-0 text-gray-600 dark:text-gray-300 [&_svg]:text-gray-600 [&_svg]:dark:text-gray-300",
-        2: "pl-6 text-gray-500 dark:text-gray-400 [&_svg]:text-gray-500 [&_svg]:dark:text-gray-400",
-        3: "pl-12 text-gray-500 dark:text-gray-400 [&_svg]:text-gray-500 [&_svg]:dark:text-gray-400",
+        1: "pl-0 text-slate-800 dark:text-slate-200 [&_svg]:text-slate-800 [&_svg]:dark:text-slate-200",
+        2: "pl-6 text-slate-600 dark:text-slate-300 [&_svg]:text-slate-600 [&_svg]:dark:text-slate-300",
+        3: "pl-12 text-slate-600 dark:text-slate-300 [&_svg]:text-slate-600 [&_svg]:dark:text-slate-300",
       },
     },
     defaultVariants: {
@@ -83,10 +83,10 @@ const NavItem = React.forwardRef<HTMLButtonElement, NavItemProps>(
           {/* 호버 시 툴팁 */}
           <div className={cn(
             "absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-md whitespace-nowrap",
-            "bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-700",
+            "bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-700",
             "shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible",
             "transition-all duration-200 z-50",
-            "text-sm font-medium text-gray-600 dark:text-gray-300"
+            "text-sm font-medium text-slate-800 dark:text-slate-200"
           )}>
             {label}
           </div>

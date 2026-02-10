@@ -38,15 +38,15 @@ const Checkbox = React.forwardRef<
         // 기본 스타일 (20x20, 2px radius)
         "peer h-5 w-5 shrink-0 rounded-[2px] border-[0.75px] flex items-center justify-center cursor-pointer",
         // 미체크 상태
-        "border-gray-500 bg-white",
+        "border-slate-500 bg-white",
         // 체크 상태
-        "data-[state=checked]:bg-primary data-[state=checked]:border-gray-500 data-[state=checked]:text-white",
+        "data-[state=checked]:bg-blue-500 data-[state=checked]:border-slate-500 data-[state=checked]:text-white",
         // 포커스 상태 (inset ring으로 레이아웃 시프트 방지)
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset",
         // 비활성화 상태
         "disabled:cursor-not-allowed disabled:opacity-30",
         // 다크모드
-        "dark:border-gray-200 dark:bg-dark-500 dark:data-[state=checked]:bg-primary dark:data-[state=checked]:border-gray-200",
+        "dark:border-slate-200 dark:bg-slate-900 dark:data-[state=checked]:bg-blue-500 dark:data-[state=checked]:border-slate-200",
         className
       )}
       {...props}
@@ -61,7 +61,7 @@ const Checkbox = React.forwardRef<
     return (
       <label className="inline-flex items-center gap-1.5 cursor-pointer align-middle">
         {checkbox}
-        <span className="text-xs text-gray-600 tracking-[-0.12px] dark:text-gray-200 leading-none">
+        <span className="text-xs text-slate-600 tracking-[-0.12px] dark:text-slate-200 leading-none">
           {label}
         </span>
       </label>

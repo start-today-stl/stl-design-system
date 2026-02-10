@@ -1,16 +1,16 @@
-import { jsx as r, jsxs as t } from "react/jsx-runtime";
-import * as g from "react";
-import { cva as b } from "class-variance-authority";
+import { jsx as e, jsxs as t } from "react/jsx-runtime";
+import * as v from "react";
+import { cva as g } from "class-variance-authority";
 import { cn as a } from "../lib/utils.mjs";
-const v = {
-  main: "bg-gradient-to-b from-[#f7f9ff] to-white hover:from-[#f6f7f9] hover:to-[#f6f7f9] active:from-primary-200 active:to-primary-200 dark:from-[#2a3348] dark:to-dark-400 dark:hover:from-dark-300 dark:hover:to-dark-300 dark:active:from-primary-200 dark:active:to-primary-200",
-  sub: "bg-gradient-to-b from-[#f7f9ff] to-white hover:from-[#f6f7f9] hover:to-[#f6f7f9] active:from-primary-200 active:to-primary-200 dark:from-[#2a3348] dark:to-dark-400 dark:hover:from-dark-300 dark:hover:to-dark-300 dark:active:from-primary-200 dark:active:to-primary-200",
-  small: "bg-[#f7f9ff] hover:bg-[#f6f7f9] active:bg-primary-200 dark:bg-[#2a3348] dark:hover:bg-dark-300 dark:active:bg-primary-200"
-}, y = {
-  main: "bg-white border border-gray-100 hover:bg-[#f6f7f9] active:bg-primary-200 dark:bg-dark-400 dark:border-dark-300 dark:hover:bg-dark-300 dark:active:bg-primary-200",
-  sub: "bg-white border border-gray-100 hover:bg-[#f6f7f9] active:bg-primary-200 dark:bg-dark-400 dark:border-dark-300 dark:hover:bg-dark-300 dark:active:bg-primary-200",
-  small: "bg-white border border-gray-100 hover:bg-[#f6f7f9] active:bg-primary-200 dark:bg-dark-400 dark:border-dark-300 dark:hover:bg-dark-300 dark:active:bg-primary-200"
-}, p = b(
+const u = {
+  main: "bg-gradient-to-b from-blue-50 to-white hover:from-slate-100 hover:to-slate-100 active:from-blue-200 active:to-blue-200 dark:from-blue-950 dark:to-slate-800 dark:hover:from-slate-700 dark:hover:to-slate-700 dark:active:from-blue-800 dark:active:to-blue-800",
+  sub: "bg-gradient-to-b from-blue-50 to-white hover:from-slate-100 hover:to-slate-100 active:from-blue-200 active:to-blue-200 dark:from-blue-950 dark:to-slate-800 dark:hover:from-slate-700 dark:hover:to-slate-700 dark:active:from-blue-800 dark:active:to-blue-800",
+  small: "bg-blue-50 hover:bg-slate-100 active:bg-blue-200 dark:bg-slate-800 dark:hover:bg-slate-700 dark:active:bg-blue-800"
+}, k = {
+  main: "bg-white border border-slate-100 hover:bg-slate-100 active:bg-blue-200 dark:bg-slate-700 dark:border-slate-600 dark:hover:bg-slate-600 dark:active:bg-blue-800",
+  sub: "bg-white border border-slate-100 hover:bg-slate-100 active:bg-blue-200 dark:bg-slate-700 dark:border-slate-600 dark:hover:bg-slate-600 dark:active:bg-blue-800",
+  small: "bg-white border border-slate-100 hover:bg-slate-100 active:bg-blue-200 dark:bg-slate-700 dark:border-slate-600 dark:hover:bg-slate-600 dark:active:bg-blue-800"
+}, f = g(
   "relative cursor-pointer transition-colors group",
   {
     variants: {
@@ -32,55 +32,55 @@ const v = {
       stretch: !1
     }
   }
-), N = g.forwardRef(
-  ({ className: s, variant: i = "main", icon: d, label: l, count: f, badge: k, bordered: x = !1, headerAction: h, stretch: n = !1, ...m }, o) => {
-    const e = "text-gray-700 dark:text-gray-100", c = x ? y[i || "main"] : v[i || "main"];
-    return i === "main" ? /* @__PURE__ */ r(
+), N = v.forwardRef(
+  ({ className: i, variant: l = "main", icon: s, label: d, count: n, badge: h, bordered: p = !1, headerAction: x, stretch: o = !1, ...c }, m) => {
+    const r = "text-slate-700 dark:text-slate-100", b = p ? k[l || "main"] : u[l || "main"];
+    return l === "main" ? /* @__PURE__ */ e(
       "div",
       {
-        ref: o,
-        className: a(p({ variant: i, stretch: n }), c, s),
-        ...m,
+        ref: m,
+        className: a(f({ variant: l, stretch: o }), b, i),
+        ...c,
         children: /* @__PURE__ */ t("div", { className: "flex flex-col h-full justify-between", children: [
           /* @__PURE__ */ t("div", { className: "flex items-center justify-between", children: [
             /* @__PURE__ */ t("div", { className: "flex items-center gap-0.5", children: [
-              d && /* @__PURE__ */ r("span", { className: a("flex-shrink-0", e), children: d }),
-              /* @__PURE__ */ r("span", { className: a("text-sm tracking-[-0.14px]", e), children: l })
+              s && /* @__PURE__ */ e("span", { className: a("flex-shrink-0", r), children: s }),
+              /* @__PURE__ */ e("span", { className: a("text-sm tracking-[-0.14px]", r), children: d })
             ] }),
-            h && /* @__PURE__ */ r("div", { className: "flex items-center", children: h })
+            x && /* @__PURE__ */ e("div", { className: "flex items-center", children: x })
           ] }),
-          /* @__PURE__ */ r("span", { className: a("font-heading text-[86px] font-normal tracking-[-2.58px] leading-none", e), children: f })
+          /* @__PURE__ */ e("span", { className: a("font-heading text-[86px] font-normal tracking-[-2.58px] leading-none", r), children: n })
         ] })
       }
-    ) : i === "sub" ? /* @__PURE__ */ r(
+    ) : l === "sub" ? /* @__PURE__ */ e(
       "div",
       {
-        ref: o,
-        className: a(p({ variant: i, stretch: n }), c, s),
-        ...m,
+        ref: m,
+        className: a(f({ variant: l, stretch: o }), b, i),
+        ...c,
         children: /* @__PURE__ */ t("div", { className: "flex gap-0.5 h-full", children: [
           /* @__PURE__ */ t("div", { className: "flex-1 flex flex-col justify-between", children: [
             /* @__PURE__ */ t("div", { className: "flex items-center gap-0.5", children: [
-              d && /* @__PURE__ */ r("span", { className: a("flex-shrink-0", e), children: d }),
-              /* @__PURE__ */ r("span", { className: a("text-sm tracking-[-0.14px]", e), children: l })
+              s && /* @__PURE__ */ e("span", { className: a("flex-shrink-0", r), children: s }),
+              /* @__PURE__ */ e("span", { className: a("text-sm tracking-[-0.14px]", r), children: d })
             ] }),
-            /* @__PURE__ */ r("span", { className: a("text-[48px] font-normal tracking-[-1.44px] leading-none", e), children: f })
+            /* @__PURE__ */ e("span", { className: a("text-[48px] font-normal tracking-[-1.44px] leading-none", r), children: n })
           ] }),
-          k && /* @__PURE__ */ r("div", { className: "w-[28px] flex flex-col justify-end items-center", children: k })
+          h && /* @__PURE__ */ e("div", { className: "w-[28px] flex flex-col justify-end items-center", children: h })
         ] })
       }
-    ) : /* @__PURE__ */ r(
+    ) : /* @__PURE__ */ e(
       "div",
       {
-        ref: o,
-        className: a(p({ variant: i, stretch: n }), c, s),
-        ...m,
+        ref: m,
+        className: a(f({ variant: l, stretch: o }), b, i),
+        ...c,
         children: /* @__PURE__ */ t("div", { className: "flex items-center justify-between", children: [
           /* @__PURE__ */ t("div", { className: "flex items-center gap-0.5", children: [
-            d && /* @__PURE__ */ r("span", { className: a("flex-shrink-0", e), children: d }),
-            /* @__PURE__ */ r("span", { className: a("text-sm tracking-[-0.14px]", e), children: l })
+            s && /* @__PURE__ */ e("span", { className: a("flex-shrink-0", r), children: s }),
+            /* @__PURE__ */ e("span", { className: a("text-sm tracking-[-0.14px]", r), children: d })
           ] }),
-          /* @__PURE__ */ r("span", { className: a("text-sm tracking-[-0.14px]", e), children: f })
+          /* @__PURE__ */ e("span", { className: a("text-sm tracking-[-0.14px]", r), children: n })
         ] })
       }
     );
@@ -89,6 +89,6 @@ const v = {
 N.displayName = "StatCard";
 export {
   N as StatCard,
-  p as statCardVariants
+  f as statCardVariants
 };
 //# sourceMappingURL=stat-card.mjs.map

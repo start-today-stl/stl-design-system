@@ -1,37 +1,37 @@
-import { jsxs as w, jsx as e } from "react/jsx-runtime";
-import * as y from "react";
+import { jsxs as g, jsx as e } from "react/jsx-runtime";
+import * as k from "react";
 import { useState as v } from "react";
 import { cn as m } from "../lib/utils.mjs";
 import { NavMenu as S } from "./nav-menu.mjs";
-import { Notice as k } from "./notice.mjs";
-import { NavInfo as j } from "./nav-info.mjs";
+import { Notice as j } from "./notice.mjs";
+import { NavInfo as y } from "./nav-info.mjs";
 import { STLArrowIcon as _ } from "../icons/STLArrowIcon.mjs";
 import { STLSignatureIcon as T } from "../icons/STLSignatureIcon.mjs";
-const I = y.forwardRef(
+const I = k.forwardRef(
   ({
     className: c,
-    collapsed: s,
+    collapsed: i,
     defaultCollapsed: n = !1,
     onCollapsedChange: t,
     showToggle: p = !0,
     noticeTitle: o,
     noticeDescription: f,
     noticeIcon: x,
-    infoItems: i,
+    infoItems: s,
     children: d,
     ...b
   }, h) => {
-    const [u, N] = v(n), a = s !== void 0, r = a ? s : u, g = () => {
+    const [u, N] = v(n), a = i !== void 0, r = a ? i : u, w = () => {
       const l = !r;
       a || N(l), t == null || t(l);
     };
-    return /* @__PURE__ */ w(
+    return /* @__PURE__ */ g(
       "div",
       {
         ref: h,
         className: m(
-          "relative flex flex-col h-full bg-white dark:bg-gray-900",
-          "pt-8 rounded-r-[40px] border border-gray-100 dark:border-gray-700",
+          "relative flex flex-col h-full bg-white dark:bg-black",
+          "pt-8 rounded-r-[40px] border border-slate-100 dark:border-slate-700",
           "shadow-[1px_0px_41.3px_1px_rgba(0,0,0,0.05)] transition-all",
           r ? "w-[88px] px-0 items-center" : "w-[340px] px-8",
           c
@@ -55,12 +55,12 @@ const I = y.forwardRef(
               collapsed: r,
               showToggle: p,
               scrollable: !0,
-              onToggle: g,
+              onToggle: w,
               children: d
             }
           ),
           !r && o && /* @__PURE__ */ e(
-            k,
+            j,
             {
               icon: x,
               title: o,
@@ -68,7 +68,7 @@ const I = y.forwardRef(
               className: "mb-5 flex-shrink-0"
             }
           ),
-          !r && i && i.length > 0 && /* @__PURE__ */ e(j, { items: i, className: "mb-8 flex-shrink-0" })
+          !r && s && s.length > 0 && /* @__PURE__ */ e(y, { items: s, className: "mb-8 flex-shrink-0" })
         ]
       }
     );

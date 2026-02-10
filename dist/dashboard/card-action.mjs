@@ -1,35 +1,35 @@
-import { jsx as n } from "react/jsx-runtime";
-import * as d from "react";
+import { jsx as s } from "react/jsx-runtime";
+import * as n from "react";
 import { cva as i } from "class-variance-authority";
-import { cn as s } from "../lib/utils.mjs";
+import { cn as l } from "../lib/utils.mjs";
 const c = i(
-  "h-[18px] px-[5px] rounded-[2px] border text-[10px] tracking-[-0.1px] transition-colors cursor-pointer inline-flex items-center justify-center border-gray-200 text-gray-700 dark:border-dark-300 dark:text-gray-100",
+  "h-[18px] px-[5px] rounded-[2px] border text-[10px] tracking-[-0.1px] transition-colors cursor-pointer inline-flex items-center justify-center border-slate-200 text-slate-700 dark:border-slate-600 dark:text-slate-100",
   {
     variants: {
       selected: {
-        true: "bg-gray-100 dark:bg-dark-300",
-        false: "hover:bg-gray-50 dark:hover:bg-dark-400"
+        true: "bg-slate-100 dark:bg-slate-600",
+        false: "hover:bg-slate-50 dark:hover:bg-slate-700"
       }
     },
     defaultVariants: {
       selected: !1
     }
   }
-), p = d.forwardRef(
-  ({ className: r, selected: t, children: a, ...e }, o) => /* @__PURE__ */ n(
+), d = n.forwardRef(
+  ({ className: t, selected: e, children: r, ...a }, o) => /* @__PURE__ */ s(
     "button",
     {
       ref: o,
       type: "button",
-      className: s(c({ selected: t }), r),
-      ...e,
-      children: a
+      className: l(c({ selected: e }), t),
+      ...a,
+      children: r
     }
   )
 );
-p.displayName = "CardAction";
+d.displayName = "CardAction";
 export {
-  p as CardAction,
+  d as CardAction,
   c as cardActionVariants
 };
 //# sourceMappingURL=card-action.mjs.map

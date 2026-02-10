@@ -41,7 +41,7 @@ export const Default: Story = {
   render: () => (
     <InputGroup size="md">
       <Input placeholder="검색어를 입력하세요" className="flex-1" />
-      <Button variant="action">검색</Button>
+      <Button variant="primary">검색</Button>
     </InputGroup>
   ),
 }
@@ -51,7 +51,7 @@ export const WithLabel: Story = {
   render: () => (
     <InputGroup label="검색" size="md">
       <Input placeholder="검색어를 입력하세요" className="flex-1" />
-      <Button variant="action">검색</Button>
+      <Button variant="primary">검색</Button>
     </InputGroup>
   ),
 }
@@ -61,7 +61,7 @@ export const WithIconButton: Story = {
   render: () => (
     <InputGroup size="md">
       <Input placeholder="검색어를 입력하세요" className="flex-1" />
-      <Button variant="action" size="icon" aria-label="검색">
+      <Button variant="primary" size="icon" aria-label="검색">
         <SearchIcon size={20} />
       </Button>
     </InputGroup>
@@ -73,7 +73,7 @@ export const WithError: Story = {
   render: () => (
     <InputGroup label="검색" error errorMessage="검색어를 입력해주세요" size="md">
       <Input placeholder="검색어를 입력하세요" error className="flex-1" />
-      <Button variant="action">검색</Button>
+      <Button variant="primary">검색</Button>
     </InputGroup>
   ),
 }
@@ -94,7 +94,7 @@ export const MultipleElements: Story = {
     <InputGroup label="금액" size="lg">
       <Button variant="secondary">KRW</Button>
       <Input placeholder="금액을 입력하세요" type="number" className="flex-1" />
-      <Button variant="action">확인</Button>
+      <Button variant="primary">확인</Button>
     </InputGroup>
   ),
 }
@@ -104,32 +104,32 @@ export const AllSizes: Story = {
   render: () => (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-2">
-        <span className="text-sm text-gray-500">sm (160px)</span>
+        <span className="text-sm text-slate-500">sm (160px)</span>
         <InputGroup size="sm">
           <Input placeholder="검색" className="flex-1" />
-          <Button variant="action">검색</Button>
+          <Button variant="primary">검색</Button>
         </InputGroup>
       </div>
       <div className="flex flex-col gap-2">
-        <span className="text-sm text-gray-500">md (260px)</span>
+        <span className="text-sm text-slate-500">md (260px)</span>
         <InputGroup size="md">
           <Input placeholder="검색어를 입력하세요" className="flex-1" />
-          <Button variant="action">검색</Button>
+          <Button variant="primary">검색</Button>
         </InputGroup>
       </div>
       <div className="flex flex-col gap-2">
-        <span className="text-sm text-gray-500">lg (360px)</span>
+        <span className="text-sm text-slate-500">lg (360px)</span>
         <InputGroup size="lg">
           <Input placeholder="검색어를 입력하세요" className="flex-1" />
-          <Button variant="action">검색</Button>
+          <Button variant="primary">검색</Button>
         </InputGroup>
       </div>
       <div className="flex flex-col gap-2">
-        <span className="text-sm text-gray-500">full (100%)</span>
+        <span className="text-sm text-slate-500">full (100%)</span>
         <div className="w-[500px]">
           <InputGroup size="full">
             <Input placeholder="검색어를 입력하세요" className="flex-1" />
-            <Button variant="action">검색</Button>
+            <Button variant="primary">검색</Button>
           </InputGroup>
         </div>
       </div>

@@ -64,8 +64,8 @@ const DropdownContent = React.forwardRef<
       sideOffset={sideOffset}
       className={cn(
         "z-50 max-h-[var(--radix-dropdown-menu-content-available-height)] min-w-[8rem] overflow-y-auto overflow-x-hidden",
-        "rounded-[5px] border border-gray-100 dark:border-dark-200",
-        "bg-white/50 dark:bg-dark-400/50 backdrop-blur-[12px]",
+        "rounded-[5px] border border-slate-100 dark:border-slate-600",
+        "bg-white/50 dark:bg-slate-800/50 backdrop-blur-[12px]",
         "p-[5px] text-popover-foreground",
         "shadow-[10px_10px_10px_0px_rgba(0,0,0,0.05)]",
         "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-dropdown-menu-content-transform-origin]",
@@ -87,9 +87,9 @@ const DropdownItem = React.forwardRef<
     ref={ref}
     className={cn(
       "relative flex h-[29px] cursor-pointer select-none items-center gap-2 rounded-[2px] px-[5px] py-[5px]",
-      "text-xs text-gray-500 dark:text-gray-300 outline-none transition-colors",
-      "hover:bg-gray-100 dark:hover:bg-dark-300",
-      "focus:bg-gray-100 dark:focus:bg-dark-300",
+      "text-xs text-slate-500 dark:text-slate-300 outline-none transition-colors",
+      "hover:bg-slate-100 dark:hover:bg-slate-700",
+      "focus:bg-slate-100 dark:focus:bg-slate-700",
       "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
       "[&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
       inset && "pl-8",

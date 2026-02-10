@@ -1,6 +1,6 @@
 import { jsx as e, jsxs as c } from "react/jsx-runtime";
 import * as n from "react";
-import * as r from "@radix-ui/react-checkbox";
+import * as t from "@radix-ui/react-checkbox";
 import { cn as d } from "../../lib/utils.mjs";
 const l = () => /* @__PURE__ */ e(
   "svg",
@@ -19,36 +19,36 @@ const l = () => /* @__PURE__ */ e(
       }
     )
   }
-), h = n.forwardRef(({ className: i, label: t, ...o }, s) => {
-  const a = /* @__PURE__ */ e(
-    r.Root,
+), h = n.forwardRef(({ className: a, label: r, ...i }, o) => {
+  const s = /* @__PURE__ */ e(
+    t.Root,
     {
-      ref: s,
+      ref: o,
       className: d(
         // 기본 스타일 (20x20, 2px radius)
         "peer h-5 w-5 shrink-0 rounded-[2px] border-[0.75px] flex items-center justify-center cursor-pointer",
         // 미체크 상태
-        "border-gray-500 bg-white",
+        "border-slate-500 bg-white",
         // 체크 상태
-        "data-[state=checked]:bg-primary data-[state=checked]:border-gray-500 data-[state=checked]:text-white",
+        "data-[state=checked]:bg-blue-500 data-[state=checked]:border-slate-500 data-[state=checked]:text-white",
         // 포커스 상태 (inset ring으로 레이아웃 시프트 방지)
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset",
         // 비활성화 상태
         "disabled:cursor-not-allowed disabled:opacity-30",
         // 다크모드
-        "dark:border-gray-200 dark:bg-dark-500 dark:data-[state=checked]:bg-primary dark:data-[state=checked]:border-gray-200",
-        i
+        "dark:border-slate-200 dark:bg-slate-900 dark:data-[state=checked]:bg-blue-500 dark:data-[state=checked]:border-slate-200",
+        a
       ),
-      ...o,
-      children: /* @__PURE__ */ e(r.Indicator, { className: "flex items-center justify-center text-current", children: /* @__PURE__ */ e(l, {}) })
+      ...i,
+      children: /* @__PURE__ */ e(t.Indicator, { className: "flex items-center justify-center text-current", children: /* @__PURE__ */ e(l, {}) })
     }
   );
-  return t ? /* @__PURE__ */ c("label", { className: "inline-flex items-center gap-1.5 cursor-pointer align-middle", children: [
-    a,
-    /* @__PURE__ */ e("span", { className: "text-xs text-gray-600 tracking-[-0.12px] dark:text-gray-200 leading-none", children: t })
-  ] }) : a;
+  return r ? /* @__PURE__ */ c("label", { className: "inline-flex items-center gap-1.5 cursor-pointer align-middle", children: [
+    s,
+    /* @__PURE__ */ e("span", { className: "text-xs text-slate-600 tracking-[-0.12px] dark:text-slate-200 leading-none", children: r })
+  ] }) : s;
 });
-h.displayName = r.Root.displayName;
+h.displayName = t.Root.displayName;
 export {
   h as Checkbox
 };

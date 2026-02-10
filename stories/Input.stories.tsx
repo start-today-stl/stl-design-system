@@ -59,19 +59,19 @@ export const AllStates: Story = {
   render: () => (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-2">
-        <span className="text-sm text-gray-500">Default</span>
+        <span className="text-sm text-slate-500">Default</span>
         <Input placeholder="내용을 입력하세요." className="w-[260px]" />
       </div>
       <div className="flex flex-col gap-2">
-        <span className="text-sm text-gray-500">Error</span>
+        <span className="text-sm text-slate-500">Error</span>
         <Input error placeholder="내용을 채워주세요." className="w-[260px]" />
       </div>
       <div className="flex flex-col gap-2">
-        <span className="text-sm text-gray-500">Disabled</span>
+        <span className="text-sm text-slate-500">Disabled</span>
         <Input placeholder="내용을 입력하세요." disabled className="w-[260px]" />
       </div>
       <div className="flex flex-col gap-2">
-        <span className="text-sm text-gray-500">With Value</span>
+        <span className="text-sm text-slate-500">With Value</span>
         <Input defaultValue="입력된 내용" className="w-[260px]" aria-label="입력 필드" />
       </div>
     </div>

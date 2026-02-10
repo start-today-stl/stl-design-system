@@ -1,10 +1,10 @@
-import { jsx as t, jsxs as l } from "react/jsx-runtime";
+import { jsx as e, jsxs as d } from "react/jsx-runtime";
 import * as f from "react";
-import * as e from "@radix-ui/react-switch";
+import * as t from "@radix-ui/react-switch";
 import { cva as n } from "class-variance-authority";
 import { cn as r } from "../../lib/utils.mjs";
-const m = n(
-  "peer inline-flex shrink-0 cursor-pointer items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=unchecked]:bg-gray-100 dark:data-[state=unchecked]:bg-dark-300",
+const u = n(
+  "peer inline-flex shrink-0 cursor-pointer items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-blue-500 data-[state=unchecked]:bg-slate-100 dark:data-[state=unchecked]:bg-slate-700",
   {
     variants: {
       size: {
@@ -18,7 +18,7 @@ const m = n(
       size: "default"
     }
   }
-), u = n(
+), m = n(
   "pointer-events-none block rounded-full bg-white shadow-lg ring-0 transition-transform data-[state=unchecked]:translate-x-0",
   {
     variants: {
@@ -33,24 +33,24 @@ const m = n(
       size: "default"
     }
   }
-), h = f.forwardRef(({ className: o, size: a, label: s, ...c }, d) => {
-  const i = /* @__PURE__ */ t(
-    e.Root,
+), h = f.forwardRef(({ className: o, size: a, label: s, ...c }, l) => {
+  const i = /* @__PURE__ */ e(
+    t.Root,
     {
-      className: r(m({ size: a }), o),
+      className: r(u({ size: a }), o),
       ...c,
-      ref: d,
-      children: /* @__PURE__ */ t(e.Thumb, { className: r(u({ size: a })) })
+      ref: l,
+      children: /* @__PURE__ */ e(t.Thumb, { className: r(m({ size: a })) })
     }
   );
-  return s ? /* @__PURE__ */ l("div", { className: "inline-flex items-center gap-2", children: [
+  return s ? /* @__PURE__ */ d("div", { className: "inline-flex items-center gap-2", children: [
     i,
-    /* @__PURE__ */ t("span", { className: "text-xs text-gray-500 dark:text-gray-300", children: s })
+    /* @__PURE__ */ e("span", { className: "text-xs text-slate-500 dark:text-slate-300", children: s })
   ] }) : i;
 });
-h.displayName = e.Root.displayName;
+h.displayName = t.Root.displayName;
 export {
   h as Switch,
-  m as switchVariants
+  u as switchVariants
 };
 //# sourceMappingURL=switch.mjs.map

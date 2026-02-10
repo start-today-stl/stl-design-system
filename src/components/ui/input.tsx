@@ -5,16 +5,16 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 const inputBaseStyles = [
-  "flex rounded-[5px] border bg-gray-50/50 dark:bg-dark-400",
-  "h-9 px-3 text-xs text-gray-900 dark:text-gray-100",
+  "flex rounded-[5px] border bg-slate-50/50 dark:bg-slate-800",
+  "h-9 px-3 text-xs text-slate-900 dark:text-slate-100",
   "outline-none transition-colors",
   "disabled:cursor-not-allowed disabled:opacity-50",
 ].join(" ");
 
 const inputDefaultStyles = [
-  "border-gray-100 dark:border-dark-100",
-  "placeholder:text-gray-300 dark:placeholder:text-gray-100",
-  "focus:border-primary focus:shadow-[0px_0px_6px_0px_rgba(23,118,255,0.5)]",
+  "border-slate-100 dark:border-slate-500",
+  "placeholder:text-slate-300 dark:placeholder:text-slate-100",
+  "focus:border-blue-500 focus:shadow-[0px_0px_6px_0px_rgba(23,118,255,0.5)]",
 ].join(" ");
 
 const inputErrorStyles = [
@@ -87,7 +87,7 @@ const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
         {label && (
           <label
             htmlFor={inputId}
-            className="text-[length:var(--text-body-2)] text-gray-600 dark:text-gray-50"
+            className="text-[length:var(--text-body-2)] text-slate-600 dark:text-slate-50"
           >
             {label}
           </label>
@@ -105,7 +105,7 @@ const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
               type="button"
               onClick={onRightIconClick}
               aria-label={rightIconLabel}
-              className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-900 hover:text-gray-600 dark:text-gray-50 dark:hover:text-white"
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-900 hover:text-slate-600 dark:text-slate-50 dark:hover:text-white"
               tabIndex={-1}
             >
               {rightIcon}

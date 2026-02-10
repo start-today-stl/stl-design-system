@@ -120,19 +120,19 @@ export const AllSizes: Story = {
   render: () => (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-2">
-        <span className="text-sm text-gray-500">sm (160px)</span>
+        <span className="text-sm text-slate-500">sm (160px)</span>
         <InputField placeholder="내용을 입력하세요." size="sm" />
       </div>
       <div className="flex flex-col gap-2">
-        <span className="text-sm text-gray-500">md (260px)</span>
+        <span className="text-sm text-slate-500">md (260px)</span>
         <InputField placeholder="내용을 입력하세요." size="md" />
       </div>
       <div className="flex flex-col gap-2">
-        <span className="text-sm text-gray-500">lg (360px)</span>
+        <span className="text-sm text-slate-500">lg (360px)</span>
         <InputField placeholder="내용을 입력하세요." size="lg" />
       </div>
       <div className="flex flex-col gap-2">
-        <span className="text-sm text-gray-500">full (100%)</span>
+        <span className="text-sm text-slate-500">full (100%)</span>
         <div className="w-[400px]">
           <InputField placeholder="내용을 입력하세요." size="full" />
         </div>
@@ -157,27 +157,27 @@ export const AllStates: Story = {
   render: () => (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-2">
-        <span className="text-sm text-gray-500">Default</span>
+        <span className="text-sm text-slate-500">Default</span>
         <InputField placeholder="내용을 입력하세요." size="md" />
       </div>
       <div className="flex flex-col gap-2">
-        <span className="text-sm text-gray-500">Error</span>
+        <span className="text-sm text-slate-500">Error</span>
         <InputField error placeholder="내용을 채워주세요." size="md" />
       </div>
       <div className="flex flex-col gap-2">
-        <span className="text-sm text-gray-500">Error with Message</span>
+        <span className="text-sm text-slate-500">Error with Message</span>
         <InputField error errorMessage="필수 입력 항목입니다." placeholder="내용을 채워주세요." size="md" />
       </div>
       <div className="flex flex-col gap-2">
-        <span className="text-sm text-gray-500">With Label</span>
+        <span className="text-sm text-slate-500">With Label</span>
         <InputField label="라벨" placeholder="내용을 입력하세요." size="md" />
       </div>
       <div className="flex flex-col gap-2">
-        <span className="text-sm text-gray-500">Disabled</span>
+        <span className="text-sm text-slate-500">Disabled</span>
         <InputField label="라벨" placeholder="내용을 입력하세요." disabled size="md" />
       </div>
       <div className="flex flex-col gap-2">
-        <span className="text-sm text-gray-500">With Right Icon</span>
+        <span className="text-sm text-slate-500">With Right Icon</span>
         <InputField
           label="날짜"
           placeholder="2025-00-00"

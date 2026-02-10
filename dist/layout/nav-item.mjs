@@ -1,22 +1,22 @@
-import { jsxs as c, jsx as r } from "react/jsx-runtime";
-import * as p from "react";
-import { cva as l } from "class-variance-authority";
-import { cn as i } from "../lib/utils.mjs";
-import { RightIcon as f } from "../icons/RightIcon.mjs";
-const d = l(
+import { jsxs as c, jsx as t } from "react/jsx-runtime";
+import * as f from "react";
+import { cva as h } from "class-variance-authority";
+import { cn as s } from "../lib/utils.mjs";
+import { RightIcon as b } from "../icons/RightIcon.mjs";
+const d = h(
   // 기본: h-9(36px), p-1.5(6px), gap-0.5(2px), rounded-md(6px)
-  // 색상: gray-600 → hover:primary, bg:transparent → hover:cool-50 → active:primary-200
-  "flex items-center gap-0.5 w-full h-9 p-1.5 rounded-md cursor-pointer transition-colors text-sm font-medium tracking-[-0.14px] hover:bg-cool-50 dark:hover:bg-dark-400 active:bg-primary-200 dark:active:bg-primary-200 hover:text-primary dark:hover:text-primary-300 active:text-primary dark:active:text-primary-300 hover:[&_svg]:text-primary dark:hover:[&_svg]:text-primary-300 active:[&_svg]:text-primary dark:active:[&_svg]:text-primary-300",
+  // 색상: slate-600 → hover:blue-500, bg:transparent → hover:slate-50 → active:blue-100
+  "flex items-center gap-0.5 w-full h-9 p-1.5 rounded-md cursor-pointer transition-colors text-sm font-medium tracking-[-0.14px] hover:bg-slate-50 dark:hover:bg-slate-800 active:bg-blue-100 dark:active:bg-blue-100 hover:text-blue-500 dark:hover:text-blue-300 active:text-blue-500 dark:active:text-blue-300 hover:[&_svg]:text-blue-500 dark:hover:[&_svg]:text-blue-300 active:[&_svg]:text-blue-500 dark:active:[&_svg]:text-blue-300",
   {
     variants: {
       active: {
-        true: "text-primary dark:text-primary-300 [&_svg]:text-primary [&_svg]:dark:text-primary-300",
+        true: "text-blue-500 dark:text-blue-300 [&_svg]:text-blue-500 [&_svg]:dark:text-blue-300",
         false: ""
       },
       depth: {
-        1: "pl-0 text-gray-600 dark:text-gray-300 [&_svg]:text-gray-600 [&_svg]:dark:text-gray-300",
-        2: "pl-6 text-gray-500 dark:text-gray-400 [&_svg]:text-gray-500 [&_svg]:dark:text-gray-400",
-        3: "pl-12 text-gray-500 dark:text-gray-400 [&_svg]:text-gray-500 [&_svg]:dark:text-gray-400"
+        1: "pl-0 text-slate-800 dark:text-slate-200 [&_svg]:text-slate-800 [&_svg]:dark:text-slate-200",
+        2: "pl-6 text-slate-600 dark:text-slate-300 [&_svg]:text-slate-600 [&_svg]:dark:text-slate-300",
+        3: "pl-12 text-slate-600 dark:text-slate-300 [&_svg]:text-slate-600 [&_svg]:dark:text-slate-300"
       }
     },
     defaultVariants: {
@@ -24,73 +24,73 @@ const d = l(
       depth: 1
     }
   }
-), h = p.forwardRef(
+), g = f.forwardRef(
   ({
-    className: n,
-    icon: a,
-    label: e,
-    active: m,
+    className: i,
+    icon: r,
+    label: a,
+    active: n,
     depth: x,
-    hasChildren: s,
-    expanded: v,
-    collapsed: t,
+    hasChildren: l,
+    expanded: m,
+    collapsed: e,
     indicator: o,
-    ...g
-  }, y) => t && !s ? /* @__PURE__ */ c("div", { className: "relative group", children: [
-    /* @__PURE__ */ r(
+    ...u
+  }, v) => e && !l ? /* @__PURE__ */ c("div", { className: "relative group", children: [
+    /* @__PURE__ */ t(
       "button",
       {
-        ref: y,
-        className: i(
-          d({ active: m, depth: x }),
+        ref: v,
+        className: s(
+          d({ active: n, depth: x }),
           "justify-center w-9 px-0",
-          n
+          i
         ),
-        "aria-label": e,
-        ...g,
-        children: a && /* @__PURE__ */ r("span", { className: "flex-shrink-0 w-6 h-6 flex items-center justify-center", children: a })
+        "aria-label": a,
+        ...u,
+        children: r && /* @__PURE__ */ t("span", { className: "flex-shrink-0 w-6 h-6 flex items-center justify-center", children: r })
       }
     ),
-    /* @__PURE__ */ r("div", { className: i(
+    /* @__PURE__ */ t("div", { className: s(
       "absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-md whitespace-nowrap",
-      "bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-700",
+      "bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-700",
       "shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible",
       "transition-all duration-200 z-50",
-      "text-sm font-medium text-gray-600 dark:text-gray-300"
-    ), children: e })
+      "text-sm font-medium text-slate-800 dark:text-slate-200"
+    ), children: a })
   ] }) : /* @__PURE__ */ c(
     "button",
     {
-      ref: y,
-      className: i(
-        d({ active: m, depth: x }),
-        t && "justify-center w-9 px-0",
-        n
+      ref: v,
+      className: s(
+        d({ active: n, depth: x }),
+        e && "justify-center w-9 px-0",
+        i
       ),
-      title: t ? e : void 0,
-      "aria-label": t ? e : void 0,
-      ...g,
+      title: e ? a : void 0,
+      "aria-label": e ? a : void 0,
+      ...u,
       children: [
-        a && /* @__PURE__ */ r("span", { className: "flex-shrink-0 w-6 h-6 flex items-center justify-center", children: a }),
-        !t && /* @__PURE__ */ r("span", { className: "flex-1 text-left truncate", children: e }),
-        o && !t && !s && /* @__PURE__ */ r("span", { className: "flex-shrink-0 w-6 h-6 flex items-center justify-center", children: o }),
-        s && !t && /* @__PURE__ */ r(
+        r && /* @__PURE__ */ t("span", { className: "flex-shrink-0 w-6 h-6 flex items-center justify-center", children: r }),
+        !e && /* @__PURE__ */ t("span", { className: "flex-1 text-left truncate", children: a }),
+        o && !e && !l && /* @__PURE__ */ t("span", { className: "flex-shrink-0 w-6 h-6 flex items-center justify-center", children: o }),
+        l && !e && /* @__PURE__ */ t(
           "span",
           {
-            className: i(
+            className: s(
               "flex-shrink-0 w-6 h-6 flex items-center justify-center transition-transform",
-              v && "rotate-90"
+              m && "rotate-90"
             ),
-            children: /* @__PURE__ */ r(f, { size: 24 })
+            children: /* @__PURE__ */ t(b, { size: 24 })
           }
         )
       ]
     }
   )
 );
-h.displayName = "NavItem";
+g.displayName = "NavItem";
 export {
-  h as NavItem,
+  g as NavItem,
   d as navItemVariants
 };
 //# sourceMappingURL=nav-item.mjs.map

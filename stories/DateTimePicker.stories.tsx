@@ -102,19 +102,19 @@ export const AllSizes: Story = {
     return (
       <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-2">
-          <span className="text-sm text-gray-500">sm (160px)</span>
+          <span className="text-sm text-slate-500">sm (160px)</span>
           <DateTimePicker label="날짜/시간" size="sm" />
         </div>
         <div className="flex flex-col gap-2">
-          <span className="text-sm text-gray-500">md (260px)</span>
+          <span className="text-sm text-slate-500">md (260px)</span>
           <DateTimePicker label="날짜/시간" size="md" />
         </div>
         <div className="flex flex-col gap-2">
-          <span className="text-sm text-gray-500">lg (360px)</span>
+          <span className="text-sm text-slate-500">lg (360px)</span>
           <DateTimePicker label="날짜/시간" size="lg" />
         </div>
         <div className="flex flex-col gap-2">
-          <span className="text-sm text-gray-500">full (100%)</span>
+          <span className="text-sm text-slate-500">full (100%)</span>
           <div className="w-[400px]">
             <DateTimePicker label="날짜/시간" size="full" />
           </div>
@@ -138,7 +138,7 @@ export const ManualInput: Story = {
           size="lg"
           placeholder="2025-12-25 14:30:00"
         />
-        <div className="text-sm text-gray-500">
+        <div className="text-sm text-slate-500">
           선택된 날짜/시간:{" "}
           {date ? date.toLocaleString("ko-KR") : "없음"}
         </div>

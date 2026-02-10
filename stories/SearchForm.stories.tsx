@@ -30,7 +30,7 @@ export const Default: Story = {
       title="상품 관리"
       actions={
         <>
-          <Button variant="action" className="w-24">초기화</Button>
+          <Button variant="ghost-outline" className="w-24">초기화</Button>
           <Button className="w-24">
             <SearchIcon size={16} className="mr-2" />
             검색
@@ -68,7 +68,7 @@ export const WithoutTitle: Story = {
     <SearchForm
       actions={
         <>
-          <Button variant="action">초기화</Button>
+          <Button variant="ghost-outline">초기화</Button>
           <Button>검색</Button>
         </>
       }

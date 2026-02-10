@@ -1,31 +1,36 @@
 import { jsx as n } from "react/jsx-runtime";
-import * as g from "react";
-import { Slot as d } from "@radix-ui/react-slot";
-import { cva as s } from "class-variance-authority";
-import { cn as c } from "../../lib/utils.mjs";
-const b = s(
+import * as s from "react";
+import { Slot as b } from "@radix-ui/react-slot";
+import { cva as d } from "class-variance-authority";
+import { cn as g } from "../../lib/utils.mjs";
+const l = d(
   "inline-flex items-center justify-center gap-0.5 whitespace-nowrap font-normal transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-30 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:-ml-1",
   {
     variants: {
       variant: {
-        // Basic (Gray) - 기본 버튼 Outline (라이트: gray-500, 다크: gray-200)
-        basic: "border-[0.75px] border-gray-500 text-gray-500 bg-transparent hover:bg-gray-500/50 hover:text-white active:bg-gray-500 active:text-white dark:border-gray-200 dark:text-gray-200 dark:hover:bg-gray-200/50 dark:active:bg-gray-200",
-        // Basic Filled (Gray) - 기본 버튼 채움
-        "basic-filled": "bg-gray-300 text-white hover:bg-gray-500 active:bg-gray-700 dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-gray-300 dark:active:bg-gray-400",
-        // Negative (Red) - 삭제/경고 버튼 Outline
-        negative: "border-[0.75px] border-danger text-danger bg-transparent hover:bg-danger/50 hover:text-white active:bg-danger active:text-white",
-        // Negative Filled (Red) - 삭제/경고 버튼 채움
-        "negative-filled": "bg-danger text-white hover:bg-danger-400 active:bg-danger-500",
-        // Action (Blue) - 주요 액션 버튼 Outline
-        action: "border-[0.75px] border-primary text-primary bg-transparent hover:bg-primary/50 hover:text-white active:bg-primary active:text-white",
-        // Action Filled (Blue) - 주요 액션 버튼 채움
-        "action-filled": "bg-primary text-white hover:bg-primary-500 active:bg-primary-500",
+        // Ghost (Slate) - 중립 버튼 (Figma: ButtonGhost)
+        ghost: "bg-slate-50 border-[0.75px] border-slate-200 text-slate-600 hover:bg-slate-200 active:bg-slate-300 dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-600 dark:active:bg-slate-500",
+        // Ghost Outline (Slate) - 중립 버튼 아웃라인
+        "ghost-outline": "border-[0.75px] border-slate-500 text-slate-500 bg-transparent hover:bg-slate-500/50 hover:text-white active:bg-slate-500 active:text-white dark:border-slate-200 dark:text-slate-200 dark:hover:bg-slate-200/50 dark:active:bg-slate-200",
+        // Primary (Blue) - 주요 액션 버튼 (Figma: ButtonPrimary)
+        primary: "bg-blue-500 text-white hover:bg-blue-600 active:bg-blue-700",
+        // Primary Outline (Blue) - 주요 액션 버튼 아웃라인
+        "primary-outline": "border-[0.75px] border-blue-500 text-blue-500 bg-transparent hover:bg-blue-500/50 hover:text-white active:bg-blue-500 active:text-white",
+        // Danger (Red) - 삭제/경고 버튼 (Figma: ButtonDanger)
+        danger: "bg-red-500 text-white hover:bg-red-600 active:bg-red-700",
+        // Danger Outline (Red) - 삭제/경고 버튼 아웃라인
+        "danger-outline": "border-[0.75px] border-red-500 text-red-500 bg-transparent hover:bg-red-500/50 hover:text-white active:bg-red-500 active:text-white",
+        // Success (Green) - 완료/긍정 버튼 (Figma: ButtonPositive)
+        success: "bg-green-500 text-white hover:bg-green-600 active:bg-green-700",
+        // Success Outline (Green) - 완료/긍정 버튼 아웃라인
+        "success-outline": "border-[0.75px] border-green-500 text-green-500 bg-transparent hover:bg-green-500/50 hover:text-white active:bg-green-500 active:text-white",
+        // Text - 텍스트만 있는 버튼 (배경/테두리 없음)
+        text: "bg-transparent text-slate-600 hover:text-blue-500 active:text-blue-600 dark:text-slate-300 dark:hover:text-blue-400 dark:active:text-blue-500",
         // Legacy variants (하위 호환)
         default: "bg-primary text-primary-foreground hover:bg-primary/90",
         destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
         secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline"
       },
       size: {
@@ -38,23 +43,23 @@ const b = s(
       }
     },
     defaultVariants: {
-      variant: "basic",
+      variant: "ghost",
       size: "default"
     }
   }
-), v = g.forwardRef(
-  ({ className: e, variant: r, size: t, asChild: a = !1, ...o }, i) => /* @__PURE__ */ n(
-    a ? d : "button",
+), v = s.forwardRef(
+  ({ className: e, variant: t, size: r, asChild: o = !1, ...a }, i) => /* @__PURE__ */ n(
+    o ? b : "button",
     {
-      className: c(b({ variant: r, size: t, className: e })),
+      className: g(l({ variant: t, size: r, className: e })),
       ref: i,
-      ...o
+      ...a
     }
   )
 );
 v.displayName = "Button";
 export {
   v as Button,
-  b as buttonVariants
+  l as buttonVariants
 };
 //# sourceMappingURL=button.mjs.map

@@ -15,7 +15,7 @@ const meta = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['basic', 'basic-filled', 'negative', 'negative-filled', 'action', 'action-filled', 'default', 'destructive', 'outline', 'secondary', 'ghost', 'link'],
+      options: ['ghost', 'ghost-outline', 'primary', 'primary-outline', 'danger', 'danger-outline', 'success', 'success-outline', 'default', 'destructive', 'outline', 'secondary', 'link'],
       description: '버튼 스타일 변형',
     },
     size: {
@@ -41,26 +41,34 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-// Basic (Gray) - 기본 버튼
-export const Basic: Story = {
+// Ghost (Slate) - 중립 버튼
+export const Ghost: Story = {
   args: {
-    variant: 'basic',
+    variant: 'ghost',
     children: 'Buttons',
   },
 }
 
-// Negative (Red) - 삭제/경고 버튼
-export const Negative: Story = {
+// Primary (Blue) - 주요 액션 버튼
+export const Primary: Story = {
   args: {
-    variant: 'negative',
+    variant: 'primary',
     children: 'Buttons',
   },
 }
 
-// Action (Blue) - 주요 액션 버튼
-export const Action: Story = {
+// Danger (Red) - 삭제/경고 버튼
+export const Danger: Story = {
   args: {
-    variant: 'action',
+    variant: 'danger',
+    children: 'Buttons',
+  },
+}
+
+// Success (Green) - 완료/긍정 버튼
+export const Success: Story = {
+  args: {
+    variant: 'success',
     children: 'Buttons',
   },
 }
@@ -68,7 +76,7 @@ export const Action: Story = {
 // Disabled 상태
 export const Disabled: Story = {
   args: {
-    variant: 'basic',
+    variant: 'ghost',
     children: 'Buttons',
     disabled: true,
   },
@@ -77,7 +85,7 @@ export const Disabled: Story = {
 // 크기 변형
 export const Small: Story = {
   args: {
-    variant: 'basic',
+    variant: 'ghost',
     size: 'sm',
     children: 'Buttons',
   },
@@ -88,21 +96,23 @@ export const AllVariants: Story = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
       <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-        <span style={{ width: '100px', fontSize: '12px', color: '#666' }}>Outline</span>
-        <Button variant="basic">Buttons</Button>
-        <Button variant="negative">Buttons</Button>
-        <Button variant="action">Buttons</Button>
+        <span style={{ width: '100px', fontSize: '12px', color: '#666' }}>Filled</span>
+        <Button variant="ghost">Ghost</Button>
+        <Button variant="primary">Primary</Button>
+        <Button variant="danger">Danger</Button>
+        <Button variant="success">Success</Button>
       </div>
       <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-        <span style={{ width: '100px', fontSize: '12px', color: '#666' }}>Filled</span>
-        <Button variant="basic-filled">Buttons</Button>
-        <Button variant="negative-filled">Buttons</Button>
-        <Button variant="action-filled">Buttons</Button>
+        <span style={{ width: '100px', fontSize: '12px', color: '#666' }}>Outline</span>
+        <Button variant="ghost-outline">Ghost</Button>
+        <Button variant="primary-outline">Primary</Button>
+        <Button variant="danger-outline">Danger</Button>
+        <Button variant="success-outline">Success</Button>
       </div>
       <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
         <span style={{ width: '100px', fontSize: '12px', color: '#666' }}>Disabled</span>
-        <Button variant="basic" disabled>Buttons</Button>
-        <Button variant="basic-filled" disabled>Buttons</Button>
+        <Button variant="ghost" disabled>Ghost</Button>
+        <Button variant="primary" disabled>Primary</Button>
       </div>
     </div>
   ),
@@ -114,15 +124,15 @@ export const WithIcon: Story = {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
       <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
         <span style={{ width: '80px', fontSize: '12px', color: '#666' }}>default</span>
-        <Button variant="basic"><UploadIcon size={24} /> Buttons</Button>
-        <Button variant="negative"><DeleteIcon size={24} /> Buttons</Button>
-        <Button variant="action"><SearchIcon size={24} /> Buttons</Button>
+        <Button variant="ghost"><UploadIcon size={24} /> Buttons</Button>
+        <Button variant="danger"><DeleteIcon size={24} /> Buttons</Button>
+        <Button variant="primary"><SearchIcon size={24} /> Buttons</Button>
       </div>
       <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
         <span style={{ width: '80px', fontSize: '12px', color: '#666' }}>sm</span>
-        <Button variant="basic" size="sm"><UploadIcon size={16} /> Buttons</Button>
-        <Button variant="negative" size="sm"><DeleteIcon size={16} /> Buttons</Button>
-        <Button variant="action" size="sm"><SearchIcon size={16} /> Buttons</Button>
+        <Button variant="ghost" size="sm"><UploadIcon size={16} /> Buttons</Button>
+        <Button variant="danger" size="sm"><DeleteIcon size={16} /> Buttons</Button>
+        <Button variant="primary" size="sm"><SearchIcon size={16} /> Buttons</Button>
       </div>
     </div>
   ),
@@ -134,15 +144,15 @@ export const IconOnly: Story = {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
       <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
         <span style={{ width: '80px', fontSize: '12px', color: '#666' }}>icon</span>
-        <Button variant="basic" size="icon" aria-label="업로드"><UploadIcon size={24} /></Button>
-        <Button variant="negative" size="icon" aria-label="삭제"><DeleteIcon size={24} /></Button>
-        <Button variant="action" size="icon" aria-label="검색"><SearchIcon size={24} /></Button>
+        <Button variant="ghost" size="icon" aria-label="업로드"><UploadIcon size={24} /></Button>
+        <Button variant="danger" size="icon" aria-label="삭제"><DeleteIcon size={24} /></Button>
+        <Button variant="primary" size="icon" aria-label="검색"><SearchIcon size={24} /></Button>
       </div>
       <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
         <span style={{ width: '80px', fontSize: '12px', color: '#666' }}>icon-sm</span>
-        <Button variant="basic" size="icon-sm" aria-label="업로드"><UploadIcon size={24} /></Button>
-        <Button variant="negative" size="icon-sm" aria-label="삭제"><DeleteIcon size={24} /></Button>
-        <Button variant="action" size="icon-sm" aria-label="검색"><SearchIcon size={24} /></Button>
+        <Button variant="ghost" size="icon-sm" aria-label="업로드"><UploadIcon size={24} /></Button>
+        <Button variant="danger" size="icon-sm" aria-label="삭제"><DeleteIcon size={24} /></Button>
+        <Button variant="primary" size="icon-sm" aria-label="검색"><SearchIcon size={24} /></Button>
       </div>
     </div>
   ),

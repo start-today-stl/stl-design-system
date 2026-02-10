@@ -29,10 +29,10 @@ const VisitTag = React.forwardRef<HTMLDivElement, VisitTagProps>(
         ref={ref}
         className={cn(
           "inline-flex h-9 items-center justify-center gap-0.5 p-2 rounded-[5px] whitespace-nowrap flex-shrink-0",
-          "border-[0.75px] border-gray-100 dark:border-gray-700",
-          "bg-white dark:bg-dark-500",
-          "text-xs text-gray-700 dark:text-gray-300 tracking-[-0.12px]",
-          "hover:border-gray-200 dark:hover:border-gray-600 transition-colors",
+          "border-[0.75px] border-slate-100 dark:border-slate-700",
+          "bg-white dark:bg-slate-900",
+          "text-xs text-slate-700 dark:text-slate-300 tracking-[-0.12px]",
+          "hover:border-slate-200 dark:hover:border-slate-600 transition-colors",
           className
         )}
         {...props}
@@ -41,7 +41,7 @@ const VisitTag = React.forwardRef<HTMLDivElement, VisitTagProps>(
         <button
           type="button"
           onClick={handleClick}
-          className="hover:text-primary dark:hover:text-primary-300 transition-colors"
+          className="hover:text-blue-500 dark:hover:text-blue-300 transition-colors"
         >
           {label}
         </button>
@@ -54,7 +54,7 @@ const VisitTag = React.forwardRef<HTMLDivElement, VisitTagProps>(
               e.stopPropagation()
               onRemove()
             }}
-            className="flex-shrink-0 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
+            className="flex-shrink-0 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 transition-colors"
             aria-label={`${label} 삭제`}
           >
             <XIcon size={20} />

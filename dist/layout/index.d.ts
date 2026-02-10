@@ -12,3 +12,4 @@ export type { NavigationConfig, NavItemConfig, NavGroupConfig, TopLevelNavItem, 
 export { isNavGroup } from './types';
 export * from './search-bar';
 export * from './visit-tag';
+export * from './page-title';

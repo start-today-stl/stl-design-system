@@ -70,13 +70,10 @@ function LanguageSelector() {
   return (
     <Dropdown open={open} onOpenChange={setOpen}>
       <DropdownTrigger asChild>
-        <button
-          type="button"
-          className="flex items-center gap-0.5 text-sm text-gray-700 dark:text-gray-300 tracking-[-0.14px] hover:text-primary dark:hover:text-primary-300 transition-colors"
-        >
+        <Button variant="text" className="text-sm tracking-[-0.14px]">
           <span>{currentLang?.label || "Language"}</span>
           {open ? <DownIcon size={24} /> : <UpIcon size={24} />}
-        </button>
+        </Button>
       </DropdownTrigger>
       <DropdownContent align="end" className="min-w-[100px]">
         {languages.map((lang) => (
