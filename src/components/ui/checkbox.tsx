@@ -22,18 +22,37 @@ const CheckIcon = () => (
   </svg>
 )
 
+// 인디터미네이트 아이콘 (가로선)
+const IndeterminateIcon = () => (
+  <svg
+    width="10"
+    height="2"
+    viewBox="0 0 10 2"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path d="M0 1H10" stroke="currentColor" strokeWidth="1.5" />
+  </svg>
+)
+
 export interface CheckboxProps
   extends React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root> {
   label?: string
+  /** 인디터미네이트 (일부 선택) 상태 */
+  indeterminate?: boolean
 }
 
 const Checkbox = React.forwardRef<
   React.ElementRef<typeof CheckboxPrimitive.Root>,
   CheckboxProps
->(({ className, label, ...props }, ref) => {
+>(({ className, label, indeterminate, checked, ...props }, ref) => {
+  // indeterminate 상태면 checked를 "indeterminate"로 설정
+  const checkboxState = indeterminate ? "indeterminate" : checked
+
   const checkbox = (
     <CheckboxPrimitive.Root
       ref={ref}
+      checked={checkboxState}
       className={cn(
         // 기본 스타일 (20x20, 2px radius)
         "peer h-5 w-5 shrink-0 rounded-[2px] border-[0.75px] flex items-center justify-center cursor-pointer",
@@ -41,18 +60,21 @@ const Checkbox = React.forwardRef<
         "border-slate-500 bg-white",
         // 체크 상태
         "data-[state=checked]:bg-blue-500 data-[state=checked]:border-slate-500 data-[state=checked]:text-white",
+        // 인디터미네이트 상태
+        "data-[state=indeterminate]:bg-blue-500 data-[state=indeterminate]:border-slate-500 data-[state=indeterminate]:text-white",
         // 포커스 상태 (inset ring으로 레이아웃 시프트 방지)
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset",
         // 비활성화 상태
         "disabled:cursor-not-allowed disabled:opacity-30",
         // 다크모드
         "dark:border-slate-200 dark:bg-slate-900 dark:data-[state=checked]:bg-blue-500 dark:data-[state=checked]:border-slate-200",
+        "dark:data-[state=indeterminate]:bg-blue-500 dark:data-[state=indeterminate]:border-slate-200",
         className
       )}
       {...props}
     >
       <CheckboxPrimitive.Indicator className="flex items-center justify-center text-current">
-        <CheckIcon />
+        {indeterminate ? <IndeterminateIcon /> : <CheckIcon />}
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>
   )

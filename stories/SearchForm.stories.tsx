@@ -1,12 +1,12 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { SearchForm } from "@/components/patterns/search-form";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { SearchForm } from "../src/components/table";
 import { SearchIcon } from "@/icons";
 import { InputField } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 
 const meta = {
-  title: "Patterns/SearchForm",
+  title: "Table/SearchForm",
   component: SearchForm,
   parameters: {
     layout: "padded",

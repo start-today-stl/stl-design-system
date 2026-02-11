@@ -1,10 +1,10 @@
-import { jsx as n } from "react/jsx-runtime";
-import * as s from "react";
-import { Slot as b } from "@radix-ui/react-slot";
-import { cva as d } from "class-variance-authority";
-import { cn as g } from "../../lib/utils.mjs";
-const l = d(
-  "inline-flex items-center justify-center gap-0.5 whitespace-nowrap font-normal transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-30 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:-ml-1",
+import { jsx as s } from "react/jsx-runtime";
+import * as n from "react";
+import { Slot as d } from "@radix-ui/react-slot";
+import { cva as b } from "class-variance-authority";
+import { cn as l } from "../../lib/utils.mjs";
+const g = b(
+  "inline-flex items-center justify-center gap-0.5 whitespace-nowrap font-normal transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-30 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&>svg:first-child:not(:last-child)]:-ml-1 [&>svg:last-child:not(:first-child)]:-mr-1",
   {
     variants: {
       variant: {
@@ -47,19 +47,19 @@ const l = d(
       size: "default"
     }
   }
-), v = s.forwardRef(
-  ({ className: e, variant: t, size: r, asChild: o = !1, ...a }, i) => /* @__PURE__ */ n(
-    o ? b : "button",
+), c = n.forwardRef(
+  ({ className: e, variant: t, size: r, asChild: o = !1, ...a }, i) => /* @__PURE__ */ s(
+    o ? d : "button",
     {
-      className: g(l({ variant: t, size: r, className: e })),
+      className: l(g({ variant: t, size: r, className: e })),
       ref: i,
       ...a
     }
   )
 );
-v.displayName = "Button";
+c.displayName = "Button";
 export {
-  v as Button,
-  l as buttonVariants
+  c as Button,
+  g as buttonVariants
 };
 //# sourceMappingURL=button.mjs.map

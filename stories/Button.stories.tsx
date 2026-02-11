@@ -15,7 +15,7 @@ const meta = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['ghost', 'ghost-outline', 'primary', 'primary-outline', 'danger', 'danger-outline', 'success', 'success-outline', 'default', 'destructive', 'outline', 'secondary', 'link'],
+      options: ['ghost', 'ghost-outline', 'primary', 'primary-outline', 'danger', 'danger-outline', 'success', 'success-outline', 'text', 'default', 'destructive', 'outline', 'secondary', 'link'],
       description: '버튼 스타일 변형',
     },
     size: {
@@ -108,6 +108,10 @@ export const AllVariants: Story = {
         <Button variant="primary-outline">Primary</Button>
         <Button variant="danger-outline">Danger</Button>
         <Button variant="success-outline">Success</Button>
+      </div>
+      <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+        <span style={{ width: '100px', fontSize: '12px', color: '#666' }}>Text</span>
+        <Button variant="text">Text</Button>
       </div>
       <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
         <span style={{ width: '100px', fontSize: '12px', color: '#666' }}>Disabled</span>

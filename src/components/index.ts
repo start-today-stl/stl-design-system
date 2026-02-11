@@ -28,12 +28,11 @@ export * from './ui/sheet'
 export * from './ui/slider'
 export * from './ui/sonner'
 export * from './ui/switch'
-export * from './ui/table'
 export * from './ui/tabs'
 export * from './ui/textarea'
 export * from './ui/tooltip'
 export { TooltipArrowContent } from './ui/tooltip-side'
 export * from './ui/modal'
 
-// Pattern Components
-export * from './patterns'
+// Table Components (테이블 관련 전체)
+export * from './table'
