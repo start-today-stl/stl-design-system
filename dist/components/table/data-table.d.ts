@@ -91,8 +91,20 @@ export interface DataTableProps<T extends {
     rowClassName?: (row: T) => string;
     /** 테이블 본문 최대 높이 (초과 시 내부 스크롤) */
     maxHeight?: number | string;
+    /** 컬럼 리사이징 활성화 */
+    resizable?: boolean;
+    /** 컬럼 너비 상태 (제어 컴포넌트) */
+    columnWidths?: Record<string, number>;
+    /** 컬럼 너비 변경 핸들러 */
+    onColumnResize?: (columnKey: keyof T, width: number) => void;
+    /** 컬럼 순서 변경 활성화 */
+    columnReorderable?: boolean;
+    /** 컬럼 순서 (accessorKey 배열) */
+    columnOrder?: (keyof T)[];
+    /** 컬럼 순서 변경 핸들러 */
+    onColumnReorder?: (newOrder: (keyof T)[]) => void;
 }
 declare function DataTable<T extends {
     id: string | number;
-}>({ columns, data, selectable, selectedIds, onSelectionChange, sortState, onSortChange, onRowClick, onCellChange, expandable, emptyMessage, className, rowClassName, maxHeight, }: DataTableProps<T>): import("react/jsx-runtime").JSX.Element;
+}>({ columns, data, selectable, selectedIds, onSelectionChange, sortState, onSortChange, onRowClick, onCellChange, expandable, emptyMessage, className, rowClassName, maxHeight, resizable, columnWidths, onColumnResize, columnReorderable, columnOrder, onColumnReorder, }: DataTableProps<T>): import("react/jsx-runtime").JSX.Element;
 export { DataTable };

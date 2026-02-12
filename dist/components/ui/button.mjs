@@ -1,8 +1,8 @@
-import { jsx as s } from "react/jsx-runtime";
+import { jsx as i } from "react/jsx-runtime";
 import * as n from "react";
-import { Slot as d } from "@radix-ui/react-slot";
+import { Slot as l } from "@radix-ui/react-slot";
 import { cva as b } from "class-variance-authority";
-import { cn as l } from "../../lib/utils.mjs";
+import { cn as d } from "../../lib/utils.mjs";
 const g = b(
   "inline-flex items-center justify-center gap-0.5 whitespace-nowrap font-normal transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-30 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&>svg:first-child:not(:last-child)]:-ml-1 [&>svg:last-child:not(:first-child)]:-mr-1",
   {
@@ -25,13 +25,7 @@ const g = b(
         // Success Outline (Green) - 완료/긍정 버튼 아웃라인
         "success-outline": "border-[0.75px] border-green-500 text-green-500 bg-transparent hover:bg-green-500/50 hover:text-white active:bg-green-500 active:text-white",
         // Text - 텍스트만 있는 버튼 (배경/테두리 없음)
-        text: "bg-transparent text-slate-600 hover:text-blue-500 active:text-blue-600 dark:text-slate-300 dark:hover:text-blue-400 dark:active:text-blue-500",
-        // Legacy variants (하위 호환)
-        default: "bg-primary text-primary-foreground hover:bg-primary/90",
-        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
-        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        link: "text-primary underline-offset-4 hover:underline"
+        text: "bg-transparent text-slate-600 hover:text-blue-500 active:text-blue-600 dark:text-slate-300 dark:hover:text-blue-400 dark:active:text-blue-500"
       },
       size: {
         // 텍스트 또는 아이콘+텍스트 버튼
@@ -47,19 +41,19 @@ const g = b(
       size: "default"
     }
   }
-), c = n.forwardRef(
-  ({ className: e, variant: t, size: r, asChild: o = !1, ...a }, i) => /* @__PURE__ */ s(
-    o ? d : "button",
+), v = n.forwardRef(
+  ({ className: e, variant: t, size: r, asChild: a = !1, ...o }, s) => /* @__PURE__ */ i(
+    a ? l : "button",
     {
-      className: l(g({ variant: t, size: r, className: e })),
-      ref: i,
-      ...a
+      className: d(g({ variant: t, size: r, className: e })),
+      ref: s,
+      ...o
     }
   )
 );
-c.displayName = "Button";
+v.displayName = "Button";
 export {
-  c as Button,
+  v as Button,
   g as buttonVariants
 };
 //# sourceMappingURL=button.mjs.map
