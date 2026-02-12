@@ -31,7 +31,7 @@ export const Default: Story = {
   render: () => (
     <Dropdown>
       <DropdownTrigger asChild>
-        <Button variant="outline">메뉴 열기</Button>
+        <Button variant="ghost-outline">메뉴 열기</Button>
       </DropdownTrigger>
       <DropdownContent>
         <DropdownItem>프로필</DropdownItem>
@@ -67,7 +67,7 @@ export const WithLabelAndGroup: Story = {
   render: () => (
     <Dropdown>
       <DropdownTrigger asChild>
-        <Button variant="outline">계정</Button>
+        <Button variant="ghost-outline">계정</Button>
       </DropdownTrigger>
       <DropdownContent className="w-56">
         <DropdownLabel>내 계정</DropdownLabel>
@@ -94,7 +94,7 @@ export const WithCheckboxItems: Story = {
     return (
       <Dropdown>
         <DropdownTrigger asChild>
-          <Button variant="outline">보기 설정</Button>
+          <Button variant="ghost-outline">보기 설정</Button>
         </DropdownTrigger>
         <DropdownContent className="w-56">
           <DropdownLabel>패널 표시</DropdownLabel>
@@ -131,7 +131,7 @@ export const WithRadioGroup: Story = {
     return (
       <Dropdown>
         <DropdownTrigger asChild>
-          <Button variant="outline">언어 선택</Button>
+          <Button variant="ghost-outline">언어 선택</Button>
         </DropdownTrigger>
         <DropdownContent className="w-56">
           <DropdownLabel>언어</DropdownLabel>
@@ -152,7 +152,7 @@ export const WithDisabledItems: Story = {
   render: () => (
     <Dropdown>
       <DropdownTrigger asChild>
-        <Button variant="outline">작업</Button>
+        <Button variant="ghost-outline">작업</Button>
       </DropdownTrigger>
       <DropdownContent>
         <DropdownItem>편집</DropdownItem>
@@ -170,7 +170,7 @@ export const Positioning: Story = {
     <div className="flex gap-8">
       <Dropdown>
         <DropdownTrigger asChild>
-          <Button variant="outline">아래 (기본)</Button>
+          <Button variant="ghost-outline">아래 (기본)</Button>
         </DropdownTrigger>
         <DropdownContent side="bottom" align="start">
           <DropdownItem>옵션 1</DropdownItem>
@@ -180,7 +180,7 @@ export const Positioning: Story = {
 
       <Dropdown>
         <DropdownTrigger asChild>
-          <Button variant="outline">오른쪽</Button>
+          <Button variant="ghost-outline">오른쪽</Button>
         </DropdownTrigger>
         <DropdownContent side="right" align="start">
           <DropdownItem>옵션 1</DropdownItem>
@@ -190,7 +190,7 @@ export const Positioning: Story = {
 
       <Dropdown>
         <DropdownTrigger asChild>
-          <Button variant="outline">위</Button>
+          <Button variant="ghost-outline">위</Button>
         </DropdownTrigger>
         <DropdownContent side="top" align="start">
           <DropdownItem>옵션 1</DropdownItem>
@@ -200,7 +200,7 @@ export const Positioning: Story = {
 
       <Dropdown>
         <DropdownTrigger asChild>
-          <Button variant="outline">왼쪽</Button>
+          <Button variant="ghost-outline">왼쪽</Button>
         </DropdownTrigger>
         <DropdownContent side="left" align="start">
           <DropdownItem>옵션 1</DropdownItem>
@@ -225,7 +225,7 @@ export const ManualActiveState: Story = {
     return (
       <Dropdown>
         <DropdownTrigger asChild>
-          <Button variant="outline">
+          <Button variant="ghost-outline">
             {options.find((o) => o.value === selected)?.label}
           </Button>
         </DropdownTrigger>

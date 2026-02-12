@@ -26,7 +26,7 @@ export const AllSides: Story = {
         {(["top", "right", "bottom", "left"] as const).map((side) => (
           <Tooltip key={side}>
             <TooltipTrigger asChild>
-              <Button variant="outline" className="capitalize">
+              <Button variant="ghost-outline" className="capitalize">
                 {side}
               </Button>
             </TooltipTrigger>
@@ -46,7 +46,7 @@ export const Top: Story = {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button variant="outline">위로 툴팁</Button>
+          <Button variant="ghost-outline">위로 툴팁</Button>
         </TooltipTrigger>
         <TooltipArrowContent side="top">
           <p>위쪽에 표시되는 툴팁</p>
