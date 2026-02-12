@@ -82,7 +82,7 @@ export const WithError: Story = {
 export const ButtonFirst: Story = {
   render: () => (
     <InputGroup size="md">
-      <Button variant="secondary">선택</Button>
+      <Button variant="ghost">선택</Button>
       <Input placeholder="값을 입력하세요" className="flex-1" />
     </InputGroup>
   ),
@@ -92,7 +92,7 @@ export const ButtonFirst: Story = {
 export const MultipleElements: Story = {
   render: () => (
     <InputGroup label="금액" size="lg">
-      <Button variant="secondary">KRW</Button>
+      <Button variant="ghost">KRW</Button>
       <Input placeholder="금액을 입력하세요" type="number" className="flex-1" />
       <Button variant="primary">확인</Button>
     </InputGroup>

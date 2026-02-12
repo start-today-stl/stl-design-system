@@ -35,15 +35,6 @@ const buttonVariants = cva(
           "border-[0.75px] border-green-500 text-green-500 bg-transparent hover:bg-green-500/50 hover:text-white active:bg-green-500 active:text-white",
         // Text - 텍스트만 있는 버튼 (배경/테두리 없음)
         text: "bg-transparent text-slate-600 hover:text-blue-500 active:text-blue-600 dark:text-slate-300 dark:hover:text-blue-400 dark:active:text-blue-500",
-        // Legacy variants (하위 호환)
-        default: "bg-primary text-primary-foreground hover:bg-primary/90",
-        destructive:
-          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        outline:
-          "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
-        secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
         // 텍스트 또는 아이콘+텍스트 버튼
