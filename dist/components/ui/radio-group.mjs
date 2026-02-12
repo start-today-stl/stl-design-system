@@ -1,32 +1,54 @@
-import { jsx as e } from "react/jsx-runtime";
-import * as t from "react";
-import * as r from "@radix-ui/react-radio-group";
-import { Circle as m } from "lucide-react";
-import { cn as s } from "../../lib/utils.mjs";
-const c = t.forwardRef(({ className: o, ...i }, a) => /* @__PURE__ */ e(
-  r.Root,
+import { jsx as r, jsxs as d } from "react/jsx-runtime";
+import * as l from "react";
+import * as s from "@radix-ui/react-radio-group";
+import { cn as n } from "../../lib/utils.mjs";
+const c = l.forwardRef(({ className: a, ...e }, t) => /* @__PURE__ */ r(
+  s.Root,
   {
-    className: s("grid gap-2", o),
-    ...i,
-    ref: a
+    className: n("grid gap-2", a),
+    ...e,
+    ref: t
   }
 ));
-c.displayName = r.Root.displayName;
-const l = t.forwardRef(({ className: o, ...i }, a) => /* @__PURE__ */ e(
-  r.Item,
-  {
-    ref: a,
-    className: s(
-      "aspect-square h-4 w-4 rounded-full border border-primary text-primary ring-offset-background focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
-      o
-    ),
-    ...i,
-    children: /* @__PURE__ */ e(r.Indicator, { className: "flex items-center justify-center", children: /* @__PURE__ */ e(m, { className: "h-2.5 w-2.5 fill-current text-current" }) })
-  }
-));
-l.displayName = r.Item.displayName;
+c.displayName = s.Root.displayName;
+const m = l.forwardRef(({ className: a, label: e, ...t }, o) => {
+  const i = /* @__PURE__ */ r(
+    s.Item,
+    {
+      ref: o,
+      className: n(
+        // 기본 스타일 (20x20, 원형)
+        "peer h-5 w-5 shrink-0 rounded-full border-[0.75px] flex items-center justify-center cursor-pointer",
+        // 미선택 상태
+        "border-slate-500 bg-white",
+        // 선택 상태 - 테두리와 내부 원 모두 blue
+        "data-[state=checked]:border-blue-500",
+        // 포커스 상태
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset",
+        // 비활성화 상태
+        "disabled:cursor-not-allowed disabled:opacity-30",
+        // 다크모드
+        "dark:border-slate-200 dark:bg-slate-900 dark:data-[state=checked]:border-blue-500",
+        a
+      ),
+      ...t,
+      children: /* @__PURE__ */ r(s.Indicator, { className: "flex items-center justify-center", children: /* @__PURE__ */ r("span", { className: "h-2.5 w-2.5 rounded-full bg-blue-500" }) })
+    }
+  );
+  return e ? /* @__PURE__ */ d("label", { className: "inline-flex items-center gap-1.5 cursor-pointer align-middle", children: [
+    i,
+    /* @__PURE__ */ r("span", { className: "text-xs text-slate-600 tracking-[-0.12px] dark:text-slate-200 leading-none", children: e })
+  ] }) : i;
+});
+m.displayName = s.Item.displayName;
+const p = l.forwardRef(({ className: a, label: e, children: t, ...o }, i) => /* @__PURE__ */ d("div", { className: "flex flex-col gap-1.5", children: [
+  e && /* @__PURE__ */ r("span", { className: "text-[length:var(--text-body-2)] text-slate-600 dark:text-slate-50", children: e }),
+  /* @__PURE__ */ r(c, { ref: i, className: a, ...o, children: t })
+] }));
+p.displayName = "RadioGroupField";
 export {
   c as RadioGroup,
-  l as RadioGroupItem
+  p as RadioGroupField,
+  m as RadioGroupItem
 };
 //# sourceMappingURL=radio-group.mjs.map
