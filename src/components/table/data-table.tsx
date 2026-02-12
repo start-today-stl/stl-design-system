@@ -1,4 +1,21 @@
 import * as React from "react"
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from "@dnd-kit/core"
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  horizontalListSortingStrategy,
+  useSortable,
+} from "@dnd-kit/sortable"
+import { CSS } from "@dnd-kit/utilities"
 
 import { cn } from "@/lib/utils"
 import {
@@ -13,7 +30,7 @@ import {
 } from "@/components/table/table"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
-import { RightIcon, DownIcon } from "@/icons"
+import { RightIcon, DownIcon, DragHandleIcon } from "@/icons"
 
 /** 편집 컴포넌트 Props */
 export interface EditComponentProps<T, K extends keyof T = keyof T> {
@@ -122,6 +139,12 @@ export interface DataTableProps<T extends { id: string | number }> {
   columnWidths?: Record<string, number>
   /** 컬럼 너비 변경 핸들러 */
   onColumnResize?: (columnKey: keyof T, width: number) => void
+  /** 컬럼 순서 변경 활성화 */
+  columnReorderable?: boolean
+  /** 컬럼 순서 (accessorKey 배열) */
+  columnOrder?: (keyof T)[]
+  /** 컬럼 순서 변경 핸들러 */
+  onColumnReorder?: (newOrder: (keyof T)[]) => void
 }
 
 /** 기본 편집 컴포넌트 (Input) */
@@ -168,6 +191,66 @@ function DefaultEditComponent<T>({
   )
 }
 
+/** 드래그 가능한 헤더 셀 */
+interface SortableHeaderCellProps {
+  id: string
+  children: React.ReactNode
+  className?: string
+  style?: React.CSSProperties
+  disabled?: boolean
+}
+
+function SortableHeaderCell({
+  id,
+  children,
+  className,
+  style,
+  disabled,
+}: SortableHeaderCellProps) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id, disabled })
+
+  const dragStyle: React.CSSProperties = {
+    ...style,
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+    cursor: disabled ? undefined : "grab",
+  }
+
+  return (
+    <th
+      ref={setNodeRef}
+      style={dragStyle}
+      className={cn(
+        "group/drag h-9 pl-1.5 pr-1.5 py-1.5 text-left align-middle font-medium text-[#798698] dark:text-slate-300",
+        "bg-[#eaedf1] dark:bg-slate-800",
+        "[&:has([role=checkbox])]:pr-0",
+        "hover:bg-slate-200/70 dark:hover:bg-slate-700/70",
+        "transition-colors",
+        isDragging && "z-50",
+        className
+      )}
+      {...attributes}
+      {...listeners}
+    >
+      <span className="flex items-center gap-0.5">
+        <DragHandleIcon
+          size={16}
+          className="opacity-30 group-hover/drag:opacity-70 transition-opacity flex-shrink-0"
+        />
+        {children}
+      </span>
+    </th>
+  )
+}
+
 function DataTable<T extends { id: string | number }>({
   columns,
   data,
@@ -186,6 +269,9 @@ function DataTable<T extends { id: string | number }>({
   resizable = false,
   columnWidths,
   onColumnResize,
+  columnReorderable = false,
+  columnOrder,
+  onColumnReorder,
 }: DataTableProps<T>) {
   const [editingCell, setEditingCell] = React.useState<EditingCell<T> | null>(null)
   const [editValue, setEditValue] = React.useState<T[keyof T] | null>(null)
@@ -202,6 +288,53 @@ function DataTable<T extends { id: string | number }>({
   const [resizingColumn, setResizingColumn] = React.useState<keyof T | null>(null)
   const resizeStartX = React.useRef<number>(0)
   const resizeStartWidth = React.useRef<number>(0)
+  // 내부 컬럼 순서 상태 (비제어 컴포넌트용)
+  const [internalColumnOrder, setInternalColumnOrder] = React.useState<(keyof T)[]>(() =>
+    columns.map((col) => col.accessorKey)
+  )
+
+  // 컬럼 순서 (제어/비제어)
+  const currentColumnOrder = columnOrder ?? internalColumnOrder
+  const orderedColumns = React.useMemo(() => {
+    if (!columnReorderable) return columns
+    return currentColumnOrder
+      .map((key) => columns.find((col) => col.accessorKey === key))
+      .filter((col): col is DataTableColumn<T> => col !== undefined)
+  }, [columns, currentColumnOrder, columnReorderable])
+
+  // dnd-kit 센서 설정
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 5, // 5px 이상 드래그해야 활성화
+      },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  )
+
+  // 드래그 완료 핸들러
+  const handleDragEnd = React.useCallback(
+    (event: DragEndEvent) => {
+      const { active, over } = event
+      if (!over || active.id === over.id) return
+
+      const oldIndex = currentColumnOrder.findIndex((key) => String(key) === active.id)
+      const newIndex = currentColumnOrder.findIndex((key) => String(key) === over.id)
+
+      if (oldIndex === -1 || newIndex === -1) return
+
+      const newOrder = arrayMove(currentColumnOrder, oldIndex, newIndex)
+
+      if (onColumnReorder) {
+        onColumnReorder(newOrder)
+      } else {
+        setInternalColumnOrder(newOrder)
+      }
+    },
+    [currentColumnOrder, onColumnReorder]
+  )
 
   const expandedRowIds = expandable?.expandedRowIds ?? internalExpandedIds
   const setExpandedRowIds = expandable?.onExpandedChange ?? setInternalExpandedIds
@@ -401,7 +534,7 @@ function DataTable<T extends { id: string | number }>({
             isHeader
               ? "bg-[#eaedf1] dark:bg-slate-800"
               : isSelected
-                ? "bg-blue-50 dark:bg-blue-900"
+                ? "bg-blue-50 dark:bg-blue-950/30"
                 : "bg-slate-50 dark:bg-slate-800 group-hover:bg-slate-100 dark:group-hover:bg-slate-700",
             isLastLeft && "shadow-[2px_0_4px_rgba(0,0,0,0.08)]"
           ),
@@ -419,7 +552,7 @@ function DataTable<T extends { id: string | number }>({
           isHeader
             ? "bg-[#eaedf1] dark:bg-slate-800"
             : isSelected
-              ? "bg-blue-50 dark:bg-blue-900"
+              ? "bg-blue-50 dark:bg-blue-950/30"
               : "bg-slate-50 dark:bg-slate-800 group-hover:bg-slate-100 dark:group-hover:bg-slate-700",
           isFirstRight && "shadow-[-2px_0_4px_rgba(0,0,0,0.08)]"
         ),
@@ -506,7 +639,88 @@ function DataTable<T extends { id: string | number }>({
   const CHECKBOX_WIDTH = 48 // w-12 = 48px
   const EXPAND_WIDTH = 40 // w-10 = 40px
 
-  return (
+  // 컬럼 헤더 렌더링 함수
+  const renderColumnHeader = (column: DataTableColumn<T>) => {
+    const stickyData = getStickyStyles(column, true)
+    const toPx = (v: string | number) => typeof v === "number" ? `${v}px` : v
+    const baseStyle: React.CSSProperties = {}
+    if (!column.sticky) {
+      const resizedWidth = resizable ? getColumnWidth(column) : undefined
+      if (resizedWidth !== undefined) {
+        baseStyle.width = `${resizedWidth}px`
+        baseStyle.minWidth = `${resizedWidth}px`
+      } else {
+        if (column.width) baseStyle.width = toPx(column.width)
+        if (column.minWidth) baseStyle.minWidth = toPx(column.minWidth)
+      }
+    }
+    const style = { ...baseStyle, ...stickyData.style }
+
+    // 리사이즈 핸들 컴포넌트
+    const resizeHandle = resizable && (
+      <div
+        className={cn(
+          "absolute top-0 h-full w-[9px] cursor-col-resize opacity-0 hover:opacity-100 transition-opacity z-30",
+          resizingColumn === column.accessorKey && "opacity-100"
+        )}
+        style={{
+          right: "-4px",
+          background: "linear-gradient(to right, transparent, rgba(148,163,184,0.5) 50%, transparent)"
+        }}
+        onMouseDown={(e) => handleResizeStart(e, column)}
+        onPointerDown={(e) => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
+      />
+    )
+
+    // 드래그 가능 여부 (sticky 컬럼은 드래그 불가)
+    const isDraggable = columnReorderable && !column.sticky && !column.sortable
+
+    if (isDraggable) {
+      return (
+        <SortableHeaderCell
+          key={String(column.accessorKey)}
+          id={String(column.accessorKey)}
+          style={style}
+          className={cn(getAlignClass(column.align), stickyData.className, resizable && "relative overflow-visible")}
+        >
+          {column.header}
+          {resizeHandle}
+        </SortableHeaderCell>
+      )
+    }
+
+    if (column.sortable) {
+      return (
+        <TableSortableHead
+          key={String(column.accessorKey)}
+          sortDirection={getSortDirection(column.accessorKey)}
+          onSort={() => handleSort(column.accessorKey)}
+          style={style}
+          className={cn(getAlignClass(column.align), stickyData.className, resizable && "relative overflow-visible")}
+        >
+          {column.header}
+          {resizeHandle}
+        </TableSortableHead>
+      )
+    }
+
+    return (
+      <TableHead
+        key={String(column.accessorKey)}
+        style={style}
+        className={cn(getAlignClass(column.align), stickyData.className, resizable && "relative overflow-visible")}
+      >
+        {column.header}
+        {resizeHandle}
+      </TableHead>
+    )
+  }
+
+  const columnsToRender = columnReorderable ? orderedColumns : columns
+  const columnIds = columnsToRender.filter(col => !col.sticky).map(col => String(col.accessorKey))
+
+  const tableContent = (
     <Table className={className} maxHeight={maxHeight}>
       <TableHeader>
         <TableRow>
@@ -548,67 +762,13 @@ function DataTable<T extends { id: string | number }>({
             </TableHead>
           )}
 
-          {columns.map((column) => {
-            const stickyData = getStickyStyles(column, true)
-            // sticky 컬럼은 getStickyStyles에서 width/minWidth/maxWidth 모두 설정
-            // non-sticky 컬럼은 사용자가 지정한 width 또는 minWidth 사용
-            const toPx = (v: string | number) => typeof v === "number" ? `${v}px` : v
-            const baseStyle: React.CSSProperties = {}
-            if (!column.sticky) {
-              // resizable일 때 getColumnWidth 사용
-              const resizedWidth = resizable ? getColumnWidth(column) : undefined
-              if (resizedWidth !== undefined) {
-                baseStyle.width = `${resizedWidth}px`
-                baseStyle.minWidth = `${resizedWidth}px`
-              } else {
-                if (column.width) baseStyle.width = toPx(column.width)
-                if (column.minWidth) baseStyle.minWidth = toPx(column.minWidth)
-              }
-            }
-            const style = { ...baseStyle, ...stickyData.style }
-
-            // 리사이즈 핸들 컴포넌트
-            const resizeHandle = resizable && (
-              <div
-                className={cn(
-                  "absolute top-0 h-full w-[9px] cursor-col-resize opacity-0 hover:opacity-100 transition-opacity z-30",
-                  resizingColumn === column.accessorKey && "opacity-100"
-                )}
-                style={{
-                  right: "-4px",
-                  background: "linear-gradient(to right, transparent, rgba(148,163,184,0.5) 50%, transparent)"
-                }}
-                onMouseDown={(e) => handleResizeStart(e, column)}
-                onClick={(e) => e.stopPropagation()}
-              />
-            )
-
-            if (column.sortable) {
-              return (
-                <TableSortableHead
-                  key={String(column.accessorKey)}
-                  sortDirection={getSortDirection(column.accessorKey)}
-                  onSort={() => handleSort(column.accessorKey)}
-                  style={style}
-                  className={cn(getAlignClass(column.align), stickyData.className, resizable && "relative overflow-visible")}
-                >
-                  {column.header}
-                  {resizeHandle}
-                </TableSortableHead>
-              )
-            }
-
-            return (
-              <TableHead
-                key={String(column.accessorKey)}
-                style={style}
-                className={cn(getAlignClass(column.align), stickyData.className, resizable && "relative overflow-visible")}
-              >
-                {column.header}
-                {resizeHandle}
-              </TableHead>
-            )
-          })}
+          {columnReorderable ? (
+            <SortableContext items={columnIds} strategy={horizontalListSortingStrategy}>
+              {columnsToRender.map(renderColumnHeader)}
+            </SortableContext>
+          ) : (
+            columnsToRender.map(renderColumnHeader)
+          )}
         </TableRow>
       </TableHeader>
 
@@ -641,7 +801,7 @@ function DataTable<T extends { id: string | number }>({
                   {selectable && (
                     <TableCell
                       onClick={(e) => e.stopPropagation()}
-                      className={hasLeftStickyColumns ? (isSelected ? "transition-colors bg-blue-50 dark:bg-blue-900" : "transition-colors bg-slate-50 dark:bg-slate-800 group-hover:bg-slate-100 dark:group-hover:bg-slate-700") : undefined}
+                      className={hasLeftStickyColumns ? (isSelected ? "transition-colors bg-blue-50 dark:bg-blue-950/30" : "transition-colors bg-slate-50 dark:bg-slate-800 group-hover:bg-slate-100 dark:group-hover:bg-slate-700") : undefined}
                       style={hasLeftStickyColumns ? {
                         position: "sticky",
                         left: 0,
@@ -663,7 +823,7 @@ function DataTable<T extends { id: string | number }>({
                     <TableCell
                       className={cn(
                         "p-0",
-                        hasLeftStickyColumns && (isSelected ? "transition-colors bg-blue-50 dark:bg-blue-900" : "transition-colors bg-slate-50 dark:bg-slate-800 group-hover:bg-slate-100 dark:group-hover:bg-slate-700")
+                        hasLeftStickyColumns && (isSelected ? "transition-colors bg-blue-50 dark:bg-blue-950/30" : "transition-colors bg-slate-50 dark:bg-slate-800 group-hover:bg-slate-100 dark:group-hover:bg-slate-700")
                       )}
                       style={hasLeftStickyColumns ? {
                         position: "sticky",
@@ -693,7 +853,7 @@ function DataTable<T extends { id: string | number }>({
                     </TableCell>
                   )}
 
-                {columns.map((column) => {
+                {columnsToRender.map((column) => {
                   const value = row[column.accessorKey]
                   const cellIsEditing = isEditing(row.id, column.accessorKey)
                   const stickyData = getStickyStyles(column, false, isSelected)
@@ -799,6 +959,20 @@ function DataTable<T extends { id: string | number }>({
       </TableBody>
     </Table>
   )
+
+  if (columnReorderable) {
+    return (
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
+      >
+        {tableContent}
+      </DndContext>
+    )
+  }
+
+  return tableContent
 }
 
 export { DataTable }

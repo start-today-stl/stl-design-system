@@ -21,6 +21,7 @@ const Slider = React.forwardRef<
 >(({ className, showTooltip, showLabels, label, min = 0, max = 100, value, defaultValue, ...props }, ref) => {
   const [internalValue, setInternalValue] = React.useState(defaultValue ?? [min])
   const currentValue = value ?? internalValue
+  const labelId = React.useId()
 
   const handleValueChange = (newValue: number[]) => {
     if (!value) {
@@ -32,7 +33,10 @@ const Slider = React.forwardRef<
   return (
     <div className="flex flex-col gap-1.5 w-full">
       {label && (
-        <span className="text-[length:var(--text-body-2)] text-slate-600 dark:text-slate-50">
+        <span
+          id={labelId}
+          className="text-[length:var(--text-body-2)] text-slate-600 dark:text-slate-50"
+        >
           {label}
         </span>
       )}
@@ -53,7 +57,11 @@ const Slider = React.forwardRef<
           <SliderPrimitive.Track className="relative h-1 w-full grow overflow-hidden rounded-full bg-slate-200 dark:bg-slate-400">
             <SliderPrimitive.Range className="absolute h-full bg-gradient-to-r from-blue-300 to-blue-500" />
           </SliderPrimitive.Track>
-          <SliderPrimitive.Thumb className="group relative block h-[22px] w-[22px] rounded-full bg-blue-500 border-[3px] border-slate-200 shadow-[10px_10px_10px_0px_rgba(0,0,0,0.05)] transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 cursor-grab active:cursor-grabbing dark:border-slate-400">
+          <SliderPrimitive.Thumb
+            aria-labelledby={label ? labelId : undefined}
+            aria-label={label ? undefined : "슬라이더"}
+            className="group relative block h-[22px] w-[22px] rounded-full bg-blue-500 border-[3px] border-slate-200 shadow-[10px_10px_10px_0px_rgba(0,0,0,0.05)] transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 cursor-grab active:cursor-grabbing dark:border-slate-400"
+          >
             {/* 툴팁 - hover/active 상태에서만 표시 */}
             {showTooltip && (
               <div className="absolute -top-10 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-opacity">
