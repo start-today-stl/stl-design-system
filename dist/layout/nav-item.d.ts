@@ -17,6 +17,8 @@ export interface NavItemProps extends React.ButtonHTMLAttributes<HTMLButtonEleme
     collapsed?: boolean;
     /** 우측 인디케이터 아이콘 (펼침 모드) */
     indicator?: React.ReactNode;
+    /** @internal 플라이아웃 내부 여부 (NavGroup에서 전달됨, DOM에 전달되지 않음) */
+    _inFlyout?: boolean;
 }
 declare const NavItem: React.ForwardRefExoticComponent<NavItemProps & React.RefAttributes<HTMLButtonElement>>;
 export { NavItem, navItemVariants };

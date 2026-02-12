@@ -404,87 +404,6 @@ export const EditableWithValidation: Story = {
   },
 }
 
-/** 풀 테이블 (툴바 + 선택 + 정렬 + 페이지네이션) */
-export const FullExample: Story = {
-  render: () => {
-    const [selectedIds, setSelectedIds] = useState<number[]>([])
-    const [sortState, setSortState] = useState<SortState<User>>({
-      column: null,
-      direction: null,
-    })
-    const [currentPage, setCurrentPage] = useState(1)
-    const [pageSize, setPageSize] = useState(10)
-
-    // 더 많은 샘플 데이터
-    const allData: User[] = Array.from({ length: 68 }, (_, i) => ({
-      id: i + 1,
-      name: `사용자 ${i + 1}`,
-      email: `user${i + 1}@example.com`,
-      role: i % 3 === 0 ? "관리자" : i % 3 === 1 ? "편집자" : "사용자",
-      status: i % 4 === 0 ? "비활성" : "활성",
-    }))
-
-    const totalPages = Math.ceil(allData.length / pageSize)
-
-    // 정렬
-    const sortedData = [...allData].sort((a, b) => {
-      if (!sortState.column || !sortState.direction) return 0
-      const aValue = a[sortState.column]
-      const bValue = b[sortState.column]
-      const comparison = String(aValue).localeCompare(String(bValue))
-      return sortState.direction === "asc" ? comparison : -comparison
-    })
-
-    // 페이지네이션
-    const paginatedData = sortedData.slice(
-      (currentPage - 1) * pageSize,
-      currentPage * pageSize
-    )
-
-    return (
-      <div className="border border-slate-200 rounded-lg overflow-hidden">
-        {/* 툴바 */}
-        <TableToolbar totalCount={allData.length} selectedCount={selectedIds.length}>
-          <Button variant="danger" disabled={selectedIds.length === 0}>
-            삭제
-          </Button>
-          <Button variant="ghost">다운로드</Button>
-          <Button variant="ghost">업로드</Button>
-        </TableToolbar>
-
-        {/* 데이터 테이블 */}
-        <DataTable
-          columns={columns}
-          data={paginatedData}
-          selectable
-          selectedIds={selectedIds}
-          onSelectionChange={(ids) => setSelectedIds(ids as number[])}
-          sortState={sortState}
-          onSortChange={setSortState}
-        />
-
-        {/* 페이지네이션 */}
-        <div className="flex items-center justify-between p-4 border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900">
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-            previousLabel="Previous"
-            nextLabel="Next"
-          />
-          <PageSizeSelector
-            pageSize={pageSize}
-            onPageSizeChange={(size) => {
-              setPageSize(size)
-              setCurrentPage(1)
-            }}
-          />
-        </div>
-      </div>
-    )
-  },
-}
-
 // 주문 상세 아이템 타입 (확장 영역용)
 interface OrderItem {
   id: number
@@ -848,8 +767,89 @@ export const ExpandableWithSelection: Story = {
   },
 }
 
-/** 전체 기능 조합 (툴바 + Sticky + 선택 + 편집 + 확장 + 페이지네이션) */
-export const FullFeatured: Story = {
+/** 기본 목록 페이지 패턴 (툴바 + 선택 + 정렬 + 페이지네이션) */
+export const ListPageBasic: Story = {
+  render: () => {
+    const [selectedIds, setSelectedIds] = useState<number[]>([])
+    const [sortState, setSortState] = useState<SortState<User>>({
+      column: null,
+      direction: null,
+    })
+    const [currentPage, setCurrentPage] = useState(1)
+    const [pageSize, setPageSize] = useState(10)
+
+    // 더 많은 샘플 데이터
+    const allData: User[] = Array.from({ length: 68 }, (_, i) => ({
+      id: i + 1,
+      name: `사용자 ${i + 1}`,
+      email: `user${i + 1}@example.com`,
+      role: i % 3 === 0 ? "관리자" : i % 3 === 1 ? "편집자" : "사용자",
+      status: i % 4 === 0 ? "비활성" : "활성",
+    }))
+
+    const totalPages = Math.ceil(allData.length / pageSize)
+
+    // 정렬
+    const sortedData = [...allData].sort((a, b) => {
+      if (!sortState.column || !sortState.direction) return 0
+      const aValue = a[sortState.column]
+      const bValue = b[sortState.column]
+      const comparison = String(aValue).localeCompare(String(bValue))
+      return sortState.direction === "asc" ? comparison : -comparison
+    })
+
+    // 페이지네이션
+    const paginatedData = sortedData.slice(
+      (currentPage - 1) * pageSize,
+      currentPage * pageSize
+    )
+
+    return (
+      <div className="border border-slate-200 rounded-lg overflow-hidden">
+        {/* 툴바 */}
+        <TableToolbar totalCount={allData.length} selectedCount={selectedIds.length}>
+          <Button variant="danger" disabled={selectedIds.length === 0}>
+            삭제
+          </Button>
+          <Button variant="ghost">다운로드</Button>
+          <Button variant="ghost">업로드</Button>
+        </TableToolbar>
+
+        {/* 데이터 테이블 */}
+        <DataTable
+          columns={columns}
+          data={paginatedData}
+          selectable
+          selectedIds={selectedIds}
+          onSelectionChange={(ids) => setSelectedIds(ids as number[])}
+          sortState={sortState}
+          onSortChange={setSortState}
+        />
+
+        {/* 페이지네이션 */}
+        <div className="flex items-center justify-between p-4 border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+            previousLabel="Previous"
+            nextLabel="Next"
+          />
+          <PageSizeSelector
+            pageSize={pageSize}
+            onPageSizeChange={(size) => {
+              setPageSize(size)
+              setCurrentPage(1)
+            }}
+          />
+        </div>
+      </div>
+    )
+  },
+}
+
+/** 모든 기능 조합 (Sticky + 선택 + 편집 + 검증 + 확장 + 페이지네이션 + maxHeight) */
+export const AllFeatures: Story = {
   render: () => {
     // 상품 옵션 타입
     interface ProductOption {

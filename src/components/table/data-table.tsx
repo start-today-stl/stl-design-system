@@ -380,14 +380,14 @@ function DataTable<T extends { id: string | number }>({
             ...baseStyles,
             left: `${leftPos}px`,
           },
-          // 헤더: 셀 단위 hover, 바디: 행 단위 hover (group-hover)
+          // 헤더: hover 없음, 바디: 행 단위 hover (group-hover), 스티키는 다른 배경색
           className: cn(
             "transition-colors",
             isHeader
-              ? "bg-[#eaedf1] dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700"
+              ? "bg-[#eaedf1] dark:bg-slate-800"
               : isSelected
                 ? "bg-blue-50 dark:bg-blue-900"
-                : "bg-slate-50 dark:bg-slate-900 group-hover:bg-slate-100 dark:group-hover:bg-slate-800",
+                : "bg-slate-50 dark:bg-slate-800 group-hover:bg-slate-100 dark:group-hover:bg-slate-700",
             isLastLeft && "shadow-[2px_0_4px_rgba(0,0,0,0.08)]"
           ),
         }
@@ -402,10 +402,10 @@ function DataTable<T extends { id: string | number }>({
         className: cn(
           "transition-colors",
           isHeader
-            ? "bg-[#eaedf1] dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700"
+            ? "bg-[#eaedf1] dark:bg-slate-800"
             : isSelected
               ? "bg-blue-50 dark:bg-blue-900"
-              : "bg-slate-50 dark:bg-slate-900 group-hover:bg-slate-100 dark:group-hover:bg-slate-800",
+              : "bg-slate-50 dark:bg-slate-800 group-hover:bg-slate-100 dark:group-hover:bg-slate-700",
           isFirstRight && "shadow-[-2px_0_4px_rgba(0,0,0,0.08)]"
         ),
       }
@@ -425,7 +425,7 @@ function DataTable<T extends { id: string | number }>({
         <TableRow>
           {selectable && (
             <TableHead
-              className="bg-[#eaedf1] dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700"
+              className="bg-[#eaedf1] dark:bg-slate-800"
               style={hasLeftStickyColumns ? {
                 position: "sticky",
                 left: 0,
@@ -446,7 +446,7 @@ function DataTable<T extends { id: string | number }>({
 
           {expandable && (
             <TableHead
-              className="bg-[#eaedf1] dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700"
+              className="bg-[#eaedf1] dark:bg-slate-800"
               style={hasLeftStickyColumns ? {
                 position: "sticky",
                 left: selectable ? CHECKBOX_WIDTH : 0,
@@ -529,7 +529,7 @@ function DataTable<T extends { id: string | number }>({
                   {selectable && (
                     <TableCell
                       onClick={(e) => e.stopPropagation()}
-                      className={hasLeftStickyColumns ? (isSelected ? "transition-colors bg-blue-50 dark:bg-blue-900" : "transition-colors bg-slate-50 dark:bg-slate-900 group-hover:bg-slate-100 dark:group-hover:bg-slate-800") : undefined}
+                      className={hasLeftStickyColumns ? (isSelected ? "transition-colors bg-blue-50 dark:bg-blue-900" : "transition-colors bg-slate-50 dark:bg-slate-800 group-hover:bg-slate-100 dark:group-hover:bg-slate-700") : undefined}
                       style={hasLeftStickyColumns ? {
                         position: "sticky",
                         left: 0,
@@ -551,7 +551,7 @@ function DataTable<T extends { id: string | number }>({
                     <TableCell
                       className={cn(
                         "p-0",
-                        hasLeftStickyColumns && (isSelected ? "transition-colors bg-blue-50 dark:bg-blue-900" : "transition-colors bg-slate-50 dark:bg-slate-900 group-hover:bg-slate-100 dark:group-hover:bg-slate-800")
+                        hasLeftStickyColumns && (isSelected ? "transition-colors bg-blue-50 dark:bg-blue-900" : "transition-colors bg-slate-50 dark:bg-slate-800 group-hover:bg-slate-100 dark:group-hover:bg-slate-700")
                       )}
                       style={hasLeftStickyColumns ? {
                         position: "sticky",

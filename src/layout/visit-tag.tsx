@@ -41,7 +41,7 @@ const VisitTag = React.forwardRef<HTMLDivElement, VisitTagProps>(
         <button
           type="button"
           onClick={handleClick}
-          className="hover:text-blue-500 dark:hover:text-blue-300 transition-colors"
+          className="cursor-pointer hover:text-blue-500 dark:hover:text-blue-300 transition-colors"
         >
           {label}
         </button>
@@ -54,7 +54,7 @@ const VisitTag = React.forwardRef<HTMLDivElement, VisitTagProps>(
               e.stopPropagation()
               onRemove()
             }}
-            className="flex-shrink-0 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 transition-colors"
+            className="flex-shrink-0 cursor-pointer text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 transition-colors"
             aria-label={`${label} 삭제`}
           >
             <XIcon size={20} />

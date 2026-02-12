@@ -35,6 +35,7 @@ const d = h(
     expanded: m,
     collapsed: e,
     indicator: o,
+    _inFlyout: p,
     ...u
   }, v) => e && !l ? /* @__PURE__ */ c("div", { className: "relative group", children: [
     /* @__PURE__ */ t(

@@ -7,7 +7,7 @@ const n = i.forwardRef(
     {
       ref: d,
       className: m(
-        "w-[276px] p-2.5 bg-slate-50 dark:bg-slate-800 rounded-[10px]",
+        "w-full p-2.5 bg-slate-50 dark:bg-slate-800 rounded-[10px]",
         r
       ),
       ...x,

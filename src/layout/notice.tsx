@@ -17,7 +17,7 @@ const Notice = React.forwardRef<HTMLDivElement, NoticeProps>(
       <div
         ref={ref}
         className={cn(
-          "w-[276px] p-2.5 bg-slate-50 dark:bg-slate-800 rounded-[10px]",
+          "w-full p-2.5 bg-slate-50 dark:bg-slate-800 rounded-[10px]",
           className
         )}
         {...props}

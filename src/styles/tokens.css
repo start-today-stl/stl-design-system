@@ -110,6 +110,11 @@
   --color-success-foreground: var(--color-white);
   --color-danger: var(--color-red-500);
 
+  /* Text Colors (Semantic) */
+  --color-text-primary: var(--color-slate-900);
+  --color-text-secondary: var(--color-slate-600);
+  --color-text-disabled: var(--color-slate-300);
+
   /* Icon Colors */
   --color-icon: var(--color-slate-500);
   --color-icon-dark: var(--color-slate-50);
@@ -248,6 +253,9 @@
   --color-accent-foreground: var(--color-blue-300);
   --color-destructive-foreground: var(--color-white);
   --color-success-foreground: var(--color-white);
+  --color-text-primary: var(--color-slate-50);
+  --color-text-secondary: var(--color-slate-400);
+  --color-text-disabled: var(--color-slate-600);
   --color-icon: var(--color-slate-50);
   --color-border: var(--color-slate-700);
   --color-input: var(--color-slate-800);
@@ -272,6 +280,9 @@
     --color-accent-foreground: var(--color-blue-300);
     --color-destructive-foreground: var(--color-white);
     --color-success-foreground: var(--color-white);
+    --color-text-primary: var(--color-slate-50);
+    --color-text-secondary: var(--color-slate-400);
+    --color-text-disabled: var(--color-slate-600);
     --color-icon: var(--color-slate-50);
     --color-border: var(--color-slate-700);
     --color-input: var(--color-slate-800);

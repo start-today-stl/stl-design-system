@@ -21,7 +21,7 @@ const Table = React.forwardRef<HTMLTableElement, TableProps>(
       >
         <table
           ref={ref}
-          className={cn("caption-bottom text-sm", className)}
+          className={cn("caption-bottom text-[length:var(--text-body-2)]", className)}
           style={{ borderSpacing: 0, minWidth: "100%" }}
           {...props}
         />
@@ -73,7 +73,7 @@ const TableRow = React.forwardRef<
   <tr
     ref={ref}
     className={cn(
-      "group border-b border-[#f4f6f8] dark:border-slate-700 transition-colors hover:bg-slate-100 dark:hover:bg-slate-800 data-[state=selected]:bg-blue-50 dark:data-[state=selected]:bg-blue-900",
+      "group border-b border-slate-200 dark:border-slate-700 transition-colors bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 data-[state=selected]:bg-blue-50 dark:data-[state=selected]:bg-blue-900",
       className
     )}
     {...props}
@@ -88,8 +88,8 @@ const TableHead = React.forwardRef<
   <th
     ref={ref}
     className={cn(
-      "h-9 pl-3 pr-1.5 py-1.5 text-left align-middle font-medium text-[#798698] dark:text-slate-400 [&:has([role=checkbox])]:pr-0",
-      "bg-[#eaedf1] dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700",
+      "h-9 pl-3 pr-1.5 py-1.5 text-left align-middle font-medium text-[#798698] dark:text-slate-300 [&:has([role=checkbox])]:pr-0",
+      "bg-[#eaedf1] dark:bg-slate-800",
       className
     )}
     {...props}
@@ -103,7 +103,7 @@ const TableCell = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <td
     ref={ref}
-    className={cn("h-9 pl-3 pr-1.5 py-1.5 align-middle text-[#798698] dark:text-slate-400 [&:has([role=checkbox])]:pr-0", className)}
+    className={cn("h-9 pl-3 pr-1.5 py-1.5 align-middle text-[#798698] dark:text-slate-300 [&:has([role=checkbox])]:pr-0", className)}
     {...props}
   />
 ))
@@ -138,8 +138,8 @@ const TableSortableHead = React.forwardRef<
   <th
     ref={ref}
     className={cn(
-      "h-9 pl-3 pr-1.5 py-1.5 text-left align-middle font-medium text-[#798698] dark:text-slate-400",
-      "bg-[#eaedf1] dark:bg-slate-800 cursor-pointer select-none hover:bg-slate-200 dark:hover:bg-slate-700",
+      "h-9 pl-3 pr-1.5 py-1.5 text-left align-middle font-medium text-[#798698] dark:text-slate-300",
+      "bg-[#eaedf1] dark:bg-slate-800 cursor-pointer select-none",
       "[&:has([role=checkbox])]:pr-0",
       className
     )}
@@ -155,7 +155,7 @@ const TableSortableHead = React.forwardRef<
             "transition-colors",
             sortDirection === "asc"
               ? "text-blue-500"
-              : "text-slate-300 dark:text-slate-600"
+              : "text-slate-300 dark:text-slate-500"
           )}
         />
         <DownIcon
@@ -164,7 +164,7 @@ const TableSortableHead = React.forwardRef<
             "transition-colors",
             sortDirection === "desc"
               ? "text-blue-500"
-              : "text-slate-300 dark:text-slate-600"
+              : "text-slate-300 dark:text-slate-500"
           )}
         />
       </span>

@@ -13,8 +13,8 @@ const Content = React.forwardRef<HTMLDivElement, ContentProps>(
       <div
         ref={ref}
         className={cn(
-          "h-full",
-          padded && "p-4",
+          "min-h-full",
+          padded && "px-4 pt-2 pb-4",
           className
         )}
         {...props}

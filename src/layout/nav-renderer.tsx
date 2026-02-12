@@ -20,6 +20,10 @@ export interface NavRendererProps {
   indicatorSize?: number
   /** 축소 모드 (아이콘만 표시) */
   collapsed?: boolean
+  /** 현재 경로 (active 상태 자동 결정) */
+  currentPath?: string
+  /** 아이템 클릭 핸들러 (href가 있는 아이템 클릭 시 호출) */
+  onItemClick?: (href: string, item: NavItemConfig | TopLevelNavItem) => void
 }
 
 type DepthLevel = 1 | 2 | 3
@@ -37,13 +41,30 @@ export function NavRenderer({
   iconSize = 24,
   indicatorSize = 24,
   collapsed,
+  currentPath,
+  onItemClick,
 }: NavRendererProps) {
+  /** 현재 경로가 그룹의 하위 경로인지 확인 */
+  const isGroupActive = (group: NavGroupConfig | TopLevelNavGroup): boolean => {
+    if (!currentPath) return false
+    const checkChildren = (children: (NavItemConfig | NavGroupConfig)[]): boolean => {
+      return children.some((child) => {
+        if (isNavGroup(child)) {
+          return checkChildren(child.children)
+        }
+        return child.href === currentPath
+      })
+    }
+    return checkChildren(group.children)
+  }
+
   const renderItem = (
     item: NavItemConfig | NavGroupConfig | TopLevelNavItem | TopLevelNavGroup,
     depth: number = 1
   ): React.ReactNode => {
     if (isNavGroup(item)) {
       const IconComponent = "icon" in item ? item.icon : undefined
+      const shouldExpand = item.defaultExpanded || isGroupActive(item)
 
       return (
         <NavGroup
@@ -51,7 +72,7 @@ export function NavRenderer({
           icon={IconComponent ? <IconComponent size={iconSize} /> : undefined}
           label={item.label}
           depth={toDepthLevel(depth)}
-          defaultExpanded={item.defaultExpanded}
+          defaultExpanded={shouldExpand}
           collapsed={collapsed}
         >
           {item.children.map((child) => renderItem(child, depth + 1))}
@@ -62,13 +83,21 @@ export function NavRenderer({
     // NavItem
     const navItem = item as TopLevelNavItem | NavItemConfig
     const IconComponent = "icon" in navItem ? navItem.icon : undefined
+    // currentPath가 있으면 href와 비교, 없으면 설정된 active 사용
+    const isActive = currentPath ? navItem.href === currentPath : navItem.active
+
+    const handleClick = () => {
+      if (onItemClick && navItem.href) {
+        onItemClick(navItem.href, navItem)
+      }
+    }
 
     return (
       <NavItem
         key={navItem.id}
         icon={IconComponent ? <IconComponent size={iconSize} /> : undefined}
         label={navItem.label}
-        active={navItem.active}
+        active={isActive}
         depth={toDepthLevel(depth)}
         collapsed={collapsed}
         indicator={
@@ -76,6 +105,7 @@ export function NavRenderer({
             <STLArrowIcon size={indicatorSize} />
           ) : undefined
         }
+        onClick={onItemClick && navItem.href ? handleClick : undefined}
       />
     )
   }

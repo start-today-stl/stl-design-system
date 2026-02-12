@@ -77,7 +77,7 @@ const _ = o.forwardRef(
             "absolute left-0 right-0 top-full mt-[13px] z-[100]",
             "overflow-hidden rounded-[5px] border",
             "border-slate-100 dark:border-slate-600",
-            "bg-white/50 dark:bg-slate-800/50 backdrop-blur-[12px]",
+            "bg-white/90 dark:bg-slate-800/90 backdrop-blur-[12px]",
             "shadow-[10px_10px_10px_0px_rgba(0,0,0,0.05)]",
             "p-[5px]",
             "animate-in fade-in-0 zoom-in-95 slide-in-from-top-2"

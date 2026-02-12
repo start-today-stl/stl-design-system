@@ -8,6 +8,7 @@ export * from './pagination'
 export * from './data-table'
 
 // Table patterns (조합 패턴)
+export * from './table-container'
 export * from './table-toolbar'
 export * from './pagination-footer'
 export * from './search-form'

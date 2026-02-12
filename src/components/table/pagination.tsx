@@ -180,7 +180,7 @@ function PageSizeSelector({
   return (
     <div className={cn("flex items-center gap-2", className)}>
       {label && (
-        <span className="text-xs text-slate-500 dark:text-slate-400 whitespace-nowrap">
+        <span className="text-xs text-slate-500 dark:text-slate-300 whitespace-nowrap">
           {label}
         </span>
       )}

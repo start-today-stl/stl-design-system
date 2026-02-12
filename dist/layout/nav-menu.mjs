@@ -1,44 +1,44 @@
-import { jsxs as x, jsx as o } from "react/jsx-runtime";
+import { jsxs as b, jsx as o } from "react/jsx-runtime";
 import * as r from "react";
-import { cn as a } from "../lib/utils.mjs";
-import { IsolationModeIcon as b } from "../icons/IsolationModeIcon.mjs";
+import { cn as l } from "../lib/utils.mjs";
+import { IsolationModeIcon as x } from "../icons/IsolationModeIcon.mjs";
 const d = r.forwardRef(
-  ({ className: l, collapsed: e, showToggle: n = !1, scrollable: i = !1, onToggle: s, children: m, ...f }, c) => /* @__PURE__ */ x(
+  ({ className: a, collapsed: e, showToggle: n = !1, scrollable: i = !1, onToggle: s, children: f, ...m }, c) => /* @__PURE__ */ b(
     "nav",
     {
       ref: c,
-      className: a(
+      className: l(
         "relative flex flex-col min-h-0",
-        e ? "w-[88px] items-center" : "w-[276px]",
-        l
+        e ? "w-[88px] items-center" : "w-full",
+        a
       ),
-      ...f,
+      ...m,
       children: [
         n && /* @__PURE__ */ o(
           "button",
           {
             type: "button",
             onClick: s,
-            className: a(
+            className: l(
               "absolute flex items-center justify-center z-20",
               "w-8 h-8 rounded-[20px] border border-slate-100 dark:border-slate-700",
               "bg-white dark:bg-black hover:bg-slate-50 dark:hover:bg-slate-800",
               "transition-colors cursor-pointer",
-              e ? "top-[-60px] -right-4" : "top-[-50px] -right-[48px]"
+              e ? "top-[-60px] -right-4" : "top-[-50px] -right-[40px]"
             ),
             "aria-label": e ? "메뉴 펼치기" : "메뉴 접기",
-            children: /* @__PURE__ */ o(b, { size: 24, className: "text-slate-500" })
+            children: /* @__PURE__ */ o(x, { size: 24, className: "text-slate-500" })
           }
         ),
         /* @__PURE__ */ o(
           "div",
           {
-            className: a(
+            className: l(
               "flex flex-col",
               e ? "items-center gap-0.5 w-full overflow-visible" : "gap-0.5",
               i && !e && "flex-1 min-h-0 overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
             ),
-            children: r.Children.map(m, (t) => r.isValidElement(t) ? r.cloneElement(t, {
+            children: r.Children.map(f, (t) => r.isValidElement(t) ? r.cloneElement(t, {
               collapsed: e
             }) : t)
           }

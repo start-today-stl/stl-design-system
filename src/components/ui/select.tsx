@@ -79,7 +79,7 @@ const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
         {label && (
           <label
             htmlFor={id}
-            className="text-xs text-slate-600 dark:text-slate-50"
+            className="text-[length:var(--text-body-2)] text-slate-600 dark:text-slate-50"
           >
             {label}
           </label>
@@ -115,7 +115,7 @@ const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
             <SelectPrimitive.Content
               className={cn(
                 "relative z-50 overflow-hidden rounded-[5px] border border-slate-100 dark:border-slate-600 w-[var(--radix-select-trigger-width)]",
-                "bg-white/50 dark:bg-slate-800/30 backdrop-blur-[12px]",
+                "bg-white/50 dark:bg-slate-800/50 backdrop-blur-[12px]",
                 "shadow-[10px_10px_10px_0px_rgba(0,0,0,0.05)]",
                 "p-[5px]",
                 "data-[state=open]:animate-in data-[state=closed]:animate-out",

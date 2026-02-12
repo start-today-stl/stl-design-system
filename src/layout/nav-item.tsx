@@ -42,6 +42,8 @@ export interface NavItemProps
   collapsed?: boolean
   /** 우측 인디케이터 아이콘 (펼침 모드) */
   indicator?: React.ReactNode
+  /** @internal 플라이아웃 내부 여부 (NavGroup에서 전달됨, DOM에 전달되지 않음) */
+  _inFlyout?: boolean
 }
 
 const NavItem = React.forwardRef<HTMLButtonElement, NavItemProps>(
@@ -56,10 +58,13 @@ const NavItem = React.forwardRef<HTMLButtonElement, NavItemProps>(
       expanded,
       collapsed,
       indicator,
+      _inFlyout,
       ...props
     },
     ref
   ) => {
+    // _inFlyout은 NavGroup에서 전달되지만 DOM에는 전달하지 않음
+    void _inFlyout
     // 축소 모드 + 하위 메뉴 없는 경우 툴팁 표시
     if (collapsed && !hasChildren) {
       return (

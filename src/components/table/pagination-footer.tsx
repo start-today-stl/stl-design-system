@@ -43,8 +43,8 @@ const PaginationFooter = React.forwardRef<HTMLDivElement, PaginationFooterProps>
       pageSize = 10,
       pageSizeOptions = [10, 20, 50, 100],
       onPageSizeChange,
-      previousLabel = "이전",
-      nextLabel = "다음",
+      previousLabel = "Previous",
+      nextLabel = "Next",
       formatItemRange = (start, end, total) =>
         `총 ${total.toLocaleString()}건 중 ${start.toLocaleString()}-${end.toLocaleString()}건 표시`,
       pageSizeLabel = "페이지당 항목 수",
@@ -56,12 +56,14 @@ const PaginationFooter = React.forwardRef<HTMLDivElement, PaginationFooterProps>
   ) => {
     const startItem = totalItems ? (currentPage - 1) * pageSize + 1 : 0
     const endItem = totalItems ? Math.min(currentPage * pageSize, totalItems) : 0
+    const showItemRange = !hideItemRange && totalItems !== undefined
+    const showPageSizeSelector = !hidePageSizeSelector && onPageSizeChange
 
     return (
       <div
         ref={ref}
         className={cn(
-          "flex items-center justify-between py-3 px-4",
+          "flex items-center py-3 px-4",
           "bg-white dark:bg-slate-900",
           "border-t border-slate-200 dark:border-slate-700",
           className
@@ -69,16 +71,16 @@ const PaginationFooter = React.forwardRef<HTMLDivElement, PaginationFooterProps>
         {...props}
       >
         {/* 왼쪽: 아이템 범위 표시 */}
-        <div className="flex items-center">
-          {!hideItemRange && totalItems !== undefined && (
-            <span className="text-sm text-slate-500 dark:text-slate-400">
+        <div className="flex-1">
+          {showItemRange && (
+            <span className="text-sm text-slate-500 dark:text-slate-300">
               {formatItemRange(startItem, endItem, totalItems)}
             </span>
           )}
         </div>
 
-        {/* 오른쪽: 페이지네이션 + 페이지 사이즈 */}
-        <div className="flex items-center gap-4">
+        {/* 가운데: 페이지네이션 */}
+        <div className="flex items-center justify-center">
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}
@@ -86,7 +88,11 @@ const PaginationFooter = React.forwardRef<HTMLDivElement, PaginationFooterProps>
             previousLabel={previousLabel}
             nextLabel={nextLabel}
           />
-          {!hidePageSizeSelector && onPageSizeChange && (
+        </div>
+
+        {/* 오른쪽: 페이지 사이즈 */}
+        <div className="flex-1 flex justify-end">
+          {showPageSizeSelector && (
             <PageSizeSelector
               pageSize={pageSize}
               options={pageSizeOptions}

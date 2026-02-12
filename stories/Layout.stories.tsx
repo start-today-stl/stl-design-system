@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { AppShell, Sidebar, Header, PageTitle } from "../src/layout";
+import { AppShell, Sidebar, Header, PageTitle, Notice, NavInfo } from "../src/layout";
 import { NavGroup } from "../src/layout/nav-group";
 import { NavItem } from "../src/layout/nav-item";
 import { NavRenderer } from "../src/layout/nav-renderer";
@@ -161,20 +161,29 @@ export const Default: Story = {
       <div style={{ height: "800px" }}>
         <AppShell>
           <AppShell.Sidebar
-            noticeIcon={<NoticeIcon size={20} />}
-            noticeTitle="CBT 시스템 정기 점검 안내 (12/15 02:00–05:00)"
-            noticeDescription="안녕하세요. 더 안정적인 서비스 제공을 위해 CBT 시스템의 정기 점검이 진행될 예정입니다."
-            infoItems={[
-              {
-                icon: <PhoneIcon size={20} />,
-                text: "1800-4636",
-                href: "tel:1800-4636",
-              },
-              {
-                icon: <LocationIcon size={20} />,
-                text: "경기도 파주시 조리읍 대원로 95-5 스타트투데이 2센터",
-              },
-            ]}
+            footer={
+              <>
+                <Notice
+                  icon={<NoticeIcon size={20} />}
+                  title="CBT 시스템 정기 점검 안내 (12/15 02:00–05:00)"
+                  description="안녕하세요. 더 안정적인 서비스 제공을 위해 CBT 시스템의 정기 점검이 진행될 예정입니다."
+                  className="mb-5"
+                />
+                <NavInfo
+                  items={[
+                    {
+                      icon: <PhoneIcon size={20} />,
+                      text: "1800-4636",
+                      href: "tel:1800-4636",
+                    },
+                    {
+                      icon: <LocationIcon size={20} />,
+                      text: "경기도 파주시 조리읍 대원로 95-5 스타트투데이 2센터",
+                    },
+                  ]}
+                />
+              </>
+            }
           >
             <NavRenderer items={sampleNavigation} />
           </AppShell.Sidebar>
@@ -253,15 +262,24 @@ export const WithBreadcrumb: Story = {
       <div style={{ height: "800px" }}>
         <AppShell>
           <AppShell.Sidebar
-            noticeIcon={<NoticeIcon size={20} />}
-            noticeTitle="CBT 시스템 정기 점검 안내"
-            infoItems={[
-              {
-                icon: <PhoneIcon size={20} />,
-                text: "1800-4636",
-                href: "tel:1800-4636",
-              },
-            ]}
+            footer={
+              <>
+                <Notice
+                  icon={<NoticeIcon size={20} />}
+                  title="CBT 시스템 정기 점검 안내"
+                  className="mb-5"
+                />
+                <NavInfo
+                  items={[
+                    {
+                      icon: <PhoneIcon size={20} />,
+                      text: "1800-4636",
+                      href: "tel:1800-4636",
+                    },
+                  ]}
+                />
+              </>
+            }
           >
             <NavRenderer items={sampleNavigation} />
           </AppShell.Sidebar>
@@ -332,16 +350,25 @@ export const SidebarOnly: Story = {
   render: () => (
     <div style={{ height: "800px" }}>
       <Sidebar
-        noticeIcon={<NoticeIcon size={20} />}
-        noticeTitle="시스템 점검 안내"
-        noticeDescription="12/15 02:00–05:00 점검 예정"
-        infoItems={[
-          {
-            icon: <PhoneIcon size={20} />,
-            text: "1800-4636",
-            href: "tel:1800-4636",
-          },
-        ]}
+        footer={
+          <>
+            <Notice
+              icon={<NoticeIcon size={20} />}
+              title="시스템 점검 안내"
+              description="12/15 02:00–05:00 점검 예정"
+              className="mb-5"
+            />
+            <NavInfo
+              items={[
+                {
+                  icon: <PhoneIcon size={20} />,
+                  text: "1800-4636",
+                  href: "tel:1800-4636",
+                },
+              ]}
+            />
+          </>
+        }
       >
         <NavItem
           icon={<SolidHomeIcon size={24} />}

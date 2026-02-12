@@ -1,81 +1,66 @@
-import { jsxs as g, jsx as e } from "react/jsx-runtime";
-import * as k from "react";
-import { useState as v } from "react";
-import { cn as m } from "../lib/utils.mjs";
-import { NavMenu as S } from "./nav-menu.mjs";
-import { Notice as j } from "./notice.mjs";
-import { NavInfo as y } from "./nav-info.mjs";
-import { STLArrowIcon as _ } from "../icons/STLArrowIcon.mjs";
-import { STLSignatureIcon as T } from "../icons/STLSignatureIcon.mjs";
-const I = k.forwardRef(
+import { jsxs as v, jsx as t } from "react/jsx-runtime";
+import * as w from "react";
+import { useState as N } from "react";
+import { cn as o } from "../lib/utils.mjs";
+import { NavMenu as k } from "./nav-menu.mjs";
+const j = w.forwardRef(
   ({
-    className: c,
-    collapsed: i,
+    className: m,
+    logo: s,
+    collapsed: l,
     defaultCollapsed: n = !1,
-    onCollapsedChange: t,
-    showToggle: p = !0,
-    noticeTitle: o,
-    noticeDescription: f,
-    noticeIcon: x,
-    infoItems: s,
+    onCollapsedChange: r,
+    showToggle: x = !0,
+    footer: a,
     children: d,
-    ...b
-  }, h) => {
-    const [u, N] = v(n), a = i !== void 0, r = a ? i : u, w = () => {
-      const l = !r;
-      a || N(l), t == null || t(l);
+    ...p
+  }, f) => {
+    const [b, u] = N(n), i = l !== void 0, e = i ? l : b, h = () => {
+      const c = !e;
+      i || u(c), r == null || r(c);
     };
-    return /* @__PURE__ */ g(
+    return /* @__PURE__ */ v(
       "div",
       {
-        ref: h,
-        className: m(
+        ref: f,
+        className: o(
           "relative flex flex-col h-full bg-white dark:bg-black",
           "pt-8 rounded-r-[40px] border border-slate-100 dark:border-slate-700",
           "shadow-[1px_0px_41.3px_1px_rgba(0,0,0,0.05)] transition-all",
-          r ? "w-[88px] px-0 items-center" : "w-[340px] px-8",
-          c
+          e ? "w-[88px] px-0 items-center" : "w-[260px] px-6",
+          m
         ),
-        ...b,
+        ...p,
         children: [
-          /* @__PURE__ */ e(
+          s && /* @__PURE__ */ t(
             "div",
             {
-              className: m(
-                "h-[32px] flex items-center mb-[55px] flex-shrink-0",
-                r ? "justify-center" : "justify-start"
+              className: o(
+                "flex mb-[55px] flex-shrink-0",
+                e ? "justify-center items-center h-[32px]" : "justify-start"
               ),
-              children: r ? /* @__PURE__ */ e(_, { size: 36, className: "text-primary" }) : /* @__PURE__ */ e(T, { width: 161, height: 28 })
+              children: s(e)
             }
           ),
-          /* @__PURE__ */ e(
-            S,
+          /* @__PURE__ */ t(
+            k,
             {
               className: "flex-1 min-h-0",
-              collapsed: r,
-              showToggle: p,
+              collapsed: e,
+              showToggle: x,
               scrollable: !0,
-              onToggle: w,
+              onToggle: h,
               children: d
             }
           ),
-          !r && o && /* @__PURE__ */ e(
-            j,
-            {
-              icon: x,
-              title: o,
-              description: f,
-              className: "mb-5 flex-shrink-0"
-            }
-          ),
-          !r && s && s.length > 0 && /* @__PURE__ */ e(y, { items: s, className: "mb-8 flex-shrink-0" })
+          !e && a && /* @__PURE__ */ t("div", { className: "flex-shrink-0 mb-8", children: a })
         ]
       }
     );
   }
 );
-I.displayName = "Sidebar";
+j.displayName = "Sidebar";
 export {
-  I as Sidebar
+  j as Sidebar
 };
 //# sourceMappingURL=sidebar.mjs.map
