@@ -1,154 +1,153 @@
-import type { Meta, StoryObj } from "@storybook/react-vite"
 import { useState } from "react"
-import { Pagination, PageSizeSelector } from "../src/components/table"
+import type { Meta, StoryObj } from "@storybook/react"
+import { Pagination, PageSizeSelector } from "@/components/table/pagination"
 
-const meta = {
+const meta: Meta<typeof Pagination> = {
   title: "Table/Pagination",
   component: Pagination,
-  tags: ["autodocs"],
-  argTypes: {
-    currentPage: {
-      control: "number",
-    },
-    totalPages: {
-      control: "number",
-    },
-    siblingCount: {
-      control: "number",
-    },
+  parameters: {
+    layout: "centered",
   },
-} satisfies Meta<typeof Pagination>
+  tags: ["autodocs"],
+}
 
 export default meta
-type Story = StoryObj<typeof meta>
+type Story = StoryObj<typeof Pagination>
 
 /** 기본 페이지네이션 */
 export const Default: Story = {
-  args: {
-    currentPage: 1,
-    totalPages: 10,
+  render: function DefaultExample() {
+    const [currentPage, setCurrentPage] = useState(1)
+
+    return (
+      <Pagination
+        currentPage={currentPage}
+        totalPages={10}
+        onPageChange={setCurrentPage}
+      />
+    )
   },
 }
 
-/** 중간 페이지 */
-export const MiddlePage: Story = {
-  args: {
-    currentPage: 5,
-    totalPages: 10,
+/** 페이지 많을 때 (Ellipsis 표시) */
+export const ManyPages: Story = {
+  render: function ManyPagesExample() {
+    const [currentPage, setCurrentPage] = useState(15)
+
+    return (
+      <div className="flex flex-col gap-4">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={50}
+          onPageChange={setCurrentPage}
+        />
+        <p className="text-xs text-slate-500 text-center">
+          현재 페이지: {currentPage} / 50
+        </p>
+      </div>
+    )
   },
+}
+
+/** 첫 페이지 */
+export const FirstPage: Story = {
+  render: () => (
+    <Pagination
+      currentPage={1}
+      totalPages={20}
+    />
+  ),
 }
 
 /** 마지막 페이지 */
 export const LastPage: Story = {
-  args: {
-    currentPage: 10,
-    totalPages: 10,
-  },
+  render: () => (
+    <Pagination
+      currentPage={20}
+      totalPages={20}
+    />
+  ),
 }
 
-/** 많은 페이지 */
-export const ManyPages: Story = {
-  args: {
-    currentPage: 34,
-    totalPages: 68,
-  },
-}
-
-/** 적은 페이지 */
+/** 페이지 적을 때 */
 export const FewPages: Story = {
-  args: {
-    currentPage: 1,
-    totalPages: 3,
-  },
-}
-
-/** 한글 라벨 */
-export const KoreanLabels: Story = {
-  args: {
-    currentPage: 5,
-    totalPages: 20,
-    previousLabel: "이전",
-    nextLabel: "다음",
-  },
-}
-
-/** 인터랙티브 */
-export const Interactive: Story = {
-  render: () => {
-    const [currentPage, setCurrentPage] = useState(1)
-    const totalPages = 20
+  render: function FewPagesExample() {
+    const [currentPage, setCurrentPage] = useState(2)
 
     return (
-      <div className="flex flex-col gap-4">
-        <p className="text-sm text-slate-500">
-          현재 페이지: {currentPage} / {totalPages}
-        </p>
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
-        />
-      </div>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={3}
+        onPageChange={setCurrentPage}
+      />
     )
   },
 }
 
-/** Pagination + PageSizeSelector 조합 */
+/** 커스텀 라벨 */
+export const CustomLabels: Story = {
+  render: function CustomLabelsExample() {
+    const [currentPage, setCurrentPage] = useState(5)
+
+    return (
+      <Pagination
+        currentPage={currentPage}
+        totalPages={10}
+        onPageChange={setCurrentPage}
+        previousLabel="이전"
+        nextLabel="다음"
+      />
+    )
+  },
+}
+
+/** 페이지 사이즈 셀렉터 */
 export const WithPageSizeSelector: Story = {
-  render: () => {
+  render: function PageSizeSelectorExample() {
     const [currentPage, setCurrentPage] = useState(1)
     const [pageSize, setPageSize] = useState(10)
-    const totalItems = 234
-    const totalPages = Math.ceil(totalItems / pageSize)
 
     return (
-      <div className="flex items-center justify-between w-full">
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
-        />
-        <PageSizeSelector
-          pageSize={pageSize}
-          onPageSizeChange={(size) => {
-            setPageSize(size)
-            setCurrentPage(1)
-          }}
-        />
-      </div>
-    )
-  },
-}
-
-/** PageSizeSelector 단독 */
-export const PageSizeSelectorOnly: Story = {
-  render: () => {
-    const [pageSize, setPageSize] = useState(10)
-
-    return (
-      <div className="flex flex-col gap-4">
-        <p className="text-sm text-slate-500">
-          현재 페이지 사이즈: {pageSize}
-        </p>
+      <div className="flex items-center gap-6">
         <PageSizeSelector
           pageSize={pageSize}
           onPageSizeChange={setPageSize}
         />
+        <Pagination
+          currentPage={currentPage}
+          totalPages={Math.ceil(100 / pageSize)}
+          onPageChange={setCurrentPage}
+        />
       </div>
     )
   },
 }
 
-/** PageSizeSelector 커스텀 옵션 */
-export const PageSizeSelectorCustomOptions: Story = {
-  render: () => {
+/** 페이지 사이즈 셀렉터 (라벨 없이) */
+export const PageSizeSelectorNoLabel: Story = {
+  render: function PageSizeSelectorNoLabelExample() {
+    const [pageSize, setPageSize] = useState(20)
+
+    return (
+      <PageSizeSelector
+        pageSize={pageSize}
+        onPageSizeChange={setPageSize}
+        label=""
+      />
+    )
+  },
+}
+
+/** 커스텀 페이지 사이즈 옵션 */
+export const CustomPageSizeOptions: Story = {
+  render: function CustomPageSizeOptionsExample() {
     const [pageSize, setPageSize] = useState(25)
 
     return (
       <PageSizeSelector
         pageSize={pageSize}
-        options={[25, 50, 100, 200]}
         onPageSizeChange={setPageSize}
+        options={[25, 50, 75, 100]}
         label="표시 개수"
       />
     )

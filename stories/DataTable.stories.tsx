@@ -1078,3 +1078,108 @@ export const AllFeatures: Story = {
     )
   },
 }
+
+/** 컬럼 리사이징 */
+export const Resizable: Story = {
+  render: () => {
+    interface ResizableItem {
+      id: number
+      name: string
+      email: string
+      department: string
+      role: string
+      status: "활성" | "비활성"
+    }
+
+    const items: ResizableItem[] = [
+      { id: 1, name: "홍길동", email: "hong@example.com", department: "개발팀", role: "팀장", status: "활성" },
+      { id: 2, name: "김철수", email: "kim@example.com", department: "디자인팀", role: "시니어", status: "활성" },
+      { id: 3, name: "이영희", email: "lee@example.com", department: "기획팀", role: "주니어", status: "비활성" },
+      { id: 4, name: "박민수", email: "park@example.com", department: "개발팀", role: "시니어", status: "활성" },
+      { id: 5, name: "정수진", email: "jung@example.com", department: "마케팅팀", role: "매니저", status: "활성" },
+    ]
+
+    const resizableColumns: DataTableColumn<ResizableItem>[] = [
+      { accessorKey: "name", header: "이름", width: 120 },
+      { accessorKey: "email", header: "이메일", width: 180 },
+      { accessorKey: "department", header: "부서", width: 120 },
+      { accessorKey: "role", header: "직급", width: 100 },
+      {
+        accessorKey: "status",
+        header: "상태",
+        width: 100,
+        cell: (value) => (
+          <Badge variant={value === "활성" ? "success-light" : "danger-light"}>
+            {value as string}
+          </Badge>
+        ),
+      },
+    ]
+
+    return (
+      <div>
+        <p className="mb-4 text-xs text-slate-400">
+          컬럼 헤더의 오른쪽 가장자리를 드래그하여 너비를 조절하세요. (최소 너비: 50px)
+        </p>
+        <DataTable columns={resizableColumns} data={items} resizable />
+      </div>
+    )
+  },
+}
+
+/** 컬럼 리사이징 (제어 컴포넌트) */
+export const ResizableControlled: Story = {
+  render: () => {
+    interface ControlledItem {
+      id: number
+      code: string
+      title: string
+      description: string
+      createdAt: string
+    }
+
+    const items: ControlledItem[] = Array.from({ length: 5 }, (_, i) => ({
+      id: i + 1,
+      code: `CODE-${i + 1}`,
+      title: `항목 ${i + 1}`,
+      description: `이것은 항목 ${i + 1}의 설명입니다.`,
+      createdAt: `2024-01-${String(i + 10).padStart(2, "0")}`,
+    }))
+
+    const [columnWidths, setColumnWidths] = useState<Record<string, number>>({
+      code: 100,
+      title: 150,
+      description: 250,
+      createdAt: 120,
+    })
+
+    const handleColumnResize = (columnKey: keyof ControlledItem, width: number) => {
+      setColumnWidths((prev) => ({ ...prev, [String(columnKey)]: width }))
+    }
+
+    const controlledColumns: DataTableColumn<ControlledItem>[] = [
+      { accessorKey: "code", header: "코드", width: 100 },
+      { accessorKey: "title", header: "제목", width: 150 },
+      { accessorKey: "description", header: "설명", width: 250 },
+      { accessorKey: "createdAt", header: "생성일", width: 120 },
+    ]
+
+    return (
+      <div>
+        <p className="mb-4 text-xs text-slate-400">
+          컬럼 너비가 외부 상태로 관리됩니다. 현재 너비:
+        </p>
+        <div className="mb-4 text-xs font-mono bg-slate-100 dark:bg-slate-800 p-2 rounded">
+          {JSON.stringify(columnWidths)}
+        </div>
+        <DataTable
+          columns={controlledColumns}
+          data={items}
+          resizable
+          columnWidths={columnWidths}
+          onColumnResize={handleColumnResize}
+        />
+      </div>
+    )
+  },
+}

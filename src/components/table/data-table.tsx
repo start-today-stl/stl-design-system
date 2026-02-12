@@ -116,6 +116,12 @@ export interface DataTableProps<T extends { id: string | number }> {
   rowClassName?: (row: T) => string
   /** 테이블 본문 최대 높이 (초과 시 내부 스크롤) */
   maxHeight?: number | string
+  /** 컬럼 리사이징 활성화 */
+  resizable?: boolean
+  /** 컬럼 너비 상태 (제어 컴포넌트) */
+  columnWidths?: Record<string, number>
+  /** 컬럼 너비 변경 핸들러 */
+  onColumnResize?: (columnKey: keyof T, width: number) => void
 }
 
 /** 기본 편집 컴포넌트 (Input) */
@@ -177,6 +183,9 @@ function DataTable<T extends { id: string | number }>({
   className,
   rowClassName,
   maxHeight,
+  resizable = false,
+  columnWidths,
+  onColumnResize,
 }: DataTableProps<T>) {
   const [editingCell, setEditingCell] = React.useState<EditingCell<T> | null>(null)
   const [editValue, setEditValue] = React.useState<T[keyof T] | null>(null)
@@ -187,6 +196,12 @@ function DataTable<T extends { id: string | number }>({
   const [internalExpandedIds, setInternalExpandedIds] = React.useState<(string | number)[]>(
     expandable?.defaultExpandedRowIds ?? []
   )
+  // 내부 컬럼 너비 상태 (비제어 컴포넌트용)
+  const [internalColumnWidths, setInternalColumnWidths] = React.useState<Record<string, number>>({})
+  // 리사이징 상태
+  const [resizingColumn, setResizingColumn] = React.useState<keyof T | null>(null)
+  const resizeStartX = React.useRef<number>(0)
+  const resizeStartWidth = React.useRef<number>(0)
 
   const expandedRowIds = expandable?.expandedRowIds ?? internalExpandedIds
   const setExpandedRowIds = expandable?.onExpandedChange ?? setInternalExpandedIds
@@ -415,6 +430,78 @@ function DataTable<T extends { id: string | number }>({
   // 체크박스/확장 컬럼도 sticky로 만들기 (왼쪽 고정 컬럼이 있을 때)
   const hasLeftStickyColumns = columns.some((col) => col.sticky === "left")
 
+  // 컬럼 너비 가져오기 (제어/비제어 컴포넌트 통합)
+  const getColumnWidth = React.useCallback(
+    (column: DataTableColumn<T>): number | undefined => {
+      const key = String(column.accessorKey)
+      // 제어 컴포넌트
+      if (columnWidths && key in columnWidths) {
+        return columnWidths[key]
+      }
+      // 비제어 컴포넌트
+      if (key in internalColumnWidths) {
+        return internalColumnWidths[key]
+      }
+      // 초기값: column.width 또는 undefined
+      if (column.width) {
+        return typeof column.width === "number" ? column.width : parseInt(column.width, 10)
+      }
+      return undefined
+    },
+    [columnWidths, internalColumnWidths]
+  )
+
+  // 리사이즈 핸들러
+  const handleResizeStart = React.useCallback(
+    (e: React.MouseEvent, column: DataTableColumn<T>) => {
+      e.preventDefault()
+      e.stopPropagation()
+      setResizingColumn(column.accessorKey)
+      resizeStartX.current = e.clientX
+      const currentWidth = getColumnWidth(column) ?? 150
+      resizeStartWidth.current = currentWidth
+    },
+    [getColumnWidth]
+  )
+
+  const handleResizeMove = React.useCallback(
+    (e: MouseEvent) => {
+      if (!resizingColumn) return
+      const delta = e.clientX - resizeStartX.current
+      const newWidth = Math.max(50, resizeStartWidth.current + delta) // 최소 50px
+      const key = String(resizingColumn)
+
+      if (onColumnResize) {
+        onColumnResize(resizingColumn, newWidth)
+      } else {
+        setInternalColumnWidths((prev) => ({ ...prev, [key]: newWidth }))
+      }
+    },
+    [resizingColumn, onColumnResize]
+  )
+
+  const handleResizeEnd = React.useCallback(() => {
+    setResizingColumn(null)
+  }, [])
+
+  // 전역 마우스 이벤트 등록 (리사이징 중)
+  React.useEffect(() => {
+    if (!resizingColumn) return
+
+    document.addEventListener("mousemove", handleResizeMove)
+    document.addEventListener("mouseup", handleResizeEnd)
+    // 드래그 중 텍스트 선택 방지
+    document.body.style.userSelect = "none"
+    document.body.style.cursor = "col-resize"
+
+    return () => {
+      document.removeEventListener("mousemove", handleResizeMove)
+      document.removeEventListener("mouseup", handleResizeEnd)
+      document.body.style.userSelect = ""
+      document.body.style.cursor = ""
+    }
+  }, [resizingColumn, handleResizeMove, handleResizeEnd])
+
   // 체크박스/확장 컬럼 너비 상수
   const CHECKBOX_WIDTH = 48 // w-12 = 48px
   const EXPAND_WIDTH = 40 // w-10 = 40px
@@ -468,10 +555,33 @@ function DataTable<T extends { id: string | number }>({
             const toPx = (v: string | number) => typeof v === "number" ? `${v}px` : v
             const baseStyle: React.CSSProperties = {}
             if (!column.sticky) {
-              if (column.width) baseStyle.width = toPx(column.width)
-              if (column.minWidth) baseStyle.minWidth = toPx(column.minWidth)
+              // resizable일 때 getColumnWidth 사용
+              const resizedWidth = resizable ? getColumnWidth(column) : undefined
+              if (resizedWidth !== undefined) {
+                baseStyle.width = `${resizedWidth}px`
+                baseStyle.minWidth = `${resizedWidth}px`
+              } else {
+                if (column.width) baseStyle.width = toPx(column.width)
+                if (column.minWidth) baseStyle.minWidth = toPx(column.minWidth)
+              }
             }
             const style = { ...baseStyle, ...stickyData.style }
+
+            // 리사이즈 핸들 컴포넌트
+            const resizeHandle = resizable && (
+              <div
+                className={cn(
+                  "absolute top-0 h-full w-[9px] cursor-col-resize opacity-0 hover:opacity-100 transition-opacity z-30",
+                  resizingColumn === column.accessorKey && "opacity-100"
+                )}
+                style={{
+                  right: "-4px",
+                  background: "linear-gradient(to right, transparent, rgba(148,163,184,0.5) 50%, transparent)"
+                }}
+                onMouseDown={(e) => handleResizeStart(e, column)}
+                onClick={(e) => e.stopPropagation()}
+              />
+            )
 
             if (column.sortable) {
               return (
@@ -480,9 +590,10 @@ function DataTable<T extends { id: string | number }>({
                   sortDirection={getSortDirection(column.accessorKey)}
                   onSort={() => handleSort(column.accessorKey)}
                   style={style}
-                  className={cn(getAlignClass(column.align), stickyData.className)}
+                  className={cn(getAlignClass(column.align), stickyData.className, resizable && "relative overflow-visible")}
                 >
                   {column.header}
+                  {resizeHandle}
                 </TableSortableHead>
               )
             }
@@ -491,9 +602,10 @@ function DataTable<T extends { id: string | number }>({
               <TableHead
                 key={String(column.accessorKey)}
                 style={style}
-                className={cn(getAlignClass(column.align), stickyData.className)}
+                className={cn(getAlignClass(column.align), stickyData.className, resizable && "relative overflow-visible")}
               >
                 {column.header}
+                {resizeHandle}
               </TableHead>
             )
           })}
@@ -586,6 +698,21 @@ function DataTable<T extends { id: string | number }>({
                   const cellIsEditing = isEditing(row.id, column.accessorKey)
                   const stickyData = getStickyStyles(column, false, isSelected)
 
+                  // 바디 셀 너비 계산 (헤더와 동일한 로직)
+                  const toPx = (v: string | number) => typeof v === "number" ? `${v}px` : v
+                  const bodyCellStyle: React.CSSProperties = {}
+                  if (!column.sticky) {
+                    const resizedWidth = resizable ? getColumnWidth(column) : undefined
+                    if (resizedWidth !== undefined) {
+                      bodyCellStyle.width = `${resizedWidth}px`
+                      bodyCellStyle.minWidth = `${resizedWidth}px`
+                    } else {
+                      if (column.width) bodyCellStyle.width = toPx(column.width)
+                      if (column.minWidth) bodyCellStyle.minWidth = toPx(column.minWidth)
+                    }
+                  }
+                  const cellStyle = { ...bodyCellStyle, ...stickyData.style }
+
                   if (cellIsEditing && column.editable) {
                     const EditComponent = column.editComponent || DefaultEditComponent
 
@@ -594,7 +721,7 @@ function DataTable<T extends { id: string | number }>({
                         ref={editingCellRef}
                         key={String(column.accessorKey)}
                         className={cn(getAlignClass(column.align), "p-1", stickyData.className)}
-                        style={stickyData.style}
+                        style={cellStyle}
                         onClick={(e) => e.stopPropagation()}
                       >
                         <EditComponent
@@ -629,7 +756,7 @@ function DataTable<T extends { id: string | number }>({
                           "cursor-text hover:bg-blue-100 dark:hover:bg-blue-800",
                           stickyData.className
                         )}
-                        style={stickyData.style}
+                        style={cellStyle}
                         onClick={(e) => {
                           e.stopPropagation()
                           // 이전 셀의 blur 처리가 먼저 완료되어야 함
@@ -647,7 +774,7 @@ function DataTable<T extends { id: string | number }>({
                     <TableCell
                       key={String(column.accessorKey)}
                       className={cn(getAlignClass(column.align), stickyData.className)}
-                      style={stickyData.style}
+                      style={cellStyle}
                     >
                       {content}
                     </TableCell>
