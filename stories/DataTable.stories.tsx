@@ -1183,3 +1183,165 @@ export const ResizableControlled: Story = {
     )
   },
 }
+
+/** 컬럼 순서 변경 (드래그 앤 드롭) */
+export const ColumnReorderable: Story = {
+  render: () => {
+    interface ReorderItem {
+      id: number
+      name: string
+      email: string
+      department: string
+      role: string
+    }
+
+    const items: ReorderItem[] = [
+      { id: 1, name: "홍길동", email: "hong@example.com", department: "개발팀", role: "팀장" },
+      { id: 2, name: "김철수", email: "kim@example.com", department: "디자인팀", role: "시니어" },
+      { id: 3, name: "이영희", email: "lee@example.com", department: "기획팀", role: "주니어" },
+      { id: 4, name: "박민수", email: "park@example.com", department: "개발팀", role: "시니어" },
+      { id: 5, name: "정수진", email: "jung@example.com", department: "마케팅팀", role: "매니저" },
+    ]
+
+    const reorderColumns: DataTableColumn<ReorderItem>[] = [
+      { accessorKey: "name", header: "이름", width: 120 },
+      { accessorKey: "email", header: "이메일", width: 200 },
+      { accessorKey: "department", header: "부서", width: 120 },
+      { accessorKey: "role", header: "직급", width: 100 },
+    ]
+
+    return (
+      <div>
+        <p className="mb-4 text-xs text-slate-400">
+          컬럼 헤더를 드래그하여 순서를 변경하세요. (sortable, sticky 컬럼은 드래그 불가)
+        </p>
+        <DataTable columns={reorderColumns} data={items} columnReorderable />
+      </div>
+    )
+  },
+}
+
+/** 컬럼 순서 변경 (제어 컴포넌트) */
+export const ColumnReorderableControlled: Story = {
+  render: () => {
+    interface ControlledReorderItem {
+      id: number
+      col1: string
+      col2: string
+      col3: string
+      col4: string
+      col5: string
+    }
+
+    const items: ControlledReorderItem[] = Array.from({ length: 5 }, (_, i) => ({
+      id: i + 1,
+      col1: `A${i + 1}`,
+      col2: `B${i + 1}`,
+      col3: `C${i + 1}`,
+      col4: `D${i + 1}`,
+      col5: `E${i + 1}`,
+    }))
+
+    const [columnOrder, setColumnOrder] = useState<(keyof ControlledReorderItem)[]>([
+      "col1", "col2", "col3", "col4", "col5"
+    ])
+
+    const controlledColumns: DataTableColumn<ControlledReorderItem>[] = [
+      { accessorKey: "col1", header: "컬럼 1", width: 100 },
+      { accessorKey: "col2", header: "컬럼 2", width: 100 },
+      { accessorKey: "col3", header: "컬럼 3", width: 100 },
+      { accessorKey: "col4", header: "컬럼 4", width: 100 },
+      { accessorKey: "col5", header: "컬럼 5", width: 100 },
+    ]
+
+    return (
+      <div>
+        <p className="mb-4 text-xs text-slate-400">
+          컬럼 순서가 외부 상태로 관리됩니다. 현재 순서:
+        </p>
+        <div className="mb-4 text-xs font-mono bg-slate-100 dark:bg-slate-800 p-2 rounded">
+          {JSON.stringify(columnOrder)}
+        </div>
+        <DataTable
+          columns={controlledColumns}
+          data={items}
+          columnReorderable
+          columnOrder={columnOrder}
+          onColumnReorder={setColumnOrder}
+        />
+      </div>
+    )
+  },
+}
+
+/** 컬럼 순서 변경 + 리사이징 + 선택 */
+export const ColumnReorderableWithFeatures: Story = {
+  render: () => {
+    interface FeatureItem {
+      id: number
+      code: string
+      name: string
+      category: string
+      price: number
+      stock: number
+    }
+
+    const items: FeatureItem[] = Array.from({ length: 8 }, (_, i) => ({
+      id: i + 1,
+      code: `ITEM-${i + 1}`,
+      name: `상품 ${i + 1}`,
+      category: ["전자기기", "의류", "식품", "가구"][i % 4],
+      price: (i + 1) * 10000,
+      stock: (i + 1) * 5,
+    }))
+
+    const [selectedIds, setSelectedIds] = useState<number[]>([])
+    const [columnOrder, setColumnOrder] = useState<(keyof FeatureItem)[]>([
+      "code", "name", "category", "price", "stock"
+    ])
+    const [columnWidths, setColumnWidths] = useState<Record<string, number>>({
+      code: 100,
+      name: 150,
+      category: 120,
+      price: 100,
+      stock: 80,
+    })
+
+    const featureColumns: DataTableColumn<FeatureItem>[] = [
+      { accessorKey: "code", header: "코드", width: 100 },
+      { accessorKey: "name", header: "상품명", width: 150 },
+      { accessorKey: "category", header: "카테고리", width: 120 },
+      { accessorKey: "price", header: "가격", width: 100, align: "right", cell: (v) => `${(v as number).toLocaleString()}원` },
+      { accessorKey: "stock", header: "재고", width: 80, align: "center" },
+    ]
+
+    return (
+      <div>
+        <p className="mb-4 text-xs text-slate-400">
+          컬럼 순서 변경 + 컬럼 리사이징 + 행 선택이 모두 동작합니다.
+        </p>
+        <div className="mb-4 text-xs">
+          <div className="font-mono bg-slate-100 dark:bg-slate-800 p-2 rounded mb-2">
+            순서: {JSON.stringify(columnOrder)}
+          </div>
+          <div className="font-mono bg-slate-100 dark:bg-slate-800 p-2 rounded">
+            너비: {JSON.stringify(columnWidths)}
+          </div>
+        </div>
+        <DataTable
+          columns={featureColumns}
+          data={items}
+          selectable
+          selectedIds={selectedIds}
+          onSelectionChange={(ids) => setSelectedIds(ids as number[])}
+          columnReorderable
+          columnOrder={columnOrder}
+          onColumnReorder={setColumnOrder}
+          resizable
+          columnWidths={columnWidths}
+          onColumnResize={(key, width) => setColumnWidths(prev => ({ ...prev, [String(key)]: width }))}
+        />
+      </div>
+    )
+  },
+}
