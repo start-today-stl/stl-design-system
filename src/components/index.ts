@@ -33,8 +33,7 @@ export * from './ui/textarea'
 export * from './ui/tooltip'
 export { TooltipArrowContent } from './ui/tooltip-side'
 export * from './ui/modal'
-export * from './ui/split-panel'
-export * from './ui/tree-list'
+export * from './ui/tree'
 
 // Table Components (테이블 관련 전체)
 export * from './table'

@@ -13,4 +13,5 @@ export { isNavGroup } from './types';
 export * from './search-bar';
 export * from './visit-tag';
 export * from './page-title';
+export * from './panel-layout';
 export { stlLogoLight, stlLogoDark } from '../assets/images';

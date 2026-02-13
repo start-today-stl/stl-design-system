@@ -1,29 +1,29 @@
 import { useState } from "react"
 import type { Meta, StoryObj } from "@storybook/react-vite"
-import { TreeList, TreeItem } from "../src/components/ui/tree-list"
+import { Tree, TreeItem } from "../src/components/ui/tree"
 import { BoxIcon, WriteIcon, DeleteIcon } from "@/icons"
 
 const meta = {
-  title: "Components/TreeList",
-  component: TreeList,
+  title: "Components/Tree",
+  component: Tree,
   parameters: {
     layout: "padded",
   },
   tags: ["autodocs"],
-} satisfies Meta<typeof TreeList>
+} satisfies Meta<typeof Tree>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-/** 기본 TreeList */
+/** 기본 Tree */
 export const Default: Story = {
   render: () => (
     <div className="w-[280px] border rounded-lg p-2">
-      <TreeList>
+      <Tree>
         <TreeItem icon={<BoxIcon size={18} />} label="카테고리 1" />
         <TreeItem icon={<BoxIcon size={18} />} label="카테고리 2" />
         <TreeItem icon={<BoxIcon size={18} />} label="카테고리 3" />
-      </TreeList>
+      </Tree>
     </div>
   ),
 }
@@ -32,7 +32,7 @@ export const Default: Story = {
 export const Nested: Story = {
   render: () => (
     <div className="w-[280px] border rounded-lg p-2">
-      <TreeList>
+      <Tree>
         <TreeItem icon={<BoxIcon size={18} />} label="전자제품" defaultExpanded>
           <TreeItem label="스마트폰" />
           <TreeItem label="노트북" defaultExpanded>
@@ -46,7 +46,7 @@ export const Nested: Story = {
           <TreeItem label="하의" />
         </TreeItem>
         <TreeItem icon={<BoxIcon size={18} />} label="식품" />
-      </TreeList>
+      </Tree>
     </div>
   ),
 }
@@ -66,7 +66,7 @@ export const WithSelection: Story = {
 
     return (
       <div className="w-[280px] border rounded-lg p-2">
-        <TreeList>
+        <Tree>
           {items.map((item) => (
             <TreeItem
               key={item.id}
@@ -76,7 +76,7 @@ export const WithSelection: Story = {
               onSelect={() => setSelected(item.id)}
             />
           ))}
-        </TreeList>
+        </Tree>
       </div>
     )
   },
@@ -104,7 +104,7 @@ export const WithActions: Story = {
 
     return (
       <div className="w-[280px] border rounded-lg p-2">
-        <TreeList>
+        <Tree>
           {items.map((item) => (
             <TreeItem
               key={item.id}
@@ -119,20 +119,20 @@ export const WithActions: Story = {
                     onClick={() => handleEdit(item.id)}
                     aria-label="수정"
                   >
-                    <WriteIcon size={14} />
+                    <WriteIcon size={20} />
                   </button>
                   <button
                     className="p-1 hover:bg-slate-200 dark:hover:bg-slate-700 rounded text-red-500"
                     onClick={() => handleDelete(item.id)}
                     aria-label="삭제"
                   >
-                    <DeleteIcon size={14} />
+                    <DeleteIcon size={20} />
                   </button>
                 </>
               }
             />
           ))}
-        </TreeList>
+        </Tree>
       </div>
     )
   },
@@ -152,7 +152,7 @@ export const Controlled: Story = {
 
     return (
       <div className="w-[280px] border rounded-lg p-2">
-        <TreeList>
+        <Tree>
           <TreeItem
             icon={<BoxIcon size={18} />}
             label="전자제품"
@@ -171,7 +171,7 @@ export const Controlled: Story = {
             <TreeItem label="상의" />
             <TreeItem label="하의" />
           </TreeItem>
-        </TreeList>
+        </Tree>
         <div className="mt-4 text-xs text-slate-500">
           <p>전자제품: {expanded.electronics ? "펼침" : "접힘"}</p>
           <p>의류: {expanded.clothing ? "펼침" : "접힘"}</p>
@@ -185,12 +185,12 @@ export const Controlled: Story = {
 export const WithoutIcons: Story = {
   render: () => (
     <div className="w-[280px] border rounded-lg p-2">
-      <TreeList>
+      <Tree>
         <TreeItem label="기본 설정" />
         <TreeItem label="알림 설정" />
         <TreeItem label="보안 설정" />
         <TreeItem label="계정 설정" />
-      </TreeList>
+      </Tree>
     </div>
   ),
 }

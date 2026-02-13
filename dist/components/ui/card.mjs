@@ -1,65 +1,68 @@
 import { jsx as d } from "react/jsx-runtime";
-import * as o from "react";
-import { cn as t } from "../../lib/utils.mjs";
-const s = o.forwardRef(({ className: a, ...e }, r) => /* @__PURE__ */ d(
+import * as t from "react";
+import { cn as o } from "../../lib/utils.mjs";
+const i = t.forwardRef(
+  ({ className: a, shadow: e = !0, ...r }, s) => /* @__PURE__ */ d(
+    "div",
+    {
+      ref: s,
+      className: o(
+        "rounded-2xl border bg-card text-card-foreground",
+        e && "shadow-card",
+        a
+      ),
+      ...r
+    }
+  )
+);
+i.displayName = "Card";
+const m = t.forwardRef(({ className: a, ...e }, r) => /* @__PURE__ */ d(
   "div",
   {
     ref: r,
-    className: t(
-      "rounded-lg border bg-card text-card-foreground shadow-sm",
+    className: o("flex flex-col gap-4 p-4", a),
+    ...e
+  }
+));
+m.displayName = "CardHeader";
+const l = t.forwardRef(({ className: a, ...e }, r) => /* @__PURE__ */ d(
+  "div",
+  {
+    ref: r,
+    className: o(
+      "text-xl font-semibold leading-[1.3] tracking-tight",
       a
     ),
     ...e
   }
 ));
-s.displayName = "Card";
-const i = o.forwardRef(({ className: a, ...e }, r) => /* @__PURE__ */ d(
+l.displayName = "CardTitle";
+const n = t.forwardRef(({ className: a, ...e }, r) => /* @__PURE__ */ d(
   "div",
   {
     ref: r,
-    className: t("flex flex-col space-y-1.5 p-6", a),
+    className: o("text-sm font-medium leading-normal text-muted-foreground", a),
     ...e
   }
 ));
-i.displayName = "CardHeader";
-const m = o.forwardRef(({ className: a, ...e }, r) => /* @__PURE__ */ d(
+n.displayName = "CardDescription";
+const c = t.forwardRef(({ className: a, ...e }, r) => /* @__PURE__ */ d("div", { ref: r, className: o("p-4 pt-0", a), ...e }));
+c.displayName = "CardContent";
+const f = t.forwardRef(({ className: a, ...e }, r) => /* @__PURE__ */ d(
   "div",
   {
     ref: r,
-    className: t(
-      "text-2xl font-semibold leading-none tracking-tight",
-      a
-    ),
+    className: o("flex items-center p-4 pt-0", a),
     ...e
   }
 ));
-m.displayName = "CardTitle";
-const c = o.forwardRef(({ className: a, ...e }, r) => /* @__PURE__ */ d(
-  "div",
-  {
-    ref: r,
-    className: t("text-sm text-muted-foreground", a),
-    ...e
-  }
-));
-c.displayName = "CardDescription";
-const l = o.forwardRef(({ className: a, ...e }, r) => /* @__PURE__ */ d("div", { ref: r, className: t("p-6 pt-0", a), ...e }));
-l.displayName = "CardContent";
-const n = o.forwardRef(({ className: a, ...e }, r) => /* @__PURE__ */ d(
-  "div",
-  {
-    ref: r,
-    className: t("flex items-center p-6 pt-0", a),
-    ...e
-  }
-));
-n.displayName = "CardFooter";
+f.displayName = "CardFooter";
 export {
-  s as Card,
-  l as CardContent,
-  c as CardDescription,
-  n as CardFooter,
-  i as CardHeader,
-  m as CardTitle
+  i as Card,
+  c as CardContent,
+  n as CardDescription,
+  f as CardFooter,
+  m as CardHeader,
+  l as CardTitle
 };
 //# sourceMappingURL=card.mjs.map

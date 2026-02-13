@@ -1,7 +1,7 @@
 import * as React from "react";
-export interface TreeListProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface TreeProps extends React.HTMLAttributes<HTMLDivElement> {
 }
-declare const TreeList: React.ForwardRefExoticComponent<TreeListProps & React.RefAttributes<HTMLDivElement>>;
+declare const Tree: React.ForwardRefExoticComponent<TreeProps & React.RefAttributes<HTMLDivElement>>;
 export interface TreeItemProps extends React.HTMLAttributes<HTMLDivElement> {
     /** 아이템 아이콘 */
     icon?: React.ReactNode;
@@ -23,4 +23,4 @@ export interface TreeItemProps extends React.HTMLAttributes<HTMLDivElement> {
     depth?: number;
 }
 declare const TreeItem: React.ForwardRefExoticComponent<TreeItemProps & React.RefAttributes<HTMLDivElement>>;
-export { TreeList, TreeItem };
+export { Tree, TreeItem };

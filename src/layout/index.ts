@@ -29,5 +29,8 @@ export * from './visit-tag'
 // Page Components
 export * from './page-title'
 
+// Panel Layout
+export * from './panel-layout'
+
 // Assets
 export { stlLogoLight, stlLogoDark } from '@/assets/images'

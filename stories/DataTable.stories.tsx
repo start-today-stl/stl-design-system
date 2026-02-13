@@ -48,14 +48,14 @@ const columns: DataTableColumn<User>[] = [
   },
 ]
 
-const meta = {
+const meta: Meta = {
   title: "Table/DataTable",
   component: DataTable,
   tags: ["autodocs"],
-} satisfies Meta<typeof DataTable>
+}
 
 export default meta
-type Story = StoryObj<typeof meta>
+type Story = StoryObj
 
 /** 기본 테이블 */
 export const Default: Story = {
@@ -490,13 +490,13 @@ export const Expandable: Story = {
         accessorKey: "status",
         header: "상태",
         cell: (value) => {
-          const statusColors: Record<string, "default" | "success-light" | "warning-light" | "danger-light"> = {
-            대기: "default",
-            처리중: "warning-light",
+          const statusColors: Record<string, "info-light" | "info-solid" | "success-light" | "danger-light"> = {
+            대기: "info-light",
+            처리중: "info-solid",
             완료: "success-light",
             취소: "danger-light",
           }
-          return <Badge variant={statusColors[value as string] || "default"}>{value as string}</Badge>
+          return <Badge variant={statusColors[value as string] || "info-light"}>{value as string}</Badge>
         },
       },
     ]
@@ -575,16 +575,16 @@ export const StickyColumn: Story = {
     }))
 
     const productColumns: DataTableColumn<Product>[] = [
-      // sticky 컬럼은 width (고정 너비)
+      // sticky 컬럼 (고정 너비)
       { accessorKey: "sku", header: "SKU", width: 120, sticky: "left" },
       { accessorKey: "name", header: "상품명", width: 150, sticky: "left" },
-      // non-sticky 컬럼은 minWidth (유동적 너비)
-      { accessorKey: "category", header: "카테고리", minWidth: 120 },
-      { accessorKey: "brand", header: "브랜드", minWidth: 120 },
+      // non-sticky 컬럼 (고정 너비, 컨테이너 초과 시 스크롤)
+      { accessorKey: "category", header: "카테고리", minWidth: 80 },
+      { accessorKey: "brand", header: "브랜드", minWidth: 80 },
       { accessorKey: "price", header: "가격", minWidth: 100, align: "right", cell: (v) => `${(v as number).toLocaleString()}원` },
-      { accessorKey: "stock", header: "재고", minWidth: 80, align: "center" },
-      { accessorKey: "rating", header: "평점", minWidth: 80, align: "center", cell: (v) => `${v}/5` },
-      { accessorKey: "reviews", header: "리뷰수", minWidth: 80, align: "center" },
+      { accessorKey: "stock", header: "재고", minWidth: 60, align: "center" },
+      { accessorKey: "rating", header: "평점", minWidth: 60, align: "center", cell: (v) => `${v}/5` },
+      { accessorKey: "reviews", header: "리뷰수", minWidth: 200, align: "center" },
       { accessorKey: "description", header: "설명", minWidth: 200 },
       {
         accessorKey: "actions",
@@ -605,7 +605,7 @@ export const StickyColumn: Story = {
         <p className="mb-4 text-xs text-slate-400">
           SKU, 상품명은 왼쪽 고정, 액션은 오른쪽 고정입니다. 가로 스크롤하여 확인하세요.
         </p>
-        <div className="w-[600px] border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
+        <div className="border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
           <DataTable columns={productColumns} data={products} />
         </div>
       </div>
@@ -642,11 +642,11 @@ export const StickyColumnWithSelection: Story = {
 
     const itemColumns: DataTableColumn<Item>[] = [
       { accessorKey: "code", header: "코드", width: 100, sticky: "left" },
-      { accessorKey: "name", header: "이름", minWidth: 150 },
-      { accessorKey: "col1", header: "컬럼1", minWidth: 150 },
-      { accessorKey: "col2", header: "컬럼2", minWidth: 150 },
-      { accessorKey: "col3", header: "컬럼3", minWidth: 150 },
-      { accessorKey: "col4", header: "컬럼4", minWidth: 150 },
+      { accessorKey: "name", header: "이름", width: 120 },
+      { accessorKey: "col1", header: "컬럼1", width: 100 },
+      { accessorKey: "col2", header: "컬럼2", width: 100 },
+      { accessorKey: "col3", header: "컬럼3", width: 100 },
+      { accessorKey: "col4", header: "컬럼4", width: 100 },
       {
         accessorKey: "status",
         header: "상태",
@@ -668,7 +668,7 @@ export const StickyColumnWithSelection: Story = {
         <p className="mb-4 text-xs text-slate-400">
           체크박스와 코드 컬럼이 왼쪽 고정, 상태 컬럼이 오른쪽 고정입니다.
         </p>
-        <div className="w-[500px] border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
+        <div className="border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
           <DataTable
             columns={itemColumns}
             data={items}
@@ -947,11 +947,11 @@ export const AllFeatures: Story = {
         },
       },
       // 스크롤되는 컬럼
-      { accessorKey: "category", header: "카테고리", minWidth: 120, sortable: true },
+      { accessorKey: "category", header: "카테고리", width: 100, sortable: true },
       {
         accessorKey: "price",
         header: "가격",
-        minWidth: 120,
+        width: 120,
         align: "right",
         sortable: true,
         editable: true,
@@ -966,7 +966,7 @@ export const AllFeatures: Story = {
       {
         accessorKey: "stock",
         header: "재고",
-        minWidth: 100,
+        width: 80,
         align: "center",
         sortable: true,
         editable: true,
@@ -990,7 +990,7 @@ export const AllFeatures: Story = {
                 ? "success-light"
                 : value === "품절"
                   ? "danger-light"
-                  : "default"
+                  : "info-light"
             }
           >
             {value as string}
@@ -1010,7 +1010,7 @@ export const AllFeatures: Story = {
         <p className="mb-4 text-xs text-slate-400">
           SKU/상품명은 왼쪽 고정, 상태는 오른쪽 고정. 상품명/가격/재고는 편집 가능. 옵션이 있는 상품은 확장 가능. maxHeight=400 적용.
         </p>
-        <div className="w-[700px] border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
+        <div className="border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
           {/* 툴바 */}
           <TableToolbar totalCount={products.length} selectedCount={selectedIds.length}>
             <Button variant="danger" disabled={selectedIds.length === 0} onClick={handleDelete}>
@@ -1304,7 +1304,7 @@ export const ColumnReorderableWithFeatures: Story = {
       name: 150,
       category: 120,
       price: 100,
-      stock: 80,
+      stock: 100,
     })
 
     const featureColumns: DataTableColumn<FeatureItem>[] = [
@@ -1312,7 +1312,7 @@ export const ColumnReorderableWithFeatures: Story = {
       { accessorKey: "name", header: "상품명", width: 150 },
       { accessorKey: "category", header: "카테고리", width: 120 },
       { accessorKey: "price", header: "가격", width: 100, align: "right", cell: (v) => `${(v as number).toLocaleString()}원` },
-      { accessorKey: "stock", header: "재고", width: 80, align: "center" },
+      { accessorKey: "stock", header: "재고", width: 100, align: "center" },
     ]
 
     return (

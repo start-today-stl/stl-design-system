@@ -40,7 +40,6 @@ const sampleNavigation: NavigationConfig = [
     label: "대시보드",
     icon: SolidHomeIcon,
     href: "/dashboard",
-    active: true,
     hasIndicator: true,
   },
   {
@@ -146,6 +145,7 @@ const sampleRecentSearches = [
 /** 기본 레이아웃 - Compound Component + 데이터 기반 네비게이션 */
 export const Default: Story = {
   render: function Render() {
+    const [currentPath, setCurrentPath] = useState("/dashboard");
     const [visits, setVisits] = useState([
       { id: "1", label: "판매 관리" },
       { id: "2", label: "STL" },
@@ -185,7 +185,11 @@ export const Default: Story = {
               </>
             }
           >
-            <NavRenderer items={sampleNavigation} />
+            <NavRenderer
+              items={sampleNavigation}
+              currentPath={currentPath}
+              onItemClick={(href) => setCurrentPath(href)}
+            />
           </AppShell.Sidebar>
 
           <AppShell.Header
@@ -248,6 +252,7 @@ export const Default: Story = {
 /** Breadcrumb + PageTitle 사용 예시 */
 export const WithBreadcrumb: Story = {
   render: function Render() {
+    const [currentPath, setCurrentPath] = useState("/orders/b2c");
     const [visits, setVisits] = useState([
       { id: "1", label: "판매 관리" },
       { id: "2", label: "STL" },
@@ -281,7 +286,11 @@ export const WithBreadcrumb: Story = {
               </>
             }
           >
-            <NavRenderer items={sampleNavigation} />
+            <NavRenderer
+              items={sampleNavigation}
+              currentPath={currentPath}
+              onItemClick={(href) => setCurrentPath(href)}
+            />
           </AppShell.Sidebar>
 
           <AppShell.Header
