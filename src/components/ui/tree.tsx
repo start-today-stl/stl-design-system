@@ -5,12 +5,12 @@ import { cn } from "@/lib/utils"
 import { RightIcon } from "@/icons"
 
 // ============================================================================
-// TreeList
+// Tree
 // ============================================================================
 
-export interface TreeListProps extends React.HTMLAttributes<HTMLDivElement> {}
+export interface TreeProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-const TreeList = React.forwardRef<HTMLDivElement, TreeListProps>(
+const Tree = React.forwardRef<HTMLDivElement, TreeProps>(
   ({ className, children, ...props }, ref) => {
     return (
       <div
@@ -24,7 +24,7 @@ const TreeList = React.forwardRef<HTMLDivElement, TreeListProps>(
     )
   }
 )
-TreeList.displayName = "TreeList"
+Tree.displayName = "Tree"
 
 // ============================================================================
 // TreeItem
@@ -163,4 +163,4 @@ const TreeItem = React.forwardRef<HTMLDivElement, TreeItemProps>(
 )
 TreeItem.displayName = "TreeItem"
 
-export { TreeList, TreeItem }
+export { Tree, TreeItem }

@@ -127,6 +127,10 @@
   --radius-md: 0.375rem;
   --radius-lg: 0.5rem;
   --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
+
+  /* Box Shadow */
+  --shadow-card: 10px 10px 20px 0px var(--color-slate-100);
 
   /* Spacing Scale */
   --spacing-0: 0px;

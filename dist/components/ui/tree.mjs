@@ -1,27 +1,27 @@
-import { jsxs as v, jsx as e } from "react/jsx-runtime";
+import { jsx as e, jsxs as v } from "react/jsx-runtime";
 import * as t from "react";
 import { useState as C } from "react";
-import { cn as a } from "../../lib/utils.mjs";
-import { RightIcon as L } from "../../icons/RightIcon.mjs";
-const j = t.forwardRef(
-  ({ className: n, children: s, ...l }, i) => /* @__PURE__ */ e(
+import { cn as i } from "../../lib/utils.mjs";
+import { RightIcon as j } from "../../icons/RightIcon.mjs";
+const P = t.forwardRef(
+  ({ className: n, children: s, ...l }, a) => /* @__PURE__ */ e(
     "div",
     {
-      ref: i,
+      ref: a,
       role: "tree",
-      className: a("flex flex-col", n),
+      className: i("flex flex-col", n),
       ...l,
       children: s
     }
   )
 );
-j.displayName = "TreeList";
-const P = t.forwardRef(
+P.displayName = "Tree";
+const V = t.forwardRef(
   ({
     className: n,
     icon: s,
     label: l,
-    selected: i = !1,
+    selected: a = !1,
     expanded: p,
     defaultExpanded: N = !1,
     onSelect: m,
@@ -42,10 +42,10 @@ const P = t.forwardRef(
       /* @__PURE__ */ v(
         "div",
         {
-          className: a(
+          className: i(
             "group flex items-center gap-2 px-3 py-2 cursor-pointer rounded-lg",
             "transition-colors",
-            i ? "bg-accent text-primary" : "hover:bg-muted",
+            a ? "bg-accent text-primary" : "hover:bg-muted",
             n
           ),
           style: { paddingLeft: `${12 + u * 20}px` },
@@ -55,14 +55,14 @@ const P = t.forwardRef(
               "button",
               {
                 type: "button",
-                className: a(
+                className: i(
                   "flex-shrink-0 p-0.5 rounded hover:bg-muted",
                   "transition-transform",
                   o && "rotate-90"
                 ),
                 onClick: w,
                 "aria-label": o ? "접기" : "펼치기",
-                children: /* @__PURE__ */ e(L, { size: 16, className: "text-muted-foreground" })
+                children: /* @__PURE__ */ e(j, { size: 16, className: "text-muted-foreground" })
               }
             ) : /* @__PURE__ */ e("span", { className: "w-5 flex-shrink-0" }),
             s && /* @__PURE__ */ e("span", { className: "flex-shrink-0 text-muted-foreground", children: s }),
@@ -70,10 +70,10 @@ const P = t.forwardRef(
             f && /* @__PURE__ */ e(
               "div",
               {
-                className: a(
+                className: i(
                   "flex items-center gap-1 flex-shrink-0",
                   "opacity-0 group-hover:opacity-100",
-                  i && "opacity-100"
+                  a && "opacity-100"
                 ),
                 onClick: (r) => r.stopPropagation(),
                 children: f
@@ -86,9 +86,9 @@ const P = t.forwardRef(
     ] });
   }
 );
-P.displayName = "TreeItem";
+V.displayName = "TreeItem";
 export {
-  P as TreeItem,
-  j as TreeList
+  P as Tree,
+  V as TreeItem
 };
-//# sourceMappingURL=tree-list.mjs.map
+//# sourceMappingURL=tree.mjs.map

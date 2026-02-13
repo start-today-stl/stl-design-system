@@ -117,6 +117,10 @@
   --radius-md: 0.375rem;
   --radius-lg: 0.5rem;
   --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
+
+  /* Box Shadow */
+  --shadow-card: 10px 10px 20px 0px var(--color-slate-100);
 
   /* Spacing Scale */
   --spacing-0: 0px;
@@ -188,7 +192,7 @@
 /* Firefox */
 *:not(.scrollbar-hide) {
   scrollbar-width: thin;
-  scrollbar-color: var(--color-slate-300) transparent;
+  scrollbar-color: rgba(191, 200, 212, 0.5) transparent;
 }
 
 /* Chrome, Safari, Edge */
@@ -203,17 +207,19 @@
 
 *:not(.scrollbar-hide)::-webkit-scrollbar-thumb {
   background-color: var(--color-slate-300);
-  border-radius: 4px;
+  border-radius: 2px;
+  opacity: 0.5;
 }
 
 *:not(.scrollbar-hide)::-webkit-scrollbar-thumb:hover {
   background-color: var(--color-slate-400);
+  opacity: 0.7;
 }
 
 /* Dark mode scrollbar */
 .dark *:not(.scrollbar-hide),
 .dark:not(.scrollbar-hide) {
-  scrollbar-color: var(--color-slate-700) transparent;
+  scrollbar-color: rgba(94, 105, 119, 0.5) transparent;
 }
 
 .dark *:not(.scrollbar-hide)::-webkit-scrollbar-thumb {

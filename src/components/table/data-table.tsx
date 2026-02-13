@@ -467,6 +467,10 @@ function DataTable<T extends { id: string | number }>({
 
   const totalColumns = columns.length + (selectable ? 1 : 0) + (expandable ? 1 : 0)
 
+  // 체크박스/확장 컬럼 너비 상수
+  const CHECKBOX_WIDTH = 40 // w-10 = 40px
+  const EXPAND_WIDTH = 40 // w-10 = 40px
+
   // Sticky 컬럼 위치 계산
   const getStickyStyles = React.useMemo(() => {
     // 컬럼 너비 추출 헬퍼 (width 우선, 없으면 minWidth)
@@ -479,8 +483,8 @@ function DataTable<T extends { id: string | number }>({
     const rightColumns = columns.filter((col) => col.sticky === "right")
 
     // 왼쪽 고정 컬럼 위치 계산 (체크박스, 확장 아이콘 컬럼 고려)
-    const checkboxWidth = selectable ? 48 : 0 // w-12 = 48px
-    const expandWidth = expandable ? 40 : 0 // w-10 = 40px
+    const checkboxWidth = selectable ? CHECKBOX_WIDTH : 0
+    const expandWidth = expandable ? EXPAND_WIDTH : 0
     const baseLeftOffset = checkboxWidth + expandWidth
 
     const leftPositions = new Map<keyof T, number>()
@@ -635,10 +639,6 @@ function DataTable<T extends { id: string | number }>({
     }
   }, [resizingColumn, handleResizeMove, handleResizeEnd])
 
-  // 체크박스/확장 컬럼 너비 상수
-  const CHECKBOX_WIDTH = 48 // w-12 = 48px
-  const EXPAND_WIDTH = 40 // w-10 = 40px
-
   // 컬럼 헤더 렌더링 함수
   const renderColumnHeader = (column: DataTableColumn<T>) => {
     const stickyData = getStickyStyles(column, true)
@@ -726,7 +726,7 @@ function DataTable<T extends { id: string | number }>({
         <TableRow>
           {selectable && (
             <TableHead
-              className="bg-[#eaedf1] dark:bg-slate-800"
+              className="!p-0 bg-[#eaedf1] dark:bg-slate-800"
               style={hasLeftStickyColumns ? {
                 position: "sticky",
                 left: 0,
@@ -734,14 +734,20 @@ function DataTable<T extends { id: string | number }>({
                 width: `${CHECKBOX_WIDTH}px`,
                 minWidth: `${CHECKBOX_WIDTH}px`,
                 maxWidth: `${CHECKBOX_WIDTH}px`,
-              } : { width: `${CHECKBOX_WIDTH}px` }}
+              } : {
+                width: `${CHECKBOX_WIDTH}px`,
+                minWidth: `${CHECKBOX_WIDTH}px`,
+                maxWidth: `${CHECKBOX_WIDTH}px`,
+              }}
             >
-              <Checkbox
-                checked={isAllSelected}
-                indeterminate={isIndeterminate}
-                onCheckedChange={handleSelectAll}
-                aria-label="전체 선택"
-              />
+              <div className="flex items-center justify-center h-9">
+                <Checkbox
+                  checked={isAllSelected}
+                  indeterminate={isIndeterminate}
+                  onCheckedChange={handleSelectAll}
+                  aria-label="전체 선택"
+                />
+              </div>
             </TableHead>
           )}
 
@@ -755,7 +761,11 @@ function DataTable<T extends { id: string | number }>({
                 width: `${EXPAND_WIDTH}px`,
                 minWidth: `${EXPAND_WIDTH}px`,
                 maxWidth: `${EXPAND_WIDTH}px`,
-              } : { width: `${EXPAND_WIDTH}px` }}
+              } : {
+                width: `${EXPAND_WIDTH}px`,
+                minWidth: `${EXPAND_WIDTH}px`,
+                maxWidth: `${EXPAND_WIDTH}px`,
+              }}
               aria-label="확장"
             >
               <span className="sr-only">확장</span>
@@ -801,7 +811,10 @@ function DataTable<T extends { id: string | number }>({
                   {selectable && (
                     <TableCell
                       onClick={(e) => e.stopPropagation()}
-                      className={hasLeftStickyColumns ? (isSelected ? "transition-colors bg-blue-50 dark:bg-blue-950/30" : "transition-colors bg-slate-50 dark:bg-slate-800 group-hover:bg-slate-100 dark:group-hover:bg-slate-700") : undefined}
+                      className={cn(
+                        "!p-0",
+                        hasLeftStickyColumns && (isSelected ? "transition-colors bg-blue-50 dark:bg-blue-950/30" : "transition-colors bg-slate-50 dark:bg-slate-800 group-hover:bg-slate-100 dark:group-hover:bg-slate-700")
+                      )}
                       style={hasLeftStickyColumns ? {
                         position: "sticky",
                         left: 0,
@@ -809,13 +822,19 @@ function DataTable<T extends { id: string | number }>({
                         width: `${CHECKBOX_WIDTH}px`,
                         minWidth: `${CHECKBOX_WIDTH}px`,
                         maxWidth: `${CHECKBOX_WIDTH}px`,
-                      } : { width: `${CHECKBOX_WIDTH}px` }}
+                      } : {
+                        width: `${CHECKBOX_WIDTH}px`,
+                        minWidth: `${CHECKBOX_WIDTH}px`,
+                        maxWidth: `${CHECKBOX_WIDTH}px`,
+                      }}
                     >
-                      <Checkbox
-                        checked={isSelected}
-                        onCheckedChange={() => handleSelectRow(row.id)}
-                        aria-label={`행 ${row.id} 선택`}
-                      />
+                      <div className="flex items-center justify-center h-9">
+                        <Checkbox
+                          checked={isSelected}
+                          onCheckedChange={() => handleSelectRow(row.id)}
+                          aria-label={`행 ${row.id} 선택`}
+                        />
+                      </div>
                     </TableCell>
                   )}
 
@@ -832,7 +851,11 @@ function DataTable<T extends { id: string | number }>({
                         width: `${EXPAND_WIDTH}px`,
                         minWidth: `${EXPAND_WIDTH}px`,
                         maxWidth: `${EXPAND_WIDTH}px`,
-                      } : { width: `${EXPAND_WIDTH}px` }}
+                      } : {
+                        width: `${EXPAND_WIDTH}px`,
+                        minWidth: `${EXPAND_WIDTH}px`,
+                        maxWidth: `${EXPAND_WIDTH}px`,
+                      }}
                       onClick={(e) => e.stopPropagation()}
                     >
                       {canExpand && (

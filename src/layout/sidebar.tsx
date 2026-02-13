@@ -60,17 +60,15 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
         )}
         {...props}
       >
-        {/* 로고 영역 */}
-        {logo && (
-          <div
-            className={cn(
-              "flex mb-[55px] flex-shrink-0",
-              collapsed ? "justify-center items-center h-[32px]" : "justify-start"
-            )}
-          >
-            {logo(collapsed)}
-          </div>
-        )}
+        {/* 로고 영역 - 로고가 없어도 자리 유지 */}
+        <div
+          className={cn(
+            "flex mb-[55px] flex-shrink-0",
+            collapsed ? "justify-center items-center h-[32px]" : "justify-start h-[32px]"
+          )}
+        >
+          {logo?.(collapsed)}
+        </div>
 
         {/* 네비게이션 메뉴 */}
         <NavMenu
