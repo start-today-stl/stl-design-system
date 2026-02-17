@@ -8,6 +8,8 @@ export interface VisitTagProps extends React.HTMLAttributes<HTMLDivElement> {
     onNavigate?: () => void;
     /** 삭제 핸들러 */
     onRemove?: () => void;
+    /** 활성 상태 */
+    active?: boolean;
 }
 declare const VisitTag: React.ForwardRefExoticComponent<VisitTagProps & React.RefAttributes<HTMLDivElement>>;
 export { VisitTag };

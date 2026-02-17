@@ -12,10 +12,12 @@ export interface VisitTagProps extends React.HTMLAttributes<HTMLDivElement> {
   onNavigate?: () => void
   /** 삭제 핸들러 */
   onRemove?: () => void
+  /** 활성 상태 */
+  active?: boolean
 }
 
 const VisitTag = React.forwardRef<HTMLDivElement, VisitTagProps>(
-  ({ className, label, href, onNavigate, onRemove, ...props }, ref) => {
+  ({ className, label, href, onNavigate, onRemove, active, ...props }, ref) => {
     const handleClick = () => {
       if (href) {
         window.location.href = href
@@ -41,7 +43,12 @@ const VisitTag = React.forwardRef<HTMLDivElement, VisitTagProps>(
         <button
           type="button"
           onClick={handleClick}
-          className="cursor-pointer hover:text-blue-500 dark:hover:text-blue-300 transition-colors"
+          className={cn(
+            "cursor-pointer transition-colors",
+            active
+              ? "text-primary"
+              : "hover:text-blue-500 dark:hover:text-blue-300"
+          )}
         >
           {label}
         </button>

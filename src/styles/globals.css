@@ -120,7 +120,8 @@
   --radius-2xl: 1rem;
 
   /* Box Shadow */
-  --shadow-card: 10px 10px 20px 0px var(--color-slate-100);
+  --color-shadow: var(--color-slate-100);
+  --shadow-card: 10px 10px 20px 0px var(--color-shadow);
 
   /* Spacing Scale */
   --spacing-0: 0px;
@@ -257,6 +258,7 @@
   --color-text-secondary: var(--color-slate-400);
   --color-text-disabled: var(--color-slate-600);
   --color-surface-default: var(--color-slate-900);
+  --color-shadow: var(--color-slate-950);
 }
 
 /* 시스템 설정 따르기 (선택사항) */
@@ -285,5 +287,6 @@
     --color-text-secondary: var(--color-slate-400);
     --color-text-disabled: var(--color-slate-600);
     --color-surface-default: var(--color-slate-900);
+    --color-shadow: var(--color-slate-950);
   }
 }

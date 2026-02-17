@@ -1,18 +1,28 @@
-import { jsxs as d, jsx as e } from "react/jsx-runtime";
-import i from "react";
-import { cn as o } from "../../lib/utils.mjs";
-import { Card as t, CardHeader as f, CardTitle as p, CardContent as n } from "../ui/card.mjs";
-const x = i.forwardRef(
-  ({ className: m, title: r, children: a, actions: l, ...s }, c) => /* @__PURE__ */ d(t, { ref: c, className: o("w-full", m), ...s, children: [
-    r && /* @__PURE__ */ e(f, { className: "border-b px-6 py-4", children: /* @__PURE__ */ e(p, { className: "text-lg", children: r }) }),
-    /* @__PURE__ */ e(n, { className: "p-6", children: /* @__PURE__ */ d("div", { className: "flex flex-col gap-6 md:flex-row md:items-end md:justify-between", children: [
-      a && /* @__PURE__ */ e("div", { className: "grid flex-1 grid-cols-1 gap-4 md:grid-cols-4", children: a }),
-      l && /* @__PURE__ */ e("div", { className: "flex items-center gap-2 pl-4", children: l })
-    ] }) })
-  ] })
+import { jsxs as o, jsx as e } from "react/jsx-runtime";
+import c from "react";
+import { cn as i } from "../../lib/utils.mjs";
+const f = c.forwardRef(
+  ({ className: a, title: r, children: d, actions: l, ...s }, m) => /* @__PURE__ */ o(
+    "div",
+    {
+      ref: m,
+      className: i(
+        "w-full bg-card border border-border rounded-2xl overflow-hidden",
+        a
+      ),
+      ...s,
+      children: [
+        r && /* @__PURE__ */ e("div", { className: "border-b border-border px-6 py-4", children: /* @__PURE__ */ e("h3", { className: "text-lg font-semibold", children: r }) }),
+        /* @__PURE__ */ e("div", { className: "p-6", children: /* @__PURE__ */ o("div", { className: "flex flex-col gap-6 md:flex-row md:items-end md:justify-between", children: [
+          d && /* @__PURE__ */ e("div", { className: "grid flex-1 grid-cols-1 gap-4 md:grid-cols-4", children: d }),
+          l && /* @__PURE__ */ e("div", { className: "flex items-center gap-2 pl-4", children: l })
+        ] }) })
+      ]
+    }
+  )
 );
-x.displayName = "SearchForm";
+f.displayName = "SearchForm";
 export {
-  x as SearchForm
+  f as SearchForm
 };
 //# sourceMappingURL=search-form.mjs.map

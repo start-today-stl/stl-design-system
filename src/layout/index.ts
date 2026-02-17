@@ -28,6 +28,7 @@ export * from './visit-tag'
 
 // Page Components
 export * from './page-title'
+export * from './page-header'
 
 // Panel Layout
 export * from './panel-layout'
