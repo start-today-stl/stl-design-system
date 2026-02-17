@@ -13,7 +13,7 @@ const TableContainer = React.forwardRef<HTMLDivElement, TableContainerProps>(
       <div
         ref={ref}
         className={cn(
-          "rounded-lg overflow-hidden shadow-sm",
+          "rounded-2xl overflow-hidden shadow-sm",
           "border border-slate-200 dark:border-slate-700",
           className
         )}

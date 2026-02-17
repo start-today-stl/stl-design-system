@@ -1,47 +1,72 @@
-import { jsx as o } from "react/jsx-runtime";
-import * as a from "react";
-import * as e from "@radix-ui/react-tabs";
+import { jsx as s, jsxs as l } from "react/jsx-runtime";
+import * as o from "react";
+import * as t from "@radix-ui/react-tabs";
 import { cn as n } from "../../lib/utils.mjs";
-const l = e.Root, r = a.forwardRef(({ className: i, ...s }, t) => /* @__PURE__ */ o(
-  e.List,
+import { XIcon as f } from "../../icons/XIcon.mjs";
+const v = t.Root, m = o.forwardRef(({ className: r, align: i = "start", ...e }, a) => /* @__PURE__ */ s(
+  t.List,
   {
-    ref: t,
+    ref: a,
     className: n(
-      "inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground",
-      i
+      "flex h-9 items-end border-b border-border",
+      i === "end" ? "justify-end" : "justify-start",
+      r
     ),
-    ...s
+    ...e
   }
 ));
-r.displayName = e.List.displayName;
-const f = a.forwardRef(({ className: i, ...s }, t) => /* @__PURE__ */ o(
-  e.Trigger,
+m.displayName = t.List.displayName;
+const p = o.forwardRef(({ className: r, closable: i, onClose: e, children: a, ...c }, d) => /* @__PURE__ */ l(
+  t.Trigger,
   {
-    ref: t,
+    ref: d,
     className: n(
-      "inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm",
-      i
+      "inline-flex h-9 items-center justify-center gap-0.5 whitespace-nowrap px-3 py-2 text-xs font-bold cursor-pointer",
+      "rounded-t border border-b-0 border-border",
+      "text-text-secondary bg-slate-100 dark:bg-slate-800",
+      "mb-[-1px]",
+      // 하단 border와 연결
+      "transition-colors",
+      "data-[state=active]:bg-card data-[state=active]:text-primary",
+      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+      "disabled:pointer-events-none disabled:opacity-50",
+      r
     ),
-    ...s
+    ...c,
+    children: [
+      a,
+      i && /* @__PURE__ */ s(
+        "button",
+        {
+          type: "button",
+          onClick: (b) => {
+            b.stopPropagation(), e == null || e();
+          },
+          className: "ml-0.5 text-text-secondary hover:text-text-primary transition-colors",
+          "aria-label": "탭 닫기",
+          children: /* @__PURE__ */ s(f, { size: 20 })
+        }
+      )
+    ]
   }
 ));
-f.displayName = e.Trigger.displayName;
-const d = a.forwardRef(({ className: i, ...s }, t) => /* @__PURE__ */ o(
-  e.Content,
+p.displayName = t.Trigger.displayName;
+const g = o.forwardRef(({ className: r, ...i }, e) => /* @__PURE__ */ s(
+  t.Content,
   {
-    ref: t,
+    ref: e,
     className: n(
-      "mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-      i
+      "mt-4 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+      r
     ),
-    ...s
+    ...i
   }
 ));
-d.displayName = e.Content.displayName;
+g.displayName = t.Content.displayName;
 export {
-  l as Tabs,
-  d as TabsContent,
-  r as TabsList,
-  f as TabsTrigger
+  v as Tabs,
+  g as TabsContent,
+  m as TabsList,
+  p as TabsTrigger
 };
 //# sourceMappingURL=tabs.mjs.map

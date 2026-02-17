@@ -1,6 +1,5 @@
 import React from "react";
 import { cn } from "@/lib/utils";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export interface SearchFormProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
   /** 폼 제목 */
@@ -14,13 +13,20 @@ export interface SearchFormProps extends Omit<React.HTMLAttributes<HTMLDivElemen
 export const SearchForm = React.forwardRef<HTMLDivElement, SearchFormProps>(
   ({ className, title, children, actions, ...props }, ref) => {
     return (
-      <Card ref={ref} className={cn("w-full", className)} {...props}>
-        {title && (
-          <CardHeader className="border-b px-6 py-4">
-            <CardTitle className="text-lg">{title}</CardTitle>
-          </CardHeader>
+      <div
+        ref={ref}
+        className={cn(
+          "w-full bg-card border border-border rounded-2xl overflow-hidden",
+          className
         )}
-        <CardContent className="p-6">
+        {...props}
+      >
+        {title && (
+          <div className="border-b border-border px-6 py-4">
+            <h3 className="text-lg font-semibold">{title}</h3>
+          </div>
+        )}
+        <div className="p-6">
           <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
             {children && (
               <div className="grid flex-1 grid-cols-1 gap-4 md:grid-cols-4">
@@ -31,8 +37,8 @@ export const SearchForm = React.forwardRef<HTMLDivElement, SearchFormProps>(
               <div className="flex items-center gap-2 pl-4">{actions}</div>
             )}
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     );
   }
 );
