@@ -1,0 +1,27 @@
+import { jsx as t } from "react/jsx-runtime";
+function V({ size: r = 24, className: o, ...n }) {
+  return /* @__PURE__ */ t(
+    "svg",
+    {
+      width: r,
+      height: r,
+      viewBox: "0 0 24 24",
+      fill: "none",
+      xmlns: "http://www.w3.org/2000/svg",
+      className: o,
+      ...n,
+      children: /* @__PURE__ */ t(
+        "path",
+        {
+          d: "M15.1777 4.7998L15.4004 5.21582V7.61621H14.4004V5.4834L7.7002 1.0166L1 5.4834V14.3164H5.2998V15.3164H0.5L0 14.8164V5.21582L0.222656 4.7998L7.42285 0H7.97754L15.1777 4.7998ZM15.4102 10.0166V14.8164L14.9102 15.3164H7.70996L7.20996 14.8164V10.0166L7.70996 9.5166H14.9102L15.4102 10.0166ZM8.20996 14.3164H14.4102V10.5166H8.20996V14.3164ZM12.5107 12.2158H10.1104V11.2158H12.5107V12.2158Z",
+          fill: "currentColor",
+          transform: "translate(4.29, 4.34)"
+        }
+      )
+    }
+  );
+}
+export {
+  V as ProductArchiveIcon
+};
+//# sourceMappingURL=ProductArchiveIcon.mjs.map

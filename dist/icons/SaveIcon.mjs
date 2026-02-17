@@ -1,20 +1,27 @@
-import { jsx as r } from "react/jsx-runtime";
-function e({ size: o = 24, className: t, ...n }) {
-  return /* @__PURE__ */ r(
+import { jsx as t } from "react/jsx-runtime";
+function l({ size: r = 24, className: n, ...o }) {
+  return /* @__PURE__ */ t(
     "svg",
     {
-      width: o,
-      height: o,
+      width: r,
+      height: r,
       viewBox: "0 0 24 24",
       fill: "none",
       xmlns: "http://www.w3.org/2000/svg",
-      className: t,
-      ...n,
-      children: /* @__PURE__ */ r("path", { d: "M17.2998 6V19.3203L16.4854 19.708L12 16.0635L7.51562 19.708L6.7002 19.3203V6L7.2002 5.5H16.7998L17.2998 6ZM7.7002 18.2686L11.6846 15.0322H12.3154L16.2998 18.2686V6.5H7.7002V18.2686Z", fill: "currentColor" })
+      className: n,
+      ...o,
+      children: /* @__PURE__ */ t(
+        "path",
+        {
+          d: "M10.5996 0.5V13.8203L9.78516 14.208L5.2998 10.5635L0.81543 14.208L0 13.8203V0.5L0.5 0H10.0996L10.5996 0.5ZM1 12.7686L4.98438 9.53223H5.61523L9.59961 12.7686V1H1V12.7686Z",
+          fill: "currentColor",
+          transform: "translate(6.70, 4.90)"
+        }
+      )
     }
   );
 }
 export {
-  e as SaveIcon
+  l as SaveIcon
 };
 //# sourceMappingURL=SaveIcon.mjs.map

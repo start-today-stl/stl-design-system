@@ -1,0 +1,27 @@
+import { jsx as r } from "react/jsx-runtime";
+function e({ size: L = 24, className: t, ...n }) {
+  return /* @__PURE__ */ r(
+    "svg",
+    {
+      width: L,
+      height: L,
+      viewBox: "0 0 24 24",
+      fill: "none",
+      xmlns: "http://www.w3.org/2000/svg",
+      className: t,
+      ...n,
+      children: /* @__PURE__ */ r(
+        "path",
+        {
+          d: "M15.2539 4.7998V5.50684L5.65332 15.1074L5.2998 15.2539H0.5L0 14.7539V9.95312L0.146484 9.59961L9.74609 0H10.4531L15.2539 4.7998ZM1 14.2539H4.10254L1 11.1514V14.2539ZM8.40625 2.75293L11.6836 6.03027L10.9766 6.7373L7.69922 3.45996L1.21094 9.94824L5.30371 14.041L14.1924 5.15332L10.0996 1.05957L8.40625 2.75293Z",
+          fill: "currentColor",
+          transform: "translate(4.37, 4.37)"
+        }
+      )
+    }
+  );
+}
+export {
+  e as PenIcon
+};
+//# sourceMappingURL=PenIcon.mjs.map

@@ -1,28 +1,23 @@
-import { jsx as l, jsxs as m } from "react/jsx-runtime";
+import { jsx as l, jsxs as c } from "react/jsx-runtime";
 import * as s from "react";
 import { cn as r } from "../../lib/utils.mjs";
 import { DownIcon as i } from "../../icons/DownIcon.mjs";
 import { UpIcon as f } from "../../icons/UpIcon.mjs";
 const p = s.forwardRef(
-  ({ className: t, maxHeight: e, tableLayout: a = "auto", style: d, ...b }, c) => {
-    const n = e ? { maxHeight: typeof e == "number" ? `${e}px` : e } : {}, o = {
-      borderSpacing: 0,
-      minWidth: "100%",
-      tableLayout: a,
-      ...d
-    };
+  ({ className: t, maxHeight: e, ...a }, o) => {
+    const d = e ? { maxHeight: typeof e == "number" ? `${e}px` : e } : {};
     return /* @__PURE__ */ l(
       "div",
       {
         className: r("relative w-full overflow-x-auto", e && "overflow-y-auto"),
-        style: n,
+        style: d,
         children: /* @__PURE__ */ l(
           "table",
           {
-            ref: c,
+            ref: o,
             className: r("caption-bottom text-[length:var(--text-body-2)]", t),
-            style: o,
-            ...b
+            style: { borderSpacing: 0, minWidth: "100%" },
+            ...a
           }
         )
       }
@@ -96,14 +91,14 @@ const k = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
   }
 ));
 k.displayName = "TableCaption";
-const w = s.forwardRef(({ className: t, sortDirection: e, onSort: a, children: d, ...b }, c) => {
-  const n = (o) => {
-    a && (o.key === "Enter" || o.key === " ") && (o.preventDefault(), a());
+const w = s.forwardRef(({ className: t, sortDirection: e, onSort: a, children: o, ...d }, n) => {
+  const m = (b) => {
+    a && (b.key === "Enter" || b.key === " ") && (b.preventDefault(), a());
   };
   return /* @__PURE__ */ l(
     "th",
     {
-      ref: c,
+      ref: n,
       className: r(
         "h-9 pl-3 pr-1.5 py-1.5 text-left align-middle font-medium text-[#798698] dark:text-slate-300",
         "bg-[#eaedf1] dark:bg-slate-800 select-none",
@@ -111,17 +106,17 @@ const w = s.forwardRef(({ className: t, sortDirection: e, onSort: a, children: d
         t
       ),
       "aria-sort": e === "asc" ? "ascending" : e === "desc" ? "descending" : "none",
-      ...b,
-      children: /* @__PURE__ */ m(
+      ...d,
+      children: /* @__PURE__ */ c(
         "button",
         {
           type: "button",
           className: "flex w-full items-center gap-1 text-left cursor-pointer",
           onClick: a,
-          onKeyDown: n,
+          onKeyDown: m,
           children: [
-            d,
-            /* @__PURE__ */ m("span", { className: "flex flex-col -space-y-1", children: [
+            o,
+            /* @__PURE__ */ c("span", { className: "flex flex-col -space-y-1", children: [
               /* @__PURE__ */ l(
                 f,
                 {

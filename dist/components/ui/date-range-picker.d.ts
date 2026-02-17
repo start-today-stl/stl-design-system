@@ -21,7 +21,9 @@ export interface DateRangePickerProps {
     disabled?: boolean;
     /** 추가 className */
     className?: string;
+    /** 라벨이 없어도 라벨 공간 유지 */
+    reserveLabelSpace?: boolean;
 }
-declare const DateRangePicker: ({ value, onChange, label, placeholder, dateFormat, error, errorMessage, size, disabled, className, }: DateRangePickerProps) => import("react/jsx-runtime").JSX.Element;
+declare const DateRangePicker: ({ value, onChange, label, placeholder, dateFormat, error, errorMessage, size, disabled, className, reserveLabelSpace, }: DateRangePickerProps) => import("react/jsx-runtime").JSX.Element;
 export { DateRangePicker };
 export type { DateRange };

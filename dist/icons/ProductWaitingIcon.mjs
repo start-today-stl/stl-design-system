@@ -1,0 +1,27 @@
+import { jsx as L } from "react/jsx-runtime";
+function o({ size: t = 24, className: r, ...H }) {
+  return /* @__PURE__ */ L(
+    "svg",
+    {
+      width: t,
+      height: t,
+      viewBox: "0 0 24 24",
+      fill: "none",
+      xmlns: "http://www.w3.org/2000/svg",
+      className: r,
+      ...H,
+      children: /* @__PURE__ */ L(
+        "path",
+        {
+          d: "M1 12H7.7002V13H0.5L0 12.5V4.09961H1V12ZM14.1348 4.34766L11.876 8.2998L14.1348 12.252L13.7002 13H8.90039L8.46582 12.252L10.7236 8.2998L8.46582 4.34766L8.90039 3.59961H13.7002L14.1348 4.34766ZM9.7627 12H12.8389L11.2998 9.30762L9.7627 12ZM11.2998 7.29102L12.8389 4.59961H9.7627L11.2998 7.29102ZM7.69922 4.59961H4.09961V3.59961H7.69922V4.59961ZM13 0.5V2.90039H12V1H1V2.90039H0V0.5L0.5 0H12.5L13 0.5Z",
+          fill: "currentColor",
+          transform: "translate(4.93, 5.50)"
+        }
+      )
+    }
+  );
+}
+export {
+  o as ProductWaitingIcon
+};
+//# sourceMappingURL=ProductWaitingIcon.mjs.map

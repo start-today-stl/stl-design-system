@@ -30,6 +30,8 @@ export interface InputFieldProps extends Omit<React.InputHTMLAttributes<HTMLInpu
     onRightIconClick?: () => void;
     /** 우측 아이콘 버튼의 접근성 라벨 */
     rightIconLabel?: string;
+    /** 라벨이 없어도 라벨 공간 유지 */
+    reserveLabelSpace?: boolean;
 }
 declare const InputField: React.ForwardRefExoticComponent<InputFieldProps & React.RefAttributes<HTMLInputElement>>;
 export { Input, InputField, inputSizeStyles };

@@ -164,27 +164,29 @@ function _({
       "data-range-end": a.range_end,
       "data-range-middle": a.range_middle,
       className: e(
+        // 기본 상태: ghost variant의 배경/border 제거
+        "!bg-transparent !border-0",
         // 정원형 선택: 29px × 29px, 12px 폰트, slate-500, 다크모드: slate-300
         "flex size-[29px] items-center justify-center rounded-full text-xs font-normal text-slate-500 tracking-[-0.18px] transition-colors dark:text-slate-300",
         // 호버
-        "hover:bg-slate-50 dark:hover:bg-slate-700",
+        "hover:!bg-slate-50 dark:hover:!bg-slate-700",
         // 다른 달 날짜 (연한 색상), 다크모드: opacity-50 + slate-50
         "data-[outside=true]:text-slate-200 data-[outside=true]:opacity-50 data-[outside=true]:hover:bg-transparent dark:data-[outside=true]:text-slate-50",
         // 오늘 날짜 (선택되지 않은 상태)
         "data-[today=true]:font-medium data-[today=true]:text-blue-500",
         // 단일 선택 (원형)
-        "data-[selected-single=true]:bg-blue-500 data-[selected-single=true]:text-white data-[selected-single=true]:hover:bg-blue-500",
+        "data-[selected-single=true]:!bg-blue-500 data-[selected-single=true]:text-white data-[selected-single=true]:hover:!bg-blue-500",
         // 오늘 날짜가 선택된 경우 - 선택 스타일 우선
         "data-[today=true]:data-[selected-single=true]:text-white",
         "data-[today=true]:data-[range-start=true]:text-white",
         "data-[today=true]:data-[range-end=true]:text-white",
         "data-[today=true]:data-[range-middle=true]:text-blue-500",
         // 범위 시작 (원형)
-        "data-[range-start=true]:bg-blue-500 data-[range-start=true]:text-white",
+        "data-[range-start=true]:!bg-blue-500 data-[range-start=true]:text-white",
         // 범위 끝 (원형)
-        "data-[range-end=true]:bg-blue-500 data-[range-end=true]:text-white",
+        "data-[range-end=true]:!bg-blue-500 data-[range-end=true]:text-white",
         // 범위 중간 (원형 연한 배경)
-        "data-[range-middle=true]:bg-blue-100 data-[range-middle=true]:text-blue-500",
+        "data-[range-middle=true]:!bg-blue-100 data-[range-middle=true]:text-blue-500",
         // 포커스
         "group-data-[focused=true]/day:relative group-data-[focused=true]/day:z-10 group-data-[focused=true]/day:ring-2 group-data-[focused=true]/day:ring-blue-500/50",
         s
