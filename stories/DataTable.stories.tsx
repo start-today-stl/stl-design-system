@@ -159,6 +159,70 @@ export const Empty: Story = {
   ),
 }
 
+/** 로딩 상태 (기본) */
+export const Loading: Story = {
+  render: () => (
+    <DataTable
+      columns={columns}
+      data={[]}
+      loading
+    />
+  ),
+}
+
+/** 로딩 상태 (커스텀) */
+export const LoadingCustom: Story = {
+  render: () => (
+    <DataTable
+      columns={columns}
+      data={[]}
+      loading
+      loadingContent={
+        <div className="flex flex-col items-center gap-3">
+          <div className="animate-spin h-8 w-8 border-2 border-blue-500 border-t-transparent rounded-full" />
+          <span className="text-sm text-slate-500">데이터를 불러오는 중...</span>
+        </div>
+      }
+    />
+  ),
+}
+
+/** 로딩 상태 (툴바 + 페이지네이션 포함) */
+export const LoadingWithLayout: Story = {
+  render: () => (
+    <div className="border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
+      {/* 툴바 */}
+      <TableToolbar totalCount={0} selectedCount={0}>
+        <Button variant="danger" disabled>삭제</Button>
+        <Button variant="ghost">다운로드</Button>
+      </TableToolbar>
+
+      {/* 데이터 테이블 - 로딩 상태 */}
+      <DataTable
+        columns={columns}
+        data={[]}
+        loading
+        selectable
+      />
+
+      {/* 페이지네이션 */}
+      <div className="flex items-center justify-between p-4 border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900">
+        <Pagination
+          currentPage={1}
+          totalPages={1}
+          onPageChange={() => {}}
+          previousLabel="Previous"
+          nextLabel="Next"
+        />
+        <PageSizeSelector
+          pageSize={10}
+          onPageSizeChange={() => {}}
+        />
+      </div>
+    </div>
+  ),
+}
+
 /** 행 클릭 */
 export const RowClick: Story = {
   render: () => {
@@ -259,6 +323,7 @@ export const EditableWithCustomEditor: Story = {
           options={roleOptions}
           size="sm"
           className="w-full"
+          tableMode
         />
       )
     }
@@ -284,6 +349,7 @@ export const EditableWithCustomEditor: Story = {
           options={statusOptions}
           size="sm"
           className="w-full"
+          tableMode
         />
       )
     }
@@ -642,11 +708,11 @@ export const StickyColumnWithSelection: Story = {
 
     const itemColumns: DataTableColumn<Item>[] = [
       { accessorKey: "code", header: "코드", width: 100, sticky: "left" },
-      { accessorKey: "name", header: "이름", width: 120 },
-      { accessorKey: "col1", header: "컬럼1", width: 100 },
-      { accessorKey: "col2", header: "컬럼2", width: 100 },
-      { accessorKey: "col3", header: "컬럼3", width: 100 },
-      { accessorKey: "col4", header: "컬럼4", width: 100 },
+      { accessorKey: "name", header: "이름", minWidth: 120 },
+      { accessorKey: "col1", header: "컬럼1", minWidth: 100 },
+      { accessorKey: "col2", header: "컬럼2", minWidth: 100 },
+      { accessorKey: "col3", header: "컬럼3", minWidth: 100 },
+      { accessorKey: "col4", header: "컬럼4", minWidth: 100 },
       {
         accessorKey: "status",
         header: "상태",
@@ -947,11 +1013,11 @@ export const AllFeatures: Story = {
         },
       },
       // 스크롤되는 컬럼
-      { accessorKey: "category", header: "카테고리", width: 100, sortable: true },
+      { accessorKey: "category", header: "카테고리", minWidth: 100, sortable: true },
       {
         accessorKey: "price",
         header: "가격",
-        width: 120,
+        minWidth: 120,
         align: "right",
         sortable: true,
         editable: true,
@@ -966,7 +1032,7 @@ export const AllFeatures: Story = {
       {
         accessorKey: "stock",
         header: "재고",
-        width: 80,
+        minWidth: 80,
         align: "center",
         sortable: true,
         editable: true,
@@ -1204,10 +1270,10 @@ export const ColumnReorderable: Story = {
     ]
 
     const reorderColumns: DataTableColumn<ReorderItem>[] = [
-      { accessorKey: "name", header: "이름", width: 120 },
-      { accessorKey: "email", header: "이메일", width: 200 },
-      { accessorKey: "department", header: "부서", width: 120 },
-      { accessorKey: "role", header: "직급", width: 100 },
+      { accessorKey: "name", header: "이름", minWidth: 120 },
+      { accessorKey: "email", header: "이메일", minWidth: 200 },
+      { accessorKey: "department", header: "부서", minWidth: 120 },
+      { accessorKey: "role", header: "직급", minWidth: 100 },
     ]
 
     return (
@@ -1247,11 +1313,11 @@ export const ColumnReorderableControlled: Story = {
     ])
 
     const controlledColumns: DataTableColumn<ControlledReorderItem>[] = [
-      { accessorKey: "col1", header: "컬럼 1", width: 100 },
-      { accessorKey: "col2", header: "컬럼 2", width: 100 },
-      { accessorKey: "col3", header: "컬럼 3", width: 100 },
-      { accessorKey: "col4", header: "컬럼 4", width: 100 },
-      { accessorKey: "col5", header: "컬럼 5", width: 100 },
+      { accessorKey: "col1", header: "컬럼 1", minWidth: 100 },
+      { accessorKey: "col2", header: "컬럼 2", minWidth: 100 },
+      { accessorKey: "col3", header: "컬럼 3", minWidth: 100 },
+      { accessorKey: "col4", header: "컬럼 4", minWidth: 100 },
+      { accessorKey: "col5", header: "컬럼 5", minWidth: 100 },
     ]
 
     return (
@@ -1301,7 +1367,6 @@ export const ColumnReorderableWithFeatures: Story = {
     ])
     const [columnWidths, setColumnWidths] = useState<Record<string, number>>({
       code: 100,
-      name: 150,
       category: 120,
       price: 100,
       stock: 100,
@@ -1309,7 +1374,7 @@ export const ColumnReorderableWithFeatures: Story = {
 
     const featureColumns: DataTableColumn<FeatureItem>[] = [
       { accessorKey: "code", header: "코드", width: 100 },
-      { accessorKey: "name", header: "상품명", width: 150 },
+      { accessorKey: "name", header: "상품명", minWidth: 150 },
       { accessorKey: "category", header: "카테고리", width: 120 },
       { accessorKey: "price", header: "가격", width: 100, align: "right", cell: (v) => `${(v as number).toLocaleString()}원` },
       { accessorKey: "stock", header: "재고", width: 100, align: "center" },
@@ -1340,6 +1405,290 @@ export const ColumnReorderableWithFeatures: Story = {
           resizable
           columnWidths={columnWidths}
           onColumnResize={(key, width) => setColumnWidths(prev => ({ ...prev, [String(key)]: width }))}
+        />
+      </div>
+    )
+  },
+}
+
+/** 로우 순서 변경 (드래그 앤 드롭) */
+export const RowReorderable: Story = {
+  render: () => {
+    interface RowReorderItem {
+      id: number
+      name: string
+      email: string
+      priority: number
+    }
+
+    const [items, setItems] = useState<RowReorderItem[]>([
+      { id: 1, name: "작업 A", email: "task-a@example.com", priority: 1 },
+      { id: 2, name: "작업 B", email: "task-b@example.com", priority: 2 },
+      { id: 3, name: "작업 C", email: "task-c@example.com", priority: 3 },
+      { id: 4, name: "작업 D", email: "task-d@example.com", priority: 4 },
+      { id: 5, name: "작업 E", email: "task-e@example.com", priority: 5 },
+    ])
+
+    const rowReorderColumns: DataTableColumn<RowReorderItem>[] = [
+      { accessorKey: "priority", header: "우선순위", minWidth: 80 },
+      { accessorKey: "name", header: "작업명", minWidth: 150 },
+      { accessorKey: "email", header: "담당자 이메일", minWidth: 200 },
+    ]
+
+    return (
+      <div>
+        <p className="mb-4 text-xs text-slate-400">
+          왼쪽 드래그 핸들을 잡고 로우를 드래그하여 순서를 변경하세요.
+        </p>
+        <DataTable
+          columns={rowReorderColumns}
+          data={items}
+          rowReorderable
+          onRowReorder={setItems}
+        />
+      </div>
+    )
+  },
+}
+
+/** 로우 순서 변경 + 선택 */
+export const RowReorderableWithSelection: Story = {
+  render: () => {
+    interface RowReorderSelectItem {
+      id: number
+      name: string
+      status: "대기" | "진행중" | "완료"
+      order: number
+    }
+
+    const [items, setItems] = useState<RowReorderSelectItem[]>([
+      { id: 1, name: "기획서 작성", status: "완료", order: 1 },
+      { id: 2, name: "디자인 검토", status: "진행중", order: 2 },
+      { id: 3, name: "개발 착수", status: "대기", order: 3 },
+      { id: 4, name: "테스트", status: "대기", order: 4 },
+      { id: 5, name: "배포", status: "대기", order: 5 },
+    ])
+    const [selectedIds, setSelectedIds] = useState<number[]>([])
+
+    const rowReorderSelectColumns: DataTableColumn<RowReorderSelectItem>[] = [
+      { accessorKey: "order", header: "순서", minWidth: 60 },
+      { accessorKey: "name", header: "작업", minWidth: 150 },
+      {
+        accessorKey: "status",
+        header: "상태",
+        minWidth: 100,
+        cell: (value) => (
+          <Badge
+            variant={
+              value === "완료" ? "success-light" :
+              value === "진행중" ? "info-light" : "danger-light"
+            }
+          >
+            {value as string}
+          </Badge>
+        ),
+      },
+    ]
+
+    const handleRowReorder = (newItems: RowReorderSelectItem[]) => {
+      // 순서 필드 업데이트
+      const updatedItems = newItems.map((item, index) => ({
+        ...item,
+        order: index + 1,
+      }))
+      setItems(updatedItems)
+    }
+
+    return (
+      <div>
+        <p className="mb-4 text-xs text-slate-400">
+          로우 순서 변경 + 행 선택이 모두 동작합니다.
+        </p>
+        <p className="mb-4 text-sm text-slate-500">
+          선택됨: {selectedIds.length > 0 ? selectedIds.join(", ") : "없음"}
+        </p>
+        <DataTable
+          columns={rowReorderSelectColumns}
+          data={items}
+          rowReorderable
+          onRowReorder={handleRowReorder}
+          selectable
+          selectedIds={selectedIds}
+          onSelectionChange={(ids) => setSelectedIds(ids as number[])}
+        />
+      </div>
+    )
+  },
+}
+
+/** 로우/컬럼 순서 변경 + 리사이징 + 선택 */
+export const RowReorderableWithFeatures: Story = {
+  render: () => {
+    interface FeatureItem {
+      id: number
+      code: string
+      name: string
+      category: string
+      price: number
+      order: number
+    }
+
+    const [items, setItems] = useState<FeatureItem[]>(
+      Array.from({ length: 6 }, (_, i) => ({
+        id: i + 1,
+        code: `ITEM-${i + 1}`,
+        name: `상품 ${i + 1}`,
+        category: ["전자기기", "의류", "식품", "가구"][i % 4],
+        price: (i + 1) * 10000,
+        order: i + 1,
+      }))
+    )
+    const [selectedIds, setSelectedIds] = useState<number[]>([])
+    const [columnOrder, setColumnOrder] = useState<(keyof FeatureItem)[]>([
+      "order", "code", "name", "category", "price"
+    ])
+    const [columnWidths, setColumnWidths] = useState<Record<string, number>>({
+      order: 60,
+      code: 100,
+      category: 120,
+      price: 100,
+    })
+
+    const featureColumns: DataTableColumn<FeatureItem>[] = [
+      { accessorKey: "order", header: "순서", minWidth: 60 },
+      { accessorKey: "code", header: "코드", minWidth: 100 },
+      { accessorKey: "name", header: "상품명", minWidth: 150 },
+      { accessorKey: "category", header: "카테고리", minWidth: 120 },
+      { accessorKey: "price", header: "가격", minWidth: 100, align: "right", cell: (v) => `${(v as number).toLocaleString()}원` },
+    ]
+
+    const handleRowReorder = (newItems: FeatureItem[]) => {
+      const updatedItems = newItems.map((item, index) => ({
+        ...item,
+        order: index + 1,
+      }))
+      setItems(updatedItems)
+    }
+
+    return (
+      <div>
+        <p className="mb-4 text-xs text-slate-400">
+          로우 순서 변경 + 컬럼 순서 변경 + 컬럼 리사이징 + 행 선택이 모두 동작합니다.
+        </p>
+        <div className="mb-4 text-xs">
+          <div className="font-mono bg-slate-100 dark:bg-slate-800 p-2 rounded mb-2">
+            컬럼 순서: {JSON.stringify(columnOrder)}
+          </div>
+          <div className="font-mono bg-slate-100 dark:bg-slate-800 p-2 rounded">
+            선택됨: {selectedIds.length > 0 ? selectedIds.join(", ") : "없음"}
+          </div>
+        </div>
+        <DataTable
+          columns={featureColumns}
+          data={items}
+          rowReorderable
+          onRowReorder={handleRowReorder}
+          selectable
+          selectedIds={selectedIds}
+          onSelectionChange={(ids) => setSelectedIds(ids as number[])}
+          columnReorderable
+          columnOrder={columnOrder}
+          onColumnReorder={setColumnOrder}
+          resizable
+          columnWidths={columnWidths}
+          onColumnResize={(key, width) => setColumnWidths(prev => ({ ...prev, [String(key)]: width }))}
+        />
+      </div>
+    )
+  },
+}
+
+/** 행 추가/삭제 (외부 버튼) */
+export const EditableWithAddDelete: Story = {
+  render: () => {
+    interface ProductItem {
+      id: number
+      sku: string
+      name: string
+      price: number
+    }
+
+    const [items, setItems] = useState<ProductItem[]>([
+      { id: 1, sku: "SKU-001", name: "상품 A", price: 10000 },
+      { id: 2, sku: "SKU-002", name: "상품 B", price: 20000 },
+    ])
+
+    const handleAddRow = () => {
+      const newId = Math.max(0, ...items.map(item => item.id)) + 1
+      const newItem: ProductItem = {
+        id: newId,
+        sku: `SKU-${String(newId).padStart(3, "0")}`,
+        name: "",
+        price: 0,
+      }
+      setItems([...items, newItem])
+    }
+
+    const handleDeleteRow = (id: number) => {
+      setItems(items.filter(item => item.id !== id))
+    }
+
+    const handleCellChange = (
+      rowId: string | number,
+      columnKey: keyof ProductItem,
+      value: ProductItem[keyof ProductItem]
+    ) => {
+      setItems((prev) =>
+        prev.map((row) =>
+          row.id === rowId ? { ...row, [columnKey]: value } : row
+        )
+      )
+    }
+
+    const productColumns: DataTableColumn<ProductItem>[] = [
+      { accessorKey: "sku", header: "SKU", minWidth: 100 },
+      { accessorKey: "name", header: "상품명", editable: true, minWidth: 150 },
+      {
+        accessorKey: "price",
+        header: "가격",
+        editable: true,
+        align: "right",
+        minWidth: 100,
+        cell: (v) => `${(v as number).toLocaleString()}원`,
+      },
+      {
+        accessorKey: "id",
+        header: "액션",
+        minWidth: 80,
+        cell: (_, row) => (
+          <Button
+            variant="danger"
+            size="sm"
+            onClick={(e) => {
+              e.stopPropagation()
+              handleDeleteRow(row.id)
+            }}
+          >
+            삭제
+          </Button>
+        ),
+      },
+    ]
+
+    return (
+      <div>
+        <p className="mb-4 text-xs text-slate-400">
+          행 추가/삭제 버튼은 테이블 외부에 배치합니다. 데이터 배열을 직접 조작하여 행을 추가/삭제합니다.
+        </p>
+        <div className="flex gap-2 mb-2">
+          <Button variant="primary" size="sm" onClick={handleAddRow}>
+            + 상품 추가
+          </Button>
+        </div>
+        <DataTable
+          columns={productColumns}
+          data={items}
+          onCellChange={handleCellChange}
         />
       </div>
     )

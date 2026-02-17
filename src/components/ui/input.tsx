@@ -17,6 +17,12 @@ const inputDefaultStyles = [
   "focus:border-blue-500 focus:shadow-[0px_0px_6px_0px_rgba(23,118,255,0.5)]",
 ].join(" ");
 
+const inputTableModeStyles = [
+  "border-slate-300 dark:border-slate-500",
+  "placeholder:text-slate-300 dark:placeholder:text-slate-100",
+  "focus:border-slate-500 focus:border-[1.5px] focus:shadow-none dark:focus:border-slate-300",
+].join(" ");
+
 const inputErrorStyles = [
   "border-destructive dark:border-red-500",
   "placeholder:text-destructive dark:placeholder:text-red-400",
@@ -36,21 +42,27 @@ export type InputSize = keyof typeof inputSizeStyles;
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   /** 에러 상태 */
   error?: boolean;
+  /** 테이블 모드 (파란 glow 대신 border 강조) */
+  tableMode?: boolean;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, error, ...props }, ref) => (
-    <input
-      ref={ref}
-      className={cn(
-        inputBaseStyles,
-        error ? inputErrorStyles : inputDefaultStyles,
-        className,
-      )}
-      aria-invalid={error}
-      {...props}
-    />
-  ),
+  ({ className, error, tableMode, ...props }, ref) => {
+    const getStyleVariant = () => {
+      if (error) return inputErrorStyles;
+      if (tableMode) return inputTableModeStyles;
+      return inputDefaultStyles;
+    };
+
+    return (
+      <input
+        ref={ref}
+        className={cn(inputBaseStyles, getStyleVariant(), className)}
+        aria-invalid={error}
+        {...props}
+      />
+    );
+  },
 );
 Input.displayName = "Input";
 
