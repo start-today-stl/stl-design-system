@@ -1,72 +1,80 @@
 import { jsx as s, jsxs as l } from "react/jsx-runtime";
-import * as o from "react";
-import * as t from "@radix-ui/react-tabs";
-import { cn as n } from "../../lib/utils.mjs";
-import { XIcon as f } from "../../icons/XIcon.mjs";
-const v = t.Root, m = o.forwardRef(({ className: r, align: i = "start", ...e }, a) => /* @__PURE__ */ s(
-  t.List,
+import * as d from "react";
+import * as e from "@radix-ui/react-tabs";
+import { cn as c } from "../../lib/utils.mjs";
+import { XIcon as m } from "../../icons/XIcon.mjs";
+const h = e.Root, g = d.forwardRef(({ className: r, align: a = "start", ...t }, n) => /* @__PURE__ */ s(
+  e.List,
   {
-    ref: a,
-    className: n(
+    ref: n,
+    className: c(
       "flex h-9 items-end border-b border-border",
-      i === "end" ? "justify-end" : "justify-start",
+      a === "end" ? "justify-end" : "justify-start",
       r
     ),
-    ...e
+    ...t
   }
 ));
-m.displayName = t.List.displayName;
-const p = o.forwardRef(({ className: r, closable: i, onClose: e, children: a, ...c }, d) => /* @__PURE__ */ l(
-  t.Trigger,
+g.displayName = e.List.displayName;
+const u = d.forwardRef(({ className: r, closable: a, onClose: t, children: n, onKeyDown: o, ...f }, b) => {
+  const p = (i) => {
+    a && (i.key === "Delete" || i.key === "Backspace") && (i.preventDefault(), t == null || t()), o == null || o(i);
+  };
+  return /* @__PURE__ */ l(
+    e.Trigger,
+    {
+      ref: b,
+      className: c(
+        "inline-flex h-9 items-center justify-center gap-0.5 whitespace-nowrap px-3 py-2 text-xs font-bold cursor-pointer",
+        "rounded-t bg-transparent",
+        "text-text-secondary",
+        "mb-[-1px]",
+        // 하단 border와 연결
+        "transition-colors",
+        "data-[state=active]:border data-[state=active]:border-b-0 data-[state=active]:border-border",
+        "data-[state=active]:text-slate-900 dark:data-[state=active]:text-slate-50",
+        "data-[state=active]:bg-[linear-gradient(180deg,white_0%,#f4f6f8_30%)]",
+        "dark:data-[state=active]:bg-[linear-gradient(180deg,#444b57_0%,#1b2026_30%)]",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+        "disabled:pointer-events-none disabled:opacity-50",
+        r
+      ),
+      onKeyDown: p,
+      ...f,
+      children: [
+        n,
+        a && /* @__PURE__ */ s(
+          "span",
+          {
+            onClick: (i) => {
+              i.stopPropagation(), t == null || t();
+            },
+            className: "ml-0.5 text-text-secondary hover:text-text-primary transition-colors cursor-pointer",
+            "aria-hidden": "true",
+            children: /* @__PURE__ */ s(m, { size: 20 })
+          }
+        )
+      ]
+    }
+  );
+});
+u.displayName = e.Trigger.displayName;
+const v = d.forwardRef(({ className: r, ...a }, t) => /* @__PURE__ */ s(
+  e.Content,
   {
-    ref: d,
-    className: n(
-      "inline-flex h-9 items-center justify-center gap-0.5 whitespace-nowrap px-3 py-2 text-xs font-bold cursor-pointer",
-      "rounded-t border border-b-0 border-border",
-      "text-text-secondary bg-slate-100 dark:bg-slate-800",
-      "mb-[-1px]",
-      // 하단 border와 연결
-      "transition-colors",
-      "data-[state=active]:bg-card data-[state=active]:text-primary",
-      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-      "disabled:pointer-events-none disabled:opacity-50",
-      r
-    ),
-    ...c,
-    children: [
-      a,
-      i && /* @__PURE__ */ s(
-        "button",
-        {
-          type: "button",
-          onClick: (b) => {
-            b.stopPropagation(), e == null || e();
-          },
-          className: "ml-0.5 text-text-secondary hover:text-text-primary transition-colors",
-          "aria-label": "탭 닫기",
-          children: /* @__PURE__ */ s(f, { size: 20 })
-        }
-      )
-    ]
-  }
-));
-p.displayName = t.Trigger.displayName;
-const g = o.forwardRef(({ className: r, ...i }, e) => /* @__PURE__ */ s(
-  t.Content,
-  {
-    ref: e,
-    className: n(
+    ref: t,
+    className: c(
       "mt-4 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
       r
     ),
-    ...i
+    ...a
   }
 ));
-g.displayName = t.Content.displayName;
+v.displayName = e.Content.displayName;
 export {
-  v as Tabs,
-  g as TabsContent,
-  m as TabsList,
-  p as TabsTrigger
+  h as Tabs,
+  v as TabsContent,
+  g as TabsList,
+  u as TabsTrigger
 };
 //# sourceMappingURL=tabs.mjs.map

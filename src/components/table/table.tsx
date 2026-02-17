@@ -134,43 +134,64 @@ export interface TableSortableHeadProps
 const TableSortableHead = React.forwardRef<
   HTMLTableCellElement,
   TableSortableHeadProps
->(({ className, sortDirection, onSort, children, ...props }, ref) => (
-  <th
-    ref={ref}
-    className={cn(
-      "h-9 pl-3 pr-1.5 py-1.5 text-left align-middle font-medium text-[#798698] dark:text-slate-300",
-      "bg-[#eaedf1] dark:bg-slate-800 cursor-pointer select-none",
-      "[&:has([role=checkbox])]:pr-0",
-      className
-    )}
-    onClick={onSort}
-    {...props}
-  >
-    <div className="flex items-center gap-1">
-      {children}
-      <span className="flex flex-col -space-y-1">
-        <UpIcon
-          size={14}
-          className={cn(
-            "transition-colors",
-            sortDirection === "asc"
-              ? "text-blue-500"
-              : "text-slate-300 dark:text-slate-500"
-          )}
-        />
-        <DownIcon
-          size={14}
-          className={cn(
-            "transition-colors",
-            sortDirection === "desc"
-              ? "text-blue-500"
-              : "text-slate-300 dark:text-slate-500"
-          )}
-        />
-      </span>
-    </div>
-  </th>
-))
+>(({ className, sortDirection, onSort, children, ...props }, ref) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (!onSort) return
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault()
+      onSort()
+    }
+  }
+
+  return (
+    <th
+      ref={ref}
+      className={cn(
+        "h-9 pl-3 pr-1.5 py-1.5 text-left align-middle font-medium text-[#798698] dark:text-slate-300",
+        "bg-[#eaedf1] dark:bg-slate-800 select-none",
+        "[&:has([role=checkbox])]:pr-0",
+        className
+      )}
+      aria-sort={
+        sortDirection === "asc"
+          ? "ascending"
+          : sortDirection === "desc"
+            ? "descending"
+            : "none"
+      }
+      {...props}
+    >
+      <button
+        type="button"
+        className="flex w-full items-center gap-1 text-left cursor-pointer"
+        onClick={onSort}
+        onKeyDown={handleKeyDown}
+      >
+        {children}
+        <span className="flex flex-col -space-y-1">
+          <UpIcon
+            size={14}
+            className={cn(
+              "transition-colors",
+              sortDirection === "asc"
+                ? "text-blue-500"
+                : "text-slate-300 dark:text-slate-500"
+            )}
+          />
+          <DownIcon
+            size={14}
+            className={cn(
+              "transition-colors",
+              sortDirection === "desc"
+                ? "text-blue-500"
+                : "text-slate-300 dark:text-slate-500"
+            )}
+          />
+        </span>
+      </button>
+    </th>
+  )
+})
 TableSortableHead.displayName = "TableSortableHead"
 
 export {

@@ -10,6 +10,8 @@ export type InputSize = keyof typeof inputSizeStyles;
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     /** 에러 상태 */
     error?: boolean;
+    /** 테이블 모드 (파란 glow 대신 border 강조) */
+    tableMode?: boolean;
 }
 declare const Input: React.ForwardRefExoticComponent<InputProps & React.RefAttributes<HTMLInputElement>>;
 /** InputField - label과 error 메시지를 포함한 Input 래퍼 */

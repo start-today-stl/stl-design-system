@@ -2,6 +2,8 @@ import * as React from "react";
 export interface TableProps extends React.HTMLAttributes<HTMLTableElement> {
     /** 테이블 최대 높이 (초과 시 세로 스크롤) */
     maxHeight?: number | string;
+    /** 테이블 레이아웃 (auto/fixed) */
+    tableLayout?: "auto" | "fixed";
 }
 declare const Table: React.ForwardRefExoticComponent<TableProps & React.RefAttributes<HTMLTableElement>>;
 declare const TableHeader: React.ForwardRefExoticComponent<React.HTMLAttributes<HTMLTableSectionElement> & React.RefAttributes<HTMLTableSectionElement>>;
