@@ -46,6 +46,8 @@ export interface SelectProps {
   className?: string;
   /** 접근성 라벨 (label이 없을 때 사용) */
   "aria-label"?: string;
+  /** 테이블 모드 (파란 glow 대신 border 강조) */
+  tableMode?: boolean;
 }
 
 const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
@@ -63,6 +65,7 @@ const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
       disabled,
       className,
       "aria-label": ariaLabel,
+      tableMode,
     },
     ref,
   ) => {
@@ -99,7 +102,9 @@ const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
               "disabled:cursor-not-allowed disabled:opacity-50",
               error
                 ? "border-red-500 dark:border-red-500 data-[state=open]:border-red-500 data-[state=open]:shadow-[0px_0px_6px_0px_rgba(239,68,68,0.5)]"
-                : "border-slate-100 dark:border-slate-600 data-[state=open]:border-blue-500 data-[state=open]:shadow-[0px_0px_6px_0px_rgba(23,118,255,0.5)]",
+                : tableMode
+                  ? "border-slate-300 dark:border-slate-500 data-[state=open]:border-slate-500 data-[state=open]:border-[1.5px] data-[state=open]:shadow-none dark:data-[state=open]:border-slate-300"
+                  : "border-slate-100 dark:border-slate-600 data-[state=open]:border-blue-500 data-[state=open]:shadow-[0px_0px_6px_0px_rgba(23,118,255,0.5)]",
               "data-[placeholder]:text-slate-500 dark:data-[placeholder]:text-slate-50",
             )}
             aria-invalid={error}

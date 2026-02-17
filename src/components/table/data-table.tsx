@@ -7,12 +7,14 @@ import {
   useSensor,
   useSensors,
   type DragEndEvent,
+  type DraggableAttributes,
 } from "@dnd-kit/core"
 import {
   arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
   horizontalListSortingStrategy,
+  verticalListSortingStrategy,
   useSortable,
 } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
@@ -30,7 +32,7 @@ import {
 } from "@/components/table/table"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
-import { RightIcon, DownIcon, DragHandleIcon } from "@/icons"
+import { RightIcon, DownIcon, DragHandleIcon, WriteIcon, STLArrowIcon } from "@/icons"
 
 /** 편집 컴포넌트 Props */
 export interface EditComponentProps<T, K extends keyof T = keyof T> {
@@ -56,12 +58,12 @@ export interface DataTableColumn<T> {
   /** 데이터 접근 키 */
   accessorKey: keyof T
   /** 헤더 텍스트 */
-  header: string
+  header: React.ReactNode
   /** 정렬 가능 여부 */
   sortable?: boolean
   /** 컬럼 고정 너비 (sticky 컬럼에 권장) */
   width?: string | number
-  /** 컬럼 최소 너비 (유동적 너비에 권장) */
+  /** 컬럼 최소 너비 (width 미설정 시 남은 공간을 채움) */
   minWidth?: string | number
   /** 셀 정렬 */
   align?: "left" | "center" | "right"
@@ -126,7 +128,7 @@ export interface DataTableProps<T extends { id: string | number }> {
   /** 확장 가능 행 설정 */
   expandable?: ExpandableConfig<T>
   /** 빈 데이터 메시지 */
-  emptyMessage?: string
+  emptyMessage?: React.ReactNode
   /** 추가 className */
   className?: string
   /** 행 className 커스터마이즈 */
@@ -145,6 +147,14 @@ export interface DataTableProps<T extends { id: string | number }> {
   columnOrder?: (keyof T)[]
   /** 컬럼 순서 변경 핸들러 */
   onColumnReorder?: (newOrder: (keyof T)[]) => void
+  /** 로우 순서 변경 활성화 */
+  rowReorderable?: boolean
+  /** 로우 순서 변경 핸들러 */
+  onRowReorder?: (newData: T[]) => void
+  /** 로딩 상태 */
+  loading?: boolean
+  /** 커스텀 로딩 콘텐츠 (미설정 시 STL 화살표 로고 표시) */
+  loadingContent?: React.ReactNode
 }
 
 /** 기본 편집 컴포넌트 (Input) */
@@ -180,7 +190,8 @@ function DefaultEditComponent<T>({
         onChange={(e) => onChange(e.target.value as T[keyof T])}
         onKeyDown={handleKeyDown}
         error={!!error}
-        className="w-full min-w-[60px] px-2 text-xs"
+        tableMode
+        className="w-full px-2 text-xs"
       />
       {error && (
         <span className="text-[10px] text-destructive dark:text-red-400">
@@ -251,6 +262,111 @@ function SortableHeaderCell({
   )
 }
 
+/** 드래그 가능한 로우 */
+interface SortableRowProps {
+  id: string
+  children: React.ReactNode | ((dragHandleProps: DragHandleProps) => React.ReactNode)
+  className?: string
+  isSelected?: boolean
+  onClick?: () => void
+}
+
+interface DragHandleProps {
+  listeners?: Record<string, unknown>
+  attributes?: DraggableAttributes
+  setActivatorNodeRef?: (element: HTMLElement | null) => void
+}
+
+function SortableRow({
+  id,
+  children,
+  className,
+  isSelected,
+  onClick,
+}: SortableRowProps) {
+  const {
+    setNodeRef,
+    setActivatorNodeRef,
+    listeners,
+    attributes,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id })
+
+  const style: React.CSSProperties = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  }
+
+  return (
+    <tr
+      ref={setNodeRef}
+      style={style}
+      data-state={isSelected ? "selected" : undefined}
+      className={cn(
+        "group border-b border-slate-200 dark:border-slate-700 transition-colors",
+        "bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800",
+        "data-[state=selected]:bg-blue-50 dark:data-[state=selected]:bg-blue-950/30",
+        isDragging && "z-50 shadow-lg",
+        className
+      )}
+      onClick={onClick}
+    >
+      {typeof children === "function"
+        ? children({ listeners, attributes, setActivatorNodeRef })
+        : children}
+    </tr>
+  )
+}
+
+/** 드래그 핸들 셀 */
+interface DragHandleCellProps {
+  isSelected?: boolean
+  hasLeftStickyColumns?: boolean
+  dragHandleProps?: DragHandleProps
+}
+
+function DragHandleCell({ isSelected, hasLeftStickyColumns, dragHandleProps }: DragHandleCellProps) {
+  const DRAG_HANDLE_WIDTH = 32
+  const { listeners, attributes, setActivatorNodeRef } = dragHandleProps ?? {}
+
+  return (
+    <td
+      className={cn(
+        "p-0 align-middle",
+        hasLeftStickyColumns && (isSelected
+          ? "transition-colors bg-blue-50 dark:bg-blue-950/30"
+          : "transition-colors bg-slate-50 dark:bg-slate-800 group-hover:bg-slate-100 dark:group-hover:bg-slate-700"
+        )
+      )}
+      style={hasLeftStickyColumns ? {
+        position: "sticky",
+        left: 0,
+        zIndex: 10,
+        width: `${DRAG_HANDLE_WIDTH}px`,
+        minWidth: `${DRAG_HANDLE_WIDTH}px`,
+        maxWidth: `${DRAG_HANDLE_WIDTH}px`,
+      } : {
+        width: `${DRAG_HANDLE_WIDTH}px`,
+        minWidth: `${DRAG_HANDLE_WIDTH}px`,
+        maxWidth: `${DRAG_HANDLE_WIDTH}px`,
+      }}
+    >
+      <div
+        ref={setActivatorNodeRef}
+        className="flex h-9 w-8 items-center justify-center cursor-grab text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
+        onClick={(e) => e.stopPropagation()}
+        {...listeners}
+        {...attributes}
+      >
+        <DragHandleIcon size={16} />
+      </div>
+    </td>
+  )
+}
+
 function DataTable<T extends { id: string | number }>({
   columns,
   data,
@@ -272,6 +388,10 @@ function DataTable<T extends { id: string | number }>({
   columnReorderable = false,
   columnOrder,
   onColumnReorder,
+  rowReorderable = false,
+  onRowReorder,
+  loading = false,
+  loadingContent,
 }: DataTableProps<T>) {
   const [editingCell, setEditingCell] = React.useState<EditingCell<T> | null>(null)
   const [editValue, setEditValue] = React.useState<T[keyof T] | null>(null)
@@ -292,6 +412,26 @@ function DataTable<T extends { id: string | number }>({
   const [internalColumnOrder, setInternalColumnOrder] = React.useState<(keyof T)[]>(() =>
     columns.map((col) => col.accessorKey)
   )
+
+  React.useEffect(() => {
+    if (!columnReorderable || columnOrder) return
+
+    setInternalColumnOrder((prev) => {
+      const columnKeys = columns.map((col) => col.accessorKey)
+      const next = prev.filter((key) => columnKeys.includes(key))
+      const missing = columnKeys.filter((key) => !next.includes(key))
+      const updated = [...next, ...missing]
+
+      if (
+        updated.length === prev.length &&
+        updated.every((key, index) => key === prev[index])
+      ) {
+        return prev
+      }
+
+      return updated
+    })
+  }, [columns, columnReorderable, columnOrder])
 
   // 컬럼 순서 (제어/비제어)
   const currentColumnOrder = columnOrder ?? internalColumnOrder
@@ -314,8 +454,8 @@ function DataTable<T extends { id: string | number }>({
     })
   )
 
-  // 드래그 완료 핸들러
-  const handleDragEnd = React.useCallback(
+  // 컬럼 드래그 완료 핸들러
+  const handleColumnDragEnd = React.useCallback(
     (event: DragEndEvent) => {
       const { active, over } = event
       if (!over || active.id === over.id) return
@@ -334,6 +474,41 @@ function DataTable<T extends { id: string | number }>({
       }
     },
     [currentColumnOrder, onColumnReorder]
+  )
+
+  // 로우 드래그 완료 핸들러
+  const handleRowDragEnd = React.useCallback(
+    (event: DragEndEvent) => {
+      const { active, over } = event
+      if (!over || active.id === over.id) return
+
+      // row- 접두사 제거 후 비교
+      const activeId = String(active.id).replace(/^row-/, "")
+      const overId = String(over.id).replace(/^row-/, "")
+
+      const oldIndex = data.findIndex((row) => String(row.id) === activeId)
+      const newIndex = data.findIndex((row) => String(row.id) === overId)
+
+      if (oldIndex === -1 || newIndex === -1) return
+
+      const newData = arrayMove(data, oldIndex, newIndex)
+      onRowReorder?.(newData)
+    },
+    [data, onRowReorder]
+  )
+
+  // 통합 드래그 완료 핸들러
+  const handleDragEnd = React.useCallback(
+    (event: DragEndEvent) => {
+      const { active } = event
+      // row-로 시작하면 로우 드래그, 아니면 컬럼 드래그
+      if (String(active.id).startsWith("row-")) {
+        handleRowDragEnd(event)
+      } else {
+        handleColumnDragEnd(event)
+      }
+    },
+    [handleColumnDragEnd, handleRowDragEnd]
   )
 
   const expandedRowIds = expandable?.expandedRowIds ?? internalExpandedIds
@@ -465,27 +640,31 @@ function DataTable<T extends { id: string | number }>({
     }
   }
 
-  const totalColumns = columns.length + (selectable ? 1 : 0) + (expandable ? 1 : 0)
+  const totalColumns = columns.length + (selectable ? 1 : 0) + (expandable ? 1 : 0) + (rowReorderable ? 1 : 0)
 
-  // 체크박스/확장 컬럼 너비 상수
+  // 체크박스/확장/드래그 핸들 컬럼 너비 상수
   const CHECKBOX_WIDTH = 40 // w-10 = 40px
   const EXPAND_WIDTH = 40 // w-10 = 40px
+  const DRAG_HANDLE_WIDTH = 32 // w-8 = 32px
 
   // Sticky 컬럼 위치 계산
   const getStickyStyles = React.useMemo(() => {
     // 컬럼 너비 추출 헬퍼 (width 우선, 없으면 minWidth)
     const getColWidth = (col: DataTableColumn<T>): number => {
       const w = col.width ?? col.minWidth
-      return typeof w === "number" ? w : parseInt(String(w) || "150", 10)
+      if (typeof w === "number") return w
+      const parsed = parseInt(String(w), 10)
+      return Number.isFinite(parsed) ? parsed : 150
     }
 
     const leftColumns = columns.filter((col) => col.sticky === "left")
     const rightColumns = columns.filter((col) => col.sticky === "right")
 
-    // 왼쪽 고정 컬럼 위치 계산 (체크박스, 확장 아이콘 컬럼 고려)
+    // 왼쪽 고정 컬럼 위치 계산 (드래그 핸들, 체크박스, 확장 아이콘 컬럼 고려)
+    const dragHandleWidth = rowReorderable ? DRAG_HANDLE_WIDTH : 0
     const checkboxWidth = selectable ? CHECKBOX_WIDTH : 0
     const expandWidth = expandable ? EXPAND_WIDTH : 0
-    const baseLeftOffset = checkboxWidth + expandWidth
+    const baseLeftOffset = dragHandleWidth + checkboxWidth + expandWidth
 
     const leftPositions = new Map<keyof T, number>()
     let currentLeft = baseLeftOffset
@@ -719,17 +898,51 @@ function DataTable<T extends { id: string | number }>({
 
   const columnsToRender = columnReorderable ? orderedColumns : columns
   const columnIds = columnsToRender.filter(col => !col.sticky).map(col => String(col.accessorKey))
+  const rowIds = data.map(row => `row-${row.id}`)
+
+  // 드래그 핸들 헤더 sticky left 위치 계산
+  const getDragHandleHeaderLeftOffset = () => 0
+  // 체크박스 헤더 sticky left 위치 계산
+  const getCheckboxHeaderLeftOffset = () => rowReorderable ? DRAG_HANDLE_WIDTH : 0
+  // 확장 버튼 헤더 sticky left 위치 계산
+  const getExpandHeaderLeftOffset = () => {
+    let offset = 0
+    if (rowReorderable) offset += DRAG_HANDLE_WIDTH
+    if (selectable) offset += CHECKBOX_WIDTH
+    return offset
+  }
 
   const tableContent = (
-    <Table className={className} maxHeight={maxHeight}>
+    <Table className={className} maxHeight={maxHeight} tableLayout="fixed">
       <TableHeader>
         <TableRow>
+          {rowReorderable && (
+            <TableHead
+              className="!p-0 bg-[#eaedf1] dark:bg-slate-800"
+              style={hasLeftStickyColumns ? {
+                position: "sticky",
+                left: getDragHandleHeaderLeftOffset(),
+                zIndex: 20,
+                width: `${DRAG_HANDLE_WIDTH}px`,
+                minWidth: `${DRAG_HANDLE_WIDTH}px`,
+                maxWidth: `${DRAG_HANDLE_WIDTH}px`,
+              } : {
+                width: `${DRAG_HANDLE_WIDTH}px`,
+                minWidth: `${DRAG_HANDLE_WIDTH}px`,
+                maxWidth: `${DRAG_HANDLE_WIDTH}px`,
+              }}
+              aria-label="순서 변경"
+            >
+              <span className="sr-only">순서 변경</span>
+            </TableHead>
+          )}
+
           {selectable && (
             <TableHead
               className="!p-0 bg-[#eaedf1] dark:bg-slate-800"
               style={hasLeftStickyColumns ? {
                 position: "sticky",
-                left: 0,
+                left: getCheckboxHeaderLeftOffset(),
                 zIndex: 20,
                 width: `${CHECKBOX_WIDTH}px`,
                 minWidth: `${CHECKBOX_WIDTH}px`,
@@ -756,7 +969,7 @@ function DataTable<T extends { id: string | number }>({
               className="bg-[#eaedf1] dark:bg-slate-800"
               style={hasLeftStickyColumns ? {
                 position: "sticky",
-                left: selectable ? CHECKBOX_WIDTH : 0,
+                left: getExpandHeaderLeftOffset(),
                 zIndex: 20,
                 width: `${EXPAND_WIDTH}px`,
                 minWidth: `${EXPAND_WIDTH}px`,
@@ -783,8 +996,21 @@ function DataTable<T extends { id: string | number }>({
       </TableHeader>
 
       <TableBody>
-        {data.length === 0 ? (
-          <TableRow>
+        {loading ? (
+          <TableRow className="hover:bg-white dark:hover:bg-slate-900">
+            <TableCell
+              colSpan={totalColumns}
+              className="h-80 text-center"
+            >
+              {loadingContent ?? (
+                <div className="flex items-center justify-center">
+                  <STLArrowIcon size={200} className="text-slate-200 dark:text-slate-700" />
+                </div>
+              )}
+            </TableCell>
+          </TableRow>
+        ) : data.length === 0 ? (
+          <TableRow className="hover:bg-white dark:hover:bg-slate-900">
             <TableCell
               colSpan={totalColumns}
               className="h-24 text-center text-slate-500"
@@ -792,22 +1018,23 @@ function DataTable<T extends { id: string | number }>({
               {emptyMessage}
             </TableCell>
           </TableRow>
-        ) : (
-          data.map((row) => {
-            const isSelected = selectedIds.includes(row.id)
-            const canExpand = isRowExpandable(row)
-            const isExpanded = isRowExpanded(row.id)
+        ) : rowReorderable ? (
+          <SortableContext items={rowIds} strategy={verticalListSortingStrategy}>
+            {data.map((row) => {
+              const isSelected = selectedIds.includes(row.id)
+              const canExpand = isRowExpandable(row)
+              const isExpanded = isRowExpanded(row.id)
+              const rowSortableId = `row-${row.id}`
 
-            return (
-              <React.Fragment key={row.id}>
-                <TableRow
-                  data-state={isSelected ? "selected" : undefined}
-                  className={cn(
-                    onRowClick && "cursor-pointer",
-                    rowClassName?.(row)
-                  )}
-                  onClick={() => onRowClick?.(row)}
-                >
+              // 로우 내부 셀들 렌더링 함수
+              const renderRowCells = (dragHandleProps?: DragHandleProps) => (
+                <>
+                  <DragHandleCell
+                    isSelected={isSelected}
+                    hasLeftStickyColumns={hasLeftStickyColumns}
+                    dragHandleProps={dragHandleProps}
+                  />
+
                   {selectable && (
                     <TableCell
                       onClick={(e) => e.stopPropagation()}
@@ -817,7 +1044,7 @@ function DataTable<T extends { id: string | number }>({
                       )}
                       style={hasLeftStickyColumns ? {
                         position: "sticky",
-                        left: 0,
+                        left: getCheckboxHeaderLeftOffset(),
                         zIndex: 10,
                         width: `${CHECKBOX_WIDTH}px`,
                         minWidth: `${CHECKBOX_WIDTH}px`,
@@ -846,7 +1073,7 @@ function DataTable<T extends { id: string | number }>({
                       )}
                       style={hasLeftStickyColumns ? {
                         position: "sticky",
-                        left: selectable ? CHECKBOX_WIDTH : 0,
+                        left: getExpandHeaderLeftOffset(),
                         zIndex: 10,
                         width: `${EXPAND_WIDTH}px`,
                         minWidth: `${EXPAND_WIDTH}px`,
@@ -876,6 +1103,212 @@ function DataTable<T extends { id: string | number }>({
                     </TableCell>
                   )}
 
+                  {columnsToRender.map((column) => {
+                    const value = row[column.accessorKey]
+                    const cellIsEditing = isEditing(row.id, column.accessorKey)
+                    const stickyData = getStickyStyles(column, false, isSelected)
+
+                    const toPx = (v: string | number) => typeof v === "number" ? `${v}px` : v
+                    const bodyCellStyle: React.CSSProperties = {}
+                    if (!column.sticky) {
+                      const resizedWidth = resizable ? getColumnWidth(column) : undefined
+                      if (resizedWidth !== undefined) {
+                        bodyCellStyle.width = `${resizedWidth}px`
+                        bodyCellStyle.minWidth = `${resizedWidth}px`
+                      } else {
+                        if (column.width) bodyCellStyle.width = toPx(column.width)
+                        if (column.minWidth) bodyCellStyle.minWidth = toPx(column.minWidth)
+                      }
+                    }
+                    const cellStyle = { ...bodyCellStyle, ...stickyData.style }
+
+                    if (cellIsEditing && column.editable) {
+                      const EditComponent = column.editComponent || DefaultEditComponent
+                      return (
+                        <TableCell
+                          ref={editingCellRef}
+                          key={String(column.accessorKey)}
+                          className={cn(getAlignClass(column.align), "p-1 overflow-hidden", stickyData.className)}
+                          style={cellStyle}
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <EditComponent
+                            value={editValue as T[keyof T]}
+                            onChange={(newValue) => {
+                              setEditValue(newValue)
+                              editValueRef.current = newValue
+                              if (editingCell?.error) {
+                                setEditingCell({ ...editingCell, error: undefined })
+                              }
+                            }}
+                            onComplete={() => completeEditing(column, row)}
+                            onCancel={cancelEditing}
+                            row={row}
+                            error={editingCell?.error}
+                          />
+                        </TableCell>
+                      )
+                    }
+
+                    const content = column.cell ? column.cell(value, row) : String(value ?? "")
+
+                    if (column.editable && onCellChange) {
+                      return (
+                        <TableCell
+                          key={String(column.accessorKey)}
+                          className={cn(getAlignClass(column.align), "group/edit cursor-text hover:bg-blue-100 dark:hover:bg-blue-800", stickyData.className)}
+                          style={cellStyle}
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            setTimeout(() => startEditing(row.id, column.accessorKey, value), 0)
+                          }}
+                        >
+                          <span className="flex items-center gap-1">
+                            <span className="flex-1">{content}</span>
+                            <WriteIcon
+                              size={14}
+                              className="flex-shrink-0 opacity-0 group-hover/edit:opacity-100 transition-opacity text-blue-500 dark:text-blue-300"
+                            />
+                          </span>
+                        </TableCell>
+                      )
+                    }
+
+                    return (
+                      <TableCell
+                        key={String(column.accessorKey)}
+                        className={cn(getAlignClass(column.align), stickyData.className)}
+                        style={cellStyle}
+                      >
+                        {content}
+                      </TableCell>
+                    )
+                  })}
+                </>
+              )
+
+              return (
+                <React.Fragment key={row.id}>
+                  <SortableRow
+                    id={rowSortableId}
+                    isSelected={isSelected}
+                    className={cn(onRowClick && "cursor-pointer", rowClassName?.(row))}
+                    onClick={() => onRowClick?.(row)}
+                  >
+                    {(dragHandleProps) => renderRowCells(dragHandleProps)}
+                  </SortableRow>
+
+                  {expandable && isExpanded && (
+                    <TableRow className="bg-white dark:bg-slate-800/50 hover:bg-white dark:hover:bg-slate-800/50">
+                      <TableCell
+                        colSpan={totalColumns}
+                        className="p-0"
+                        style={{ position: "relative" }}
+                      >
+                        <div
+                          className="p-4 overflow-x-auto"
+                          style={{
+                            position: "sticky",
+                            left: 0,
+                            width: "100%",
+                            maxWidth: "100vw",
+                          }}
+                        >
+                          {expandable.expandedRowRender(row)}
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </React.Fragment>
+              )
+            })}
+          </SortableContext>
+        ) : (
+          data.map((row) => {
+            const isSelected = selectedIds.includes(row.id)
+            const canExpand = isRowExpandable(row)
+            const isExpanded = isRowExpanded(row.id)
+            const rowSortableId = `row-${row.id}`
+
+            // 로우 내부 셀들 렌더링 함수
+            const renderRowCells = (dragHandleProps?: DragHandleProps) => (
+              <>
+                {rowReorderable && (
+                  <DragHandleCell
+                    isSelected={isSelected}
+                    hasLeftStickyColumns={hasLeftStickyColumns}
+                    dragHandleProps={dragHandleProps}
+                  />
+                )}
+
+                {selectable && (
+                  <TableCell
+                    onClick={(e) => e.stopPropagation()}
+                    className={cn(
+                      "!p-0",
+                      hasLeftStickyColumns && (isSelected ? "transition-colors bg-blue-50 dark:bg-blue-950/30" : "transition-colors bg-slate-50 dark:bg-slate-800 group-hover:bg-slate-100 dark:group-hover:bg-slate-700")
+                    )}
+                    style={hasLeftStickyColumns ? {
+                      position: "sticky",
+                      left: getCheckboxHeaderLeftOffset(),
+                      zIndex: 10,
+                      width: `${CHECKBOX_WIDTH}px`,
+                      minWidth: `${CHECKBOX_WIDTH}px`,
+                      maxWidth: `${CHECKBOX_WIDTH}px`,
+                    } : {
+                      width: `${CHECKBOX_WIDTH}px`,
+                      minWidth: `${CHECKBOX_WIDTH}px`,
+                      maxWidth: `${CHECKBOX_WIDTH}px`,
+                    }}
+                  >
+                    <div className="flex items-center justify-center h-9">
+                      <Checkbox
+                        checked={isSelected}
+                        onCheckedChange={() => handleSelectRow(row.id)}
+                        aria-label={`행 ${row.id} 선택`}
+                      />
+                    </div>
+                  </TableCell>
+                )}
+
+                {expandable && (
+                  <TableCell
+                    className={cn(
+                      "p-0",
+                      hasLeftStickyColumns && (isSelected ? "transition-colors bg-blue-50 dark:bg-blue-950/30" : "transition-colors bg-slate-50 dark:bg-slate-800 group-hover:bg-slate-100 dark:group-hover:bg-slate-700")
+                    )}
+                    style={hasLeftStickyColumns ? {
+                      position: "sticky",
+                      left: getExpandHeaderLeftOffset(),
+                      zIndex: 10,
+                      width: `${EXPAND_WIDTH}px`,
+                      minWidth: `${EXPAND_WIDTH}px`,
+                      maxWidth: `${EXPAND_WIDTH}px`,
+                    } : {
+                      width: `${EXPAND_WIDTH}px`,
+                      minWidth: `${EXPAND_WIDTH}px`,
+                      maxWidth: `${EXPAND_WIDTH}px`,
+                    }}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    {canExpand && (
+                      <button
+                        type="button"
+                        onClick={() => toggleRowExpanded(row.id)}
+                        className="flex h-9 w-10 items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
+                        aria-label={isExpanded ? "행 접기" : "행 펼치기"}
+                        aria-expanded={isExpanded}
+                      >
+                        {isExpanded ? (
+                          <DownIcon size={24} />
+                        ) : (
+                          <RightIcon size={24} />
+                        )}
+                      </button>
+                    )}
+                  </TableCell>
+                )}
+
                 {columnsToRender.map((column) => {
                   const value = row[column.accessorKey]
                   const cellIsEditing = isEditing(row.id, column.accessorKey)
@@ -903,7 +1336,7 @@ function DataTable<T extends { id: string | number }>({
                       <TableCell
                         ref={editingCellRef}
                         key={String(column.accessorKey)}
-                        className={cn(getAlignClass(column.align), "p-1", stickyData.className)}
+                        className={cn(getAlignClass(column.align), "p-1 overflow-hidden", stickyData.className)}
                         style={cellStyle}
                         onClick={(e) => e.stopPropagation()}
                       >
@@ -936,7 +1369,7 @@ function DataTable<T extends { id: string | number }>({
                         key={String(column.accessorKey)}
                         className={cn(
                           getAlignClass(column.align),
-                          "cursor-text hover:bg-blue-100 dark:hover:bg-blue-800",
+                          "group/edit cursor-text hover:bg-blue-100 dark:hover:bg-blue-800",
                           stickyData.className
                         )}
                         style={cellStyle}
@@ -948,7 +1381,13 @@ function DataTable<T extends { id: string | number }>({
                           }, 0)
                         }}
                       >
-                        {content}
+                        <span className="flex items-center gap-1">
+                          <span className="flex-1">{content}</span>
+                          <WriteIcon
+                            size={20}
+                            className="flex-shrink-0 opacity-0 group-hover/edit:opacity-100 transition-opacity text-blue-500 dark:text-blue-300"
+                          />
+                        </span>
                       </TableCell>
                     )
                   }
@@ -963,15 +1402,48 @@ function DataTable<T extends { id: string | number }>({
                     </TableCell>
                   )
                 })}
-                </TableRow>
+              </>
+            )
+
+            return (
+              <React.Fragment key={row.id}>
+                {rowReorderable ? (
+                  <SortableRow
+                    id={rowSortableId}
+                    isSelected={isSelected}
+                    className={cn(onRowClick && "cursor-pointer", rowClassName?.(row))}
+                    onClick={() => onRowClick?.(row)}
+                  >
+                    {(dragHandleProps) => renderRowCells(dragHandleProps)}
+                  </SortableRow>
+                ) : (
+                  <TableRow
+                    data-state={isSelected ? "selected" : undefined}
+                    className={cn(onRowClick && "cursor-pointer", rowClassName?.(row))}
+                    onClick={() => onRowClick?.(row)}
+                  >
+                    {renderRowCells()}
+                  </TableRow>
+                )}
 
                 {expandable && isExpanded && (
                   <TableRow className="bg-white dark:bg-slate-800/50 hover:bg-white dark:hover:bg-slate-800/50">
                     <TableCell
                       colSpan={totalColumns}
-                      className="p-4"
+                      className="p-0"
+                      style={{ position: "relative" }}
                     >
-                      {expandable.expandedRowRender(row)}
+                      <div
+                        className="p-4 overflow-x-auto"
+                        style={{
+                          position: "sticky",
+                          left: 0,
+                          width: "100%",
+                          maxWidth: "100vw",
+                        }}
+                      >
+                        {expandable.expandedRowRender(row)}
+                      </div>
                     </TableCell>
                   </TableRow>
                 )}
@@ -983,7 +1455,7 @@ function DataTable<T extends { id: string | number }>({
     </Table>
   )
 
-  if (columnReorderable) {
+  if (columnReorderable || rowReorderable) {
     return (
       <DndContext
         sensors={sensors}
