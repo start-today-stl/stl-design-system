@@ -11,7 +11,11 @@ export function BoxIcon({ size = 24, className, ...props }: IconProps) {
       className={className}
       {...props}
     >
-      <path d="M18.5 6V18L18 18.5H6L5.5 18V6L6 5.5H18L18.5 6ZM6.5 17.5H17.5V6.5H6.5V17.5Z" fill="currentColor"/>
+      <path
+        d="M13 0.5V12.5L12.5 13H0.5L0 12.5V0.5L0.5 0H12.5L13 0.5ZM1 12H12V1H1V12Z"
+        fill="currentColor"
+        transform="translate(5.50, 5.50)"
+      />
     </svg>
   )
 }

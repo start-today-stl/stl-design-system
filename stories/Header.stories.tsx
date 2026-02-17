@@ -13,7 +13,7 @@ import {
 } from "../src/components/ui/dropdown"
 import {
   ShipIcon,
-  AlarmIcon,
+  BellIcon,
   ProfileIcon,
   UpIcon,
   DownIcon,
@@ -130,7 +130,7 @@ export const Default: Story = {
               <ShipIcon size={24} />
             </Button>
             <Button variant="ghost" size="icon-sm" aria-label="알림">
-              <AlarmIcon size={24} />
+              <BellIcon size={24} />
             </Button>
             <Button variant="ghost" size="icon-sm" aria-label="프로필">
               <ProfileIcon size={24} />
@@ -209,7 +209,7 @@ export const WithActions: Story = {
       actions={
         <div className="flex items-center gap-2">
           <Button variant="ghost" size="icon-sm" aria-label="알림">
-            <AlarmIcon size={24} />
+            <BellIcon size={24} />
           </Button>
           <Button variant="ghost" size="icon-sm" aria-label="프로필">
             <ProfileIcon size={24} />
@@ -262,7 +262,7 @@ export const WithManyVisits: Story = {
         actions={
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="icon-sm" aria-label="알림">
-              <AlarmIcon size={24} />
+              <BellIcon size={24} />
             </Button>
             <Button variant="ghost" size="icon-sm" aria-label="프로필">
               <ProfileIcon size={24} />

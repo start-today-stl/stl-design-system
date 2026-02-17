@@ -6,11 +6,11 @@ import { NavItem } from "@/layout/nav-item"
 import { NavRenderer } from "@/layout/nav-renderer"
 import { Sidebar } from "@/layout"
 import {
-  SolidHomeIcon,
-  SolidProductIcon,
-  SolidPostIcon,
-  SolidShipIcon,
-  SolidStockIcon,
+  NaviHomeIcon,
+  NaviSaleIcon,
+  NaviOrderIcon,
+  NaviShipIcon,
+  NaviStockIcon,
   NoticeIcon,
   PhoneIcon,
   LocationIcon,
@@ -23,7 +23,7 @@ const sampleNavigation: NavigationConfig = [
   {
     id: "dashboard",
     label: "대시보드",
-    icon: SolidHomeIcon,
+    icon: NaviHomeIcon,
     href: "/dashboard",
     active: true,
     hasIndicator: true,
@@ -31,7 +31,7 @@ const sampleNavigation: NavigationConfig = [
   {
     id: "sales",
     label: "판매 관리",
-    icon: SolidProductIcon,
+    icon: NaviSaleIcon,
     children: [
       { id: "products", label: "상품 관리", href: "/sales/products" },
       { id: "packages", label: "패키지 관리", href: "/sales/packages" },
@@ -40,7 +40,7 @@ const sampleNavigation: NavigationConfig = [
   {
     id: "orders",
     label: "주문 관리",
-    icon: SolidPostIcon,
+    icon: NaviOrderIcon,
     defaultExpanded: true,
     children: [
       {
@@ -57,7 +57,7 @@ const sampleNavigation: NavigationConfig = [
   {
     id: "shipping",
     label: "배송 관리",
-    icon: SolidShipIcon,
+    icon: NaviShipIcon,
     children: [
       { id: "b2c-shipping", label: "B2C 배송 관리", href: "/shipping/b2c" },
     ],
@@ -65,7 +65,7 @@ const sampleNavigation: NavigationConfig = [
   {
     id: "inventory",
     label: "재고 관리",
-    icon: SolidStockIcon,
+    icon: NaviStockIcon,
     defaultExpanded: true,
     children: [
       { id: "inbound", label: "입고 관리", href: "/inventory/inbound" },
@@ -139,12 +139,12 @@ export const NavMenuManual: Story = {
         showToggle={args.showToggle}
         onToggle={() => setCollapsed(!collapsed)}
       >
-        <NavItem icon={<SolidHomeIcon size={24} />} label="대시보드" indicator={<STLArrowIcon size={24} />} />
-        <NavGroup icon={<SolidProductIcon size={24} />} label="판매 관리">
+        <NavItem icon={<NaviHomeIcon size={24} />} label="대시보드" indicator={<STLArrowIcon size={24} />} />
+        <NavGroup icon={<NaviSaleIcon size={24} />} label="판매 관리">
           <NavItem label="상품 관리" depth={2} />
           <NavItem label="패키지 관리" depth={2} />
         </NavGroup>
-        <NavGroup icon={<SolidPostIcon size={24} />} label="주문 관리" defaultExpanded>
+        <NavGroup icon={<NaviOrderIcon size={24} />} label="주문 관리" defaultExpanded>
           <NavGroup label="B2C 주문" depth={2} defaultExpanded>
             <NavItem label="B2C 주문 관리" depth={3} />
             <NavItem label="주문 수집" depth={3} />

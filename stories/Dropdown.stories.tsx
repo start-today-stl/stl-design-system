@@ -12,7 +12,7 @@ import {
   DropdownRadioItem,
 } from "@/components/ui/dropdown"
 import { Button } from "@/components/ui/button"
-import { SettingIcon } from "@/icons"
+import { SettingsIcon } from "@/icons"
 import { useState } from "react"
 
 const meta: Meta = {
@@ -49,7 +49,7 @@ export const WithIconTrigger: Story = {
     <Dropdown>
       <DropdownTrigger asChild>
         <Button variant="ghost" size="icon" aria-label="설정 메뉴">
-          <SettingIcon size={20} />
+          <SettingsIcon size={20} />
         </Button>
       </DropdownTrigger>
       <DropdownContent>

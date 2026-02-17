@@ -56,20 +56,25 @@ export interface TextareaFieldProps
   error?: boolean
   /** 에러 메시지 */
   errorMessage?: string
+  /** 라벨이 없어도 라벨 공간 유지 */
+  reserveLabelSpace?: boolean
 }
 
 const TextareaField = React.forwardRef<HTMLTextAreaElement, TextareaFieldProps>(
-  ({ className, label, error, errorMessage, id, ...props }, ref) => {
+  ({ className, label, error, errorMessage, id, reserveLabelSpace, ...props }, ref) => {
     const textareaId = id || React.useId()
 
     return (
       <div className="flex flex-col gap-1 w-full">
-        {label && (
+        {(label || reserveLabelSpace) && (
           <label
             htmlFor={textareaId}
-            className="text-[length:var(--text-body-2)] text-slate-600 dark:text-slate-50"
+            className={cn(
+              "text-[length:var(--text-body-2)] text-slate-600 dark:text-slate-50",
+              !label && "invisible"
+            )}
           >
-            {label}
+            {label || "\u00A0"}
           </label>
         )}
         <Textarea

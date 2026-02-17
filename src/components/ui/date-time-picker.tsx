@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { InputField, type InputSize } from "@/components/ui/input";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { CalenderIcon, DirectionIcon } from "@/icons";
+import { CalendarIcon, UpIcon, DownIcon } from "@/icons";
 
 /** 시간 스피너 컴포넌트 */
 interface TimeSpinnerProps {
@@ -26,14 +26,14 @@ const TimeSpinner = ({ value, onChange, max, disabled }: TimeSpinnerProps) => {
   };
 
   return (
-    <div className="flex flex-col items-center gap-1">
+    <div className="flex flex-col items-center gap-0.5">
       <button
         type="button"
         onClick={increment}
         disabled={disabled}
-        className="flex size-[10px] cursor-pointer items-center justify-center text-slate-200 hover:text-slate-400 disabled:cursor-not-allowed disabled:opacity-50 dark:text-slate-100 dark:hover:text-slate-50"
+        className="flex size-5 cursor-pointer items-center justify-center text-slate-400 hover:text-slate-600 disabled:cursor-not-allowed disabled:opacity-50 dark:text-slate-400 dark:hover:text-slate-200"
       >
-        <DirectionIcon size={10} className="rotate-180" />
+        <UpIcon size={20} />
       </button>
       <div className="flex h-[23px] w-[34px] items-center justify-center rounded-[2px] p-[5px]">
         <span className="text-xs font-normal tabular-nums text-slate-500 tracking-[-0.18px] dark:text-slate-300">
@@ -44,9 +44,9 @@ const TimeSpinner = ({ value, onChange, max, disabled }: TimeSpinnerProps) => {
         type="button"
         onClick={decrement}
         disabled={disabled}
-        className="flex size-[10px] cursor-pointer items-center justify-center text-slate-200 hover:text-slate-400 disabled:cursor-not-allowed disabled:opacity-50 dark:text-slate-100 dark:hover:text-slate-50"
+        className="flex size-5 cursor-pointer items-center justify-center text-slate-400 hover:text-slate-600 disabled:cursor-not-allowed disabled:opacity-50 dark:text-slate-400 dark:hover:text-slate-200"
       >
-        <DirectionIcon size={10} />
+        <DownIcon size={20} />
       </button>
     </div>
   );
@@ -73,6 +73,8 @@ export interface DateTimePickerProps {
   disabled?: boolean;
   /** 추가 className */
   className?: string;
+  /** 라벨이 없어도 라벨 공간 유지 */
+  reserveLabelSpace?: boolean;
 }
 
 const DateTimePicker = ({
@@ -86,6 +88,7 @@ const DateTimePicker = ({
   size = "md",
   disabled,
   className,
+  reserveLabelSpace,
 }: DateTimePickerProps) => {
   const [open, setOpen] = React.useState(false);
   const [month, setMonth] = React.useState<Date>(value || new Date());
@@ -204,8 +207,9 @@ const DateTimePicker = ({
             size={size}
             disabled={disabled}
             autoComplete="off"
-            rightIcon={<CalenderIcon size={24} />}
+            rightIcon={<CalendarIcon size={24} />}
             onRightIconClick={() => !disabled && setOpen(true)}
+            reserveLabelSpace={reserveLabelSpace}
           />
         </div>
       </PopoverTrigger>
