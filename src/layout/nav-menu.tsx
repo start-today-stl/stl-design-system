@@ -1,7 +1,7 @@
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
-import { IsolationModeIcon } from "@/icons"
+import { MenuVerticalIcon } from "@/icons"
 
 export interface NavMenuProps extends React.HTMLAttributes<HTMLDivElement> {
   /** 축소 모드 */
@@ -40,7 +40,7 @@ const NavMenu = React.forwardRef<HTMLDivElement, NavMenuProps>(
             )}
             aria-label={collapsed ? "메뉴 펼치기" : "메뉴 접기"}
           >
-            <IsolationModeIcon size={24} className="text-slate-500" />
+            <MenuVerticalIcon size={24} className="text-slate-500" />
           </button>
         )}
 

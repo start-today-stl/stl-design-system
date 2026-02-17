@@ -16,20 +16,23 @@ import {
   DropdownItem,
 } from "../src/components/ui/dropdown";
 import {
-  SolidHomeIcon,
-  SolidProductIcon,
-  SolidPostIcon,
-  SolidShipIcon,
-  SolidStockIcon,
+  NaviHomeIcon,
+  NaviSaleIcon,
+  NaviOrderIcon,
+  NaviShipIcon,
+  NaviStockIcon,
   NoticeIcon,
   PhoneIcon,
   LocationIcon,
   STLArrowIcon,
   ShipIcon,
-  AlarmIcon,
+  BellIcon,
   ProfileIcon,
   UpIcon,
   DownIcon,
+  KoreanIcon,
+  EnglishIcon,
+  JapaneseIcon,
 } from "../src/icons";
 import type { NavigationConfig } from "../src/layout/types";
 
@@ -38,14 +41,14 @@ const sampleNavigation: NavigationConfig = [
   {
     id: "dashboard",
     label: "대시보드",
-    icon: SolidHomeIcon,
+    icon: NaviHomeIcon,
     href: "/dashboard",
     hasIndicator: true,
   },
   {
     id: "sales",
     label: "판매 관리",
-    icon: SolidProductIcon,
+    icon: NaviSaleIcon,
     children: [
       { id: "products", label: "상품 관리", href: "/sales/products" },
       { id: "packages", label: "패키지 관리", href: "/sales/packages" },
@@ -54,7 +57,7 @@ const sampleNavigation: NavigationConfig = [
   {
     id: "orders",
     label: "주문 관리",
-    icon: SolidPostIcon,
+    icon: NaviOrderIcon,
     defaultExpanded: true,
     children: [
       {
@@ -71,7 +74,7 @@ const sampleNavigation: NavigationConfig = [
   {
     id: "shipping",
     label: "배송 관리",
-    icon: SolidShipIcon,
+    icon: NaviShipIcon,
     children: [
       { id: "b2c-shipping", label: "B2C 배송 관리", href: "/shipping/b2c" },
     ],
@@ -79,7 +82,7 @@ const sampleNavigation: NavigationConfig = [
   {
     id: "inventory",
     label: "재고 관리",
-    icon: SolidStockIcon,
+    icon: NaviStockIcon,
     defaultExpanded: true,
     children: [
       { id: "inbound", label: "입고 관리", href: "/inventory/inbound" },
@@ -88,9 +91,9 @@ const sampleNavigation: NavigationConfig = [
 ];
 
 const languages = [
-  { code: "ko", label: "한국어" },
-  { code: "ja", label: "日本語" },
-  { code: "en", label: "English" },
+  { code: "ko", label: "한국어", icon: KoreanIcon },
+  { code: "ja", label: "日本語", icon: JapaneseIcon },
+  { code: "en", label: "English", icon: EnglishIcon },
 ];
 
 /** 언어 선택 드롭다운 */
@@ -98,25 +101,31 @@ function LanguageSelector() {
   const [language, setLanguage] = useState("ko");
   const [open, setOpen] = useState(false);
   const currentLang = languages.find((l) => l.code === language);
+  const CurrentIcon = currentLang?.icon;
 
   return (
     <Dropdown open={open} onOpenChange={setOpen}>
       <DropdownTrigger asChild>
         <Button variant="text" className="text-sm tracking-[-0.14px]">
+          {CurrentIcon && <CurrentIcon size={20} />}
           <span>{currentLang?.label || "Language"}</span>
           {open ? <DownIcon size={24} /> : <UpIcon size={24} />}
         </Button>
       </DropdownTrigger>
-      <DropdownContent align="end" className="min-w-[100px]">
-        {languages.map((lang) => (
-          <DropdownItem
-            key={lang.code}
-            onClick={() => setLanguage(lang.code)}
-            className={language === lang.code ? "bg-accent" : ""}
-          >
-            {lang.label}
-          </DropdownItem>
-        ))}
+      <DropdownContent align="end" className="min-w-[120px]">
+        {languages.map((lang) => {
+          const LangIcon = lang.icon;
+          return (
+            <DropdownItem
+              key={lang.code}
+              onClick={() => setLanguage(lang.code)}
+              className={language === lang.code ? "bg-accent" : ""}
+            >
+              <LangIcon size={20} />
+              {lang.label}
+            </DropdownItem>
+          );
+        })}
       </DropdownContent>
     </Dropdown>
   );
@@ -218,7 +227,7 @@ export const Default: Story = {
                   <ShipIcon size={24} />
                 </Button>
                 <Button variant="ghost" size="icon-sm" aria-label="알림">
-                  <AlarmIcon size={24} />
+                  <BellIcon size={24} />
                 </Button>
                 <Button variant="ghost" size="icon-sm" aria-label="프로필">
                   <ProfileIcon size={24} />
@@ -316,7 +325,7 @@ export const WithBreadcrumb: Story = {
             actions={
               <div className="flex items-center gap-2">
                 <Button variant="ghost" size="icon-sm" aria-label="알림">
-                  <AlarmIcon size={24} />
+                  <BellIcon size={24} />
                 </Button>
                 <Button variant="ghost" size="icon-sm" aria-label="프로필">
                   <ProfileIcon size={24} />
@@ -380,16 +389,16 @@ export const SidebarOnly: Story = {
         }
       >
         <NavItem
-          icon={<SolidHomeIcon size={24} />}
+          icon={<NaviHomeIcon size={24} />}
           label="대시보드"
           active
           indicator={<STLArrowIcon size={24} />}
         />
-        <NavGroup icon={<SolidProductIcon size={24} />} label="판매 관리">
+        <NavGroup icon={<NaviSaleIcon size={24} />} label="판매 관리">
           <NavItem label="상품 관리" depth={2} />
         </NavGroup>
         <NavGroup
-          icon={<SolidPostIcon size={24} />}
+          icon={<NaviOrderIcon size={24} />}
           label="주문 관리"
           defaultExpanded
         >
@@ -440,7 +449,7 @@ export const HeaderOnly: Story = {
               <ShipIcon size={24} />
             </Button>
             <Button variant="ghost" size="icon-sm" aria-label="알림">
-              <AlarmIcon size={24} />
+              <BellIcon size={24} />
             </Button>
             <Button variant="ghost" size="icon-sm" aria-label="프로필">
               <ProfileIcon size={24} />

@@ -913,7 +913,7 @@ function DataTable<T extends { id: string | number }>({
   }
 
   const tableContent = (
-    <Table className={className} maxHeight={maxHeight} tableLayout="fixed">
+    <Table className={className} maxHeight={maxHeight}>
       <TableHeader>
         <TableRow>
           {rowReorderable && (

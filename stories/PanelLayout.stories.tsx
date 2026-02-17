@@ -9,10 +9,10 @@ import { Button } from "../src/components/ui/button"
 import {
   BoxIcon,
   SearchIcon,
-  SolidHomeIcon,
-  SolidProductIcon,
-  SolidPostIcon,
-  AlarmIcon,
+  NaviHomeIcon,
+  NaviSaleIcon,
+  NaviOrderIcon,
+  BellIcon,
   ProfileIcon,
 } from "@/icons"
 import type { NavigationConfig } from "../src/layout/types"
@@ -277,20 +277,20 @@ const sampleNavigation: NavigationConfig = [
   {
     id: "dashboard",
     label: "대시보드",
-    icon: SolidHomeIcon,
+    icon: NaviHomeIcon,
     href: "/dashboard",
   },
   {
     id: "category",
     label: "카테고리 관리",
-    icon: SolidProductIcon,
+    icon: NaviSaleIcon,
     href: "/category",
     active: true,
   },
   {
     id: "orders",
     label: "주문 관리",
-    icon: SolidPostIcon,
+    icon: NaviOrderIcon,
     children: [
       { id: "b2c-orders", label: "B2C 주문", href: "/orders/b2c" },
       { id: "b2b-orders", label: "B2B 주문", href: "/orders/b2b" },
@@ -329,7 +329,7 @@ export const InsideAppShell: Story = {
             actions={
               <div className="flex items-center gap-2">
                 <Button variant="ghost" size="icon-sm" aria-label="알림">
-                  <AlarmIcon size={24} />
+                  <BellIcon size={24} />
                 </Button>
                 <Button variant="ghost" size="icon-sm" aria-label="프로필">
                   <ProfileIcon size={24} />

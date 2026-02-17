@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { InputField, type InputSize } from "@/components/ui/input";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { CalenderIcon } from "@/icons";
+import { CalendarIcon } from "@/icons";
 
 export interface DatePickerProps {
   /** 선택된 날짜 */
@@ -30,6 +30,8 @@ export interface DatePickerProps {
   disabled?: boolean;
   /** 추가 className */
   className?: string;
+  /** 라벨이 없어도 라벨 공간 유지 */
+  reserveLabelSpace?: boolean;
 }
 
 const DatePicker = ({
@@ -43,6 +45,7 @@ const DatePicker = ({
   size = "md",
   disabled,
   className,
+  reserveLabelSpace,
 }: DatePickerProps) => {
   const [open, setOpen] = React.useState(false);
   const [month, setMonth] = React.useState<Date>(value || new Date());
@@ -117,8 +120,9 @@ const DatePicker = ({
             size={size}
             disabled={disabled}
             autoComplete="off"
-            rightIcon={<CalenderIcon size={24} />}
+            rightIcon={<CalendarIcon size={24} />}
             onRightIconClick={() => !disabled && setOpen(true)}
+            reserveLabelSpace={reserveLabelSpace}
           />
         </div>
       </PopoverTrigger>

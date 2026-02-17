@@ -1,0 +1,21 @@
+import type { IconProps } from './types'
+
+export function EnglishIcon({ size = 24, className, ...props }: IconProps) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      {...props}
+    >
+      <path
+        d="M15.4004 0.5V14.9004L14.9004 15.4004H0.5L0 14.9004V0.5L0.5 0H14.9004L15.4004 0.5ZM1 14.4004H14.4004V1H1V14.4004ZM11.3301 9.33984V3.24023H12.4502V12.1406H11.3301L9.02051 6.10059V12.1406H7.90039V3.24023H9.02051L11.3301 9.33984ZM6.62988 4.28027H4.08008V7.14062H6.33984V8.12988H4.08008V11.0898H6.66992V12.1299H2.95996V3.24023H6.62988V4.28027Z"
+        fill="currentColor"
+        transform="translate(4.30, 4.30)"
+      />
+    </svg>
+  )
+}

@@ -11,7 +11,11 @@ export function SaveIcon({ size = 24, className, ...props }: IconProps) {
       className={className}
       {...props}
     >
-      <path d="M17.2998 6V19.3203L16.4854 19.708L12 16.0635L7.51562 19.708L6.7002 19.3203V6L7.2002 5.5H16.7998L17.2998 6ZM7.7002 18.2686L11.6846 15.0322H12.3154L16.2998 18.2686V6.5H7.7002V18.2686Z" fill="currentColor"/>
+      <path
+        d="M10.5996 0.5V13.8203L9.78516 14.208L5.2998 10.5635L0.81543 14.208L0 13.8203V0.5L0.5 0H10.0996L10.5996 0.5ZM1 12.7686L4.98438 9.53223H5.61523L9.59961 12.7686V1H1V12.7686Z"
+        fill="currentColor"
+        transform="translate(6.70, 4.90)"
+      />
     </svg>
   )
 }

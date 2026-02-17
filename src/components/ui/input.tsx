@@ -85,23 +85,28 @@ export interface InputFieldProps extends Omit<
   onRightIconClick?: () => void;
   /** 우측 아이콘 버튼의 접근성 라벨 */
   rightIconLabel?: string;
+  /** 라벨이 없어도 라벨 공간 유지 */
+  reserveLabelSpace?: boolean;
 }
 
 const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
   (
-    { className, label, error, errorMessage, size = "full", id, rightIcon, onRightIconClick, rightIconLabel = "아이콘 버튼", ...props },
+    { className, label, error, errorMessage, size = "full", id, rightIcon, onRightIconClick, rightIconLabel = "아이콘 버튼", reserveLabelSpace, ...props },
     ref,
   ) => {
     const inputId = id || React.useId();
 
     return (
       <div className={cn("flex flex-col gap-1", inputSizeStyles[size])}>
-        {label && (
+        {(label || reserveLabelSpace) && (
           <label
             htmlFor={inputId}
-            className="text-[length:var(--text-body-2)] text-slate-600 dark:text-slate-50"
+            className={cn(
+              "text-[length:var(--text-body-2)] text-slate-600 dark:text-slate-50",
+              !label && "invisible"
+            )}
           >
-            {label}
+            {label || "\u00A0"}
           </label>
         )}
         <div className="relative">

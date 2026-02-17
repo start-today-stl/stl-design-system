@@ -11,7 +11,11 @@ export function STLArrowIcon({ size = 24, className, ...props }: IconProps) {
       className={className}
       {...props}
     >
-      <path d="M10.42 10.2599L7.04005 19.3599L19.2 7.19995H4.80005L10.42 10.2599Z" fill="currentColor"/>
+      <path
+        d="M14.4 0H0L5.62999 3.06L2.25 12.15L14.4 0Z"
+        fill="currentColor"
+        transform="translate(4.8, 5.93)"
+      />
     </svg>
   )
 }
