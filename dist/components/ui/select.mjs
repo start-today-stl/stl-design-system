@@ -1,14 +1,14 @@
-import { jsxs as l, jsx as e } from "react/jsx-runtime";
+import { jsxs as o, jsx as e } from "react/jsx-runtime";
 import * as n from "react";
 import * as t from "@radix-ui/react-select";
 import { cn as d } from "../../lib/utils.mjs";
-import { UpIcon as k } from "../../icons/UpIcon.mjs";
-const v = {
+import { UpIcon as v } from "../../icons/UpIcon.mjs";
+const _ = {
   sm: "w-[160px]",
   md: "w-[260px]",
   lg: "w-[360px]",
   full: "w-full"
-}, _ = n.forwardRef(
+}, N = n.forwardRef(
   ({
     label: s,
     placeholder: p = "선택하세요",
@@ -18,19 +18,20 @@ const v = {
     onValueChange: m,
     size: u = "full",
     error: r,
-    errorMessage: o,
-    disabled: f,
-    className: h,
-    "aria-label": g
-  }, w) => {
+    errorMessage: l,
+    disabled: h,
+    className: f,
+    "aria-label": g,
+    tableMode: w
+  }, k) => {
     const i = n.useId();
-    return /* @__PURE__ */ l(
+    return /* @__PURE__ */ o(
       "div",
       {
         className: d(
           "flex flex-col gap-1",
-          v[u],
-          h
+          _[u],
+          f
         ),
         children: [
           s && /* @__PURE__ */ e(
@@ -41,31 +42,31 @@ const v = {
               children: s
             }
           ),
-          /* @__PURE__ */ l(
+          /* @__PURE__ */ o(
             t.Root,
             {
               value: x,
               defaultValue: b,
               onValueChange: m,
-              disabled: f,
+              disabled: h,
               children: [
-                /* @__PURE__ */ l(
+                /* @__PURE__ */ o(
                   t.Trigger,
                   {
-                    ref: w,
+                    ref: k,
                     id: i,
                     className: d(
                       "group flex h-9 w-full items-center justify-between rounded-[5px] border bg-white dark:bg-slate-800",
                       "px-3 text-xs outline-none transition-colors cursor-pointer",
                       "disabled:cursor-not-allowed disabled:opacity-50",
-                      r ? "border-red-500 dark:border-red-500 data-[state=open]:border-red-500 data-[state=open]:shadow-[0px_0px_6px_0px_rgba(239,68,68,0.5)]" : "border-slate-100 dark:border-slate-600 data-[state=open]:border-blue-500 data-[state=open]:shadow-[0px_0px_6px_0px_rgba(23,118,255,0.5)]",
+                      r ? "border-red-500 dark:border-red-500 data-[state=open]:border-red-500 data-[state=open]:shadow-[0px_0px_6px_0px_rgba(239,68,68,0.5)]" : w ? "border-slate-300 dark:border-slate-500 data-[state=open]:border-slate-500 data-[state=open]:border-[1.5px] data-[state=open]:shadow-none dark:data-[state=open]:border-slate-300" : "border-slate-100 dark:border-slate-600 data-[state=open]:border-blue-500 data-[state=open]:shadow-[0px_0px_6px_0px_rgba(23,118,255,0.5)]",
                       "data-[placeholder]:text-slate-500 dark:data-[placeholder]:text-slate-50"
                     ),
                     "aria-invalid": r,
                     "aria-label": g,
                     children: [
                       /* @__PURE__ */ e(t.Value, { placeholder: p }),
-                      /* @__PURE__ */ e(t.Icon, { asChild: !0, children: /* @__PURE__ */ e(k, { size: 24, className: "text-slate-900 transition-transform duration-200 group-data-[state=open]:rotate-180 dark:text-slate-50" }) })
+                      /* @__PURE__ */ e(t.Icon, { asChild: !0, children: /* @__PURE__ */ e(v, { size: 24, className: "text-slate-900 transition-transform duration-200 group-data-[state=open]:rotate-180 dark:text-slate-50" }) })
                     ]
                   }
                 ),
@@ -106,15 +107,15 @@ const v = {
               ]
             }
           ),
-          r && o && /* @__PURE__ */ e("span", { className: "text-xs text-destructive dark:text-red-400", children: o })
+          r && l && /* @__PURE__ */ e("span", { className: "text-xs text-destructive dark:text-red-400", children: l })
         ]
       }
     );
   }
 );
-_.displayName = "Select";
+N.displayName = "Select";
 export {
-  _ as Select,
-  v as selectSizeStyles
+  N as Select,
+  _ as selectSizeStyles
 };
 //# sourceMappingURL=select.mjs.map

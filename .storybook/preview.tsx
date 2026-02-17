@@ -20,8 +20,8 @@ const preview: Preview = {
     backgrounds: {
       default: 'light',
       values: [
-        { name: 'light', value: '#ffffff' },
-        { name: 'dark', value: '#20242d' },
+        { name: 'light', value: '#f4f6f8' },
+        { name: 'dark', value: '#1b2026' },
       ],
     },
   },
@@ -51,13 +51,13 @@ const preview: Preview = {
         // Storybook docs 캔버스 배경색 설정
         const docsStory = document.querySelector('.docs-story') as HTMLElement
         if (docsStory) {
-          docsStory.style.backgroundColor = isDark ? '#20242d' : '#ffffff'
+          docsStory.style.backgroundColor = isDark ? '#1b2026' : '#f4f6f8'
         }
 
         // Storybook 메인 캔버스 배경색 설정
         const sbMain = document.querySelector('.sb-show-main') as HTMLElement
         if (sbMain) {
-          sbMain.style.backgroundColor = isDark ? '#20242d' : '#ffffff'
+          sbMain.style.backgroundColor = isDark ? '#1b2026' : '#f4f6f8'
         }
       }
 

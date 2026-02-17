@@ -53,11 +53,14 @@ const TabsTrigger = React.forwardRef<
       ref={ref}
       className={cn(
         "inline-flex h-9 items-center justify-center gap-0.5 whitespace-nowrap px-3 py-2 text-xs font-bold cursor-pointer",
-        "rounded-t border border-b-0 border-border",
-        "text-text-secondary bg-slate-100 dark:bg-slate-800",
+        "rounded-t bg-transparent",
+        "text-text-secondary",
         "mb-[-1px]", // 하단 border와 연결
         "transition-colors",
-        "data-[state=active]:bg-card data-[state=active]:text-primary",
+        "data-[state=active]:border data-[state=active]:border-b-0 data-[state=active]:border-border",
+        "data-[state=active]:text-slate-900 dark:data-[state=active]:text-slate-50",
+        "data-[state=active]:bg-[linear-gradient(180deg,white_0%,#f4f6f8_30%)]",
+        "dark:data-[state=active]:bg-[linear-gradient(180deg,#444b57_0%,#1b2026_30%)]",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
         "disabled:pointer-events-none disabled:opacity-50",
         className

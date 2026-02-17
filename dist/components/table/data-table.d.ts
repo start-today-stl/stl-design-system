@@ -22,12 +22,12 @@ export interface DataTableColumn<T> {
     /** 데이터 접근 키 */
     accessorKey: keyof T;
     /** 헤더 텍스트 */
-    header: string;
+    header: React.ReactNode;
     /** 정렬 가능 여부 */
     sortable?: boolean;
     /** 컬럼 고정 너비 (sticky 컬럼에 권장) */
     width?: string | number;
-    /** 컬럼 최소 너비 (유동적 너비에 권장) */
+    /** 컬럼 최소 너비 (width 미설정 시 남은 공간을 채움) */
     minWidth?: string | number;
     /** 셀 정렬 */
     align?: "left" | "center" | "right";
@@ -84,7 +84,7 @@ export interface DataTableProps<T extends {
     /** 확장 가능 행 설정 */
     expandable?: ExpandableConfig<T>;
     /** 빈 데이터 메시지 */
-    emptyMessage?: string;
+    emptyMessage?: React.ReactNode;
     /** 추가 className */
     className?: string;
     /** 행 className 커스터마이즈 */
@@ -103,8 +103,22 @@ export interface DataTableProps<T extends {
     columnOrder?: (keyof T)[];
     /** 컬럼 순서 변경 핸들러 */
     onColumnReorder?: (newOrder: (keyof T)[]) => void;
+    /** 로우 순서 변경 활성화 */
+    rowReorderable?: boolean;
+    /** 로우 순서 변경 핸들러 */
+    onRowReorder?: (newData: T[]) => void;
+    /** 로딩 상태 */
+    loading?: boolean;
+    /** 커스텀 로딩 콘텐츠 (미설정 시 STL 화살표 로고 표시) */
+    loadingContent?: React.ReactNode;
+    /** 행 추가 기능 활성화 */
+    addable?: boolean;
+    /** 행 추가 버튼 클릭 핸들러 */
+    onAddRow?: () => void;
+    /** 행 추가 버튼 레이블 (기본값: "행 추가") */
+    addRowLabel?: string;
 }
 declare function DataTable<T extends {
     id: string | number;
-}>({ columns, data, selectable, selectedIds, onSelectionChange, sortState, onSortChange, onRowClick, onCellChange, expandable, emptyMessage, className, rowClassName, maxHeight, resizable, columnWidths, onColumnResize, columnReorderable, columnOrder, onColumnReorder, }: DataTableProps<T>): import("react/jsx-runtime").JSX.Element;
+}>({ columns, data, selectable, selectedIds, onSelectionChange, sortState, onSortChange, onRowClick, onCellChange, expandable, emptyMessage, className, rowClassName, maxHeight, resizable, columnWidths, onColumnResize, columnReorderable, columnOrder, onColumnReorder, rowReorderable, onRowReorder, loading, loadingContent, addable, onAddRow, addRowLabel, }: DataTableProps<T>): import("react/jsx-runtime").JSX.Element;
 export { DataTable };

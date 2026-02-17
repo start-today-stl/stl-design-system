@@ -11,15 +11,38 @@ const navItemVariants = cva(
   {
     variants: {
       active: {
-        true: "text-blue-500 dark:text-blue-300 [&_svg]:text-blue-500 [&_svg]:dark:text-blue-300",
+        true: "",
         false: "",
       },
       depth: {
-        1: "pl-0 text-slate-800 dark:text-slate-200 [&_svg]:text-slate-800 [&_svg]:dark:text-slate-200",
-        2: "pl-6 text-slate-600 dark:text-slate-300 [&_svg]:text-slate-600 [&_svg]:dark:text-slate-300",
-        3: "pl-12 text-slate-600 dark:text-slate-300 [&_svg]:text-slate-600 [&_svg]:dark:text-slate-300",
+        1: "pl-0",
+        2: "pl-6",
+        3: "pl-12",
       },
     },
+    compoundVariants: [
+      // active: false + depth 조합 - 기본 텍스트 색상
+      {
+        active: false,
+        depth: 1,
+        className: "text-slate-800 dark:text-slate-200 [&_svg]:text-slate-800 [&_svg]:dark:text-slate-200",
+      },
+      {
+        active: false,
+        depth: 2,
+        className: "text-slate-600 dark:text-slate-300 [&_svg]:text-slate-600 [&_svg]:dark:text-slate-300",
+      },
+      {
+        active: false,
+        depth: 3,
+        className: "text-slate-600 dark:text-slate-300 [&_svg]:text-slate-600 [&_svg]:dark:text-slate-300",
+      },
+      // active: true - 모든 depth에서 파란색
+      {
+        active: true,
+        className: "text-blue-500 dark:text-blue-300 [&_svg]:text-blue-500 [&_svg]:dark:text-blue-300",
+      },
+    ],
     defaultVariants: {
       active: false,
       depth: 1,
