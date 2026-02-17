@@ -38,6 +38,8 @@ export interface SelectProps {
     "aria-label"?: string;
     /** 테이블 모드 (파란 glow 대신 border 강조) */
     tableMode?: boolean;
+    /** 라벨이 없어도 라벨 공간 유지 */
+    reserveLabelSpace?: boolean;
 }
 declare const Select: React.ForwardRefExoticComponent<SelectProps & React.RefAttributes<HTMLButtonElement>>;
 export { Select, selectSizeStyles };

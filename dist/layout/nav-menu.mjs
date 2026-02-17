@@ -1,8 +1,8 @@
 import { jsxs as b, jsx as o } from "react/jsx-runtime";
 import * as r from "react";
 import { cn as l } from "../lib/utils.mjs";
-import { IsolationModeIcon as x } from "../icons/IsolationModeIcon.mjs";
-const d = r.forwardRef(
+import { MenuVerticalIcon as x } from "../icons/MenuVerticalIcon.mjs";
+const u = r.forwardRef(
   ({ className: a, collapsed: e, showToggle: n = !1, scrollable: i = !1, onToggle: s, children: f, ...m }, c) => /* @__PURE__ */ b(
     "nav",
     {
@@ -47,8 +47,8 @@ const d = r.forwardRef(
     }
   )
 );
-d.displayName = "NavMenu";
+u.displayName = "NavMenu";
 export {
-  d as NavMenu
+  u as NavMenu
 };
 //# sourceMappingURL=nav-menu.mjs.map
