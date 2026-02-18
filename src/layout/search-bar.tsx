@@ -45,6 +45,7 @@ const SearchBar = React.forwardRef<HTMLInputElement, SearchBarProps>(
   ) => {
     const [open, setOpen] = React.useState(false)
     const [internalValue, setInternalValue] = React.useState("")
+    const [highlightedIndex, setHighlightedIndex] = React.useState(-1)
     const containerRef = React.useRef<HTMLDivElement>(null)
 
     const searchValue = value !== undefined ? value : internalValue
@@ -55,15 +56,41 @@ const SearchBar = React.forwardRef<HTMLInputElement, SearchBarProps>(
         setInternalValue(newValue)
       }
       onChange?.(newValue)
+      setHighlightedIndex(-1)
     }
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (e.key === "Enter") {
-        onSearch?.(searchValue)
-        setOpen(false)
+      const itemCount = recentSearches.length
+
+      if (e.key === "ArrowDown") {
+        e.preventDefault()
+        if (!open && itemCount > 0) {
+          setOpen(true)
+          setHighlightedIndex(0)
+        } else if (open && itemCount > 0) {
+          setHighlightedIndex((prev) => (prev + 1) % itemCount)
+        }
       }
+
+      if (e.key === "ArrowUp") {
+        e.preventDefault()
+        if (open && itemCount > 0) {
+          setHighlightedIndex((prev) => (prev - 1 + itemCount) % itemCount)
+        }
+      }
+
+      if (e.key === "Enter") {
+        if (open && highlightedIndex >= 0 && recentSearches[highlightedIndex]) {
+          handleRecentClick(recentSearches[highlightedIndex])
+        } else {
+          onSearch?.(searchValue)
+          setOpen(false)
+        }
+      }
+
       if (e.key === "Escape") {
         setOpen(false)
+        setHighlightedIndex(-1)
       }
     }
 
@@ -74,6 +101,7 @@ const SearchBar = React.forwardRef<HTMLInputElement, SearchBarProps>(
       onChange?.(item.text)
       onRecentSearchClick?.(item)
       setOpen(false)
+      setHighlightedIndex(-1)
     }
 
     // 외부 클릭 감지
@@ -81,6 +109,7 @@ const SearchBar = React.forwardRef<HTMLInputElement, SearchBarProps>(
       const handleClickOutside = (e: MouseEvent) => {
         if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
           setOpen(false)
+          setHighlightedIndex(-1)
         }
       }
 
@@ -141,17 +170,19 @@ const SearchBar = React.forwardRef<HTMLInputElement, SearchBarProps>(
               "animate-in fade-in-0 zoom-in-95 slide-in-from-top-2"
             )}
           >
-            {recentSearches.map((item) => (
+            {recentSearches.map((item, index) => (
               <button
                 key={item.id}
                 type="button"
                 onClick={() => handleRecentClick(item)}
+                onMouseEnter={() => setHighlightedIndex(index)}
                 className={cn(
                   "flex h-[29px] w-full cursor-pointer select-none items-center rounded-[2px] px-[5px] py-[5px]",
                   "text-xs text-slate-500 dark:text-slate-300 text-left",
                   "hover:bg-slate-100 dark:hover:bg-slate-700",
                   "focus:bg-slate-100 dark:focus:bg-slate-700 outline-none",
-                  "transition-colors"
+                  "transition-colors",
+                  highlightedIndex === index && "bg-slate-100 dark:bg-slate-700"
                 )}
               >
                 {item.text}
