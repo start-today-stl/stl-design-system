@@ -1,4 +1,4 @@
-import { jsxs as s, jsx as e } from "react/jsx-runtime";
+import { jsxs as o, jsx as e } from "react/jsx-runtime";
 import * as n from "react";
 import * as t from "@radix-ui/react-select";
 import { cn as a } from "../../lib/utils.mjs";
@@ -17,22 +17,22 @@ const N = {
     defaultValue: b,
     onValueChange: m,
     size: u = "full",
-    error: o,
+    error: s,
     errorMessage: l,
-    disabled: h,
-    className: f,
+    disabled: f,
+    className: h,
     "aria-label": g,
     tableMode: w,
     reserveLabelSpace: k
   }, v) => {
     const i = n.useId();
-    return /* @__PURE__ */ s(
+    return /* @__PURE__ */ o(
       "div",
       {
         className: a(
           "flex flex-col gap-1",
           N[u],
-          f
+          h
         ),
         children: [
           (r || k) && /* @__PURE__ */ e(
@@ -40,21 +40,21 @@ const N = {
             {
               htmlFor: i,
               className: a(
-                "text-[length:var(--text-body-2)] text-slate-600 dark:text-slate-50",
+                "text-xs text-slate-600 dark:text-slate-50",
                 !r && "invisible"
               ),
               children: r || " "
             }
           ),
-          /* @__PURE__ */ s(
+          /* @__PURE__ */ o(
             t.Root,
             {
               value: x,
               defaultValue: b,
               onValueChange: m,
-              disabled: h,
+              disabled: f,
               children: [
-                /* @__PURE__ */ s(
+                /* @__PURE__ */ o(
                   t.Trigger,
                   {
                     ref: v,
@@ -63,10 +63,10 @@ const N = {
                       "group flex h-9 w-full items-center justify-between rounded-[5px] border bg-white dark:bg-slate-800",
                       "px-3 text-xs outline-none transition-colors cursor-pointer",
                       "disabled:cursor-not-allowed disabled:opacity-50",
-                      o ? "border-red-500 dark:border-red-500 data-[state=open]:border-red-500 data-[state=open]:shadow-[0px_0px_6px_0px_rgba(239,68,68,0.5)]" : w ? "border-slate-300 dark:border-slate-500 data-[state=open]:border-slate-500 data-[state=open]:border-[1.5px] data-[state=open]:shadow-none dark:data-[state=open]:border-slate-300" : "border-slate-100 dark:border-slate-600 data-[state=open]:border-blue-500 data-[state=open]:shadow-[0px_0px_6px_0px_rgba(23,118,255,0.5)]",
+                      s ? "border-red-500 dark:border-red-500 data-[state=open]:border-red-500 data-[state=open]:shadow-[0px_0px_6px_0px_rgba(239,68,68,0.5)]" : w ? "border-slate-300 dark:border-slate-500 data-[state=open]:border-slate-500 data-[state=open]:border-[1.5px] data-[state=open]:shadow-none dark:data-[state=open]:border-slate-300" : "border-slate-100 dark:border-slate-600 data-[state=open]:border-blue-500 data-[state=open]:shadow-[0px_0px_6px_0px_rgba(23,118,255,0.5)]",
                       "data-[placeholder]:text-slate-500 dark:data-[placeholder]:text-slate-50"
                     ),
-                    "aria-invalid": o,
+                    "aria-invalid": s,
                     "aria-label": g,
                     children: [
                       /* @__PURE__ */ e(t.Value, { placeholder: p }),
@@ -111,7 +111,7 @@ const N = {
               ]
             }
           ),
-          o && l && /* @__PURE__ */ e("span", { className: "text-xs text-destructive dark:text-red-400", children: l })
+          s && l && /* @__PURE__ */ e("span", { className: "text-xs text-destructive dark:text-red-400", children: l })
         ]
       }
     );

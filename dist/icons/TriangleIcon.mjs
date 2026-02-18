@@ -1,5 +1,5 @@
 import { jsx as t } from "react/jsx-runtime";
-function l({ size: r = 24, className: n, ...L }) {
+function e({ size: r = 24, className: n, ...o }) {
   return /* @__PURE__ */ t(
     "svg",
     {
@@ -9,19 +9,19 @@ function l({ size: r = 24, className: n, ...L }) {
       fill: "none",
       xmlns: "http://www.w3.org/2000/svg",
       className: n,
-      ...L,
+      ...o,
       children: /* @__PURE__ */ t(
         "path",
         {
-          d: "M10.3066 0.707031L5.86035 5.15332L10.3066 9.59961L9.59961 10.3066L5.15332 5.86035L0.707031 10.3066L0 9.59961L4.44629 5.15332L0 0.707031L0.707031 0L5.15332 4.44629L9.59961 0L10.3066 0.707031Z",
+          d: "M12.8145 8.40039L12.4072 9.19141H0.407227L0 8.40039L6 0H6.81445L12.8145 8.40039ZM1.37891 8.19141H11.4355L6.40723 1.15137L1.37891 8.19141Z",
           fill: "currentColor",
-          transform: "translate(6.85, 6.85)"
+          transform: "translate(5.59, 7.40)"
         }
       )
     }
   );
 }
 export {
-  l as TriangleIcon
+  e as TriangleIcon
 };
 //# sourceMappingURL=TriangleIcon.mjs.map

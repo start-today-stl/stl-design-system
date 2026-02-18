@@ -2,8 +2,8 @@ import { jsxs as r, jsx as e } from "react/jsx-runtime";
 import * as i from "react";
 import * as a from "@radix-ui/react-slider";
 import { cn as k } from "../../lib/utils.mjs";
-const y = i.forwardRef(({ className: b, showTooltip: u, showLabels: h, label: t, min: s = 0, max: n = 100, value: o, defaultValue: d, ...l }, g) => {
-  const [m, f] = i.useState(d ?? [s]), v = o ?? m, c = i.useId(), N = (x) => {
+const w = i.forwardRef(({ className: b, showTooltip: u, showLabels: h, label: t, min: s = 0, max: n = 100, value: o, defaultValue: d, ...l }, m) => {
+  const [g, f] = i.useState(d ?? [s]), v = o ?? g, c = i.useId(), N = (x) => {
     var p;
     o || f(x), (p = l.onValueChange) == null || p.call(l, x);
   };
@@ -12,7 +12,7 @@ const y = i.forwardRef(({ className: b, showTooltip: u, showLabels: h, label: t,
       "span",
       {
         id: c,
-        className: "text-[length:var(--text-body-2)] text-slate-600 dark:text-slate-50",
+        className: "text-xs text-slate-600 dark:text-slate-50",
         children: t
       }
     ),
@@ -20,7 +20,7 @@ const y = i.forwardRef(({ className: b, showTooltip: u, showLabels: h, label: t,
       /* @__PURE__ */ r(
         a.Root,
         {
-          ref: g,
+          ref: m,
           min: s,
           max: n,
           value: o,
@@ -52,8 +52,8 @@ const y = i.forwardRef(({ className: b, showTooltip: u, showLabels: h, label: t,
     ] })
   ] });
 });
-y.displayName = a.Root.displayName;
+w.displayName = a.Root.displayName;
 export {
-  y as Slider
+  w as Slider
 };
 //# sourceMappingURL=slider.mjs.map

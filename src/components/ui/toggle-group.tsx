@@ -44,7 +44,7 @@ const ToggleGroup = React.forwardRef<HTMLDivElement, ToggleGroupProps>(
     return (
       <div className={cn("inline-flex flex-col gap-1 w-fit", className)}>
         {label && (
-          <label className="text-[length:var(--text-body-2)] text-slate-600 dark:text-slate-50">
+          <label className="text-xs text-slate-600 dark:text-slate-50">
             {label}
           </label>
         )}

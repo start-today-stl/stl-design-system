@@ -21,7 +21,7 @@ const Table = React.forwardRef<HTMLTableElement, TableProps>(
       >
         <table
           ref={ref}
-          className={cn("caption-bottom text-[length:var(--text-body-2)]", className)}
+          className={cn("caption-bottom text-xs", className)}
           style={{ borderSpacing: 0, minWidth: "100%" }}
           {...props}
         />

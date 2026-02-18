@@ -1,5 +1,5 @@
 import { jsx as r, jsxs as u } from "react/jsx-runtime";
-import * as s from "react";
+import * as d from "react";
 import { cn as o } from "../../lib/utils.mjs";
 const f = [
   "flex w-full rounded-[5px] border bg-slate-50/50 dark:bg-slate-800",
@@ -14,15 +14,15 @@ const f = [
   "border-destructive dark:border-red-500",
   "placeholder:text-destructive dark:placeholder:text-red-400",
   "focus:border-destructive focus:shadow-[0px_0px_6px_0px_rgba(239,68,68,0.5)] dark:focus:border-red-500"
-].join(" "), x = s.forwardRef(
-  ({ className: d, error: e, ...t }, a) => /* @__PURE__ */ r(
+].join(" "), x = d.forwardRef(
+  ({ className: s, error: e, ...t }, a) => /* @__PURE__ */ r(
     "textarea",
     {
       ref: a,
       className: o(
         f,
         e ? m : b,
-        d
+        s
       ),
       "aria-invalid": e,
       ...t
@@ -30,16 +30,16 @@ const f = [
   )
 );
 x.displayName = "Textarea";
-const h = s.forwardRef(
-  ({ className: d, label: e, error: t, errorMessage: a, id: i, reserveLabelSpace: c, ...n }, p) => {
-    const l = i || s.useId();
+const h = d.forwardRef(
+  ({ className: s, label: e, error: t, errorMessage: a, id: i, reserveLabelSpace: c, ...n }, p) => {
+    const l = i || d.useId();
     return /* @__PURE__ */ u("div", { className: "flex flex-col gap-1 w-full", children: [
       (e || c) && /* @__PURE__ */ r(
         "label",
         {
           htmlFor: l,
           className: o(
-            "text-[length:var(--text-body-2)] text-slate-600 dark:text-slate-50",
+            "text-xs text-slate-600 dark:text-slate-50",
             !e && "invisible"
           ),
           children: e || " "
@@ -51,11 +51,11 @@ const h = s.forwardRef(
           id: l,
           ref: p,
           error: t,
-          className: d,
+          className: s,
           ...n
         }
       ),
-      t && a && /* @__PURE__ */ r("span", { className: "text-[length:var(--text-body-2)] text-destructive dark:text-red-400", children: a })
+      t && a && /* @__PURE__ */ r("span", { className: "text-xs text-destructive dark:text-red-400", children: a })
     ] });
   }
 );

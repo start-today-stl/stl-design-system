@@ -25,7 +25,7 @@ const InputGroup = React.forwardRef<HTMLDivElement, InputGroupProps>(
         {label && (
           <label
             htmlFor={groupId}
-            className="text-[length:var(--text-body-2)] text-slate-600 dark:text-slate-50"
+            className="text-xs text-slate-600 dark:text-slate-50"
           >
             {label}
           </label>
@@ -42,7 +42,7 @@ const InputGroup = React.forwardRef<HTMLDivElement, InputGroupProps>(
           {children}
         </div>
         {error && errorMessage && (
-          <span className="text-[length:var(--text-body-2)] text-destructive dark:text-red-400">
+          <span className="text-xs text-destructive dark:text-red-400">
             {errorMessage}
           </span>
         )}
