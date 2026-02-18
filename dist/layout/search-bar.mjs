@@ -1,41 +1,42 @@
-import { jsxs as b, jsx as s } from "react/jsx-runtime";
-import * as o from "react";
-import { cn as n } from "../lib/utils.mjs";
-import { SearchIcon as z } from "../icons/SearchIcon.mjs";
-import { STLArrowIcon as V } from "../icons/STLArrowIcon.mjs";
-const _ = o.forwardRef(
+import { jsxs as g, jsx as i } from "react/jsx-runtime";
+import * as l from "react";
+import { cn as f } from "../lib/utils.mjs";
+import { SearchIcon as V } from "../icons/SearchIcon.mjs";
+import { STLArrowIcon as _ } from "../icons/STLArrowIcon.mjs";
+const A = l.forwardRef(
   ({
-    placeholder: w = "검색어를 입력하세요",
-    value: a,
-    onChange: t,
-    onSearch: d,
-    recentSearches: u = [],
-    onRecentSearchClick: i,
-    className: k,
+    placeholder: v = "검색어를 입력하세요",
+    value: d,
+    onChange: o,
+    onSearch: p,
+    recentSearches: n = [],
+    onRecentSearchClick: x,
+    className: y,
     disabled: c
-  }, h) => {
-    const [p, r] = o.useState(!1), [v, f] = o.useState(""), x = o.useRef(null), m = a !== void 0 ? a : v, y = (e) => {
-      const l = e.target.value;
-      a === void 0 && f(l), t == null || t(l);
-    }, g = (e) => {
-      e.key === "Enter" && (d == null || d(m), r(!1)), e.key === "Escape" && r(!1);
-    }, N = (e) => {
-      a === void 0 && f(e.text), t == null || t(e.text), i == null || i(e), r(!1);
+  }, N) => {
+    const [r, a] = l.useState(!1), [D, w] = l.useState(""), [u, s] = l.useState(-1), m = l.useRef(null), k = d !== void 0 ? d : D, E = (e) => {
+      const t = e.target.value;
+      d === void 0 && w(t), o == null || o(t), s(-1);
+    }, I = (e) => {
+      const t = n.length;
+      e.key === "ArrowDown" && (e.preventDefault(), !r && t > 0 ? (a(!0), s(0)) : r && t > 0 && s((b) => (b + 1) % t)), e.key === "ArrowUp" && (e.preventDefault(), r && t > 0 && s((b) => (b - 1 + t) % t)), e.key === "Enter" && (r && u >= 0 && n[u] ? h(n[u]) : (p == null || p(k), a(!1))), e.key === "Escape" && (a(!1), s(-1));
+    }, h = (e) => {
+      d === void 0 && w(e.text), o == null || o(e.text), x == null || x(e), a(!1), s(-1);
     };
-    o.useEffect(() => {
-      const e = (l) => {
-        x.current && !x.current.contains(l.target) && r(!1);
+    l.useEffect(() => {
+      const e = (t) => {
+        m.current && !m.current.contains(t.target) && (a(!1), s(-1));
       };
-      return p && document.addEventListener("mousedown", e), () => {
+      return r && document.addEventListener("mousedown", e), () => {
         document.removeEventListener("mousedown", e);
       };
-    }, [p]);
-    const E = p && u.length > 0;
-    return /* @__PURE__ */ b("div", { ref: x, className: "relative", children: [
-      /* @__PURE__ */ b(
+    }, [r]);
+    const z = r && n.length > 0;
+    return /* @__PURE__ */ g("div", { ref: m, className: "relative", children: [
+      /* @__PURE__ */ g(
         "div",
         {
-          className: n(
+          className: f(
             "relative flex h-9 items-center gap-2 rounded-[20px] border",
             "bg-white dark:bg-slate-800",
             "border-slate-100 dark:border-slate-600",
@@ -43,22 +44,22 @@ const _ = o.forwardRef(
             "focus-within:border-slate-500 dark:focus-within:border-slate-100",
             "transition-colors",
             c && "opacity-50 cursor-not-allowed",
-            k
+            y
           ),
           children: [
-            /* @__PURE__ */ s(z, { size: 20, className: "text-slate-500 dark:text-slate-50 shrink-0" }),
-            /* @__PURE__ */ s(
+            /* @__PURE__ */ i(V, { size: 20, className: "text-slate-500 dark:text-slate-50 shrink-0" }),
+            /* @__PURE__ */ i(
               "input",
               {
-                ref: h,
+                ref: N,
                 type: "text",
-                value: m,
-                onChange: y,
-                onKeyDown: g,
-                onFocus: () => !c && r(!0),
-                placeholder: w,
+                value: k,
+                onChange: E,
+                onKeyDown: I,
+                onFocus: () => !c && a(!0),
+                placeholder: v,
                 disabled: c,
-                className: n(
+                className: f(
                   "flex-1 bg-transparent text-xs outline-none",
                   "text-slate-900 dark:text-slate-50",
                   "placeholder:text-slate-300 dark:placeholder:text-slate-50",
@@ -66,14 +67,14 @@ const _ = o.forwardRef(
                 )
               }
             ),
-            /* @__PURE__ */ s(V, { size: 24, className: "text-blue-500 dark:text-slate-50 shrink-0" })
+            /* @__PURE__ */ i(_, { size: 24, className: "text-blue-500 dark:text-slate-50 shrink-0" })
           ]
         }
       ),
-      E && /* @__PURE__ */ s(
+      z && /* @__PURE__ */ i(
         "div",
         {
-          className: n(
+          className: f(
             "absolute left-0 right-0 top-full mt-[13px] z-[100]",
             "overflow-hidden rounded-[5px] border",
             "border-slate-100 dark:border-slate-600",
@@ -82,17 +83,19 @@ const _ = o.forwardRef(
             "p-[5px]",
             "animate-in fade-in-0 zoom-in-95 slide-in-from-top-2"
           ),
-          children: u.map((e) => /* @__PURE__ */ s(
+          children: n.map((e, t) => /* @__PURE__ */ i(
             "button",
             {
               type: "button",
-              onClick: () => N(e),
-              className: n(
+              onClick: () => h(e),
+              onMouseEnter: () => s(t),
+              className: f(
                 "flex h-[29px] w-full cursor-pointer select-none items-center rounded-[2px] px-[5px] py-[5px]",
                 "text-xs text-slate-500 dark:text-slate-300 text-left",
                 "hover:bg-slate-100 dark:hover:bg-slate-700",
                 "focus:bg-slate-100 dark:focus:bg-slate-700 outline-none",
-                "transition-colors"
+                "transition-colors",
+                u === t && "bg-slate-100 dark:bg-slate-700"
               ),
               children: e.text
             },
@@ -103,8 +106,8 @@ const _ = o.forwardRef(
     ] });
   }
 );
-_.displayName = "SearchBar";
+A.displayName = "SearchBar";
 export {
-  _ as SearchBar
+  A as SearchBar
 };
 //# sourceMappingURL=search-bar.mjs.map
