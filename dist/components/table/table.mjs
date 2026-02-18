@@ -15,7 +15,7 @@ const p = s.forwardRef(
           "table",
           {
             ref: o,
-            className: r("caption-bottom text-[length:var(--text-body-2)]", t),
+            className: r("caption-bottom text-xs", t),
             style: { borderSpacing: 0, minWidth: "100%" },
             ...a
           }
@@ -25,9 +25,9 @@ const p = s.forwardRef(
   }
 );
 p.displayName = "Table";
-const y = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l("thead", { ref: a, className: r("sticky top-0 z-20 bg-[#eaedf1] dark:bg-slate-800 [&_tr]:border-b [&_tr]:border-slate-200 dark:[&_tr]:border-slate-700", t), ...e }));
-y.displayName = "TableHeader";
-const x = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
+const x = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l("thead", { ref: a, className: r("sticky top-0 z-20 bg-[#eaedf1] dark:bg-slate-800 [&_tr]:border-b [&_tr]:border-slate-200 dark:[&_tr]:border-slate-700", t), ...e }));
+x.displayName = "TableHeader";
+const y = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
   "tbody",
   {
     ref: a,
@@ -35,7 +35,7 @@ const x = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
     ...e
   }
 ));
-x.displayName = "TableBody";
+y.displayName = "TableBody";
 const u = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
   "tfoot",
   {
@@ -60,7 +60,7 @@ const N = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
   }
 ));
 N.displayName = "TableRow";
-const g = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
+const k = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
   "th",
   {
     ref: a,
@@ -72,8 +72,8 @@ const g = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
     ...e
   }
 ));
-g.displayName = "TableHead";
-const h = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
+k.displayName = "TableHead";
+const w = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
   "td",
   {
     ref: a,
@@ -81,8 +81,8 @@ const h = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
     ...e
   }
 ));
-h.displayName = "TableCell";
-const k = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
+w.displayName = "TableCell";
+const g = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
   "caption",
   {
     ref: a,
@@ -90,8 +90,8 @@ const k = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
     ...e
   }
 ));
-k.displayName = "TableCaption";
-const w = s.forwardRef(({ className: t, sortDirection: e, onSort: a, children: o, ...d }, n) => {
+g.displayName = "TableCaption";
+const h = s.forwardRef(({ className: t, sortDirection: e, onSort: a, children: o, ...d }, n) => {
   const m = (b) => {
     a && (b.key === "Enter" || b.key === " ") && (b.preventDefault(), a());
   };
@@ -144,16 +144,16 @@ const w = s.forwardRef(({ className: t, sortDirection: e, onSort: a, children: o
     }
   );
 });
-w.displayName = "TableSortableHead";
+h.displayName = "TableSortableHead";
 export {
   p as Table,
-  x as TableBody,
-  k as TableCaption,
-  h as TableCell,
+  y as TableBody,
+  g as TableCaption,
+  w as TableCell,
   u as TableFooter,
-  g as TableHead,
-  y as TableHeader,
+  k as TableHead,
+  x as TableHeader,
   N as TableRow,
-  w as TableSortableHead
+  h as TableSortableHead
 };
 //# sourceMappingURL=table.mjs.map

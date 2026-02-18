@@ -85,7 +85,7 @@ const RadioGroupField = React.forwardRef<
   return (
     <div className="flex flex-col gap-1.5">
       {label && (
-        <span className="text-[length:var(--text-body-2)] text-slate-600 dark:text-slate-50">
+        <span className="text-xs text-slate-600 dark:text-slate-50">
           {label}
         </span>
       )}

@@ -153,18 +153,6 @@
   /* Typography - Font Family */
   --font-heading: 'STL Gothic R', sans-serif;
   --font-sans: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-
-  /* Typography - Font Size */
-  --text-headline-1: 48px;
-  --text-headline-1-sm: 32px;
-  --text-headline-2: 28px;
-  --text-headline-3: 20px;
-  --text-headline-4: 16px;
-  --text-body-1: 14px;
-  --text-body-2: 12px;
-  --text-body-3: 10px;
-  --text-caption-1: 8px;
-  --text-caption-2: 6px;
 }
 
 @layer base {

@@ -1,18 +1,18 @@
 import { jsxs as f, jsx as r } from "react/jsx-runtime";
-import * as g from "react";
+import * as p from "react";
 import * as d from "@radix-ui/react-toggle-group";
 import { cn as i } from "../../lib/utils.mjs";
-const p = g.forwardRef(
+const g = p.forwardRef(
   ({
     label: a,
-    options: l,
+    options: s,
     value: n,
     defaultValue: b,
     onValueChange: t,
     disabled: c,
     className: x
   }, m) => /* @__PURE__ */ f("div", { className: i("inline-flex flex-col gap-1 w-fit", x), children: [
-    a && /* @__PURE__ */ r("label", { className: "text-[length:var(--text-body-2)] text-slate-600 dark:text-slate-50", children: a }),
+    a && /* @__PURE__ */ r("label", { className: "text-xs text-slate-600 dark:text-slate-50", children: a }),
     /* @__PURE__ */ r(
       d.Root,
       {
@@ -25,8 +25,8 @@ const p = g.forwardRef(
         },
         disabled: c,
         className: "inline-flex",
-        children: l.map((e, s) => {
-          const o = s === 0, u = s === l.length - 1;
+        children: s.map((e, l) => {
+          const o = l === 0, u = l === s.length - 1;
           return /* @__PURE__ */ r(
             d.Item,
             {
@@ -58,8 +58,8 @@ const p = g.forwardRef(
     )
   ] })
 );
-p.displayName = "ToggleGroup";
+g.displayName = "ToggleGroup";
 export {
-  p as ToggleGroup
+  g as ToggleGroup
 };
 //# sourceMappingURL=toggle-group.mjs.map

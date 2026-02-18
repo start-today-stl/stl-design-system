@@ -102,7 +102,7 @@ const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
           <label
             htmlFor={inputId}
             className={cn(
-              "text-[length:var(--text-body-2)] text-slate-600 dark:text-slate-50",
+              "text-xs text-slate-600 dark:text-slate-50",
               !label && "invisible"
             )}
           >
@@ -130,7 +130,7 @@ const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
           )}
         </div>
         {error && errorMessage && (
-          <span className="text-[length:var(--text-body-2)] text-destructive dark:text-red-400">
+          <span className="text-xs text-destructive dark:text-red-400">
             {errorMessage}
           </span>
         )}

@@ -86,7 +86,7 @@ const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
           <label
             htmlFor={id}
             className={cn(
-              "text-[length:var(--text-body-2)] text-slate-600 dark:text-slate-50",
+              "text-xs text-slate-600 dark:text-slate-50",
               !label && "invisible"
             )}
           >

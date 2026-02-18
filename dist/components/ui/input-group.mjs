@@ -3,14 +3,14 @@ import * as l from "react";
 import { cn as o } from "../../lib/utils.mjs";
 import { inputSizeStyles as x } from "./input.mjs";
 const u = l.forwardRef(
-  ({ className: d, label: e, error: n, errorMessage: r, size: s = "full", children: a, ...i }, c) => {
+  ({ className: s, label: e, error: d, errorMessage: r, size: n = "full", children: a, ...i }, c) => {
     const m = l.useId();
-    return /* @__PURE__ */ p("div", { ref: c, className: o("flex flex-col gap-1", x[s], d), ...i, children: [
+    return /* @__PURE__ */ p("div", { ref: c, className: o("flex flex-col gap-1", x[n], s), ...i, children: [
       e && /* @__PURE__ */ t(
         "label",
         {
           htmlFor: m,
-          className: "text-[length:var(--text-body-2)] text-slate-600 dark:text-slate-50",
+          className: "text-xs text-slate-600 dark:text-slate-50",
           children: e
         }
       ),
@@ -27,7 +27,7 @@ const u = l.forwardRef(
           children: a
         }
       ),
-      n && r && /* @__PURE__ */ t("span", { className: "text-[length:var(--text-body-2)] text-destructive dark:text-red-400", children: r })
+      d && r && /* @__PURE__ */ t("span", { className: "text-xs text-destructive dark:text-red-400", children: r })
     ] });
   }
 );

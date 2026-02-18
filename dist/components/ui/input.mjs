@@ -6,15 +6,15 @@ const k = [
   "h-9 px-3 text-xs text-slate-900 dark:text-slate-100",
   "outline-none transition-colors",
   "disabled:cursor-not-allowed disabled:opacity-50"
-].join(" "), y = [
+].join(" "), w = [
   "border-slate-100 dark:border-slate-500",
   "placeholder:text-slate-300 dark:placeholder:text-slate-100",
   "focus:border-blue-500 focus:shadow-[0px_0px_6px_0px_rgba(23,118,255,0.5)]"
-].join(" "), v = [
+].join(" "), y = [
   "border-slate-300 dark:border-slate-500",
   "placeholder:text-slate-300 dark:placeholder:text-slate-100",
   "focus:border-slate-500 focus:border-[1.5px] focus:shadow-none dark:focus:border-slate-300"
-].join(" "), w = [
+].join(" "), v = [
   "border-destructive dark:border-red-500",
   "placeholder:text-destructive dark:placeholder:text-red-400",
   "focus:border-destructive focus:shadow-[0px_0px_6px_0px_rgba(239,68,68,0.5)] dark:focus:border-red-500"
@@ -28,14 +28,14 @@ const k = [
     "input",
     {
       ref: d,
-      className: l(k, e ? w : r ? v : y, s),
+      className: l(k, e ? v : r ? y : w, s),
       "aria-invalid": e,
       ...a
     }
   )
 );
 x.displayName = "Input";
-const g = n.forwardRef(
+const S = n.forwardRef(
   ({ className: s, label: e, error: r, errorMessage: a, size: d = "full", id: i, rightIcon: o, onRightIconClick: u, rightIconLabel: b = "아이콘 버튼", reserveLabelSpace: f, ...h }, m) => {
     const c = i || n.useId();
     return /* @__PURE__ */ p("div", { className: l("flex flex-col gap-1", N[d]), children: [
@@ -44,7 +44,7 @@ const g = n.forwardRef(
         {
           htmlFor: c,
           className: l(
-            "text-[length:var(--text-body-2)] text-slate-600 dark:text-slate-50",
+            "text-xs text-slate-600 dark:text-slate-50",
             !e && "invisible"
           ),
           children: e || " "
@@ -73,14 +73,14 @@ const g = n.forwardRef(
           }
         )
       ] }),
-      r && a && /* @__PURE__ */ t("span", { className: "text-[length:var(--text-body-2)] text-destructive dark:text-red-400", children: a })
+      r && a && /* @__PURE__ */ t("span", { className: "text-xs text-destructive dark:text-red-400", children: a })
     ] });
   }
 );
-g.displayName = "InputField";
+S.displayName = "InputField";
 export {
   x as Input,
-  g as InputField,
+  S as InputField,
   N as inputSizeStyles
 };
 //# sourceMappingURL=input.mjs.map
