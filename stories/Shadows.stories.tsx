@@ -57,7 +57,7 @@ export const CardShadow: Story = {
               >
                 shadow-card
               </code>
-              <span style={{ fontSize: "12px", color: "#888" }}>
+              <span style={{ fontSize: "12px", color: "#666" }}>
                 10px 10px 20px 0px var(--color-shadow)
               </span>
             </div>
@@ -87,7 +87,7 @@ export const CardShadow: Story = {
               Focused Input
             </div>
             <div>
-              <span style={{ fontSize: "12px", color: "#888" }}>
+              <span style={{ fontSize: "12px", color: "#666" }}>
                 0px 0px 6px 0px rgba(23, 118, 255, 0.5)
               </span>
             </div>
@@ -111,13 +111,13 @@ export const CardShadow: Story = {
                 alignItems: "center",
                 padding: "0 12px",
                 fontSize: "12px",
-                color: "#eb3e2a",
+                color: "#8d2519",
               }}
             >
               Error Input
             </div>
             <div>
-              <span style={{ fontSize: "12px", color: "#888" }}>
+              <span style={{ fontSize: "12px", color: "#666" }}>
                 0px 0px 6px 0px rgba(239, 68, 68, 0.5)
               </span>
             </div>
@@ -155,7 +155,7 @@ export const DropdownShadow: Story = {
             style={{
               padding: "5px",
               fontSize: "12px",
-              color: "#94a3b8",
+              color: "#5e6977",
               borderRadius: "2px",
             }}
           >
@@ -165,7 +165,7 @@ export const DropdownShadow: Story = {
             style={{
               padding: "5px",
               fontSize: "12px",
-              color: "#94a3b8",
+              color: "#5e6977",
               borderRadius: "2px",
               backgroundColor: "#eaedf1",
             }}
@@ -176,7 +176,7 @@ export const DropdownShadow: Story = {
             style={{
               padding: "5px",
               fontSize: "12px",
-              color: "#94a3b8",
+              color: "#5e6977",
               borderRadius: "2px",
             }}
           >
@@ -198,7 +198,7 @@ export const DropdownShadow: Story = {
           >
             shadow-[10px_10px_10px_0px_rgba(0,0,0,0.05)]
           </code>
-          <p style={{ fontSize: "11px", color: "#888", marginTop: "8px" }}>
+          <p style={{ fontSize: "11px", color: "#666", marginTop: "8px" }}>
             backdrop-blur-[12px] + bg-white/50
           </p>
         </div>

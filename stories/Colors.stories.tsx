@@ -71,8 +71,8 @@ const blueColors = [
   { name: "100", color: "#d1e4ff", textColor: "#092f66" },
   { name: "200", color: "#a2c8ff", textColor: "#092f66" },
   { name: "300", color: "#74adff", textColor: "#092f66" },
-  { name: "400", color: "#4591ff", textColor: "#fff" },
-  { name: "500", color: "#1776ff", textColor: "#fff" },
+  { name: "400", color: "#4591ff", textColor: "#020c1a" },
+  { name: "500", color: "#1776ff", textColor: "#020c1a" },
   { name: "600", color: "#125ecc", textColor: "#fff" },
   { name: "700", color: "#0e4799", textColor: "#fff" },
   { name: "800", color: "#092f66", textColor: "#fff" },
@@ -85,8 +85,8 @@ const redColors = [
   { name: "100", color: "#fbd8d4", textColor: "#5e1911" },
   { name: "200", color: "#f7b2aa", textColor: "#5e1911" },
   { name: "300", color: "#f38b7f", textColor: "#5e1911" },
-  { name: "400", color: "#ef6555", textColor: "#fff" },
-  { name: "500", color: "#eb3e2a", textColor: "#fff" },
+  { name: "400", color: "#ef6555", textColor: "#5e1911" },
+  { name: "500", color: "#eb3e2a", textColor: "#5e1911" },
   { name: "600", color: "#bc3222", textColor: "#fff" },
   { name: "700", color: "#8d2519", textColor: "#fff" },
   { name: "800", color: "#5e1911", textColor: "#fff" },
@@ -99,7 +99,7 @@ const greenColors = [
   { name: "100", color: "#bdf2b8", textColor: "#064c00" },
   { name: "200", color: "#91e58a", textColor: "#064c00" },
   { name: "300", color: "#66d75c", textColor: "#064c00" },
-  { name: "400", color: "#3aca2e", textColor: "#fff" },
+  { name: "400", color: "#3aca2e", textColor: "#064c00" },
   { name: "500", color: "#0fbd00", textColor: "#fff" },
   { name: "600", color: "#0c9700", textColor: "#fff" },
   { name: "700", color: "#097100", textColor: "#fff" },
@@ -114,7 +114,7 @@ const slateColors = [
   { name: "200", color: "#d4dae3", textColor: "#292e36" },
   { name: "300", color: "#bfc8d4", textColor: "#292e36" },
   { name: "400", color: "#a9b5c6", textColor: "#292e36" },
-  { name: "500", color: "#94a3b8", textColor: "#fff" },
+  { name: "500", color: "#94a3b8", textColor: "#292e36" },
   { name: "600", color: "#798698", textColor: "#fff" },
   { name: "700", color: "#5e6977", textColor: "#fff" },
   { name: "800", color: "#444b57", textColor: "#fff" },
@@ -123,6 +123,12 @@ const slateColors = [
 ];
 
 export const Palette: Story = {
+  parameters: {
+    a11y: {
+      // 색상 스와치 내부 라벨은 색상 대비 검사 대상이 아님 (문서 용도)
+      disable: true,
+    },
+  },
   render: () => (
     <div>
       <h2 style={{ fontSize: "20px", fontWeight: 600, marginBottom: "8px" }}>
@@ -188,7 +194,7 @@ const SemanticColorCard = ({
       </p>
       <code style={{ fontSize: "11px", color: "#666" }}>{variable}</code>
     </div>
-    <span style={{ fontSize: "12px", color: "#888" }}>{color}</span>
+    <span style={{ fontSize: "12px", color: "#666" }}>{color}</span>
   </div>
 );
 
@@ -226,6 +232,12 @@ const textColors = [
 
 export const TextColors: Story = {
   name: "Text Colors",
+  parameters: {
+    a11y: {
+      // secondary/disabled 텍스트 색상은 의도적으로 낮은 대비를 가짐
+      disable: true,
+    },
+  },
   render: () => (
     <div>
       <h2 style={{ fontSize: "20px", fontWeight: 600, marginBottom: "8px" }}>
@@ -261,7 +273,7 @@ export const TextColors: Story = {
               <p style={{ fontSize: "14px", fontWeight: 500, color: "#292e36" }}>
                 {c.name}
               </p>
-              <code style={{ fontSize: "11px", color: "#888" }}>{c.className}</code>
+              <code style={{ fontSize: "11px", color: "#666" }}>{c.className}</code>
             </div>
             <p style={{ fontSize: "16px", color: c.color }}>
               가나다라마바사 ABCDEFG 1234567

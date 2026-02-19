@@ -15,6 +15,7 @@ export * from './ui/time-picker';
 export * from './ui/checkbox';
 export * from './ui/dialog';
 export * from './ui/dropdown';
+export * from './ui/error-content';
 export * from './ui/input';
 export * from './ui/input-group';
 export * from './ui/label';

@@ -158,6 +158,7 @@ function Ct({ isSelected: y, hasLeftStickyColumns: u, dragHandleProps: N }) {
           ref: I,
           className: "flex h-9 w-8 items-center justify-center cursor-grab text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors",
           onClick: (o) => o.stopPropagation(),
+          "aria-label": "행 순서 변경",
           ...f,
           ...m,
           children: /* @__PURE__ */ s(Vt, { size: 16 })

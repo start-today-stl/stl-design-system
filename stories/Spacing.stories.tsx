@@ -58,16 +58,16 @@ const SpacingRow = ({
       <code
         style={{
           fontSize: "12px",
-          background: "#f3f4f6",
+          background: "#e8f1ff",
           padding: "2px 8px",
           borderRadius: "4px",
-          color: "#1776ff",
+          color: "#0d5ad4",
         }}
       >
         {name}
       </code>
       <span style={{ fontSize: "12px", color: "#666" }}>{value}</span>
-      <code style={{ fontSize: "11px", color: "#888" }}>{variable}</code>
+      <code style={{ fontSize: "11px", color: "#666" }}>{variable}</code>
       <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
         <div
           style={{
@@ -79,7 +79,7 @@ const SpacingRow = ({
           }}
         />
         {numValue > 0 && (
-          <span style={{ fontSize: "10px", color: "#888" }}>{numValue}px</span>
+          <span style={{ fontSize: "10px", color: "#666" }}>{numValue}px</span>
         )}
       </div>
     </div>
@@ -105,7 +105,7 @@ export const Scale: Story = {
           gap: "16px",
           fontSize: "11px",
           fontWeight: 600,
-          color: "#888",
+          color: "#666",
           textTransform: "uppercase",
         }}
       >
@@ -158,10 +158,10 @@ export const Semantic: Story = {
               <p style={{ fontSize: "14px", fontWeight: 500, color: "#292e36", marginBottom: "2px" }}>
                 {token.name}
               </p>
-              <code style={{ fontSize: "11px", color: "#888" }}>{token.variable}</code>
+              <code style={{ fontSize: "11px", color: "#666" }}>{token.variable}</code>
             </div>
             <span style={{ fontSize: "12px", color: "#666" }}>{token.value}</span>
-            <span style={{ fontSize: "12px", color: "#888" }}>{token.usage}</span>
+            <span style={{ fontSize: "12px", color: "#666" }}>{token.usage}</span>
           </div>
         ))}
       </div>
@@ -216,7 +216,7 @@ export const Usage: Story = {
           >
             <div style={{ fontSize: "14px", fontWeight: 500 }}>카드 타이틀</div>
             <div style={{ display: "flex", gap: "8px" }}>
-              <div style={{ padding: "8px 12px", background: "#1776ff", color: "#fff", borderRadius: "4px", fontSize: "12px" }}>
+              <div style={{ padding: "8px 12px", background: "#125ecc", color: "#fff", borderRadius: "4px", fontSize: "12px" }}>
                 버튼 1
               </div>
               <div style={{ padding: "8px 12px", background: "#eaedf1", borderRadius: "4px", fontSize: "12px" }}>
@@ -224,7 +224,7 @@ export const Usage: Story = {
               </div>
             </div>
           </div>
-          <code style={{ fontSize: "11px", color: "#888", marginTop: "8px", display: "block" }}>
+          <code style={{ fontSize: "11px", color: "#666", marginTop: "8px", display: "block" }}>
             padding: padding-card (16px), gap: gap-form-field (16px), buttons: gap-button (8px)
           </code>
         </div>

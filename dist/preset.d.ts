@@ -73,6 +73,7 @@ export declare const stlPreset: {
             };
             fontFamily: {
                 sans: string[];
+                'stl-gothic': string[];
             };
             fontSize: {
                 xs: (string | {
