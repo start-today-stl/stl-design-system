@@ -54,6 +54,7 @@ export const stlPreset = {
       },
       fontFamily: {
         sans: ['Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
+        'stl-gothic': ['STLgothicR', 'Pretendard', 'sans-serif'],
       },
       fontSize: {
         xs: ['12px', { lineHeight: '1.5', letterSpacing: '-0.12px' }],

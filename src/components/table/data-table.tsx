@@ -358,6 +358,7 @@ function DragHandleCell({ isSelected, hasLeftStickyColumns, dragHandleProps }: D
         ref={setActivatorNodeRef}
         className="flex h-9 w-8 items-center justify-center cursor-grab text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
         onClick={(e) => e.stopPropagation()}
+        aria-label="행 순서 변경"
         {...listeners}
         {...attributes}
       >

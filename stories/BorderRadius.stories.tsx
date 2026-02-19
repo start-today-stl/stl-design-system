@@ -54,7 +54,7 @@ const RadiusCard = ({
       <p style={{ fontSize: "14px", fontWeight: 500, color: "#292e36", marginBottom: "4px" }}>
         rounded-{name}
       </p>
-      <code style={{ fontSize: "11px", color: "#888" }}>{value}</code>
+      <code style={{ fontSize: "11px", color: "#666" }}>{value}</code>
     </div>
   </div>
 );
@@ -100,7 +100,7 @@ export const Comparison: Story = {
           <div
             style={{
               padding: "8px 16px",
-              background: "#1776ff",
+              background: "#125ecc",
               color: "#fff",
               borderRadius: "4px",
               fontSize: "12px",
@@ -108,7 +108,7 @@ export const Comparison: Story = {
           >
             Button (rounded-sm)
           </div>
-          <code style={{ fontSize: "11px", color: "#888" }}>4px</code>
+          <code style={{ fontSize: "11px", color: "#666" }}>4px</code>
         </div>
 
         <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
@@ -119,12 +119,12 @@ export const Comparison: Story = {
               borderRadius: "5px",
               fontSize: "12px",
               width: "200px",
-              color: "#94a3b8",
+              color: "#5e6977",
             }}
           >
             Input (5px)
           </div>
-          <code style={{ fontSize: "11px", color: "#888" }}>5px (custom)</code>
+          <code style={{ fontSize: "11px", color: "#666" }}>5px (custom)</code>
         </div>
 
         <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
@@ -139,7 +139,7 @@ export const Comparison: Story = {
           >
             Card (rounded-lg)
           </div>
-          <code style={{ fontSize: "11px", color: "#888" }}>8px</code>
+          <code style={{ fontSize: "11px", color: "#666" }}>8px</code>
         </div>
 
         <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
@@ -154,7 +154,7 @@ export const Comparison: Story = {
           >
             Modal (rounded-2xl)
           </div>
-          <code style={{ fontSize: "11px", color: "#888" }}>16px</code>
+          <code style={{ fontSize: "11px", color: "#666" }}>16px</code>
         </div>
       </div>
     </div>

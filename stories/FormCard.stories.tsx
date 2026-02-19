@@ -96,6 +96,7 @@ export const TwoColumns: Story = {
               <Select
                 placeholder="중분류"
                 reserveLabelSpace
+                aria-label="중분류 선택"
                 options={[
                   { label: "상의", value: "top" },
                   { label: "하의", value: "bottom" },
@@ -104,6 +105,7 @@ export const TwoColumns: Story = {
               <Select
                 placeholder="소분류"
                 reserveLabelSpace
+                aria-label="소분류 선택"
                 options={[
                   { label: "티셔츠", value: "tshirt" },
                   { label: "셔츠", value: "shirt" },
@@ -157,7 +159,7 @@ export const TwoColumns: Story = {
             </FormRow>
             <FormRow>
               <div className="flex items-center gap-3">
-                <Switch />
+                <Switch aria-label="해외 판매 상품" />
                 <div className="flex flex-col gap-0.5">
                   <span className="text-xs text-text-secondary">해외 판매 상품</span>
                   <span className="text-[10px] text-text-secondary">

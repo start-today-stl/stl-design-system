@@ -118,10 +118,10 @@ const TypographyRow = ({
     <code
       style={{
         fontSize: "11px",
-        background: "#f3f4f6",
+        background: "#e8f1ff",
         padding: "2px 6px",
         borderRadius: "4px",
-        color: "#1776ff",
+        color: "#0d5ad4",
       }}
     >
       {className}
@@ -152,7 +152,7 @@ export const Tokens: Story = {
               style={{
                 fontSize: "14px",
                 fontWeight: 600,
-                color: "#1776ff",
+                color: "#0d5ad4",
                 marginBottom: "12px",
                 textTransform: "uppercase",
                 letterSpacing: "0.05em",
@@ -170,7 +170,7 @@ export const Tokens: Story = {
                 gap: "16px",
                 fontSize: "11px",
                 fontWeight: 600,
-                color: "#888",
+                color: "#666",
                 textTransform: "uppercase",
               }}
             >
@@ -196,7 +196,7 @@ export const Display: Story = {
   render: () => (
     <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
       <div>
-        <p style={{ fontSize: "12px", color: "#888", marginBottom: "8px" }}>
+        <p style={{ fontSize: "12px", color: "#666", marginBottom: "8px" }}>
           text-5xl (48px) - 대시보드 숫자
         </p>
         <p className="text-5xl font-heading" style={{ color: "#292e36" }}>
@@ -204,7 +204,7 @@ export const Display: Story = {
         </p>
       </div>
       <div>
-        <p style={{ fontSize: "12px", color: "#888", marginBottom: "8px" }}>
+        <p style={{ fontSize: "12px", color: "#666", marginBottom: "8px" }}>
           text-4xl (36px) - 서브 디스플레이
         </p>
         <p className="text-4xl font-heading" style={{ color: "#292e36" }}>
@@ -219,7 +219,7 @@ export const Headings: Story = {
   render: () => (
     <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
       <div>
-        <p style={{ fontSize: "12px", color: "#888", marginBottom: "8px" }}>
+        <p style={{ fontSize: "12px", color: "#666", marginBottom: "8px" }}>
           text-2xl (24px) - 페이지 타이틀
         </p>
         <p className="text-2xl font-semibold" style={{ color: "#292e36" }}>
@@ -227,7 +227,7 @@ export const Headings: Story = {
         </p>
       </div>
       <div>
-        <p style={{ fontSize: "12px", color: "#888", marginBottom: "8px" }}>
+        <p style={{ fontSize: "12px", color: "#666", marginBottom: "8px" }}>
           text-xl (20px) - 섹션 타이틀
         </p>
         <p className="text-xl font-semibold" style={{ color: "#292e36" }}>
@@ -235,7 +235,7 @@ export const Headings: Story = {
         </p>
       </div>
       <div>
-        <p style={{ fontSize: "12px", color: "#888", marginBottom: "8px" }}>
+        <p style={{ fontSize: "12px", color: "#666", marginBottom: "8px" }}>
           text-lg (18px) - 카드/모달 타이틀
         </p>
         <p className="text-lg font-semibold" style={{ color: "#292e36" }}>
@@ -250,7 +250,7 @@ export const Body: Story = {
   render: () => (
     <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
       <div>
-        <p style={{ fontSize: "12px", color: "#888", marginBottom: "8px" }}>
+        <p style={{ fontSize: "12px", color: "#666", marginBottom: "8px" }}>
           text-base (16px) - 본문 기본
         </p>
         <p className="text-base" style={{ color: "#292e36" }}>
@@ -258,7 +258,7 @@ export const Body: Story = {
         </p>
       </div>
       <div>
-        <p style={{ fontSize: "12px", color: "#888", marginBottom: "8px" }}>
+        <p style={{ fontSize: "12px", color: "#666", marginBottom: "8px" }}>
           text-sm (14px) - 본문 텍스트
         </p>
         <p className="text-sm" style={{ color: "#292e36" }}>
@@ -266,7 +266,7 @@ export const Body: Story = {
         </p>
       </div>
       <div>
-        <p style={{ fontSize: "12px", color: "#888", marginBottom: "8px" }}>
+        <p style={{ fontSize: "12px", color: "#666", marginBottom: "8px" }}>
           text-xs (12px) - 라벨, 버튼, 입력필드
         </p>
         <p className="text-xs" style={{ color: "#292e36" }}>
@@ -281,7 +281,7 @@ export const Caption: Story = {
   render: () => (
     <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
       <div>
-        <p style={{ fontSize: "12px", color: "#888", marginBottom: "8px" }}>
+        <p style={{ fontSize: "12px", color: "#666", marginBottom: "8px" }}>
           text-[10px] - 작은 텍스트
         </p>
         <p className="text-[10px]" style={{ color: "#292e36" }}>
@@ -289,7 +289,7 @@ export const Caption: Story = {
         </p>
       </div>
       <div>
-        <p style={{ fontSize: "12px", color: "#888", marginBottom: "8px" }}>
+        <p style={{ fontSize: "12px", color: "#666", marginBottom: "8px" }}>
           text-[8px] - 아주 작은 텍스트
         </p>
         <p className="text-[8px]" style={{ color: "#292e36" }}>
