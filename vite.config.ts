@@ -29,6 +29,7 @@ export default defineConfig({
         layout: resolve(__dirname, 'src/layout/index.ts'),
         dashboard: resolve(__dirname, 'src/dashboard/index.ts'),
         icons: resolve(__dirname, 'src/icons/index.ts'),
+        assets: resolve(__dirname, 'src/assets/index.ts'),
       },
       name: 'STLDesignSystem',
       formats: ['es', 'cjs'],

@@ -15,4 +15,3 @@ export * from './visit-tag';
 export * from './page-title';
 export * from './page-header';
 export * from './panel-layout';
-export { stlLogoLight, stlLogoDark } from '../assets/images';

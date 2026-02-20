@@ -12,3 +12,6 @@ export * from './layout'
 
 // Icons
 export * from './icons'
+
+// Assets (로고, 이미지 등)
+export * from './assets'

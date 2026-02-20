@@ -1,23 +1,26 @@
-import { jsxs as p, jsx as t } from "react/jsx-runtime";
+import { jsxs as x, jsx as e } from "react/jsx-runtime";
 import * as l from "react";
-import { cn as o } from "../../lib/utils.mjs";
-import { inputSizeStyles as x } from "./input.mjs";
-const u = l.forwardRef(
-  ({ className: s, label: e, error: d, errorMessage: r, size: n = "full", children: a, ...i }, c) => {
-    const m = l.useId();
-    return /* @__PURE__ */ p("div", { ref: c, className: o("flex flex-col gap-1", x[n], s), ...i, children: [
-      e && /* @__PURE__ */ t(
+import { cn as r } from "../../lib/utils.mjs";
+import { inputSizeStyles as u } from "./input.mjs";
+const f = l.forwardRef(
+  ({ className: o, label: t, error: d, errorMessage: s, size: n = "full", reserveLabelSpace: i, children: a, ...c }, m) => {
+    const p = l.useId();
+    return /* @__PURE__ */ x("div", { ref: m, className: r("flex flex-col gap-1", u[n], o), ...c, children: [
+      (t || i) && /* @__PURE__ */ e(
         "label",
         {
-          htmlFor: m,
-          className: "text-xs text-slate-600 dark:text-slate-50",
-          children: e
+          htmlFor: p,
+          className: r(
+            "text-xs text-slate-600 dark:text-slate-50",
+            !t && "invisible"
+          ),
+          children: t || " "
         }
       ),
-      /* @__PURE__ */ t(
+      /* @__PURE__ */ e(
         "div",
         {
-          className: o(
+          className: r(
             "flex",
             "[&>*:first-child]:rounded-r-none",
             "[&>*:last-child]:rounded-l-none",
@@ -27,12 +30,12 @@ const u = l.forwardRef(
           children: a
         }
       ),
-      d && r && /* @__PURE__ */ t("span", { className: "text-xs text-destructive dark:text-red-400", children: r })
+      d && s && /* @__PURE__ */ e("span", { className: "text-xs text-destructive dark:text-red-400", children: s })
     ] });
   }
 );
-u.displayName = "InputGroup";
+f.displayName = "InputGroup";
 export {
-  u as InputGroup
+  f as InputGroup
 };
 //# sourceMappingURL=input-group.mjs.map
