@@ -88,37 +88,28 @@ const NavItem = React.forwardRef<HTMLButtonElement, NavItemProps>(
   ) => {
     // _inFlyout은 NavGroup에서 전달되지만 DOM에는 전달하지 않음
     void _inFlyout
-    // 축소 모드 + 하위 메뉴 없는 경우 툴팁 표시
-    if (collapsed && !hasChildren) {
+
+    // 축소 모드: 아이콘 + 아래에 라벨 표시 (세로 배치)
+    if (collapsed) {
       return (
-        <div className="relative group">
-          <button
-            ref={ref}
-            className={cn(
-              navItemVariants({ active, depth }),
-              "justify-center w-9 px-0",
-              className
-            )}
-            aria-label={label}
-            {...props}
-          >
-            {icon && (
-              <span className="flex-shrink-0 w-6 h-6 flex items-center justify-center">
-                {icon}
-              </span>
-            )}
-          </button>
-          {/* 호버 시 툴팁 */}
-          <div className={cn(
-            "absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 rounded-md whitespace-nowrap",
-            "bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-700",
-            "shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible",
-            "transition-all duration-200 z-50",
-            "text-sm font-medium text-slate-800 dark:text-slate-200"
-          )}>
+        <button
+          ref={ref}
+          className={cn(
+            navItemVariants({ active, depth }),
+            "flex-col justify-center items-center w-full h-auto py-2 px-1 gap-1",
+            className
+          )}
+          {...props}
+        >
+          {icon && (
+            <span className="flex-shrink-0 w-6 h-6 flex items-center justify-center">
+              {icon}
+            </span>
+          )}
+          <span className="text-[10px] font-medium leading-tight text-center truncate w-full px-1">
             {label}
-          </div>
-        </div>
+          </span>
+        </button>
       )
     }
 
@@ -127,11 +118,8 @@ const NavItem = React.forwardRef<HTMLButtonElement, NavItemProps>(
         ref={ref}
         className={cn(
           navItemVariants({ active, depth }),
-          collapsed && "justify-center w-9 px-0",
           className
         )}
-        title={collapsed ? label : undefined}
-        aria-label={collapsed ? label : undefined}
         {...props}
       >
         {/* 아이콘 */}

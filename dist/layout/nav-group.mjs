@@ -1,8 +1,8 @@
 import { jsxs as s, jsx as r } from "react/jsx-runtime";
 import * as l from "react";
-import { cn as p } from "../lib/utils.mjs";
-import { NavItem as f } from "./nav-item.mjs";
-const w = l.forwardRef(
+import { cn as f } from "../lib/utils.mjs";
+import { NavItem as p } from "./nav-item.mjs";
+const y = l.forwardRef(
   ({
     className: u,
     icon: o,
@@ -17,13 +17,13 @@ const w = l.forwardRef(
     children: m,
     ...x
   }, v) => {
-    const [k, y] = l.useState(N), t = c !== void 0 ? c : k, b = () => {
+    const [k, w] = l.useState(N), t = c !== void 0 ? c : k, b = () => {
       const e = !t;
-      y(e), i == null || i(e);
+      w(e), i == null || i(e);
     };
-    return g ? /* @__PURE__ */ s("div", { ref: v, className: p("flex flex-col gap-0.5", u), ...x, children: [
+    return g ? /* @__PURE__ */ s("div", { ref: v, className: f("flex flex-col gap-0.5", u), ...x, children: [
       /* @__PURE__ */ r(
-        f,
+        p,
         {
           icon: o,
           label: a,
@@ -39,9 +39,9 @@ const w = l.forwardRef(
         depth: (n || 1) + 1,
         _inFlyout: !0
       }) : e) })
-    ] }) : h ? /* @__PURE__ */ s("div", { className: "relative group", children: [
+    ] }) : h ? /* @__PURE__ */ s("div", { className: "relative group w-full", children: [
       /* @__PURE__ */ r(
-        f,
+        p,
         {
           icon: o,
           label: a,
@@ -50,8 +50,8 @@ const w = l.forwardRef(
           hasChildren: !0
         }
       ),
-      /* @__PURE__ */ s("div", { className: p(
-        "absolute left-full top-0 ml-2 min-w-[200px] py-2 px-3 rounded-md",
+      /* @__PURE__ */ s("div", { className: f(
+        "absolute left-full top-0 ml-4 min-w-[200px] py-2 px-3 rounded-md",
         "bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-700",
         "shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible",
         "transition-all duration-200 z-50"
@@ -63,9 +63,9 @@ const w = l.forwardRef(
           _inFlyout: !0
         }) : e) })
       ] })
-    ] }) : /* @__PURE__ */ s("div", { ref: v, className: p("flex flex-col gap-0.5", u), ...x, children: [
+    ] }) : /* @__PURE__ */ s("div", { ref: v, className: f("flex flex-col gap-0.5", u), ...x, children: [
       /* @__PURE__ */ r(
-        f,
+        p,
         {
           icon: o,
           label: a,
@@ -80,8 +80,8 @@ const w = l.forwardRef(
     ] });
   }
 );
-w.displayName = "NavGroup";
+y.displayName = "NavGroup";
 export {
-  w as NavGroup
+  y as NavGroup
 };
 //# sourceMappingURL=nav-group.mjs.map

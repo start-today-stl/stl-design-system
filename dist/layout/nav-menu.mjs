@@ -1,9 +1,9 @@
-import { jsxs as b, jsx as o } from "react/jsx-runtime";
+import { jsxs as x, jsx as o } from "react/jsx-runtime";
 import * as r from "react";
 import { cn as l } from "../lib/utils.mjs";
-import { MenuVerticalIcon as x } from "../icons/MenuVerticalIcon.mjs";
+import { MenuVerticalIcon as b } from "../icons/MenuVerticalIcon.mjs";
 const u = r.forwardRef(
-  ({ className: a, collapsed: e, showToggle: n = !1, scrollable: i = !1, onToggle: s, children: f, ...m }, c) => /* @__PURE__ */ b(
+  ({ className: a, collapsed: e, showToggle: n = !1, scrollable: i = !1, onToggle: s, children: f, ...m }, c) => /* @__PURE__ */ x(
     "nav",
     {
       ref: c,
@@ -27,7 +27,7 @@ const u = r.forwardRef(
               e ? "top-[-60px] -right-4" : "top-[-50px] -right-[40px]"
             ),
             "aria-label": e ? "메뉴 펼치기" : "메뉴 접기",
-            children: /* @__PURE__ */ o(x, { size: 24, className: "text-slate-500" })
+            children: /* @__PURE__ */ o(b, { size: 24, className: "text-slate-500" })
           }
         ),
         /* @__PURE__ */ o(
@@ -35,7 +35,7 @@ const u = r.forwardRef(
           {
             className: l(
               "flex flex-col",
-              e ? "items-center gap-0.5 w-full overflow-visible" : "gap-0.5",
+              e ? "items-center gap-0.5 w-full px-2 overflow-visible" : "gap-0.5",
               i && !e && "flex-1 min-h-0 overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
             ),
             children: r.Children.map(f, (t) => r.isValidElement(t) ? r.cloneElement(t, {
