@@ -53,7 +53,7 @@ const N = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
   {
     ref: a,
     className: r(
-      "group border-b border-slate-200 dark:border-slate-700 transition-colors bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 data-[state=selected]:bg-blue-50 dark:data-[state=selected]:bg-blue-950/30",
+      "group border-b border-slate-200 dark:border-slate-700 transition-colors bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 data-[state=selected]:bg-blue-50 dark:data-[state=selected]:bg-blue-900",
       t
     ),
     ...e
