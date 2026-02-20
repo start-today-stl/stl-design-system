@@ -48,7 +48,7 @@ const NavMenu = React.forwardRef<HTMLDivElement, NavMenuProps>(
         <div
           className={cn(
             "flex flex-col",
-            collapsed ? "items-center gap-0.5 w-full overflow-visible" : "gap-0.5",
+            collapsed ? "items-center gap-0.5 w-full px-2 overflow-visible" : "gap-0.5",
             scrollable && !collapsed && "flex-1 min-h-0 overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
           )}
         >

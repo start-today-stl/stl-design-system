@@ -86,10 +86,11 @@ const NavGroup = React.forwardRef<HTMLDivElement, NavGroupProps>(
       )
     }
 
-    // 축소 모드에서는 아이콘만 표시 + 호버 시 플라이아웃
+    // 축소 모드에서는 아이콘 + 라벨 표시 + 호버 시 플라이아웃
     if (collapsed) {
       return (
-        <div className="relative group">
+        <div className="relative group w-full">
+          {/* 아이콘 + 라벨 (NavItem 사용) */}
           <NavItem
             icon={icon}
             label={label}
@@ -97,9 +98,9 @@ const NavGroup = React.forwardRef<HTMLDivElement, NavGroupProps>(
             collapsed
             hasChildren
           />
-          {/* 호버 시 플라이아웃 메뉴 */}
+          {/* 호버 시 플라이아웃 메뉴 - 사이드바 우측에 간격 두고 표시 */}
           <div className={cn(
-            "absolute left-full top-0 ml-2 min-w-[200px] py-2 px-3 rounded-md",
+            "absolute left-full top-0 ml-4 min-w-[200px] py-2 px-3 rounded-md",
             "bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-700",
             "shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible",
             "transition-all duration-200 z-50"
