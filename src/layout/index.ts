@@ -32,6 +32,3 @@ export * from './page-header'
 
 // Panel Layout
 export * from './panel-layout'
-
-// Assets
-export { stlLogoLight, stlLogoDark } from '@/assets/images'

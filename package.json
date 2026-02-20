@@ -31,6 +31,11 @@
       "import": "./dist/icons.mjs",
       "require": "./dist/icons.cjs"
     },
+    "./assets": {
+      "types": "./dist/assets/index.d.ts",
+      "import": "./dist/assets.mjs",
+      "require": "./dist/assets.cjs"
+    },
     "./tokens": "./dist/styles/tokens.css",
     "./styles": "./dist/styles/globals.css",
     "./preset": {

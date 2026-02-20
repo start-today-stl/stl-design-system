@@ -9,6 +9,8 @@ export interface InputGroupProps extends React.HTMLAttributes<HTMLDivElement> {
     errorMessage?: string;
     /** 너비 크기 */
     size?: InputSize;
+    /** 라벨이 없어도 라벨 공간 유지 */
+    reserveLabelSpace?: boolean;
 }
 declare const InputGroup: React.ForwardRefExoticComponent<InputGroupProps & React.RefAttributes<HTMLDivElement>>;
 export { InputGroup };
