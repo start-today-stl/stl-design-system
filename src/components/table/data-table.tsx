@@ -79,6 +79,24 @@ export interface DataTableColumn<T> {
   sticky?: "left" | "right"
 }
 
+/** 헤더 그룹 정의 (다중 레벨 헤더) */
+export interface HeaderGroup<T> {
+  /** 그룹 헤더 텍스트 */
+  header: React.ReactNode
+  /** 이 그룹에 포함되는 컬럼 키 배열 */
+  columns: (keyof T)[]
+  /** 정렬 */
+  align?: "left" | "center" | "right"
+}
+
+/** 로우 그룹핑 설정 */
+export interface RowGroupConfig<T> {
+  /** 그룹핑할 컬럼 키 (해당 컬럼 값이 같은 행들은 셀이 병합됨) */
+  groupBy: keyof T | (keyof T)[]
+  /** 그룹핑 적용 컬럼들 (미지정 시 groupBy 컬럼만 병합) */
+  mergeColumns?: (keyof T)[]
+}
+
 /** 정렬 상태 */
 export interface SortState<T> {
   column: keyof T | null
@@ -155,6 +173,10 @@ export interface DataTableProps<T extends { id: string | number }> {
   loading?: boolean
   /** 커스텀 로딩 콘텐츠 (미설정 시 STL 화살표 로고 표시) */
   loadingContent?: React.ReactNode
+  /** 헤더 그룹 정의 (다중 레벨 헤더) */
+  headerGroups?: HeaderGroup<T>[]
+  /** 로우 그룹핑 설정 (셀 병합) */
+  rowGrouping?: RowGroupConfig<T>
 }
 
 /** 기본 편집 컴포넌트 (Input) */
@@ -269,6 +291,8 @@ interface SortableRowProps {
   className?: string
   isSelected?: boolean
   onClick?: () => void
+  onMouseEnter?: () => void
+  onMouseLeave?: () => void
 }
 
 interface DragHandleProps {
@@ -283,6 +307,8 @@ function SortableRow({
   className,
   isSelected,
   onClick,
+  onMouseEnter,
+  onMouseLeave,
 }: SortableRowProps) {
   const {
     setNodeRef,
@@ -308,11 +334,13 @@ function SortableRow({
       className={cn(
         "group border-b border-slate-200 dark:border-slate-700 transition-colors",
         "bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800",
-        "data-[state=selected]:bg-blue-50 dark:data-[state=selected]:bg-blue-950/30",
+        "data-[state=selected]:bg-blue-50 dark:data-[state=selected]:bg-blue-900",
         isDragging && "z-50 shadow-lg",
         className
       )}
       onClick={onClick}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
     >
       {typeof children === "function"
         ? children({ listeners, attributes, setActivatorNodeRef })
@@ -337,8 +365,8 @@ function DragHandleCell({ isSelected, hasLeftStickyColumns, dragHandleProps }: D
       className={cn(
         "p-0 align-middle",
         hasLeftStickyColumns && (isSelected
-          ? "transition-colors bg-blue-50 dark:bg-blue-950/30"
-          : "transition-colors bg-slate-50 dark:bg-slate-800 group-hover:bg-slate-100 dark:group-hover:bg-slate-700"
+          ? "transition-colors bg-blue-50 dark:bg-blue-900"
+          : "transition-colors bg-slate-100 dark:bg-slate-800"
         )
       )}
       style={hasLeftStickyColumns ? {
@@ -389,11 +417,25 @@ function DataTable<T extends { id: string | number }>({
   columnReorderable = false,
   columnOrder,
   onColumnReorder,
-  rowReorderable = false,
+  rowReorderable: rowReorderableProp = false,
   onRowReorder,
   loading = false,
   loadingContent,
+  headerGroups,
+  rowGrouping,
 }: DataTableProps<T>) {
+  // rowGrouping과 rowReorderable은 함께 사용할 수 없음 (rowSpan 셀 드래그 시 레이아웃 깨짐)
+  const rowReorderable = rowGrouping ? false : rowReorderableProp
+
+  React.useEffect(() => {
+    if (rowGrouping && rowReorderableProp) {
+      console.warn(
+        "[DataTable] rowGrouping과 rowReorderable은 함께 사용할 수 없습니다. " +
+        "rowSpan 셀이 있는 행을 드래그하면 레이아웃이 깨지므로 rowReorderable이 무시됩니다."
+      )
+    }
+  }, [rowGrouping, rowReorderableProp])
+
   const [editingCell, setEditingCell] = React.useState<EditingCell<T> | null>(null)
   const [editValue, setEditValue] = React.useState<T[keyof T] | null>(null)
   // stale closure 방지용 ref
@@ -413,6 +455,8 @@ function DataTable<T extends { id: string | number }>({
   const [internalColumnOrder, setInternalColumnOrder] = React.useState<(keyof T)[]>(() =>
     columns.map((col) => col.accessorKey)
   )
+  // 로우 그룹핑용 호버 상태 추적
+  const [hoveredRowIndex, setHoveredRowIndex] = React.useState<number | null>(null)
 
   React.useEffect(() => {
     if (!columnReorderable || columnOrder) return
@@ -643,6 +687,95 @@ function DataTable<T extends { id: string | number }>({
 
   const totalColumns = columns.length + (selectable ? 1 : 0) + (expandable ? 1 : 0) + (rowReorderable ? 1 : 0)
 
+  // 로우 그룹핑: rowSpan 계산 + 그룹 중간 행 Set
+  const { rowSpanMap, middleRowSet } = React.useMemo(() => {
+    if (!rowGrouping) return { rowSpanMap: null, middleRowSet: null }
+
+    const groupByKeys = Array.isArray(rowGrouping.groupBy)
+      ? rowGrouping.groupBy
+      : [rowGrouping.groupBy]
+    const mergeColumns = rowGrouping.mergeColumns ?? groupByKeys
+
+    // Map: rowIndex -> columnKey -> rowSpan (0이면 이 셀은 렌더링하지 않음)
+    const spanMap = new Map<number, Map<keyof T, number>>()
+    // 그룹 중간에 있는 행들 (border-b 숨김)
+    const middleRows = new Set<number>()
+
+    // 각 병합 컬럼에 대해 rowSpan 계산
+    for (const colKey of mergeColumns) {
+      let i = 0
+      while (i < data.length) {
+        // 현재 행의 그룹 키 값들
+        const currentGroupValues = groupByKeys.map((k) => data[i][k])
+        const currentColValue = data[i][colKey]
+        let spanCount = 1
+
+        // 같은 그룹 값을 가진 연속된 행 수 계산
+        for (let j = i + 1; j < data.length; j++) {
+          const nextGroupValues = groupByKeys.map((k) => data[j][k])
+          const nextColValue = data[j][colKey]
+
+          // 그룹 키와 컬럼 값이 모두 같아야 병합
+          const sameGroup = currentGroupValues.every((v, idx) => v === nextGroupValues[idx])
+          const sameValue = currentColValue === nextColValue
+
+          if (sameGroup && sameValue) {
+            spanCount++
+          } else {
+            break
+          }
+        }
+
+        // 첫 번째 행에 rowSpan 설정
+        if (!spanMap.has(i)) {
+          spanMap.set(i, new Map())
+        }
+        spanMap.get(i)!.set(colKey, spanCount)
+
+        // 병합된 후속 행들은 rowSpan 0 (렌더링 안 함)
+        // + 그룹 중간 행 기록 (마지막 행 제외)
+        for (let k = i; k < i + spanCount - 1; k++) {
+          middleRows.add(k)
+        }
+        for (let k = i + 1; k < i + spanCount; k++) {
+          if (!spanMap.has(k)) {
+            spanMap.set(k, new Map())
+          }
+          spanMap.get(k)!.set(colKey, 0)
+        }
+
+        i += spanCount
+      }
+    }
+
+    return { rowSpanMap: spanMap, middleRowSet: middleRows }
+  }, [data, rowGrouping])
+
+  // 특정 셀의 rowSpan 가져오기
+  const getRowSpan = (rowIndex: number, columnKey: keyof T): number | undefined => {
+    if (!rowSpanMap) return undefined
+    const rowMap = rowSpanMap.get(rowIndex)
+    if (!rowMap) return undefined
+    const span = rowMap.get(columnKey)
+    return span
+  }
+
+  // 그룹 셀이 속한 행 범위 내에 호버된 행이 있는지 확인
+  const isGroupCellHovered = (rowIndex: number, rowSpan: number): boolean => {
+    if (hoveredRowIndex === null) return false
+    return hoveredRowIndex >= rowIndex && hoveredRowIndex < rowIndex + rowSpan
+  }
+
+  // 그룹 셀이 속한 행 범위 내에 선택된 행이 있는지 확인
+  const isGroupCellSelected = (rowIndex: number, rowSpan: number): boolean => {
+    for (let i = rowIndex; i < rowIndex + rowSpan; i++) {
+      if (i < data.length && selectedIds.includes(data[i].id)) {
+        return true
+      }
+    }
+    return false
+  }
+
   // 체크박스/확장/드래그 핸들 컬럼 너비 상수
   const CHECKBOX_WIDTH = 40 // w-10 = 40px
   const EXPAND_WIDTH = 40 // w-10 = 40px
@@ -687,7 +820,7 @@ function DataTable<T extends { id: string | number }>({
     const lastLeftSticky = leftColumns.length > 0 ? leftColumns[leftColumns.length - 1].accessorKey : null
     const firstRightSticky = rightColumns.length > 0 ? rightColumns[0].accessorKey : null
 
-    return (column: DataTableColumn<T>, isHeader: boolean, isSelected?: boolean) => {
+    return (column: DataTableColumn<T>, isHeader: boolean, isSelected?: boolean, groupCellSelected?: boolean) => {
       if (!column.sticky) return { style: {}, className: "" }
 
       const isLastLeft = column.accessorKey === lastLeftSticky
@@ -705,6 +838,9 @@ function DataTable<T extends { id: string | number }>({
         maxWidth: widthPx,
       }
 
+      // 그룹 셀 선택 상태가 있으면 우선 적용
+      const effectiveSelected = groupCellSelected ?? isSelected
+
       if (column.sticky === "left") {
         const leftPos = leftPositions.get(column.accessorKey) ?? 0
         return {
@@ -717,9 +853,9 @@ function DataTable<T extends { id: string | number }>({
             "transition-colors",
             isHeader
               ? "bg-[#eaedf1] dark:bg-slate-800"
-              : isSelected
-                ? "bg-blue-50 dark:bg-blue-950/30"
-                : "bg-slate-50 dark:bg-slate-800 group-hover:bg-slate-100 dark:group-hover:bg-slate-700",
+              : effectiveSelected
+                ? "bg-blue-50 dark:bg-blue-900"
+                : "bg-slate-100 dark:bg-slate-800",
             isLastLeft && "shadow-[2px_0_4px_rgba(0,0,0,0.08)]"
           ),
         }
@@ -735,9 +871,9 @@ function DataTable<T extends { id: string | number }>({
           "transition-colors",
           isHeader
             ? "bg-[#eaedf1] dark:bg-slate-800"
-            : isSelected
-              ? "bg-blue-50 dark:bg-blue-950/30"
-              : "bg-slate-50 dark:bg-slate-800 group-hover:bg-slate-100 dark:group-hover:bg-slate-700",
+            : effectiveSelected
+              ? "bg-blue-50 dark:bg-blue-900"
+              : "bg-slate-100 dark:bg-slate-800",
           isFirstRight && "shadow-[-2px_0_4px_rgba(0,0,0,0.08)]"
         ),
       }
@@ -913,11 +1049,137 @@ function DataTable<T extends { id: string | number }>({
     return offset
   }
 
+  // 헤더 그룹의 colSpan 계산
+  const getHeaderGroupColSpan = React.useCallback(
+    (group: HeaderGroup<T>): number => {
+      // 실제 렌더링되는 컬럼 순서에서 해당 그룹에 속하는 컬럼 수 계산
+      return columnsToRender.filter((col) =>
+        group.columns.includes(col.accessorKey)
+      ).length
+    },
+    [columnsToRender]
+  )
+
+  // 헤더 그룹에 속하는 컬럼들 (Set)
+  const groupedColumnsSet = React.useMemo(() => {
+    if (!headerGroups) return new Set<keyof T>()
+    return new Set(headerGroups.flatMap((g) => g.columns))
+  }, [headerGroups])
+
   const tableContent = (
     <Table className={className} maxHeight={maxHeight}>
       <TableHeader>
+        {/* 헤더 그룹 행 (headerGroups가 있을 때만 렌더링) */}
+        {headerGroups && headerGroups.length > 0 && (
+          <TableRow>
+            {/* 드래그 핸들, 체크박스, 확장 버튼 컬럼용 빈 셀 */}
+            {rowReorderable && (
+              <TableHead
+                className="!p-0 bg-[#eaedf1] dark:bg-slate-800 border-b-0"
+                rowSpan={2}
+                style={{
+                  width: `${DRAG_HANDLE_WIDTH}px`,
+                  minWidth: `${DRAG_HANDLE_WIDTH}px`,
+                  ...(hasLeftStickyColumns && { position: "sticky", left: 0, zIndex: 20 }),
+                }}
+              />
+            )}
+            {selectable && (
+              <TableHead
+                className="!p-0 bg-[#eaedf1] dark:bg-slate-800 border-b-0"
+                rowSpan={2}
+                style={{
+                  width: `${CHECKBOX_WIDTH}px`,
+                  minWidth: `${CHECKBOX_WIDTH}px`,
+                  ...(hasLeftStickyColumns && { position: "sticky", left: rowReorderable ? DRAG_HANDLE_WIDTH : 0, zIndex: 20 }),
+                }}
+              >
+                <div className="flex items-center justify-center h-9">
+                  <Checkbox
+                    checked={isAllSelected}
+                    indeterminate={isIndeterminate}
+                    onCheckedChange={handleSelectAll}
+                    aria-label="전체 선택"
+                  />
+                </div>
+              </TableHead>
+            )}
+            {expandable && (
+              <TableHead
+                className="bg-[#eaedf1] dark:bg-slate-800 border-b-0"
+                rowSpan={2}
+                style={{
+                  width: `${EXPAND_WIDTH}px`,
+                  minWidth: `${EXPAND_WIDTH}px`,
+                  ...(hasLeftStickyColumns && { position: "sticky", left: getExpandHeaderLeftOffset(), zIndex: 20 }),
+                }}
+              />
+            )}
+
+            {/* 헤더 그룹과 독립 컬럼들 렌더링 */}
+            {(() => {
+              const groupedColumns = new Set(headerGroups.flatMap((g) => g.columns))
+              const elements: React.ReactNode[] = []
+              let i = 0
+
+              while (i < columnsToRender.length) {
+                const col = columnsToRender[i]
+
+                // 이 컬럼이 어떤 그룹에 속하는지 확인
+                const group = headerGroups.find((g) =>
+                  g.columns.includes(col.accessorKey)
+                )
+
+                if (group) {
+                  // 그룹의 첫 번째 컬럼인 경우에만 그룹 헤더 렌더링
+                  const groupFirstCol = columnsToRender.find((c) =>
+                    group.columns.includes(c.accessorKey)
+                  )
+                  if (groupFirstCol?.accessorKey === col.accessorKey) {
+                    const colSpan = getHeaderGroupColSpan(group)
+                    elements.push(
+                      <TableHead
+                        key={`group-${String(group.columns[0])}`}
+                        colSpan={colSpan}
+                        className={cn(
+                          "text-center font-medium bg-[#eaedf1] dark:bg-slate-800",
+                          group.align === "left" && "text-left",
+                          group.align === "right" && "text-right"
+                        )}
+                      >
+                        {group.header}
+                      </TableHead>
+                    )
+                  }
+                } else if (!groupedColumns.has(col.accessorKey)) {
+                  // 독립 컬럼 (그룹에 속하지 않음) - rowSpan=2
+                  const stickyData = getStickyStyles(col, true)
+                  elements.push(
+                    <TableHead
+                      key={`standalone-${String(col.accessorKey)}`}
+                      rowSpan={2}
+                      className={cn(
+                        getAlignClass(col.align),
+                        "bg-[#eaedf1] dark:bg-slate-800 border-b-0",
+                        stickyData.className
+                      )}
+                      style={stickyData.style}
+                    >
+                      {col.header}
+                    </TableHead>
+                  )
+                }
+                i++
+              }
+              return elements
+            })()}
+          </TableRow>
+        )}
+
+        {/* 메인 헤더 행 */}
         <TableRow>
-          {rowReorderable && (
+          {/* headerGroups가 있으면 이 컬럼들은 위 행에서 rowSpan=2로 렌더링됨 */}
+          {!headerGroups && rowReorderable && (
             <TableHead
               className="!p-0 bg-[#eaedf1] dark:bg-slate-800"
               style={hasLeftStickyColumns ? {
@@ -938,7 +1200,7 @@ function DataTable<T extends { id: string | number }>({
             </TableHead>
           )}
 
-          {selectable && (
+          {!headerGroups && selectable && (
             <TableHead
               className="!p-0 bg-[#eaedf1] dark:bg-slate-800"
               style={hasLeftStickyColumns ? {
@@ -965,7 +1227,7 @@ function DataTable<T extends { id: string | number }>({
             </TableHead>
           )}
 
-          {expandable && (
+          {!headerGroups && expandable && (
             <TableHead
               className="bg-[#eaedf1] dark:bg-slate-800"
               style={hasLeftStickyColumns ? {
@@ -986,12 +1248,27 @@ function DataTable<T extends { id: string | number }>({
             </TableHead>
           )}
 
-          {columnReorderable ? (
-            <SortableContext items={columnIds} strategy={horizontalListSortingStrategy}>
-              {columnsToRender.map(renderColumnHeader)}
-            </SortableContext>
+          {/* headerGroups가 있으면 그룹에 속한 컬럼만 렌더링 (독립 컬럼은 위 행에서 rowSpan=2) */}
+          {headerGroups ? (
+            columnReorderable ? (
+              <SortableContext items={columnIds} strategy={horizontalListSortingStrategy}>
+                {columnsToRender
+                  .filter((col) => groupedColumnsSet.has(col.accessorKey))
+                  .map(renderColumnHeader)}
+              </SortableContext>
+            ) : (
+              columnsToRender
+                .filter((col) => groupedColumnsSet.has(col.accessorKey))
+                .map(renderColumnHeader)
+            )
           ) : (
-            columnsToRender.map(renderColumnHeader)
+            columnReorderable ? (
+              <SortableContext items={columnIds} strategy={horizontalListSortingStrategy}>
+                {columnsToRender.map(renderColumnHeader)}
+              </SortableContext>
+            ) : (
+              columnsToRender.map(renderColumnHeader)
+            )
           )}
         </TableRow>
       </TableHeader>
@@ -1021,12 +1298,11 @@ function DataTable<T extends { id: string | number }>({
           </TableRow>
         ) : rowReorderable ? (
           <SortableContext items={rowIds} strategy={verticalListSortingStrategy}>
-            {data.map((row) => {
+            {data.map((row, rowIndex) => {
               const isSelected = selectedIds.includes(row.id)
               const canExpand = isRowExpandable(row)
               const isExpanded = isRowExpanded(row.id)
               const rowSortableId = `row-${row.id}`
-
               // 로우 내부 셀들 렌더링 함수
               const renderRowCells = (dragHandleProps?: DragHandleProps) => (
                 <>
@@ -1041,7 +1317,7 @@ function DataTable<T extends { id: string | number }>({
                       onClick={(e) => e.stopPropagation()}
                       className={cn(
                         "!p-0",
-                        hasLeftStickyColumns && (isSelected ? "transition-colors bg-blue-50 dark:bg-blue-950/30" : "transition-colors bg-slate-50 dark:bg-slate-800 group-hover:bg-slate-100 dark:group-hover:bg-slate-700")
+                        hasLeftStickyColumns && (isSelected ? "transition-colors bg-blue-50 dark:bg-blue-900" : "transition-colors bg-slate-100 dark:bg-slate-800")
                       )}
                       style={hasLeftStickyColumns ? {
                         position: "sticky",
@@ -1070,7 +1346,7 @@ function DataTable<T extends { id: string | number }>({
                     <TableCell
                       className={cn(
                         "p-0",
-                        hasLeftStickyColumns && (isSelected ? "transition-colors bg-blue-50 dark:bg-blue-950/30" : "transition-colors bg-slate-50 dark:bg-slate-800 group-hover:bg-slate-100 dark:group-hover:bg-slate-700")
+                        hasLeftStickyColumns && (isSelected ? "transition-colors bg-blue-50 dark:bg-blue-900" : "transition-colors bg-slate-100 dark:bg-slate-800")
                       )}
                       style={hasLeftStickyColumns ? {
                         position: "sticky",
@@ -1105,9 +1381,20 @@ function DataTable<T extends { id: string | number }>({
                   )}
 
                   {columnsToRender.map((column) => {
+                    // 로우 그룹핑: rowSpan 확인
+                    const rowSpan = getRowSpan(rowIndex, column.accessorKey)
+                    // rowSpan이 0이면 이 셀은 이전 행에서 병합되었으므로 렌더링하지 않음
+                    if (rowSpan === 0) return null
+
                     const value = row[column.accessorKey]
                     const cellIsEditing = isEditing(row.id, column.accessorKey)
-                    const stickyData = getStickyStyles(column, false, isSelected)
+                    // rowSpan이 있는 셀은 세로 중앙 정렬
+                    const hasRowSpan = rowSpan !== undefined && rowSpan > 1
+                    // 그룹 셀의 hover/selected 상태 (범위 내 행 중 하나라도 hover/selected면 true)
+                    const groupCellHovered = hasRowSpan && isGroupCellHovered(rowIndex, rowSpan)
+                    const groupCellSelected = hasRowSpan && isGroupCellSelected(rowIndex, rowSpan)
+                    // sticky 스타일 (그룹 셀 선택 상태 전달)
+                    const stickyData = getStickyStyles(column, false, isSelected, hasRowSpan ? groupCellSelected : undefined)
 
                     const toPx = (v: string | number) => typeof v === "number" ? `${v}px` : v
                     const bodyCellStyle: React.CSSProperties = {}
@@ -1132,6 +1419,7 @@ function DataTable<T extends { id: string | number }>({
                           className={cn(getAlignClass(column.align), "p-1 overflow-hidden", stickyData.className)}
                           style={cellStyle}
                           onClick={(e) => e.stopPropagation()}
+                          rowSpan={hasRowSpan ? rowSpan : undefined}
                         >
                           <EditComponent
                             value={editValue as T[keyof T]}
@@ -1157,12 +1445,18 @@ function DataTable<T extends { id: string | number }>({
                       return (
                         <TableCell
                           key={String(column.accessorKey)}
-                          className={cn(getAlignClass(column.align), "group/edit cursor-text hover:bg-blue-100 dark:hover:bg-blue-800", stickyData.className)}
+                          className={cn(
+                            getAlignClass(column.align),
+                            "group/edit cursor-text hover:bg-blue-100 dark:hover:bg-blue-800",
+                            hasRowSpan && "align-middle",
+                            stickyData.className
+                          )}
                           style={cellStyle}
                           onClick={(e) => {
                             e.stopPropagation()
                             setTimeout(() => startEditing(row.id, column.accessorKey, value), 0)
                           }}
+                          rowSpan={hasRowSpan ? rowSpan : undefined}
                         >
                           <span className="flex items-center gap-1">
                             <span className="flex-1">{content}</span>
@@ -1175,11 +1469,23 @@ function DataTable<T extends { id: string | number }>({
                       )
                     }
 
+                    // 그룹 셀이 테이블 마지막 행까지 걸쳐있으면 border-b 제외
+                    const isGroupSpanToEnd = hasRowSpan && (rowIndex + rowSpan >= data.length)
+
                     return (
                       <TableCell
                         key={String(column.accessorKey)}
-                        className={cn(getAlignClass(column.align), stickyData.className)}
+                        className={cn(
+                          getAlignClass(column.align),
+                          hasRowSpan && "align-middle transition-colors",
+                          hasRowSpan && !isGroupSpanToEnd && "border-b border-slate-200 dark:border-slate-700",
+                          // 그룹 셀 hover/selected 스타일
+                          hasRowSpan && groupCellSelected && "bg-blue-50 dark:bg-blue-900",
+                          hasRowSpan && !groupCellSelected && groupCellHovered && "bg-slate-100 dark:bg-slate-800",
+                          stickyData.className
+                        )}
                         style={cellStyle}
+                        rowSpan={hasRowSpan ? rowSpan : undefined}
                       >
                         {content}
                       </TableCell>
@@ -1195,6 +1501,8 @@ function DataTable<T extends { id: string | number }>({
                     isSelected={isSelected}
                     className={cn(onRowClick && "cursor-pointer", rowClassName?.(row))}
                     onClick={() => onRowClick?.(row)}
+                    onMouseEnter={rowGrouping ? () => setHoveredRowIndex(rowIndex) : undefined}
+                    onMouseLeave={rowGrouping ? () => setHoveredRowIndex(null) : undefined}
                   >
                     {(dragHandleProps) => renderRowCells(dragHandleProps)}
                   </SortableRow>
@@ -1225,7 +1533,7 @@ function DataTable<T extends { id: string | number }>({
             })}
           </SortableContext>
         ) : (
-          data.map((row) => {
+          data.map((row, rowIndex) => {
             const isSelected = selectedIds.includes(row.id)
             const canExpand = isRowExpandable(row)
             const isExpanded = isRowExpanded(row.id)
@@ -1247,7 +1555,11 @@ function DataTable<T extends { id: string | number }>({
                     onClick={(e) => e.stopPropagation()}
                     className={cn(
                       "!p-0",
-                      hasLeftStickyColumns && (isSelected ? "transition-colors bg-blue-50 dark:bg-blue-950/30" : "transition-colors bg-slate-50 dark:bg-slate-800 group-hover:bg-slate-100 dark:group-hover:bg-slate-700")
+                      hasLeftStickyColumns && (
+                        isSelected
+                          ? "transition-colors bg-blue-50 dark:bg-blue-900"
+                          : "transition-colors bg-slate-100 dark:bg-slate-800"
+                      )
                     )}
                     style={hasLeftStickyColumns ? {
                       position: "sticky",
@@ -1276,7 +1588,11 @@ function DataTable<T extends { id: string | number }>({
                   <TableCell
                     className={cn(
                       "p-0",
-                      hasLeftStickyColumns && (isSelected ? "transition-colors bg-blue-50 dark:bg-blue-950/30" : "transition-colors bg-slate-50 dark:bg-slate-800 group-hover:bg-slate-100 dark:group-hover:bg-slate-700")
+                      hasLeftStickyColumns && (
+                        isSelected
+                          ? "transition-colors bg-blue-50 dark:bg-blue-900"
+                          : "transition-colors bg-slate-100 dark:bg-slate-800"
+                      )
                     )}
                     style={hasLeftStickyColumns ? {
                       position: "sticky",
@@ -1311,9 +1627,20 @@ function DataTable<T extends { id: string | number }>({
                 )}
 
                 {columnsToRender.map((column) => {
+                  // 로우 그룹핑: rowSpan 확인
+                  const rowSpan = getRowSpan(rowIndex, column.accessorKey)
+                  // rowSpan이 0이면 이 셀은 이전 행에서 병합되었으므로 렌더링하지 않음
+                  if (rowSpan === 0) return null
+
                   const value = row[column.accessorKey]
                   const cellIsEditing = isEditing(row.id, column.accessorKey)
-                  const stickyData = getStickyStyles(column, false, isSelected)
+                  // rowSpan이 있는 셀은 세로 중앙 정렬
+                  const hasRowSpan = rowSpan !== undefined && rowSpan > 1
+                  // 그룹 셀의 hover/selected 상태 (범위 내 행 중 하나라도 hover/selected면 true)
+                  const groupCellHovered = hasRowSpan && isGroupCellHovered(rowIndex, rowSpan)
+                  const groupCellSelected = hasRowSpan && isGroupCellSelected(rowIndex, rowSpan)
+                  // sticky 스타일 (그룹 셀 선택 상태 전달)
+                  const stickyData = getStickyStyles(column, false, isSelected, hasRowSpan ? groupCellSelected : undefined)
 
                   // 바디 셀 너비 계산 (헤더와 동일한 로직)
                   const toPx = (v: string | number) => typeof v === "number" ? `${v}px` : v
@@ -1340,6 +1667,7 @@ function DataTable<T extends { id: string | number }>({
                         className={cn(getAlignClass(column.align), "p-1 overflow-hidden", stickyData.className)}
                         style={cellStyle}
                         onClick={(e) => e.stopPropagation()}
+                        rowSpan={hasRowSpan ? rowSpan : undefined}
                       >
                         <EditComponent
                           value={editValue as T[keyof T]}
@@ -1371,6 +1699,7 @@ function DataTable<T extends { id: string | number }>({
                         className={cn(
                           getAlignClass(column.align),
                           "group/edit cursor-text hover:bg-blue-100 dark:hover:bg-blue-800",
+                          hasRowSpan && "align-middle",
                           stickyData.className
                         )}
                         style={cellStyle}
@@ -1381,6 +1710,7 @@ function DataTable<T extends { id: string | number }>({
                             startEditing(row.id, column.accessorKey, value)
                           }, 0)
                         }}
+                        rowSpan={hasRowSpan ? rowSpan : undefined}
                       >
                         <span className="flex items-center gap-1">
                           <span className="flex-1">{content}</span>
@@ -1393,11 +1723,23 @@ function DataTable<T extends { id: string | number }>({
                     )
                   }
 
+                  // 그룹 셀이 테이블 마지막 행까지 걸쳐있으면 border-b 제외
+                  const isGroupSpanToEnd = hasRowSpan && (rowIndex + rowSpan >= data.length)
+
                   return (
                     <TableCell
                       key={String(column.accessorKey)}
-                      className={cn(getAlignClass(column.align), stickyData.className)}
+                      className={cn(
+                        getAlignClass(column.align),
+                        hasRowSpan && "align-middle transition-colors",
+                        hasRowSpan && !isGroupSpanToEnd && "border-b border-slate-200 dark:border-slate-700",
+                        // 그룹 셀 hover/selected 스타일
+                        hasRowSpan && groupCellSelected && "bg-blue-50 dark:bg-blue-900",
+                        hasRowSpan && !groupCellSelected && groupCellHovered && "bg-slate-100 dark:bg-slate-800",
+                        stickyData.className
+                      )}
                       style={cellStyle}
+                      rowSpan={hasRowSpan ? rowSpan : undefined}
                     >
                       {content}
                     </TableCell>
@@ -1414,14 +1756,22 @@ function DataTable<T extends { id: string | number }>({
                     isSelected={isSelected}
                     className={cn(onRowClick && "cursor-pointer", rowClassName?.(row))}
                     onClick={() => onRowClick?.(row)}
+                    onMouseEnter={rowGrouping ? () => setHoveredRowIndex(rowIndex) : undefined}
+                    onMouseLeave={rowGrouping ? () => setHoveredRowIndex(null) : undefined}
                   >
                     {(dragHandleProps) => renderRowCells(dragHandleProps)}
                   </SortableRow>
                 ) : (
                   <TableRow
                     data-state={isSelected ? "selected" : undefined}
-                    className={cn(onRowClick && "cursor-pointer", rowClassName?.(row))}
+                    className={cn(
+                      onRowClick && "cursor-pointer",
+                      middleRowSet?.has(rowIndex) && "border-b-0",
+                      rowClassName?.(row)
+                    )}
                     onClick={() => onRowClick?.(row)}
+                    onMouseEnter={rowGrouping ? () => setHoveredRowIndex(rowIndex) : undefined}
+                    onMouseLeave={rowGrouping ? () => setHoveredRowIndex(null) : undefined}
                   >
                     {renderRowCells()}
                   </TableRow>

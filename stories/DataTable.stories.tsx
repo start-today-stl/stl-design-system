@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite"
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import {
   DataTable,
   TableToolbar,
@@ -8,7 +8,8 @@ import {
   type DataTableColumn,
   type SortState,
   type EditComponentProps,
-  type ExpandableConfig,
+  type HeaderGroup,
+  type RowGroupConfig,
 } from "../src/components/table"
 import { Button } from "../src/components/ui/button"
 import { Badge } from "../src/components/ui/badge"
@@ -159,17 +160,6 @@ export const Empty: Story = {
   ),
 }
 
-/** 로딩 상태 (기본) */
-export const Loading: Story = {
-  render: () => (
-    <DataTable
-      columns={columns}
-      data={[]}
-      loading
-    />
-  ),
-}
-
 /** 로딩 상태 (커스텀) */
 export const LoadingCustom: Story = {
   render: () => (
@@ -187,8 +177,8 @@ export const LoadingCustom: Story = {
   ),
 }
 
-/** 로딩 상태 (툴바 + 페이지네이션 포함) */
-export const LoadingWithLayout: Story = {
+/** 로딩 상태 (기본: 툴바 + 페이지네이션 포함) */
+export const Loading: Story = {
   render: () => (
     <div className="border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
       {/* 툴바 */}
@@ -470,217 +460,8 @@ export const EditableWithValidation: Story = {
   },
 }
 
-// 주문 상세 아이템 타입 (확장 영역용)
-interface OrderItem {
-  id: number
-  sku: string
-  productName: string
-  quantity: number
-  price: number
-}
-
-// 주문 타입 (확장 가능한 행)
-interface Order {
-  id: number
-  orderNo: string
-  customerName: string
-  orderDate: string
-  totalAmount: number
-  status: "대기" | "처리중" | "완료" | "취소"
-  items: OrderItem[]
-}
-
-/** 확장 가능한 행 */
-export const Expandable: Story = {
-  render: () => {
-    // 주문 데이터 (상세 아이템 포함)
-    const orderData: Order[] = [
-      {
-        id: 1,
-        orderNo: "ORD-2024-001",
-        customerName: "홍길동",
-        orderDate: "2024-01-15",
-        totalAmount: 150000,
-        status: "완료",
-        items: [
-          { id: 101, sku: "SKU001", productName: "상품 A", quantity: 2, price: 50000 },
-          { id: 102, sku: "SKU002", productName: "상품 B", quantity: 1, price: 50000 },
-        ],
-      },
-      {
-        id: 2,
-        orderNo: "ORD-2024-002",
-        customerName: "김철수",
-        orderDate: "2024-01-16",
-        totalAmount: 80000,
-        status: "처리중",
-        items: [
-          { id: 201, sku: "SKU003", productName: "상품 C", quantity: 1, price: 80000 },
-        ],
-      },
-      {
-        id: 3,
-        orderNo: "ORD-2024-003",
-        customerName: "이영희",
-        orderDate: "2024-01-17",
-        totalAmount: 0,
-        status: "취소",
-        items: [], // 빈 상세 - 확장 불가
-      },
-      {
-        id: 4,
-        orderNo: "ORD-2024-004",
-        customerName: "박민수",
-        orderDate: "2024-01-18",
-        totalAmount: 220000,
-        status: "대기",
-        items: [
-          { id: 401, sku: "SKU004", productName: "상품 D", quantity: 3, price: 40000 },
-          { id: 402, sku: "SKU005", productName: "상품 E", quantity: 2, price: 50000 },
-        ],
-      },
-    ]
-
-    // 주문 목록 컬럼
-    const orderColumns: DataTableColumn<Order>[] = [
-      { accessorKey: "orderNo", header: "주문번호" },
-      { accessorKey: "customerName", header: "고객명" },
-      { accessorKey: "orderDate", header: "주문일" },
-      {
-        accessorKey: "totalAmount",
-        header: "총액",
-        align: "right",
-        cell: (value) => `${(value as number).toLocaleString()}원`,
-      },
-      {
-        accessorKey: "status",
-        header: "상태",
-        cell: (value) => {
-          const statusColors: Record<string, "info-light" | "info-solid" | "success-light" | "danger-light"> = {
-            대기: "info-light",
-            처리중: "info-solid",
-            완료: "success-light",
-            취소: "danger-light",
-          }
-          return <Badge variant={statusColors[value as string] || "info-light"}>{value as string}</Badge>
-        },
-      },
-    ]
-
-    // 상세 아이템 컬럼
-    const itemColumns: DataTableColumn<OrderItem>[] = [
-      { accessorKey: "sku", header: "SKU" },
-      { accessorKey: "productName", header: "상품명" },
-      { accessorKey: "quantity", header: "수량", align: "center" },
-      {
-        accessorKey: "price",
-        header: "가격",
-        align: "right",
-        cell: (value) => `${(value as number).toLocaleString()}원`,
-      },
-    ]
-
-    // 확장 설정
-    const expandableConfig: ExpandableConfig<Order> = {
-      // 상세 아이템이 있는 행만 확장 가능
-      rowExpandable: (row) => row.items.length > 0,
-      // 확장 영역에 상세 테이블 렌더링
-      expandedRowRender: (row) => (
-        <div className="space-y-2">
-          <p className="text-xs font-medium text-slate-500">주문 상세 ({row.items.length}개 상품)</p>
-          <DataTable columns={itemColumns} data={row.items} />
-        </div>
-      ),
-    }
-
-    return (
-      <div>
-        <p className="mb-4 text-xs text-slate-400">
-          화살표 아이콘을 클릭하여 행을 확장하세요. 상세 아이템이 없는 행(취소)은 확장 불가합니다.
-        </p>
-        <DataTable
-          columns={orderColumns}
-          data={orderData}
-          expandable={expandableConfig}
-        />
-      </div>
-    )
-  },
-}
-
 /** 고정 컬럼 (Sticky Column) */
 export const StickyColumn: Story = {
-  render: () => {
-    // 넓은 테이블 데이터
-    interface Product {
-      id: number
-      sku: string
-      name: string
-      category: string
-      brand: string
-      price: number
-      stock: number
-      rating: number
-      reviews: number
-      description: string
-      actions: string
-    }
-
-    const products: Product[] = Array.from({ length: 10 }, (_, i) => ({
-      id: i + 1,
-      sku: `SKU-${String(i + 1).padStart(4, "0")}`,
-      name: `상품 ${i + 1}`,
-      category: ["전자기기", "의류", "식품", "가구", "도서"][i % 5],
-      brand: ["브랜드A", "브랜드B", "브랜드C"][i % 3],
-      price: (i + 1) * 10000,
-      stock: (i + 1) * 10,
-      rating: 3 + (i % 3),
-      reviews: (i + 1) * 5,
-      description: `이것은 상품 ${i + 1}의 상세 설명입니다. 아주 긴 텍스트가 들어갈 수 있습니다.`,
-      actions: "actions",
-    }))
-
-    const productColumns: DataTableColumn<Product>[] = [
-      // sticky 컬럼 (고정 너비)
-      { accessorKey: "sku", header: "SKU", width: 120, sticky: "left" },
-      { accessorKey: "name", header: "상품명", width: 150, sticky: "left" },
-      // non-sticky 컬럼 (고정 너비, 컨테이너 초과 시 스크롤)
-      { accessorKey: "category", header: "카테고리", minWidth: 80 },
-      { accessorKey: "brand", header: "브랜드", minWidth: 80 },
-      { accessorKey: "price", header: "가격", minWidth: 100, align: "right", cell: (v) => `${(v as number).toLocaleString()}원` },
-      { accessorKey: "stock", header: "재고", minWidth: 60, align: "center" },
-      { accessorKey: "rating", header: "평점", minWidth: 60, align: "center", cell: (v) => `${v}/5` },
-      { accessorKey: "reviews", header: "리뷰수", minWidth: 200, align: "center" },
-      { accessorKey: "description", header: "설명", minWidth: 200 },
-      {
-        accessorKey: "actions",
-        header: "액션",
-        width: 150,
-        sticky: "right",
-        cell: () => (
-          <div className="flex gap-1">
-            <Button variant="ghost" size="sm">수정</Button>
-            <Button variant="danger" size="sm">삭제</Button>
-          </div>
-        ),
-      },
-    ]
-
-    return (
-      <div>
-        <p className="mb-4 text-xs text-slate-400">
-          SKU, 상품명은 왼쪽 고정, 액션은 오른쪽 고정입니다. 가로 스크롤하여 확인하세요.
-        </p>
-        <div className="border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
-          <DataTable columns={productColumns} data={products} />
-        </div>
-      </div>
-    )
-  },
-}
-
-/** 고정 컬럼 + 선택 가능 */
-export const StickyColumnWithSelection: Story = {
   render: () => {
     const [selectedIds, setSelectedIds] = useState<number[]>([])
 
@@ -748,8 +529,8 @@ export const StickyColumnWithSelection: Story = {
   },
 }
 
-/** 확장 가능 + 선택 가능 */
-export const ExpandableWithSelection: Story = {
+/** 확장 가능한 행 */
+export const Expandable: Story = {
   render: () => {
     const [selectedIds, setSelectedIds] = useState<number[]>([])
 
@@ -1148,54 +929,6 @@ export const AllFeatures: Story = {
 /** 컬럼 리사이징 */
 export const Resizable: Story = {
   render: () => {
-    interface ResizableItem {
-      id: number
-      name: string
-      email: string
-      department: string
-      role: string
-      status: "활성" | "비활성"
-    }
-
-    const items: ResizableItem[] = [
-      { id: 1, name: "홍길동", email: "hong@example.com", department: "개발팀", role: "팀장", status: "활성" },
-      { id: 2, name: "김철수", email: "kim@example.com", department: "디자인팀", role: "시니어", status: "활성" },
-      { id: 3, name: "이영희", email: "lee@example.com", department: "기획팀", role: "주니어", status: "비활성" },
-      { id: 4, name: "박민수", email: "park@example.com", department: "개발팀", role: "시니어", status: "활성" },
-      { id: 5, name: "정수진", email: "jung@example.com", department: "마케팅팀", role: "매니저", status: "활성" },
-    ]
-
-    const resizableColumns: DataTableColumn<ResizableItem>[] = [
-      { accessorKey: "name", header: "이름", width: 120 },
-      { accessorKey: "email", header: "이메일", width: 180 },
-      { accessorKey: "department", header: "부서", width: 120 },
-      { accessorKey: "role", header: "직급", width: 100 },
-      {
-        accessorKey: "status",
-        header: "상태",
-        width: 100,
-        cell: (value) => (
-          <Badge variant={value === "활성" ? "success-light" : "danger-light"}>
-            {value as string}
-          </Badge>
-        ),
-      },
-    ]
-
-    return (
-      <div>
-        <p className="mb-4 text-xs text-slate-400">
-          컬럼 헤더의 오른쪽 가장자리를 드래그하여 너비를 조절하세요. (최소 너비: 50px)
-        </p>
-        <DataTable columns={resizableColumns} data={items} resizable />
-      </div>
-    )
-  },
-}
-
-/** 컬럼 리사이징 (제어 컴포넌트) */
-export const ResizableControlled: Story = {
-  render: () => {
     interface ControlledItem {
       id: number
       code: string
@@ -1252,96 +985,6 @@ export const ResizableControlled: Story = {
 
 /** 컬럼 순서 변경 (드래그 앤 드롭) */
 export const ColumnReorderable: Story = {
-  render: () => {
-    interface ReorderItem {
-      id: number
-      name: string
-      email: string
-      department: string
-      role: string
-    }
-
-    const items: ReorderItem[] = [
-      { id: 1, name: "홍길동", email: "hong@example.com", department: "개발팀", role: "팀장" },
-      { id: 2, name: "김철수", email: "kim@example.com", department: "디자인팀", role: "시니어" },
-      { id: 3, name: "이영희", email: "lee@example.com", department: "기획팀", role: "주니어" },
-      { id: 4, name: "박민수", email: "park@example.com", department: "개발팀", role: "시니어" },
-      { id: 5, name: "정수진", email: "jung@example.com", department: "마케팅팀", role: "매니저" },
-    ]
-
-    const reorderColumns: DataTableColumn<ReorderItem>[] = [
-      { accessorKey: "name", header: "이름", minWidth: 120 },
-      { accessorKey: "email", header: "이메일", minWidth: 200 },
-      { accessorKey: "department", header: "부서", minWidth: 120 },
-      { accessorKey: "role", header: "직급", minWidth: 100 },
-    ]
-
-    return (
-      <div>
-        <p className="mb-4 text-xs text-slate-400">
-          컬럼 헤더를 드래그하여 순서를 변경하세요. (sortable, sticky 컬럼은 드래그 불가)
-        </p>
-        <DataTable columns={reorderColumns} data={items} columnReorderable />
-      </div>
-    )
-  },
-}
-
-/** 컬럼 순서 변경 (제어 컴포넌트) */
-export const ColumnReorderableControlled: Story = {
-  render: () => {
-    interface ControlledReorderItem {
-      id: number
-      col1: string
-      col2: string
-      col3: string
-      col4: string
-      col5: string
-    }
-
-    const items: ControlledReorderItem[] = Array.from({ length: 5 }, (_, i) => ({
-      id: i + 1,
-      col1: `A${i + 1}`,
-      col2: `B${i + 1}`,
-      col3: `C${i + 1}`,
-      col4: `D${i + 1}`,
-      col5: `E${i + 1}`,
-    }))
-
-    const [columnOrder, setColumnOrder] = useState<(keyof ControlledReorderItem)[]>([
-      "col1", "col2", "col3", "col4", "col5"
-    ])
-
-    const controlledColumns: DataTableColumn<ControlledReorderItem>[] = [
-      { accessorKey: "col1", header: "컬럼 1", minWidth: 100 },
-      { accessorKey: "col2", header: "컬럼 2", minWidth: 100 },
-      { accessorKey: "col3", header: "컬럼 3", minWidth: 100 },
-      { accessorKey: "col4", header: "컬럼 4", minWidth: 100 },
-      { accessorKey: "col5", header: "컬럼 5", minWidth: 100 },
-    ]
-
-    return (
-      <div>
-        <p className="mb-4 text-xs text-slate-400">
-          컬럼 순서가 외부 상태로 관리됩니다. 현재 순서:
-        </p>
-        <div className="mb-4 text-xs font-mono bg-slate-100 dark:bg-slate-800 p-2 rounded">
-          {JSON.stringify(columnOrder)}
-        </div>
-        <DataTable
-          columns={controlledColumns}
-          data={items}
-          columnReorderable
-          columnOrder={columnOrder}
-          onColumnReorder={setColumnOrder}
-        />
-      </div>
-    )
-  },
-}
-
-/** 컬럼 순서 변경 + 리사이징 + 선택 */
-export const ColumnReorderableWithFeatures: Story = {
   render: () => {
     interface FeatureItem {
       id: number
@@ -1413,116 +1056,6 @@ export const ColumnReorderableWithFeatures: Story = {
 
 /** 로우 순서 변경 (드래그 앤 드롭) */
 export const RowReorderable: Story = {
-  render: () => {
-    interface RowReorderItem {
-      id: number
-      name: string
-      email: string
-      priority: number
-    }
-
-    const [items, setItems] = useState<RowReorderItem[]>([
-      { id: 1, name: "작업 A", email: "task-a@example.com", priority: 1 },
-      { id: 2, name: "작업 B", email: "task-b@example.com", priority: 2 },
-      { id: 3, name: "작업 C", email: "task-c@example.com", priority: 3 },
-      { id: 4, name: "작업 D", email: "task-d@example.com", priority: 4 },
-      { id: 5, name: "작업 E", email: "task-e@example.com", priority: 5 },
-    ])
-
-    const rowReorderColumns: DataTableColumn<RowReorderItem>[] = [
-      { accessorKey: "priority", header: "우선순위", minWidth: 80 },
-      { accessorKey: "name", header: "작업명", minWidth: 150 },
-      { accessorKey: "email", header: "담당자 이메일", minWidth: 200 },
-    ]
-
-    return (
-      <div>
-        <p className="mb-4 text-xs text-slate-400">
-          왼쪽 드래그 핸들을 잡고 로우를 드래그하여 순서를 변경하세요.
-        </p>
-        <DataTable
-          columns={rowReorderColumns}
-          data={items}
-          rowReorderable
-          onRowReorder={setItems}
-        />
-      </div>
-    )
-  },
-}
-
-/** 로우 순서 변경 + 선택 */
-export const RowReorderableWithSelection: Story = {
-  render: () => {
-    interface RowReorderSelectItem {
-      id: number
-      name: string
-      status: "대기" | "진행중" | "완료"
-      order: number
-    }
-
-    const [items, setItems] = useState<RowReorderSelectItem[]>([
-      { id: 1, name: "기획서 작성", status: "완료", order: 1 },
-      { id: 2, name: "디자인 검토", status: "진행중", order: 2 },
-      { id: 3, name: "개발 착수", status: "대기", order: 3 },
-      { id: 4, name: "테스트", status: "대기", order: 4 },
-      { id: 5, name: "배포", status: "대기", order: 5 },
-    ])
-    const [selectedIds, setSelectedIds] = useState<number[]>([])
-
-    const rowReorderSelectColumns: DataTableColumn<RowReorderSelectItem>[] = [
-      { accessorKey: "order", header: "순서", minWidth: 60 },
-      { accessorKey: "name", header: "작업", minWidth: 150 },
-      {
-        accessorKey: "status",
-        header: "상태",
-        minWidth: 100,
-        cell: (value) => (
-          <Badge
-            variant={
-              value === "완료" ? "success-light" :
-              value === "진행중" ? "info-light" : "danger-light"
-            }
-          >
-            {value as string}
-          </Badge>
-        ),
-      },
-    ]
-
-    const handleRowReorder = (newItems: RowReorderSelectItem[]) => {
-      // 순서 필드 업데이트
-      const updatedItems = newItems.map((item, index) => ({
-        ...item,
-        order: index + 1,
-      }))
-      setItems(updatedItems)
-    }
-
-    return (
-      <div>
-        <p className="mb-4 text-xs text-slate-400">
-          로우 순서 변경 + 행 선택이 모두 동작합니다.
-        </p>
-        <p className="mb-4 text-sm text-slate-500">
-          선택됨: {selectedIds.length > 0 ? selectedIds.join(", ") : "없음"}
-        </p>
-        <DataTable
-          columns={rowReorderSelectColumns}
-          data={items}
-          rowReorderable
-          onRowReorder={handleRowReorder}
-          selectable
-          selectedIds={selectedIds}
-          onSelectionChange={(ids) => setSelectedIds(ids as number[])}
-        />
-      </div>
-    )
-  },
-}
-
-/** 로우/컬럼 순서 변경 + 리사이징 + 선택 */
-export const RowReorderableWithFeatures: Story = {
   render: () => {
     interface FeatureItem {
       id: number
@@ -1689,6 +1222,236 @@ export const EditableWithAddDelete: Story = {
           columns={productColumns}
           data={items}
           onCellChange={handleCellChange}
+        />
+      </div>
+    )
+  },
+}
+
+/** 헤더 그룹핑 (다중 레벨 헤더) */
+export const HeaderGrouping: Story = {
+  render: () => {
+    interface AddressData {
+      id: number
+      name: string
+      city: string
+      district: string
+      neighborhood: string
+      phone: string
+      mobile: string
+    }
+
+    const addressData: AddressData[] = [
+      { id: 1, name: "홍길동", city: "서울", district: "강남구", neighborhood: "역삼동", phone: "02-1234-5678", mobile: "010-1111-2222" },
+      { id: 2, name: "김철수", city: "서울", district: "서초구", neighborhood: "서초동", phone: "02-2345-6789", mobile: "010-3333-4444" },
+      { id: 3, name: "이영희", city: "부산", district: "해운대구", neighborhood: "우동", phone: "051-1234-5678", mobile: "010-5555-6666" },
+      { id: 4, name: "박민수", city: "대전", district: "유성구", neighborhood: "봉명동", phone: "042-1234-5678", mobile: "010-7777-8888" },
+    ]
+
+    const addressColumns: DataTableColumn<AddressData>[] = [
+      { accessorKey: "name", header: "이름", width: 100 },
+      { accessorKey: "city", header: "시", minWidth: 80 },
+      { accessorKey: "district", header: "구", minWidth: 100 },
+      { accessorKey: "neighborhood", header: "동", minWidth: 80 },
+      { accessorKey: "phone", header: "전화", minWidth: 120 },
+      { accessorKey: "mobile", header: "휴대폰", minWidth: 120 },
+    ]
+
+    const headerGroups: HeaderGroup<AddressData>[] = [
+      { header: "주소", columns: ["city", "district", "neighborhood"] },
+      { header: "연락처", columns: ["phone", "mobile"] },
+    ]
+
+    return (
+      <div>
+        <p className="mb-4 text-xs text-slate-400">
+          "주소" 헤더가 시/구/동 컬럼을, "연락처" 헤더가 전화/휴대폰 컬럼을 그룹핑합니다.
+          "이름" 컬럼은 그룹에 속하지 않아 두 행에 걸쳐 표시됩니다.
+        </p>
+        <DataTable
+          columns={addressColumns}
+          data={addressData}
+          headerGroups={headerGroups}
+        />
+      </div>
+    )
+  },
+}
+
+/**
+ * 로우 그룹핑 (셀 병합)
+ *
+ * - **rowGrouping**: 같은 값을 가진 행들의 셀 병합 (예: 같은 지역의 행들을 그룹핑)
+ *
+ * ## 호환 가능한 기능 (✅)
+ * - selectable, headerGroups, resizable, columnReorderable, sticky, sortable, editable
+ *
+ * ## 사용 불가 (❌)
+ * - **rowReorderable**: rowSpan 셀 드래그 시 레이아웃 깨짐 (자동 비활성화됨)
+ *
+ * ## 주의 (⚠️)
+ * - **expandable**: 그룹 중간 행 확장 시 레이아웃 이슈 가능
+ */
+export const RowGrouping: Story = {
+  render: () => {
+    interface SalesData {
+      id: number
+      region: string
+      salesPerson: string
+      q1Sales: number
+      q2Sales: number
+      q3Sales: number
+      q4Sales: number
+    }
+
+    const salesData: SalesData[] = [
+      { id: 1, region: "서울", salesPerson: "홍길동", q1Sales: 1000, q2Sales: 1200, q3Sales: 1100, q4Sales: 1300 },
+      { id: 2, region: "서울", salesPerson: "김철수", q1Sales: 900, q2Sales: 1100, q3Sales: 1000, q4Sales: 1200 },
+      { id: 3, region: "서울", salesPerson: "이영희", q1Sales: 850, q2Sales: 950, q3Sales: 900, q4Sales: 1100 },
+      { id: 4, region: "부산", salesPerson: "박민수", q1Sales: 800, q2Sales: 900, q3Sales: 850, q4Sales: 950 },
+      { id: 5, region: "부산", salesPerson: "정수진", q1Sales: 700, q2Sales: 800, q3Sales: 750, q4Sales: 900 },
+      { id: 6, region: "대전", salesPerson: "최지훈", q1Sales: 600, q2Sales: 700, q3Sales: 650, q4Sales: 750 },
+    ]
+
+    const [selectedIds, setSelectedIds] = useState<number[]>([])
+    const [sortState, setSortState] = useState<SortState<SalesData>>({ column: null, direction: null })
+    const [columnWidths, setColumnWidths] = useState<Record<string, number>>({})
+
+    // 정렬 시 그룹 순서 유지: 1차 region, 2차 선택한 컬럼
+    const sortedData = useMemo(() => {
+      if (!sortState.column || !sortState.direction) return salesData
+
+      return [...salesData].sort((a, b) => {
+        // 1차: region으로 정렬 (그룹 유지)
+        if (a.region !== b.region) {
+          return a.region.localeCompare(b.region)
+        }
+        // 2차: 선택한 컬럼으로 정렬
+        const aVal = a[sortState.column!]
+        const bVal = b[sortState.column!]
+        const cmp = typeof aVal === "number" && typeof bVal === "number"
+          ? aVal - bVal
+          : String(aVal).localeCompare(String(bVal))
+        return sortState.direction === "asc" ? cmp : -cmp
+      })
+    }, [sortState])
+
+    const salesColumns: DataTableColumn<SalesData>[] = [
+      { accessorKey: "region", header: "지역", width: 100, sticky: "left" },
+      { accessorKey: "salesPerson", header: "담당자", minWidth: 100, sortable: true },
+      { accessorKey: "q1Sales", header: "1분기", minWidth: 100, align: "right", sortable: true, cell: (v) => `${(v as number).toLocaleString()}만` },
+      { accessorKey: "q2Sales", header: "2분기", minWidth: 100, align: "right", sortable: true, cell: (v) => `${(v as number).toLocaleString()}만` },
+      { accessorKey: "q3Sales", header: "3분기", minWidth: 100, align: "right", sortable: true, cell: (v) => `${(v as number).toLocaleString()}만` },
+      { accessorKey: "q4Sales", header: "4분기", minWidth: 100, align: "right", sortable: true, cell: (v) => `${(v as number).toLocaleString()}만` },
+    ]
+
+    // 헤더 그룹: "분기별 매출"이 4개 분기 컬럼을 포함
+    const headerGroups: HeaderGroup<SalesData>[] = [
+      { header: "분기별 매출", columns: ["q1Sales", "q2Sales", "q3Sales", "q4Sales"] },
+    ]
+
+    // 로우 그룹: region 기준으로 셀 병합
+    const rowGrouping: RowGroupConfig<SalesData> = {
+      groupBy: "region",
+      mergeColumns: ["region"],
+    }
+
+    return (
+      <div className="space-y-4">
+        <div className="p-4 bg-slate-50 dark:bg-slate-800 rounded-md text-sm">
+          <h3 className="font-bold mb-2">그룹핑 호환성</h3>
+          <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-slate-600 dark:text-slate-300">
+            <p>✅ selectable (행 선택)</p>
+            <p>✅ sortable (정렬 - 그룹 유지)</p>
+            <p>✅ resizable (컬럼 리사이징)</p>
+            <p>✅ sticky (고정 컬럼)</p>
+            <p>❌ rowReorderable (자동 비활성화)</p>
+            <p>⚠️ expandable (레이아웃 주의)</p>
+          </div>
+        </div>
+        <p className="text-sm text-slate-500">
+          선택됨: {selectedIds.length > 0 ? selectedIds.join(", ") : "없음"}
+        </p>
+        <DataTable
+          columns={salesColumns}
+          data={sortedData}
+          headerGroups={headerGroups}
+          rowGrouping={rowGrouping}
+          selectable
+          selectedIds={selectedIds}
+          onSelectionChange={(ids) => setSelectedIds(ids as number[])}
+          sortState={sortState}
+          onSortChange={setSortState}
+          resizable
+          columnWidths={columnWidths}
+          onColumnResize={(key, width) => setColumnWidths((prev) => ({ ...prev, [String(key)]: width }))}
+        />
+        <p className="text-xs text-slate-400">
+          * 헤더 그룹핑: "분기별 매출"이 1~4분기 컬럼을 그룹핑 / 로우 그룹핑: 같은 지역의 셀이 병합됨
+          <br />
+          * 정렬 시 지역(그룹) 순서를 유지하면서 그룹 내에서만 정렬됩니다.
+        </p>
+      </div>
+    )
+  },
+}
+
+/** 로우 그룹핑 (스티키 없음) - 비교용 */
+export const RowGroupingNoSticky: Story = {
+  render: () => {
+    interface SalesData {
+      id: number
+      region: string
+      salesPerson: string
+      q1Sales: number
+      q2Sales: number
+      q3Sales: number
+      q4Sales: number
+    }
+
+    const salesData: SalesData[] = [
+      { id: 1, region: "서울", salesPerson: "홍길동", q1Sales: 1000, q2Sales: 1200, q3Sales: 1100, q4Sales: 1300 },
+      { id: 2, region: "서울", salesPerson: "김철수", q1Sales: 900, q2Sales: 1100, q3Sales: 1000, q4Sales: 1200 },
+      { id: 3, region: "서울", salesPerson: "이영희", q1Sales: 850, q2Sales: 950, q3Sales: 900, q4Sales: 1100 },
+      { id: 4, region: "부산", salesPerson: "박민수", q1Sales: 800, q2Sales: 900, q3Sales: 850, q4Sales: 950 },
+      { id: 5, region: "부산", salesPerson: "정수진", q1Sales: 700, q2Sales: 800, q3Sales: 750, q4Sales: 900 },
+      { id: 6, region: "대전", salesPerson: "최지훈", q1Sales: 600, q2Sales: 700, q3Sales: 650, q4Sales: 750 },
+    ]
+
+    const [selectedIds, setSelectedIds] = useState<number[]>([])
+
+    const salesColumns: DataTableColumn<SalesData>[] = [
+      { accessorKey: "region", header: "지역", width: 100 },
+      { accessorKey: "salesPerson", header: "담당자", minWidth: 100 },
+      { accessorKey: "q1Sales", header: "1분기", minWidth: 100, align: "right", cell: (v) => `${(v as number).toLocaleString()}만` },
+      { accessorKey: "q2Sales", header: "2분기", minWidth: 100, align: "right", cell: (v) => `${(v as number).toLocaleString()}만` },
+      { accessorKey: "q3Sales", header: "3분기", minWidth: 100, align: "right", cell: (v) => `${(v as number).toLocaleString()}만` },
+      { accessorKey: "q4Sales", header: "4분기", minWidth: 100, align: "right", cell: (v) => `${(v as number).toLocaleString()}만` },
+    ]
+
+    const rowGrouping: RowGroupConfig<SalesData> = {
+      groupBy: "region",
+      mergeColumns: ["region"],
+    }
+
+    return (
+      <div className="space-y-4">
+        <div className="p-4 bg-slate-50 dark:bg-slate-800 rounded-md text-sm">
+          <h3 className="font-bold mb-2">스티키 컬럼 없는 로우 그룹핑</h3>
+          <p className="text-slate-600 dark:text-slate-300">
+            sticky 컬럼 없이 로우 그룹핑만 적용된 테이블입니다. 비교용.
+          </p>
+        </div>
+        <p className="text-sm text-slate-500">
+          선택됨: {selectedIds.length > 0 ? selectedIds.join(", ") : "없음"}
+        </p>
+        <DataTable
+          columns={salesColumns}
+          data={salesData}
+          rowGrouping={rowGrouping}
+          selectable
+          selectedIds={selectedIds}
+          onSelectionChange={(ids) => setSelectedIds(ids as number[])}
         />
       </div>
     )

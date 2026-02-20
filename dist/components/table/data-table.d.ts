@@ -42,6 +42,22 @@ export interface DataTableColumn<T> {
     /** 고정 컬럼 (left: 왼쪽 고정, right: 오른쪽 고정) */
     sticky?: "left" | "right";
 }
+/** 헤더 그룹 정의 (다중 레벨 헤더) */
+export interface HeaderGroup<T> {
+    /** 그룹 헤더 텍스트 */
+    header: React.ReactNode;
+    /** 이 그룹에 포함되는 컬럼 키 배열 */
+    columns: (keyof T)[];
+    /** 정렬 */
+    align?: "left" | "center" | "right";
+}
+/** 로우 그룹핑 설정 */
+export interface RowGroupConfig<T> {
+    /** 그룹핑할 컬럼 키 (해당 컬럼 값이 같은 행들은 셀이 병합됨) */
+    groupBy: keyof T | (keyof T)[];
+    /** 그룹핑 적용 컬럼들 (미지정 시 groupBy 컬럼만 병합) */
+    mergeColumns?: (keyof T)[];
+}
 /** 정렬 상태 */
 export interface SortState<T> {
     column: keyof T | null;
@@ -111,8 +127,12 @@ export interface DataTableProps<T extends {
     loading?: boolean;
     /** 커스텀 로딩 콘텐츠 (미설정 시 STL 화살표 로고 표시) */
     loadingContent?: React.ReactNode;
+    /** 헤더 그룹 정의 (다중 레벨 헤더) */
+    headerGroups?: HeaderGroup<T>[];
+    /** 로우 그룹핑 설정 (셀 병합) */
+    rowGrouping?: RowGroupConfig<T>;
 }
 declare function DataTable<T extends {
     id: string | number;
-}>({ columns, data, selectable, selectedIds, onSelectionChange, sortState, onSortChange, onRowClick, onCellChange, expandable, emptyMessage, className, rowClassName, maxHeight, resizable, columnWidths, onColumnResize, columnReorderable, columnOrder, onColumnReorder, rowReorderable, onRowReorder, loading, loadingContent, }: DataTableProps<T>): import("react/jsx-runtime").JSX.Element;
+}>({ columns, data, selectable, selectedIds, onSelectionChange, sortState, onSortChange, onRowClick, onCellChange, expandable, emptyMessage, className, rowClassName, maxHeight, resizable, columnWidths, onColumnResize, columnReorderable, columnOrder, onColumnReorder, rowReorderable: rowReorderableProp, onRowReorder, loading, loadingContent, headerGroups, rowGrouping, }: DataTableProps<T>): import("react/jsx-runtime").JSX.Element;
 export { DataTable };
