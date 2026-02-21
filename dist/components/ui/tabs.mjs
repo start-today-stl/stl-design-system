@@ -2,9 +2,10 @@ import { jsx as n, jsxs as k, Fragment as L } from "react/jsx-runtime";
 import * as t from "react";
 import * as b from "@radix-ui/react-tabs";
 import { createPortal as H } from "react-dom";
-import { useSensors as $, useSensor as E, DndContext as B, closestCenter as X, KeyboardSensor as A, PointerSensor as O } from "../../node_modules/@dnd-kit/core/dist/core.esm.mjs";
-import { SortableContext as F, horizontalListSortingStrategy as Y, useSortable as q, arrayMove as G } from "../../node_modules/@dnd-kit/sortable/dist/sortable.esm.mjs";
-import { CSS as J } from "../../node_modules/@dnd-kit/utilities/dist/utilities.esm.mjs";
+import { useSensors as $, useSensor as E, PointerSensor as B, KeyboardSensor as X, DndContext as A, closestCenter as O } from "@dnd-kit/core";
+import { SortableContext as F, horizontalListSortingStrategy as Y, useSortable as q, arrayMove as G } from "@dnd-kit/sortable";
+import { arrayMove as de } from "@dnd-kit/sortable";
+import { CSS as J } from "@dnd-kit/utilities";
 import { cn as y } from "../../lib/utils.mjs";
 import { XIcon as _ } from "../../icons/XIcon.mjs";
 const ne = b.Root, Q = t.forwardRef(({ className: c, align: i = "start", ...e }, r) => /* @__PURE__ */ n(
@@ -22,19 +23,19 @@ const ne = b.Root, Q = t.forwardRef(({ className: c, align: i = "start", ...e },
 Q.displayName = b.List.displayName;
 const U = t.forwardRef(({ className: c, align: i = "start", items: e, onReorder: r, children: d, ...f }, p) => {
   const l = $(
-    E(O, {
+    E(B, {
       activationConstraint: {
         distance: 8
         // 8px 이상 이동해야 드래그 시작
       }
     }),
-    E(A)
+    E(X)
   );
   return /* @__PURE__ */ n(
-    B,
+    A,
     {
       sensors: l,
-      collisionDetection: X,
+      collisionDetection: O,
       onDragEnd: (o) => {
         const { active: g, over: m } = o;
         if (m && g.id !== m.id) {
@@ -178,7 +179,7 @@ const Z = t.forwardRef(({ id: c, className: i, closable: e, onClose: r, children
     transform: h,
     transition: w,
     isDragging: v
-  } = q({ id: c }), { role: S, ...a } = g, T = t.useRef(null), N = t.useRef(null), [z, I] = t.useState(!1), [W, R] = t.useState(!1), P = t.useCallback(
+  } = q({ id: c }), { role: S, ...a } = g, T = t.useRef(null), N = t.useRef(null), [z, I] = t.useState(!1), [W, R] = t.useState(!1), M = t.useCallback(
     (s) => {
       N.current = s, x(s), typeof o == "function" ? o(s) : o && typeof o == "object" && (o.current = s);
     },
@@ -190,9 +191,9 @@ const Z = t.forwardRef(({ id: c, className: i, closable: e, onClose: r, children
     };
     return s(), window.addEventListener("resize", s), () => window.removeEventListener("resize", s);
   }, [d]);
-  const D = (s) => {
+  const P = (s) => {
     e && (s.key === "Delete" || s.key === "Backspace") && (s.preventDefault(), r == null || r()), f == null || f(s);
-  }, M = {
+  }, D = {
     transform: J.Transform.toString(h),
     transition: w,
     opacity: v ? 0.5 : 1,
@@ -204,8 +205,8 @@ const Z = t.forwardRef(({ id: c, className: i, closable: e, onClose: r, children
     /* @__PURE__ */ k(
       b.Trigger,
       {
-        ref: P,
-        style: M,
+        ref: M,
+        style: D,
         className: y(
           "inline-flex h-9 items-center justify-center gap-0.5 px-3 py-2 text-xs font-bold cursor-grab",
           "flex-shrink flex-grow-0",
@@ -224,7 +225,7 @@ const Z = t.forwardRef(({ id: c, className: i, closable: e, onClose: r, children
           v && "cursor-grabbing",
           i
         ),
-        onKeyDown: D,
+        onKeyDown: P,
         onMouseEnter: () => R(!0),
         onMouseLeave: () => R(!1),
         ...a,
@@ -276,6 +277,6 @@ export {
   K as TabsContent,
   Q as TabsList,
   V as TabsTrigger,
-  G as arrayMove
+  de as arrayMove
 };
 //# sourceMappingURL=tabs.mjs.map
