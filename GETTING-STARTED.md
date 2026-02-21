@@ -4,12 +4,12 @@
 
 디자인 시스템을 사용하기 전에 다음 요구사항을 확인하세요.
 
-| 패키지 | 버전 | 필수 |
-|--------|------|------|
-| Node.js | 20+ | O |
-| React | 18.x | O |
-| Tailwind CSS | 4.x | O |
-| @tailwindcss/vite | 4.x | O |
+| 패키지            | 버전 | 필수 |
+| ----------------- | ---- | ---- |
+| Node.js           | 20+  | O    |
+| React             | 18.x | O    |
+| Tailwind CSS      | 4.x  | O    |
+| @tailwindcss/vite | 4.x  | O    |
 
 > **주의**: React 19는 아직 지원하지 않습니다. 반드시 React 18.x를 사용하세요.
 
@@ -17,18 +17,53 @@
 
 ## 1. 설치
 
-```bash
-npm install stl-design-system
+### package.json에 추가
+
+```json
+{
+  "dependencies": {
+    "stl-design-system": "git+https://github.com/start-today-stl/stl-design-system.git"
+  }
+}
 ```
 
-GitHub에서 직접 설치:
+그 후 설치:
+
 ```bash
-npm install github:start-today-stl/stl-design-system
+# npm
+npm install
+
+# pnpm
+pnpm install
 ```
 
-### 로컬 개발 (npm link)
+### CLI로 직접 설치
 
-디자인 시스템을 수정하면서 바로 테스트하고 싶다면 `npm link`를 사용하세요:
+```bash
+# npm
+npm install git+https://github.com/start-today-stl/stl-design-system.git
+
+# pnpm
+pnpm add git+https://github.com/start-today-stl/stl-design-system.git
+```
+
+### 로컬 개발 (link)
+
+디자인 시스템을 수정하면서 바로 테스트하고 싶다면 link를 사용하세요:
+
+**pnpm 사용 시 (권장):**
+
+```bash
+# 1. 디자인 시스템 프로젝트에서 (1회)
+cd stl-design-system
+pnpm link --global
+
+# 2. 사용할 프로젝트에서 (1회)
+cd my-project
+pnpm link --global stl-design-system
+```
+
+**npm 사용 시:**
 
 ```bash
 # 1. 디자인 시스템 프로젝트에서 (1회)
@@ -41,11 +76,48 @@ npm link stl-design-system
 ```
 
 이후 워크플로우:
+
 1. 디자인 시스템에서 코드 수정
 2. `npm run build` 실행
 3. 사용 프로젝트에서 바로 반영됨 (dev 서버 새로고침만 하면 됨)
 
-> **참고**: `npm link`는 심볼릭 링크를 생성하므로, 재설치 없이 빌드만 하면 변경사항이 즉시 반영됩니다.
+> **참고**: link는 심볼릭 링크를 생성하므로, 재설치 없이 빌드만 하면 변경사항이 즉시 반영됩니다.
+
+### 업데이트 반영 흐름
+
+```mermaid
+%%{init: {'theme': 'neutral', 'look': 'neo'}}%%
+flowchart TD
+    subgraph DS["디자인 시스템"]
+        A[코드 수정] --> B[npm run build]
+        B --> C[git commit & push]
+    end
+
+    subgraph LOCAL["로컬 개발"]
+        D[pnpm link 사용 중]
+        B -->|심볼릭 링크| D
+        D -->|즉시 반영| E[브라우저 새로고침]
+    end
+
+    subgraph PROJECT["사용 프로젝트"]
+        F[pnpm update stl-design-system]
+        F --> G[pnpm-lock.yaml 변경]
+        G --> H[git commit & push]
+    end
+
+    subgraph SERVER["서버 배포 (GitHub Actions)"]
+        I[pnpm install --frozen-lockfile]
+        I -->|lockfile에 고정된 버전 사용| J[빌드 & 배포]
+    end
+
+    C -.->|자동 반영 안됨| SERVER
+    H --> SERVER
+```
+
+| 환경 | 반영 시점                    |
+| ---- | ---------------------------- |
+| 로컬 | 디자인 시스템 빌드 즉시      |
+| 서버 | lockfile 업데이트 후 배포 시 |
 
 ---
 
@@ -61,11 +133,11 @@ npm link stl-design-system
 
 ### 각 줄의 역할
 
-| 코드 | 역할 | 누락 시 문제 |
-|------|------|-------------|
-| `@import "tailwindcss"` | Tailwind CSS 로드 | 모든 스타일 미적용 |
+| 코드                                 | 역할                             | 누락 시 문제            |
+| ------------------------------------ | -------------------------------- | ----------------------- |
+| `@import "tailwindcss"`              | Tailwind CSS 로드                | 모든 스타일 미적용      |
 | `@import "stl-design-system/tokens"` | 디자인 토큰 (색상, 폰트 등) 로드 | 커스텀 색상/폰트 미적용 |
-| `@source "..."` | 디자인 시스템 클래스 스캔 | 컴포넌트 스타일 미적용 |
+| `@source "..."`                      | 디자인 시스템 클래스 스캔        | 컴포넌트 스타일 미적용  |
 
 ### @source 경로 주의사항
 
@@ -82,11 +154,11 @@ npm link stl-design-system
 
 CSS 파일 위치에 따라 경로가 달라집니다:
 
-| CSS 파일 위치 | @source 경로 |
-|--------------|-------------|
-| `src/index.css` | `@source "../node_modules/stl-design-system/dist"` |
+| CSS 파일 위치          | @source 경로                                          |
+| ---------------------- | ----------------------------------------------------- |
+| `src/index.css`        | `@source "../node_modules/stl-design-system/dist"`    |
 | `src/styles/index.css` | `@source "../../node_modules/stl-design-system/dist"` |
-| `styles/main.css` | `@source "../node_modules/stl-design-system/dist"` |
+| `styles/main.css`      | `@source "../node_modules/stl-design-system/dist"`    |
 
 ### 왜 @source가 필요한가?
 
@@ -101,13 +173,13 @@ Tailwind CSS v4는 `node_modules` 폴더를 기본적으로 스캔하지 않습�
 `vite.config.ts`에 `@tailwindcss/vite` 플러그인을 추가해야 합니다:
 
 ```ts
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-})
+});
 ```
 
 > **주의**: `@tailwindcss/vite`가 없으면 CSS의 `@import "tailwindcss"`가 처리되지 않습니다.
@@ -118,7 +190,7 @@ export default defineConfig({
 
 설정 완료 후 다음을 확인하세요:
 
-- [ ] `npm install stl-design-system` 완료
+- [ ] `stl-design-system` 설치 완료
 - [ ] React 버전이 18.x인가? (`npm list react`로 확인)
 - [ ] Tailwind CSS 버전이 4.x인가? (`npm list tailwindcss`로 확인)
 - [ ] `@tailwindcss/vite` 설치됨?
@@ -135,7 +207,7 @@ export default defineConfig({
 ### 기본 컴포넌트
 
 ```tsx
-import { Button, Input, Badge } from 'stl-design-system'
+import { Button, Input, Badge } from "stl-design-system";
 
 function App() {
   return (
@@ -154,7 +226,7 @@ function App() {
         <Badge variant="danger-light">위험</Badge>
       </div>
     </div>
-  )
+  );
 }
 ```
 
@@ -168,7 +240,7 @@ import {
   SearchBar,
   SolidHomeIcon,
   SolidSettingIcon,
-} from 'stl-design-system'
+} from "stl-design-system";
 
 function Layout({ children }) {
   return (
@@ -188,11 +260,9 @@ function Layout({ children }) {
         search={<SearchBar placeholder="검색어를 입력하세요" />}
       />
 
-      <AppShell.Content>
-        {children}
-      </AppShell.Content>
+      <AppShell.Content>{children}</AppShell.Content>
     </AppShell>
-  )
+  );
 }
 ```
 
@@ -219,19 +289,24 @@ function Layout({ children }) {
 
 ### 디자인 시스템 업데이트 후 반영 안 됨
 
-**npm link 사용 시:**
+**link 사용 시:**
+
 ```bash
 # 디자인 시스템에서 빌드만 하면 됨
 cd stl-design-system
 npm run build
 ```
 
-**GitHub 설치 사용 시:**
+**Git URL 설치 사용 시:**
+
 ```bash
-# 캐시 삭제 후 재설치
-rm -rf node_modules/.cache
-rm -rf node_modules/stl-design-system
-npm install stl-design-system@github:start-today-stl/stl-design-system
+# pnpm
+rm -rf node_modules/.cache node_modules/stl-design-system
+pnpm install
+
+# npm
+rm -rf node_modules/.cache node_modules/stl-design-system
+npm install
 ```
 
 그리고 Vite 개발 서버 재시작
@@ -257,5 +332,9 @@ npm error ERESOLVE could not resolve
 React 19가 설치된 경우 발생합니다. React 18로 다운그레이드하세요:
 
 ```bash
+# pnpm
+pnpm add react@18 react-dom@18
+
+# npm
 npm install react@18 react-dom@18
 ```
