@@ -79,6 +79,12 @@ npm link stl-design-system
 
 > **주의**: `pnpm install` 또는 `pnpm update` 실행 시 link가 해제됩니다. 의존성 재설치 후에는 다시 link 명령어를 실행하세요.
 
+> **커밋 시 주의**: `pnpm link`를 사용하면 `pnpm-lock.yaml`에 로컬 경로가 기록됩니다. 커밋 전에 반드시 lockfile을 복원하세요:
+> ```bash
+> git checkout pnpm-lock.yaml
+> ```
+> 로컬 링크 설정이 포함된 lockfile을 커밋하면 CI에서 빌드가 실패합니다.
+
 ### 업데이트 반영 흐름
 
 ```mermaid
