@@ -42,6 +42,8 @@ export default defineConfig({
         'react/jsx-runtime',
         // Radix UI
         /^@radix-ui\/.*/,
+        // DnD Kit
+        /^@dnd-kit\/.*/,
         // Utilities
         'clsx',
         'tailwind-merge',

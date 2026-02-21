@@ -133,7 +133,7 @@ import { SearchForm as kp } from "./components/table/search-form.mjs";
 import { Table as Lp, TableBody as Rp, TableCaption as Gp, TableCell as Bp, TableFooter as Vp, TableHead as Op, TableHeader as zp, TableRow as Mp, TableSortableHead as Ep } from "./components/table/table.mjs";
 import { TableContainer as Wp } from "./components/table/table-container.mjs";
 import { TableToolbar as Jp } from "./components/table/table-toolbar.mjs";
-import { arrayMove as Xp } from "./node_modules/@dnd-kit/sortable/dist/sortable.esm.mjs";
+import { arrayMove as Xp } from "@dnd-kit/sortable";
 import { default as Qp } from "./assets/images/stl_logo_dark.png.mjs";
 import { default as Zp } from "./assets/images/stl_logo_light.png.mjs";
 export {

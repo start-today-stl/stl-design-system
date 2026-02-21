@@ -44,7 +44,7 @@ import { SearchForm as ne } from "./components/table/search-form.mjs";
 import { Table as de, TableBody as ge, TableCaption as xe, TableCell as Te, TableFooter as fe, TableHead as De, TableHeader as be, TableRow as ce, TableSortableHead as Se } from "./components/table/table.mjs";
 import { TableContainer as se } from "./components/table/table-container.mjs";
 import { TableToolbar as ue } from "./components/table/table-toolbar.mjs";
-import { arrayMove as Fe } from "./node_modules/@dnd-kit/sortable/dist/sortable.esm.mjs";
+import { arrayMove as Fe } from "@dnd-kit/sortable";
 export {
   e as Accordion,
   t as AccordionContent,

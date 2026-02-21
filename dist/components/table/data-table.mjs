@@ -1,8 +1,8 @@
 import { jsxs as H, jsx as s, Fragment as tt } from "react/jsx-runtime";
 import * as d from "react";
-import { useSensors as Ht, useSensor as st, DndContext as zt, closestCenter as Lt, KeyboardSensor as Mt, PointerSensor as Tt } from "../../node_modules/@dnd-kit/core/dist/core.esm.mjs";
-import { arrayMove as it, SortableContext as He, horizontalListSortingStrategy as rt, verticalListSortingStrategy as At, useSortable as ft, sortableKeyboardCoordinates as _t } from "../../node_modules/@dnd-kit/sortable/dist/sortable.esm.mjs";
-import { CSS as ht } from "../../node_modules/@dnd-kit/utilities/dist/utilities.esm.mjs";
+import { useSensors as Ht, useSensor as st, PointerSensor as zt, KeyboardSensor as Lt, DndContext as Mt, closestCenter as Tt } from "@dnd-kit/core";
+import { sortableKeyboardCoordinates as At, arrayMove as it, SortableContext as He, horizontalListSortingStrategy as rt, verticalListSortingStrategy as _t, useSortable as ft } from "@dnd-kit/sortable";
+import { CSS as ht } from "@dnd-kit/utilities";
 import { cn as x } from "../../lib/utils.mjs";
 import { Table as Pt, TableHeader as Ct, TableRow as ee, TableHead as q, TableBody as Rt, TableCell as z, TableSortableHead as jt } from "./table.mjs";
 import { Checkbox as be } from "../ui/checkbox.mjs";
@@ -217,14 +217,14 @@ function rs({
     });
   }, [N, X, me]);
   const re = me ?? mt, vt = d.useMemo(() => X ? re.map((e) => N.find((t) => t.accessorKey === e)).filter((e) => e !== void 0) : N, [N, re, X]), kt = Ht(
-    st(Tt, {
+    st(zt, {
       activationConstraint: {
         distance: 5
         // 5px 이상 드래그해야 활성화
       }
     }),
-    st(Mt, {
-      coordinateGetter: _t
+    st(Lt, {
+      coordinateGetter: At
     })
   ), _e = d.useCallback(
     (e) => {
@@ -671,7 +671,7 @@ function rs({
         className: "h-24 text-center text-slate-500",
         children: te
       }
-    ) }) : O ? /* @__PURE__ */ s(He, { items: Et, strategy: At, children: l.map((e, t) => {
+    ) }) : O ? /* @__PURE__ */ s(He, { items: Et, strategy: _t, children: l.map((e, t) => {
       const i = w.includes(e.id), c = Fe(e), a = Ee(e.id), n = `row-${e.id}`, k = (h) => /* @__PURE__ */ H(tt, { children: [
         /* @__PURE__ */ s(
           dt,
@@ -1078,10 +1078,10 @@ function rs({
     }) })
   ] });
   return X || O ? /* @__PURE__ */ s(
-    zt,
+    Mt,
     {
       sensors: kt,
-      collisionDetection: Lt,
+      collisionDetection: Tt,
       onDragEnd: St,
       children: et
     }
