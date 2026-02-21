@@ -54,13 +54,9 @@ pnpm add git+https://github.com/start-today-stl/stl-design-system.git
 **pnpm 사용 시 (권장):**
 
 ```bash
-# 1. 디자인 시스템 프로젝트에서 (1회)
-cd stl-design-system
-pnpm link --global
-
-# 2. 사용할 프로젝트에서 (1회)
+# 사용할 프로젝트에서
 cd my-project
-pnpm link --global stl-design-system
+pnpm link /path/to/stl-design-system
 ```
 
 **npm 사용 시:**
@@ -70,7 +66,7 @@ pnpm link --global stl-design-system
 cd stl-design-system
 npm link
 
-# 2. 사용할 프로젝트에서 (1회)
+# 2. 사용할 프로젝트에서
 cd my-project
 npm link stl-design-system
 ```
@@ -81,7 +77,7 @@ npm link stl-design-system
 2. `npm run build` 실행
 3. 사용 프로젝트에서 바로 반영됨 (dev 서버 새로고침만 하면 됨)
 
-> **참고**: link는 심볼릭 링크를 생성하므로, 재설치 없이 빌드만 하면 변경사항이 즉시 반영됩니다.
+> **주의**: `pnpm install` 또는 `pnpm update` 실행 시 link가 해제됩니다. 의존성 재설치 후에는 다시 link 명령어를 실행하세요.
 
 ### 업데이트 반영 흐름
 
