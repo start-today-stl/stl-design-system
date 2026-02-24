@@ -23,36 +23,54 @@ export interface RadioGroupItemProps
   extends React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item> {
   /** 라벨 텍스트 */
   label?: string
+  /** 색상 변형 */
+  variant?: "primary" | "success" | "danger"
+}
+
+const checkedVariantStyles = {
+  primary: "group-data-[state=checked]:bg-blue-500",
+  success: "group-data-[state=checked]:bg-green-500",
+  danger: "group-data-[state=checked]:bg-red-500",
 }
 
 const RadioGroupItem = React.forwardRef<
   React.ElementRef<typeof RadioGroupPrimitive.Item>,
   RadioGroupItemProps
->(({ className, label, ...props }, ref) => {
+>(({ className, label, variant = "primary", ...props }, ref) => {
+  const checkedStyle = checkedVariantStyles[variant]
+
   const radio = (
     <RadioGroupPrimitive.Item
       ref={ref}
       className={cn(
-        // 기본 스타일 (20x20, 원형)
-        "peer h-5 w-5 shrink-0 rounded-full border-[0.75px] flex items-center justify-center cursor-pointer",
-        // 미선택 상태
-        "border-slate-500 bg-white",
-        // 선택 상태 - 테두리와 내부 원 모두 blue
-        "data-[state=checked]:border-blue-500",
+        // 기본 스타일 (12x12, 원형) - Figma 기준
+        "peer size-3 shrink-0 rounded-md border flex items-center justify-center cursor-pointer group",
+        // Default 상태: bg-slate-50, border-slate-200
+        "bg-slate-50 border-slate-200",
+        // Hover 상태: bg-slate-400, border-slate-400
+        "hover:bg-slate-400 hover:border-slate-400",
         // 포커스 상태
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1",
         // 비활성화 상태
-        "disabled:cursor-not-allowed disabled:opacity-30",
+        "disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-slate-50 disabled:hover:border-slate-200",
         // 다크모드
-        "dark:border-slate-200 dark:bg-slate-900 dark:data-[state=checked]:border-blue-500",
+        "dark:bg-slate-700 dark:border-slate-600 dark:hover:bg-slate-500 dark:hover:border-slate-500",
         className
       )}
       {...props}
     >
-      <RadioGroupPrimitive.Indicator className="flex items-center justify-center">
-        {/* 선택된 상태의 내부 원 (10x10) */}
-        <span className="h-2.5 w-2.5 rounded-full bg-blue-500" />
-      </RadioGroupPrimitive.Indicator>
+      {/* 내부 원 (6x6) - 항상 표시, 선택 시 색상 변경 */}
+      <span
+        className={cn(
+          "size-1.5 rounded-full transition-colors",
+          // 기본: 회색, Hover: 회색 유지
+          "bg-slate-200 group-hover:bg-slate-200",
+          // 선택 시: 색상 변경 (variant에 따라)
+          checkedStyle,
+          // 다크모드
+          "dark:bg-slate-500 dark:group-hover:bg-slate-400"
+        )}
+      />
     </RadioGroupPrimitive.Item>
   )
 

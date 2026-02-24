@@ -32,6 +32,10 @@ export interface InputFieldProps extends Omit<React.InputHTMLAttributes<HTMLInpu
     rightIconLabel?: string;
     /** 라벨이 없어도 라벨 공간 유지 */
     reserveLabelSpace?: boolean;
+    /** 로딩 상태 (스피너 표시) */
+    loading?: boolean;
+    /** 비밀번호 보기 토글 표시 (type="password"일 때 기본 true) */
+    showPasswordToggle?: boolean;
 }
 declare const InputField: React.ForwardRefExoticComponent<InputFieldProps & React.RefAttributes<HTMLInputElement>>;
 export { Input, InputField, inputSizeStyles };

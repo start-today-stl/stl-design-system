@@ -27,6 +27,10 @@ const meta = {
       control: 'boolean',
       description: '비활성화 상태',
     },
+    loading: {
+      control: 'boolean',
+      description: '로딩 상태 (스피너 표시)',
+    },
     children: {
       control: 'text',
       description: '버튼 텍스트',
@@ -122,8 +126,8 @@ export const AllVariants: Story = {
   ),
 }
 
-// 아이콘 + 텍스트 버튼
-export const WithIcon: Story = {
+// 아이콘 + 텍스트 버튼 (왼쪽 아이콘)
+export const WithIconLeft: Story = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
       <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
@@ -137,6 +141,46 @@ export const WithIcon: Story = {
         <Button variant="ghost" size="sm"><UploadIcon size={16} /> Buttons</Button>
         <Button variant="danger" size="sm"><DeleteIcon size={16} /> Buttons</Button>
         <Button variant="primary" size="sm"><SearchIcon size={16} /> Buttons</Button>
+      </div>
+    </div>
+  ),
+}
+
+// 텍스트 + 아이콘 버튼 (오른쪽 아이콘)
+export const WithIconRight: Story = {
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+        <span style={{ width: '80px', fontSize: '12px', color: '#666' }}>default</span>
+        <Button variant="ghost">Buttons <UploadIcon size={24} /></Button>
+        <Button variant="danger">Buttons <DeleteIcon size={24} /></Button>
+        <Button variant="primary">Buttons <SearchIcon size={24} /></Button>
+      </div>
+      <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+        <span style={{ width: '80px', fontSize: '12px', color: '#666' }}>sm</span>
+        <Button variant="ghost" size="sm">Buttons <UploadIcon size={16} /></Button>
+        <Button variant="danger" size="sm">Buttons <DeleteIcon size={16} /></Button>
+        <Button variant="primary" size="sm">Buttons <SearchIcon size={16} /></Button>
+      </div>
+    </div>
+  ),
+}
+
+// 아이콘 + 텍스트 + 아이콘 버튼 (양쪽 아이콘)
+export const WithIconBoth: Story = {
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+        <span style={{ width: '80px', fontSize: '12px', color: '#666' }}>default</span>
+        <Button variant="ghost"><UploadIcon size={24} /> Buttons <SearchIcon size={24} /></Button>
+        <Button variant="danger"><DeleteIcon size={24} /> Buttons <DeleteIcon size={24} /></Button>
+        <Button variant="primary"><SearchIcon size={24} /> Buttons <UploadIcon size={24} /></Button>
+      </div>
+      <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+        <span style={{ width: '80px', fontSize: '12px', color: '#666' }}>sm</span>
+        <Button variant="ghost" size="sm"><UploadIcon size={16} /> Buttons <SearchIcon size={16} /></Button>
+        <Button variant="danger" size="sm"><DeleteIcon size={16} /> Buttons <DeleteIcon size={16} /></Button>
+        <Button variant="primary" size="sm"><SearchIcon size={16} /> Buttons <UploadIcon size={16} /></Button>
       </div>
     </div>
   ),
@@ -160,4 +204,79 @@ export const IconOnly: Story = {
       </div>
     </div>
   ),
+}
+
+// 로딩 상태 (정적)
+export const Loading: Story = {
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+        <span style={{ width: '80px', fontSize: '12px', color: '#666' }}>default</span>
+        <Button variant="primary" loading>Primary</Button>
+        <Button variant="success" loading>Success</Button>
+        <Button variant="danger" loading>Danger</Button>
+      </div>
+      <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+        <span style={{ width: '80px', fontSize: '12px', color: '#666' }}>sm</span>
+        <Button variant="primary" size="sm" loading>Primary</Button>
+        <Button variant="success" size="sm" loading>Success</Button>
+        <Button variant="danger" size="sm" loading>Danger</Button>
+      </div>
+    </div>
+  ),
+}
+
+// 로딩 상태 (인터랙티브)
+export const LoadingInteractive: Story = {
+  render: function Render() {
+    const [loadingStates, setLoadingStates] = React.useState<Record<string, boolean>>({})
+
+    const handleClick = (id: string) => {
+      setLoadingStates(prev => ({ ...prev, [id]: true }))
+      setTimeout(() => {
+        setLoadingStates(prev => ({ ...prev, [id]: false }))
+      }, 2000)
+    }
+
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <p style={{ fontSize: '12px', color: '#666', marginBottom: '8px' }}>
+          버튼을 클릭하면 2초간 로딩 상태가 됩니다.
+        </p>
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+          <span style={{ width: '80px', fontSize: '12px', color: '#666' }}>default</span>
+          <Button variant="primary" loading={loadingStates['primary']} onClick={() => handleClick('primary')}>
+            저장하기
+          </Button>
+          <Button variant="success" loading={loadingStates['success']} onClick={() => handleClick('success')}>
+            완료
+          </Button>
+          <Button variant="danger" loading={loadingStates['danger']} onClick={() => handleClick('danger')}>
+            삭제
+          </Button>
+        </div>
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+          <span style={{ width: '80px', fontSize: '12px', color: '#666' }}>sm</span>
+          <Button variant="primary" size="sm" loading={loadingStates['primary-sm']} onClick={() => handleClick('primary-sm')}>
+            저장하기
+          </Button>
+          <Button variant="success" size="sm" loading={loadingStates['success-sm']} onClick={() => handleClick('success-sm')}>
+            완료
+          </Button>
+          <Button variant="danger" size="sm" loading={loadingStates['danger-sm']} onClick={() => handleClick('danger-sm')}>
+            삭제
+          </Button>
+        </div>
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+          <span style={{ width: '80px', fontSize: '12px', color: '#666' }}>with icon</span>
+          <Button variant="primary" loading={loadingStates['icon']} onClick={() => handleClick('icon')}>
+            <SearchIcon size={24} /> 검색
+          </Button>
+          <Button variant="ghost" loading={loadingStates['upload']} onClick={() => handleClick('upload')}>
+            <UploadIcon size={24} /> 업로드
+          </Button>
+        </div>
+      </div>
+    )
+  },
 }

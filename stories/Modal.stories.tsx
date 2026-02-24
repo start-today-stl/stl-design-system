@@ -5,7 +5,6 @@ import { Modal } from "@/components/ui/modal";
 import { InputField } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { DatePicker } from "@/components/ui/date-picker";
-import { STLArrowIcon } from "@/icons";
 
 const meta = {
   title: "Components/Modal",
@@ -89,7 +88,31 @@ export const SingleButton: Story = {
   },
 };
 
-/** 헤더에 아이콘이 포함된 모달 */
+/** 닫기 버튼이 있는 모달 */
+export const WithCloseButton: Story = {
+  render: function Render() {
+    const [open, setOpen] = useState(false);
+
+    return (
+      <>
+        <Button onClick={() => setOpen(true)}>닫기 버튼 모달</Button>
+        <Modal
+          open={open}
+          onOpenChange={setOpen}
+          size="s"
+          title="닫기 버튼 모달"
+          description="우측 상단에 X 버튼이 표시됩니다."
+          showCloseButton
+          footer={<Button variant="primary" onClick={() => setOpen(false)}>확인</Button>}
+        >
+          <p className="text-sm text-slate-500">X 버튼을 클릭하여 모달을 닫을 수 있습니다.</p>
+        </Modal>
+      </>
+    );
+  },
+};
+
+/** 헤더에 STL 아이콘이 포함된 모달 (기본) */
 export const WithHeaderIcon: Story = {
   render: function Render() {
     const [open, setOpen] = useState(false);
@@ -101,12 +124,7 @@ export const WithHeaderIcon: Story = {
           open={open}
           onOpenChange={setOpen}
           size="s"
-          title={
-            <span className="flex items-center justify-between w-full">
-              비밀번호 변경
-              <STLArrowIcon size={29} className="text-slate-100" />
-            </span>
-          }
+          title="비밀번호 변경"
           footer={
             <>
               <Button variant="ghost-outline" onClick={() => setOpen(false)}>닫기</Button>
@@ -115,9 +133,9 @@ export const WithHeaderIcon: Story = {
           }
         >
           <div className="flex flex-col gap-4">
-            <InputField label="기존 비밀번호" placeholder="내용을 입력하세요." />
-            <InputField label="새 비밀번호" placeholder="내용을 입력하세요." />
-            <InputField label="비밀번호 확인" placeholder="내용을 입력하세요." />
+            <InputField label="기존 비밀번호" placeholder="내용을 입력하세요." type="password" />
+            <InputField label="새 비밀번호" placeholder="내용을 입력하세요." type="password" />
+            <InputField label="비밀번호 확인" placeholder="내용을 입력하세요." type="password" />
           </div>
         </Modal>
       </>
@@ -216,6 +234,43 @@ export const Sizes: Story = {
           </Modal>
         )}
       </div>
+    );
+  },
+};
+
+/** 로딩 상태 (스플래시) */
+export const Loading: Story = {
+  render: function Render() {
+    const [open, setOpen] = useState(false);
+    const [loading, setLoading] = useState(true);
+
+    const handleOpen = () => {
+      setOpen(true);
+      setLoading(true);
+      // 2초 후 로딩 완료
+      setTimeout(() => setLoading(false), 2000);
+    };
+
+    return (
+      <>
+        <Button onClick={handleOpen}>로딩 모달 열기</Button>
+        <Modal
+          open={open}
+          onOpenChange={setOpen}
+          size="m"
+          title="데이터 로딩"
+          description="데이터를 불러오는 중입니다."
+          loading={loading}
+          footer={
+            <>
+              <Button variant="ghost-outline" onClick={() => setOpen(false)}>닫기</Button>
+              <Button variant="primary">확인</Button>
+            </>
+          }
+        >
+          <p className="text-sm text-slate-500">데이터가 성공적으로 로드되었습니다!</p>
+        </Modal>
+      </>
     );
   },
 };

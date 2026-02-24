@@ -75,6 +75,35 @@ export const Controlled: Story = {
   },
 }
 
+/** Variant 변형 */
+export const Variants: Story = {
+  render: () => (
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-2">
+        <span className="text-xs text-slate-500">Primary (기본)</span>
+        <RadioGroup defaultValue="a" className="flex gap-4">
+          <RadioGroupItem value="a" variant="primary" label="옵션 A" />
+          <RadioGroupItem value="b" variant="primary" label="옵션 B" />
+        </RadioGroup>
+      </div>
+      <div className="flex flex-col gap-2">
+        <span className="text-xs text-slate-500">Success</span>
+        <RadioGroup defaultValue="a" className="flex gap-4">
+          <RadioGroupItem value="a" variant="success" label="옵션 A" />
+          <RadioGroupItem value="b" variant="success" label="옵션 B" />
+        </RadioGroup>
+      </div>
+      <div className="flex flex-col gap-2">
+        <span className="text-xs text-slate-500">Danger</span>
+        <RadioGroup defaultValue="a" className="flex gap-4">
+          <RadioGroupItem value="a" variant="danger" label="옵션 A" />
+          <RadioGroupItem value="b" variant="danger" label="옵션 B" />
+        </RadioGroup>
+      </div>
+    </div>
+  ),
+}
+
 /** 모든 상태 비교 */
 export const AllStates: Story = {
   render: () => (

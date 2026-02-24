@@ -32,7 +32,9 @@ import {
 } from "@/components/table/table"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
-import { RightIcon, DownIcon, DragHandleIcon, WriteIcon, STLArrowIcon } from "@/icons"
+import { Skeleton } from "@/components/ui/skeleton"
+import { SplashScreen } from "@/components/ui/splash-screen"
+import { RightIcon, DownIcon, DragHandleIcon, WriteIcon } from "@/icons"
 
 /** 편집 컴포넌트 Props */
 export interface EditComponentProps<T, K extends keyof T = keyof T> {
@@ -171,7 +173,9 @@ export interface DataTableProps<T extends { id: string | number }> {
   onRowReorder?: (newData: T[]) => void
   /** 로딩 상태 */
   loading?: boolean
-  /** 커스텀 로딩 콘텐츠 (미설정 시 STL 화살표 로고 표시) */
+  /** 로딩 모드 (splash: SplashScreen, skeleton: 컬럼 기반 스켈레톤 자동 생성) */
+  loadingMode?: "splash" | "skeleton"
+  /** 커스텀 로딩 콘텐츠 (loadingMode보다 우선 적용) */
   loadingContent?: React.ReactNode
   /** 헤더 그룹 정의 (다중 레벨 헤더) */
   headerGroups?: HeaderGroup<T>[]
@@ -420,6 +424,7 @@ function DataTable<T extends { id: string | number }>({
   rowReorderable: rowReorderableProp = false,
   onRowReorder,
   loading = false,
+  loadingMode = "splash",
   loadingContent,
   headerGroups,
   rowGrouping,
@@ -435,6 +440,14 @@ function DataTable<T extends { id: string | number }>({
       )
     }
   }, [rowGrouping, rowReorderableProp])
+
+  React.useEffect(() => {
+    if (loadingContent && loadingMode !== "splash") {
+      console.warn(
+        "[DataTable] loadingContent와 loadingMode가 함께 전달되었습니다. loadingContent가 우선 적용됩니다."
+      )
+    }
+  }, [loadingContent, loadingMode])
 
   const [editingCell, setEditingCell] = React.useState<EditingCell<T> | null>(null)
   const [editValue, setEditValue] = React.useState<T[keyof T] | null>(null)
@@ -1278,12 +1291,74 @@ function DataTable<T extends { id: string | number }>({
           <TableRow className="hover:bg-white dark:hover:bg-slate-900">
             <TableCell
               colSpan={totalColumns}
-              className="h-80 text-center"
+              className={cn(
+                "text-center",
+                loadingContent || loadingMode !== "skeleton" ? "h-80" : "p-0 align-top"
+              )}
             >
               {loadingContent ?? (
-                <div className="flex items-center justify-center">
-                  <STLArrowIcon size={200} className="text-slate-200 dark:text-slate-700" />
-                </div>
+                loadingMode === "skeleton" ? (
+                  // 스켈레톤 모드: 컬럼 기반 자동 생성
+                  (() => {
+                    const ROW_HEIGHT = 41
+                    // maxHeight가 있으면 그걸 기준으로, 없으면 기본 로딩 영역 높이 사용
+                    const containerHeight = typeof maxHeight === "number"
+                      ? maxHeight
+                      : typeof maxHeight === "string"
+                        ? parseInt(maxHeight, 10) || 320
+                        : 320
+                    const skeletonRowCount = Math.max(1, Math.floor(containerHeight / ROW_HEIGHT))
+
+                    return (
+                      <table className="w-full">
+                        <tbody>
+                          {Array.from({ length: skeletonRowCount }).map((_, rowIdx) => (
+                            <tr
+                              key={rowIdx}
+                              className="border-b border-slate-200 dark:border-slate-700 last:border-b-0"
+                            >
+                              {/* 드래그 핸들 */}
+                              {rowReorderable && (
+                                <td className="w-8 p-2">
+                                  <Skeleton width={16} height={16} />
+                                </td>
+                              )}
+                              {/* 체크박스 */}
+                              {selectable && (
+                                <td className="w-10 p-2">
+                                  <Skeleton width={18} height={18} />
+                                </td>
+                              )}
+                              {/* 확장 버튼 */}
+                              {expandable && (
+                                <td className="w-10 p-2">
+                                  <Skeleton width={18} height={18} />
+                                </td>
+                              )}
+                              {/* 컬럼별 스켈레톤 */}
+                              {columnsToRender.map((col) => {
+                                const colWidth = col.width ?? col.minWidth
+                                const skeletonWidth = typeof colWidth === "number"
+                                  ? Math.min(colWidth * 0.6, 150)
+                                  : 100
+                                return (
+                                  <td key={String(col.accessorKey)} className="p-2">
+                                    <Skeleton height={16} width={skeletonWidth} />
+                                  </td>
+                                )
+                              })}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    )
+                  })()
+                ) : (
+                  // 스플래시 모드 (기본)
+                  <div className="flex items-center justify-center h-full">
+                    <SplashScreen size="lg" />
+                  </div>
+                )
               )}
             </TableCell>
           </TableRow>

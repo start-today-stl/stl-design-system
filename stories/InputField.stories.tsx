@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import { InputField } from "@/components/ui/input"
-import { EyeIcon } from "@/icons"
+import { SearchIcon } from "@/icons"
 
 const meta: Meta<typeof InputField> = {
   title: "Components/InputField",
@@ -34,6 +34,10 @@ const meta: Meta<typeof InputField> = {
     onRightIconClick: {
       action: "clicked",
       description: "우측 아이콘 클릭 핸들러",
+    },
+    loading: {
+      control: "boolean",
+      description: "로딩 상태 (스피너 표시)",
     },
   },
 }
@@ -144,10 +148,31 @@ export const AllSizes: Story = {
 /** 우측 아이콘 포함 */
 export const WithRightIcon: Story = {
   args: {
-    label: "비밀번호 입력",
+    label: "검색어",
     size: "md",
-    rightIcon: <EyeIcon size={18} />,
-    onRightIconClick: () => alert("비밀번호 보기"),
+    placeholder: "검색어를 입력하세요.",
+    rightIcon: <SearchIcon size={24} />,
+    onRightIconClick: () => alert("검색"),
+  },
+}
+
+/** 비밀번호 입력 (자동 토글) */
+export const Password: Story = {
+  args: {
+    label: "비밀번호",
+    type: "password",
+    placeholder: "비밀번호를 입력하세요.",
+    size: "md",
+  },
+}
+
+/** 로딩 상태 */
+export const Loading: Story = {
+  args: {
+    label: "Product",
+    defaultValue: "버튼",
+    size: "md",
+    loading: true,
   },
 }
 
@@ -178,10 +203,29 @@ export const AllStates: Story = {
       <div className="flex flex-col gap-2">
         <span className="text-sm text-slate-500">With Right Icon</span>
         <InputField
-          label="비밀번호 입력"
+          label="검색어"
           size="md"
-          rightIcon={<EyeIcon size={18} />}
-          onRightIconClick={() => console.log("비밀번호 보기")}
+          placeholder="검색어를 입력하세요."
+          rightIcon={<SearchIcon size={24} />}
+          onRightIconClick={() => console.log("검색")}
+        />
+      </div>
+      <div className="flex flex-col gap-2">
+        <span className="text-sm text-slate-500">Password</span>
+        <InputField
+          label="비밀번호"
+          type="password"
+          placeholder="비밀번호를 입력하세요."
+          size="md"
+        />
+      </div>
+      <div className="flex flex-col gap-2">
+        <span className="text-sm text-slate-500">Loading</span>
+        <InputField
+          label="Product"
+          defaultValue="버튼"
+          size="md"
+          loading
         />
       </div>
     </div>
