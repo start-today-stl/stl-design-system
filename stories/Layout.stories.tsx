@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { AppShell, Sidebar, Header, PageTitle, Notice, NavInfo } from "../src/layout";
+import { stlLogoLight, stlLogoDark } from "../src/assets";
 import { NavGroup } from "../src/layout/nav-group";
 import { NavItem } from "../src/layout/nav-item";
 import { NavRenderer } from "../src/layout/nav-renderer";
@@ -27,11 +28,11 @@ import {
   ShipIcon,
   BellIcon,
   ProfileIcon,
+  KoreanIcon,
+  JapaneseIcon,
+  EnglishIcon,
   UpIcon,
   DownIcon,
-  KoreanIcon,
-  EnglishIcon,
-  JapaneseIcon,
 } from "../src/icons";
 import type { NavigationConfig } from "../src/layout/types";
 
@@ -89,47 +90,6 @@ const sampleNavigation: NavigationConfig = [
   },
 ];
 
-const languages = [
-  { code: "ko", label: "한국어", icon: KoreanIcon },
-  { code: "ja", label: "日本語", icon: JapaneseIcon },
-  { code: "en", label: "English", icon: EnglishIcon },
-];
-
-/** 언어 선택 드롭다운 */
-function LanguageSelector() {
-  const [language, setLanguage] = useState("ko");
-  const [open, setOpen] = useState(false);
-  const currentLang = languages.find((l) => l.code === language);
-  const CurrentIcon = currentLang?.icon;
-
-  return (
-    <Dropdown open={open} onOpenChange={setOpen}>
-      <DropdownTrigger asChild>
-        <Button variant="text" className="text-sm tracking-[-0.14px]">
-          {CurrentIcon && <CurrentIcon size={20} />}
-          <span>{currentLang?.label || "Language"}</span>
-          {open ? <DownIcon size={24} /> : <UpIcon size={24} />}
-        </Button>
-      </DropdownTrigger>
-      <DropdownContent align="end" className="min-w-[120px]">
-        {languages.map((lang) => {
-          const LangIcon = lang.icon;
-          return (
-            <DropdownItem
-              key={lang.code}
-              onClick={() => setLanguage(lang.code)}
-              className={language === lang.code ? "bg-accent" : ""}
-            >
-              <LangIcon size={20} />
-              {lang.label}
-            </DropdownItem>
-          );
-        })}
-      </DropdownContent>
-    </Dropdown>
-  );
-}
-
 const meta = {
   title: "Layout/AppShell",
   component: AppShell,
@@ -155,11 +115,31 @@ export const Default: Story = {
   render: function Render() {
     const [currentPath, setCurrentPath] = useState("/dashboard");
     const [bookmarked, setBookmarked] = useState(false);
+    // 언어 선택 상태
+    const [locale, setLocale] = useState("ko");
+    const [langOpen, setLangOpen] = useState(false);
+    const languages = [
+      { code: "ko", label: "한국어", icon: KoreanIcon },
+      { code: "ja", label: "日本語", icon: JapaneseIcon },
+      { code: "en", label: "English", icon: EnglishIcon },
+    ];
+    const currentLang = languages.find((l) => l.code === locale);
+    const CurrentLangIcon = currentLang?.icon || KoreanIcon;
 
     return (
       <div style={{ height: "800px" }}>
         <AppShell>
           <AppShell.Sidebar
+            logo={(collapsed) =>
+              collapsed ? (
+                <STLArrowIcon size={36} className="text-primary" />
+              ) : (
+                <div className="relative h-8">
+                  <img src={stlLogoLight} alt="STL" className="h-8 dark:hidden" />
+                  <img src={stlLogoDark} alt="STL" className="h-8 hidden dark:block" />
+                </div>
+              )
+            }
             footer={
               <>
                 <Notice
@@ -210,7 +190,31 @@ export const Default: Story = {
                 <Button variant="ghost" size="icon-sm" aria-label="프로필">
                   <ProfileIcon size={24} />
                 </Button>
-                <LanguageSelector />
+                {/* 언어 선택 드롭다운 */}
+                <Dropdown open={langOpen} onOpenChange={setLangOpen}>
+                  <DropdownTrigger asChild>
+                    <Button variant="text" className="text-sm tracking-[-0.14px]">
+                      <CurrentLangIcon size={20} />
+                      <span>{currentLang?.label || "Language"}</span>
+                      {langOpen ? <DownIcon size={24} /> : <UpIcon size={24} />}
+                    </Button>
+                  </DropdownTrigger>
+                  <DropdownContent align="end" className="min-w-[120px]">
+                    {languages.map((lang) => {
+                      const LangIcon = lang.icon;
+                      return (
+                        <DropdownItem
+                          key={lang.code}
+                          onClick={() => setLocale(lang.code)}
+                          className={locale === lang.code ? "bg-accent" : ""}
+                        >
+                          <LangIcon size={20} />
+                          <span>{lang.label}</span>
+                        </DropdownItem>
+                      );
+                    })}
+                  </DropdownContent>
+                </Dropdown>
               </div>
             }
           />
@@ -241,11 +245,31 @@ export const WithBreadcrumb: Story = {
   render: function Render() {
     const [currentPath, setCurrentPath] = useState("/orders/b2c");
     const [bookmarked, setBookmarked] = useState(false);
+    // 언어 선택 상태
+    const [locale, setLocale] = useState("ko");
+    const [langOpen, setLangOpen] = useState(false);
+    const languages = [
+      { code: "ko", label: "한국어", icon: KoreanIcon },
+      { code: "ja", label: "日本語", icon: JapaneseIcon },
+      { code: "en", label: "English", icon: EnglishIcon },
+    ];
+    const currentLang = languages.find((l) => l.code === locale);
+    const CurrentLangIcon = currentLang?.icon || KoreanIcon;
 
     return (
       <div style={{ height: "800px" }}>
         <AppShell>
           <AppShell.Sidebar
+            logo={(collapsed) =>
+              collapsed ? (
+                <STLArrowIcon size={36} className="text-primary" />
+              ) : (
+                <div className="relative h-8">
+                  <img src={stlLogoLight} alt="STL" className="h-8 dark:hidden" />
+                  <img src={stlLogoDark} alt="STL" className="h-8 hidden dark:block" />
+                </div>
+              )
+            }
             footer={
               <>
                 <Notice
@@ -288,7 +312,31 @@ export const WithBreadcrumb: Story = {
                 <Button variant="ghost" size="icon-sm" aria-label="프로필">
                   <ProfileIcon size={24} />
                 </Button>
-                <LanguageSelector />
+                {/* 언어 선택 드롭다운 */}
+                <Dropdown open={langOpen} onOpenChange={setLangOpen}>
+                  <DropdownTrigger asChild>
+                    <Button variant="text" className="text-sm tracking-[-0.14px]">
+                      <CurrentLangIcon size={20} />
+                      <span>{currentLang?.label || "Language"}</span>
+                      {langOpen ? <DownIcon size={24} /> : <UpIcon size={24} />}
+                    </Button>
+                  </DropdownTrigger>
+                  <DropdownContent align="end" className="min-w-[120px]">
+                    {languages.map((lang) => {
+                      const LangIcon = lang.icon;
+                      return (
+                        <DropdownItem
+                          key={lang.code}
+                          onClick={() => setLocale(lang.code)}
+                          className={locale === lang.code ? "bg-accent" : ""}
+                        >
+                          <LangIcon size={20} />
+                          <span>{lang.label}</span>
+                        </DropdownItem>
+                      );
+                    })}
+                  </DropdownContent>
+                </Dropdown>
               </div>
             }
           />
@@ -326,11 +374,31 @@ export const WithHeaderCenter: Story = {
   render: function Render() {
     const [currentPath, setCurrentPath] = useState("/dashboard");
     const [bookmarked, setBookmarked] = useState(false);
+    // 언어 선택 상태
+    const [locale, setLocale] = useState("ko");
+    const [langOpen, setLangOpen] = useState(false);
+    const languages = [
+      { code: "ko", label: "한국어", icon: KoreanIcon },
+      { code: "ja", label: "日本語", icon: JapaneseIcon },
+      { code: "en", label: "English", icon: EnglishIcon },
+    ];
+    const currentLang = languages.find((l) => l.code === locale);
+    const CurrentLangIcon = currentLang?.icon || KoreanIcon;
 
     return (
       <div style={{ height: "800px" }}>
         <AppShell>
           <AppShell.Sidebar
+            logo={(collapsed) =>
+              collapsed ? (
+                <STLArrowIcon size={36} className="text-primary" />
+              ) : (
+                <div className="relative h-8">
+                  <img src={stlLogoLight} alt="STL" className="h-8 dark:hidden" />
+                  <img src={stlLogoDark} alt="STL" className="h-8 hidden dark:block" />
+                </div>
+              )
+            }
             footer={
               <>
                 <Notice
@@ -378,7 +446,31 @@ export const WithHeaderCenter: Story = {
                 <Button variant="ghost" size="icon-sm" aria-label="프로필">
                   <ProfileIcon size={24} />
                 </Button>
-                <LanguageSelector />
+                {/* 언어 선택 드롭다운 */}
+                <Dropdown open={langOpen} onOpenChange={setLangOpen}>
+                  <DropdownTrigger asChild>
+                    <Button variant="text" className="text-sm tracking-[-0.14px]">
+                      <CurrentLangIcon size={20} />
+                      <span>{currentLang?.label || "Language"}</span>
+                      {langOpen ? <DownIcon size={24} /> : <UpIcon size={24} />}
+                    </Button>
+                  </DropdownTrigger>
+                  <DropdownContent align="end" className="min-w-[120px]">
+                    {languages.map((lang) => {
+                      const LangIcon = lang.icon;
+                      return (
+                        <DropdownItem
+                          key={lang.code}
+                          onClick={() => setLocale(lang.code)}
+                          className={locale === lang.code ? "bg-accent" : ""}
+                        >
+                          <LangIcon size={20} />
+                          <span>{lang.label}</span>
+                        </DropdownItem>
+                      );
+                    })}
+                  </DropdownContent>
+                </Dropdown>
               </div>
             }
           />
@@ -409,6 +501,16 @@ export const SidebarOnly: Story = {
   render: () => (
     <div style={{ height: "800px" }}>
       <Sidebar
+        logo={(collapsed) =>
+          collapsed ? (
+            <STLArrowIcon size={36} className="text-primary" />
+          ) : (
+            <div className="relative h-8">
+              <img src={stlLogoLight} alt="STL" className="h-8 dark:hidden" />
+              <img src={stlLogoDark} alt="STL" className="h-8 hidden dark:block" />
+            </div>
+          )
+        }
         footer={
           <>
             <Notice
