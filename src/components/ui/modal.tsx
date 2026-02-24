@@ -9,7 +9,9 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
+  DialogClose,
 } from "@/components/ui/dialog";
+import { STLArrowIcon, XIcon } from "@/icons";
 
 export interface ModalProps {
   /** 모달 크기 */
@@ -28,6 +30,10 @@ export interface ModalProps {
   footer?: React.ReactNode;
   /** 추가 className */
   className?: string;
+  /** 로딩 상태 (스플래시 표시) */
+  loading?: boolean;
+  /** 닫기 버튼 표시 (true: X 버튼, false: STL 아이콘) */
+  showCloseButton?: boolean;
 }
 
 const Modal = ({
@@ -39,6 +45,8 @@ const Modal = ({
   children,
   footer,
   className,
+  loading = false,
+  showCloseButton = false,
 }: ModalProps) => {
   // Size configuration
   const sizeConfig = {
@@ -58,27 +66,49 @@ const Modal = ({
   };
   const footerChildCount = getChildCount(footer);
 
+  // 헤더 우측 아이콘 렌더링
+  const renderHeaderIcon = () => {
+    if (showCloseButton) {
+      return (
+        <DialogClose className="absolute right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none disabled:pointer-events-none cursor-pointer">
+          <XIcon size={24} />
+          <span className="sr-only">닫기</span>
+        </DialogClose>
+      );
+    }
+    return (
+      <div className="absolute right-4 top-4">
+        <STLArrowIcon size={29} className="text-slate-200 dark:text-slate-600" />
+      </div>
+    );
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className={cn(sizeConfig[size], className)}>
-        {(title || description) && (
-          <DialogHeader>
-            {title && <DialogTitle>{title}</DialogTitle>}
-            {description && <DialogDescription>{description}</DialogDescription>}
-          </DialogHeader>
-        )}
-
-        {children && <div className="py-4">{children}</div>}
-
-        {footer && (
-          <div
-            className={cn(
-              "flex flex-col-reverse gap-2 sm:flex-row w-full",
-              footerChildCount === 1 ? "sm:justify-end" : "sm:justify-between"
+      <DialogContent className={cn(sizeConfig[size], className)} loading={loading}>
+        {!loading && (
+          <>
+            {renderHeaderIcon()}
+            {(title || description) && (
+              <DialogHeader className="pr-10">
+                {title && <DialogTitle>{title}</DialogTitle>}
+                {description && <DialogDescription>{description}</DialogDescription>}
+              </DialogHeader>
             )}
-          >
-            {footer}
-          </div>
+
+            {children && <div className="py-4">{children}</div>}
+
+            {footer && (
+              <div
+                className={cn(
+                  "flex flex-col-reverse gap-2 sm:flex-row w-full",
+                  footerChildCount === 1 ? "sm:justify-end" : "sm:justify-between"
+                )}
+              >
+                {footer}
+              </div>
+            )}
+          </>
         )}
       </DialogContent>
     </Dialog>

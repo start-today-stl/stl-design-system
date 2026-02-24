@@ -125,7 +125,9 @@ export interface DataTableProps<T extends {
     onRowReorder?: (newData: T[]) => void;
     /** 로딩 상태 */
     loading?: boolean;
-    /** 커스텀 로딩 콘텐츠 (미설정 시 STL 화살표 로고 표시) */
+    /** 로딩 모드 (splash: SplashScreen, skeleton: 컬럼 기반 스켈레톤 자동 생성) */
+    loadingMode?: "splash" | "skeleton";
+    /** 커스텀 로딩 콘텐츠 (loadingMode보다 우선 적용) */
     loadingContent?: React.ReactNode;
     /** 헤더 그룹 정의 (다중 레벨 헤더) */
     headerGroups?: HeaderGroup<T>[];
@@ -134,5 +136,5 @@ export interface DataTableProps<T extends {
 }
 declare function DataTable<T extends {
     id: string | number;
-}>({ columns, data, selectable, selectedIds, onSelectionChange, sortState, onSortChange, onRowClick, onCellChange, expandable, emptyMessage, className, rowClassName, maxHeight, resizable, columnWidths, onColumnResize, columnReorderable, columnOrder, onColumnReorder, rowReorderable: rowReorderableProp, onRowReorder, loading, loadingContent, headerGroups, rowGrouping, }: DataTableProps<T>): import("react/jsx-runtime").JSX.Element;
+}>({ columns, data, selectable, selectedIds, onSelectionChange, sortState, onSortChange, onRowClick, onCellChange, expandable, emptyMessage, className, rowClassName, maxHeight, resizable, columnWidths, onColumnResize, columnReorderable, columnOrder, onColumnReorder, rowReorderable: rowReorderableProp, onRowReorder, loading, loadingMode, loadingContent, headerGroups, rowGrouping, }: DataTableProps<T>): import("react/jsx-runtime").JSX.Element;
 export { DataTable };

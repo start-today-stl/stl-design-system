@@ -7,6 +7,10 @@ export interface SliderProps extends React.ComponentPropsWithoutRef<typeof Slide
     showLabels?: boolean;
     /** 라벨 텍스트 */
     label?: string;
+    /** 읽기 전용 모드 (진행률 표시용) */
+    readonly?: boolean;
+    /** Thumb 표시 여부 (기본값: true) */
+    showThumb?: boolean;
 }
 declare const Slider: React.ForwardRefExoticComponent<SliderProps & React.RefAttributes<HTMLSpanElement>>;
 export { Slider };

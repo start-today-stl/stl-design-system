@@ -14,6 +14,7 @@ import {
 import { Button } from "../src/components/ui/button"
 import { Badge } from "../src/components/ui/badge"
 import { Select } from "../src/components/ui/select"
+import { SplashScreen } from "../src/components/ui/splash-screen"
 
 // 샘플 데이터 타입
 interface User {
@@ -160,24 +161,7 @@ export const Empty: Story = {
   ),
 }
 
-/** 로딩 상태 (커스텀) */
-export const LoadingCustom: Story = {
-  render: () => (
-    <DataTable
-      columns={columns}
-      data={[]}
-      loading
-      loadingContent={
-        <div className="flex flex-col items-center gap-3">
-          <div className="animate-spin h-8 w-8 border-2 border-blue-500 border-t-transparent rounded-full" />
-          <span className="text-sm text-slate-500">데이터를 불러오는 중...</span>
-        </div>
-      }
-    />
-  ),
-}
-
-/** 로딩 상태 (기본: 툴바 + 페이지네이션 포함) */
+/** 로딩 상태 (기본: SplashScreen) */
 export const Loading: Story = {
   render: () => (
     <div className="border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
@@ -196,6 +180,79 @@ export const Loading: Story = {
       />
 
       {/* 페이지네이션 */}
+      <div className="flex items-center justify-between p-4 border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900">
+        <Pagination
+          currentPage={1}
+          totalPages={1}
+          onPageChange={() => {}}
+          previousLabel="Previous"
+          nextLabel="Next"
+        />
+        <PageSizeSelector
+          pageSize={10}
+          onPageSizeChange={() => {}}
+        />
+      </div>
+    </div>
+  ),
+}
+
+/** 로딩 상태 - 커스텀 (텍스트 포함) */
+export const LoadingCustom: Story = {
+  render: () => (
+    <div className="border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
+      <TableToolbar totalCount={0} selectedCount={0}>
+        <Button variant="danger" disabled>삭제</Button>
+        <Button variant="ghost">다운로드</Button>
+      </TableToolbar>
+
+      <DataTable
+        columns={columns}
+        data={[]}
+        loading
+        selectable
+        loadingContent={
+          <div className="flex flex-col items-center gap-4">
+            <SplashScreen size="default" />
+            <p className="text-sm text-slate-500">데이터를 불러오는 중...</p>
+          </div>
+        }
+      />
+
+      <div className="flex items-center justify-between p-4 border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900">
+        <Pagination
+          currentPage={1}
+          totalPages={1}
+          onPageChange={() => {}}
+          previousLabel="Previous"
+          nextLabel="Next"
+        />
+        <PageSizeSelector
+          pageSize={10}
+          onPageSizeChange={() => {}}
+        />
+      </div>
+    </div>
+  ),
+}
+
+/** 로딩 상태 - Skeleton 사용 (loadingMode="skeleton") */
+export const LoadingWithSkeleton: Story = {
+  render: () => (
+    <div className="border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
+      <TableToolbar totalCount={0} selectedCount={0}>
+        <Button variant="danger" disabled>삭제</Button>
+        <Button variant="ghost">다운로드</Button>
+      </TableToolbar>
+
+      <DataTable
+        columns={columns}
+        data={[]}
+        loading
+        loadingMode="skeleton"
+        selectable
+      />
+
       <div className="flex items-center justify-between p-4 border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900">
         <Pagination
           currentPage={1}

@@ -16,6 +16,10 @@ export interface ModalProps {
     footer?: React.ReactNode;
     /** 추가 className */
     className?: string;
+    /** 로딩 상태 (스플래시 표시) */
+    loading?: boolean;
+    /** 닫기 버튼 표시 (true: X 버튼, false: STL 아이콘) */
+    showCloseButton?: boolean;
 }
-declare const Modal: ({ size, open, onOpenChange, title, description, children, footer, className, }: ModalProps) => import("react/jsx-runtime").JSX.Element;
+declare const Modal: ({ size, open, onOpenChange, title, description, children, footer, className, loading, showCloseButton, }: ModalProps) => import("react/jsx-runtime").JSX.Element;
 export { Modal };

@@ -117,3 +117,41 @@ export const Grid: Story = {
     </div>
   ),
 }
+
+/** 로딩 상태 (스켈레톤) */
+export const Loading: Story = {
+  render: () => (
+    <Card className="w-[240px]" loading />
+  ),
+}
+
+/** 로딩 상태 비교 */
+export const LoadingComparison: Story = {
+  render: () => (
+    <div className="flex gap-4">
+      <div className="flex flex-col gap-2 items-center">
+        <span className="text-sm text-slate-500">로딩 중</span>
+        <Card className="w-[240px]" loading />
+      </div>
+      <div className="flex flex-col gap-2 items-center">
+        <span className="text-sm text-slate-500">로딩 완료</span>
+        <Card className="w-[240px]">
+          <CardHeader>
+            <div className="bg-slate-50 rounded h-[140px] w-full" />
+            <CardTitle>
+              STL
+              <br />
+              상품을 등록하고
+              <br />
+              사은품 받아가세요
+            </CardTitle>
+            <CardDescription>
+              STL CBT에 상품 등록하는
+              <br />전 고객에게 사은품 증정
+            </CardDescription>
+          </CardHeader>
+        </Card>
+      </div>
+    </div>
+  ),
+}

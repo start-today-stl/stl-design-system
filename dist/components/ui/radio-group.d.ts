@@ -4,6 +4,8 @@ declare const RadioGroup: React.ForwardRefExoticComponent<Omit<RadioGroupPrimiti
 export interface RadioGroupItemProps extends React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item> {
     /** 라벨 텍스트 */
     label?: string;
+    /** 색상 변형 */
+    variant?: "primary" | "success" | "danger";
 }
 declare const RadioGroupItem: React.ForwardRefExoticComponent<RadioGroupItemProps & React.RefAttributes<HTMLButtonElement>>;
 /** RadioGroupField - label을 포함한 RadioGroup 래퍼 */

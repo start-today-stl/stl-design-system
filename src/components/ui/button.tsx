@@ -4,8 +4,38 @@ import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
 
+/** 버튼용 스피너 (흰색) */
+function ButtonSpinner({ size }: { size: "default" | "sm" }) {
+  const gradientId = React.useId()
+  const isSmall = size === "sm"
+
+  return (
+    <svg
+      className={cn("animate-spin", isSmall ? "size-3" : "size-6")}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <defs>
+        <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="rgba(255,255,255,1)" />
+          <stop offset="100%" stopColor="rgba(255,255,255,0.3)" />
+        </linearGradient>
+      </defs>
+      <circle
+        cx="12"
+        cy="12"
+        r="10"
+        stroke={`url(#${gradientId})`}
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
+    </svg>
+  )
+}
+
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-0.5 whitespace-nowrap font-normal transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-30 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&>svg:first-child:not(:last-child)]:-ml-1 [&>svg:last-child:not(:first-child)]:-mr-1",
+  "inline-flex items-center justify-center gap-0.5 whitespace-nowrap font-normal transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-30 [&_svg]:pointer-events-none [&_svg]:shrink-0",
   {
     variants: {
       variant: {
@@ -38,11 +68,11 @@ const buttonVariants = cva(
       },
       size: {
         // 텍스트 또는 아이콘+텍스트 버튼
-        default: "h-9 px-2.5 py-2 rounded-sm text-xs tracking-[-0.12px]",
-        sm: "h-6 px-1.5 py-1 rounded-[3px] text-[8px] tracking-[-0.08px]",
+        default: "h-9 px-2.5 py-2 rounded text-xs tracking-[-0.12px]",
+        sm: "h-6 px-2.5 py-2 rounded text-[10px] tracking-[-0.1px]",
         // 아이콘만 있는 버튼 (정사각형)
-        icon: "h-9 w-9 p-2 rounded-sm [&_svg]:ml-0",
-        "icon-sm": "h-8 w-8 p-1.5 rounded-[2px] [&_svg]:ml-0",
+        icon: "h-9 w-9 p-2 rounded [&_svg]:ml-0",
+        "icon-sm": "h-8 w-8 p-1.5 rounded [&_svg]:ml-0",
       },
     },
     defaultVariants: {
@@ -56,17 +86,70 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean
+  /** 로딩 상태 (스피너 표시) */
+  loading?: boolean
+}
+
+/** 아이콘 위치 감지 */
+function detectIconPosition(children: React.ReactNode) {
+  const childArray = React.Children.toArray(children)
+  if (childArray.length === 0) return { hasIconLeft: false, hasIconRight: false, isIconOnly: false }
+
+  const first = childArray[0]
+  const last = childArray[childArray.length - 1]
+
+  const isSvgElement = (child: React.ReactNode): boolean => {
+    if (!React.isValidElement(child)) return false
+    // SVG 요소이거나, 컴포넌트가 svg를 반환하는 경우 (type이 'svg'이거나 displayName에 'Icon' 포함)
+    return (
+      child.type === "svg" ||
+      (typeof child.type === "function" && (child.type as React.FC).displayName?.includes("Icon")) ||
+      (typeof child.type === "function" && child.type.name?.includes("Icon"))
+    )
+  }
+
+  // 아이콘만 있는 경우 (children이 1개이고 그게 아이콘인 경우)
+  const isIconOnly = childArray.length === 1 && isSvgElement(first)
+
+  return {
+    hasIconLeft: isSvgElement(first) && childArray.length > 1,
+    hasIconRight: isSvgElement(last) && childArray.length > 1,
+    isIconOnly,
+  }
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
+  ({ className, variant, size, asChild = false, loading = false, children, disabled, ...props }, ref) => {
     const Comp = asChild ? Slot : "button"
+    const spinnerSize = size === "sm" ? "sm" : "default"
+
+    // 아이콘 위치 감지
+    const { hasIconLeft, hasIconRight, isIconOnly } = detectIconPosition(children)
+
+    // 아이콘 위치에 따른 패딩 클래스 (Figma 기준: 아이콘쪽 7px, 텍스트쪽 12px, 아이콘만 6px)
+    const getPaddingClass = () => {
+      if (size === "icon" || size === "icon-sm") return "" // 명시적 아이콘 버튼은 별도 패딩
+      if (isIconOnly) return "!px-1.5" // 아이콘만 있는 경우 양쪽 6px
+      if (hasIconLeft && hasIconRight) return "!pl-[7px] !pr-[7px]" // 양쪽 아이콘
+      if (hasIconLeft) return "!pl-[7px] !pr-3" // 왼쪽 아이콘 (pr-3 = 12px)
+      if (hasIconRight) return "!pl-3 !pr-[7px]" // 오른쪽 아이콘
+      return "" // 텍스트만 (기본 px-2.5 = 10px)
+    }
+
     return (
       <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
+        className={cn(buttonVariants({ variant, size, className }), getPaddingClass(), loading && "relative")}
         ref={ref}
+        disabled={disabled || loading}
         {...props}
-      />
+      >
+        {loading && (
+          <span className="absolute inset-0 flex items-center justify-center">
+            <ButtonSpinner size={spinnerSize} />
+          </span>
+        )}
+        <span className={cn("inline-flex items-center gap-0.5", loading && "invisible")}>{children}</span>
+      </Comp>
     )
   }
 )

@@ -1,94 +1,96 @@
-import { jsxs as n, jsx as s } from "react/jsx-runtime";
+import { jsxs as m, jsx as s } from "react/jsx-runtime";
 import * as i from "react";
-import * as a from "@radix-ui/react-dialog";
+import * as e from "@radix-ui/react-dialog";
 import { cn as l } from "../../lib/utils.mjs";
-const D = a.Root, u = a.Trigger, m = a.Portal, w = a.Close, d = i.forwardRef(({ className: e, ...t }, o) => /* @__PURE__ */ s(
-  a.Overlay,
+import { SplashScreen as c } from "./splash-screen.mjs";
+const h = e.Root, v = e.Trigger, f = e.Portal, R = e.Close, d = i.forwardRef(({ className: a, ...t }, o) => /* @__PURE__ */ s(
+  e.Overlay,
   {
     ref: o,
     className: l(
       "fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
-      e
+      a
     ),
     ...t
   }
 ));
-d.displayName = a.Overlay.displayName;
-const c = i.forwardRef(({ className: e, children: t, ...o }, r) => /* @__PURE__ */ n(m, { children: [
+d.displayName = e.Overlay.displayName;
+const p = i.forwardRef(({ className: a, children: t, loading: o = !1, ...r }, n) => /* @__PURE__ */ m(f, { children: [
   /* @__PURE__ */ s(d, {}),
   /* @__PURE__ */ s(
-    a.Content,
+    e.Content,
     {
-      ref: r,
+      ref: n,
       className: l(
         "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-card text-card-foreground p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg",
-        e
+        o && "min-h-[200px] items-center justify-center",
+        a
       ),
-      ...o,
-      children: t
+      ...r,
+      children: o ? /* @__PURE__ */ s(c, {}) : t
     }
   )
 ] }));
-c.displayName = a.Content.displayName;
-const f = ({
-  className: e,
+p.displayName = e.Content.displayName;
+const g = ({
+  className: a,
   ...t
 }) => /* @__PURE__ */ s(
   "div",
   {
     className: l(
       "flex flex-col space-y-1.5 text-center sm:text-left",
-      e
+      a
     ),
     ...t
   }
 );
-f.displayName = "DialogHeader";
-const p = ({
-  className: e,
+g.displayName = "DialogHeader";
+const x = ({
+  className: a,
   ...t
 }) => /* @__PURE__ */ s(
   "div",
   {
     className: l(
       "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
-      e
+      a
     ),
     ...t
   }
 );
-p.displayName = "DialogFooter";
-const g = i.forwardRef(({ className: e, ...t }, o) => /* @__PURE__ */ s(
-  a.Title,
+x.displayName = "DialogFooter";
+const y = i.forwardRef(({ className: a, ...t }, o) => /* @__PURE__ */ s(
+  e.Title,
   {
     ref: o,
     className: l(
       "text-lg font-semibold leading-none tracking-tight",
-      e
+      a
     ),
     ...t
   }
 ));
-g.displayName = a.Title.displayName;
-const x = i.forwardRef(({ className: e, ...t }, o) => /* @__PURE__ */ s(
-  a.Description,
+y.displayName = e.Title.displayName;
+const N = i.forwardRef(({ className: a, ...t }, o) => /* @__PURE__ */ s(
+  e.Description,
   {
     ref: o,
-    className: l("text-sm text-muted-foreground", e),
+    className: l("text-sm text-muted-foreground", a),
     ...t
   }
 ));
-x.displayName = a.Description.displayName;
+N.displayName = e.Description.displayName;
 export {
-  D as Dialog,
-  w as DialogClose,
-  c as DialogContent,
-  x as DialogDescription,
-  p as DialogFooter,
-  f as DialogHeader,
+  h as Dialog,
+  R as DialogClose,
+  p as DialogContent,
+  N as DialogDescription,
+  x as DialogFooter,
+  g as DialogHeader,
   d as DialogOverlay,
-  m as DialogPortal,
-  g as DialogTitle,
-  u as DialogTrigger
+  f as DialogPortal,
+  y as DialogTitle,
+  v as DialogTrigger
 };
 //# sourceMappingURL=dialog.mjs.map

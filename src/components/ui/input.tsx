@@ -3,6 +3,8 @@
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
+import { Spinner } from "@/components/ui/spinner";
+import { EyeIcon } from "@/icons";
 
 const inputBaseStyles = [
   "flex rounded-[5px] border bg-slate-50/50 dark:bg-slate-800",
@@ -87,14 +89,72 @@ export interface InputFieldProps extends Omit<
   rightIconLabel?: string;
   /** 라벨이 없어도 라벨 공간 유지 */
   reserveLabelSpace?: boolean;
+  /** 로딩 상태 (스피너 표시) */
+  loading?: boolean;
+  /** 비밀번호 보기 토글 표시 (type="password"일 때 기본 true) */
+  showPasswordToggle?: boolean;
 }
 
 const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
   (
-    { className, label, error, errorMessage, size = "full", id, rightIcon, onRightIconClick, rightIconLabel = "아이콘 버튼", reserveLabelSpace, ...props },
+    { className, label, error, errorMessage, size = "full", id, rightIcon, onRightIconClick, rightIconLabel = "아이콘 버튼", reserveLabelSpace, loading, showPasswordToggle, type, ...props },
     ref,
   ) => {
     const inputId = id || React.useId();
+    const [showPassword, setShowPassword] = React.useState(false);
+
+    // type="password"이고 showPasswordToggle이 명시적으로 false가 아니면 토글 표시
+    const isPasswordType = type === "password";
+    const shouldShowPasswordToggle = isPasswordType && showPasswordToggle !== false;
+
+    const hasRightContent = rightIcon || loading || shouldShowPasswordToggle;
+
+    // 실제 input type 결정
+    const inputType = isPasswordType && showPassword ? "text" : type;
+
+    // 우측 콘텐츠 렌더링
+    const renderRightContent = () => {
+      if (loading) {
+        return (
+          <div className="absolute right-2 top-1/2 -translate-y-1/2">
+            <Spinner size="sm" />
+          </div>
+        );
+      }
+
+      if (shouldShowPasswordToggle) {
+        return (
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            aria-label={showPassword ? "비밀번호 숨기기" : "비밀번호 보기"}
+            className={cn(
+              "absolute right-2 top-1/2 -translate-y-1/2 text-slate-900 hover:text-slate-600 dark:text-slate-50 dark:hover:text-white",
+              showPassword && "text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300"
+            )}
+            tabIndex={-1}
+          >
+            <EyeIcon size={24} />
+          </button>
+        );
+      }
+
+      if (rightIcon) {
+        return (
+          <button
+            type="button"
+            onClick={onRightIconClick}
+            aria-label={rightIconLabel}
+            className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-900 hover:text-slate-600 dark:text-slate-50 dark:hover:text-white"
+            tabIndex={-1}
+          >
+            {rightIcon}
+          </button>
+        );
+      }
+
+      return null;
+    };
 
     return (
       <div className={cn("flex flex-col gap-1", inputSizeStyles[size])}>
@@ -113,21 +173,12 @@ const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
           <Input
             id={inputId}
             ref={ref}
+            type={inputType}
             error={error}
-            className={cn("w-full", rightIcon && "pr-9", className)}
+            className={cn("w-full", hasRightContent && "pr-9", className)}
             {...props}
           />
-          {rightIcon && (
-            <button
-              type="button"
-              onClick={onRightIconClick}
-              aria-label={rightIconLabel}
-              className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-900 hover:text-slate-600 dark:text-slate-50 dark:hover:text-white"
-              tabIndex={-1}
-            >
-              {rightIcon}
-            </button>
-          )}
+          {renderRightContent()}
         </div>
         {error && errorMessage && (
           <span className="text-xs text-destructive dark:text-red-400">
