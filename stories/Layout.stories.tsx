@@ -8,7 +8,6 @@ import { NavRenderer } from "../src/layout/nav-renderer";
 import { Button } from "../src/components/ui/button";
 import { Breadcrumb } from "../src/components/ui/breadcrumb";
 import { SearchBar } from "../src/layout/search-bar";
-import { VisitTag } from "../src/layout/visit-tag";
 import {
   Dropdown,
   DropdownTrigger,
@@ -155,16 +154,7 @@ const sampleRecentSearches = [
 export const Default: Story = {
   render: function Render() {
     const [currentPath, setCurrentPath] = useState("/dashboard");
-    const [visits, setVisits] = useState([
-      { id: "1", label: "판매 관리" },
-      { id: "2", label: "STL" },
-      { id: "3", label: "사은품 관리" },
-    ]);
     const [bookmarked, setBookmarked] = useState(false);
-
-    const handleRemoveVisit = (id: string) => {
-      setVisits(visits.filter((v) => v.id !== id));
-    };
 
     return (
       <div style={{ height: "800px" }}>
@@ -209,18 +199,6 @@ export const Default: Story = {
                 className="w-full"
               />
             }
-            recentVisits={
-              <div className="flex items-center gap-1.5">
-                {visits.map((visit) => (
-                  <VisitTag
-                    key={visit.id}
-                    label={visit.label}
-                    onNavigate={() => console.log(`Navigate to ${visit.label}`)}
-                    onRemove={() => handleRemoveVisit(visit.id)}
-                  />
-                ))}
-              </div>
-            }
             actions={
               <div className="flex items-center gap-2">
                 <Button variant="ghost" size="icon-sm" aria-label="설정">
@@ -262,15 +240,7 @@ export const Default: Story = {
 export const WithBreadcrumb: Story = {
   render: function Render() {
     const [currentPath, setCurrentPath] = useState("/orders/b2c");
-    const [visits, setVisits] = useState([
-      { id: "1", label: "판매 관리" },
-      { id: "2", label: "STL" },
-    ]);
     const [bookmarked, setBookmarked] = useState(false);
-
-    const handleRemoveVisit = (id: string) => {
-      setVisits(visits.filter((v) => v.id !== id));
-    };
 
     return (
       <div style={{ height: "800px" }}>
@@ -310,18 +280,6 @@ export const WithBreadcrumb: Story = {
                 className="w-full"
               />
             }
-            recentVisits={
-              <div className="flex items-center gap-1.5">
-                {visits.map((visit) => (
-                  <VisitTag
-                    key={visit.id}
-                    label={visit.label}
-                    onNavigate={() => console.log(`Navigate to ${visit.label}`)}
-                    onRemove={() => handleRemoveVisit(visit.id)}
-                  />
-                ))}
-              </div>
-            }
             actions={
               <div className="flex items-center gap-2">
                 <Button variant="ghost" size="icon-sm" aria-label="알림">
@@ -353,6 +311,89 @@ export const WithBreadcrumb: Story = {
               <div className="bg-white dark:bg-slate-800 rounded-lg p-6 flex-1 mt-4">
                 <p className="text-muted-foreground">
                   주문 목록 테이블이 여기에 들어갑니다.
+                </p>
+              </div>
+            </div>
+          </AppShell.Content>
+        </AppShell>
+      </div>
+    );
+  },
+};
+
+/** 헤더 중앙 커스텀 영역 포함 */
+export const WithHeaderCenter: Story = {
+  render: function Render() {
+    const [currentPath, setCurrentPath] = useState("/dashboard");
+    const [bookmarked, setBookmarked] = useState(false);
+
+    return (
+      <div style={{ height: "800px" }}>
+        <AppShell>
+          <AppShell.Sidebar
+            footer={
+              <>
+                <Notice
+                  icon={<NoticeIcon size={20} />}
+                  title="CBT 시스템 정기 점검 안내"
+                  className="mb-5"
+                />
+                <NavInfo
+                  items={[
+                    {
+                      icon: <PhoneIcon size={20} />,
+                      text: "1800-4636",
+                      href: "tel:1800-4636",
+                    },
+                  ]}
+                />
+              </>
+            }
+          >
+            <NavRenderer
+              items={sampleNavigation}
+              currentPath={currentPath}
+              onItemClick={(href) => setCurrentPath(href)}
+            />
+          </AppShell.Sidebar>
+
+          <AppShell.Header
+            search={
+              <SearchBar
+                placeholder="검색..."
+                recentSearches={sampleRecentSearches}
+                className="w-full"
+              />
+            }
+            center={
+              <span className="text-sm text-slate-500">
+                중앙 커스텀 영역
+              </span>
+            }
+            actions={
+              <div className="flex items-center gap-2">
+                <Button variant="ghost" size="icon-sm" aria-label="알림">
+                  <BellIcon size={24} />
+                </Button>
+                <Button variant="ghost" size="icon-sm" aria-label="프로필">
+                  <ProfileIcon size={24} />
+                </Button>
+                <LanguageSelector />
+              </div>
+            }
+          />
+
+          <AppShell.Content>
+            <div className="flex flex-col gap-4">
+              <PageTitle
+                title="대시보드"
+                subtitle="Dashboard"
+                bookmarked={bookmarked}
+                onBookmark={() => setBookmarked(!bookmarked)}
+              />
+              <div className="bg-white dark:bg-slate-800 rounded-lg p-6 flex-1">
+                <p className="text-muted-foreground">
+                  여기에 대시보드 콘텐츠가 들어갑니다.
                 </p>
               </div>
             </div>
@@ -411,57 +452,33 @@ export const SidebarOnly: Story = {
 
 /** 헤더만 (개별 컴포넌트 테스트) */
 export const HeaderOnly: Story = {
-  render: function Render() {
-    const [visits, setVisits] = useState([
-      { id: "1", label: "판매 관리" },
-      { id: "2", label: "STL" },
-      { id: "3", label: "사은품 관리" },
-    ]);
-
-    const handleRemoveVisit = (id: string) => {
-      setVisits(visits.filter((v) => v.id !== id));
-    };
-
-    return (
-      <Header
-        search={
-          <SearchBar
-            placeholder="주문번호, 주문ID, 출고번호, 이름, 전화번호, 우편번호, 이메일, 주소"
-            recentSearches={sampleRecentSearches}
-            className="w-full"
-          />
-        }
-        recentVisits={
-          <div className="flex items-center gap-1.5">
-            {visits.map((visit) => (
-              <VisitTag
-                key={visit.id}
-                label={visit.label}
-                onNavigate={() => console.log(`Navigate to ${visit.label}`)}
-                onRemove={() => handleRemoveVisit(visit.id)}
-              />
-            ))}
+  render: () => (
+    <Header
+      search={
+        <SearchBar
+          placeholder="주문번호, 주문ID, 출고번호, 이름, 전화번호, 우편번호, 이메일, 주소"
+          recentSearches={sampleRecentSearches}
+          className="w-full"
+        />
+      }
+      actions={
+        <div className="flex items-center gap-2">
+          <Button variant="ghost" size="icon-sm" aria-label="설정">
+            <ShipIcon size={24} />
+          </Button>
+          <Button variant="ghost" size="icon-sm" aria-label="알림">
+            <BellIcon size={24} />
+          </Button>
+          <Button variant="ghost" size="icon-sm" aria-label="프로필">
+            <ProfileIcon size={24} />
+          </Button>
+          <div className="flex items-center gap-1 text-sm text-slate-700 dark:text-slate-300">
+            <span>Language</span>
           </div>
-        }
-        actions={
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon-sm" aria-label="설정">
-              <ShipIcon size={24} />
-            </Button>
-            <Button variant="ghost" size="icon-sm" aria-label="알림">
-              <BellIcon size={24} />
-            </Button>
-            <Button variant="ghost" size="icon-sm" aria-label="프로필">
-              <ProfileIcon size={24} />
-            </Button>
-            <div className="flex items-center gap-1 text-sm text-slate-700 dark:text-slate-300">
-              <span>Language</span>
-            </div>
-          </div>
-        }
-      />
-    );
-  },
+        </div>
+      }
+    />
+  ),
 };
 
 /** 사이드바 없는 레이아웃 - Compound Component 패턴 */

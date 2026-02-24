@@ -10,7 +10,7 @@ src/
 ├── components/      # UI 컴포넌트
 │   └── ui/          # 기본 UI 컴포넌트 (Button, Input, Badge 등)
 ├── config/          # 설정 파일
-├── dashboard/       # 대시보드 컴포넌트 (StatCard, VisitTag 등)
+├── dashboard/       # 대시보드 컴포넌트 (StatCard 등)
 ├── icons/           # 아이콘 컴포넌트
 ├── layout/          # 레이아웃 컴포넌트 (AppShell, Header, Sidebar 등)
 ├── lib/             # 유틸리티 함수

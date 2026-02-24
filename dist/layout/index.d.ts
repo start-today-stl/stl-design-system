@@ -11,7 +11,6 @@ export * from './notice';
 export type { NavigationConfig, NavItemConfig, NavGroupConfig, TopLevelNavItem, TopLevelNavGroup, } from './types';
 export { isNavGroup } from './types';
 export * from './search-bar';
-export * from './visit-tag';
 export * from './page-title';
 export * from './page-header';
 export * from './panel-layout';
