@@ -2,38 +2,9 @@
 
 import * as React from "react"
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox"
+import { Check, Minus } from "lucide-react"
 
 import { cn } from "@/lib/utils"
-
-// 체크 아이콘 (Figma 디자인 기준 - 10x9)
-const CheckIcon = () => (
-  <svg
-    width="10"
-    height="9"
-    viewBox="0 0 10 9"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path
-      d="M0.295898 3.7124L3.7959 8.2124L9.2959 0.212402"
-      stroke="currentColor"
-      strokeWidth="0.75"
-    />
-  </svg>
-)
-
-// 인디터미네이트 아이콘 (가로선)
-const IndeterminateIcon = () => (
-  <svg
-    width="10"
-    height="2"
-    viewBox="0 0 10 2"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path d="M0 1H10" stroke="currentColor" strokeWidth="1.5" />
-  </svg>
-)
 
 export interface CheckboxProps
   extends React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root> {
@@ -74,7 +45,7 @@ const Checkbox = React.forwardRef<
       {...props}
     >
       <CheckboxPrimitive.Indicator className="flex items-center justify-center text-current">
-        {indeterminate ? <IndeterminateIcon /> : <CheckIcon />}
+        {indeterminate ? <Minus className="h-3 w-3" strokeWidth={3} /> : <Check className="h-3 w-3" strokeWidth={3} />}
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>
   )

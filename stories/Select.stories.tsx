@@ -1,3 +1,4 @@
+import { useState } from "react"
 import type { Meta, StoryObj } from "@storybook/react"
 import { Select } from "@/components/ui/select"
 
@@ -21,6 +22,14 @@ const meta: Meta<typeof Select> = {
     disabled: {
       control: "boolean",
       description: "비활성화 상태",
+    },
+    searchable: {
+      control: "boolean",
+      description: "검색 기능 활성화",
+    },
+    multiple: {
+      control: "boolean",
+      description: "다중 선택 모드",
     },
   },
 }
@@ -169,6 +178,109 @@ export const AllStates: Story = {
       <div className="flex flex-col gap-2">
         <span className="text-sm text-slate-500">Disabled</span>
         <Select label="상품명" placeholder="접수일" options={defaultOptions} disabled size="md" />
+      </div>
+    </div>
+  ),
+}
+
+const manyOptions = [
+  { label: "서울", value: "seoul" },
+  { label: "부산", value: "busan" },
+  { label: "대구", value: "daegu" },
+  { label: "인천", value: "incheon" },
+  { label: "광주", value: "gwangju" },
+  { label: "대전", value: "daejeon" },
+  { label: "울산", value: "ulsan" },
+  { label: "세종", value: "sejong" },
+  { label: "경기", value: "gyeonggi" },
+  { label: "강원", value: "gangwon" },
+  { label: "충북", value: "chungbuk" },
+  { label: "충남", value: "chungnam" },
+  { label: "전북", value: "jeonbuk" },
+  { label: "전남", value: "jeonnam" },
+  { label: "경북", value: "gyeongbuk" },
+  { label: "경남", value: "gyeongnam" },
+  { label: "제주", value: "jeju" },
+]
+
+/** 검색 가능한 셀렉트 (단일 선택) */
+export const Searchable: Story = {
+  args: {
+    label: "지역 선택",
+    placeholder: "지역을 선택하세요",
+    options: manyOptions,
+    searchable: true,
+    size: "md",
+  },
+}
+
+/** 다중 선택 셀렉트 */
+export const Multiple: Story = {
+  args: {
+    label: "지역 선택 (다중)",
+    placeholder: "지역을 선택하세요",
+    options: manyOptions,
+    multiple: true,
+    size: "md",
+  },
+}
+
+/** 검색 + 다중 선택 (Controlled) */
+export const MultipleControlled: Story = {
+  render: function Render() {
+    const [value, setValue] = useState<string[]>(["seoul", "busan"])
+
+    return (
+      <div className="flex flex-col gap-4">
+        <Select
+          label="지역 선택 (다중)"
+          placeholder="지역을 선택하세요"
+          options={manyOptions}
+          multiple
+          value={value}
+          onValueChange={setValue}
+          size="lg"
+        />
+        <div className="text-xs text-slate-500">
+          선택된 값: {value.join(", ") || "없음"}
+        </div>
+      </div>
+    )
+  },
+}
+
+/** 모든 Select 모드 비교 */
+export const AllModes: Story = {
+  render: () => (
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-2">
+        <span className="text-sm text-slate-500">Basic (기본)</span>
+        <Select
+          label="상품명"
+          placeholder="선택하세요"
+          options={defaultOptions}
+          size="md"
+        />
+      </div>
+      <div className="flex flex-col gap-2">
+        <span className="text-sm text-slate-500">Searchable (검색 가능)</span>
+        <Select
+          label="지역"
+          placeholder="지역을 선택하세요"
+          options={manyOptions}
+          searchable
+          size="md"
+        />
+      </div>
+      <div className="flex flex-col gap-2">
+        <span className="text-sm text-slate-500">Multiple (다중 선택)</span>
+        <Select
+          label="지역 (다중)"
+          placeholder="지역을 선택하세요"
+          options={manyOptions}
+          multiple
+          size="md"
+        />
       </div>
     </div>
   ),
