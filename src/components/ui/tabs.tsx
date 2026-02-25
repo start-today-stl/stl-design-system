@@ -152,6 +152,7 @@ const PortalTooltip = ({
         left: position.left,
         transform: "translateX(-50%)",
         zIndex: 50,
+        pointerEvents: "none",
       }}
       className={cn(
         "rounded-md border bg-popover px-4 py-2.5 text-sm text-popover-foreground",
@@ -214,14 +215,18 @@ const TabsTrigger = React.forwardRef<
     <>
       <TabsPrimitive.Trigger
         ref={mergedRef}
-        style={{ maxWidth: `${maxWidth}px`, minWidth: `${minWidth}px` }}
+        style={{ minWidth: `${minWidth}px` }}
         className={cn(
           "inline-flex h-9 items-center justify-center gap-0.5 px-3 py-2 text-xs font-bold cursor-pointer",
-          "flex-shrink flex-grow-0", // 컨테이너에 맞게 축소 가능
+          "flex-grow-0", // 늘어나지 않음
           "rounded-t bg-transparent",
           "text-text-secondary",
           "mb-[-1px]", // 하단 border와 연결
-          "transition-colors",
+          "transition-all duration-200",
+          // 비활성 탭: 축소 가능, maxWidth 제한
+          "data-[state=inactive]:flex-shrink data-[state=inactive]:max-w-[120px]",
+          // 활성 탭: 축소 안 함, 전체 텍스트 표시
+          "data-[state=active]:flex-shrink-0 data-[state=active]:max-w-none",
           "data-[state=active]:border data-[state=active]:border-b-0 data-[state=active]:border-border",
           "data-[state=active]:text-slate-900 dark:data-[state=active]:text-slate-50",
           "data-[state=active]:bg-[linear-gradient(180deg,white_0%,#f4f6f8_30%)]",
@@ -328,7 +333,6 @@ const SortableTabsTrigger = React.forwardRef<
     transition,
     opacity: isDragging ? 0.5 : 1,
     zIndex: isDragging ? 10 : undefined,
-    maxWidth: `${maxWidth}px`,
     minWidth: `${minWidth}px`,
   }
 
@@ -339,11 +343,15 @@ const SortableTabsTrigger = React.forwardRef<
         style={style}
         className={cn(
           "inline-flex h-9 items-center justify-center gap-0.5 px-3 py-2 text-xs font-bold cursor-grab",
-          "flex-shrink flex-grow-0", // 컨테이너에 맞게 축소 가능
+          "flex-grow-0", // 늘어나지 않음
           "rounded-t bg-transparent",
           "text-text-secondary",
           "mb-[-1px]", // 하단 border와 연결
-          "transition-colors",
+          "transition-all duration-200",
+          // 비활성 탭: 축소 가능, maxWidth 제한
+          "data-[state=inactive]:flex-shrink data-[state=inactive]:max-w-[120px]",
+          // 활성 탭: 축소 안 함, 전체 텍스트 표시
+          "data-[state=active]:flex-shrink-0 data-[state=active]:max-w-none",
           "data-[state=active]:border data-[state=active]:border-b-0 data-[state=active]:border-border",
           "data-[state=active]:text-slate-900 dark:data-[state=active]:text-slate-50",
           "data-[state=active]:bg-[linear-gradient(180deg,white_0%,#f4f6f8_30%)]",

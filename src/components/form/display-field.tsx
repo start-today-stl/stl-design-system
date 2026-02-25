@@ -198,13 +198,13 @@ export const DisplayField = React.forwardRef<HTMLDivElement, DisplayFieldProps>(
               type="button"
               onClick={handleCopy}
               className={cn(
-                "shrink-0 p-1 rounded transition-colors",
+                "shrink-0 p-1 rounded transition-colors cursor-pointer",
                 "text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300",
                 copied && "text-green-500 dark:text-green-400"
               )}
               aria-label={copied ? "복사됨" : "복사"}
             >
-              <DuplicationIcon size={16} />
+              <DuplicationIcon size={20} />
             </button>
           )}
         </div>
