@@ -137,3 +137,40 @@ export const InternalTabs: Story = {
     </div>
   ),
 }
+
+/** 스크롤 시 상단 고정 (Sticky) */
+export const Sticky: Story = {
+  args: {
+    title: "상품 목록",
+    subtitle: "Product List",
+    sticky: true,
+  },
+  parameters: {
+    layout: "fullscreen",
+  },
+  render: (args) => (
+    <div className="h-[400px] overflow-auto bg-slate-50">
+      <div className="p-4">
+        <PageHeader
+          {...args}
+          tabs={
+            <Tabs defaultValue="all" className="w-full">
+              <TabsList align="end">
+                <TabsTrigger value="all">전체</TabsTrigger>
+                <TabsTrigger value="active">사용</TabsTrigger>
+                <TabsTrigger value="inactive">미사용</TabsTrigger>
+              </TabsList>
+            </Tabs>
+          }
+        />
+        <div className="mt-4 space-y-4">
+          {Array.from({ length: 20 }).map((_, i) => (
+            <div key={i} className="p-4 bg-white rounded-lg border">
+              스크롤 테스트용 콘텐츠 {i + 1}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  ),
+}

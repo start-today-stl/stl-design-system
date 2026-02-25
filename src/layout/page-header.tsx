@@ -36,17 +36,23 @@ export interface PageHeaderProps
     Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
   /** 탭 영역 (Tabs 컴포넌트) */
   tabs?: React.ReactNode
+  /** 스크롤 시 상단에 고정 */
+  sticky?: boolean
 }
 
 const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>(
   (
-    { className, title, subtitle, bookmarked, onBookmark, tabs, ...props },
+    { className, title, subtitle, bookmarked, onBookmark, tabs, sticky, ...props },
     ref
   ) => {
     return (
       <div
         ref={ref}
-        className={cn("flex items-end w-full", className)}
+        className={cn(
+          "flex items-end w-full",
+          sticky && "sticky top-0 z-10 bg-slate-50 dark:bg-slate-950 shadow-sm",
+          className
+        )}
         {...props}
       >
         <PageTitle

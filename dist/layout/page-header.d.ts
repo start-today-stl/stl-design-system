@@ -31,6 +31,8 @@ import * as React from "react";
 export interface PageHeaderProps extends Omit<PageTitleProps, "className">, Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
     /** 탭 영역 (Tabs 컴포넌트) */
     tabs?: React.ReactNode;
+    /** 스크롤 시 상단에 고정 */
+    sticky?: boolean;
 }
 declare const PageHeader: React.ForwardRefExoticComponent<PageHeaderProps & React.RefAttributes<HTMLDivElement>>;
 export { PageHeader };
