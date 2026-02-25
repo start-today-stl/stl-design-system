@@ -204,12 +204,34 @@ export default defineConfig({
 
 ---
 
-## 5. 컴포넌트 사용
+## 5. Import 경로
+
+| Import 경로                    | 설명                                               |
+| ------------------------------ | -------------------------------------------------- |
+| `stl-design-system`            | 전체 re-export (components, layout, icons, assets) |
+| `stl-design-system/components` | UI 컴포넌트 (Button, Input, Table, Dashboard 등)   |
+| `stl-design-system/layout`     | Layout 컴포넌트 (AppShell, Header, Sidebar 등)     |
+| `stl-design-system/icons`      | 아이콘 컴포넌트                                    |
+| `stl-design-system/assets`     | 로고, 이미지 등 정적 에셋                          |
+
+```tsx
+// 각 경로에서 직접 import
+import { Button, Input, DataTable } from "stl-design-system/components";
+import { AppShell, NavGroup, NavItem } from "stl-design-system/layout";
+import { SearchIcon, DeleteIcon } from "stl-design-system/icons";
+
+// 또는 메인 진입점에서 한번에 import
+import { Button, AppShell, SearchIcon } from "stl-design-system";
+```
+
+---
+
+## 6. 컴포넌트 사용
 
 ### 기본 컴포넌트
 
 ```tsx
-import { Button, Input, Badge } from "stl-design-system";
+import { Button, Input, Badge } from "stl-design-system/components";
 
 function App() {
   return (
@@ -235,14 +257,8 @@ function App() {
 ### 레이아웃 컴포넌트
 
 ```tsx
-import {
-  AppShell,
-  NavGroup,
-  NavItem,
-  SearchBar,
-  SolidHomeIcon,
-  SolidSettingIcon,
-} from "stl-design-system";
+import { AppShell, NavGroup, NavItem, SearchBar } from "stl-design-system/layout";
+import { SolidHomeIcon, SolidSettingIcon } from "stl-design-system/icons";
 
 function Layout({ children }) {
   return (
@@ -270,7 +286,7 @@ function Layout({ children }) {
 
 ---
 
-## 6. 문제 해결
+## 7. 문제 해결
 
 ### 스타일이 전혀 적용되지 않음
 

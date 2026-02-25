@@ -27,7 +27,6 @@ export default defineConfig({
         index: resolve(__dirname, 'src/index.ts'),
         components: resolve(__dirname, 'src/components/index.ts'),
         layout: resolve(__dirname, 'src/layout/index.ts'),
-        dashboard: resolve(__dirname, 'src/dashboard/index.ts'),
         icons: resolve(__dirname, 'src/icons/index.ts'),
         assets: resolve(__dirname, 'src/assets/index.ts'),
       },
@@ -55,6 +54,7 @@ export default defineConfig({
         'next-themes',
         'react-day-picker',
         /^date-fns.*/,
+        'cmdk',
       ],
       output: {
         globals: {

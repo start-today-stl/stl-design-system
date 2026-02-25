@@ -8,9 +8,10 @@ STL 서비스를 위한 React 컴포넌트 라이브러리
 src/
 ├── assets/          # 폰트 등 정적 리소스
 ├── components/      # UI 컴포넌트
-│   └── ui/          # 기본 UI 컴포넌트 (Button, Input, Badge 등)
-├── config/          # 설정 파일
-├── dashboard/       # 대시보드 컴포넌트 (StatCard 등)
+│   ├── ui/          # 기본 UI 컴포넌트 (Button, Input, Badge 등)
+│   ├── form/        # 폼 컴포넌트 (FormLabel, FormField 등)
+│   ├── table/       # 테이블 컴포넌트 (DataTable 등)
+│   └── dashboard/   # 대시보드 컴포넌트 (StatCard, DashboardCard 등)
 ├── icons/           # 아이콘 컴포넌트
 ├── layout/          # 레이아웃 컴포넌트 (AppShell, Header, Sidebar 등)
 ├── lib/             # 유틸리티 함수

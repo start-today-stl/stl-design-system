@@ -1,7 +1,7 @@
 import { jsx as s } from "react/jsx-runtime";
 import * as n from "react";
 import { cva as i } from "class-variance-authority";
-import { cn as l } from "../lib/utils.mjs";
+import { cn as l } from "../../lib/utils.mjs";
 const c = i(
   "h-[18px] px-[5px] rounded-[2px] border text-[10px] tracking-[-0.1px] transition-colors cursor-pointer inline-flex items-center justify-center border-slate-200 text-slate-700 dark:border-slate-600 dark:text-slate-100",
   {

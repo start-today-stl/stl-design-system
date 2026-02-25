@@ -1,7 +1,7 @@
 import { jsxs as t, jsx as e } from "react/jsx-runtime";
 import * as n from "react";
 import * as f from "@radix-ui/react-select";
-import { Command as p } from "../../node_modules/cmdk/dist/index.mjs";
+import { Command as p } from "cmdk";
 import * as w from "@radix-ui/react-popover";
 import { cn as l } from "../../lib/utils.mjs";
 import { SearchIcon as M } from "../../icons/SearchIcon.mjs";

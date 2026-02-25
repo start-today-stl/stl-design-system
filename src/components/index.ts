@@ -45,3 +45,6 @@ export * from './table'
 
 // Form Components (폼 레이아웃 관련)
 export * from './form'
+
+// Dashboard Components (대시보드 전용)
+export * from './dashboard'

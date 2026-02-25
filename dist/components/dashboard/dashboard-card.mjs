@@ -1,6 +1,6 @@
 import { jsxs as a, jsx as e } from "react/jsx-runtime";
 import * as m from "react";
-import { cn as t } from "../lib/utils.mjs";
+import { cn as t } from "../../lib/utils.mjs";
 const n = m.forwardRef(
   ({ className: d, icon: s, title: x, headerAction: l, children: i, stretch: r = !1, ...c }, f) => /* @__PURE__ */ a(
     "div",

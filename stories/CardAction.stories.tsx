@@ -1,7 +1,7 @@
 import * as React from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 
-import { CardAction, CardActionGroup } from '../src/dashboard'
+import { CardAction, CardActionGroup } from '../src/components/dashboard'
 
 const meta = {
   title: 'Dashboard/CardAction',

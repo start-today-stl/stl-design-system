@@ -40,3 +40,4 @@ export * from './ui/splash-screen';
 export * from './ui/skeleton';
 export * from './table';
 export * from './form';
+export * from './dashboard';
