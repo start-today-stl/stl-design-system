@@ -1,23 +1,26 @@
-import { jsxs as x, jsx as e } from "react/jsx-runtime";
-import * as l from "react";
+import { jsxs as l, jsx as t } from "react/jsx-runtime";
+import * as d from "react";
 import { cn as r } from "../../lib/utils.mjs";
-import { inputSizeStyles as u } from "./input.mjs";
-const f = l.forwardRef(
-  ({ className: o, label: t, error: d, errorMessage: s, size: n = "full", reserveLabelSpace: i, children: a, ...c }, m) => {
-    const p = l.useId();
-    return /* @__PURE__ */ x("div", { ref: m, className: r("flex flex-col gap-1", u[n], o), ...c, children: [
-      (t || i) && /* @__PURE__ */ e(
+import { inputSizeStyles as f } from "./input.mjs";
+const h = d.forwardRef(
+  ({ className: n, label: e, error: o, errorMessage: s, size: i = "full", reserveLabelSpace: a, required: c, children: m, ...p }, u) => {
+    const x = d.useId();
+    return /* @__PURE__ */ l("div", { ref: u, className: r("flex flex-col gap-1", f[i], n), ...p, children: [
+      (e || a) && /* @__PURE__ */ l(
         "label",
         {
-          htmlFor: p,
+          htmlFor: x,
           className: r(
-            "text-xs text-slate-600 dark:text-slate-50",
-            !t && "invisible"
+            "flex items-center gap-1 text-xs text-slate-600 dark:text-slate-50",
+            !e && "invisible"
           ),
-          children: t || " "
+          children: [
+            c && /* @__PURE__ */ t("span", { className: "size-2 rounded-full bg-stone-400", "aria-hidden": "true" }),
+            e || " "
+          ]
         }
       ),
-      /* @__PURE__ */ e(
+      /* @__PURE__ */ t(
         "div",
         {
           className: r(
@@ -27,15 +30,15 @@ const f = l.forwardRef(
             "[&>*:not(:first-child):not(:last-child)]:rounded-none",
             "[&>*:not(:last-child)]:border-r-0"
           ),
-          children: a
+          children: m
         }
       ),
-      d && s && /* @__PURE__ */ e("span", { className: "text-xs text-destructive dark:text-red-400", children: s })
+      o && s && /* @__PURE__ */ t("span", { className: "text-xs text-destructive dark:text-red-400", children: s })
     ] });
   }
 );
-f.displayName = "InputGroup";
+h.displayName = "InputGroup";
 export {
-  f as InputGroup
+  h as InputGroup
 };
 //# sourceMappingURL=input-group.mjs.map

@@ -200,6 +200,71 @@ export const TwoColumns: Story = {
   ),
 }
 
+/** 2열 + 전체 너비 섹션 (fullWidth) */
+export const TwoColumnsWithFullWidthSection: Story = {
+  render: () => (
+    <FormCard className="max-w-[1036px]">
+      <FormContent columns={2}>
+        {/* 왼쪽 열 */}
+        <FormColumn>
+          <FormSection title="식별 정보">
+            <FormRow>
+              <InputField label="SKU" placeholder="SKU 입력" />
+            </FormRow>
+            <FormRow columns={2}>
+              <InputField label="바코드" placeholder="바코드 입력" />
+              <InputField label="상품 참조 번호" placeholder="참조 번호 입력" />
+            </FormRow>
+          </FormSection>
+
+          <FormSection title="상품 기본 정보" divider>
+            <FormRow>
+              <InputField label="상품명" placeholder="상품명 입력" />
+            </FormRow>
+          </FormSection>
+        </FormColumn>
+
+        {/* 오른쪽 열 */}
+        <FormColumn>
+          <FormSection title="판매 정보">
+            <FormRow columns={2}>
+              <InputField label="판매 가격" placeholder="가격 입력" />
+              <Select
+                label="통화단위"
+                placeholder="선택"
+                options={[
+                  { label: "KRW", value: "krw" },
+                  { label: "USD", value: "usd" },
+                ]}
+              />
+            </FormRow>
+          </FormSection>
+
+          <FormSection title="옵션 정보" divider>
+            <FormRow columns={2}>
+              <InputField label="색상" placeholder="색상 입력" />
+              <InputField label="소재" placeholder="소재 입력" />
+            </FormRow>
+          </FormSection>
+        </FormColumn>
+
+        {/* 전체 너비 섹션 (fullWidth) - 폼 하단에 배치 */}
+        <FormSection title="세트 구성품" divider fullWidth>
+          <div className="text-sm text-text-secondary bg-slate-50 rounded-lg p-4 text-center">
+            이 영역은 fullWidth prop으로 2열을 모두 차지합니다.
+            <br />
+            테이블이나 전체 너비가 필요한 컴포넌트를 배치할 수 있습니다.
+          </div>
+        </FormSection>
+      </FormContent>
+      <FormFooter>
+        <Button variant="ghost" className="w-[160px]">취소</Button>
+        <Button variant="primary" className="w-[160px]">등록</Button>
+      </FormFooter>
+    </FormCard>
+  ),
+}
+
 /** 헤더 포함 */
 export const WithHeader: Story = {
   render: () => (

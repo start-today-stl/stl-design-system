@@ -8,6 +8,8 @@ interface FormSectionProps extends React.HTMLAttributes<HTMLDivElement> {
     defaultCollapsed?: boolean;
     /** 구분선 표시 여부 (섹션 위에 표시) */
     divider?: boolean;
+    /** 전체 너비 사용 (FormContent 내에서 col-span-full 적용) */
+    fullWidth?: boolean;
 }
 declare const FormSection: React.ForwardRefExoticComponent<FormSectionProps & React.RefAttributes<HTMLDivElement>>;
 interface FormRowProps extends React.HTMLAttributes<HTMLDivElement> {
