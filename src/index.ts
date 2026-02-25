@@ -1,11 +1,8 @@
 // Tokens
 export * from './tokens'
 
-// Components (기본 UI)
+// Components (기본 UI + Dashboard)
 export * from './components'
-
-// Dashboard
-export * from './dashboard'
 
 // Layout (레이아웃 + 네비게이션)
 export * from './layout'

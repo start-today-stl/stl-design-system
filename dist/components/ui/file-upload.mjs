@@ -1,9 +1,9 @@
 import { jsxs as r, jsx as s } from "react/jsx-runtime";
 import * as h from "react";
 import { cn as v } from "../../lib/utils.mjs";
-import { Input as C, inputSizeStyles as I } from "./input.mjs";
-import { Button as U } from "./button.mjs";
-import { UploadIcon as b } from "../../icons/UploadIcon.mjs";
+import { Input as b, inputSizeStyles as C } from "./input.mjs";
+import { Button as I } from "./button.mjs";
+import { UploadIcon as U } from "../../icons/UploadIcon.mjs";
 import { XIcon as S } from "../../icons/XIcon.mjs";
 const k = (n) => {
   if (n === 0) return "0 B";
@@ -54,7 +54,7 @@ const k = (n) => {
       "div",
       {
         ref: $,
-        className: v("flex flex-col gap-2", I[y], B),
+        className: v("flex flex-col gap-2", C[y], B),
         children: [
           n && /* @__PURE__ */ r("label", { className: "flex items-center gap-1 text-xs text-slate-600 dark:text-slate-50", children: [
             z && /* @__PURE__ */ s("span", { className: "size-2 rounded-full bg-stone-400", "aria-hidden": "true" }),
@@ -72,7 +72,7 @@ const k = (n) => {
               ),
               children: [
                 /* @__PURE__ */ s(
-                  C,
+                  b,
                   {
                     value: R,
                     placeholder: "",
@@ -84,14 +84,15 @@ const k = (n) => {
                   }
                 ),
                 /* @__PURE__ */ r(
-                  U,
+                  I,
                   {
+                    type: "button",
                     variant: "primary",
                     size: "default",
                     onClick: M,
                     disabled: c || !F,
                     children: [
-                      /* @__PURE__ */ s(b, { size: 20 }),
+                      /* @__PURE__ */ s(U, { size: 20 }),
                       "파일 선택"
                     ]
                   }

@@ -21,11 +21,6 @@
       "import": "./dist/layout.mjs",
       "require": "./dist/layout.cjs"
     },
-    "./dashboard": {
-      "types": "./dist/dashboard/index.d.ts",
-      "import": "./dist/dashboard.mjs",
-      "require": "./dist/dashboard.cjs"
-    },
     "./icons": {
       "types": "./dist/icons/index.d.ts",
       "import": "./dist/icons.mjs",

@@ -1,9 +1,9 @@
 import * as React from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 
-import { DashboardCard } from '../src/dashboard/dashboard-card'
-import { CardAction, CardActionGroup } from '../src/dashboard'
-import { StatCard } from '../src/dashboard/stat-card'
+import { DashboardCard } from '../src/components/dashboard/dashboard-card'
+import { CardAction, CardActionGroup } from '../src/components/dashboard'
+import { StatCard } from '../src/components/dashboard/stat-card'
 import { Badge } from '../src/components/ui/badge'
 import { InformationIcon } from '../src/icons'
 

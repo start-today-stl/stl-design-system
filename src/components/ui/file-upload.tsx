@@ -172,6 +172,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
             aria-label={label || "선택된 파일"}
           />
           <Button
+            type="button"
             variant="primary"
             size="default"
             onClick={handleButtonClick}

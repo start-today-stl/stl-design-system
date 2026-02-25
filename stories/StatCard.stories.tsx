@@ -2,7 +2,7 @@ import * as React from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { fn, expect, userEvent, within } from 'storybook/test'
 
-import { StatCard } from '../src/dashboard/stat-card'
+import { StatCard } from '../src/components/dashboard/stat-card'
 import { Badge } from '../src/components/ui/badge'
 import { InformationIcon } from '../src/icons'
 

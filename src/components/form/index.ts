@@ -17,3 +17,5 @@ export type {
 export { FormSection, FormRow } from "./form-section"
 
 export type { FormSectionProps, FormRowProps } from "./form-section"
+
+export { FormLabel } from "./form-label"
