@@ -16,6 +16,7 @@ export * from './ui/checkbox';
 export * from './ui/dialog';
 export * from './ui/dropdown';
 export * from './ui/error-content';
+export * from './ui/file-upload';
 export * from './ui/input';
 export * from './ui/input-group';
 export * from './ui/label';

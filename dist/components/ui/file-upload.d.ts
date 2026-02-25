@@ -23,6 +23,8 @@ export interface FileUploadProps {
     size?: InputSize;
     /** 비활성화 */
     disabled?: boolean;
+    /** 필수 입력 표시 (라벨 앞에 점 표시) */
+    required?: boolean;
     /** 추가 className */
     className?: string;
 }

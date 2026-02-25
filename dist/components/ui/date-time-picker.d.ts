@@ -30,6 +30,8 @@ export interface DateTimePickerProps {
     className?: string;
     /** 라벨이 없어도 라벨 공간 유지 */
     reserveLabelSpace?: boolean;
+    /** 필수 입력 표시 (라벨 앞에 점 표시) */
+    required?: boolean;
 }
-declare const DateTimePicker: ({ value, onChange, label, placeholder, dateFormat, error, errorMessage, size, disabled, className, reserveLabelSpace, }: DateTimePickerProps) => import("react/jsx-runtime").JSX.Element;
+declare const DateTimePicker: ({ value, onChange, label, placeholder, dateFormat, error, errorMessage, size, disabled, className, reserveLabelSpace, required, }: DateTimePickerProps) => import("react/jsx-runtime").JSX.Element;
 export { DateTimePicker, TimeSpinner };

@@ -104,6 +104,17 @@ export const Variants: Story = {
   ),
 }
 
+/** 필수 입력 표시 */
+export const Required: Story = {
+  render: () => (
+    <RadioGroupField label="배송 방법" defaultValue="standard" required>
+      <RadioGroupItem value="standard" label="일반 배송" />
+      <RadioGroupItem value="express" label="빠른 배송" />
+      <RadioGroupItem value="pickup" label="매장 픽업" />
+    </RadioGroupField>
+  ),
+}
+
 /** 모든 상태 비교 */
 export const AllStates: Story = {
   render: () => (

@@ -90,6 +90,16 @@ export const WithLabelChecked: Story = {
   },
 }
 
+/** 필수 입력 표시 */
+export const Required: Story = {
+  args: {
+    "aria-label": "Setting",
+    size: "sm",
+    label: "해외 판매 상품",
+    required: true,
+  },
+}
+
 /** 모든 상태 */
 export const AllStates: Story = {
   render: () => (

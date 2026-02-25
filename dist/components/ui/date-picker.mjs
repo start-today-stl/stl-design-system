@@ -1,12 +1,12 @@
-import { jsxs as j, jsx as s } from "react/jsx-runtime";
+import { jsxs as B, jsx as s } from "react/jsx-runtime";
 import * as c from "react";
 import { format as n, parse as a, isValid as y } from "date-fns";
-import { cn as B } from "../../lib/utils.mjs";
-import { InputField as N } from "./input.mjs";
-import { Calendar as R } from "./calendar.mjs";
-import { Popover as z, PopoverTrigger as E, PopoverContent as T } from "./popover.mjs";
-import { CalendarIcon as q } from "../../icons/CalendarIcon.mjs";
-const W = ({
+import { cn as N } from "../../lib/utils.mjs";
+import { InputField as R } from "./input.mjs";
+import { Calendar as z } from "./calendar.mjs";
+import { Popover as E, PopoverTrigger as T, PopoverContent as q } from "./popover.mjs";
+import { CalendarIcon as A } from "../../icons/CalendarIcon.mjs";
+const X = ({
   value: r,
   onChange: e,
   label: w,
@@ -17,57 +17,59 @@ const W = ({
   size: S = "md",
   disabled: l,
   className: x,
-  reserveLabelSpace: M
+  reserveLabelSpace: M,
+  required: P
 }) => {
-  const [P, p] = c.useState(!1), [V, u] = c.useState(r || /* @__PURE__ */ new Date()), [f, i] = c.useState(
+  const [V, p] = c.useState(!1), [b, u] = c.useState(r || /* @__PURE__ */ new Date()), [f, i] = c.useState(
     r ? n(r, o) : ""
   );
   c.useEffect(() => {
     i(r ? n(r, o) : "");
   }, [r, o]);
-  const b = (t) => {
+  const k = (t) => {
     const m = t.target.value;
     i(m);
     const d = a(m, o, /* @__PURE__ */ new Date());
     y(d) && m.length === o.length && (e == null || e(d));
-  }, k = () => {
+  }, O = () => {
     if (!f) {
       e == null || e(void 0);
       return;
     }
     const t = a(f, o, /* @__PURE__ */ new Date());
     y(t) ? (i(n(t, o)), e == null || e(t)) : i(r ? n(r, o) : "");
-  }, O = (t) => {
+  }, j = (t) => {
     t && (i(n(t, o)), e == null || e(t)), p(!1);
   };
-  return /* @__PURE__ */ j(z, { open: P, onOpenChange: (t) => {
+  return /* @__PURE__ */ B(E, { open: V, onOpenChange: (t) => {
     p(t), t && u(r || /* @__PURE__ */ new Date());
   }, children: [
-    /* @__PURE__ */ s(E, { asChild: !0, disabled: l, children: /* @__PURE__ */ s("div", { role: "combobox", "aria-haspopup": "dialog", className: B("inline-block", x), children: /* @__PURE__ */ s(
-      N,
+    /* @__PURE__ */ s(T, { asChild: !0, disabled: l, children: /* @__PURE__ */ s("div", { role: "combobox", "aria-haspopup": "dialog", className: N("inline-block", x), children: /* @__PURE__ */ s(
+      R,
       {
         label: w,
         value: f,
-        onChange: b,
-        onBlur: k,
+        onChange: k,
+        onBlur: O,
         placeholder: I,
         error: h,
         errorMessage: D,
         size: S,
         disabled: l,
         autoComplete: "off",
-        rightIcon: /* @__PURE__ */ s(q, { size: 24 }),
+        rightIcon: /* @__PURE__ */ s(A, { size: 24 }),
         onRightIconClick: () => !l && p(!0),
-        reserveLabelSpace: M
+        reserveLabelSpace: M,
+        required: P
       }
     ) }) }),
-    /* @__PURE__ */ s(T, { className: "w-auto border-0 bg-transparent p-0 shadow-none", align: "start", children: /* @__PURE__ */ s(
-      R,
+    /* @__PURE__ */ s(q, { className: "w-auto border-0 bg-transparent p-0 shadow-none", align: "start", children: /* @__PURE__ */ s(
+      z,
       {
         mode: "single",
         selected: r,
-        onSelect: O,
-        month: V,
+        onSelect: j,
+        month: b,
         onMonthChange: u,
         initialFocus: !0
       }
@@ -75,6 +77,6 @@ const W = ({
   ] });
 };
 export {
-  W as DatePicker
+  X as DatePicker
 };
 //# sourceMappingURL=date-picker.mjs.map

@@ -100,6 +100,16 @@ export const Disabled: Story = {
   },
 };
 
+/** 필수 입력 표시 */
+export const Required: Story = {
+  args: {
+    label: "기간",
+    placeholder: "yyyy-mm-dd - yyyy-mm-dd",
+    size: "lg",
+    required: true,
+  },
+};
+
 /** 다양한 크기 */
 export const AllSizes: Story = {
   render: function Render() {

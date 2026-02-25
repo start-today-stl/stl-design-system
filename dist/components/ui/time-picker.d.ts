@@ -22,6 +22,8 @@ export interface TimePickerProps {
     reserveLabelSpace?: boolean;
     /** 초 단위 표시 여부 */
     showSeconds?: boolean;
+    /** 필수 입력 표시 (라벨 앞에 점 표시) */
+    required?: boolean;
 }
-declare const TimePicker: ({ value, onChange, label, placeholder, error, errorMessage, size, disabled, className, reserveLabelSpace, showSeconds, }: TimePickerProps) => import("react/jsx-runtime").JSX.Element;
+declare const TimePicker: ({ value, onChange, label, placeholder, error, errorMessage, size, disabled, className, reserveLabelSpace, showSeconds, required, }: TimePickerProps) => import("react/jsx-runtime").JSX.Element;
 export { TimePicker };

@@ -1,11 +1,7 @@
+import { inputSizeStyles, InputSize } from './input';
 import * as React from "react";
-declare const selectSizeStyles: {
-    readonly sm: "w-[160px]";
-    readonly md: "w-[260px]";
-    readonly lg: "w-[360px]";
-    readonly full: "w-full";
-};
-export type SelectSize = keyof typeof selectSizeStyles;
+/** @deprecated Use InputSize instead */
+export type SelectSize = InputSize;
 export interface SelectOption {
     label: string;
     value: string;
@@ -34,6 +30,8 @@ interface SelectBaseProps {
     tableMode?: boolean;
     /** 라벨이 없어도 라벨 공간 유지 */
     reserveLabelSpace?: boolean;
+    /** 필수 입력 표시 (라벨 앞에 점 표시) */
+    required?: boolean;
     /** 검색 기능 활성화 */
     searchable?: boolean;
     /** 검색 플레이스홀더 */
@@ -61,4 +59,4 @@ interface MultipleSelectProps extends SelectBaseProps {
 }
 export type SelectProps = SingleSelectProps | MultipleSelectProps;
 declare const Select: React.ForwardRefExoticComponent<SelectProps & React.RefAttributes<HTMLButtonElement>>;
-export { Select, selectSizeStyles };
+export { Select, inputSizeStyles };

@@ -78,6 +78,18 @@ export const WithErrorMessage: Story = {
   ),
 }
 
+/** TextareaField - 필수 입력 표시 */
+export const Required: Story = {
+  render: () => (
+    <TextareaField
+      label="상품 설명"
+      placeholder="상품 설명을 입력하세요."
+      required
+      className="w-[360px]"
+    />
+  ),
+}
+
 /** 모든 상태 비교 */
 export const AllStates: Story = {
   render: () => (

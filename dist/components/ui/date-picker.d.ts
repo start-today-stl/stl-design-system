@@ -22,6 +22,8 @@ export interface DatePickerProps {
     className?: string;
     /** 라벨이 없어도 라벨 공간 유지 */
     reserveLabelSpace?: boolean;
+    /** 필수 입력 표시 (라벨 앞에 점 표시) */
+    required?: boolean;
 }
-declare const DatePicker: ({ value, onChange, label, placeholder, dateFormat, error, errorMessage, size, disabled, className, reserveLabelSpace, }: DatePickerProps) => import("react/jsx-runtime").JSX.Element;
+declare const DatePicker: ({ value, onChange, label, placeholder, dateFormat, error, errorMessage, size, disabled, className, reserveLabelSpace, required, }: DatePickerProps) => import("react/jsx-runtime").JSX.Element;
 export { DatePicker };

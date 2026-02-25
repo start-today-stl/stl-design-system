@@ -113,3 +113,11 @@ export const Interactive: Story = {
     )
   },
 }
+
+// 필수 입력 표시
+export const Required: Story = {
+  args: {
+    label: "이용약관에 동의합니다",
+    required: true,
+  },
+}

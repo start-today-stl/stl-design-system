@@ -1,15 +1,16 @@
-import { jsx as e, jsxs as l } from "react/jsx-runtime";
-import * as m from "react";
+import { jsx as e, jsxs as d } from "react/jsx-runtime";
+import * as b from "react";
 import * as t from "@radix-ui/react-checkbox";
-import { Minus as b, Check as h } from "lucide-react";
-import { cn as k } from "../../lib/utils.mjs";
-const x = m.forwardRef(({ className: i, label: a, indeterminate: r, checked: d, ...c }, n) => {
-  const o = r ? "indeterminate" : d, s = /* @__PURE__ */ e(
+import { Minus as h, Check as k } from "lucide-react";
+import { cn as u } from "../../lib/utils.mjs";
+const x = b.forwardRef(({ className: n, label: a, indeterminate: r, checked: c, required: s, ...o }, l) => {
+  const m = r ? "indeterminate" : c, i = /* @__PURE__ */ e(
     t.Root,
     {
-      ref: n,
-      checked: o,
-      className: k(
+      ref: l,
+      checked: m,
+      required: s,
+      className: u(
         // 기본 스타일 (20x20, 2px radius)
         "peer h-5 w-5 shrink-0 rounded-[2px] border-[0.75px] flex items-center justify-center cursor-pointer",
         // 미체크 상태
@@ -25,16 +26,19 @@ const x = m.forwardRef(({ className: i, label: a, indeterminate: r, checked: d, 
         // 다크모드
         "dark:border-slate-200 dark:bg-slate-900 dark:data-[state=checked]:bg-blue-500 dark:data-[state=checked]:border-slate-200",
         "dark:data-[state=indeterminate]:bg-blue-500 dark:data-[state=indeterminate]:border-slate-200",
-        i
+        n
       ),
-      ...c,
-      children: /* @__PURE__ */ e(t.Indicator, { className: "flex items-center justify-center text-current", children: r ? /* @__PURE__ */ e(b, { className: "h-3 w-3", strokeWidth: 3 }) : /* @__PURE__ */ e(h, { className: "h-3 w-3", strokeWidth: 3 }) })
+      ...o,
+      children: /* @__PURE__ */ e(t.Indicator, { className: "flex items-center justify-center text-current", children: r ? /* @__PURE__ */ e(h, { className: "h-3 w-3", strokeWidth: 3 }) : /* @__PURE__ */ e(k, { className: "h-3 w-3", strokeWidth: 3 }) })
     }
   );
-  return a ? /* @__PURE__ */ l("label", { className: "inline-flex items-center gap-1.5 cursor-pointer align-middle", children: [
-    s,
-    /* @__PURE__ */ e("span", { className: "text-xs text-slate-600 tracking-[-0.12px] dark:text-slate-200 leading-none", children: a })
-  ] }) : s;
+  return a ? /* @__PURE__ */ d("label", { className: "inline-flex items-center gap-1.5 cursor-pointer align-middle", children: [
+    i,
+    /* @__PURE__ */ d("span", { className: "flex items-center gap-1 text-xs text-slate-600 tracking-[-0.12px] dark:text-slate-200 leading-none", children: [
+      s && /* @__PURE__ */ e("span", { className: "size-2 rounded-full bg-stone-400", "aria-hidden": "true" }),
+      a
+    ] })
+  ] }) : i;
 });
 x.displayName = t.Root.displayName;
 export {

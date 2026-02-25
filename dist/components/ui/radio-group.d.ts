@@ -12,6 +12,8 @@ declare const RadioGroupItem: React.ForwardRefExoticComponent<RadioGroupItemProp
 export interface RadioGroupFieldProps extends React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root> {
     /** 라벨 텍스트 */
     label?: string;
+    /** 필수 입력 표시 (라벨 앞에 점 표시) */
+    required?: boolean;
 }
 declare const RadioGroupField: React.ForwardRefExoticComponent<RadioGroupFieldProps & React.RefAttributes<HTMLDivElement>>;
 export { RadioGroup, RadioGroupItem, RadioGroupField };

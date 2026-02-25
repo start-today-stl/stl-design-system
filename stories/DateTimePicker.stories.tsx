@@ -96,6 +96,16 @@ export const Disabled: Story = {
   },
 };
 
+/** 필수 입력 표시 */
+export const Required: Story = {
+  args: {
+    label: "날짜/시간",
+    placeholder: "yyyy-mm-dd 00:00:00",
+    size: "md",
+    required: true,
+  },
+};
+
 /** 다양한 크기 */
 export const AllSizes: Story = {
   render: function Render() {
