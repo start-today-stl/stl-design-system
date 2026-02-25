@@ -1,36 +1,52 @@
-import { jsxs as f, jsx as a } from "react/jsx-runtime";
-import * as c from "react";
-import { cn as n } from "../lib/utils.mjs";
-import { PageTitle as p } from "./page-title.mjs";
-const x = c.forwardRef(
-  ({ className: r, title: s, subtitle: m, bookmarked: i, onBookmark: l, tabs: e, sticky: o, ...t }, d) => /* @__PURE__ */ f(
-    "div",
-    {
-      ref: d,
-      className: n(
-        "flex items-end w-full",
-        o && "sticky top-0 z-10 bg-slate-50 dark:bg-slate-950 shadow-sm",
-        r
-      ),
-      ...t,
-      children: [
-        /* @__PURE__ */ a(
-          p,
-          {
-            title: s,
-            subtitle: m,
-            bookmarked: i,
-            onBookmark: l,
-            className: "flex-shrink-0"
-          }
-        ),
-        e && /* @__PURE__ */ a("div", { className: "flex-1 min-w-0", children: e })
-      ]
-    }
-  )
+import { jsxs as o, Fragment as h, jsx as t } from "react/jsx-runtime";
+import * as r from "react";
+import { cn as b } from "../lib/utils.mjs";
+import { PageTitle as v } from "./page-title.mjs";
+const _ = r.forwardRef(
+  ({ className: l, title: c, subtitle: i, bookmarked: f, onBookmark: m, tabs: n, sticky: e, ...d }, u) => {
+    const [p, x] = r.useState(!1), s = r.useRef(null);
+    return r.useEffect(() => {
+      if (!e || !s.current) return;
+      const a = new IntersectionObserver(
+        ([g]) => {
+          x(!g.isIntersecting);
+        },
+        { threshold: 0 }
+      );
+      return a.observe(s.current), () => a.disconnect();
+    }, [e]), /* @__PURE__ */ o(h, { children: [
+      e && /* @__PURE__ */ t("div", { ref: s, className: "h-0" }),
+      /* @__PURE__ */ o(
+        "div",
+        {
+          ref: u,
+          className: b(
+            "flex items-end w-full",
+            e && "sticky top-0 z-10 bg-slate-50 dark:bg-slate-950",
+            e && p && "[box-shadow:0_4px_4px_-4px_rgb(0_0_0/0.15)]",
+            l
+          ),
+          ...d,
+          children: [
+            /* @__PURE__ */ t(
+              v,
+              {
+                title: c,
+                subtitle: i,
+                bookmarked: f,
+                onBookmark: m,
+                className: "flex-shrink-0"
+              }
+            ),
+            n && /* @__PURE__ */ t("div", { className: "flex-1 min-w-0", children: n })
+          ]
+        }
+      )
+    ] });
+  }
 );
-x.displayName = "PageHeader";
+_.displayName = "PageHeader";
 export {
-  x as PageHeader
+  _ as PageHeader
 };
 //# sourceMappingURL=page-header.mjs.map
