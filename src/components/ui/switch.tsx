@@ -39,15 +39,18 @@ export interface SwitchProps
     VariantProps<typeof switchVariants> {
   /** 라벨 텍스트 */
   label?: string
+  /** 필수 입력 표시 (라벨 앞에 점 표시) */
+  required?: boolean
 }
 
 const Switch = React.forwardRef<
   React.ElementRef<typeof SwitchPrimitives.Root>,
   SwitchProps
->(({ className, size, label, ...props }, ref) => {
+>(({ className, size, label, required, ...props }, ref) => {
   const switchElement = (
     <SwitchPrimitives.Root
       className={cn(switchVariants({ size }), className)}
+      required={required}
       {...props}
       ref={ref}
     >
@@ -59,7 +62,12 @@ const Switch = React.forwardRef<
     return (
       <div className="inline-flex items-center gap-2">
         {switchElement}
-        <span className="text-xs text-slate-500 dark:text-slate-300">{label}</span>
+        <span className="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-300">
+          {required && (
+            <span className="size-2 rounded-full bg-stone-400" aria-hidden="true" />
+          )}
+          {label}
+        </span>
       </div>
     )
   }

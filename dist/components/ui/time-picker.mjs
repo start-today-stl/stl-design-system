@@ -1,11 +1,11 @@
-import { jsxs as j, jsx as i, Fragment as v } from "react/jsx-runtime";
+import { jsxs as j, jsx as i, Fragment as A } from "react/jsx-runtime";
 import * as u from "react";
-import { cn as A } from "../../lib/utils.mjs";
-import { InputField as G } from "./input.mjs";
-import { Popover as J, PopoverTrigger as K, PopoverContent as L } from "./popover.mjs";
+import { cn as G } from "../../lib/utils.mjs";
+import { InputField as J } from "./input.mjs";
+import { Popover as K, PopoverTrigger as L, PopoverContent as Q } from "./popover.mjs";
 import { TimeSpinner as T } from "./date-time-picker.mjs";
-import { BellIcon as Q } from "../../icons/BellIcon.mjs";
-const tt = ({
+import { BellIcon as U } from "../../icons/BellIcon.mjs";
+const st = ({
   value: c,
   onChange: e,
   label: B,
@@ -16,9 +16,10 @@ const tt = ({
   disabled: m,
   className: E,
   reserveLabelSpace: F,
-  showSeconds: d = !0
+  showSeconds: d = !0,
+  required: O
 }) => {
-  const [O, $] = u.useState(!1), I = (t) => {
+  const [R, $] = u.useState(!1), I = (t) => {
     if (!t) return { hours: 0, minutes: 0, seconds: 0 };
     if (t instanceof Date)
       return {
@@ -50,7 +51,7 @@ const tt = ({
     } else
       p("");
   }, [c, d]);
-  const R = (t) => {
+  const z = (t) => {
     const s = t.target.value;
     p(s);
     const r = s.split(":");
@@ -58,7 +59,7 @@ const tt = ({
       const o = parseInt(r[0], 10), n = parseInt(r[1], 10), l = r[2] ? parseInt(r[2], 10) : 0;
       !isNaN(o) && !isNaN(n) && o >= 0 && o <= 23 && n >= 0 && n <= 59 && l >= 0 && l <= 59 && (N(o), S(n), b(l), e == null || e(a(o, n, l)));
     }
-  }, z = () => {
+  }, D = () => {
     if (!k) {
       e == null || e("");
       return;
@@ -73,40 +74,41 @@ const tt = ({
       }
     }
     p(c ? a(f, x, h) : "");
-  }, D = (t) => {
+  }, g = (t) => {
     N(t);
     const s = a(t, x, h);
     p(s), e == null || e(s);
-  }, g = (t) => {
+  }, q = (t) => {
     S(t);
     const s = a(f, t, h);
     p(s), e == null || e(s);
-  }, q = (t) => {
+  }, v = (t) => {
     b(t);
     const s = a(f, x, t);
     p(s), e == null || e(s);
   };
-  return /* @__PURE__ */ j(J, { open: O, onOpenChange: $, children: [
-    /* @__PURE__ */ i(K, { asChild: !0, disabled: m, children: /* @__PURE__ */ i("div", { role: "combobox", "aria-haspopup": "dialog", className: A("inline-block", E), children: /* @__PURE__ */ i(
-      G,
+  return /* @__PURE__ */ j(K, { open: R, onOpenChange: $, children: [
+    /* @__PURE__ */ i(L, { asChild: !0, disabled: m, children: /* @__PURE__ */ i("div", { role: "combobox", "aria-haspopup": "dialog", className: G("inline-block", E), children: /* @__PURE__ */ i(
+      J,
       {
         label: B,
         value: k,
-        onChange: R,
-        onBlur: z,
+        onChange: z,
+        onBlur: D,
         placeholder: d ? H : "00:00",
         error: M,
         errorMessage: V,
         size: w,
         disabled: m,
         autoComplete: "off",
-        rightIcon: /* @__PURE__ */ i(Q, { size: 24 }),
+        rightIcon: /* @__PURE__ */ i(U, { size: 24 }),
         onRightIconClick: () => !m && $(!0),
-        reserveLabelSpace: F
+        reserveLabelSpace: F,
+        required: O
       }
     ) }) }),
     /* @__PURE__ */ i(
-      L,
+      Q,
       {
         className: "w-auto border-0 bg-transparent p-0 shadow-none",
         align: "start",
@@ -115,7 +117,7 @@ const tt = ({
             T,
             {
               value: f,
-              onChange: D,
+              onChange: g,
               max: 23,
               disabled: m
             }
@@ -125,18 +127,18 @@ const tt = ({
             T,
             {
               value: x,
-              onChange: g,
+              onChange: q,
               max: 59,
               disabled: m
             }
           ),
-          d && /* @__PURE__ */ j(v, { children: [
+          d && /* @__PURE__ */ j(A, { children: [
             /* @__PURE__ */ i("span", { className: "flex h-[23px] w-[9px] items-center justify-center text-xs text-slate-500 dark:text-slate-300", children: ":" }),
             /* @__PURE__ */ i(
               T,
               {
                 value: h,
-                onChange: q,
+                onChange: v,
                 max: 59,
                 disabled: m
               }
@@ -148,6 +150,6 @@ const tt = ({
   ] });
 };
 export {
-  tt as TimePicker
+  st as TimePicker
 };
 //# sourceMappingURL=time-picker.mjs.map

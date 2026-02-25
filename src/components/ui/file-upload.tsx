@@ -30,6 +30,8 @@ export interface FileUploadProps {
   size?: InputSize;
   /** 비활성화 */
   disabled?: boolean;
+  /** 필수 입력 표시 (라벨 앞에 점 표시) */
+  required?: boolean;
   /** 추가 className */
   className?: string;
 }
@@ -72,6 +74,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
       errorMessage,
       size = "full",
       disabled,
+      required,
       className,
     },
     ref
@@ -141,7 +144,10 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
       >
         {/* 라벨 */}
         {label && (
-          <label className="text-xs text-slate-600 dark:text-slate-50">
+          <label className="flex items-center gap-1 text-xs text-slate-600 dark:text-slate-50">
+            {required && (
+              <span className="size-2 rounded-full bg-stone-400" aria-hidden="true" />
+            )}
             {label}
           </label>
         )}

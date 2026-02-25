@@ -65,6 +65,17 @@ export const WithLabel: Story = {
   },
 }
 
+/** 필수 입력 표시 */
+export const Required: Story = {
+  args: {
+    label: "브랜드",
+    placeholder: "브랜드를 선택하세요",
+    options: defaultOptions,
+    size: "md",
+    required: true,
+  },
+}
+
 /** 에러 상태 */
 export const Error: Story = {
   args: {

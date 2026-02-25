@@ -112,6 +112,15 @@ export const Disabled: Story = {
   },
 };
 
+/** 필수 입력 표시 */
+export const Required: Story = {
+  args: {
+    label: "시간",
+    size: "sm",
+    required: true,
+  },
+};
+
 /** 다양한 크기 */
 export const AllSizes: Story = {
   render: function Render() {

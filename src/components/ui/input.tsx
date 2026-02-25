@@ -93,11 +93,13 @@ export interface InputFieldProps extends Omit<
   loading?: boolean;
   /** 비밀번호 보기 토글 표시 (type="password"일 때 기본 true) */
   showPasswordToggle?: boolean;
+  /** 필수 입력 표시 (라벨 앞에 점 표시) */
+  required?: boolean;
 }
 
 const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
   (
-    { className, label, error, errorMessage, size = "full", id, rightIcon, onRightIconClick, rightIconLabel = "아이콘 버튼", reserveLabelSpace, loading, showPasswordToggle, type, ...props },
+    { className, label, error, errorMessage, size = "full", id, rightIcon, onRightIconClick, rightIconLabel = "아이콘 버튼", reserveLabelSpace, loading, showPasswordToggle, required, type, ...props },
     ref,
   ) => {
     const inputId = id || React.useId();
@@ -162,10 +164,13 @@ const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
           <label
             htmlFor={inputId}
             className={cn(
-              "text-xs text-slate-600 dark:text-slate-50",
+              "flex items-center gap-1 text-xs text-slate-600 dark:text-slate-50",
               !label && "invisible"
             )}
           >
+            {required && (
+              <span className="size-2 rounded-full bg-stone-400" aria-hidden="true" />
+            )}
             {label || "\u00A0"}
           </label>
         )}
@@ -175,6 +180,7 @@ const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
             ref={ref}
             type={inputType}
             error={error}
+            required={required}
             className={cn("w-full", hasRightContent && "pr-9", className)}
             {...props}
           />

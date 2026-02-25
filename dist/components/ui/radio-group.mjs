@@ -1,26 +1,26 @@
-import { jsx as r, jsxs as c } from "react/jsx-runtime";
-import * as l from "react";
-import * as t from "@radix-ui/react-radio-group";
-import { cn as d } from "../../lib/utils.mjs";
-const p = l.forwardRef(({ className: a, ...e }, s) => /* @__PURE__ */ r(
-  t.Root,
+import { jsx as r, jsxs as l } from "react/jsx-runtime";
+import * as c from "react";
+import * as o from "@radix-ui/react-radio-group";
+import { cn as n } from "../../lib/utils.mjs";
+const g = c.forwardRef(({ className: a, ...e }, s) => /* @__PURE__ */ r(
+  o.Root,
   {
-    className: d("grid gap-2", a),
+    className: n("grid gap-2", a),
     ...e,
     ref: s
   }
 ));
-p.displayName = t.Root.displayName;
+g.displayName = o.Root.displayName;
 const m = {
   primary: "group-data-[state=checked]:bg-blue-500",
   success: "group-data-[state=checked]:bg-green-500",
   danger: "group-data-[state=checked]:bg-red-500"
-}, u = l.forwardRef(({ className: a, label: e, variant: s = "primary", ...o }, i) => {
-  const g = m[s], n = /* @__PURE__ */ r(
-    t.Item,
+}, u = c.forwardRef(({ className: a, label: e, variant: s = "primary", ...t }, i) => {
+  const d = m[s], p = /* @__PURE__ */ r(
+    o.Item,
     {
       ref: i,
-      className: d(
+      className: n(
         // 기본 스타일 (12x12, 원형) - Figma 기준
         "peer size-3 shrink-0 rounded-md border flex items-center justify-center cursor-pointer group",
         // Default 상태: bg-slate-50, border-slate-200
@@ -35,16 +35,16 @@ const m = {
         "dark:bg-slate-700 dark:border-slate-600 dark:hover:bg-slate-500 dark:hover:border-slate-500",
         a
       ),
-      ...o,
+      ...t,
       children: /* @__PURE__ */ r(
         "span",
         {
-          className: d(
+          className: n(
             "size-1.5 rounded-full transition-colors",
             // 기본: 회색, Hover: 회색 유지
             "bg-slate-200 group-hover:bg-slate-200",
             // 선택 시: 색상 변경 (variant에 따라)
-            g,
+            d,
             // 다크모드
             "dark:bg-slate-500 dark:group-hover:bg-slate-400"
           )
@@ -52,19 +52,22 @@ const m = {
       )
     }
   );
-  return e ? /* @__PURE__ */ c("label", { className: "inline-flex items-center gap-1.5 cursor-pointer align-middle", children: [
-    n,
+  return e ? /* @__PURE__ */ l("label", { className: "inline-flex items-center gap-1.5 cursor-pointer align-middle", children: [
+    p,
     /* @__PURE__ */ r("span", { className: "text-xs text-slate-600 tracking-[-0.12px] dark:text-slate-200 leading-none", children: e })
-  ] }) : n;
+  ] }) : p;
 });
-u.displayName = t.Item.displayName;
-const b = l.forwardRef(({ className: a, label: e, children: s, ...o }, i) => /* @__PURE__ */ c("div", { className: "flex flex-col gap-1.5", children: [
-  e && /* @__PURE__ */ r("span", { className: "text-xs text-slate-600 dark:text-slate-50", children: e }),
-  /* @__PURE__ */ r(p, { ref: i, className: a, ...o, children: s })
+u.displayName = o.Item.displayName;
+const b = c.forwardRef(({ className: a, label: e, children: s, required: t, ...i }, d) => /* @__PURE__ */ l("div", { className: "flex flex-col gap-1.5", children: [
+  e && /* @__PURE__ */ l("span", { className: "flex items-center gap-1 text-xs text-slate-600 dark:text-slate-50", children: [
+    t && /* @__PURE__ */ r("span", { className: "size-2 rounded-full bg-stone-400", "aria-hidden": "true" }),
+    e
+  ] }),
+  /* @__PURE__ */ r(g, { ref: d, className: a, required: t, ...i, children: s })
 ] }));
 b.displayName = "RadioGroupField";
 export {
-  p as RadioGroup,
+  g as RadioGroup,
   b as RadioGroupField,
   u as RadioGroupItem
 };

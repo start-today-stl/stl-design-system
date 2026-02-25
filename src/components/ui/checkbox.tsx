@@ -11,12 +11,14 @@ export interface CheckboxProps
   label?: string
   /** 인디터미네이트 (일부 선택) 상태 */
   indeterminate?: boolean
+  /** 필수 입력 표시 (라벨 앞에 점 표시) */
+  required?: boolean
 }
 
 const Checkbox = React.forwardRef<
   React.ElementRef<typeof CheckboxPrimitive.Root>,
   CheckboxProps
->(({ className, label, indeterminate, checked, ...props }, ref) => {
+>(({ className, label, indeterminate, checked, required, ...props }, ref) => {
   // indeterminate 상태면 checked를 "indeterminate"로 설정
   const checkboxState = indeterminate ? "indeterminate" : checked
 
@@ -24,6 +26,7 @@ const Checkbox = React.forwardRef<
     <CheckboxPrimitive.Root
       ref={ref}
       checked={checkboxState}
+      required={required}
       className={cn(
         // 기본 스타일 (20x20, 2px radius)
         "peer h-5 w-5 shrink-0 rounded-[2px] border-[0.75px] flex items-center justify-center cursor-pointer",
@@ -54,7 +57,10 @@ const Checkbox = React.forwardRef<
     return (
       <label className="inline-flex items-center gap-1.5 cursor-pointer align-middle">
         {checkbox}
-        <span className="text-xs text-slate-600 tracking-[-0.12px] dark:text-slate-200 leading-none">
+        <span className="flex items-center gap-1 text-xs text-slate-600 tracking-[-0.12px] dark:text-slate-200 leading-none">
+          {required && (
+            <span className="size-2 rounded-full bg-stone-400" aria-hidden="true" />
+          )}
           {label}
         </span>
       </label>

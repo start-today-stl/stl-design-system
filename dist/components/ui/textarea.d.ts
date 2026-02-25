@@ -14,6 +14,8 @@ export interface TextareaFieldProps extends React.TextareaHTMLAttributes<HTMLTex
     errorMessage?: string;
     /** 라벨이 없어도 라벨 공간 유지 */
     reserveLabelSpace?: boolean;
+    /** 필수 입력 표시 (라벨 앞에 점 표시) */
+    required?: boolean;
 }
 declare const TextareaField: React.ForwardRefExoticComponent<TextareaFieldProps & React.RefAttributes<HTMLTextAreaElement>>;
 export { Textarea, TextareaField };

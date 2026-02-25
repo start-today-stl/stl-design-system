@@ -155,6 +155,27 @@ export const Disabled: Story = {
   },
 }
 
+/** 필수 입력 표시 */
+export const Required: Story = {
+  render: (args) => {
+    const [files, setFiles] = useState<File[]>([])
+    return (
+      <FileUpload
+        {...args}
+        files={files}
+        onChange={setFiles}
+        size="lg"
+      />
+    )
+  },
+  args: {
+    label: "제품 이미지",
+    maxFiles: 1,
+    accept: "image/jpg,image/jpeg,image/png",
+    required: true,
+  },
+}
+
 /** 사이즈 비교 */
 export const Sizes: Story = {
   render: () => {

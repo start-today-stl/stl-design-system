@@ -33,6 +33,8 @@ export interface DateRangePickerProps {
   className?: string;
   /** 라벨이 없어도 라벨 공간 유지 */
   reserveLabelSpace?: boolean;
+  /** 필수 입력 표시 (라벨 앞에 점 표시) */
+  required?: boolean;
 }
 
 const DateRangePicker = ({
@@ -47,6 +49,7 @@ const DateRangePicker = ({
   disabled,
   className,
   reserveLabelSpace,
+  required,
 }: DateRangePickerProps) => {
   const [open, setOpen] = React.useState(false);
   // 클릭 횟수 추적 (0: 미선택, 1: 첫번째 선택, 2: 완료)
@@ -186,6 +189,7 @@ const DateRangePicker = ({
             rightIcon={<CalendarIcon size={24} />}
             onRightIconClick={() => !disabled && setOpen(true)}
             reserveLabelSpace={reserveLabelSpace}
+            required={required}
           />
         </div>
       </PopoverTrigger>

@@ -58,10 +58,12 @@ export interface TextareaFieldProps
   errorMessage?: string
   /** 라벨이 없어도 라벨 공간 유지 */
   reserveLabelSpace?: boolean
+  /** 필수 입력 표시 (라벨 앞에 점 표시) */
+  required?: boolean
 }
 
 const TextareaField = React.forwardRef<HTMLTextAreaElement, TextareaFieldProps>(
-  ({ className, label, error, errorMessage, id, reserveLabelSpace, ...props }, ref) => {
+  ({ className, label, error, errorMessage, id, reserveLabelSpace, required, ...props }, ref) => {
     const textareaId = id || React.useId()
 
     return (
@@ -70,10 +72,13 @@ const TextareaField = React.forwardRef<HTMLTextAreaElement, TextareaFieldProps>(
           <label
             htmlFor={textareaId}
             className={cn(
-              "text-xs text-slate-600 dark:text-slate-50",
+              "flex items-center gap-1 text-xs text-slate-600 dark:text-slate-50",
               !label && "invisible"
             )}
           >
+            {required && (
+              <span className="size-2 rounded-full bg-stone-400" aria-hidden="true" />
+            )}
             {label || "\u00A0"}
           </label>
         )}
@@ -81,6 +86,7 @@ const TextareaField = React.forwardRef<HTMLTextAreaElement, TextareaFieldProps>(
           id={textareaId}
           ref={ref}
           error={error}
+          required={required}
           className={className}
           {...props}
         />

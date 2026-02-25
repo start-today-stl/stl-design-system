@@ -36,6 +36,8 @@ export interface InputFieldProps extends Omit<React.InputHTMLAttributes<HTMLInpu
     loading?: boolean;
     /** 비밀번호 보기 토글 표시 (type="password"일 때 기본 true) */
     showPasswordToggle?: boolean;
+    /** 필수 입력 표시 (라벨 앞에 점 표시) */
+    required?: boolean;
 }
 declare const InputField: React.ForwardRefExoticComponent<InputFieldProps & React.RefAttributes<HTMLInputElement>>;
 export { Input, InputField, inputSizeStyles };

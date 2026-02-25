@@ -30,6 +30,8 @@ export interface TimePickerProps {
   reserveLabelSpace?: boolean;
   /** 초 단위 표시 여부 */
   showSeconds?: boolean;
+  /** 필수 입력 표시 (라벨 앞에 점 표시) */
+  required?: boolean;
 }
 
 const TimePicker = ({
@@ -44,6 +46,7 @@ const TimePicker = ({
   className,
   reserveLabelSpace,
   showSeconds = true,
+  required,
 }: TimePickerProps) => {
   const [open, setOpen] = React.useState(false);
 
@@ -188,6 +191,7 @@ const TimePicker = ({
             rightIcon={<BellIcon size={24} />}
             onRightIconClick={() => !disabled && setOpen(true)}
             reserveLabelSpace={reserveLabelSpace}
+            required={required}
           />
         </div>
       </PopoverTrigger>

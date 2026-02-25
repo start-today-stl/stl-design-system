@@ -39,6 +39,10 @@ const meta: Meta<typeof InputField> = {
       control: "boolean",
       description: "로딩 상태 (스피너 표시)",
     },
+    required: {
+      control: "boolean",
+      description: "필수 입력 표시",
+    },
   },
 }
 
@@ -59,6 +63,16 @@ export const WithLabel: Story = {
     label: "라벨",
     placeholder: "내용을 입력하세요.",
     size: "md",
+  },
+}
+
+/** 필수 입력 표시 */
+export const Required: Story = {
+  args: {
+    label: "상품명",
+    placeholder: "상품명을 입력하세요.",
+    size: "md",
+    required: true,
   },
 }
 

@@ -94,20 +94,25 @@ export interface RadioGroupFieldProps
   extends React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root> {
   /** 라벨 텍스트 */
   label?: string
+  /** 필수 입력 표시 (라벨 앞에 점 표시) */
+  required?: boolean
 }
 
 const RadioGroupField = React.forwardRef<
   React.ElementRef<typeof RadioGroupPrimitive.Root>,
   RadioGroupFieldProps
->(({ className, label, children, ...props }, ref) => {
+>(({ className, label, children, required, ...props }, ref) => {
   return (
     <div className="flex flex-col gap-1.5">
       {label && (
-        <span className="text-xs text-slate-600 dark:text-slate-50">
+        <span className="flex items-center gap-1 text-xs text-slate-600 dark:text-slate-50">
+          {required && (
+            <span className="size-2 rounded-full bg-stone-400" aria-hidden="true" />
+          )}
           {label}
         </span>
       )}
-      <RadioGroup ref={ref} className={className} {...props}>
+      <RadioGroup ref={ref} className={className} required={required} {...props}>
         {children}
       </RadioGroup>
     </div>

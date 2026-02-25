@@ -7,6 +7,8 @@ declare const switchVariants: (props?: ({
 export interface SwitchProps extends React.ComponentPropsWithoutRef<typeof SwitchPrimitives.Root>, VariantProps<typeof switchVariants> {
     /** 라벨 텍스트 */
     label?: string;
+    /** 필수 입력 표시 (라벨 앞에 점 표시) */
+    required?: boolean;
 }
 declare const Switch: React.ForwardRefExoticComponent<SwitchProps & React.RefAttributes<HTMLButtonElement>>;
 export { Switch, switchVariants };

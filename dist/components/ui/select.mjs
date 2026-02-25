@@ -1,54 +1,50 @@
-import { jsxs as s, jsx as e } from "react/jsx-runtime";
-import * as i from "react";
+import { jsxs as t, jsx as e } from "react/jsx-runtime";
+import * as n from "react";
 import * as f from "@radix-ui/react-select";
-import { Command as c } from "../../node_modules/cmdk/dist/index.mjs";
+import { Command as p } from "../../node_modules/cmdk/dist/index.mjs";
 import * as w from "@radix-ui/react-popover";
 import { cn as l } from "../../lib/utils.mjs";
 import { SearchIcon as M } from "../../icons/SearchIcon.mjs";
 import { UpIcon as T } from "../../icons/UpIcon.mjs";
-import { XIcon as U } from "../../icons/XIcon.mjs";
-import { Checkbox as X } from "./checkbox.mjs";
-const $ = {
-  sm: "w-[160px]",
-  md: "w-[260px]",
-  lg: "w-[360px]",
-  full: "w-full"
-}, B = i.forwardRef(
+import { XIcon as F } from "../../icons/XIcon.mjs";
+import { Checkbox as U } from "./checkbox.mjs";
+import { inputSizeStyles as X } from "./input.mjs";
+const B = n.forwardRef(
   ({
     id: h,
-    placeholder: p = "선택하세요",
-    options: x,
-    value: b,
-    defaultValue: o,
+    placeholder: x = "선택하세요",
+    options: b,
+    value: m,
+    defaultValue: d,
     onValueChange: g,
-    error: t,
-    disabled: n,
-    ariaLabel: k,
-    tableMode: N
-  }, _) => /* @__PURE__ */ s(
+    error: r,
+    disabled: o,
+    ariaLabel: N,
+    tableMode: _
+  }, S) => /* @__PURE__ */ t(
     f.Root,
     {
-      value: b,
-      defaultValue: o,
+      value: m,
+      defaultValue: d,
       onValueChange: g,
-      disabled: n,
+      disabled: o,
       children: [
-        /* @__PURE__ */ s(
+        /* @__PURE__ */ t(
           f.Trigger,
           {
-            ref: _,
+            ref: S,
             id: h,
             className: l(
               "group flex h-9 w-full items-center justify-between rounded-[5px] border bg-white dark:bg-slate-800",
               "px-3 text-xs outline-none transition-colors cursor-pointer",
               "disabled:cursor-not-allowed disabled:opacity-50",
-              t ? "border-red-500 dark:border-red-500 data-[state=open]:border-red-500 data-[state=open]:shadow-[0px_0px_6px_0px_rgba(239,68,68,0.5)]" : N ? "border-slate-300 dark:border-slate-500 data-[state=open]:border-slate-500 data-[state=open]:border-[1.5px] data-[state=open]:shadow-none dark:data-[state=open]:border-slate-300" : "border-slate-100 dark:border-slate-600 data-[state=open]:border-blue-500 data-[state=open]:shadow-[0px_0px_6px_0px_rgba(23,118,255,0.5)]",
+              r ? "border-red-500 dark:border-red-500 data-[state=open]:border-red-500 data-[state=open]:shadow-[0px_0px_6px_0px_rgba(239,68,68,0.5)]" : _ ? "border-slate-300 dark:border-slate-500 data-[state=open]:border-slate-500 data-[state=open]:border-[1.5px] data-[state=open]:shadow-none dark:data-[state=open]:border-slate-300" : "border-slate-100 dark:border-slate-600 data-[state=open]:border-blue-500 data-[state=open]:shadow-[0px_0px_6px_0px_rgba(23,118,255,0.5)]",
               "data-[placeholder]:text-slate-500 dark:data-[placeholder]:text-slate-50"
             ),
-            "aria-invalid": t,
-            "aria-label": k,
+            "aria-invalid": r,
+            "aria-label": N,
             children: [
-              /* @__PURE__ */ e(f.Value, { placeholder: p }),
+              /* @__PURE__ */ e(f.Value, { placeholder: x }),
               /* @__PURE__ */ e(f.Icon, { asChild: !0, children: /* @__PURE__ */ e(
                 T,
                 {
@@ -74,11 +70,11 @@ const $ = {
             ),
             position: "popper",
             sideOffset: 4,
-            children: /* @__PURE__ */ e(f.Viewport, { className: "flex flex-col gap-[5px] max-h-[240px] overflow-y-auto", children: x.map((d) => /* @__PURE__ */ e(
+            children: /* @__PURE__ */ e(f.Viewport, { className: "flex flex-col gap-[5px] max-h-[240px] overflow-y-auto", children: b.map((i) => /* @__PURE__ */ e(
               f.Item,
               {
-                value: d.value,
-                disabled: d.disabled,
+                value: i.value,
+                disabled: i.disabled,
                 className: l(
                   "relative flex h-[29px] cursor-pointer select-none items-center rounded-[2px] px-[5px] py-[5px]",
                   "text-xs text-slate-500 dark:text-slate-50 outline-none",
@@ -87,9 +83,9 @@ const $ = {
                   "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
                   "data-[state=checked]:bg-accent data-[state=checked]:text-accent-foreground"
                 ),
-                children: /* @__PURE__ */ e(f.ItemText, { children: d.label })
+                children: /* @__PURE__ */ e(f.ItemText, { children: i.label })
               },
-              d.value
+              i.value
             )) })
           }
         ) })
@@ -98,40 +94,40 @@ const $ = {
   )
 );
 B.displayName = "BasicSelect";
-const C = i.forwardRef(
+const C = n.forwardRef(
   ({
     id: h,
-    placeholder: p = "선택하세요",
-    searchPlaceholder: x = "검색...",
-    options: b,
-    value: o,
+    placeholder: x = "선택하세요",
+    searchPlaceholder: b = "검색...",
+    options: m,
+    value: d,
     defaultValue: g,
-    onValueChange: t,
-    error: n,
-    disabled: k,
-    ariaLabel: N,
-    tableMode: _
-  }, d) => {
-    const [S, z] = i.useState(!1), [m, I] = i.useState(""), [L, O] = i.useState(g || ""), u = o !== void 0 ? o : L, y = b.find((r) => r.value === u), P = b.filter(
-      (r) => r.label.toLowerCase().includes(m.toLowerCase())
-    ), j = (r) => {
-      o === void 0 && O(r), t == null || t(r), z(!1), I("");
+    onValueChange: r,
+    error: o,
+    disabled: N,
+    ariaLabel: _,
+    tableMode: S
+  }, i) => {
+    const [c, z] = n.useState(!1), [I, v] = n.useState(""), [L, O] = n.useState(g || ""), u = d !== void 0 ? d : L, y = m.find((s) => s.value === u), P = m.filter(
+      (s) => s.label.toLowerCase().includes(I.toLowerCase())
+    ), j = (s) => {
+      d === void 0 && O(s), r == null || r(s), z(!1), v("");
     };
-    return /* @__PURE__ */ s(w.Root, { open: S, onOpenChange: z, children: [
-      /* @__PURE__ */ s(
+    return /* @__PURE__ */ t(w.Root, { open: c, onOpenChange: z, children: [
+      /* @__PURE__ */ t(
         w.Trigger,
         {
-          ref: d,
+          ref: i,
           id: h,
-          disabled: k,
+          disabled: N,
           className: l(
             "group flex h-9 w-full items-center justify-between rounded-[5px] border bg-white dark:bg-slate-800",
             "px-3 text-xs outline-none transition-colors cursor-pointer",
             "disabled:cursor-not-allowed disabled:opacity-50",
-            n ? "border-red-500 dark:border-red-500 data-[state=open]:border-red-500 data-[state=open]:shadow-[0px_0px_6px_0px_rgba(239,68,68,0.5)]" : _ ? "border-slate-300 dark:border-slate-500 data-[state=open]:border-slate-500 data-[state=open]:border-[1.5px] data-[state=open]:shadow-none dark:data-[state=open]:border-slate-300" : "border-slate-100 dark:border-slate-600 data-[state=open]:border-blue-500 data-[state=open]:shadow-[0px_0px_6px_0px_rgba(23,118,255,0.5)]"
+            o ? "border-red-500 dark:border-red-500 data-[state=open]:border-red-500 data-[state=open]:shadow-[0px_0px_6px_0px_rgba(239,68,68,0.5)]" : S ? "border-slate-300 dark:border-slate-500 data-[state=open]:border-slate-500 data-[state=open]:border-[1.5px] data-[state=open]:shadow-none dark:data-[state=open]:border-slate-300" : "border-slate-100 dark:border-slate-600 data-[state=open]:border-blue-500 data-[state=open]:shadow-[0px_0px_6px_0px_rgba(23,118,255,0.5)]"
           ),
-          "aria-invalid": n,
-          "aria-label": N,
+          "aria-invalid": o,
+          "aria-label": _,
           children: [
             /* @__PURE__ */ e(
               "span",
@@ -140,7 +136,7 @@ const C = i.forwardRef(
                   "truncate",
                   !y && "text-slate-500 dark:text-slate-50"
                 ),
-                children: (y == null ? void 0 : y.label) || p
+                children: (y == null ? void 0 : y.label) || x
               }
             ),
             /* @__PURE__ */ e(
@@ -149,7 +145,7 @@ const C = i.forwardRef(
                 size: 24,
                 className: l(
                   "text-slate-900 transition-transform duration-200 dark:text-slate-50",
-                  S && "rotate-180"
+                  c && "rotate-180"
                 )
               }
             )
@@ -168,38 +164,38 @@ const C = i.forwardRef(
           ),
           sideOffset: 4,
           align: "start",
-          children: /* @__PURE__ */ s(c, { className: "flex flex-col", children: [
-            /* @__PURE__ */ s("div", { className: "flex items-center gap-2 px-2 pb-2 border-b border-slate-100 dark:border-slate-600", children: [
+          children: /* @__PURE__ */ t(p, { className: "flex flex-col", children: [
+            /* @__PURE__ */ t("div", { className: "flex items-center gap-2 px-2 pb-2 border-b border-slate-100 dark:border-slate-600", children: [
               /* @__PURE__ */ e(M, { size: 20, className: "text-slate-400" }),
               /* @__PURE__ */ e(
-                c.Input,
+                p.Input,
                 {
-                  value: m,
-                  onValueChange: I,
-                  placeholder: x,
+                  value: I,
+                  onValueChange: v,
+                  placeholder: b,
                   className: "flex-1 bg-transparent text-xs outline-none placeholder:text-slate-400"
                 }
               )
             ] }),
-            /* @__PURE__ */ s(c.List, { className: "flex flex-col gap-[5px] max-h-[240px] overflow-y-auto pt-2", children: [
-              /* @__PURE__ */ e(c.Empty, { className: "py-2 text-center text-xs text-slate-500", children: "검색 결과가 없습니다." }),
-              P.map((r) => /* @__PURE__ */ e(
-                c.Item,
+            /* @__PURE__ */ t(p.List, { className: "flex flex-col gap-[5px] max-h-[240px] overflow-y-auto pt-2", children: [
+              /* @__PURE__ */ e(p.Empty, { className: "py-2 text-center text-xs text-slate-500", children: "검색 결과가 없습니다." }),
+              P.map((s) => /* @__PURE__ */ e(
+                p.Item,
                 {
-                  value: r.label,
-                  disabled: r.disabled,
-                  onSelect: () => j(r.value),
+                  value: s.label,
+                  disabled: s.disabled,
+                  onSelect: () => j(s.value),
                   className: l(
                     "relative flex h-[29px] cursor-pointer select-none items-center rounded-[2px] px-[5px] py-[5px]",
                     "text-xs text-slate-500 dark:text-slate-50 outline-none",
                     "hover:bg-slate-100 dark:hover:bg-slate-700",
                     "data-[selected=true]:bg-slate-100 dark:data-[selected=true]:bg-slate-700",
                     "data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
-                    u === r.value && "bg-accent text-accent-foreground"
+                    u === s.value && "bg-accent text-accent-foreground"
                   ),
-                  children: r.label
+                  children: s.label
                 },
-                r.value
+                s.value
               ))
             ] })
           ] })
@@ -209,51 +205,51 @@ const C = i.forwardRef(
   }
 );
 C.displayName = "SearchableSelect";
-const E = i.forwardRef(
+const E = n.forwardRef(
   ({
     id: h,
-    placeholder: p = "선택하세요",
-    searchPlaceholder: x = "검색...",
-    options: b,
-    value: o,
+    placeholder: x = "선택하세요",
+    searchPlaceholder: b = "검색...",
+    options: m,
+    value: d,
     defaultValue: g,
-    onValueChange: t,
-    error: n,
-    disabled: k,
-    ariaLabel: N,
-    tableMode: _
-  }, d) => {
-    const [S, z] = i.useState(!1), [m, I] = i.useState(""), [L, O] = i.useState(
+    onValueChange: r,
+    error: o,
+    disabled: N,
+    ariaLabel: _,
+    tableMode: S
+  }, i) => {
+    const [c, z] = n.useState(!1), [I, v] = n.useState(""), [L, O] = n.useState(
       g || []
-    ), u = o !== void 0 ? o : L, y = b.filter(
+    ), u = d !== void 0 ? d : L, y = m.filter(
       (a) => u.includes(a.value)
-    ), P = b.filter(
-      (a) => a.label.toLowerCase().includes(m.toLowerCase())
+    ), P = m.filter(
+      (a) => a.label.toLowerCase().includes(I.toLowerCase())
     ), j = (a) => {
-      const v = u.includes(a) ? u.filter((R) => R !== a) : [...u, a];
-      o === void 0 && O(v), t == null || t(v);
-    }, r = (a, v) => {
-      v.stopPropagation();
-      const R = u.filter((F) => F !== a);
-      o === void 0 && O(R), t == null || t(R);
+      const k = u.includes(a) ? u.filter((R) => R !== a) : [...u, a];
+      d === void 0 && O(k), r == null || r(k);
+    }, s = (a, k) => {
+      k.stopPropagation();
+      const R = u.filter((q) => q !== a);
+      d === void 0 && O(R), r == null || r(R);
     };
-    return /* @__PURE__ */ s(w.Root, { open: S, onOpenChange: z, children: [
-      /* @__PURE__ */ s(
+    return /* @__PURE__ */ t(w.Root, { open: c, onOpenChange: z, children: [
+      /* @__PURE__ */ t(
         w.Trigger,
         {
-          ref: d,
+          ref: i,
           id: h,
-          disabled: k,
+          disabled: N,
           className: l(
             "group flex min-h-9 w-full items-center justify-between rounded-[5px] border bg-white dark:bg-slate-800",
             "px-3 py-1.5 text-xs outline-none transition-colors cursor-pointer",
             "disabled:cursor-not-allowed disabled:opacity-50",
-            n ? "border-red-500 dark:border-red-500 data-[state=open]:border-red-500 data-[state=open]:shadow-[0px_0px_6px_0px_rgba(239,68,68,0.5)]" : _ ? "border-slate-300 dark:border-slate-500 data-[state=open]:border-slate-500 data-[state=open]:border-[1.5px] data-[state=open]:shadow-none dark:data-[state=open]:border-slate-300" : "border-slate-100 dark:border-slate-600 data-[state=open]:border-blue-500 data-[state=open]:shadow-[0px_0px_6px_0px_rgba(23,118,255,0.5)]"
+            o ? "border-red-500 dark:border-red-500 data-[state=open]:border-red-500 data-[state=open]:shadow-[0px_0px_6px_0px_rgba(239,68,68,0.5)]" : S ? "border-slate-300 dark:border-slate-500 data-[state=open]:border-slate-500 data-[state=open]:border-[1.5px] data-[state=open]:shadow-none dark:data-[state=open]:border-slate-300" : "border-slate-100 dark:border-slate-600 data-[state=open]:border-blue-500 data-[state=open]:shadow-[0px_0px_6px_0px_rgba(23,118,255,0.5)]"
           ),
-          "aria-invalid": n,
-          "aria-label": N,
+          "aria-invalid": o,
+          "aria-label": _,
           children: [
-            /* @__PURE__ */ e("div", { className: "flex flex-1 flex-wrap gap-1", children: y.length === 0 ? /* @__PURE__ */ e("span", { className: "text-slate-500 dark:text-slate-50", children: p }) : y.map((a) => /* @__PURE__ */ s(
+            /* @__PURE__ */ e("div", { className: "flex flex-1 flex-wrap gap-1", children: y.length === 0 ? /* @__PURE__ */ e("span", { className: "text-slate-500 dark:text-slate-50", children: x }) : y.map((a) => /* @__PURE__ */ t(
               "span",
               {
                 className: "inline-flex items-center gap-1 rounded bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 text-xs",
@@ -264,9 +260,9 @@ const E = i.forwardRef(
                     {
                       role: "img",
                       "aria-label": `${a.label} 삭제`,
-                      onClick: (v) => r(a.value, v),
+                      onClick: (k) => s(a.value, k),
                       className: "cursor-pointer",
-                      children: /* @__PURE__ */ e(U, { size: 18 })
+                      children: /* @__PURE__ */ e(F, { size: 18 })
                     }
                   )
                 ]
@@ -279,7 +275,7 @@ const E = i.forwardRef(
                 size: 24,
                 className: l(
                   "text-slate-900 transition-transform duration-200 dark:text-slate-50 flex-shrink-0",
-                  S && "rotate-180"
+                  c && "rotate-180"
                 )
               }
             )
@@ -298,25 +294,25 @@ const E = i.forwardRef(
           ),
           sideOffset: 4,
           align: "start",
-          children: /* @__PURE__ */ s(c, { className: "flex flex-col", children: [
-            /* @__PURE__ */ s("div", { className: "flex items-center gap-2 px-2 pb-2 border-b border-slate-100 dark:border-slate-600", children: [
+          children: /* @__PURE__ */ t(p, { className: "flex flex-col", children: [
+            /* @__PURE__ */ t("div", { className: "flex items-center gap-2 px-2 pb-2 border-b border-slate-100 dark:border-slate-600", children: [
               /* @__PURE__ */ e(M, { size: 20, className: "text-slate-400" }),
               /* @__PURE__ */ e(
-                c.Input,
+                p.Input,
                 {
-                  value: m,
-                  onValueChange: I,
-                  placeholder: x,
+                  value: I,
+                  onValueChange: v,
+                  placeholder: b,
                   className: "flex-1 bg-transparent text-xs outline-none placeholder:text-slate-400"
                 }
               )
             ] }),
-            /* @__PURE__ */ s(c.List, { className: "flex flex-col gap-[5px] max-h-[240px] overflow-y-auto pt-2", children: [
-              /* @__PURE__ */ e(c.Empty, { className: "py-2 text-center text-xs text-slate-500", children: "검색 결과가 없습니다." }),
+            /* @__PURE__ */ t(p.List, { className: "flex flex-col gap-[5px] max-h-[240px] overflow-y-auto pt-2", children: [
+              /* @__PURE__ */ e(p.Empty, { className: "py-2 text-center text-xs text-slate-500", children: "검색 결과가 없습니다." }),
               P.map((a) => {
-                const v = u.includes(a.value);
-                return /* @__PURE__ */ s(
-                  c.Item,
+                const k = u.includes(a.value);
+                return /* @__PURE__ */ t(
+                  p.Item,
                   {
                     value: a.label,
                     disabled: a.disabled,
@@ -330,9 +326,9 @@ const E = i.forwardRef(
                     ),
                     children: [
                       /* @__PURE__ */ e(
-                        X,
+                        U,
                         {
-                          checked: v,
+                          checked: k,
                           className: "pointer-events-none h-4 w-4"
                         }
                       ),
@@ -350,76 +346,80 @@ const E = i.forwardRef(
   }
 );
 E.displayName = "MultiSelect";
-const q = i.forwardRef(
-  (h, p) => {
+const $ = n.forwardRef(
+  (h, x) => {
     const {
-      label: x,
-      size: b = "full",
-      error: o,
+      label: b,
+      size: m = "full",
+      error: d,
       errorMessage: g,
-      className: t,
-      "aria-label": n,
-      reserveLabelSpace: k,
-      searchable: N = !1,
-      multiple: _ = !1
-    } = h, d = i.useId(), S = () => {
-      const { "aria-label": z, ...m } = h;
-      return _ ? /* @__PURE__ */ e(
+      className: r,
+      "aria-label": o,
+      reserveLabelSpace: N,
+      required: _,
+      searchable: S = !1,
+      multiple: i = !1
+    } = h, c = n.useId(), z = () => {
+      const { "aria-label": I, ...v } = h;
+      return i ? /* @__PURE__ */ e(
         E,
         {
-          ref: p,
-          id: d,
-          ariaLabel: n,
-          ...m
+          ref: x,
+          id: c,
+          ariaLabel: o,
+          ...v
         }
-      ) : N ? /* @__PURE__ */ e(
+      ) : S ? /* @__PURE__ */ e(
         C,
         {
-          ref: p,
-          id: d,
-          ariaLabel: n,
-          ...m
+          ref: x,
+          id: c,
+          ariaLabel: o,
+          ...v
         }
       ) : /* @__PURE__ */ e(
         B,
         {
-          ref: p,
-          id: d,
-          ariaLabel: n,
-          ...m
+          ref: x,
+          id: c,
+          ariaLabel: o,
+          ...v
         }
       );
     };
-    return /* @__PURE__ */ s(
+    return /* @__PURE__ */ t(
       "div",
       {
         className: l(
           "flex flex-col gap-1",
-          $[b],
-          t
+          X[m],
+          r
         ),
         children: [
-          (x || k) && /* @__PURE__ */ e(
+          (b || N) && /* @__PURE__ */ t(
             "label",
             {
-              htmlFor: d,
+              htmlFor: c,
               className: l(
-                "text-xs text-slate-600 dark:text-slate-50",
-                !x && "invisible"
+                "flex items-center gap-1 text-xs text-slate-600 dark:text-slate-50",
+                !b && "invisible"
               ),
-              children: x || " "
+              children: [
+                _ && /* @__PURE__ */ e("span", { className: "size-2 rounded-full bg-stone-400", "aria-hidden": "true" }),
+                b || " "
+              ]
             }
           ),
-          S(),
-          o && g && /* @__PURE__ */ e("span", { className: "text-xs text-destructive dark:text-red-400", children: g })
+          z(),
+          d && g && /* @__PURE__ */ e("span", { className: "text-xs text-destructive dark:text-red-400", children: g })
         ]
       }
     );
   }
 );
-q.displayName = "Select";
+$.displayName = "Select";
 export {
-  q as Select,
-  $ as selectSizeStyles
+  $ as Select,
+  X as inputSizeStyles
 };
 //# sourceMappingURL=select.mjs.map

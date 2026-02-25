@@ -8,15 +8,10 @@ import * as PopoverPrimitive from "@radix-ui/react-popover";
 import { cn } from "@/lib/utils";
 import { UpIcon, SearchIcon, XIcon } from "@/icons";
 import { Checkbox } from "@/components/ui/checkbox";
+import { inputSizeStyles, type InputSize } from "./input";
 
-const selectSizeStyles = {
-  sm: "w-[160px]",
-  md: "w-[260px]",
-  lg: "w-[360px]",
-  full: "w-full",
-} as const;
-
-export type SelectSize = keyof typeof selectSizeStyles;
+/** @deprecated Use InputSize instead */
+export type SelectSize = InputSize;
 
 export interface SelectOption {
   label: string;
@@ -48,6 +43,8 @@ interface SelectBaseProps {
   tableMode?: boolean;
   /** 라벨이 없어도 라벨 공간 유지 */
   reserveLabelSpace?: boolean;
+  /** 필수 입력 표시 (라벨 앞에 점 표시) */
+  required?: boolean;
   /** 검색 기능 활성화 */
   searchable?: boolean;
   /** 검색 플레이스홀더 */
@@ -492,6 +489,7 @@ const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
       className,
       "aria-label": ariaLabel,
       reserveLabelSpace,
+      required,
       searchable = false,
       multiple = false,
     } = props;
@@ -539,7 +537,7 @@ const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
       <div
         className={cn(
           "flex flex-col gap-1",
-          selectSizeStyles[size],
+          inputSizeStyles[size],
           className,
         )}
       >
@@ -547,10 +545,13 @@ const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
           <label
             htmlFor={id}
             className={cn(
-              "text-xs text-slate-600 dark:text-slate-50",
+              "flex items-center gap-1 text-xs text-slate-600 dark:text-slate-50",
               !label && "invisible",
             )}
           >
+            {required && (
+              <span className="size-2 rounded-full bg-stone-400" aria-hidden="true" />
+            )}
             {label || "\u00A0"}
           </label>
         )}
@@ -566,4 +567,4 @@ const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
 );
 Select.displayName = "Select";
 
-export { Select, selectSizeStyles };
+export { Select, inputSizeStyles };
