@@ -16,10 +16,12 @@ export interface InputGroupProps extends React.HTMLAttributes<HTMLDivElement> {
   size?: InputSize
   /** 라벨이 없어도 라벨 공간 유지 */
   reserveLabelSpace?: boolean
+  /** 필수 입력 표시 (라벨 앞에 점 표시) */
+  required?: boolean
 }
 
 const InputGroup = React.forwardRef<HTMLDivElement, InputGroupProps>(
-  ({ className, label, error, errorMessage, size = "full", reserveLabelSpace, children, ...props }, ref) => {
+  ({ className, label, error, errorMessage, size = "full", reserveLabelSpace, required, children, ...props }, ref) => {
     const groupId = React.useId()
 
     return (
@@ -28,10 +30,13 @@ const InputGroup = React.forwardRef<HTMLDivElement, InputGroupProps>(
           <label
             htmlFor={groupId}
             className={cn(
-              "text-xs text-slate-600 dark:text-slate-50",
+              "flex items-center gap-1 text-xs text-slate-600 dark:text-slate-50",
               !label && "invisible"
             )}
           >
+            {required && (
+              <span className="size-2 rounded-full bg-stone-400" aria-hidden="true" />
+            )}
             {label || "\u00A0"}
           </label>
         )}

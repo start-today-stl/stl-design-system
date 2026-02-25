@@ -17,6 +17,8 @@ interface FormSectionProps extends React.HTMLAttributes<HTMLDivElement> {
   defaultCollapsed?: boolean
   /** 구분선 표시 여부 (섹션 위에 표시) */
   divider?: boolean
+  /** 전체 너비 사용 (FormContent 내에서 col-span-full 적용) */
+  fullWidth?: boolean
 }
 
 const FormSection = React.forwardRef<HTMLDivElement, FormSectionProps>(
@@ -27,6 +29,7 @@ const FormSection = React.forwardRef<HTMLDivElement, FormSectionProps>(
       collapsible = false,
       defaultCollapsed = false,
       divider = false,
+      fullWidth = false,
       children,
       ...props
     },
@@ -43,7 +46,11 @@ const FormSection = React.forwardRef<HTMLDivElement, FormSectionProps>(
     return (
       <div
         ref={ref}
-        className={cn("flex flex-col gap-2", className)}
+        className={cn(
+          "flex flex-col gap-2",
+          fullWidth && "col-span-full",
+          className
+        )}
         {...props}
       >
         {/* 구분선 */}

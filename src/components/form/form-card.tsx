@@ -75,7 +75,9 @@ const FormContent = React.forwardRef<HTMLDivElement, FormContentProps>(
       <div
         ref={ref}
         className={cn(
-          "flex gap-3 border border-border bg-card p-4",
+          "border border-border bg-card p-4",
+          // columns=2일 때 grid 레이아웃 사용 (col-span 지원)
+          columns === 2 ? "grid grid-cols-2 gap-3" : "flex gap-3",
           !hasHeader && "rounded-t-2xl",
           !hasFooter && "rounded-b-2xl",
           className
