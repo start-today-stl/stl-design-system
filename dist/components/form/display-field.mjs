@@ -96,12 +96,12 @@ const z = {
                 type: "button",
                 onClick: D,
                 className: l(
-                  "shrink-0 p-1 rounded transition-colors",
+                  "shrink-0 p-1 rounded transition-colors cursor-pointer",
                   "text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300",
                   x && "text-green-500 dark:text-green-400"
                 ),
                 "aria-label": x ? "복사됨" : "복사",
-                children: /* @__PURE__ */ a(V, { size: 16 })
+                children: /* @__PURE__ */ a(V, { size: 20 })
               }
             )
           ] }),
