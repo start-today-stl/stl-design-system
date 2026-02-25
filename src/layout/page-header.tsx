@@ -45,25 +45,46 @@ const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>(
     { className, title, subtitle, bookmarked, onBookmark, tabs, sticky, ...props },
     ref
   ) => {
+    const [isStuck, setIsStuck] = React.useState(false)
+    const sentinelRef = React.useRef<HTMLDivElement>(null)
+
+    React.useEffect(() => {
+      if (!sticky || !sentinelRef.current) return
+
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          setIsStuck(!entry.isIntersecting)
+        },
+        { threshold: 0 }
+      )
+
+      observer.observe(sentinelRef.current)
+      return () => observer.disconnect()
+    }, [sticky])
+
     return (
-      <div
-        ref={ref}
-        className={cn(
-          "flex items-end w-full",
-          sticky && "sticky top-0 z-10 bg-slate-50 dark:bg-slate-950 shadow-sm",
-          className
-        )}
-        {...props}
-      >
-        <PageTitle
-          title={title}
-          subtitle={subtitle}
-          bookmarked={bookmarked}
-          onBookmark={onBookmark}
-          className="flex-shrink-0"
-        />
-        {tabs && <div className="flex-1 min-w-0">{tabs}</div>}
-      </div>
+      <>
+        {sticky && <div ref={sentinelRef} className="h-0" />}
+        <div
+          ref={ref}
+          className={cn(
+            "flex items-end w-full",
+            sticky && "sticky top-0 z-10 bg-slate-50 dark:bg-slate-950",
+            sticky && isStuck && "[box-shadow:0_4px_4px_-4px_rgb(0_0_0/0.15)]",
+            className
+          )}
+          {...props}
+        >
+          <PageTitle
+            title={title}
+            subtitle={subtitle}
+            bookmarked={bookmarked}
+            onBookmark={onBookmark}
+            className="flex-shrink-0"
+          />
+          {tabs && <div className="flex-1 min-w-0">{tabs}</div>}
+        </div>
+      </>
     )
   }
 )
