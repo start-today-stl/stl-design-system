@@ -2,6 +2,7 @@ import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
+import { Skeleton } from "@/components/ui/skeleton"
 
 // 기본 스타일 (그라데이션)
 const gradientStyles = {
@@ -171,4 +172,101 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
 )
 StatCard.displayName = "StatCard"
 
-export { StatCard, statCardVariants }
+/** StatCard 스켈레톤 컴포넌트 */
+export interface StatCardSkeletonProps extends React.HTMLAttributes<HTMLDivElement> {
+  /** 카드 variant */
+  variant?: "main" | "sub" | "small"
+  /** 테두리 스타일 */
+  bordered?: boolean
+  /** 컨테이너 높이에 맞춤 */
+  stretch?: boolean
+}
+
+const StatCardSkeleton = React.forwardRef<HTMLDivElement, StatCardSkeletonProps>(
+  ({ className, variant = "main", bordered = false, stretch = false, ...props }, ref) => {
+    const bgStyle = bordered
+      ? "bg-white border border-slate-100 dark:bg-slate-700 dark:border-slate-600"
+      : "bg-gradient-to-b from-blue-50 to-white dark:from-blue-950 dark:to-slate-800"
+
+    // Main variant skeleton
+    if (variant === "main") {
+      return (
+        <div
+          ref={ref}
+          className={cn(
+            statCardVariants({ variant, stretch }),
+            bgStyle,
+            className
+          )}
+          {...props}
+        >
+          <div className="flex flex-col h-full justify-between">
+            {/* 상단: 아이콘 + 라벨 */}
+            <div className="flex items-center gap-1">
+              <Skeleton width={24} height={24} className="rounded" />
+              <Skeleton width={60} height={14} />
+            </div>
+            {/* 하단: 큰 숫자 */}
+            <Skeleton width="70%" height={64} />
+          </div>
+        </div>
+      )
+    }
+
+    // Sub variant skeleton
+    if (variant === "sub") {
+      return (
+        <div
+          ref={ref}
+          className={cn(
+            statCardVariants({ variant, stretch }),
+            bgStyle,
+            className
+          )}
+          {...props}
+        >
+          <div className="flex gap-0.5 h-full">
+            {/* 좌측: 라벨 + 숫자 */}
+            <div className="flex-1 flex flex-col justify-between">
+              <div className="flex items-center gap-1">
+                <Skeleton width={24} height={24} className="rounded" />
+                <Skeleton width={50} height={14} />
+              </div>
+              <Skeleton width="60%" height={36} />
+            </div>
+            {/* 우측: 뱃지 영역 */}
+            <div className="w-[28px] flex flex-col justify-end items-center">
+              <Skeleton width={24} height={24} className="rounded-full" />
+            </div>
+          </div>
+        </div>
+      )
+    }
+
+    // Small variant skeleton
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          statCardVariants({ variant, stretch }),
+          bgStyle,
+          className
+        )}
+        {...props}
+      >
+        <div className="flex items-center justify-between">
+          {/* 좌측: 아이콘 + 라벨 */}
+          <div className="flex items-center gap-1">
+            <Skeleton width={24} height={24} className="rounded" />
+            <Skeleton width={60} height={14} />
+          </div>
+          {/* 우측: 숫자 */}
+          <Skeleton width={40} height={14} />
+        </div>
+      </div>
+    )
+  }
+)
+StatCardSkeleton.displayName = "StatCardSkeleton"
+
+export { StatCard, StatCardSkeleton, statCardVariants }

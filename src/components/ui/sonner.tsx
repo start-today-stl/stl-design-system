@@ -82,9 +82,7 @@ const toast = {
       <CustomToast type="loading" title={title} description={options?.description} />
     ))
   },
-  // 기존 sonner 기능 유지
   dismiss: sonnerToast.dismiss,
-  promise: sonnerToast.promise,
 }
 
 export { Toaster, toast }

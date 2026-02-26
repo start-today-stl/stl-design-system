@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { createPortal } from "react-dom"
 
 import { cn } from "@/lib/utils"
 import { SearchIcon, STLArrowIcon } from "@/icons"
@@ -46,7 +47,10 @@ const SearchBar = React.forwardRef<HTMLInputElement, SearchBarProps>(
     const [open, setOpen] = React.useState(false)
     const [internalValue, setInternalValue] = React.useState("")
     const [highlightedIndex, setHighlightedIndex] = React.useState(-1)
+    const [dropdownPosition, setDropdownPosition] = React.useState({ top: 0, left: 0, width: 0 })
     const containerRef = React.useRef<HTMLDivElement>(null)
+    const inputWrapperRef = React.useRef<HTMLDivElement>(null)
+    const dropdownRef = React.useRef<HTMLDivElement>(null)
 
     const searchValue = value !== undefined ? value : internalValue
 
@@ -104,10 +108,26 @@ const SearchBar = React.forwardRef<HTMLInputElement, SearchBarProps>(
       setHighlightedIndex(-1)
     }
 
+    // 드롭다운 위치 계산
+    React.useEffect(() => {
+      if (open && inputWrapperRef.current) {
+        const rect = inputWrapperRef.current.getBoundingClientRect()
+        setDropdownPosition({
+          top: rect.bottom + 13,
+          left: rect.left,
+          width: rect.width,
+        })
+      }
+    }, [open])
+
     // 외부 클릭 감지
     React.useEffect(() => {
       const handleClickOutside = (e: MouseEvent) => {
-        if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        const target = e.target as Node
+        const isInsideContainer = containerRef.current?.contains(target)
+        const isInsideDropdown = dropdownRef.current?.contains(target)
+
+        if (!isInsideContainer && !isInsideDropdown) {
           setOpen(false)
           setHighlightedIndex(-1)
         }
@@ -125,43 +145,53 @@ const SearchBar = React.forwardRef<HTMLInputElement, SearchBarProps>(
     const showDropdown = open && recentSearches.length > 0
 
     return (
-      <div ref={containerRef} className="relative">
-        <div
-          className={cn(
-            "relative flex h-9 items-center gap-2 rounded-[20px] border",
-            "bg-white dark:bg-slate-800",
-            "border-slate-100 dark:border-slate-600",
-            "px-3 cursor-text",
-            "focus-within:border-slate-500 dark:focus-within:border-slate-100",
-            "transition-colors",
-            disabled && "opacity-50 cursor-not-allowed",
-            className
-          )}
-        >
-          <SearchIcon size={20} className="text-slate-500 dark:text-slate-50 shrink-0" />
-          <input
-            ref={ref}
-            type="text"
-            value={searchValue}
-            onChange={handleChange}
-            onKeyDown={handleKeyDown}
-            onFocus={() => !disabled && setOpen(true)}
-            placeholder={placeholder}
-            disabled={disabled}
+      <>
+        <div ref={containerRef} className="relative">
+          <div
+            ref={inputWrapperRef}
             className={cn(
-              "flex-1 bg-transparent text-xs outline-none",
-              "text-slate-900 dark:text-slate-50",
-              "placeholder:text-slate-300 dark:placeholder:text-slate-50",
-              "disabled:cursor-not-allowed"
+              "relative flex h-9 items-center gap-2 rounded-[20px] border",
+              "bg-white dark:bg-slate-800",
+              "border-slate-100 dark:border-slate-600",
+              "px-3 cursor-text",
+              "focus-within:border-slate-500 dark:focus-within:border-slate-100",
+              "transition-colors",
+              disabled && "opacity-50 cursor-not-allowed",
+              className
             )}
-          />
-          <STLArrowIcon size={24} className="text-blue-500 dark:text-slate-50 shrink-0" />
+          >
+            <SearchIcon size={20} className="text-slate-500 dark:text-slate-50 shrink-0" />
+            <input
+              ref={ref}
+              type="text"
+              value={searchValue}
+              onChange={handleChange}
+              onKeyDown={handleKeyDown}
+              onFocus={() => !disabled && setOpen(true)}
+              placeholder={placeholder}
+              disabled={disabled}
+              className={cn(
+                "flex-1 bg-transparent text-xs outline-none",
+                "text-slate-900 dark:text-slate-50",
+                "placeholder:text-slate-300 dark:placeholder:text-slate-50",
+                "disabled:cursor-not-allowed"
+              )}
+            />
+            <STLArrowIcon size={24} className="text-blue-500 dark:text-slate-50 shrink-0" />
+          </div>
         </div>
 
-        {showDropdown && (
+        {showDropdown && createPortal(
           <div
+            ref={dropdownRef}
+            style={{
+              position: "fixed",
+              top: dropdownPosition.top,
+              left: dropdownPosition.left,
+              width: dropdownPosition.width,
+            }}
             className={cn(
-              "absolute left-0 right-0 top-full mt-[13px] z-[100]",
+              "z-50",
               "overflow-hidden rounded-[5px] border",
               "border-slate-100 dark:border-slate-600",
               "bg-white/90 dark:bg-slate-800/90 backdrop-blur-[12px]",
@@ -188,9 +218,10 @@ const SearchBar = React.forwardRef<HTMLInputElement, SearchBarProps>(
                 {item.text}
               </button>
             ))}
-          </div>
+          </div>,
+          document.body
         )}
-      </div>
+      </>
     )
   }
 )

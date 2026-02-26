@@ -2,8 +2,8 @@ import { jsx as r, jsxs as c, Fragment as l } from "react/jsx-runtime";
 import { toast as t, Toaster as n } from "sonner";
 import { ToastOIcon as d } from "../../icons/ToastOIcon.mjs";
 import { ToastXIcon as u } from "../../icons/ToastXIcon.mjs";
-import { Spinner as p } from "./spinner.mjs";
-import { cn as x } from "../../lib/utils.mjs";
+import { Spinner as x } from "./spinner.mjs";
+import { cn as p } from "../../lib/utils.mjs";
 const w = ({ ...s }) => /* @__PURE__ */ r(
   n,
   {
@@ -21,13 +21,13 @@ const w = ({ ...s }) => /* @__PURE__ */ r(
       case "error":
         return /* @__PURE__ */ r(u, { size: 26 });
       case "loading":
-        return /* @__PURE__ */ r(p, { className: "size-[26px]" });
+        return /* @__PURE__ */ r(x, { className: "size-[26px]" });
     }
   };
   return /* @__PURE__ */ r(
     "div",
     {
-      className: x(
+      className: p(
         "bg-white border border-slate-200 rounded-xl w-[368px]",
         o ? "flex flex-col items-start p-3 gap-8 mt-1" : "flex flex-row items-center justify-between h-12 py-3 pl-3 pr-4"
       ),
@@ -47,9 +47,7 @@ const w = ({ ...s }) => /* @__PURE__ */ r(
   success: (s, e) => t.custom(() => /* @__PURE__ */ r(a, { type: "success", title: s, description: e == null ? void 0 : e.description })),
   error: (s, e) => t.custom(() => /* @__PURE__ */ r(a, { type: "error", title: s, description: e == null ? void 0 : e.description })),
   loading: (s, e) => t.custom(() => /* @__PURE__ */ r(a, { type: "loading", title: s, description: e == null ? void 0 : e.description })),
-  // 기존 sonner 기능 유지
-  dismiss: t.dismiss,
-  promise: t.promise
+  dismiss: t.dismiss
 };
 export {
   w as Toaster,

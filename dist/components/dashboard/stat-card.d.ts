@@ -21,4 +21,14 @@ export interface StatCardProps extends React.HTMLAttributes<HTMLDivElement>, Var
     stretch?: boolean;
 }
 declare const StatCard: React.ForwardRefExoticComponent<StatCardProps & React.RefAttributes<HTMLDivElement>>;
-export { StatCard, statCardVariants };
+/** StatCard 스켈레톤 컴포넌트 */
+export interface StatCardSkeletonProps extends React.HTMLAttributes<HTMLDivElement> {
+    /** 카드 variant */
+    variant?: "main" | "sub" | "small";
+    /** 테두리 스타일 */
+    bordered?: boolean;
+    /** 컨테이너 높이에 맞춤 */
+    stretch?: boolean;
+}
+declare const StatCardSkeleton: React.ForwardRefExoticComponent<StatCardSkeletonProps & React.RefAttributes<HTMLDivElement>>;
+export { StatCard, StatCardSkeleton, statCardVariants };

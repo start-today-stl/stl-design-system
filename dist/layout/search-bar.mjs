@@ -1,65 +1,78 @@
-import { jsxs as g, jsx as i } from "react/jsx-runtime";
-import * as l from "react";
-import { cn as f } from "../lib/utils.mjs";
-import { SearchIcon as V } from "../icons/SearchIcon.mjs";
-import { STLArrowIcon as _ } from "../icons/STLArrowIcon.mjs";
-const A = l.forwardRef(
+import { jsxs as E, Fragment as F, jsx as i } from "react/jsx-runtime";
+import * as o from "react";
+import { createPortal as K } from "react-dom";
+import { cn as u } from "../lib/utils.mjs";
+import { SearchIcon as O } from "../icons/SearchIcon.mjs";
+import { STLArrowIcon as H } from "../icons/STLArrowIcon.mjs";
+const M = o.forwardRef(
   ({
-    placeholder: v = "검색어를 입력하세요",
-    value: d,
-    onChange: o,
-    onSearch: p,
-    recentSearches: n = [],
+    placeholder: I = "검색어를 입력하세요",
+    value: f,
+    onChange: n,
+    onSearch: c,
+    recentSearches: d = [],
     onRecentSearchClick: x,
-    className: y,
-    disabled: c
-  }, N) => {
-    const [r, a] = l.useState(!1), [D, w] = l.useState(""), [u, s] = l.useState(-1), m = l.useRef(null), k = d !== void 0 ? d : D, E = (e) => {
-      const t = e.target.value;
-      d === void 0 && w(t), o == null || o(t), s(-1);
-    }, I = (e) => {
-      const t = n.length;
-      e.key === "ArrowDown" && (e.preventDefault(), !r && t > 0 ? (a(!0), s(0)) : r && t > 0 && s((b) => (b + 1) % t)), e.key === "ArrowUp" && (e.preventDefault(), r && t > 0 && s((b) => (b - 1 + t) % t)), e.key === "Enter" && (r && u >= 0 && n[u] ? h(n[u]) : (p == null || p(k), a(!1))), e.key === "Escape" && (a(!1), s(-1));
-    }, h = (e) => {
-      d === void 0 && w(e.text), o == null || o(e.text), x == null || x(e), a(!1), s(-1);
+    className: R,
+    disabled: m
+  }, z) => {
+    const [s, l] = o.useState(!1), [V, h] = o.useState(""), [p, r] = o.useState(-1), [w, _] = o.useState({ top: 0, left: 0, width: 0 }), k = o.useRef(null), b = o.useRef(null), g = o.useRef(null), v = f !== void 0 ? f : V, A = (t) => {
+      const e = t.target.value;
+      f === void 0 && h(e), n == null || n(e), r(-1);
+    }, B = (t) => {
+      const e = d.length;
+      t.key === "ArrowDown" && (t.preventDefault(), !s && e > 0 ? (l(!0), r(0)) : s && e > 0 && r((a) => (a + 1) % e)), t.key === "ArrowUp" && (t.preventDefault(), s && e > 0 && r((a) => (a - 1 + e) % e)), t.key === "Enter" && (s && p >= 0 && d[p] ? y(d[p]) : (c == null || c(v), l(!1))), t.key === "Escape" && (l(!1), r(-1));
+    }, y = (t) => {
+      f === void 0 && h(t.text), n == null || n(t.text), x == null || x(t), l(!1), r(-1);
     };
-    l.useEffect(() => {
-      const e = (t) => {
-        m.current && !m.current.contains(t.target) && (a(!1), s(-1));
+    o.useEffect(() => {
+      if (s && b.current) {
+        const t = b.current.getBoundingClientRect();
+        _({
+          top: t.bottom + 13,
+          left: t.left,
+          width: t.width
+        });
+      }
+    }, [s]), o.useEffect(() => {
+      const t = (e) => {
+        var D, N;
+        const a = e.target, P = (D = k.current) == null ? void 0 : D.contains(a), j = (N = g.current) == null ? void 0 : N.contains(a);
+        !P && !j && (l(!1), r(-1));
       };
-      return r && document.addEventListener("mousedown", e), () => {
-        document.removeEventListener("mousedown", e);
+      return s && document.addEventListener("mousedown", t), () => {
+        document.removeEventListener("mousedown", t);
       };
-    }, [r]);
-    const z = r && n.length > 0;
-    return /* @__PURE__ */ g("div", { ref: m, className: "relative", children: [
-      /* @__PURE__ */ g(
+    }, [s]);
+    const L = s && d.length > 0;
+    return /* @__PURE__ */ E(F, { children: [
+      /* @__PURE__ */ i("div", { ref: k, className: "relative", children: /* @__PURE__ */ E(
         "div",
         {
-          className: f(
+          ref: b,
+          className: u(
             "relative flex h-9 items-center gap-2 rounded-[20px] border",
             "bg-white dark:bg-slate-800",
             "border-slate-100 dark:border-slate-600",
             "px-3 cursor-text",
             "focus-within:border-slate-500 dark:focus-within:border-slate-100",
             "transition-colors",
-            c && "opacity-50 cursor-not-allowed",
-            y
+            m && "opacity-50 cursor-not-allowed",
+            R
           ),
           children: [
-            /* @__PURE__ */ i(V, { size: 20, className: "text-slate-500 dark:text-slate-50 shrink-0" }),
+            /* @__PURE__ */ i(O, { size: 20, className: "text-slate-500 dark:text-slate-50 shrink-0" }),
             /* @__PURE__ */ i(
               "input",
               {
-                ref: N,
+                ref: z,
                 type: "text",
-                value: k,
-                onChange: E,
-                onKeyDown: I,
-                onFocus: () => !c && a(!0),
-                placeholder: v,
-                disabled: c,
-                className: f(
+                value: v,
+                onChange: A,
+                onKeyDown: B,
+                onFocus: () => !m && l(!0),
+                placeholder: I,
+                disabled: m,
+                className: u(
                   "flex-1 bg-transparent text-xs outline-none",
                   "text-slate-900 dark:text-slate-50",
                   "placeholder:text-slate-300 dark:placeholder:text-slate-50",
@@ -67,47 +80,57 @@ const A = l.forwardRef(
                 )
               }
             ),
-            /* @__PURE__ */ i(_, { size: 24, className: "text-blue-500 dark:text-slate-50 shrink-0" })
+            /* @__PURE__ */ i(H, { size: 24, className: "text-blue-500 dark:text-slate-50 shrink-0" })
           ]
         }
-      ),
-      z && /* @__PURE__ */ i(
-        "div",
-        {
-          className: f(
-            "absolute left-0 right-0 top-full mt-[13px] z-[100]",
-            "overflow-hidden rounded-[5px] border",
-            "border-slate-100 dark:border-slate-600",
-            "bg-white/90 dark:bg-slate-800/90 backdrop-blur-[12px]",
-            "shadow-[10px_10px_10px_0px_rgba(0,0,0,0.05)]",
-            "p-[5px]",
-            "animate-in fade-in-0 zoom-in-95 slide-in-from-top-2"
-          ),
-          children: n.map((e, t) => /* @__PURE__ */ i(
-            "button",
-            {
-              type: "button",
-              onClick: () => h(e),
-              onMouseEnter: () => s(t),
-              className: f(
-                "flex h-[29px] w-full cursor-pointer select-none items-center rounded-[2px] px-[5px] py-[5px]",
-                "text-xs text-slate-500 dark:text-slate-300 text-left",
-                "hover:bg-slate-100 dark:hover:bg-slate-700",
-                "focus:bg-slate-100 dark:focus:bg-slate-700 outline-none",
-                "transition-colors",
-                u === t && "bg-slate-100 dark:bg-slate-700"
-              ),
-              children: e.text
+      ) }),
+      L && K(
+        /* @__PURE__ */ i(
+          "div",
+          {
+            ref: g,
+            style: {
+              position: "fixed",
+              top: w.top,
+              left: w.left,
+              width: w.width
             },
-            e.id
-          ))
-        }
+            className: u(
+              "z-50",
+              "overflow-hidden rounded-[5px] border",
+              "border-slate-100 dark:border-slate-600",
+              "bg-white/90 dark:bg-slate-800/90 backdrop-blur-[12px]",
+              "shadow-[10px_10px_10px_0px_rgba(0,0,0,0.05)]",
+              "p-[5px]",
+              "animate-in fade-in-0 zoom-in-95 slide-in-from-top-2"
+            ),
+            children: d.map((t, e) => /* @__PURE__ */ i(
+              "button",
+              {
+                type: "button",
+                onClick: () => y(t),
+                onMouseEnter: () => r(e),
+                className: u(
+                  "flex h-[29px] w-full cursor-pointer select-none items-center rounded-[2px] px-[5px] py-[5px]",
+                  "text-xs text-slate-500 dark:text-slate-300 text-left",
+                  "hover:bg-slate-100 dark:hover:bg-slate-700",
+                  "focus:bg-slate-100 dark:focus:bg-slate-700 outline-none",
+                  "transition-colors",
+                  p === e && "bg-slate-100 dark:bg-slate-700"
+                ),
+                children: t.text
+              },
+              t.id
+            ))
+          }
+        ),
+        document.body
       )
     ] });
   }
 );
-A.displayName = "SearchBar";
+M.displayName = "SearchBar";
 export {
-  A as SearchBar
+  M as SearchBar
 };
 //# sourceMappingURL=search-bar.mjs.map
