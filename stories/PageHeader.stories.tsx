@@ -160,6 +160,9 @@ export const Sticky: Story = {
                 <TabsTrigger value="active">사용</TabsTrigger>
                 <TabsTrigger value="inactive">미사용</TabsTrigger>
               </TabsList>
+              <TabsContent value="all" className="hidden" />
+              <TabsContent value="active" className="hidden" />
+              <TabsContent value="inactive" className="hidden" />
             </Tabs>
           }
         />
