@@ -41,7 +41,7 @@ const PaginationFooter = React.forwardRef<HTMLDivElement, PaginationFooterProps>
       onPageChange,
       totalItems,
       pageSize = 10,
-      pageSizeOptions = [10, 20, 50, 100],
+      pageSizeOptions = [10, 30, 50, 100],
       onPageSizeChange,
       previousLabel = "Previous",
       nextLabel = "Next",
