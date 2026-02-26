@@ -8,9 +8,9 @@ export interface StatCardProps extends React.HTMLAttributes<HTMLDivElement>, Var
     /** 아이콘 (선택) */
     icon?: React.ReactNode;
     /** 라벨 */
-    label: string;
+    label?: string;
     /** 숫자/카운트 */
-    count: string;
+    count?: string;
     /** 뱃지 (sub variant에서 사용) */
     badge?: React.ReactNode;
     /** 테두리 스타일 (흰색 배경 + 테두리) */
@@ -19,16 +19,8 @@ export interface StatCardProps extends React.HTMLAttributes<HTMLDivElement>, Var
     headerAction?: React.ReactNode;
     /** 컨테이너 높이에 맞춤 (h-full) */
     stretch?: boolean;
+    /** 로딩 상태 (스켈레톤 표시) */
+    loading?: boolean;
 }
 declare const StatCard: React.ForwardRefExoticComponent<StatCardProps & React.RefAttributes<HTMLDivElement>>;
-/** StatCard 스켈레톤 컴포넌트 */
-export interface StatCardSkeletonProps extends React.HTMLAttributes<HTMLDivElement> {
-    /** 카드 variant */
-    variant?: "main" | "sub" | "small";
-    /** 테두리 스타일 */
-    bordered?: boolean;
-    /** 컨테이너 높이에 맞춤 */
-    stretch?: boolean;
-}
-declare const StatCardSkeleton: React.ForwardRefExoticComponent<StatCardSkeletonProps & React.RefAttributes<HTMLDivElement>>;
-export { StatCard, StatCardSkeleton, statCardVariants };
+export { StatCard, statCardVariants };

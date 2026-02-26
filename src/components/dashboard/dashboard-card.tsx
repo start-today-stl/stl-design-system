@@ -30,11 +30,11 @@ function DashboardCardSkeletonContent() {
         </div>
         <Skeleton width={60} height={24} className="rounded" />
       </div>
-      {/* Body Skeleton */}
-      <div className="p-[10px] flex-1 flex flex-col gap-2">
-        <Skeleton height={32} width="100%" />
-        <Skeleton height={32} width="100%" />
-        <Skeleton height={32} width="80%" />
+      {/* Body Skeleton - StatCard small 높이(44px)에 맞춤 */}
+      <div className="p-[10px] flex flex-col gap-[5px]">
+        <Skeleton height={44} width="100%" className="rounded-[6px]" />
+        <Skeleton height={44} width="100%" className="rounded-[6px]" />
+        <Skeleton height={44} width="100%" className="rounded-[6px]" />
       </div>
     </>
   )

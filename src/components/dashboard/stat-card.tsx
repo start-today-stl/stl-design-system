@@ -19,7 +19,7 @@ const borderedStyles = {
 }
 
 const statCardVariants = cva(
-  "relative cursor-pointer transition-colors group",
+  "relative cursor-pointer transition-colors group flex flex-col",
   {
     variants: {
       variant: {
@@ -27,8 +27,8 @@ const statCardVariants = cva(
         main: "min-h-[160px] rounded-[10px] pt-[10px] px-[10px] pb-[18px]",
         // Sub: 세로 레이아웃, 중간 숫자 (48px) + Badge - 너비 유연
         sub: "min-h-[160px] rounded-[10px] p-[10px]",
-        // Small: 가로 레이아웃, 작은 숫자 (14px) - 너비 유연
-        small: "rounded-[6px] pl-[10px] pr-[12px] py-[10px]",
+        // Small: 가로 레이아웃, 작은 숫자 (14px) - 너비 유연, 세로 중앙 정렬
+        small: "min-h-[44px] rounded-[6px] pl-[10px] pr-[12px] py-[10px] justify-center",
       },
       stretch: {
         true: "h-full",
@@ -48,9 +48,9 @@ export interface StatCardProps
   /** 아이콘 (선택) */
   icon?: React.ReactNode
   /** 라벨 */
-  label: string
+  label?: string
   /** 숫자/카운트 */
-  count: string
+  count?: string
   /** 뱃지 (sub variant에서 사용) */
   badge?: React.ReactNode
   /** 테두리 스타일 (흰색 배경 + 테두리) */
@@ -59,10 +59,12 @@ export interface StatCardProps
   headerAction?: React.ReactNode
   /** 컨테이너 높이에 맞춤 (h-full) */
   stretch?: boolean
+  /** 로딩 상태 (스켈레톤 표시) */
+  loading?: boolean
 }
 
 const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
-  ({ className, variant = "main", icon, label, count, badge, bordered = false, headerAction, stretch = false, ...props }, ref) => {
+  ({ className, variant = "main", icon, label, count, badge, bordered = false, headerAction, stretch = false, loading = false, ...props }, ref) => {
     const textColorClass = "text-slate-700 dark:text-slate-100"
     const bgStyle = bordered
       ? borderedStyles[variant || "main"]
@@ -76,30 +78,37 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
           className={cn(statCardVariants({ variant, stretch }), bgStyle, className)}
           {...props}
         >
-          <div className="flex flex-col h-full justify-between">
-            {/* 상단: 아이콘 + 라벨 + 헤더 액션 */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-0.5">
-                {icon && (
-                  <span className={cn("flex-shrink-0", textColorClass)}>
-                    {icon}
-                  </span>
-                )}
-                <span className={cn("text-sm tracking-[-0.14px]", textColorClass)}>
-                  {label}
-                </span>
-              </div>
-              {headerAction && (
-                <div className="flex items-center">
-                  {headerAction}
-                </div>
-              )}
+          {loading ? (
+            <div className="flex flex-col flex-1 justify-between">
+              <Skeleton width={60} height={14} />
+              <Skeleton width="70%" height={64} />
             </div>
-            {/* 하단: 큰 숫자 (STL Gothic R 폰트) */}
-            <span className={cn("font-heading text-[86px] font-normal tracking-[-2.58px] leading-none", textColorClass)}>
-              {count}
-            </span>
-          </div>
+          ) : (
+            <div className="flex flex-col flex-1 justify-between">
+              {/* 상단: 아이콘 + 라벨 + 헤더 액션 */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-0.5">
+                  {icon && (
+                    <span className={cn("flex-shrink-0", textColorClass)}>
+                      {icon}
+                    </span>
+                  )}
+                  <span className={cn("text-sm tracking-[-0.14px]", textColorClass)}>
+                    {label}
+                  </span>
+                </div>
+                {headerAction && (
+                  <div className="flex items-center">
+                    {headerAction}
+                  </div>
+                )}
+              </div>
+              {/* 하단: 큰 숫자 (STL Gothic R 폰트) */}
+              <span className={cn("font-heading text-[86px] font-normal tracking-[-2.58px] leading-none", textColorClass)}>
+                {count}
+              </span>
+            </div>
+          )}
         </div>
       )
     }
@@ -112,32 +121,39 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
           className={cn(statCardVariants({ variant, stretch }), bgStyle, className)}
           {...props}
         >
-          <div className="flex gap-0.5 h-full">
-            {/* 좌측: 라벨 + 숫자 */}
-            <div className="flex-1 flex flex-col justify-between">
-              {/* 상단: 아이콘 + 라벨 */}
-              <div className="flex items-center gap-0.5">
-                {icon && (
-                  <span className={cn("flex-shrink-0", textColorClass)}>
-                    {icon}
+          {loading ? (
+            <div className="flex flex-col flex-1 justify-between">
+              <Skeleton width={50} height={14} />
+              <Skeleton width="50%" height={36} />
+            </div>
+          ) : (
+            <div className="flex gap-0.5 flex-1">
+              {/* 좌측: 라벨 + 숫자 */}
+              <div className="flex-1 flex flex-col justify-between">
+                {/* 상단: 아이콘 + 라벨 */}
+                <div className="flex items-center gap-0.5">
+                  {icon && (
+                    <span className={cn("flex-shrink-0", textColorClass)}>
+                      {icon}
+                    </span>
+                  )}
+                  <span className={cn("text-sm tracking-[-0.14px]", textColorClass)}>
+                    {label}
                   </span>
-                )}
-                <span className={cn("text-sm tracking-[-0.14px]", textColorClass)}>
-                  {label}
+                </div>
+                {/* 하단: 숫자 */}
+                <span className={cn("text-[48px] font-normal tracking-[-1.44px] leading-none", textColorClass)}>
+                  {count}
                 </span>
               </div>
-              {/* 하단: 숫자 */}
-              <span className={cn("text-[48px] font-normal tracking-[-1.44px] leading-none", textColorClass)}>
-                {count}
-              </span>
+              {/* 우측: 뱃지 (하단 정렬) */}
+              {badge && (
+                <div className="w-[28px] flex flex-col justify-end items-center">
+                  {badge}
+                </div>
+              )}
             </div>
-            {/* 우측: 뱃지 (하단 정렬) */}
-            {badge && (
-              <div className="w-[28px] flex flex-col justify-end items-center">
-                {badge}
-              </div>
-            )}
-          </div>
+          )}
         </div>
       )
     }
@@ -149,124 +165,34 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
         className={cn(statCardVariants({ variant, stretch }), bgStyle, className)}
         {...props}
       >
-        <div className="flex items-center justify-between">
-          {/* 좌측: 아이콘 + 라벨 */}
-          <div className="flex items-center gap-0.5">
-            {icon && (
-              <span className={cn("flex-shrink-0", textColorClass)}>
-                {icon}
+        {loading ? (
+          <div className="flex items-center justify-between">
+            <Skeleton width={60} height={14} />
+            <Skeleton width={30} height={14} />
+          </div>
+        ) : (
+          <div className="flex items-center justify-between">
+            {/* 좌측: 아이콘 + 라벨 */}
+            <div className="flex items-center gap-0.5">
+              {icon && (
+                <span className={cn("flex-shrink-0", textColorClass)}>
+                  {icon}
+                </span>
+              )}
+              <span className={cn("text-sm tracking-[-0.14px]", textColorClass)}>
+                {label}
               </span>
-            )}
+            </div>
+            {/* 우측: 숫자 */}
             <span className={cn("text-sm tracking-[-0.14px]", textColorClass)}>
-              {label}
+              {count}
             </span>
           </div>
-          {/* 우측: 숫자 */}
-          <span className={cn("text-sm tracking-[-0.14px]", textColorClass)}>
-            {count}
-          </span>
-        </div>
+        )}
       </div>
     )
   }
 )
 StatCard.displayName = "StatCard"
 
-/** StatCard 스켈레톤 컴포넌트 */
-export interface StatCardSkeletonProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** 카드 variant */
-  variant?: "main" | "sub" | "small"
-  /** 테두리 스타일 */
-  bordered?: boolean
-  /** 컨테이너 높이에 맞춤 */
-  stretch?: boolean
-}
-
-const StatCardSkeleton = React.forwardRef<HTMLDivElement, StatCardSkeletonProps>(
-  ({ className, variant = "main", bordered = false, stretch = false, ...props }, ref) => {
-    const bgStyle = bordered
-      ? "bg-white border border-slate-100 dark:bg-slate-700 dark:border-slate-600"
-      : "bg-gradient-to-b from-blue-50 to-white dark:from-blue-950 dark:to-slate-800"
-
-    // Main variant skeleton
-    if (variant === "main") {
-      return (
-        <div
-          ref={ref}
-          className={cn(
-            statCardVariants({ variant, stretch }),
-            bgStyle,
-            className
-          )}
-          {...props}
-        >
-          <div className="flex flex-col h-full justify-between">
-            {/* 상단: 아이콘 + 라벨 */}
-            <div className="flex items-center gap-1">
-              <Skeleton width={24} height={24} className="rounded" />
-              <Skeleton width={60} height={14} />
-            </div>
-            {/* 하단: 큰 숫자 */}
-            <Skeleton width="70%" height={64} />
-          </div>
-        </div>
-      )
-    }
-
-    // Sub variant skeleton
-    if (variant === "sub") {
-      return (
-        <div
-          ref={ref}
-          className={cn(
-            statCardVariants({ variant, stretch }),
-            bgStyle,
-            className
-          )}
-          {...props}
-        >
-          <div className="flex gap-0.5 h-full">
-            {/* 좌측: 라벨 + 숫자 */}
-            <div className="flex-1 flex flex-col justify-between">
-              <div className="flex items-center gap-1">
-                <Skeleton width={24} height={24} className="rounded" />
-                <Skeleton width={50} height={14} />
-              </div>
-              <Skeleton width="60%" height={36} />
-            </div>
-            {/* 우측: 뱃지 영역 */}
-            <div className="w-[28px] flex flex-col justify-end items-center">
-              <Skeleton width={24} height={24} className="rounded-full" />
-            </div>
-          </div>
-        </div>
-      )
-    }
-
-    // Small variant skeleton
-    return (
-      <div
-        ref={ref}
-        className={cn(
-          statCardVariants({ variant, stretch }),
-          bgStyle,
-          className
-        )}
-        {...props}
-      >
-        <div className="flex items-center justify-between">
-          {/* 좌측: 아이콘 + 라벨 */}
-          <div className="flex items-center gap-1">
-            <Skeleton width={24} height={24} className="rounded" />
-            <Skeleton width={60} height={14} />
-          </div>
-          {/* 우측: 숫자 */}
-          <Skeleton width={40} height={14} />
-        </div>
-      </div>
-    )
-  }
-)
-StatCardSkeleton.displayName = "StatCardSkeleton"
-
-export { StatCard, StatCardSkeleton, statCardVariants }
+export { StatCard, statCardVariants }
