@@ -34,6 +34,7 @@ import {
   LockIcon,
   MenuHorizontalIcon,
   MenuVerticalIcon,
+  MinusIcon,
   NaviHomeIcon,
   NaviOrderIcon,
   NaviSaleIcon,
@@ -47,6 +48,7 @@ import {
   PenIcon,
   PhoneIcon,
   PhotoIcon,
+  PlusIcon,
   PostingIcon,
   ProcessingIcon,
   ProductArchive2Icon,
@@ -68,7 +70,6 @@ import {
   TriangleIcon,
   UpIcon,
   UploadIcon,
-  WriteIcon,
   XIcon,
 } from "../src/icons";
 
@@ -124,6 +125,8 @@ const basicIcons = [
   { name: "TriangleIcon", component: TriangleIcon },
   { name: "ProcessingIcon", component: ProcessingIcon },
   { name: "EyeIcon", component: EyeIcon },
+  { name: "PlusIcon", component: PlusIcon },
+  { name: "MinusIcon", component: MinusIcon },
 ];
 
 // 언어 아이콘 (Figma Frame 2)
@@ -157,7 +160,6 @@ const homeVariantIcons = [
 // 기타 아이콘 (커스텀/복원된 아이콘)
 const otherIcons = [
   { name: "DragHandleIcon", component: DragHandleIcon },
-  { name: "WriteIcon", component: WriteIcon },
 ];
 
 const meta = {

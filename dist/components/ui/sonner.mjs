@@ -1,34 +1,58 @@
-import { jsx as o } from "react/jsx-runtime";
-import { LoaderCircle as e, OctagonX as s, TriangleAlert as a, Info as g, CircleCheck as m } from "lucide-react";
-import { useTheme as n } from "next-themes";
-import { Toaster as u } from "sonner";
-const l = ({ ...t }) => {
-  const { theme: r = "system" } = n();
-  return /* @__PURE__ */ o(
-    u,
+import { jsx as r, jsxs as c, Fragment as l } from "react/jsx-runtime";
+import { toast as t, Toaster as n } from "sonner";
+import { ToastOIcon as d } from "../../icons/ToastOIcon.mjs";
+import { ToastXIcon as u } from "../../icons/ToastXIcon.mjs";
+import { Spinner as p } from "./spinner.mjs";
+import { cn as x } from "../../lib/utils.mjs";
+const w = ({ ...s }) => /* @__PURE__ */ r(
+  n,
+  {
+    className: "toaster group",
+    toastOptions: {
+      unstyled: !0
+    },
+    ...s
+  }
+), a = ({ type: s, title: e, description: m }) => {
+  const o = !!m, i = () => {
+    switch (s) {
+      case "success":
+        return /* @__PURE__ */ r(d, { size: 26 });
+      case "error":
+        return /* @__PURE__ */ r(u, { size: 26 });
+      case "loading":
+        return /* @__PURE__ */ r(p, { className: "size-[26px]" });
+    }
+  };
+  return /* @__PURE__ */ r(
+    "div",
     {
-      theme: r,
-      className: "toaster group",
-      icons: {
-        success: /* @__PURE__ */ o(m, { className: "h-4 w-4" }),
-        info: /* @__PURE__ */ o(g, { className: "h-4 w-4" }),
-        warning: /* @__PURE__ */ o(a, { className: "h-4 w-4" }),
-        error: /* @__PURE__ */ o(s, { className: "h-4 w-4" }),
-        loading: /* @__PURE__ */ o(e, { className: "h-4 w-4 animate-spin" })
-      },
-      toastOptions: {
-        classNames: {
-          toast: "group toast group-[.toaster]:bg-background group-[.toaster]:text-foreground group-[.toaster]:border-border group-[.toaster]:shadow-lg",
-          description: "group-[.toast]:text-muted-foreground",
-          actionButton: "group-[.toast]:bg-primary group-[.toast]:text-primary-foreground",
-          cancelButton: "group-[.toast]:bg-muted group-[.toast]:text-muted-foreground"
-        }
-      },
-      ...t
+      className: x(
+        "bg-white border border-slate-200 rounded-xl w-[368px]",
+        o ? "flex flex-col items-start p-3 gap-8 mt-1" : "flex flex-row items-center justify-between h-12 py-3 pl-3 pr-4"
+      ),
+      children: o ? /* @__PURE__ */ c(l, { children: [
+        /* @__PURE__ */ r(i, {}),
+        /* @__PURE__ */ c("div", { className: "flex flex-col gap-3", children: [
+          /* @__PURE__ */ r("p", { className: "text-sm font-medium text-slate-900", children: e }),
+          /* @__PURE__ */ r("p", { className: "text-[10px] text-slate-600", children: m })
+        ] })
+      ] }) : /* @__PURE__ */ c(l, { children: [
+        /* @__PURE__ */ r(i, {}),
+        /* @__PURE__ */ r("p", { className: "text-sm font-medium text-slate-900", children: e })
+      ] })
     }
   );
+}, b = {
+  success: (s, e) => t.custom(() => /* @__PURE__ */ r(a, { type: "success", title: s, description: e == null ? void 0 : e.description })),
+  error: (s, e) => t.custom(() => /* @__PURE__ */ r(a, { type: "error", title: s, description: e == null ? void 0 : e.description })),
+  loading: (s, e) => t.custom(() => /* @__PURE__ */ r(a, { type: "loading", title: s, description: e == null ? void 0 : e.description })),
+  // 기존 sonner 기능 유지
+  dismiss: t.dismiss,
+  promise: t.promise
 };
 export {
-  l as Toaster
+  w as Toaster,
+  b as toast
 };
 //# sourceMappingURL=sonner.mjs.map
