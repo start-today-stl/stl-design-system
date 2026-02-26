@@ -10,7 +10,7 @@ const P = y.forwardRef(
     onPageChange: d,
     totalItems: t,
     pageSize: o = 10,
-    pageSizeOptions: m = [10, 20, 50, 100],
+    pageSizeOptions: m = [10, 30, 50, 100],
     onPageSizeChange: l,
     previousLabel: f = "Previous",
     nextLabel: x = "Next",
