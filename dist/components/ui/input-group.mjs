@@ -1,44 +1,52 @@
-import { jsxs as l, jsx as t } from "react/jsx-runtime";
-import * as d from "react";
-import { cn as r } from "../../lib/utils.mjs";
-import { inputSizeStyles as f } from "./input.mjs";
-const h = d.forwardRef(
-  ({ className: n, label: e, error: o, errorMessage: s, size: i = "full", reserveLabelSpace: a, required: c, children: m, ...p }, u) => {
-    const x = d.useId();
-    return /* @__PURE__ */ l("div", { ref: u, className: r("flex flex-col gap-1", f[i], n), ...p, children: [
-      (e || a) && /* @__PURE__ */ l(
+import { jsxs as d, jsx as e } from "react/jsx-runtime";
+import * as l from "react";
+import { cn as n } from "../../lib/utils.mjs";
+import { inputSizeStyles as h } from "./input.mjs";
+const x = l.forwardRef(
+  ({ className: i, label: t, error: o, errorMessage: r, size: s = "full", reserveLabelSpace: a, required: c, children: u, ...p }, f) => {
+    const m = l.useId();
+    return /* @__PURE__ */ d("div", { ref: f, className: n("flex flex-col gap-1", h[s], i), ...p, children: [
+      (t || a) && /* @__PURE__ */ d(
         "label",
         {
-          htmlFor: x,
-          className: r(
+          htmlFor: m,
+          className: n(
             "flex items-center gap-1 text-xs text-slate-600 dark:text-slate-50",
-            !e && "invisible"
+            !t && "invisible"
           ),
           children: [
-            c && /* @__PURE__ */ t("span", { className: "size-2 rounded-full bg-stone-400", "aria-hidden": "true" }),
-            e || " "
+            c && /* @__PURE__ */ e("span", { className: "size-2 rounded-full bg-stone-400", "aria-hidden": "true" }),
+            t || " "
           ]
         }
       ),
-      /* @__PURE__ */ t(
+      /* @__PURE__ */ e(
         "div",
         {
-          className: r(
+          className: n(
             "flex",
+            // 첫 번째 자식: 오른쪽 radius 제거
             "[&>*:first-child]:rounded-r-none",
+            "[&>*:first-child_input]:rounded-r-none",
+            // 마지막 자식: 왼쪽 radius 제거
             "[&>*:last-child]:rounded-l-none",
+            "[&>*:last-child_input]:rounded-l-none",
+            // 중간 자식들: 모든 radius 제거
             "[&>*:not(:first-child):not(:last-child)]:rounded-none",
-            "[&>*:not(:last-child)]:border-r-0"
+            "[&>*:not(:first-child):not(:last-child)_input]:rounded-none",
+            // 마지막 자식 제외: 오른쪽 border 제거
+            "[&>*:not(:last-child)]:border-r-0",
+            "[&>*:not(:last-child)_input]:border-r-0"
           ),
-          children: m
+          children: u
         }
       ),
-      o && s && /* @__PURE__ */ t("span", { className: "text-xs text-destructive dark:text-red-400", children: s })
+      o && r && /* @__PURE__ */ e("span", { className: "text-xs text-destructive dark:text-red-400", children: r })
     ] });
   }
 );
-h.displayName = "InputGroup";
+x.displayName = "InputGroup";
 export {
-  h as InputGroup
+  x as InputGroup
 };
 //# sourceMappingURL=input-group.mjs.map
