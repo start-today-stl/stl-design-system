@@ -23,32 +23,14 @@ const textareaErrorStyles = [
   "focus:border-destructive focus:shadow-[0px_0px_6px_0px_rgba(239,68,68,0.5)] dark:focus:border-red-500",
 ].join(" ")
 
+const textareaTableModeStyles = [
+  "border-slate-300 dark:border-slate-500",
+  "placeholder:text-slate-300 dark:placeholder:text-slate-100",
+  "focus:border-slate-500 focus:border-[1.5px] focus:shadow-none dark:focus:border-slate-300",
+].join(" ")
+
+/** Textarea 컴포넌트 Props */
 export interface TextareaProps
-  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
-  /** 에러 상태 */
-  error?: boolean
-}
-
-const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
-  ({ className, error, ...props }, ref) => {
-    return (
-      <textarea
-        ref={ref}
-        className={cn(
-          textareaBaseStyles,
-          error ? textareaErrorStyles : textareaDefaultStyles,
-          className
-        )}
-        aria-invalid={error}
-        {...props}
-      />
-    )
-  }
-)
-Textarea.displayName = "Textarea"
-
-/** TextareaField - label과 error 메시지를 포함한 Textarea 래퍼 */
-export interface TextareaFieldProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   /** 라벨 텍스트 */
   label?: string
@@ -60,11 +42,36 @@ export interface TextareaFieldProps
   reserveLabelSpace?: boolean
   /** 필수 입력 표시 (라벨 앞에 점 표시) */
   required?: boolean
+  /** 테이블 모드 (파란 glow 대신 border 강조, wrapper 최소화) */
+  tableMode?: boolean
 }
 
-const TextareaField = React.forwardRef<HTMLTextAreaElement, TextareaFieldProps>(
-  ({ className, label, error, errorMessage, id, reserveLabelSpace, required, ...props }, ref) => {
+const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
+  ({ className, label, error, errorMessage, id, reserveLabelSpace, required, tableMode, ...props }, ref) => {
     const textareaId = id || React.useId()
+
+    // 스타일 결정
+    const getStyleVariant = () => {
+      if (error) return textareaErrorStyles
+      if (tableMode) return textareaTableModeStyles
+      return textareaDefaultStyles
+    }
+
+    // tableMode이고 label/errorMessage가 없으면 textarea만 렌더링 (wrapper 없음)
+    const isMinimalMode = tableMode && !label && !reserveLabelSpace && !errorMessage
+
+    if (isMinimalMode) {
+      return (
+        <textarea
+          id={textareaId}
+          ref={ref}
+          required={required}
+          className={cn(textareaBaseStyles, getStyleVariant(), className)}
+          aria-invalid={error}
+          {...props}
+        />
+      )
+    }
 
     return (
       <div className="flex flex-col gap-1 w-full">
@@ -82,12 +89,12 @@ const TextareaField = React.forwardRef<HTMLTextAreaElement, TextareaFieldProps>(
             {label || "\u00A0"}
           </label>
         )}
-        <Textarea
+        <textarea
           id={textareaId}
           ref={ref}
-          error={error}
           required={required}
-          className={className}
+          className={cn(textareaBaseStyles, getStyleVariant(), className)}
+          aria-invalid={error}
           {...props}
         />
         {error && errorMessage && (
@@ -99,6 +106,11 @@ const TextareaField = React.forwardRef<HTMLTextAreaElement, TextareaFieldProps>(
     )
   }
 )
-TextareaField.displayName = "TextareaField"
+Textarea.displayName = "Textarea"
+
+/**
+ * @deprecated Textarea를 사용하세요 (동일한 기능)
+ */
+const TextareaField = Textarea
 
 export { Textarea, TextareaField }

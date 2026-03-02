@@ -40,36 +40,8 @@ const inputSizeStyles = {
 
 export type InputSize = keyof typeof inputSizeStyles;
 
-/** 순수 Input 컴포넌트 - label/error 없이 input만 렌더링 */
-export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  /** 에러 상태 */
-  error?: boolean;
-  /** 테이블 모드 (파란 glow 대신 border 강조) */
-  tableMode?: boolean;
-}
-
-const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, error, tableMode, ...props }, ref) => {
-    const getStyleVariant = () => {
-      if (error) return inputErrorStyles;
-      if (tableMode) return inputTableModeStyles;
-      return inputDefaultStyles;
-    };
-
-    return (
-      <input
-        ref={ref}
-        className={cn(inputBaseStyles, getStyleVariant(), className)}
-        aria-invalid={error}
-        {...props}
-      />
-    );
-  },
-);
-Input.displayName = "Input";
-
-/** InputField - label과 error 메시지를 포함한 Input 래퍼 */
-export interface InputFieldProps extends Omit<
+/** Input 컴포넌트 Props */
+export interface InputProps extends Omit<
   React.InputHTMLAttributes<HTMLInputElement>,
   "size"
 > {
@@ -95,11 +67,13 @@ export interface InputFieldProps extends Omit<
   showPasswordToggle?: boolean;
   /** 필수 입력 표시 (라벨 앞에 점 표시) */
   required?: boolean;
+  /** 테이블 모드 (파란 glow 대신 border 강조, wrapper 최소화) */
+  tableMode?: boolean;
 }
 
-const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
+const Input = React.forwardRef<HTMLInputElement, InputProps>(
   (
-    { className, label, error, errorMessage, size = "full", id, rightIcon, onRightIconClick, rightIconLabel = "아이콘 버튼", reserveLabelSpace, loading, showPasswordToggle, required, type, ...props },
+    { className, label, error, errorMessage, size = "full", id, rightIcon, onRightIconClick, rightIconLabel = "아이콘 버튼", reserveLabelSpace, loading, showPasswordToggle, required, type, tableMode, ...props },
     ref,
   ) => {
     const inputId = id || React.useId();
@@ -113,6 +87,30 @@ const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
 
     // 실제 input type 결정
     const inputType = isPasswordType && showPassword ? "text" : type;
+
+    // 스타일 결정
+    const getStyleVariant = () => {
+      if (error) return inputErrorStyles;
+      if (tableMode) return inputTableModeStyles;
+      return inputDefaultStyles;
+    };
+
+    // tableMode이고 label/errorMessage/rightContent가 없으면 input만 렌더링 (wrapper 없음)
+    const isMinimalMode = tableMode && !label && !reserveLabelSpace && !errorMessage && !hasRightContent;
+
+    if (isMinimalMode) {
+      return (
+        <input
+          id={inputId}
+          ref={ref}
+          type={inputType}
+          required={required}
+          className={cn(inputBaseStyles, getStyleVariant(), inputSizeStyles[size], className)}
+          aria-invalid={error}
+          {...props}
+        />
+      );
+    }
 
     // 우측 콘텐츠 렌더링
     const renderRightContent = () => {
@@ -175,13 +173,13 @@ const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
           </label>
         )}
         <div className="relative">
-          <Input
+          <input
             id={inputId}
             ref={ref}
             type={inputType}
-            error={error}
             required={required}
-            className={cn("w-full", hasRightContent && "pr-9", className)}
+            className={cn(inputBaseStyles, getStyleVariant(), "w-full", hasRightContent && "pr-9", className)}
+            aria-invalid={error}
             {...props}
           />
           {renderRightContent()}
@@ -195,6 +193,11 @@ const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
     );
   },
 );
-InputField.displayName = "InputField";
+Input.displayName = "Input";
+
+/**
+ * @deprecated Input을 사용하세요 (동일한 기능)
+ */
+const InputField = Input;
 
 export { Input, InputField, inputSizeStyles };

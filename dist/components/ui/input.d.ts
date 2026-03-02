@@ -6,16 +6,8 @@ declare const inputSizeStyles: {
     readonly full: "w-full";
 };
 export type InputSize = keyof typeof inputSizeStyles;
-/** 순수 Input 컴포넌트 - label/error 없이 input만 렌더링 */
-export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-    /** 에러 상태 */
-    error?: boolean;
-    /** 테이블 모드 (파란 glow 대신 border 강조) */
-    tableMode?: boolean;
-}
-declare const Input: React.ForwardRefExoticComponent<InputProps & React.RefAttributes<HTMLInputElement>>;
-/** InputField - label과 error 메시지를 포함한 Input 래퍼 */
-export interface InputFieldProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size"> {
+/** Input 컴포넌트 Props */
+export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size"> {
     /** 라벨 텍스트 */
     label?: string;
     /** 에러 상태 */
@@ -38,6 +30,12 @@ export interface InputFieldProps extends Omit<React.InputHTMLAttributes<HTMLInpu
     showPasswordToggle?: boolean;
     /** 필수 입력 표시 (라벨 앞에 점 표시) */
     required?: boolean;
+    /** 테이블 모드 (파란 glow 대신 border 강조, wrapper 최소화) */
+    tableMode?: boolean;
 }
-declare const InputField: React.ForwardRefExoticComponent<InputFieldProps & React.RefAttributes<HTMLInputElement>>;
+declare const Input: React.ForwardRefExoticComponent<InputProps & React.RefAttributes<HTMLInputElement>>;
+/**
+ * @deprecated Input을 사용하세요 (동일한 기능)
+ */
+declare const InputField: React.ForwardRefExoticComponent<InputProps & React.RefAttributes<HTMLInputElement>>;
 export { Input, InputField, inputSizeStyles };

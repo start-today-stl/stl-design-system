@@ -39,6 +39,7 @@ export * from './ui/modal'
 export * from './ui/tree'
 export * from './ui/splash-screen'
 export * from './ui/skeleton'
+export * from './ui/stepper'
 
 // Table Components (테이블 관련 전체)
 export * from './table'
