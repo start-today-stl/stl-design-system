@@ -38,6 +38,7 @@ export * from './ui/modal';
 export * from './ui/tree';
 export * from './ui/splash-screen';
 export * from './ui/skeleton';
+export * from './ui/stepper';
 export * from './table';
 export * from './form';
 export * from './dashboard';
