@@ -171,3 +171,125 @@ export const WithToggleGroup: Story = {
   },
 };
 
+/** Flex 레이아웃 - 필드 너비에 맞게 자동 배치, 줄 초과 시 줄바꿈 */
+export const FlexLayout: Story = {
+  render: () => (
+    <SearchForm
+      layout="flex"
+      actions={
+        <Button variant="ghost-outline">초기화</Button>
+      }
+    >
+      <Select
+        label="조회 기준"
+        size="sm"
+        options={[
+          { label: "등록일", value: "registered" },
+          { label: "수정일", value: "modified" },
+        ]}
+      />
+      <Select
+        label="조회 기간"
+        size="sm"
+        options={[
+          { label: "오늘", value: "today" },
+          { label: "어제", value: "yesterday" },
+          { label: "이번주", value: "week" },
+          { label: "이번달", value: "month" },
+        ]}
+      />
+      <Select
+        label="상태"
+        size="sm"
+        options={[
+          { label: "전체", value: "all" },
+          { label: "활성", value: "active" },
+          { label: "비활성", value: "inactive" },
+        ]}
+      />
+      <Select
+        label="결과"
+        size="sm"
+        options={[
+          { label: "전체", value: "all" },
+          { label: "성공", value: "success" },
+          { label: "실패", value: "fail" },
+        ]}
+      />
+      <InputGroup label="" size="lg" reserveLabelSpace>
+        <Input placeholder="검색어를 입력하세요 (쉼표로 다중 검색)" className="flex-1" />
+        <Button>검색</Button>
+      </InputGroup>
+    </SearchForm>
+  ),
+};
+
+/** Flex 레이아웃 - 많은 필드 (자동 줄바꿈) */
+export const FlexLayoutManyFields: Story = {
+  render: () => (
+    <SearchForm
+      title="입고 검색"
+      layout="flex"
+      actions={
+        <>
+          <Button variant="ghost-outline">초기화</Button>
+          <Button>검색</Button>
+        </>
+      }
+    >
+      <Select
+        label="조회 기준"
+        size="sm"
+        options={[
+          { label: "등록일", value: "registered" },
+          { label: "입고 예정일", value: "expected" },
+        ]}
+      />
+      <Select
+        label="조회 기간"
+        size="sm"
+        options={[
+          { label: "오늘", value: "today" },
+          { label: "어제", value: "yesterday" },
+          { label: "이번주", value: "week" },
+          { label: "이번달", value: "month" },
+        ]}
+      />
+      <Select
+        label="메인 센터"
+        size="sm"
+        options={[
+          { label: "전체", value: "all" },
+          { label: "서울 센터", value: "seoul" },
+          { label: "부산 센터", value: "busan" },
+        ]}
+      />
+      <Select
+        label="입고 상태"
+        size="sm"
+        options={[
+          { label: "전체", value: "all" },
+          { label: "등록", value: "registered" },
+          { label: "입고 중", value: "inProgress" },
+          { label: "완료", value: "completed" },
+        ]}
+      />
+      <Select
+        label="입고 결과"
+        size="sm"
+        options={[
+          { label: "전체", value: "all" },
+          { label: "정상", value: "normal" },
+          { label: "부족", value: "shortage" },
+          { label: "초과", value: "excess" },
+        ]}
+      />
+      <InputField
+        label="검색어"
+        size="lg"
+        placeholder="상품코드, SKU, 바코드, 상품명"
+      />
+    </SearchForm>
+  ),
+};
+
