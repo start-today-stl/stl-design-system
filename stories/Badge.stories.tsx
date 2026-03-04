@@ -12,9 +12,9 @@ const meta = {
     variant: {
       control: "select",
       options: [
-        "info-light",
-        "info-solid",
-        "info-outline",
+        "primary-light",
+        "primary-solid",
+        "primary-outline",
         "success-light",
         "success-solid",
         "success-outline",
@@ -34,27 +34,27 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-// 기본 (Info Light)
+// 기본 (Primary Light)
 export const Default: Story = {
   args: {
     children: "배송전",
-    variant: "info-light",
+    variant: "primary-light",
   },
 }
 
-// Info Solid
-export const InfoSolid: Story = {
+// Primary Solid
+export const PrimarySolid: Story = {
   args: {
     children: "배송중",
-    variant: "info-solid",
+    variant: "primary-solid",
   },
 }
 
-// Info Outline
-export const InfoOutline: Story = {
+// Primary Outline
+export const PrimaryOutline: Story = {
   args: {
     children: "일반",
-    variant: "info-outline",
+    variant: "primary-outline",
   },
 }
 
@@ -111,10 +111,10 @@ export const AllVariants: Story = {
   render: () => (
     <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
       <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
-        <span style={{ width: "80px", fontSize: "12px", color: "#666" }}>Info</span>
-        <Badge variant="info-light">배송전</Badge>
-        <Badge variant="info-solid">배송중</Badge>
-        <Badge variant="info-outline">일반</Badge>
+        <span style={{ width: "80px", fontSize: "12px", color: "#666" }}>Primary</span>
+        <Badge variant="primary-light">배송전</Badge>
+        <Badge variant="primary-solid">배송중</Badge>
+        <Badge variant="primary-outline">일반</Badge>
       </div>
       <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
         <span style={{ width: "80px", fontSize: "12px", color: "#666" }}>Success</span>
