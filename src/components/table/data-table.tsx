@@ -34,7 +34,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Skeleton } from "@/components/ui/skeleton"
 import { SplashScreen } from "@/components/ui/splash-screen"
-import { RightIcon, DownIcon, DragHandleIcon, WriteIcon } from "@/icons"
+import { RightIcon, DownIcon, DragHandleIcon, WriteIcon, RowAddIcon, RowDeleteIcon } from "@/icons"
 
 /** 편집 컴포넌트 Props */
 export interface EditComponentProps<T, K extends keyof T = keyof T> {
@@ -126,6 +126,18 @@ interface EditingCell<T> {
   error?: string
 }
 
+/** 행 추가/삭제 액션 설정 */
+export interface RowActionsConfig<T> {
+  /** 행 삭제 핸들러 (각 행에 삭제 아이콘 표시) */
+  onRowDelete?: (row: T) => void
+  /** 행 추가 핸들러 (테이블 하단에 추가 행 표시) */
+  onRowAdd?: () => void
+  /** 삭제 아이콘 표시 여부 (기본: onRowDelete가 있으면 true) */
+  showDelete?: boolean
+  /** 추가 행 표시 여부 (기본: onRowAdd가 있으면 true) */
+  showAdd?: boolean
+}
+
 export interface DataTableProps<T extends { id: string | number }> {
   /** 컬럼 정의 */
   columns: DataTableColumn<T>[]
@@ -181,6 +193,8 @@ export interface DataTableProps<T extends { id: string | number }> {
   headerGroups?: HeaderGroup<T>[]
   /** 로우 그룹핑 설정 (셀 병합) */
   rowGrouping?: RowGroupConfig<T>
+  /** 행 추가/삭제 액션 설정 */
+  rowActions?: RowActionsConfig<T>
 }
 
 /** 기본 편집 컴포넌트 (Input) */
@@ -428,6 +442,7 @@ function DataTable<T extends { id: string | number }>({
   loadingContent,
   headerGroups,
   rowGrouping,
+  rowActions,
 }: DataTableProps<T>) {
   // rowGrouping과 rowReorderable은 함께 사용할 수 없음 (rowSpan 셀 드래그 시 레이아웃 깨짐)
   const rowReorderable = rowGrouping ? false : rowReorderableProp
@@ -698,7 +713,12 @@ function DataTable<T extends { id: string | number }>({
     }
   }
 
-  const totalColumns = columns.length + (selectable ? 1 : 0) + (expandable ? 1 : 0) + (rowReorderable ? 1 : 0)
+  // rowActions 설정
+  const showRowDelete = rowActions?.showDelete ?? !!rowActions?.onRowDelete
+  const showRowAdd = rowActions?.showAdd ?? !!rowActions?.onRowAdd
+  const ROW_ACTIONS_WIDTH = 40 // w-10 = 40px
+
+  const totalColumns = columns.length + (selectable ? 1 : 0) + (expandable ? 1 : 0) + (rowReorderable ? 1 : 0) + (showRowDelete ? 1 : 0)
 
   // 로우 그룹핑: rowSpan 계산 + 그룹 중간 행 Set
   const { rowSpanMap, middleRowSet } = React.useMemo(() => {
@@ -1128,6 +1148,21 @@ function DataTable<T extends { id: string | number }>({
                 }}
               />
             )}
+            {/* 행 삭제 액션 컬럼 헤더 (headerGroups) */}
+            {showRowDelete && (
+              <TableHead
+                className="!p-0 bg-[#eaedf1] dark:bg-slate-800 border-b-0"
+                rowSpan={2}
+                style={{
+                  width: `${ROW_ACTIONS_WIDTH}px`,
+                  minWidth: `${ROW_ACTIONS_WIDTH}px`,
+                  maxWidth: `${ROW_ACTIONS_WIDTH}px`,
+                }}
+                aria-label="행 삭제"
+              >
+                <span className="sr-only">행 삭제</span>
+              </TableHead>
+            )}
 
             {/* 헤더 그룹과 독립 컬럼들 렌더링 */}
             {(() => {
@@ -1258,6 +1293,21 @@ function DataTable<T extends { id: string | number }>({
               aria-label="확장"
             >
               <span className="sr-only">확장</span>
+            </TableHead>
+          )}
+
+          {/* 행 삭제 액션 컬럼 헤더 */}
+          {!headerGroups && showRowDelete && (
+            <TableHead
+              className="!p-0 bg-[#eaedf1] dark:bg-slate-800"
+              style={{
+                width: `${ROW_ACTIONS_WIDTH}px`,
+                minWidth: `${ROW_ACTIONS_WIDTH}px`,
+                maxWidth: `${ROW_ACTIONS_WIDTH}px`,
+              }}
+              aria-label="행 삭제"
+            >
+              <span className="sr-only">행 삭제</span>
             </TableHead>
           )}
 
@@ -1452,6 +1502,28 @@ function DataTable<T extends { id: string | number }>({
                           )}
                         </button>
                       )}
+                    </TableCell>
+                  )}
+
+                  {/* 행 삭제 액션 셀 (rowReorderable) */}
+                  {showRowDelete && (
+                    <TableCell
+                      className="!p-0"
+                      style={{
+                        width: `${ROW_ACTIONS_WIDTH}px`,
+                        minWidth: `${ROW_ACTIONS_WIDTH}px`,
+                        maxWidth: `${ROW_ACTIONS_WIDTH}px`,
+                      }}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <button
+                        type="button"
+                        onClick={() => rowActions?.onRowDelete?.(row)}
+                        className="flex h-9 w-10 items-center justify-center transition-opacity hover:opacity-70"
+                        aria-label="행 삭제"
+                      >
+                        <RowDeleteIcon size={20} />
+                      </button>
                     </TableCell>
                   )}
 
@@ -1701,6 +1773,28 @@ function DataTable<T extends { id: string | number }>({
                   </TableCell>
                 )}
 
+                {/* 행 삭제 액션 셀 */}
+                {showRowDelete && (
+                  <TableCell
+                    className="!p-0"
+                    style={{
+                      width: `${ROW_ACTIONS_WIDTH}px`,
+                      minWidth: `${ROW_ACTIONS_WIDTH}px`,
+                      maxWidth: `${ROW_ACTIONS_WIDTH}px`,
+                    }}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <button
+                      type="button"
+                      onClick={() => rowActions?.onRowDelete?.(row)}
+                      className="flex h-9 w-10 items-center justify-center transition-opacity hover:opacity-70"
+                      aria-label="행 삭제"
+                    >
+                      <RowDeleteIcon size={20} />
+                    </button>
+                  </TableCell>
+                )}
+
                 {columnsToRender.map((column) => {
                   // 로우 그룹핑: rowSpan 확인
                   const rowSpan = getRowSpan(rowIndex, column.accessorKey)
@@ -1876,6 +1970,70 @@ function DataTable<T extends { id: string | number }>({
               </React.Fragment>
             )
           })
+        )}
+
+        {/* 행 추가 버튼 행 */}
+        {showRowAdd && !loading && (
+          <TableRow className="bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800/50 border-b-0">
+            {/* 드래그 핸들 빈 셀 */}
+            {rowReorderable && (
+              <TableCell
+                className="!p-0"
+                style={{
+                  width: `${DRAG_HANDLE_WIDTH}px`,
+                  minWidth: `${DRAG_HANDLE_WIDTH}px`,
+                  maxWidth: `${DRAG_HANDLE_WIDTH}px`,
+                }}
+              />
+            )}
+            {/* 체크박스 빈 셀 */}
+            {selectable && (
+              <TableCell
+                className="!p-0"
+                style={{
+                  width: `${CHECKBOX_WIDTH}px`,
+                  minWidth: `${CHECKBOX_WIDTH}px`,
+                  maxWidth: `${CHECKBOX_WIDTH}px`,
+                }}
+              />
+            )}
+            {/* 확장 버튼 빈 셀 */}
+            {expandable && (
+              <TableCell
+                className="!p-0"
+                style={{
+                  width: `${EXPAND_WIDTH}px`,
+                  minWidth: `${EXPAND_WIDTH}px`,
+                  maxWidth: `${EXPAND_WIDTH}px`,
+                }}
+              />
+            )}
+            {/* 행 추가 버튼 셀 */}
+            <TableCell
+              className="!p-0"
+              style={{
+                width: `${ROW_ACTIONS_WIDTH}px`,
+                minWidth: `${ROW_ACTIONS_WIDTH}px`,
+                maxWidth: `${ROW_ACTIONS_WIDTH}px`,
+              }}
+            >
+              <button
+                type="button"
+                onClick={() => rowActions?.onRowAdd?.()}
+                className="flex h-9 w-10 items-center justify-center transition-opacity hover:opacity-70"
+                aria-label="행 추가"
+              >
+                <RowAddIcon size={20} />
+              </button>
+            </TableCell>
+            {/* 나머지 컬럼 빈 셀 */}
+            {columnsToRender.map((column) => (
+              <TableCell
+                key={String(column.accessorKey)}
+                className="!p-0"
+              />
+            ))}
+          </TableRow>
         )}
       </TableBody>
     </Table>
