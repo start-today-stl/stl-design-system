@@ -39,7 +39,7 @@ const N = c.forwardRef(
               role: e ? "button" : void 0,
               "aria-expanded": e ? !r : void 0,
               children: [
-                /* @__PURE__ */ o("span", { className: "text-sm font-medium text-text-primary", children: s }),
+                /* @__PURE__ */ o("span", { className: "text-base font-medium text-text-primary", children: s }),
                 e && /* @__PURE__ */ o(
                   u,
                   {

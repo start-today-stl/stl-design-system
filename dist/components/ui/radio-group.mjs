@@ -59,7 +59,7 @@ const m = {
 });
 u.displayName = o.Item.displayName;
 const b = c.forwardRef(({ className: a, label: e, children: s, required: t, ...i }, d) => /* @__PURE__ */ l("div", { className: "flex flex-col gap-1.5", children: [
-  e && /* @__PURE__ */ l("span", { className: "flex items-center gap-1 text-xs text-slate-600 dark:text-slate-50", children: [
+  e && /* @__PURE__ */ l("span", { className: "flex items-center gap-1 text-xs text-slate-600 dark:text-slate-400", children: [
     t && /* @__PURE__ */ r("span", { className: "size-2 rounded-full bg-stone-400", "aria-hidden": "true" }),
     e
   ] }),

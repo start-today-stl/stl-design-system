@@ -8,7 +8,7 @@ const b = [
   "disabled:cursor-not-allowed disabled:opacity-50"
 ].join(" "), k = [
   "border-slate-100 dark:border-slate-500",
-  "placeholder:text-slate-300 dark:placeholder:text-slate-100",
+  "placeholder:text-slate-300 dark:placeholder:text-slate-500",
   "focus:border-blue-500 focus:shadow-[0px_0px_6px_0px_rgba(23,118,255,0.5)]"
 ].join(" "), y = [
   "border-destructive dark:border-red-500",
@@ -16,7 +16,7 @@ const b = [
   "focus:border-destructive focus:shadow-[0px_0px_6px_0px_rgba(239,68,68,0.5)] dark:focus:border-red-500"
 ].join(" "), _ = [
   "border-slate-300 dark:border-slate-500",
-  "placeholder:text-slate-300 dark:placeholder:text-slate-100",
+  "placeholder:text-slate-300 dark:placeholder:text-slate-500",
   "focus:border-slate-500 focus:border-[1.5px] focus:shadow-none dark:focus:border-slate-300"
 ].join(" "), m = f.forwardRef(
   ({ className: l, label: e, error: t, errorMessage: r, id: h, reserveLabelSpace: i, required: s, tableMode: x, ...n }, c) => {
@@ -37,7 +37,7 @@ const b = [
         {
           htmlFor: d,
           className: o(
-            "flex items-center gap-1 text-xs text-slate-600 dark:text-slate-50",
+            "flex items-center gap-1 text-xs text-slate-600 dark:text-slate-400",
             !e && "invisible"
           ),
           children: [

@@ -12,7 +12,7 @@ const y = n.forwardRef(({ className: h, showTooltip: m, showLabels: g, label: l,
       "span",
       {
         id: p,
-        className: "text-xs text-slate-600 dark:text-slate-50",
+        className: "text-xs text-slate-600 dark:text-slate-400",
         children: l
       }
     ),
