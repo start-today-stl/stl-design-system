@@ -1,6 +1,7 @@
 import * as React from "react"
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu"
-import { Check, ChevronRight, Circle } from "lucide-react"
+import * as CollapsiblePrimitive from "@radix-ui/react-collapsible"
+import { Check, ChevronDown, ChevronRight, Circle } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
@@ -195,6 +196,54 @@ const DropdownShortcut = ({
 }
 DropdownShortcut.displayName = "DropdownShortcut"
 
+// DropdownAccordionItem - 아래로 펼쳐지는 아코디언 스타일 서브메뉴
+interface DropdownAccordionItemProps {
+  trigger: React.ReactNode
+  children: React.ReactNode
+  defaultOpen?: boolean
+  className?: string
+}
+
+const DropdownAccordionItem = ({
+  trigger,
+  children,
+  defaultOpen = false,
+  className,
+}: DropdownAccordionItemProps) => {
+  const [open, setOpen] = React.useState(defaultOpen)
+
+  return (
+    <CollapsiblePrimitive.Root open={open} onOpenChange={setOpen} className="px-[5px] first:pt-[5px] last:pb-[5px]">
+      <CollapsiblePrimitive.Trigger
+        className={cn(
+          "flex w-full h-[29px] cursor-pointer select-none items-center justify-between gap-2 rounded-[2px] px-[5px]",
+          "text-xs text-slate-500 dark:text-slate-300 outline-none transition-colors",
+          "hover:bg-slate-100 dark:hover:bg-slate-700",
+          "focus:bg-slate-100 dark:focus:bg-slate-700",
+          className
+        )}
+      >
+        {trigger}
+        <ChevronDown
+          className={cn(
+            "h-4 w-4 shrink-0 transition-transform duration-200",
+            open && "rotate-180"
+          )}
+        />
+      </CollapsiblePrimitive.Trigger>
+      <CollapsiblePrimitive.Content
+        className={cn(
+          "overflow-hidden",
+          "data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
+        )}
+      >
+        <div className="pl-2">{children}</div>
+      </CollapsiblePrimitive.Content>
+    </CollapsiblePrimitive.Root>
+  )
+}
+DropdownAccordionItem.displayName = "DropdownAccordionItem"
+
 export {
   Dropdown,
   DropdownTrigger,
@@ -211,4 +260,5 @@ export {
   DropdownSubContent,
   DropdownSubTrigger,
   DropdownRadioGroup,
+  DropdownAccordionItem,
 }

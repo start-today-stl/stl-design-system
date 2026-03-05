@@ -10,6 +10,7 @@ import {
   DropdownCheckboxItem,
   DropdownRadioGroup,
   DropdownRadioItem,
+  DropdownAccordionItem,
 } from "@/components/ui/dropdown"
 import { Button } from "@/components/ui/button"
 import { SettingsIcon } from "@/icons"
@@ -243,4 +244,51 @@ export const ManualActiveState: Story = {
       </Dropdown>
     )
   },
+}
+
+/** 아코디언 스타일 서브메뉴 (아래로 펼쳐지는 2depth 메뉴) */
+export const WithAccordionItem: Story = {
+  render: () => (
+    <Dropdown>
+      <DropdownTrigger asChild>
+        <Button variant="ghost-outline">상품 편집</Button>
+      </DropdownTrigger>
+      <DropdownContent className="w-[160px] p-0">
+        <DropdownAccordionItem trigger="사은품 적용">
+          <DropdownItem onClick={() => console.log("적용")}>적용</DropdownItem>
+          <DropdownItem onClick={() => console.log("적용 취소")}>
+            적용 취소
+          </DropdownItem>
+        </DropdownAccordionItem>
+        <DropdownAccordionItem trigger="상품 일괄 변경">
+          <DropdownItem onClick={() => console.log("추가")}>추가</DropdownItem>
+          <DropdownItem onClick={() => console.log("삭제")}>삭제</DropdownItem>
+          <DropdownItem onClick={() => console.log("변경")}>변경</DropdownItem>
+        </DropdownAccordionItem>
+      </DropdownContent>
+    </Dropdown>
+  ),
+}
+
+/** 아코디언 + 일반 아이템 혼합 */
+export const AccordionWithRegularItems: Story = {
+  render: () => (
+    <Dropdown>
+      <DropdownTrigger asChild>
+        <Button variant="ghost-outline">주문 관리</Button>
+      </DropdownTrigger>
+      <DropdownContent className="w-[180px] p-0">
+        <DropdownAccordionItem trigger="주문 상태 변경">
+          <DropdownItem>결제 완료</DropdownItem>
+          <DropdownItem>배송 중</DropdownItem>
+          <DropdownItem>배송 완료</DropdownItem>
+        </DropdownAccordionItem>
+        <DropdownSeparator />
+        <div className="p-1">
+          <DropdownItem>주문서 조회</DropdownItem>
+          <DropdownItem>주문 취소</DropdownItem>
+        </div>
+      </DropdownContent>
+    </Dropdown>
+  ),
 }

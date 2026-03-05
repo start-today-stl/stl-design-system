@@ -24,4 +24,14 @@ declare const DropdownShortcut: {
     ({ className, ...props }: React.HTMLAttributes<HTMLSpanElement>): import("react/jsx-runtime").JSX.Element;
     displayName: string;
 };
-export { Dropdown, DropdownTrigger, DropdownContent, DropdownItem, DropdownCheckboxItem, DropdownRadioItem, DropdownLabel, DropdownSeparator, DropdownShortcut, DropdownGroup, DropdownPortal, DropdownSub, DropdownSubContent, DropdownSubTrigger, DropdownRadioGroup, };
+interface DropdownAccordionItemProps {
+    trigger: React.ReactNode;
+    children: React.ReactNode;
+    defaultOpen?: boolean;
+    className?: string;
+}
+declare const DropdownAccordionItem: {
+    ({ trigger, children, defaultOpen, className, }: DropdownAccordionItemProps): import("react/jsx-runtime").JSX.Element;
+    displayName: string;
+};
+export { Dropdown, DropdownTrigger, DropdownContent, DropdownItem, DropdownCheckboxItem, DropdownRadioItem, DropdownLabel, DropdownSeparator, DropdownShortcut, DropdownGroup, DropdownPortal, DropdownSub, DropdownSubContent, DropdownSubTrigger, DropdownRadioGroup, DropdownAccordionItem, };
