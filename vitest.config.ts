@@ -18,7 +18,7 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    include: ['@storybook/addon-a11y/preview', '@storybook/react-vite'],
+    include: ['@storybook/addon-a11y/preview', '@storybook/react-vite', '@radix-ui/react-collapsible'],
   },
   test: {
     projects: [
