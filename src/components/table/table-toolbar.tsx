@@ -30,15 +30,15 @@ const TableToolbar = React.forwardRef<HTMLDivElement, TableToolbarProps>(
       <div
         ref={ref}
         className={cn(
-          "flex items-center justify-between py-3 px-4",
+          "flex items-center gap-2 py-3 px-4",
           "bg-white dark:bg-slate-900",
           "border-b border-slate-200 dark:border-slate-700",
           className
         )}
         {...props}
       >
-        {/* 왼쪽: 카운트 영역 */}
-        <div className="flex items-center gap-2">
+        {/* 왼쪽: 카운트 영역 (고정) */}
+        <div className="flex items-center gap-2 shrink-0">
           {totalCount !== undefined && (
             <span className="text-base font-semibold text-slate-600 dark:text-slate-300">
               {formatTotal(totalCount)}
@@ -51,8 +51,8 @@ const TableToolbar = React.forwardRef<HTMLDivElement, TableToolbarProps>(
           )}
         </div>
 
-        {/* 오른쪽: 액션 버튼 영역 */}
-        <div className="flex items-center gap-2">{children}</div>
+        {/* 나머지: 자유 배치 영역 (기본 오른쪽 정렬) */}
+        <div className="flex-1 flex items-center justify-end gap-2">{children}</div>
       </div>
     )
   }
