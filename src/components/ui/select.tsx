@@ -122,7 +122,7 @@ const BasicSelect = React.forwardRef<
               : tableMode
                 ? "border-slate-300 dark:border-slate-500 data-[state=open]:border-slate-500 data-[state=open]:border-[1.5px] data-[state=open]:shadow-none dark:data-[state=open]:border-slate-300"
                 : "border-slate-100 dark:border-slate-600 data-[state=open]:border-blue-500 data-[state=open]:shadow-[0px_0px_6px_0px_rgba(23,118,255,0.5)]",
-            "data-[placeholder]:text-slate-500 dark:data-[placeholder]:text-slate-50",
+            "data-[placeholder]:text-slate-300 dark:data-[placeholder]:text-slate-500",
           )}
           aria-invalid={error}
           aria-label={ariaLabel}
@@ -545,7 +545,7 @@ const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
           <label
             htmlFor={id}
             className={cn(
-              "flex items-center gap-1 text-xs text-slate-600 dark:text-slate-50",
+              "flex items-center gap-1 text-xs text-slate-600 dark:text-slate-400",
               !label && "invisible",
             )}
           >

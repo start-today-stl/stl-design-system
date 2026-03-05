@@ -12,7 +12,7 @@ const g = p.forwardRef(
     disabled: c,
     className: x
   }, m) => /* @__PURE__ */ f("div", { className: i("inline-flex flex-col gap-1 w-fit", x), children: [
-    a && /* @__PURE__ */ r("label", { className: "text-xs text-slate-600 dark:text-slate-50", children: a }),
+    a && /* @__PURE__ */ r("label", { className: "text-xs text-slate-600 dark:text-slate-400", children: a }),
     /* @__PURE__ */ r(
       d.Root,
       {

@@ -173,7 +173,7 @@ const SearchBar = React.forwardRef<HTMLInputElement, SearchBarProps>(
               className={cn(
                 "flex-1 bg-transparent text-xs outline-none",
                 "text-slate-900 dark:text-slate-50",
-                "placeholder:text-slate-300 dark:placeholder:text-slate-50",
+                "placeholder:text-slate-300 dark:placeholder:text-slate-500",
                 "disabled:cursor-not-allowed"
               )}
             />

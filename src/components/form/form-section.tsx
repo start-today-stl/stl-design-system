@@ -71,7 +71,7 @@ const FormSection = React.forwardRef<HTMLDivElement, FormSectionProps>(
             role={collapsible ? "button" : undefined}
             aria-expanded={collapsible ? !isCollapsed : undefined}
           >
-            <span className="text-sm font-medium text-text-primary">
+            <span className="text-base font-medium text-text-primary">
               {title}
             </span>
             {collapsible && (

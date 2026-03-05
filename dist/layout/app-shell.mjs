@@ -26,7 +26,7 @@ const c = a.forwardRef(
         ),
         ...d,
         children: [
-          t && /* @__PURE__ */ r("aside", { className: "flex-shrink-0 h-full relative z-20", children: t }),
+          t && /* @__PURE__ */ r("aside", { className: "flex-shrink-0 h-full relative z-30", children: t }),
           /* @__PURE__ */ i("div", { className: "flex flex-col flex-1 min-w-0 bg-slate-50 dark:bg-slate-950 rounded-tl-[20px]", children: [
             s && /* @__PURE__ */ r("header", { className: "flex-shrink-0 relative z-10", children: s }),
             /* @__PURE__ */ r("main", { className: "flex-1 overflow-auto", children: S })
