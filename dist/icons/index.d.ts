@@ -58,6 +58,8 @@ export { ProductUpIcon } from './ProductUpIcon';
 export { ProductWaitingIcon } from './ProductWaitingIcon';
 export { ProfileIcon } from './ProfileIcon';
 export { RightIcon } from './RightIcon';
+export { RowAddIcon } from './RowAddIcon';
+export { RowDeleteIcon } from './RowDeleteIcon';
 export { SaveIcon } from './SaveIcon';
 export { SearchIcon } from './SearchIcon';
 export { SettingsIcon } from './SettingsIcon';

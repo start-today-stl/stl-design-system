@@ -76,6 +76,17 @@ export interface ExpandableConfig<T> {
     /** 확장 상태 변경 핸들러 */
     onExpandedChange?: (expandedRowIds: (string | number)[]) => void;
 }
+/** 행 추가/삭제 액션 설정 */
+export interface RowActionsConfig<T> {
+    /** 행 삭제 핸들러 (각 행에 삭제 아이콘 표시) */
+    onRowDelete?: (row: T) => void;
+    /** 행 추가 핸들러 (테이블 하단에 추가 행 표시) */
+    onRowAdd?: () => void;
+    /** 삭제 아이콘 표시 여부 (기본: onRowDelete가 있으면 true) */
+    showDelete?: boolean;
+    /** 추가 행 표시 여부 (기본: onRowAdd가 있으면 true) */
+    showAdd?: boolean;
+}
 export interface DataTableProps<T extends {
     id: string | number;
 }> {
@@ -133,8 +144,10 @@ export interface DataTableProps<T extends {
     headerGroups?: HeaderGroup<T>[];
     /** 로우 그룹핑 설정 (셀 병합) */
     rowGrouping?: RowGroupConfig<T>;
+    /** 행 추가/삭제 액션 설정 */
+    rowActions?: RowActionsConfig<T>;
 }
 declare function DataTable<T extends {
     id: string | number;
-}>({ columns, data, selectable, selectedIds, onSelectionChange, sortState, onSortChange, onRowClick, onCellChange, expandable, emptyMessage, className, rowClassName, maxHeight, resizable, columnWidths, onColumnResize, columnReorderable, columnOrder, onColumnReorder, rowReorderable: rowReorderableProp, onRowReorder, loading, loadingMode, loadingContent, headerGroups, rowGrouping, }: DataTableProps<T>): import("react/jsx-runtime").JSX.Element;
+}>({ columns, data, selectable, selectedIds, onSelectionChange, sortState, onSortChange, onRowClick, onCellChange, expandable, emptyMessage, className, rowClassName, maxHeight, resizable, columnWidths, onColumnResize, columnReorderable, columnOrder, onColumnReorder, rowReorderable: rowReorderableProp, onRowReorder, loading, loadingMode, loadingContent, headerGroups, rowGrouping, rowActions, }: DataTableProps<T>): import("react/jsx-runtime").JSX.Element;
 export { DataTable };

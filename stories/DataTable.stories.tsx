@@ -894,7 +894,7 @@ export const AllFeatures: Story = {
                 ? "success-light"
                 : value === "품절"
                   ? "danger-light"
-                  : "info-light"
+                  : "primary-light"
             }
           >
             {value as string}
@@ -1509,6 +1509,258 @@ export const RowGroupingNoSticky: Story = {
           selectable
           selectedIds={selectedIds}
           onSelectionChange={(ids) => setSelectedIds(ids as number[])}
+        />
+      </div>
+    )
+  },
+}
+
+/** 편집 가능 테이블 + 행 추가/삭제 (테이블 내부 추가 버튼) */
+export const RowActionsEditable: Story = {
+  render: () => {
+    // 상품 데이터 타입
+    interface Product {
+      id: number
+      name: string
+      price: number
+      quantity: number
+    }
+
+    // 초기 데이터
+    const [data, setData] = useState<Product[]>([
+      { id: 1, name: "상품 A", price: 10000, quantity: 5 },
+      { id: 2, name: "상품 B", price: 20000, quantity: 3 },
+      { id: 3, name: "상품 C", price: 15000, quantity: 8 },
+    ])
+
+    // 다음 ID
+    const [nextId, setNextId] = useState(4)
+
+    // 컬럼 정의 (편집 가능)
+    const productColumns: DataTableColumn<Product>[] = [
+      {
+        accessorKey: "name",
+        header: "상품명",
+        width: 150,
+        editable: true,
+        validate: (value) => {
+          if (!value || String(value).trim() === "") {
+            return "상품명을 입력하세요"
+          }
+          return true
+        },
+      },
+      {
+        accessorKey: "price",
+        header: "가격",
+        width: 120,
+        align: "right",
+        editable: true,
+        cell: (value) => `${(value as number).toLocaleString()}원`,
+        validate: (value) => {
+          const num = Number(value)
+          if (isNaN(num) || num < 0) {
+            return "올바른 가격을 입력하세요"
+          }
+          return true
+        },
+      },
+      {
+        accessorKey: "quantity",
+        header: "수량",
+        width: 80,
+        align: "center",
+        editable: true,
+        validate: (value) => {
+          const num = Number(value)
+          if (isNaN(num) || num < 0 || !Number.isInteger(num)) {
+            return "올바른 수량을 입력하세요"
+          }
+          return true
+        },
+      },
+    ]
+
+    // 행 추가 핸들러
+    const handleRowAdd = () => {
+      const newProduct: Product = {
+        id: nextId,
+        name: `새 상품`,
+        price: 0,
+        quantity: 0,
+      }
+      setData([...data, newProduct])
+      setNextId(nextId + 1)
+    }
+
+    // 행 삭제 핸들러
+    const handleRowDelete = (row: Product) => {
+      setData(data.filter((item) => item.id !== row.id))
+    }
+
+    // 셀 변경 핸들러
+    const handleCellChange = (
+      rowId: string | number,
+      columnKey: keyof Product,
+      value: Product[keyof Product]
+    ) => {
+      setData(
+        data.map((item) => {
+          if (item.id === rowId) {
+            return { ...item, [columnKey]: value }
+          }
+          return item
+        })
+      )
+    }
+
+    return (
+      <div className="space-y-4">
+        <div className="p-4 bg-slate-50 dark:bg-slate-800 rounded-md text-sm">
+          <h3 className="font-bold mb-2">행 추가/삭제 + 셀 편집</h3>
+          <p className="text-slate-600 dark:text-slate-300">
+            rowActions와 editable 컬럼을 함께 사용합니다.
+            셀을 클릭하면 편집 모드로 전환되며, Enter로 저장, Escape로 취소합니다.
+          </p>
+        </div>
+        <p className="text-sm text-slate-500">
+          총 {data.length}개의 상품
+        </p>
+        <DataTable
+          columns={productColumns}
+          data={data}
+          onCellChange={handleCellChange}
+          rowActions={{
+            onRowAdd: handleRowAdd,
+            onRowDelete: handleRowDelete,
+          }}
+        />
+      </div>
+    )
+  },
+}
+
+/** 편집 가능 테이블 + 행 추가/삭제 (외부 추가 버튼) */
+export const RowActionsEditableExternal: Story = {
+  render: () => {
+    // 상품 데이터 타입
+    interface Product {
+      id: number
+      name: string
+      price: number
+      quantity: number
+    }
+
+    // 초기 데이터
+    const [data, setData] = useState<Product[]>([
+      { id: 1, name: "상품 A", price: 10000, quantity: 5 },
+      { id: 2, name: "상품 B", price: 20000, quantity: 3 },
+      { id: 3, name: "상품 C", price: 15000, quantity: 8 },
+    ])
+
+    // 다음 ID
+    const [nextId, setNextId] = useState(4)
+
+    // 컬럼 정의 (편집 가능)
+    const productColumns: DataTableColumn<Product>[] = [
+      {
+        accessorKey: "name",
+        header: "상품명",
+        width: 150,
+        editable: true,
+        validate: (value) => {
+          if (!value || String(value).trim() === "") {
+            return "상품명을 입력하세요"
+          }
+          return true
+        },
+      },
+      {
+        accessorKey: "price",
+        header: "가격",
+        width: 120,
+        align: "right",
+        editable: true,
+        cell: (value) => `${(value as number).toLocaleString()}원`,
+        validate: (value) => {
+          const num = Number(value)
+          if (isNaN(num) || num < 0) {
+            return "올바른 가격을 입력하세요"
+          }
+          return true
+        },
+      },
+      {
+        accessorKey: "quantity",
+        header: "수량",
+        width: 80,
+        align: "center",
+        editable: true,
+        validate: (value) => {
+          const num = Number(value)
+          if (isNaN(num) || num < 0 || !Number.isInteger(num)) {
+            return "올바른 수량을 입력하세요"
+          }
+          return true
+        },
+      },
+    ]
+
+    // 행 추가 핸들러
+    const handleRowAdd = () => {
+      const newProduct: Product = {
+        id: nextId,
+        name: `새 상품`,
+        price: 0,
+        quantity: 0,
+      }
+      setData([...data, newProduct])
+      setNextId(nextId + 1)
+    }
+
+    // 행 삭제 핸들러
+    const handleRowDelete = (row: Product) => {
+      setData(data.filter((item) => item.id !== row.id))
+    }
+
+    // 셀 변경 핸들러
+    const handleCellChange = (
+      rowId: string | number,
+      columnKey: keyof Product,
+      value: Product[keyof Product]
+    ) => {
+      setData(
+        data.map((item) => {
+          if (item.id === rowId) {
+            return { ...item, [columnKey]: value }
+          }
+          return item
+        })
+      )
+    }
+
+    return (
+      <div className="space-y-4">
+        <div className="p-4 bg-slate-50 dark:bg-slate-800 rounded-md text-sm">
+          <h3 className="font-bold mb-2">행 추가/삭제 + 셀 편집 (외부 추가 버튼)</h3>
+          <p className="text-slate-600 dark:text-slate-300">
+            테이블 내부에는 삭제 아이콘만 표시하고, 행 추가는 테이블 위의 별도 버튼으로 처리합니다.
+            셀을 클릭하면 편집 모드로 전환되며, Enter로 저장, Escape로 취소합니다.
+          </p>
+        </div>
+        <div className="flex items-center justify-between">
+          <p className="text-sm text-slate-500">
+            총 {data.length}개의 상품
+          </p>
+          <Button onClick={handleRowAdd}>행 추가</Button>
+        </div>
+        <DataTable
+          columns={productColumns}
+          data={data}
+          onCellChange={handleCellChange}
+          rowActions={{
+            onRowDelete: handleRowDelete,
+          }}
         />
       </div>
     )

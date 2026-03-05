@@ -54,7 +54,7 @@ const columns: DataTableColumn<Product>[] = [
             ? "success-light"
             : value === "품절"
               ? "danger-light"
-              : "info-light"
+              : "primary-light"
         }
       >
         {value as string}
