@@ -2,6 +2,8 @@
 
 import * as React from "react";
 
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
+
 import { cn } from "@/lib/utils";
 import {
   Dialog,
@@ -85,7 +87,17 @@ const Modal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className={cn(sizeConfig[size], className)} loading={loading}>
+      <DialogContent
+        className={cn(sizeConfig[size], className)}
+        loading={loading}
+        aria-describedby={!description ? undefined : undefined}
+      >
+        {/* 접근성을 위해 DialogTitle 항상 렌더링 */}
+        {loading || !title ? (
+          <VisuallyHidden.Root>
+            <DialogTitle>{title || "모달"}</DialogTitle>
+          </VisuallyHidden.Root>
+        ) : null}
         {!loading && (
           <>
             {renderHeaderIcon()}

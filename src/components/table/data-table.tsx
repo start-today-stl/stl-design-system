@@ -1595,7 +1595,10 @@ function DataTable<T extends { id: string | number }>({
                           className={cn(
                             getAlignClass(column.align),
                             "group/edit cursor-text hover:bg-blue-100 dark:hover:bg-blue-800",
-                            hasRowSpan && "align-middle",
+                            hasRowSpan && "align-middle transition-colors",
+                            // 그룹 셀 hover/selected 스타일
+                            hasRowSpan && groupCellSelected && "bg-blue-50 dark:bg-blue-900",
+                            hasRowSpan && !groupCellSelected && groupCellHovered && "bg-slate-100 dark:bg-slate-800",
                             stickyData.className
                           )}
                           style={cellStyle}
@@ -1868,7 +1871,10 @@ function DataTable<T extends { id: string | number }>({
                         className={cn(
                           getAlignClass(column.align),
                           "group/edit cursor-text hover:bg-blue-100 dark:hover:bg-blue-800",
-                          hasRowSpan && "align-middle",
+                          hasRowSpan && "align-middle transition-colors",
+                          // 그룹 셀 hover/selected 스타일
+                          hasRowSpan && groupCellSelected && "bg-blue-50 dark:bg-blue-900",
+                          hasRowSpan && !groupCellSelected && groupCellHovered && "bg-slate-100 dark:bg-slate-800",
                           stickyData.className
                         )}
                         style={cellStyle}

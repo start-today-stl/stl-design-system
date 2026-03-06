@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import * as DialogPrimitive from "@radix-ui/react-dialog"
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden"
 
 import { cn } from "@/lib/utils"
 import { SplashScreen } from "@/components/ui/splash-screen"
@@ -50,7 +51,15 @@ const DialogContent = React.forwardRef<
       )}
       {...props}
     >
-      {loading ? <SplashScreen /> : children}
+      {loading ? (
+        <>
+          <VisuallyHidden.Root>
+            <DialogPrimitive.Title>로딩 중</DialogPrimitive.Title>
+            <DialogPrimitive.Description>콘텐츠를 불러오는 중입니다</DialogPrimitive.Description>
+          </VisuallyHidden.Root>
+          <SplashScreen />
+        </>
+      ) : children}
     </DialogPrimitive.Content>
   </DialogPortal>
 ))
