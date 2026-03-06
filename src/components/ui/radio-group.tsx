@@ -28,9 +28,9 @@ export interface RadioGroupItemProps
 }
 
 const checkedVariantStyles = {
-  primary: "group-data-[state=checked]:bg-blue-500",
-  success: "group-data-[state=checked]:bg-green-500",
-  danger: "group-data-[state=checked]:bg-red-500",
+  primary: "group-data-[state=checked]:bg-blue-500 dark:group-data-[state=checked]:bg-blue-400",
+  success: "group-data-[state=checked]:bg-green-500 dark:group-data-[state=checked]:bg-green-400",
+  danger: "group-data-[state=checked]:bg-red-500 dark:group-data-[state=checked]:bg-red-400",
 }
 
 const RadioGroupItem = React.forwardRef<
@@ -53,8 +53,8 @@ const RadioGroupItem = React.forwardRef<
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1",
         // 비활성화 상태
         "disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-slate-50 disabled:hover:border-slate-200",
-        // 다크모드
-        "dark:bg-slate-700 dark:border-slate-600 dark:hover:bg-slate-500 dark:hover:border-slate-500",
+        // 다크모드: 배경 어둡게, hover시 바깥원이 내부원보다 어둡게
+        "dark:bg-slate-800 dark:border-slate-500 dark:hover:bg-slate-600 dark:hover:border-slate-500",
         className
       )}
       {...props}
