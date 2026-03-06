@@ -31,8 +31,8 @@ const u = {
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1",
         // 비활성화 상태
         "disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-slate-50 disabled:hover:border-slate-200",
-        // 다크모드
-        "dark:bg-slate-700 dark:border-slate-600 dark:hover:bg-slate-500 dark:hover:border-slate-500",
+        // 다크모드: 배경 어둡게, hover시 바깥원이 내부원보다 어둡게
+        "dark:bg-slate-800 dark:border-slate-500 dark:hover:bg-slate-600 dark:hover:border-slate-500",
         a
       ),
       ...t,
