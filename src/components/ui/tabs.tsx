@@ -32,17 +32,21 @@ export interface TabsListProps
 const TabsList = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.List>,
   TabsListProps
->(({ className, align = "start", ...props }, ref) => (
-  <TabsPrimitive.List
-    ref={ref}
-    className={cn(
-      "flex h-9 items-end border-b border-border",
-      align === "end" ? "justify-end" : "justify-start",
-      className
-    )}
-    {...props}
-  />
-))
+>(({ className, align = "start", children, ...props }, ref) => {
+  return (
+    <TabsPrimitive.List
+      ref={ref}
+      className={cn(
+        "flex h-9 items-end shadow-[inset_0_-1px_0_var(--color-border)]",
+        align === "end" ? "justify-end" : "justify-start",
+        className
+      )}
+      {...props}
+    >
+      {children}
+    </TabsPrimitive.List>
+  )
+})
 TabsList.displayName = TabsPrimitive.List.displayName
 
 /** 드래그 가능한 탭 리스트 Props */
@@ -89,7 +93,7 @@ const SortableTabsList = React.forwardRef<
         <TabsPrimitive.List
           ref={ref}
           className={cn(
-            "flex h-9 items-end border-b border-border",
+            "flex h-9 items-end shadow-[inset_0_-1px_0_var(--color-border)]",
             align === "end" ? "justify-end" : "justify-start",
             className
           )}
@@ -215,19 +219,18 @@ const TabsTrigger = React.forwardRef<
     <>
       <TabsPrimitive.Trigger
         ref={mergedRef}
-        style={{ minWidth: `${minWidth}px` }}
+        style={{ minWidth: `${minWidth}px`, transition: 'none' }}
         className={cn(
           "inline-flex h-9 items-center justify-center gap-0.5 px-3 py-2 text-xs font-bold cursor-pointer",
           "flex-grow-0", // 늘어나지 않음
           "rounded-t bg-transparent",
           "text-text-secondary",
-          "mb-[-1px]", // 하단 border와 연결
-          "transition-all duration-200",
+          "border border-b-0 border-transparent", // 항상 border 유지 (기본 투명)
           // 비활성 탭: 축소 가능, maxWidth 제한
-          "data-[state=inactive]:flex-shrink data-[state=inactive]:max-w-[120px]",
+          `data-[state=inactive]:flex-shrink data-[state=inactive]:max-w-[${maxWidth}px]`,
           // 활성 탭: 축소 안 함, 전체 텍스트 표시
           "data-[state=active]:flex-shrink-0 data-[state=active]:max-w-none",
-          "data-[state=active]:border data-[state=active]:border-b-0 data-[state=active]:border-border",
+          "data-[state=active]:border-border",
           "data-[state=active]:text-slate-900 dark:data-[state=active]:text-slate-50",
           "data-[state=active]:bg-[linear-gradient(180deg,white_0%,#f4f6f8_30%)]",
           "dark:data-[state=active]:bg-[linear-gradient(180deg,#444b57_0%,#1b2026_30%)]",
@@ -248,6 +251,10 @@ const TabsTrigger = React.forwardRef<
         </span>
         {closable && (
           <span
+            onPointerDown={(e) => {
+              e.stopPropagation()
+              e.preventDefault()
+            }}
             onClick={(e) => {
               e.stopPropagation()
               onClose?.()
@@ -346,13 +353,12 @@ const SortableTabsTrigger = React.forwardRef<
           "flex-grow-0", // 늘어나지 않음
           "rounded-t bg-transparent",
           "text-text-secondary",
-          "mb-[-1px]", // 하단 border와 연결
-          "transition-all duration-200",
+          "border border-b-0 border-transparent", // 항상 border 유지 (기본 투명)
           // 비활성 탭: 축소 가능, maxWidth 제한
-          "data-[state=inactive]:flex-shrink data-[state=inactive]:max-w-[120px]",
+          `data-[state=inactive]:flex-shrink data-[state=inactive]:max-w-[${maxWidth}px]`,
           // 활성 탭: 축소 안 함, 전체 텍스트 표시
           "data-[state=active]:flex-shrink-0 data-[state=active]:max-w-none",
-          "data-[state=active]:border data-[state=active]:border-b-0 data-[state=active]:border-border",
+          "data-[state=active]:border-border",
           "data-[state=active]:text-slate-900 dark:data-[state=active]:text-slate-50",
           "data-[state=active]:bg-[linear-gradient(180deg,white_0%,#f4f6f8_30%)]",
           "dark:data-[state=active]:bg-[linear-gradient(180deg,#444b57_0%,#1b2026_30%)]",
@@ -376,6 +382,14 @@ const SortableTabsTrigger = React.forwardRef<
         </span>
         {closable && (
           <span
+            onPointerDown={(e) => {
+              e.stopPropagation()
+              e.preventDefault()
+            }}
+            onMouseDown={(e) => {
+              e.stopPropagation()
+              e.preventDefault()
+            }}
             onClick={(e) => {
               e.stopPropagation()
               onClose?.()
