@@ -41,7 +41,7 @@ const CustomToast = ({ type, title, description }: CustomToastProps) => {
   return (
     <div
       className={cn(
-        "bg-white border border-slate-200 rounded-xl w-[368px]",
+        "bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl w-[368px]",
         isLarge
           ? "flex flex-col items-start p-3 gap-8 mt-1"
           : "flex flex-row items-center justify-between h-12 py-3 pl-3 pr-4"
@@ -51,14 +51,14 @@ const CustomToast = ({ type, title, description }: CustomToastProps) => {
         <>
           <Icon />
           <div className="flex flex-col gap-3">
-            <p className="text-sm font-medium text-slate-900">{title}</p>
-            <p className="text-[10px] text-slate-600">{description}</p>
+            <p className="text-sm font-medium text-slate-900 dark:text-slate-100">{title}</p>
+            <p className="text-[10px] text-slate-600 dark:text-slate-400">{description}</p>
           </div>
         </>
       ) : (
         <>
           <Icon />
-          <p className="text-sm font-medium text-slate-900">{title}</p>
+          <p className="text-sm font-medium text-slate-900 dark:text-slate-100">{title}</p>
         </>
       )}
     </div>

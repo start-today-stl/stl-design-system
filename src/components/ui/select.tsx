@@ -159,7 +159,7 @@ const BasicSelect = React.forwardRef<
                   disabled={option.disabled}
                   className={cn(
                     "relative flex h-[29px] cursor-pointer select-none items-center rounded-[2px] px-[5px] py-[5px]",
-                    "text-xs text-slate-500 dark:text-slate-50 outline-none",
+                    "text-xs text-slate-700 dark:text-slate-50 outline-none",
                     "hover:bg-slate-100 dark:hover:bg-slate-700",
                     "focus:bg-slate-100 dark:focus:bg-slate-700",
                     "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
@@ -289,7 +289,7 @@ const SearchableSelect = React.forwardRef<
                     onSelect={() => handleSelect(option.value)}
                     className={cn(
                       "relative flex h-[29px] cursor-pointer select-none items-center rounded-[2px] px-[5px] py-[5px]",
-                      "text-xs text-slate-500 dark:text-slate-50 outline-none",
+                      "text-xs text-slate-700 dark:text-slate-50 outline-none",
                       "hover:bg-slate-100 dark:hover:bg-slate-700",
                       "data-[selected=true]:bg-slate-100 dark:data-[selected=true]:bg-slate-700",
                       "data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
@@ -454,7 +454,7 @@ const MultiSelect = React.forwardRef<
                       onSelect={() => handleToggle(option.value)}
                       className={cn(
                         "relative flex h-[29px] cursor-pointer select-none items-center gap-2 rounded-[2px] px-[5px] py-[5px]",
-                        "text-xs text-slate-500 dark:text-slate-50 outline-none",
+                        "text-xs text-slate-700 dark:text-slate-50 outline-none",
                         "hover:bg-slate-100 dark:hover:bg-slate-700",
                         "data-[selected=true]:bg-slate-100 dark:data-[selected=true]:bg-slate-700",
                         "data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
