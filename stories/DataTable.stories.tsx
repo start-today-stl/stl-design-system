@@ -15,6 +15,7 @@ import { Button } from "../src/components/ui/button"
 import { Badge } from "../src/components/ui/badge"
 import { Select } from "../src/components/ui/select"
 import { SplashScreen } from "../src/components/ui/splash-screen"
+import { Input } from "../src/components/ui/input"
 
 // 샘플 데이터 타입
 interface User {
@@ -1762,6 +1763,194 @@ export const RowActionsEditableExternal: Story = {
             onRowDelete: handleRowDelete,
           }}
         />
+      </div>
+    )
+  },
+}
+
+/**
+ * 편집 패턴 비교: editable vs 커스텀 렌더러
+ *
+ * ## 언제 어떤 방식을 사용해야 할까?
+ *
+ * ### 1. `editable` prop (기존 데이터 일부 수정)
+ * - 이미 저장된 데이터 중 **일부 셀만** 수정하는 경우
+ * - 예: 재고 수량 수정, 메모 수정, 가격 조정
+ * - 호버 시 편집 아이콘 표시로 편집 가능 여부를 나타냄
+ *
+ * ### 2. 커스텀 렌더러 (새 데이터 전체 입력)
+ * - **모든 셀**에 직접 입력이 필요한 폼 형태
+ * - 예: 신규 등록 폼, 일괄 입력, 주문 상품 입력
+ * - cell 렌더러로 Input, Select 등을 직접 렌더링
+ */
+export const EditingPatterns: Story = {
+  render: () => {
+    // 1. editable prop 사용 예시 (기존 데이터 수정)
+    interface InventoryItem {
+      id: number
+      sku: string
+      name: string
+      stock: number
+      memo: string
+    }
+
+    const [inventoryData, setInventoryData] = useState<InventoryItem[]>([
+      { id: 1, sku: "SKU-001", name: "상품 A", stock: 50, memo: "인기 상품" },
+      { id: 2, sku: "SKU-002", name: "상품 B", stock: 30, memo: "" },
+      { id: 3, sku: "SKU-003", name: "상품 C", stock: 0, memo: "품절 예정" },
+    ])
+
+    const inventoryColumns: DataTableColumn<InventoryItem>[] = [
+      { accessorKey: "sku", header: "SKU", width: 100 },
+      { accessorKey: "name", header: "상품명", width: 120 },
+      { accessorKey: "stock", header: "재고", width: 80, align: "center", editable: true },
+      { accessorKey: "memo", header: "메모", minWidth: 150, editable: true },
+    ]
+
+    const handleInventoryCellChange = (
+      rowId: string | number,
+      columnKey: keyof InventoryItem,
+      value: InventoryItem[keyof InventoryItem]
+    ) => {
+      setInventoryData((prev) =>
+        prev.map((row) =>
+          row.id === rowId ? { ...row, [columnKey]: value } : row
+        )
+      )
+    }
+
+    // 2. 커스텀 렌더러 사용 예시 (새 데이터 입력)
+    interface OrderItem {
+      id: number
+      productName: string
+      quantity: number
+      unitPrice: number
+    }
+
+    const [orderItems, setOrderItems] = useState<OrderItem[]>([
+      { id: 1, productName: "", quantity: 0, unitPrice: 0 },
+      { id: 2, productName: "", quantity: 0, unitPrice: 0 },
+    ])
+
+    const handleOrderChange = (id: number, field: keyof OrderItem, value: string | number) => {
+      setOrderItems((prev) =>
+        prev.map((item) =>
+          item.id === id ? { ...item, [field]: value } : item
+        )
+      )
+    }
+
+    const addOrderRow = () => {
+      const newId = Math.max(0, ...orderItems.map((i) => i.id)) + 1
+      setOrderItems([...orderItems, { id: newId, productName: "", quantity: 0, unitPrice: 0 }])
+    }
+
+    const orderColumns: DataTableColumn<OrderItem>[] = [
+      {
+        accessorKey: "productName",
+        header: "상품명",
+        minWidth: 150,
+        cell: (_, row) => (
+          <Input
+            value={row.productName}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              handleOrderChange(row.id, "productName", e.target.value)
+            }
+            placeholder="상품명 입력"
+            className="h-7 text-xs"
+          />
+        ),
+      },
+      {
+        accessorKey: "quantity",
+        header: "수량",
+        width: 100,
+        cell: (_, row) => (
+          <Input
+            type="number"
+            value={row.quantity || ""}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              handleOrderChange(row.id, "quantity", Number(e.target.value))
+            }
+            placeholder="0"
+            className="h-7 text-xs text-right"
+          />
+        ),
+      },
+      {
+        accessorKey: "unitPrice",
+        header: "단가",
+        width: 120,
+        cell: (_, row) => (
+          <Input
+            type="number"
+            value={row.unitPrice || ""}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              handleOrderChange(row.id, "unitPrice", Number(e.target.value))
+            }
+            placeholder="0"
+            className="h-7 text-xs text-right"
+          />
+        ),
+      },
+      {
+        accessorKey: "id",
+        header: "합계",
+        width: 100,
+        align: "right",
+        cell: (_, row) => {
+          const total = row.quantity * row.unitPrice
+          return <span className="text-slate-600 dark:text-slate-300">{total.toLocaleString()}원</span>
+        },
+      },
+    ]
+
+    return (
+      <div className="space-y-8">
+        {/* 패턴 1: editable prop */}
+        <div className="space-y-3">
+          <div className="p-4 bg-blue-50 dark:bg-blue-900/30 rounded-md">
+            <h3 className="font-bold text-blue-800 dark:text-blue-200 mb-2">
+              패턴 1: editable prop (기존 데이터 수정)
+            </h3>
+            <p className="text-sm text-blue-700 dark:text-blue-300">
+              이미 저장된 데이터 중 <strong>일부 셀만</strong> 수정할 때 사용합니다.
+              <br />
+              호버 시 편집 아이콘이 표시되어 편집 가능 여부를 나타냅니다.
+            </p>
+          </div>
+          <p className="text-xs text-slate-500">
+            예시: 재고 수량과 메모만 편집 가능 (SKU, 상품명은 읽기 전용)
+          </p>
+          <DataTable
+            columns={inventoryColumns}
+            data={inventoryData}
+            onCellChange={handleInventoryCellChange}
+          />
+        </div>
+
+        {/* 패턴 2: 커스텀 렌더러 */}
+        <div className="space-y-3">
+          <div className="p-4 bg-green-50 dark:bg-green-900/30 rounded-md">
+            <h3 className="font-bold text-green-800 dark:text-green-200 mb-2">
+              패턴 2: 커스텀 렌더러 (새 데이터 입력)
+            </h3>
+            <p className="text-sm text-green-700 dark:text-green-300">
+              <strong>모든 셀</strong>에 직접 입력이 필요한 폼 형태일 때 사용합니다.
+              <br />
+              cell 렌더러로 Input, Select 등 컴포넌트를 직접 렌더링합니다.
+            </p>
+          </div>
+          <div className="flex items-center justify-between">
+            <p className="text-xs text-slate-500">
+              예시: 주문 상품 입력 폼 (모든 필드 직접 입력)
+            </p>
+            <Button variant="ghost" size="sm" onClick={addOrderRow}>
+              + 행 추가
+            </Button>
+          </div>
+          <DataTable columns={orderColumns} data={orderItems} />
+        </div>
       </div>
     )
   },
