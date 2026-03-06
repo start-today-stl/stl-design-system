@@ -62,7 +62,7 @@ const Switch = React.forwardRef<
     return (
       <div className="inline-flex items-center gap-2">
         {switchElement}
-        <span className="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-300">
+        <span className="flex items-center gap-1 text-xs text-slate-600 dark:text-slate-400">
           {required && (
             <span className="size-2 rounded-full bg-stone-400" aria-hidden="true" />
           )}
