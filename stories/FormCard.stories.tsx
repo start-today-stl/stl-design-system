@@ -324,6 +324,49 @@ export const CollapsibleSections: Story = {
   ),
 }
 
+/** 섹션 헤더 우측 영역 (headerRight) */
+export const SectionWithHeaderRight: Story = {
+  render: () => (
+    <FormCard className="max-w-[600px]">
+      <FormContent>
+        <FormColumn>
+          <FormSection
+            title="배송지 목록"
+            headerRight={
+              <Button variant="ghost" size="sm">
+                + 배송지 추가
+              </Button>
+            }
+          >
+            <FormRow>
+              <InputField label="기본 배송지" value="서울시 강남구 테헤란로 123" disabled />
+            </FormRow>
+          </FormSection>
+
+          <FormSection
+            title="결제 수단"
+            headerRight={
+              <Button variant="ghost" size="sm">
+                + 카드 추가
+              </Button>
+            }
+            collapsible
+            divider
+          >
+            <FormRow>
+              <InputField label="기본 카드" value="신한카드 **** 1234" disabled />
+            </FormRow>
+          </FormSection>
+        </FormColumn>
+      </FormContent>
+      <FormFooter>
+        <Button variant="ghost">취소</Button>
+        <Button variant="primary">저장</Button>
+      </FormFooter>
+    </FormCard>
+  ),
+}
+
 /** 푸터 없음 */
 export const WithoutFooter: Story = {
   render: () => (

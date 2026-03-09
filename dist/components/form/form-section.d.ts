@@ -2,6 +2,8 @@ import * as React from "react";
 interface FormSectionProps extends React.HTMLAttributes<HTMLDivElement> {
     /** 섹션 타이틀 */
     title?: string;
+    /** 헤더 우측 영역 (버튼 등) */
+    headerRight?: React.ReactNode;
     /** 접기/펼치기 가능 여부 */
     collapsible?: boolean;
     /** 기본 접힘 상태 */

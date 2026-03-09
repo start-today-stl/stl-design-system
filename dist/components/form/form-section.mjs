@@ -1,88 +1,92 @@
-import { jsx as o, jsxs as d } from "react/jsx-runtime";
-import * as c from "react";
-import { cn as a } from "../../lib/utils.mjs";
+import { jsx as o, jsxs as c } from "react/jsx-runtime";
+import * as d from "react";
+import { cn as t } from "../../lib/utils.mjs";
 import { UpIcon as u } from "../../icons/UpIcon.mjs";
-const N = c.forwardRef(
+const y = d.forwardRef(
   ({
-    className: t,
-    title: s,
+    className: i,
+    title: r,
+    headerRight: s,
     collapsible: e = !1,
-    defaultCollapsed: i = !1,
-    divider: n = !1,
-    fullWidth: l = !1,
-    children: m,
-    ...f
-  }, p) => {
-    const [r, x] = c.useState(i), g = () => {
-      e && x(!r);
+    defaultCollapsed: n = !1,
+    divider: l = !1,
+    fullWidth: m = !1,
+    children: f,
+    ...p
+  }, x) => {
+    const [a, g] = d.useState(n), v = () => {
+      e && g(!a);
     };
-    return /* @__PURE__ */ d(
+    return /* @__PURE__ */ c(
       "div",
       {
-        ref: p,
-        className: a(
+        ref: x,
+        className: t(
           "flex flex-col gap-2",
-          l && "col-span-full",
-          t
+          m && "col-span-full",
+          i
         ),
-        ...f,
+        ...p,
         children: [
-          n && /* @__PURE__ */ o("div", { className: "py-3", children: /* @__PURE__ */ o("div", { className: "h-px bg-border" }) }),
-          s && /* @__PURE__ */ d(
+          l && /* @__PURE__ */ o("div", { className: "py-3", children: /* @__PURE__ */ o("div", { className: "h-px bg-border" }) }),
+          (r || s) && /* @__PURE__ */ c(
             "div",
             {
-              className: a(
+              className: t(
                 "flex h-6 items-center justify-between",
                 e && "cursor-pointer select-none"
               ),
-              onClick: g,
+              onClick: e ? v : void 0,
               role: e ? "button" : void 0,
-              "aria-expanded": e ? !r : void 0,
+              "aria-expanded": e ? !a : void 0,
               children: [
-                /* @__PURE__ */ o("span", { className: "text-base font-medium text-text-primary", children: s }),
-                e && /* @__PURE__ */ o(
-                  u,
-                  {
-                    size: 24,
-                    className: a(
-                      "text-text-secondary transition-transform duration-200",
-                      r && "rotate-180"
-                    )
-                  }
-                )
+                /* @__PURE__ */ o("span", { className: "text-base font-medium text-text-primary", children: r }),
+                /* @__PURE__ */ c("div", { className: "flex items-center gap-2", children: [
+                  s && /* @__PURE__ */ o("div", { onClick: (N) => N.stopPropagation(), children: s }),
+                  e && /* @__PURE__ */ o(
+                    u,
+                    {
+                      size: 24,
+                      className: t(
+                        "text-text-secondary transition-transform duration-200",
+                        a && "rotate-180"
+                      )
+                    }
+                  )
+                ] })
               ]
             }
           ),
-          !r && /* @__PURE__ */ o("div", { className: "flex flex-col gap-2", children: m })
+          !a && /* @__PURE__ */ o("div", { className: "flex flex-col gap-2", children: f })
         ]
       }
     );
   }
 );
-N.displayName = "FormSection";
-const v = {
+y.displayName = "FormSection";
+const w = {
   1: "grid-cols-1",
   2: "grid-cols-2",
   3: "grid-cols-3",
   4: "grid-cols-4"
-}, h = c.forwardRef(
-  ({ className: t, columns: s = 1, children: e, ...i }, n) => /* @__PURE__ */ o(
+}, h = d.forwardRef(
+  ({ className: i, columns: r = 1, children: s, ...e }, n) => /* @__PURE__ */ o(
     "div",
     {
       ref: n,
-      className: a(
+      className: t(
         "grid gap-2",
-        v[s],
-        t
+        w[r],
+        i
       ),
-      ...i,
-      children: e
+      ...e,
+      children: s
     }
   )
 );
 h.displayName = "FormRow";
 export {
   h as FormRow,
-  N as FormSection
+  y as FormSection
 };
 //# sourceMappingURL=form-section.mjs.map
