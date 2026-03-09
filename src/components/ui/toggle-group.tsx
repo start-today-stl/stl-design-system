@@ -24,6 +24,8 @@ export interface ToggleGroupProps {
   onValueChange?: (value: string) => void
   /** 비활성화 */
   disabled?: boolean
+  /** 크기 (full: 부모 너비 100%) */
+  size?: "full"
   /** 추가 className */
   className?: string
 }
@@ -37,12 +39,15 @@ const ToggleGroup = React.forwardRef<HTMLDivElement, ToggleGroupProps>(
       defaultValue,
       onValueChange,
       disabled,
+      size,
       className,
     },
     ref
   ) => {
+    const isFull = size === "full"
+
     return (
-      <div className={cn("inline-flex flex-col gap-1 w-fit", className)}>
+      <div className={cn("flex flex-col gap-1", isFull ? "w-full" : "w-fit", className)}>
         {label && (
           <label className="text-xs text-slate-600 dark:text-slate-400">
             {label}
@@ -58,7 +63,7 @@ const ToggleGroup = React.forwardRef<HTMLDivElement, ToggleGroupProps>(
             if (val) onValueChange?.(val)
           }}
           disabled={disabled}
-          className="inline-flex"
+          className={cn("inline-flex", isFull && "w-full")}
         >
           {options.map((option, index) => {
             const isFirst = index === 0
@@ -84,7 +89,9 @@ const ToggleGroup = React.forwardRef<HTMLDivElement, ToggleGroupProps>(
                   // 위치별 border-radius
                   isFirst && "rounded-l-[5px]",
                   isLast && "rounded-r-[5px]",
-                  !isFirst && "border-l-0"
+                  !isFirst && "border-l-0",
+                  // full 사이즈일 때 균등 분배
+                  isFull && "flex-1"
                 )}
               >
                 {option.label}

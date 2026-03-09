@@ -17,6 +17,8 @@ export interface ToggleGroupProps {
     onValueChange?: (value: string) => void;
     /** 비활성화 */
     disabled?: boolean;
+    /** 크기 (full: 부모 너비 100%) */
+    size?: "full";
     /** 추가 className */
     className?: string;
 }

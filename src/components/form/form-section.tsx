@@ -11,6 +11,8 @@ import { UpIcon } from "@/icons"
 interface FormSectionProps extends React.HTMLAttributes<HTMLDivElement> {
   /** 섹션 타이틀 */
   title?: string
+  /** 헤더 우측 영역 (버튼 등) */
+  headerRight?: React.ReactNode
   /** 접기/펼치기 가능 여부 */
   collapsible?: boolean
   /** 기본 접힘 상태 */
@@ -26,6 +28,7 @@ const FormSection = React.forwardRef<HTMLDivElement, FormSectionProps>(
     {
       className,
       title,
+      headerRight,
       collapsible = false,
       defaultCollapsed = false,
       divider = false,
@@ -61,28 +64,33 @@ const FormSection = React.forwardRef<HTMLDivElement, FormSectionProps>(
         )}
 
         {/* 섹션 헤더 */}
-        {title && (
+        {(title || headerRight) && (
           <div
             className={cn(
               "flex h-6 items-center justify-between",
               collapsible && "cursor-pointer select-none"
             )}
-            onClick={handleToggle}
+            onClick={collapsible ? handleToggle : undefined}
             role={collapsible ? "button" : undefined}
             aria-expanded={collapsible ? !isCollapsed : undefined}
           >
             <span className="text-base font-medium text-text-primary">
               {title}
             </span>
-            {collapsible && (
-              <UpIcon
-                size={24}
-                className={cn(
-                  "text-text-secondary transition-transform duration-200",
-                  isCollapsed && "rotate-180"
-                )}
-              />
-            )}
+            <div className="flex items-center gap-2">
+              {headerRight && (
+                <div onClick={(e) => e.stopPropagation()}>{headerRight}</div>
+              )}
+              {collapsible && (
+                <UpIcon
+                  size={24}
+                  className={cn(
+                    "text-text-secondary transition-transform duration-200",
+                    isCollapsed && "rotate-180"
+                  )}
+                />
+              )}
+            </div>
           </div>
         )}
 
