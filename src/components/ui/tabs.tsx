@@ -119,6 +119,99 @@ export interface TabsTriggerProps
   minWidth?: number
 }
 
+/** 탭 컨텍스트 메뉴 (우클릭 메뉴) */
+interface TabContextMenuProps {
+  position: { x: number; y: number }
+  onClose: () => void
+  onCloseTab?: () => void
+  onCloseTabsToRight?: () => void
+  onCloseOtherTabs?: () => void
+}
+
+const TabContextMenu = ({
+  position,
+  onClose,
+  onCloseTab,
+  onCloseTabsToRight,
+  onCloseOtherTabs,
+}: TabContextMenuProps) => {
+  const menuRef = React.useRef<HTMLDivElement>(null)
+  const [mounted, setMounted] = React.useState(false)
+
+  React.useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // 외부 클릭 시 닫기
+  React.useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        onClose()
+      }
+    }
+
+    const handleScroll = () => onClose()
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose()
+    }
+
+    document.addEventListener("mousedown", handleClickOutside)
+    document.addEventListener("scroll", handleScroll, true)
+    document.addEventListener("keydown", handleKeyDown)
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+      document.removeEventListener("scroll", handleScroll, true)
+      document.removeEventListener("keydown", handleKeyDown)
+    }
+  }, [onClose])
+
+  if (!mounted) return null
+
+  const menuItems = [
+    { label: "닫기", onClick: onCloseTab, show: !!onCloseTab },
+    { label: "오른쪽 탭 닫기", onClick: onCloseTabsToRight, show: !!onCloseTabsToRight },
+    { label: "다른 탭 닫기", onClick: onCloseOtherTabs, show: !!onCloseOtherTabs },
+  ].filter(item => item.show)
+
+  return createPortal(
+    <div
+      ref={menuRef}
+      style={{
+        position: "fixed",
+        top: position.y,
+        left: position.x,
+        zIndex: 50,
+      }}
+      className={cn(
+        "min-w-[140px] rounded-[5px] border border-slate-100 dark:border-slate-600",
+        "bg-white/90 dark:bg-slate-800/90 backdrop-blur-[12px]",
+        "p-[5px] shadow-[10px_10px_10px_0px_rgba(0,0,0,0.1)]",
+        "animate-in fade-in-0 zoom-in-95"
+      )}
+    >
+      {menuItems.map((item, index) => (
+        <button
+          key={index}
+          type="button"
+          onClick={() => {
+            item.onClick?.()
+            onClose()
+          }}
+          className={cn(
+            "flex w-full h-[29px] cursor-pointer select-none items-center rounded-[2px] px-[8px]",
+            "text-xs text-slate-600 dark:text-slate-300 outline-none transition-colors",
+            "hover:bg-slate-100 dark:hover:bg-slate-700"
+          )}
+        >
+          {item.label}
+        </button>
+      ))}
+    </div>,
+    document.body
+  )
+}
+
 /** 커스텀 포털 툴팁 (Radix Tabs와 충돌 방지) */
 const PortalTooltip = ({
   children,
@@ -278,13 +371,17 @@ TabsTrigger.displayName = TabsPrimitive.Trigger.displayName
 export interface SortableTabsTriggerProps extends TabsTriggerProps {
   /** 드래그용 고유 ID (보통 value와 동일) */
   id: string
+  /** 오른쪽 탭 닫기 핸들러 */
+  onCloseTabsToRight?: () => void
+  /** 다른 탭 닫기 핸들러 */
+  onCloseOtherTabs?: () => void
 }
 
 /** 드래그 앤 드롭 가능한 탭 트리거 */
 const SortableTabsTrigger = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Trigger>,
   SortableTabsTriggerProps
->(({ id, className, closable, onClose, children, onKeyDown, maxWidth = 120, minWidth = 60, ...props }, ref) => {
+>(({ id, className, closable, onClose, onCloseTabsToRight, onCloseOtherTabs, children, onKeyDown, maxWidth = 120, minWidth = 60, ...props }, ref) => {
   const {
     attributes,
     listeners,
@@ -343,6 +440,18 @@ const SortableTabsTrigger = React.forwardRef<
     minWidth: `${minWidth}px`,
   }
 
+  // 컨텍스트 메뉴 표시 여부 (closable이면서 핸들러가 있을 때만)
+  const hasContextMenu = closable && (onClose || onCloseTabsToRight || onCloseOtherTabs)
+  const [contextMenuOpen, setContextMenuOpen] = React.useState(false)
+  const [contextMenuPosition, setContextMenuPosition] = React.useState({ x: 0, y: 0 })
+
+  const handleContextMenu = (e: React.MouseEvent) => {
+    if (!hasContextMenu) return
+    e.preventDefault()
+    setContextMenuPosition({ x: e.clientX, y: e.clientY })
+    setContextMenuOpen(true)
+  }
+
   return (
     <>
       <TabsPrimitive.Trigger
@@ -370,6 +479,7 @@ const SortableTabsTrigger = React.forwardRef<
         onKeyDown={handleKeyDown}
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
+        onContextMenu={handleContextMenu}
         {...sortableAttributes}
         {...listeners}
         {...props}
@@ -404,6 +514,15 @@ const SortableTabsTrigger = React.forwardRef<
       <PortalTooltip targetRef={triggerRef} show={isTruncated && isHovering && !isDragging}>
         {children}
       </PortalTooltip>
+      {hasContextMenu && contextMenuOpen && (
+        <TabContextMenu
+          position={contextMenuPosition}
+          onClose={() => setContextMenuOpen(false)}
+          onCloseTab={onClose}
+          onCloseTabsToRight={onCloseTabsToRight}
+          onCloseOtherTabs={onCloseOtherTabs}
+        />
+      )}
     </>
   )
 })

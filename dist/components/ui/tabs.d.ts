@@ -33,6 +33,10 @@ declare const TabsTrigger: React.ForwardRefExoticComponent<TabsTriggerProps & Re
 export interface SortableTabsTriggerProps extends TabsTriggerProps {
     /** 드래그용 고유 ID (보통 value와 동일) */
     id: string;
+    /** 오른쪽 탭 닫기 핸들러 */
+    onCloseTabsToRight?: () => void;
+    /** 다른 탭 닫기 핸들러 */
+    onCloseOtherTabs?: () => void;
 }
 /** 드래그 앤 드롭 가능한 탭 트리거 */
 declare const SortableTabsTrigger: React.ForwardRefExoticComponent<SortableTabsTriggerProps & React.RefAttributes<HTMLButtonElement>>;
