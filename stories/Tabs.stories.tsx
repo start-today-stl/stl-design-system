@@ -345,7 +345,7 @@ export const Sortable: Story = {
   },
 }
 
-/** 드래그 + 닫기 버튼 */
+/** 드래그 + 닫기 버튼 + 컨텍스트 메뉴 (우클릭) */
 export const SortableWithClose: Story = {
   render: function SortableClosableTabs() {
     const [tabs, setTabs] = useState([
@@ -369,23 +369,44 @@ export const SortableWithClose: Story = {
       }
     }
 
+    // 오른쪽 탭 닫기
+    const handleCloseTabsToRight = (tabId: string) => {
+      const tabIndex = tabs.findIndex((t) => t.id === tabId)
+      const tabsToClose = tabs.slice(tabIndex + 1)
+      const newTabs = tabs.slice(0, tabIndex + 1)
+      setTabs(newTabs)
+      // 활성 탭이 닫히는 탭 중에 있으면 현재 탭으로 이동
+      if (tabsToClose.some((t) => t.id === activeTab)) {
+        setActiveTab(tabId)
+      }
+    }
+
+    // 다른 탭 닫기
+    const handleCloseOtherTabs = (tabId: string) => {
+      const newTabs = tabs.filter((t) => t.id === tabId)
+      setTabs(newTabs)
+      setActiveTab(tabId)
+    }
+
     return (
       <div className="space-y-4">
         <p className="text-sm text-muted-foreground">
-          탭을 드래그하여 순서 변경, X 버튼으로 닫기
+          탭을 드래그하여 순서 변경, X 버튼으로 닫기, 우클릭하여 컨텍스트 메뉴
         </p>
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-[600px]">
           <SortableTabsList
             items={tabs.map((t) => t.id)}
             onReorder={handleReorder}
           >
-            {tabs.map((tab) => (
+            {tabs.map((tab, index) => (
               <SortableTabsTrigger
                 key={tab.id}
                 id={tab.id}
                 value={tab.id}
                 closable
                 onClose={() => handleClose(tab.id)}
+                onCloseTabsToRight={index < tabs.length - 1 ? () => handleCloseTabsToRight(tab.id) : undefined}
+                onCloseOtherTabs={tabs.length > 1 ? () => handleCloseOtherTabs(tab.id) : undefined}
               >
                 {tab.label}
               </SortableTabsTrigger>
@@ -430,23 +451,43 @@ export const ResponsiveManyTabs: Story = {
       }
     }
 
+    // 오른쪽 탭 닫기
+    const handleCloseTabsToRight = (tabId: string) => {
+      const tabIndex = tabs.findIndex((t) => t.id === tabId)
+      const tabsToClose = tabs.slice(tabIndex + 1)
+      const newTabs = tabs.slice(0, tabIndex + 1)
+      setTabs(newTabs)
+      if (tabsToClose.some((t) => t.id === activeTab)) {
+        setActiveTab(tabId)
+      }
+    }
+
+    // 다른 탭 닫기
+    const handleCloseOtherTabs = (tabId: string) => {
+      const newTabs = tabs.filter((t) => t.id === tabId)
+      setTabs(newTabs)
+      setActiveTab(tabId)
+    }
+
     return (
       <div className="space-y-4">
         <p className="text-sm text-muted-foreground">
-          탭이 많으면 자동으로 너비가 줄어들고 말줄임 표시됩니다. (마우스 올리면 툴팁)
+          탭이 많으면 자동으로 너비가 줄어들고 말줄임 표시됩니다. (마우스 올리면 툴팁, 우클릭하여 컨텍스트 메뉴)
         </p>
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-[700px]">
           <SortableTabsList
             items={tabs.map((t) => t.id)}
             onReorder={handleReorder}
           >
-            {tabs.map((tab) => (
+            {tabs.map((tab, index) => (
               <SortableTabsTrigger
                 key={tab.id}
                 id={tab.id}
                 value={tab.id}
                 closable
                 onClose={() => handleClose(tab.id)}
+                onCloseTabsToRight={index < tabs.length - 1 ? () => handleCloseTabsToRight(tab.id) : undefined}
+                onCloseOtherTabs={tabs.length > 1 ? () => handleCloseOtherTabs(tab.id) : undefined}
               >
                 {tab.label}
               </SortableTabsTrigger>

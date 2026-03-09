@@ -129,7 +129,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             onClick={() => setShowPassword(!showPassword)}
             aria-label={showPassword ? "비밀번호 숨기기" : "비밀번호 보기"}
             className={cn(
-              "absolute right-2 top-1/2 -translate-y-1/2 text-slate-900 hover:text-slate-600 dark:text-slate-50 dark:hover:text-white",
+              "absolute right-2 top-1/2 -translate-y-1/2 text-slate-900 hover:text-slate-600 dark:text-slate-50 dark:hover:text-white cursor-pointer",
               showPassword && "text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300"
             )}
             tabIndex={-1}
