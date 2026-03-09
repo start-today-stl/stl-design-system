@@ -7,7 +7,7 @@ const g = a(
     variants: {
       variant: {
         // 상태 표시용 - Light (연한 배경)
-        "primary-light": "bg-blue-300 text-blue-500 dark:bg-blue-800 dark:text-blue-200",
+        "primary-light": "bg-blue-100 text-blue-700 dark:bg-blue-800 dark:text-blue-200",
         "success-light": "bg-green-100 text-green-700 dark:bg-green-800 dark:text-green-200",
         "danger-light": "bg-red-100 text-red-600 dark:bg-red-800 dark:text-red-200",
         // 상태 표시용 - Solid (진한 배경)
