@@ -1,11 +1,11 @@
 import { jsx as i, jsxs as m } from "react/jsx-runtime";
 import * as r from "react";
-import { cn as N } from "../lib/utils.mjs";
-import { Sidebar as v } from "./sidebar.mjs";
+import { cn as v } from "../lib/utils.mjs";
+import { Sidebar as N } from "./sidebar.mjs";
 import { Header as w } from "./header.mjs";
 import { Content as k } from "./content.mjs";
-import { Button as H } from "../components/ui/button.mjs";
-import { MenuHorizontalIcon as z } from "../icons/MenuHorizontalIcon.mjs";
+import { Button as z } from "../components/ui/button.mjs";
+import { MenuHorizontalIcon as H } from "../icons/MenuHorizontalIcon.mjs";
 const p = r.createContext(null);
 function d(l, a) {
   return r.Children.toArray(l).find(
@@ -28,14 +28,14 @@ const c = r.forwardRef(
       "div",
       {
         ref: e,
-        className: N(
+        className: v(
           "flex h-screen w-full bg-slate-50 dark:bg-slate-950",
           l
         ),
         ...n,
         children: [
           t && /* @__PURE__ */ i("aside", { className: "flex-shrink-0 h-full relative z-40", children: t }),
-          /* @__PURE__ */ m("div", { className: "flex flex-col flex-1 min-w-0 bg-slate-50 dark:bg-slate-950 rounded-tl-[20px]", children: [
+          /* @__PURE__ */ m("div", { className: "flex flex-col flex-1 min-w-0 bg-slate-50 dark:bg-slate-950 rounded-tl-[20px] relative z-0", children: [
             s && /* @__PURE__ */ i("header", { className: "flex-shrink-0 relative z-30", children: s }),
             /* @__PURE__ */ i("main", { className: "flex-1 overflow-auto", children: o })
           ] })
@@ -54,7 +54,7 @@ const S = r.forwardRef(
       var o;
       (o = s == null ? void 0 : s._registerSidebar) == null || o.call(s, { collapseMode: l, collapsed: a });
     }, [l, a]), /* @__PURE__ */ i(
-      v,
+      N,
       {
         ref: t,
         collapseMode: l,
@@ -72,7 +72,7 @@ const C = r.forwardRef(
       if (l) return l;
       if ((e == null ? void 0 : e.collapseMode) === "hidden")
         return /* @__PURE__ */ i(
-          H,
+          z,
           {
             variant: "text",
             size: "icon-sm",
@@ -81,7 +81,7 @@ const C = r.forwardRef(
               return (o = e == null ? void 0 : (s = e.onCollapsedChangeRef).current) == null ? void 0 : o.call(s, !(e != null && e.collapsed));
             },
             "aria-label": e != null && e.collapsed ? "메뉴 열기" : "메뉴 닫기",
-            children: /* @__PURE__ */ i(z, { size: 24 })
+            children: /* @__PURE__ */ i(H, { size: 24 })
           }
         );
     }, [l, e == null ? void 0 : e.collapseMode, e == null ? void 0 : e.collapsed, e == null ? void 0 : e.onCollapsedChangeRef]);
