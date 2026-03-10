@@ -1,6 +1,10 @@
 import { arrayMove } from '@dnd-kit/sortable';
 import * as React from "react";
 import * as TabsPrimitive from "@radix-ui/react-tabs";
+/** 탭 최대 너비 preset 값 */
+export type TabMaxWidth = 60 | 80 | 100 | 120 | 140 | 160;
+/** minWidth preset을 Tailwind 클래스로 매핑 */
+export type TabMinWidth = 40 | 60 | 80;
 declare const Tabs: React.ForwardRefExoticComponent<TabsPrimitive.TabsProps & React.RefAttributes<HTMLDivElement>>;
 export interface TabsListProps extends React.ComponentPropsWithoutRef<typeof TabsPrimitive.List> {
     /** 탭 정렬 위치 */
@@ -23,10 +27,10 @@ export interface TabsTriggerProps extends React.ComponentPropsWithoutRef<typeof 
     closable?: boolean;
     /** 닫기 버튼 클릭 핸들러 */
     onClose?: () => void;
-    /** 탭 최대 너비 (기본값: 120px) */
-    maxWidth?: number;
-    /** 탭 최소 너비 (기본값: 60px) */
-    minWidth?: number;
+    /** 탭 최대 너비 (비활성 탭에만 적용, 기본값: 120) */
+    maxWidth?: TabMaxWidth;
+    /** 탭 최소 너비 (기본값: 60) */
+    minWidth?: TabMinWidth;
 }
 declare const TabsTrigger: React.ForwardRefExoticComponent<TabsTriggerProps & React.RefAttributes<HTMLButtonElement>>;
 /** 드래그 가능한 탭 트리거 Props */

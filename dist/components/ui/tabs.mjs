@@ -1,18 +1,29 @@
 import { jsx as c, jsxs as k, Fragment as M } from "react/jsx-runtime";
 import * as e from "react";
-import * as g from "@radix-ui/react-tabs";
+import * as v from "@radix-ui/react-tabs";
 import { createPortal as D } from "react-dom";
-import { useSensors as q, useSensor as T, PointerSensor as G, KeyboardSensor as J, DndContext as Q, closestCenter as U } from "@dnd-kit/core";
-import { SortableContext as V, horizontalListSortingStrategy as Z, useSortable as C, arrayMove as K } from "@dnd-kit/sortable";
-import { arrayMove as ve } from "@dnd-kit/sortable";
-import { CSS as ee } from "@dnd-kit/utilities";
-import { cn as v } from "../../lib/utils.mjs";
+import { useSensors as J, useSensor as T, PointerSensor as Q, KeyboardSensor as U, DndContext as V, closestCenter as Z } from "@dnd-kit/core";
+import { SortableContext as $, horizontalListSortingStrategy as K, useSortable as ee, arrayMove as te } from "@dnd-kit/sortable";
+import { arrayMove as he } from "@dnd-kit/sortable";
+import { CSS as re } from "@dnd-kit/utilities";
+import { cn as g } from "../../lib/utils.mjs";
 import { XIcon as P } from "../../icons/XIcon.mjs";
-const xe = g.Root, te = e.forwardRef(({ className: l, align: s = "start", children: t, ...n }, d) => /* @__PURE__ */ c(
-  g.List,
+const z = {
+  60: "data-[state=inactive]:max-w-[60px]",
+  80: "data-[state=inactive]:max-w-[80px]",
+  100: "data-[state=inactive]:max-w-[100px]",
+  120: "data-[state=inactive]:max-w-[120px]",
+  140: "data-[state=inactive]:max-w-[140px]",
+  160: "data-[state=inactive]:max-w-[160px]"
+}, I = {
+  40: "min-w-[40px]",
+  60: "min-w-[60px]",
+  80: "min-w-[80px]"
+}, ve = v.Root, ne = e.forwardRef(({ className: l, align: s = "start", children: t, ...n }, d) => /* @__PURE__ */ c(
+  v.List,
   {
     ref: d,
-    className: v(
+    className: g(
       "flex h-9 items-end shadow-[inset_0_-1px_0_var(--color-border)]",
       s === "end" ? "justify-end" : "justify-start",
       l
@@ -21,34 +32,34 @@ const xe = g.Root, te = e.forwardRef(({ className: l, align: s = "start", childr
     children: t
   }
 ));
-te.displayName = g.List.displayName;
-const re = e.forwardRef(({ className: l, align: s = "start", items: t, onReorder: n, children: d, ...u }, b) => {
-  const f = q(
-    T(G, {
+ne.displayName = v.List.displayName;
+const ae = e.forwardRef(({ className: l, align: s = "start", items: t, onReorder: n, children: d, ...u }, x) => {
+  const f = J(
+    T(Q, {
       activationConstraint: {
         distance: 8
         // 8px 이상 이동해야 드래그 시작
       }
     }),
-    T(J)
+    T(U)
   );
   return /* @__PURE__ */ c(
-    Q,
+    V,
     {
       sensors: f,
-      collisionDetection: U,
+      collisionDetection: Z,
       onDragEnd: (o) => {
         const { active: p, over: i } = o;
         if (i && p.id !== i.id) {
-          const m = t.indexOf(p.id), h = t.indexOf(i.id);
-          n(K(t, m, h));
+          const m = t.indexOf(p.id), w = t.indexOf(i.id);
+          n(te(t, m, w));
         }
       },
-      children: /* @__PURE__ */ c(V, { items: t, strategy: Z, children: /* @__PURE__ */ c(
-        g.List,
+      children: /* @__PURE__ */ c($, { items: t, strategy: K, children: /* @__PURE__ */ c(
+        v.List,
         {
-          ref: b,
-          className: v(
+          ref: x,
+          className: g(
             "flex h-9 items-end shadow-[inset_0_-1px_0_var(--color-border)]",
             s === "end" ? "justify-end" : "justify-start",
             l
@@ -60,15 +71,15 @@ const re = e.forwardRef(({ className: l, align: s = "start", items: t, onReorder
     }
   );
 });
-re.displayName = "SortableTabsList";
-const ne = ({
+ae.displayName = "SortableTabsList";
+const se = ({
   position: l,
   onClose: s,
   onCloseTab: t,
   onCloseTabsToRight: n,
   onCloseOtherTabs: d
 }) => {
-  const u = e.useRef(null), [b, f] = e.useState(!1);
+  const u = e.useRef(null), [x, f] = e.useState(!1);
   if (e.useEffect(() => {
     f(!0);
   }, []), e.useEffect(() => {
@@ -80,8 +91,8 @@ const ne = ({
     return document.addEventListener("mousedown", o), document.addEventListener("scroll", p, !0), document.addEventListener("keydown", i), () => {
       document.removeEventListener("mousedown", o), document.removeEventListener("scroll", p, !0), document.removeEventListener("keydown", i);
     };
-  }, [s]), !b) return null;
-  const x = [
+  }, [s]), !x) return null;
+  const b = [
     { label: "닫기", onClick: t, show: !!t },
     { label: "오른쪽 탭 닫기", onClick: n, show: !!n },
     { label: "다른 탭 닫기", onClick: d, show: !!d }
@@ -97,13 +108,13 @@ const ne = ({
           left: l.x,
           zIndex: 50
         },
-        className: v(
+        className: g(
           "min-w-[140px] rounded-[5px] border border-slate-100 dark:border-slate-600",
           "bg-white/90 dark:bg-slate-800/90 backdrop-blur-[12px]",
           "p-[5px] shadow-[10px_10px_10px_0px_rgba(0,0,0,0.1)]",
           "animate-in fade-in-0 zoom-in-95"
         ),
-        children: x.map((o, p) => /* @__PURE__ */ c(
+        children: b.map((o, p) => /* @__PURE__ */ c(
           "button",
           {
             type: "button",
@@ -111,7 +122,7 @@ const ne = ({
               var i;
               (i = o.onClick) == null || i.call(o), s();
             },
-            className: v(
+            className: g(
               "flex w-full h-[29px] cursor-pointer select-none items-center rounded-[2px] px-[8px]",
               "text-xs text-slate-600 dark:text-slate-300 outline-none transition-colors",
               "hover:bg-slate-100 dark:hover:bg-slate-700"
@@ -124,14 +135,14 @@ const ne = ({
     ),
     document.body
   );
-}, z = ({
+}, j = ({
   children: l,
   targetRef: s,
   show: t
 }) => {
-  const [n, d] = e.useState({ top: 0, left: 0 }), [u, b] = e.useState(!1);
+  const [n, d] = e.useState({ top: 0, left: 0 }), [u, x] = e.useState(!1);
   return e.useEffect(() => {
-    b(!0);
+    x(!0);
   }, []), e.useEffect(() => {
     if (t && s.current) {
       const f = s.current.getBoundingClientRect();
@@ -152,7 +163,7 @@ const ne = ({
           zIndex: 50,
           pointerEvents: "none"
         },
-        className: v(
+        className: g(
           "rounded-md border bg-popover px-4 py-2.5 text-sm text-popover-foreground",
           "shadow-[10px_10px_10px_0px_#0000001A]",
           "animate-in fade-in-0 zoom-in-95",
@@ -166,12 +177,12 @@ const ne = ({
     ),
     document.body
   );
-}, ae = e.forwardRef(({ className: l, closable: s, onClose: t, children: n, onKeyDown: d, maxWidth: u = 120, minWidth: b = 60, ...f }, x) => {
-  const o = e.useRef(null), p = e.useRef(null), [i, m] = e.useState(!1), [h, y] = e.useState(!1), S = e.useCallback(
+}, oe = e.forwardRef(({ className: l, closable: s, onClose: t, children: n, onKeyDown: d, maxWidth: u = 120, minWidth: x = 60, ...f }, b) => {
+  const o = e.useRef(null), p = e.useRef(null), [i, m] = e.useState(!1), [w, h] = e.useState(!1), S = e.useCallback(
     (a) => {
-      p.current = a, typeof x == "function" ? x(a) : x && typeof x == "object" && (x.current = a);
+      p.current = a, typeof b == "function" ? b(a) : b && typeof b == "object" && (b.current = a);
     },
-    [x]
+    [b]
   );
   e.useEffect(() => {
     const a = () => {
@@ -184,11 +195,10 @@ const ne = ({
   };
   return /* @__PURE__ */ k(M, { children: [
     /* @__PURE__ */ k(
-      g.Trigger,
+      v.Trigger,
       {
         ref: S,
-        style: { minWidth: `${b}px`, transition: "none" },
-        className: v(
+        className: g(
           "inline-flex h-9 items-center justify-center gap-0.5 px-3 py-2 text-xs font-bold cursor-pointer",
           "flex-grow-0",
           // 늘어나지 않음
@@ -196,9 +206,11 @@ const ne = ({
           "text-text-secondary",
           "border border-b-0 border-transparent",
           // 항상 border 유지 (기본 투명)
-          // 비활성 탭: 축소 가능, maxWidth 제한
-          `data-[state=inactive]:flex-shrink data-[state=inactive]:max-w-[${u}px]`,
-          // 활성 탭: 축소 안 함, 전체 텍스트 표시
+          // 비활성 탭: 축소 가능, minWidth/maxWidth 적용
+          "data-[state=inactive]:flex-shrink",
+          I[x],
+          z[u],
+          // 활성 탭: 축소 안 함, 전체 텍스트 표시 (maxWidth 제거)
           "data-[state=active]:flex-shrink-0 data-[state=active]:max-w-none",
           "data-[state=active]:border-border",
           "data-[state=active]:text-slate-900 dark:data-[state=active]:text-slate-50",
@@ -209,8 +221,8 @@ const ne = ({
           l
         ),
         onKeyDown: _,
-        onMouseEnter: () => y(!0),
-        onMouseLeave: () => y(!1),
+        onMouseEnter: () => h(!0),
+        onMouseLeave: () => h(!1),
         ...f,
         children: [
           /* @__PURE__ */ c(
@@ -238,48 +250,47 @@ const ne = ({
         ]
       }
     ),
-    /* @__PURE__ */ c(z, { targetRef: p, show: i && h, children: n })
+    /* @__PURE__ */ c(j, { targetRef: p, show: i && w, children: n })
   ] });
 });
-ae.displayName = g.Trigger.displayName;
-const se = e.forwardRef(({ id: l, className: s, closable: t, onClose: n, onCloseTabsToRight: d, onCloseOtherTabs: u, children: b, onKeyDown: f, maxWidth: x = 120, minWidth: o = 60, ...p }, i) => {
+oe.displayName = v.Trigger.displayName;
+const ie = e.forwardRef(({ id: l, className: s, closable: t, onClose: n, onCloseTabsToRight: d, onCloseOtherTabs: u, children: x, onKeyDown: f, maxWidth: b = 120, minWidth: o = 60, ...p }, i) => {
   const {
     attributes: m,
-    listeners: h,
-    setNodeRef: y,
+    listeners: w,
+    setNodeRef: h,
     transform: S,
     transition: _,
     isDragging: a
-  } = C({ id: l }), { role: ie, ...I } = m, w = e.useRef(null), E = e.useRef(null), [j, W] = e.useState(!1), [H, N] = e.useState(!1), X = e.useCallback(
+  } = ee({ id: l }), { role: de, ...W } = m, y = e.useRef(null), E = e.useRef(null), [H, X] = e.useState(!1), [B, N] = e.useState(!1), O = e.useCallback(
     (r) => {
-      E.current = r, y(r), typeof i == "function" ? i(r) : i && typeof i == "object" && (i.current = r);
+      E.current = r, h(r), typeof i == "function" ? i(r) : i && typeof i == "object" && (i.current = r);
     },
-    [i, y]
+    [i, h]
   );
   e.useEffect(() => {
     const r = () => {
-      w.current && W(w.current.scrollWidth > w.current.clientWidth);
+      y.current && X(y.current.scrollWidth > y.current.clientWidth);
     };
     return r(), window.addEventListener("resize", r), () => window.removeEventListener("resize", r);
-  }, [b]);
-  const $ = (r) => {
+  }, [x]);
+  const A = (r) => {
     t && (r.key === "Delete" || r.key === "Backspace") && (r.preventDefault(), n == null || n()), f == null || f(r);
-  }, B = {
-    transform: ee.Transform.toString(S),
+  }, Y = {
+    transform: re.Transform.toString(S),
     transition: _,
     opacity: a ? 0.5 : 1,
-    zIndex: a ? 10 : void 0,
-    minWidth: `${o}px`
-  }, L = t && (n || d || u), [O, R] = e.useState(!1), [A, Y] = e.useState({ x: 0, y: 0 }), F = (r) => {
-    L && (r.preventDefault(), Y({ x: r.clientX, y: r.clientY }), R(!0));
+    zIndex: a ? 10 : void 0
+  }, L = t && (n || d || u), [F, R] = e.useState(!1), [q, C] = e.useState({ x: 0, y: 0 }), G = (r) => {
+    L && (r.preventDefault(), C({ x: r.clientX, y: r.clientY }), R(!0));
   };
   return /* @__PURE__ */ k(M, { children: [
     /* @__PURE__ */ k(
-      g.Trigger,
+      v.Trigger,
       {
-        ref: X,
-        style: B,
-        className: v(
+        ref: O,
+        style: Y,
+        className: g(
           "inline-flex h-9 items-center justify-center gap-0.5 px-3 py-2 text-xs font-bold cursor-grab",
           "flex-grow-0",
           // 늘어나지 않음
@@ -287,9 +298,11 @@ const se = e.forwardRef(({ id: l, className: s, closable: t, onClose: n, onClose
           "text-text-secondary",
           "border border-b-0 border-transparent",
           // 항상 border 유지 (기본 투명)
-          // 비활성 탭: 축소 가능, maxWidth 제한
-          `data-[state=inactive]:flex-shrink data-[state=inactive]:max-w-[${x}px]`,
-          // 활성 탭: 축소 안 함, 전체 텍스트 표시
+          // 비활성 탭: 축소 가능, minWidth/maxWidth 적용
+          "data-[state=inactive]:flex-shrink",
+          I[o],
+          z[b],
+          // 활성 탭: 축소 안 함, 전체 텍스트 표시 (maxWidth 제거)
           "data-[state=active]:flex-shrink-0 data-[state=active]:max-w-none",
           "data-[state=active]:border-border",
           "data-[state=active]:text-slate-900 dark:data-[state=active]:text-slate-50",
@@ -300,20 +313,20 @@ const se = e.forwardRef(({ id: l, className: s, closable: t, onClose: n, onClose
           a && "cursor-grabbing",
           s
         ),
-        onKeyDown: $,
+        onKeyDown: A,
         onMouseEnter: () => N(!0),
         onMouseLeave: () => N(!1),
-        onContextMenu: F,
-        ...I,
-        ...h,
+        onContextMenu: G,
+        ...W,
+        ...w,
         ...p,
         children: [
           /* @__PURE__ */ c(
             "span",
             {
-              ref: w,
+              ref: y,
               className: "truncate min-w-0",
-              children: b
+              children: x
             }
           ),
           t && /* @__PURE__ */ c(
@@ -336,11 +349,11 @@ const se = e.forwardRef(({ id: l, className: s, closable: t, onClose: n, onClose
         ]
       }
     ),
-    /* @__PURE__ */ c(z, { targetRef: E, show: j && H && !a, children: b }),
-    L && O && /* @__PURE__ */ c(
-      ne,
+    /* @__PURE__ */ c(j, { targetRef: E, show: H && B && !a, children: x }),
+    L && F && /* @__PURE__ */ c(
+      se,
       {
-        position: A,
+        position: q,
         onClose: () => R(!1),
         onCloseTab: n,
         onCloseTabsToRight: d,
@@ -349,26 +362,26 @@ const se = e.forwardRef(({ id: l, className: s, closable: t, onClose: n, onClose
     )
   ] });
 });
-se.displayName = "SortableTabsTrigger";
-const oe = e.forwardRef(({ className: l, ...s }, t) => /* @__PURE__ */ c(
-  g.Content,
+ie.displayName = "SortableTabsTrigger";
+const ce = e.forwardRef(({ className: l, ...s }, t) => /* @__PURE__ */ c(
+  v.Content,
   {
     ref: t,
-    className: v(
+    className: g(
       "mt-4 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
       l
     ),
     ...s
   }
 ));
-oe.displayName = g.Content.displayName;
+ce.displayName = v.Content.displayName;
 export {
-  re as SortableTabsList,
-  se as SortableTabsTrigger,
-  xe as Tabs,
-  oe as TabsContent,
-  te as TabsList,
-  ae as TabsTrigger,
-  ve as arrayMove
+  ae as SortableTabsList,
+  ie as SortableTabsTrigger,
+  ve as Tabs,
+  ce as TabsContent,
+  ne as TabsList,
+  oe as TabsTrigger,
+  he as arrayMove
 };
 //# sourceMappingURL=tabs.mjs.map

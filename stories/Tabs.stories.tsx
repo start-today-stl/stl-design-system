@@ -271,31 +271,36 @@ export const ClosableWithLongText: Story = {
   },
 }
 
-/** maxWidth 커스텀 */
+/** maxWidth 커스텀 (preset: 60 | 80 | 100 | 120 | 140 | 160) */
 export const CustomMaxWidth: Story = {
   render: () => (
-    <Tabs defaultValue="tab1" className="w-[600px]">
-      <TabsList>
-        <TabsTrigger value="tab1" maxWidth={80}>
-          좁은 탭 (80px)
-        </TabsTrigger>
-        <TabsTrigger value="tab2" maxWidth={200}>
-          넓은 탭 - 이것은 긴 이름입니다 (200px)
-        </TabsTrigger>
-        <TabsTrigger value="tab3">
-          기본값 (120px)
-        </TabsTrigger>
-      </TabsList>
-      <TabsContent value="tab1">
-        <div className="p-4 rounded-lg border">maxWidth: 80px</div>
-      </TabsContent>
-      <TabsContent value="tab2">
-        <div className="p-4 rounded-lg border">maxWidth: 200px</div>
-      </TabsContent>
-      <TabsContent value="tab3">
-        <div className="p-4 rounded-lg border">maxWidth: 120px (기본값)</div>
-      </TabsContent>
-    </Tabs>
+    <div className="space-y-4">
+      <p className="text-sm text-muted-foreground">
+        비활성 탭에만 maxWidth가 적용됩니다. 탭을 클릭해서 확인해보세요.
+      </p>
+      <Tabs defaultValue="tab1" className="w-[600px]">
+        <TabsList>
+          <TabsTrigger value="tab1" maxWidth={80}>
+            좁은탭 maxWidth=80 이건긴이름입니다
+          </TabsTrigger>
+          <TabsTrigger value="tab2" maxWidth={160}>
+            넓은탭 maxWidth=160 이것도긴이름입니다
+          </TabsTrigger>
+          <TabsTrigger value="tab3">
+            기본값 maxWidth=120 역시긴이름
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value="tab1">
+          <div className="p-4 rounded-lg border">maxWidth: 80px - 비활성 시 80px로 제한</div>
+        </TabsContent>
+        <TabsContent value="tab2">
+          <div className="p-4 rounded-lg border">maxWidth: 160px - 비활성 시 160px로 제한</div>
+        </TabsContent>
+        <TabsContent value="tab3">
+          <div className="p-4 rounded-lg border">maxWidth: 120px (기본값) - 비활성 시 120px로 제한</div>
+        </TabsContent>
+      </Tabs>
+    </div>
   ),
 }
 
