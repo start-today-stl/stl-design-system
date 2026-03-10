@@ -4,7 +4,7 @@ import { ToastOIcon as n } from "../../icons/ToastOIcon.mjs";
 import { ToastXIcon as u } from "../../icons/ToastXIcon.mjs";
 import { Spinner as x } from "./spinner.mjs";
 import { cn as p } from "../../lib/utils.mjs";
-const T = ({ ...r }) => /* @__PURE__ */ t(
+const y = ({ ...r }) => /* @__PURE__ */ t(
   i,
   {
     className: "toaster group",
@@ -28,7 +28,7 @@ const T = ({ ...r }) => /* @__PURE__ */ t(
     "div",
     {
       className: p(
-        "bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl w-[368px]",
+        "bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl w-[368px] shadow-lg",
         m ? "flex flex-col items-start p-3 gap-8 mt-1" : "flex flex-row items-center justify-between h-12 py-3 pl-3 pr-4"
       ),
       children: m ? /* @__PURE__ */ a(d, { children: [
@@ -43,14 +43,14 @@ const T = ({ ...r }) => /* @__PURE__ */ t(
       ] })
     }
   );
-}, k = {
+}, T = {
   success: (r, e) => s.custom(() => /* @__PURE__ */ t(c, { type: "success", title: r, description: e == null ? void 0 : e.description })),
   error: (r, e) => s.custom(() => /* @__PURE__ */ t(c, { type: "error", title: r, description: e == null ? void 0 : e.description })),
   loading: (r, e) => s.custom(() => /* @__PURE__ */ t(c, { type: "loading", title: r, description: e == null ? void 0 : e.description })),
   dismiss: s.dismiss
 };
 export {
-  T as Toaster,
-  k as toast
+  y as Toaster,
+  T as toast
 };
 //# sourceMappingURL=sonner.mjs.map
