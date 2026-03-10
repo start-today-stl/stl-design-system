@@ -1,12 +1,4 @@
 import { InputSize } from './input';
-/** 시간 스피너 컴포넌트 */
-interface TimeSpinnerProps {
-    value: number;
-    onChange: (value: number) => void;
-    max: number;
-    disabled?: boolean;
-}
-declare const TimeSpinner: ({ value, onChange, max, disabled }: TimeSpinnerProps) => import("react/jsx-runtime").JSX.Element;
 export interface DateTimePickerProps {
     /** 선택된 날짜/시간 */
     value?: Date;
@@ -34,4 +26,4 @@ export interface DateTimePickerProps {
     required?: boolean;
 }
 declare const DateTimePicker: ({ value, onChange, label, placeholder, dateFormat, error, errorMessage, size, disabled, className, reserveLabelSpace, required, }: DateTimePickerProps) => import("react/jsx-runtime").JSX.Element;
-export { DateTimePicker, TimeSpinner };
+export { DateTimePicker };
