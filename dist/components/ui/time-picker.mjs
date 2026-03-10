@@ -3,7 +3,7 @@ import * as u from "react";
 import { cn as G } from "../../lib/utils.mjs";
 import { InputField as J } from "./input.mjs";
 import { Popover as K, PopoverTrigger as L, PopoverContent as Q } from "./popover.mjs";
-import { TimeSpinner as T } from "./date-time-picker.mjs";
+import { TimeSpinner as T } from "./time-spinner.mjs";
 import { BellIcon as U } from "../../icons/BellIcon.mjs";
 const st = ({
   value: c,

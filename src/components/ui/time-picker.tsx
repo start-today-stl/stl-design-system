@@ -4,7 +4,7 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import { InputField, type InputSize } from "@/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { TimeSpinner } from "@/components/ui/date-time-picker";
+import { TimeSpinner } from "@/components/ui/time-spinner";
 import { BellIcon } from "@/icons";
 
 export interface TimePickerProps {

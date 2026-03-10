@@ -6,51 +6,8 @@ import { cn } from "@/lib/utils";
 import { InputField, type InputSize } from "@/components/ui/input";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { CalendarIcon, UpIcon, DownIcon } from "@/icons";
-
-/** 시간 스피너 컴포넌트 */
-interface TimeSpinnerProps {
-  value: number;
-  onChange: (value: number) => void;
-  max: number;
-  disabled?: boolean;
-}
-
-const TimeSpinner = ({ value, onChange, max, disabled }: TimeSpinnerProps) => {
-  const increment = () => {
-    onChange(value >= max ? 0 : value + 1);
-  };
-
-  const decrement = () => {
-    onChange(value <= 0 ? max : value - 1);
-  };
-
-  return (
-    <div className="flex flex-col items-center gap-0.5">
-      <button
-        type="button"
-        onClick={increment}
-        disabled={disabled}
-        className="flex size-5 cursor-pointer items-center justify-center text-slate-400 hover:text-slate-600 disabled:cursor-not-allowed disabled:opacity-50 dark:text-slate-400 dark:hover:text-slate-200"
-      >
-        <UpIcon size={20} />
-      </button>
-      <div className="flex h-[23px] w-[34px] items-center justify-center rounded-[2px] p-[5px]">
-        <span className="text-xs font-normal tabular-nums text-slate-500 tracking-[-0.18px] dark:text-slate-300">
-          {value.toString().padStart(2, "0")}
-        </span>
-      </div>
-      <button
-        type="button"
-        onClick={decrement}
-        disabled={disabled}
-        className="flex size-5 cursor-pointer items-center justify-center text-slate-400 hover:text-slate-600 disabled:cursor-not-allowed disabled:opacity-50 dark:text-slate-400 dark:hover:text-slate-200"
-      >
-        <DownIcon size={20} />
-      </button>
-    </div>
-  );
-};
+import { TimeSpinner } from "@/components/ui/time-spinner";
+import { CalendarIcon } from "@/icons";
 
 export interface DateTimePickerProps {
   /** 선택된 날짜/시간 */
@@ -263,4 +220,4 @@ const DateTimePicker = ({
   );
 };
 
-export { DateTimePicker, TimeSpinner };
+export { DateTimePicker };
