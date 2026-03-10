@@ -41,7 +41,7 @@ const CustomToast = ({ type, title, description }: CustomToastProps) => {
   return (
     <div
       className={cn(
-        "bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl w-[368px]",
+        "bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl w-[368px] shadow-lg",
         isLarge
           ? "flex flex-col items-start p-3 gap-8 mt-1"
           : "flex flex-row items-center justify-between h-12 py-3 pl-3 pr-4"
