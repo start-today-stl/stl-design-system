@@ -4,7 +4,7 @@ import { NavMenu } from "@/layout/nav-menu"
 import { NavGroup } from "@/layout/nav-group"
 import { NavItem } from "@/layout/nav-item"
 import { NavRenderer } from "@/layout/nav-renderer"
-import { Sidebar } from "@/layout"
+import { Sidebar, Notice, NavInfo } from "@/layout"
 import {
   NaviHomeIcon,
   NaviSaleIcon,
@@ -201,13 +201,21 @@ export const SidebarWithNotice: Story = {
           collapsed={collapsed}
           onCollapsedChange={setCollapsed}
           showToggle={args.showToggle}
-          noticeIcon={<NoticeIcon size={20} />}
-          noticeTitle="CBT 시스템 정기 점검 안내 (12/15 02:00–05:00)"
-          noticeDescription="안녕하세요. 더 안정적인 서비스 제공을 위해 CBT 시스템의 정기 점검이 진행될 예정입니다."
-          infoItems={[
-            { icon: <PhoneIcon size={20} />, text: "1800-4636", href: "tel:1800-4636" },
-            { icon: <LocationIcon size={20} />, text: "경기도 파주시 조리읍 대원로 95-5 스타트투데이 2센터" },
-          ]}
+          footer={
+            <div className="flex flex-col gap-3">
+              <Notice
+                icon={<NoticeIcon size={20} />}
+                title="CBT 시스템 정기 점검 안내 (12/15 02:00–05:00)"
+                description="안녕하세요. 더 안정적인 서비스 제공을 위해 CBT 시스템의 정기 점검이 진행될 예정입니다."
+              />
+              <NavInfo
+                items={[
+                  { icon: <PhoneIcon size={20} />, text: "1800-4636", href: "tel:1800-4636" },
+                  { icon: <LocationIcon size={20} />, text: "경기도 파주시 조리읍 대원로 95-5 스타트투데이 2센터" },
+                ]}
+              />
+            </div>
+          }
         >
           <NavRenderer items={sampleNavigation} />
         </Sidebar>

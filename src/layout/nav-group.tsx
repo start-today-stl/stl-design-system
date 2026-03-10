@@ -4,6 +4,7 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 import { NavItem } from "./nav-item"
+import type { NavMenuLayout } from "./nav-menu"
 
 export interface NavGroupProps extends React.HTMLAttributes<HTMLDivElement> {
   /** 메뉴 아이콘 */
@@ -20,6 +21,8 @@ export interface NavGroupProps extends React.HTMLAttributes<HTMLDivElement> {
   onExpandedChange?: (expanded: boolean) => void
   /** 축소 모드 (아이콘만 표시) */
   collapsed?: boolean
+  /** 레이아웃 (NavMenu에서 전달됨) */
+  layout?: NavMenuLayout
   /** 뎁스 레벨 */
   depth?: 1 | 2 | 3
   /** @internal 플라이아웃 내부 여부 (collapsed 모드에서 중첩 NavGroup 처리용) */
@@ -37,6 +40,7 @@ const NavGroup = React.forwardRef<HTMLDivElement, NavGroupProps>(
       expanded: expandedProp,
       onExpandedChange,
       collapsed,
+      layout = "vertical",
       depth = 1,
       _inFlyout = false,
       children,
@@ -51,6 +55,47 @@ const NavGroup = React.forwardRef<HTMLDivElement, NavGroupProps>(
       const newExpanded = !isExpanded
       setExpandedState(newExpanded)
       onExpandedChange?.(newExpanded)
+    }
+
+    // Horizontal 레이아웃: 호버 시 드롭다운 표시
+    if (layout === "horizontal") {
+      return (
+        <div ref={ref} className={cn("relative group", className)} {...props}>
+          {/* 메뉴 버튼 */}
+          <NavItem
+            icon={icon}
+            label={label}
+            active={active}
+            layout="horizontal"
+            hasChildren
+          />
+          {/* 호버 시 드롭다운 메뉴 - 사이드바 mini flyout과 동일한 스타일 */}
+          <div className={cn(
+            "absolute top-full left-0 mt-1 min-w-[200px] py-2 px-3 rounded-md",
+            "bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-700",
+            "shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible",
+            "transition-all duration-200 z-50"
+          )}>
+            {/* 그룹 라벨 */}
+            <div className="text-sm font-medium text-slate-600 dark:text-slate-300 mb-2 pb-2 border-b border-slate-100 dark:border-slate-700">
+              {label}
+            </div>
+            {/* 하위 메뉴 */}
+            <div className="flex flex-col gap-0.5">
+              {React.Children.map(children, (child) => {
+                if (React.isValidElement(child)) {
+                  return React.cloneElement(child as React.ReactElement<{ layout?: NavMenuLayout; depth?: number; _inFlyout?: boolean }>, {
+                    layout: "vertical", // 드롭다운 내부는 vertical
+                    depth: 2,
+                    _inFlyout: true,
+                  })
+                }
+                return child
+              })}
+            </div>
+          </div>
+        </div>
+      )
     }
 
     // 플라이아웃 내부의 중첩 NavGroup: 일반 펼침/접힘 (새 flyout 생성 안함)
