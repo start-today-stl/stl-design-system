@@ -99,7 +99,7 @@ const NavItem = React.forwardRef<HTMLButtonElement, NavItemProps>(
         <button
           ref={ref}
           className={cn(
-            "flex items-center gap-1.5 h-9 px-3 rounded-md cursor-pointer transition-colors",
+            "flex items-center gap-1.5 h-9 px-1.5 rounded-md cursor-pointer transition-colors",
             "text-sm font-medium tracking-[-0.14px]",
             "hover:bg-slate-50 dark:hover:bg-slate-800",
             "hover:text-blue-500 dark:hover:text-blue-300",
