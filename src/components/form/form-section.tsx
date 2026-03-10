@@ -65,23 +65,17 @@ const FormSection = React.forwardRef<HTMLDivElement, FormSectionProps>(
 
         {/* 섹션 헤더 */}
         {(title || headerRight) && (
-          <div
-            className={cn(
-              "flex h-6 items-center justify-between",
-              collapsible && "cursor-pointer select-none"
-            )}
-            onClick={collapsible ? handleToggle : undefined}
-            role={collapsible ? "button" : undefined}
-            aria-expanded={collapsible ? !isCollapsed : undefined}
-          >
-            <span className="text-base font-medium text-text-primary">
-              {title}
-            </span>
-            <div className="flex items-center gap-2">
-              {headerRight && (
-                <div onClick={(e) => e.stopPropagation()}>{headerRight}</div>
-              )}
-              {collapsible && (
+          <div className="flex h-6 items-center justify-between">
+            {collapsible ? (
+              <button
+                type="button"
+                className="flex items-center gap-2 cursor-pointer select-none"
+                onClick={handleToggle}
+                aria-expanded={!isCollapsed}
+              >
+                <span className="text-base font-medium text-text-primary">
+                  {title}
+                </span>
                 <UpIcon
                   size={24}
                   className={cn(
@@ -89,17 +83,29 @@ const FormSection = React.forwardRef<HTMLDivElement, FormSectionProps>(
                     isCollapsed && "rotate-180"
                   )}
                 />
-              )}
-            </div>
+              </button>
+            ) : (
+              <span className="text-base font-medium text-text-primary">
+                {title}
+              </span>
+            )}
+            {headerRight && <div>{headerRight}</div>}
           </div>
         )}
 
         {/* 섹션 컨텐츠 */}
-        {!isCollapsed && (
-          <div className="flex flex-col gap-2">
-            {children}
+        <div
+          className={cn(
+            "grid transition-[grid-template-rows,opacity] duration-200 ease-in-out",
+            isCollapsed ? "grid-rows-[0fr] opacity-0" : "grid-rows-[1fr] opacity-100"
+          )}
+        >
+          <div className="overflow-hidden">
+            <div className="flex flex-col gap-2">
+              {children}
+            </div>
           </div>
-        )}
+        </div>
       </div>
     )
   }
