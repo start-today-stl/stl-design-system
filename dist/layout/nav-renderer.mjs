@@ -1,60 +1,63 @@
-import { jsx as i, Fragment as N } from "react/jsx-runtime";
-import { NavGroup as A } from "./nav-group.mjs";
-import { NavItem as C } from "./nav-item.mjs";
-import { STLArrowIcon as E } from "../icons/STLArrowIcon.mjs";
-import { isNavGroup as l } from "./types.mjs";
-function u(c) {
+import { jsx as i, Fragment as A } from "react/jsx-runtime";
+import { NavGroup as C } from "./nav-group.mjs";
+import { NavItem as E } from "./nav-item.mjs";
+import { STLArrowIcon as G } from "../icons/STLArrowIcon.mjs";
+import { isNavGroup as u } from "./types.mjs";
+function p(c) {
   if (!(c <= 1))
     return c >= 3 ? 3 : c;
 }
-function k({
+function w({
   items: c,
   iconSize: f = 24,
-  indicatorSize: p = 24,
+  indicatorSize: h = 24,
   collapsed: a,
   currentPath: t,
-  onItemClick: d
+  onItemClick: d,
+  layout: s = "vertical"
 }) {
-  const h = (n) => {
+  const m = (r) => {
     if (!t) return !1;
-    const o = (r) => r.some((e) => l(e) ? o(e.children) : e.href === t);
-    return o(n.children);
-  }, s = (n, o = 1) => {
-    if (l(n)) {
-      const v = "icon" in n ? n.icon : void 0, I = n.defaultExpanded || h(n);
+    const o = (n) => n.some((e) => u(e) ? o(e.children) : e.href === t);
+    return o(r.children);
+  }, v = (r, o = 1) => {
+    if (u(r)) {
+      const l = "icon" in r ? r.icon : void 0, b = r.defaultExpanded || m(r);
       return /* @__PURE__ */ i(
-        A,
+        C,
         {
-          icon: v ? /* @__PURE__ */ i(v, { size: f }) : void 0,
-          label: n.label,
-          depth: u(o),
-          defaultExpanded: I,
+          icon: l ? /* @__PURE__ */ i(l, { size: f }) : void 0,
+          label: r.label,
+          depth: p(o),
+          defaultExpanded: b,
           collapsed: a,
-          children: n.children.map((b) => s(b, o + 1))
+          layout: s,
+          children: r.children.map((N) => v(N, o + 1))
         },
-        n.id
+        r.id
       );
     }
-    const r = n, e = "icon" in r ? r.icon : void 0, m = t ? r.href === t : r.active, x = () => {
-      d && r.href && d(r.href, r);
+    const n = r, e = "icon" in n ? n.icon : void 0, x = t ? n.href === t : n.active, I = () => {
+      d && n.href && d(n.href, n);
     };
     return /* @__PURE__ */ i(
-      C,
+      E,
       {
         icon: e ? /* @__PURE__ */ i(e, { size: f }) : void 0,
-        label: r.label,
-        active: m,
-        depth: u(o),
+        label: n.label,
+        active: x,
+        depth: p(o),
         collapsed: a,
-        indicator: r.hasIndicator ? /* @__PURE__ */ i(E, { size: p }) : void 0,
-        onClick: d && r.href ? x : void 0
+        layout: s,
+        indicator: n.hasIndicator ? /* @__PURE__ */ i(G, { size: h }) : void 0,
+        onClick: d && n.href ? I : void 0
       },
-      r.id
+      n.id
     );
   };
-  return /* @__PURE__ */ i(N, { children: c.map((n) => s(n)) });
+  return /* @__PURE__ */ i(A, { children: c.map((r) => v(r)) });
 }
 export {
-  k as NavRenderer
+  w as NavRenderer
 };
 //# sourceMappingURL=nav-renderer.mjs.map

@@ -10,6 +10,7 @@ import {
   type TopLevelNavGroup,
   isNavGroup,
 } from "./types"
+import type { NavMenuLayout } from "./nav-menu"
 
 export interface NavRendererProps {
   /** 네비게이션 설정 데이터 */
@@ -24,6 +25,8 @@ export interface NavRendererProps {
   currentPath?: string
   /** 아이템 클릭 핸들러 (href가 있는 아이템 클릭 시 호출) */
   onItemClick?: (href: string, item: NavItemConfig | TopLevelNavItem) => void
+  /** 레이아웃 (vertical | horizontal) */
+  layout?: NavMenuLayout
 }
 
 type DepthLevel = 1 | 2 | 3
@@ -43,6 +46,7 @@ export function NavRenderer({
   collapsed,
   currentPath,
   onItemClick,
+  layout = "vertical",
 }: NavRendererProps) {
   /** 현재 경로가 그룹의 하위 경로인지 확인 */
   const isGroupActive = (group: NavGroupConfig | TopLevelNavGroup): boolean => {
@@ -74,6 +78,7 @@ export function NavRenderer({
           depth={toDepthLevel(depth)}
           defaultExpanded={shouldExpand}
           collapsed={collapsed}
+          layout={layout}
         >
           {item.children.map((child) => renderItem(child, depth + 1))}
         </NavGroup>
@@ -100,6 +105,7 @@ export function NavRenderer({
         active={isActive}
         depth={toDepthLevel(depth)}
         collapsed={collapsed}
+        layout={layout}
         indicator={
           navItem.hasIndicator ? (
             <STLArrowIcon size={indicatorSize} />

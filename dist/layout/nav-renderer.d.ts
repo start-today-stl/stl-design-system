@@ -1,4 +1,5 @@
 import { NavigationConfig, NavItemConfig, TopLevelNavItem } from './types';
+import { NavMenuLayout } from './nav-menu';
 export interface NavRendererProps {
     /** 네비게이션 설정 데이터 */
     items: NavigationConfig;
@@ -12,6 +13,8 @@ export interface NavRendererProps {
     currentPath?: string;
     /** 아이템 클릭 핸들러 (href가 있는 아이템 클릭 시 호출) */
     onItemClick?: (href: string, item: NavItemConfig | TopLevelNavItem) => void;
+    /** 레이아웃 (vertical | horizontal) */
+    layout?: NavMenuLayout;
 }
 /** 네비게이션 설정 데이터를 컴포넌트로 렌더링 */
-export declare function NavRenderer({ items, iconSize, indicatorSize, collapsed, currentPath, onItemClick, }: NavRendererProps): import("react/jsx-runtime").JSX.Element;
+export declare function NavRenderer({ items, iconSize, indicatorSize, collapsed, currentPath, onItemClick, layout, }: NavRendererProps): import("react/jsx-runtime").JSX.Element;
