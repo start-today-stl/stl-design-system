@@ -49,7 +49,7 @@ const NavMenu = React.forwardRef<HTMLDivElement, NavMenuProps>(
       <nav
         ref={ref}
         className={cn(
-          "relative flex flex-col min-h-0",
+          "relative flex flex-col min-h-0 transition-all duration-300",
           collapsed ? "w-[88px] items-center" : "w-full",
           className
         )}
@@ -64,7 +64,7 @@ const NavMenu = React.forwardRef<HTMLDivElement, NavMenuProps>(
               "absolute flex items-center justify-center z-20",
               "w-8 h-8 rounded-[20px] border border-slate-100 dark:border-slate-700",
               "bg-white dark:bg-black hover:bg-slate-50 dark:hover:bg-slate-800",
-              "transition-colors cursor-pointer",
+              "transition-all duration-300 cursor-pointer",
               collapsed ? "top-[-60px] -right-4" : "top-[-50px] -right-[40px]"
             )}
             aria-label={collapsed ? "메뉴 펼치기" : "메뉴 접기"}
