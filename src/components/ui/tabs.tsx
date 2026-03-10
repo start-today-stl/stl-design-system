@@ -21,6 +21,28 @@ import { CSS } from "@dnd-kit/utilities"
 import { cn } from "@/lib/utils"
 import { XIcon } from "@/icons"
 
+/** 탭 최대 너비 preset 값 */
+export type TabMaxWidth = 60 | 80 | 100 | 120 | 140 | 160
+
+/** maxWidth preset을 Tailwind 클래스로 매핑 */
+const maxWidthClasses: Record<TabMaxWidth, string> = {
+  60: "data-[state=inactive]:max-w-[60px]",
+  80: "data-[state=inactive]:max-w-[80px]",
+  100: "data-[state=inactive]:max-w-[100px]",
+  120: "data-[state=inactive]:max-w-[120px]",
+  140: "data-[state=inactive]:max-w-[140px]",
+  160: "data-[state=inactive]:max-w-[160px]",
+}
+
+/** minWidth preset을 Tailwind 클래스로 매핑 */
+export type TabMinWidth = 40 | 60 | 80
+
+const minWidthClasses: Record<TabMinWidth, string> = {
+  40: "min-w-[40px]",
+  60: "min-w-[60px]",
+  80: "min-w-[80px]",
+}
+
 const Tabs = TabsPrimitive.Root
 
 export interface TabsListProps
@@ -113,10 +135,10 @@ export interface TabsTriggerProps
   closable?: boolean
   /** 닫기 버튼 클릭 핸들러 */
   onClose?: () => void
-  /** 탭 최대 너비 (기본값: 120px) */
-  maxWidth?: number
-  /** 탭 최소 너비 (기본값: 60px) */
-  minWidth?: number
+  /** 탭 최대 너비 (비활성 탭에만 적용, 기본값: 120) */
+  maxWidth?: TabMaxWidth
+  /** 탭 최소 너비 (기본값: 60) */
+  minWidth?: TabMinWidth
 }
 
 /** 탭 컨텍스트 메뉴 (우클릭 메뉴) */
@@ -312,16 +334,17 @@ const TabsTrigger = React.forwardRef<
     <>
       <TabsPrimitive.Trigger
         ref={mergedRef}
-        style={{ minWidth: `${minWidth}px`, transition: 'none' }}
         className={cn(
           "inline-flex h-9 items-center justify-center gap-0.5 px-3 py-2 text-xs font-bold cursor-pointer",
           "flex-grow-0", // 늘어나지 않음
           "rounded-t bg-transparent",
           "text-text-secondary",
           "border border-b-0 border-transparent", // 항상 border 유지 (기본 투명)
-          // 비활성 탭: 축소 가능, maxWidth 제한
-          `data-[state=inactive]:flex-shrink data-[state=inactive]:max-w-[${maxWidth}px]`,
-          // 활성 탭: 축소 안 함, 전체 텍스트 표시
+          // 비활성 탭: 축소 가능, minWidth/maxWidth 적용
+          "data-[state=inactive]:flex-shrink",
+          minWidthClasses[minWidth],
+          maxWidthClasses[maxWidth],
+          // 활성 탭: 축소 안 함, 전체 텍스트 표시 (maxWidth 제거)
           "data-[state=active]:flex-shrink-0 data-[state=active]:max-w-none",
           "data-[state=active]:border-border",
           "data-[state=active]:text-slate-900 dark:data-[state=active]:text-slate-50",
@@ -437,7 +460,6 @@ const SortableTabsTrigger = React.forwardRef<
     transition,
     opacity: isDragging ? 0.5 : 1,
     zIndex: isDragging ? 10 : undefined,
-    minWidth: `${minWidth}px`,
   }
 
   // 컨텍스트 메뉴 표시 여부 (closable이면서 핸들러가 있을 때만)
@@ -463,9 +485,11 @@ const SortableTabsTrigger = React.forwardRef<
           "rounded-t bg-transparent",
           "text-text-secondary",
           "border border-b-0 border-transparent", // 항상 border 유지 (기본 투명)
-          // 비활성 탭: 축소 가능, maxWidth 제한
-          `data-[state=inactive]:flex-shrink data-[state=inactive]:max-w-[${maxWidth}px]`,
-          // 활성 탭: 축소 안 함, 전체 텍스트 표시
+          // 비활성 탭: 축소 가능, minWidth/maxWidth 적용
+          "data-[state=inactive]:flex-shrink",
+          minWidthClasses[minWidth],
+          maxWidthClasses[maxWidth],
+          // 활성 탭: 축소 안 함, 전체 텍스트 표시 (maxWidth 제거)
           "data-[state=active]:flex-shrink-0 data-[state=active]:max-w-none",
           "data-[state=active]:border-border",
           "data-[state=active]:text-slate-900 dark:data-[state=active]:text-slate-50",
