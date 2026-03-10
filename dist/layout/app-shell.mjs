@@ -34,9 +34,9 @@ const c = r.forwardRef(
         ),
         ...n,
         children: [
-          t && /* @__PURE__ */ i("aside", { className: "flex-shrink-0 h-full relative z-30", children: t }),
+          t && /* @__PURE__ */ i("aside", { className: "flex-shrink-0 h-full relative z-40", children: t }),
           /* @__PURE__ */ m("div", { className: "flex flex-col flex-1 min-w-0 bg-slate-50 dark:bg-slate-950 rounded-tl-[20px]", children: [
-            s && /* @__PURE__ */ i("header", { className: "flex-shrink-0 relative z-40", children: s }),
+            s && /* @__PURE__ */ i("header", { className: "flex-shrink-0 relative z-30", children: s }),
             /* @__PURE__ */ i("main", { className: "flex-1 overflow-auto", children: o })
           ] })
         ]
