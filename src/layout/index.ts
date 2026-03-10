@@ -1,6 +1,6 @@
 // Layout Shell Components
 export { AppShell, type AppShellProps } from './app-shell'
-export { Sidebar, type SidebarProps } from './sidebar'
+export { Sidebar, type SidebarProps, type SidebarCollapseMode } from './sidebar'
 export { Header, type HeaderProps } from './header'
 export { Content, type ContentProps } from './content'
 

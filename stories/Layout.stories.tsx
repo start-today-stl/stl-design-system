@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { AppShell, Sidebar, Header, PageTitle, Notice, NavInfo } from "../src/layout";
+import { AppShell, Sidebar, Header, PageTitle, Notice, NavInfo, NavMenu } from "../src/layout";
 import { stlLogoLight, stlLogoDark } from "../src/assets";
 import { NavGroup } from "../src/layout/nav-group";
 import { NavItem } from "../src/layout/nav-item";
@@ -110,7 +110,15 @@ const sampleRecentSearches = [
   { id: "5", text: "최근 검색어 5" },
 ];
 
-/** 기본 레이아웃 - Compound Component + 데이터 기반 네비게이션 */
+// ============================================================================
+// 기본 레이아웃
+// ============================================================================
+
+/**
+ * 기본 레이아웃 - 사이드바(Mini 축소 모드) + 헤더 + 콘텐츠
+ *
+ * 사이드바 토글 버튼으로 펼침/축소가 가능하며, 축소 시 아이콘만 표시됩니다.
+ */
 export const Default: Story = {
   render: function Render() {
     const [currentPath, setCurrentPath] = useState("/dashboard");
@@ -240,7 +248,187 @@ export const Default: Story = {
   },
 };
 
-/** Breadcrumb + PageTitle 사용 예시 */
+// ============================================================================
+// 사이드바 모드
+// ============================================================================
+
+/**
+ * 사이드바 Hidden 모드 - 완전히 숨기고 햄버거 메뉴로 토글
+ *
+ * `collapseMode="hidden"` 사용 시 사이드바가 완전히 숨겨지고,
+ * 헤더에 메뉴 버튼이 자동으로 추가됩니다.
+ */
+export const SidebarHiddenMode: Story = {
+  render: function Render() {
+    const [collapsed, setCollapsed] = useState(true);
+    const [currentPath, setCurrentPath] = useState("/dashboard");
+
+    return (
+      <div style={{ height: "800px" }}>
+        <AppShell>
+          <AppShell.Sidebar
+            collapseMode="hidden"
+            collapsed={collapsed}
+            onCollapsedChange={setCollapsed}
+            showToggle={false}
+            logo={(isCollapsed) =>
+              isCollapsed ? null : (
+                <div className="relative h-8">
+                  <img src={stlLogoLight} alt="STL" className="h-8 dark:hidden" />
+                  <img src={stlLogoDark} alt="STL" className="h-8 hidden dark:block" />
+                </div>
+              )
+            }
+          >
+            <NavRenderer
+              items={sampleNavigation}
+              currentPath={currentPath}
+              onItemClick={(href) => setCurrentPath(href)}
+            />
+          </AppShell.Sidebar>
+
+          <AppShell.Header
+            search={
+              <SearchBar
+                placeholder="검색..."
+                recentSearches={sampleRecentSearches}
+                className="w-full"
+              />
+            }
+            actions={
+              <div className="flex items-center gap-2">
+                <Button variant="ghost" size="icon-sm" aria-label="알림">
+                  <BellIcon size={24} />
+                </Button>
+                <Button variant="ghost" size="icon-sm" aria-label="프로필">
+                  <ProfileIcon size={24} />
+                </Button>
+              </div>
+            }
+          />
+
+          <AppShell.Content>
+            <div className="flex flex-col gap-4">
+              <PageTitle title="대시보드" subtitle="Dashboard" />
+              <div className="bg-white dark:bg-slate-800 rounded-lg p-6 flex-1">
+                <p className="text-muted-foreground">
+                  사이드바가 완전히 숨겨지고, 헤더 왼쪽의 햄버거 메뉴로 열고 닫을 수 있습니다.
+                </p>
+              </div>
+            </div>
+          </AppShell.Content>
+        </AppShell>
+      </div>
+    );
+  },
+};
+
+// ============================================================================
+// 헤더 변형
+// ============================================================================
+
+/**
+ * 헤더 네비게이션 - 사이드바 없이 헤더에 메뉴 배치
+ *
+ * `NavMenu layout="horizontal"` 사용하여 헤더에 가로 배치 네비게이션을 구현합니다.
+ */
+export const HeaderNavigation: Story = {
+  render: function Render() {
+    const [currentPath, setCurrentPath] = useState("/dashboard");
+
+    return (
+      <div style={{ height: "600px" }}>
+        <AppShell>
+          <AppShell.Header
+            logo={
+              <div className="relative h-8">
+                <img src={stlLogoLight} alt="STL" className="h-8 dark:hidden" />
+                <img src={stlLogoDark} alt="STL" className="h-8 hidden dark:block" />
+              </div>
+            }
+            nav={
+              <NavMenu layout="horizontal">
+                <NavItem
+                  icon={<NaviHomeIcon size={20} />}
+                  label="대시보드"
+                  active={currentPath === "/dashboard"}
+                  onClick={() => setCurrentPath("/dashboard")}
+                />
+                <NavGroup
+                  icon={<NaviSaleIcon size={20} />}
+                  label="판매 관리"
+                >
+                  <NavItem
+                    label="상품 관리"
+                    active={currentPath === "/sales/products"}
+                    onClick={() => setCurrentPath("/sales/products")}
+                  />
+                  <NavItem
+                    label="패키지 관리"
+                    active={currentPath === "/sales/packages"}
+                    onClick={() => setCurrentPath("/sales/packages")}
+                  />
+                </NavGroup>
+                <NavGroup
+                  icon={<NaviOrderIcon size={20} />}
+                  label="주문 관리"
+                >
+                  <NavItem
+                    label="B2C 주문 관리"
+                    active={currentPath === "/orders/b2c"}
+                    onClick={() => setCurrentPath("/orders/b2c")}
+                  />
+                  <NavItem
+                    label="주문 수집"
+                    active={currentPath === "/orders/collection"}
+                    onClick={() => setCurrentPath("/orders/collection")}
+                  />
+                </NavGroup>
+                <NavGroup
+                  icon={<NaviShipIcon size={20} />}
+                  label="배송 관리"
+                >
+                  <NavItem
+                    label="B2C 배송 관리"
+                    active={currentPath === "/shipping/b2c"}
+                    onClick={() => setCurrentPath("/shipping/b2c")}
+                  />
+                </NavGroup>
+              </NavMenu>
+            }
+            actions={
+              <div className="flex items-center gap-2">
+                <Button variant="ghost" size="icon-sm" aria-label="알림">
+                  <BellIcon size={24} />
+                </Button>
+                <Button variant="ghost" size="icon-sm" aria-label="프로필">
+                  <ProfileIcon size={24} />
+                </Button>
+              </div>
+            }
+          />
+
+          <AppShell.Content>
+            <div className="flex flex-col gap-4">
+              <PageTitle title="대시보드" subtitle="Dashboard" />
+              <div className="bg-white dark:bg-slate-800 rounded-lg p-6 flex-1">
+                <p className="text-muted-foreground">
+                  사이드바 없이 헤더에 네비게이션이 배치된 레이아웃입니다.
+                </p>
+              </div>
+            </div>
+          </AppShell.Content>
+        </AppShell>
+      </div>
+    );
+  },
+};
+
+/**
+ * 브레드크럼 포함 레이아웃
+ *
+ * `Breadcrumb` 컴포넌트를 사용하여 현재 위치를 표시합니다.
+ */
 export const WithBreadcrumb: Story = {
   render: function Render() {
     const [currentPath, setCurrentPath] = useState("/orders/b2c");
@@ -369,7 +557,11 @@ export const WithBreadcrumb: Story = {
   },
 };
 
-/** 헤더 중앙 커스텀 영역 포함 */
+/**
+ * 헤더 중앙 커스텀 영역 포함
+ *
+ * `center` prop으로 헤더 중앙에 커스텀 콘텐츠를 배치합니다.
+ */
 export const WithHeaderCenter: Story = {
   render: function Render() {
     const [currentPath, setCurrentPath] = useState("/dashboard");
@@ -496,7 +688,13 @@ export const WithHeaderCenter: Story = {
   },
 };
 
-/** 사이드바만 (개별 컴포넌트 테스트) */
+// ============================================================================
+// 레이아웃 조합
+// ============================================================================
+
+/**
+ * 사이드바만 (개별 컴포넌트 테스트)
+ */
 export const SidebarOnly: Story = {
   render: () => (
     <div style={{ height: "800px" }}>

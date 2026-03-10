@@ -3,10 +3,14 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 import { MenuVerticalIcon } from "@/icons"
 
+export type NavMenuLayout = "vertical" | "horizontal"
+
 export interface NavMenuProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** 축소 모드 */
+  /** 레이아웃: vertical(사이드바용) | horizontal(헤더용) */
+  layout?: NavMenuLayout
+  /** 축소 모드 (vertical에서만 동작) */
   collapsed?: boolean
-  /** 토글 버튼 표시 여부 */
+  /** 토글 버튼 표시 여부 (vertical에서만 동작) */
   showToggle?: boolean
   /** 토글 버튼 클릭 핸들러 */
   onToggle?: () => void
@@ -15,7 +19,32 @@ export interface NavMenuProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const NavMenu = React.forwardRef<HTMLDivElement, NavMenuProps>(
-  ({ className, collapsed, showToggle = false, scrollable = false, onToggle, children, ...props }, ref) => {
+  ({ className, layout = "vertical", collapsed, showToggle = false, scrollable = false, onToggle, children, ...props }, ref) => {
+    // Horizontal 레이아웃
+    if (layout === "horizontal") {
+      return (
+        <nav
+          ref={ref}
+          className={cn(
+            "flex items-center gap-1",
+            className
+          )}
+          {...props}
+        >
+          {/* children에 layout prop 전달 */}
+          {React.Children.map(children, (child) => {
+            if (React.isValidElement(child)) {
+              return React.cloneElement(child as React.ReactElement<{ layout?: NavMenuLayout }>, {
+                layout,
+              })
+            }
+            return child
+          })}
+        </nav>
+      )
+    }
+
+    // Vertical 레이아웃 (기존)
     return (
       <nav
         ref={ref}
@@ -55,8 +84,9 @@ const NavMenu = React.forwardRef<HTMLDivElement, NavMenuProps>(
           {/* children에 collapsed prop 전달 */}
           {React.Children.map(children, (child) => {
             if (React.isValidElement(child)) {
-              return React.cloneElement(child as React.ReactElement<{ collapsed?: boolean }>, {
+              return React.cloneElement(child as React.ReactElement<{ collapsed?: boolean; layout?: NavMenuLayout }>, {
                 collapsed,
+                layout,
               })
             }
             return child

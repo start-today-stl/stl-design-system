@@ -1,4 +1,5 @@
 import { VariantProps } from 'class-variance-authority';
+import { NavMenuLayout } from './nav-menu';
 import * as React from "react";
 declare const navItemVariants: (props?: ({
     active?: boolean | null | undefined;
@@ -15,6 +16,8 @@ export interface NavItemProps extends React.ButtonHTMLAttributes<HTMLButtonEleme
     expanded?: boolean;
     /** 축소 모드 (아이콘만 표시) */
     collapsed?: boolean;
+    /** 레이아웃 (NavMenu에서 전달됨) */
+    layout?: NavMenuLayout;
     /** 우측 인디케이터 아이콘 (펼침 모드) */
     indicator?: React.ReactNode;
     /** @internal 플라이아웃 내부 여부 (NavGroup에서 전달됨, DOM에 전달되지 않음) */

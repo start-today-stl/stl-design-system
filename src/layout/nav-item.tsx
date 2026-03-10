@@ -2,7 +2,8 @@ import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
-import { RightIcon } from "@/icons"
+import { RightIcon, DownIcon } from "@/icons"
+import type { NavMenuLayout } from "./nav-menu"
 
 const navItemVariants = cva(
   // 기본: h-9(36px), p-1.5(6px), gap-0.5(2px), rounded-md(6px)
@@ -63,6 +64,8 @@ export interface NavItemProps
   expanded?: boolean
   /** 축소 모드 (아이콘만 표시) */
   collapsed?: boolean
+  /** 레이아웃 (NavMenu에서 전달됨) */
+  layout?: NavMenuLayout
   /** 우측 인디케이터 아이콘 (펼침 모드) */
   indicator?: React.ReactNode
   /** @internal 플라이아웃 내부 여부 (NavGroup에서 전달됨, DOM에 전달되지 않음) */
@@ -80,6 +83,7 @@ const NavItem = React.forwardRef<HTMLButtonElement, NavItemProps>(
       hasChildren,
       expanded,
       collapsed,
+      layout = "vertical",
       indicator,
       _inFlyout,
       ...props
@@ -88,6 +92,44 @@ const NavItem = React.forwardRef<HTMLButtonElement, NavItemProps>(
   ) => {
     // _inFlyout은 NavGroup에서 전달되지만 DOM에는 전달하지 않음
     void _inFlyout
+
+    // Horizontal 레이아웃: 가로 배치
+    if (layout === "horizontal") {
+      return (
+        <button
+          ref={ref}
+          className={cn(
+            "flex items-center gap-1.5 h-9 px-3 rounded-md cursor-pointer transition-colors",
+            "text-sm font-medium tracking-[-0.14px]",
+            "hover:bg-slate-50 dark:hover:bg-slate-800",
+            "hover:text-blue-500 dark:hover:text-blue-300",
+            "hover:[&_svg]:text-blue-500 dark:hover:[&_svg]:text-blue-300",
+            active
+              ? "text-blue-500 dark:text-blue-300 [&_svg]:text-blue-500 [&_svg]:dark:text-blue-300"
+              : "text-slate-800 dark:text-slate-200 [&_svg]:text-slate-800 [&_svg]:dark:text-slate-200",
+            className
+          )}
+          {...props}
+        >
+          {/* 아이콘 */}
+          {icon && (
+            <span className="flex-shrink-0 w-5 h-5 flex items-center justify-center">
+              {icon}
+            </span>
+          )}
+
+          {/* 라벨 */}
+          <span className="whitespace-nowrap">{label}</span>
+
+          {/* 드롭다운 화살표 (서브메뉴 있을 때) */}
+          {hasChildren && (
+            <span className="flex-shrink-0 w-4 h-4 flex items-center justify-center">
+              <DownIcon size={16} />
+            </span>
+          )}
+        </button>
+      )
+    }
 
     // 축소 모드: 아이콘 + 아래에 라벨 표시 (세로 배치)
     if (collapsed) {

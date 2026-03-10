@@ -1,3 +1,4 @@
+import { NavMenuLayout } from './nav-menu';
 import * as React from "react";
 export interface NavGroupProps extends React.HTMLAttributes<HTMLDivElement> {
     /** 메뉴 아이콘 */
@@ -14,6 +15,8 @@ export interface NavGroupProps extends React.HTMLAttributes<HTMLDivElement> {
     onExpandedChange?: (expanded: boolean) => void;
     /** 축소 모드 (아이콘만 표시) */
     collapsed?: boolean;
+    /** 레이아웃 (NavMenu에서 전달됨) */
+    layout?: NavMenuLayout;
     /** 뎁스 레벨 */
     depth?: 1 | 2 | 3;
     /** @internal 플라이아웃 내부 여부 (collapsed 모드에서 중첩 NavGroup 처리용) */
