@@ -8,7 +8,7 @@ const f = p.forwardRef(
       ref: m,
       className: a(
         "min-h-full",
-        r && "px-4 pt-2 pb-4",
+        r && "px-4 pt-2.5 pb-4",
         t
       ),
       ...e,

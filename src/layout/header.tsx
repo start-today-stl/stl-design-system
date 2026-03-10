@@ -23,14 +23,14 @@ const Header = React.forwardRef<HTMLDivElement, HeaderProps>(
       <div
         ref={ref}
         className={cn(
-          "relative flex items-center gap-4 w-full h-[72px] px-6 py-4",
+          "relative flex items-center gap-4 w-full h-16 px-6 py-4",
           "bg-slate-50 dark:bg-slate-950 backdrop-blur-[16px]",
           className
         )}
         {...props}
       >
         {/* 하단 그라데이션 */}
-        <div className="absolute bottom-0 left-0 right-0 h-4 -mb-4 bg-gradient-to-b from-slate-50 to-transparent dark:from-slate-950 pointer-events-none" />
+        <div className="absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-b from-slate-50 to-transparent dark:from-slate-950 pointer-events-none" />
 
         {/* 로고 (사이드바 없이 헤더에 로고 배치 시) */}
         {logo && (

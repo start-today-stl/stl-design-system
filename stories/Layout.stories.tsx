@@ -1,7 +1,8 @@
 import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { AppShell, Sidebar, Header, PageTitle, Notice, NavInfo, NavMenu } from "../src/layout";
+import { AppShell, Sidebar, Header, PageTitle, PageHeader, Notice, NavInfo, NavMenu } from "../src/layout";
+import { Tabs, TabsList, TabsTrigger } from "../src/components/ui/tabs";
 import { stlLogoLight, stlLogoDark } from "../src/assets";
 import { NavGroup } from "../src/layout/nav-group";
 import { NavItem } from "../src/layout/nav-item";
@@ -331,17 +332,19 @@ export const SidebarHiddenMode: Story = {
  * 헤더 네비게이션 - 사이드바 없이 헤더에 메뉴 배치
  *
  * `NavMenu layout="horizontal"` 사용하여 헤더에 가로 배치 네비게이션을 구현합니다.
+ * PageHeader와 탭의 sticky 동작을 테스트할 수 있습니다.
  */
 export const HeaderNavigation: Story = {
   render: function Render() {
     const [currentPath, setCurrentPath] = useState("/dashboard");
+    const [activeTab, setActiveTab] = useState("all");
 
     return (
       <div style={{ height: "600px" }}>
         <AppShell>
           <AppShell.Header
             logo={
-              <div className="relative h-8">
+              <div className="flex items-end gap-2">
                 <img src={stlLogoLight} alt="STL" className="h-8 dark:hidden" />
                 <img src={stlLogoDark} alt="STL" className="h-8 hidden dark:block" />
               </div>
@@ -396,6 +399,11 @@ export const HeaderNavigation: Story = {
                 </NavGroup>
               </NavMenu>
             }
+            center={
+              <span className="px-3 py-1 rounded-full bg-orange-100 text-orange-600 text-xs font-medium">
+                DEV 환경
+              </span>
+            }
             actions={
               <div className="flex items-center gap-2">
                 <Button variant="ghost" size="icon-sm" aria-label="알림">
@@ -409,13 +417,30 @@ export const HeaderNavigation: Story = {
           />
 
           <AppShell.Content>
-            <div className="flex flex-col gap-4">
-              <PageTitle title="대시보드" subtitle="Dashboard" />
-              <div className="bg-white dark:bg-slate-800 rounded-lg p-6 flex-1">
-                <p className="text-muted-foreground">
-                  사이드바 없이 헤더에 네비게이션이 배치된 레이아웃입니다.
-                </p>
-              </div>
+            <PageHeader
+              title="B2C 주문관리"
+              subtitle="B2C Order Management"
+              sticky
+              tabs={
+                <Tabs value={activeTab} onValueChange={setActiveTab}>
+                  <TabsList>
+                    <TabsTrigger value="all">전체</TabsTrigger>
+                    <TabsTrigger value="pending">대기</TabsTrigger>
+                    <TabsTrigger value="processing">처리중</TabsTrigger>
+                    <TabsTrigger value="completed">완료</TabsTrigger>
+                  </TabsList>
+                </Tabs>
+              }
+            />
+            {/* 스크롤 테스트용 콘텐츠 */}
+            <div className="flex flex-col gap-4 mt-4">
+              {Array.from({ length: 20 }).map((_, i) => (
+                <div key={i} className="bg-white dark:bg-slate-800 rounded-lg p-6">
+                  <p className="text-muted-foreground">
+                    콘텐츠 항목 {i + 1} - 스크롤하여 sticky 동작을 테스트하세요.
+                  </p>
+                </div>
+              ))}
             </div>
           </AppShell.Content>
         </AppShell>
