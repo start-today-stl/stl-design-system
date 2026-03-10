@@ -5,3 +5,4 @@ export * from './table-container';
 export * from './table-toolbar';
 export * from './pagination-footer';
 export * from './search-form';
+export * from './filter-chip-summary';

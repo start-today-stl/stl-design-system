@@ -1,23 +1,23 @@
-import { jsx as o, jsxs as c } from "react/jsx-runtime";
-import * as d from "react";
+import { jsx as e, jsxs as n } from "react/jsx-runtime";
+import * as c from "react";
 import { cn as t } from "../../lib/utils.mjs";
-import { UpIcon as u } from "../../icons/UpIcon.mjs";
-const y = d.forwardRef(
+import { UpIcon as N } from "../../icons/UpIcon.mjs";
+const y = c.forwardRef(
   ({
     className: i,
-    title: r,
-    headerRight: s,
-    collapsible: e = !1,
-    defaultCollapsed: n = !1,
-    divider: l = !1,
+    title: s,
+    headerRight: r,
+    collapsible: a = !1,
+    defaultCollapsed: l = !1,
+    divider: d = !1,
     fullWidth: m = !1,
     children: f,
     ...p
   }, x) => {
-    const [a, g] = d.useState(n), v = () => {
-      e && g(!a);
+    const [o, g] = c.useState(l), u = () => {
+      a && g(!o);
     };
-    return /* @__PURE__ */ c(
+    return /* @__PURE__ */ n(
       "div",
       {
         ref: x,
@@ -28,65 +28,71 @@ const y = d.forwardRef(
         ),
         ...p,
         children: [
-          l && /* @__PURE__ */ o("div", { className: "py-3", children: /* @__PURE__ */ o("div", { className: "h-px bg-border" }) }),
-          (r || s) && /* @__PURE__ */ c(
-            "div",
-            {
-              className: t(
-                "flex h-6 items-center justify-between",
-                e && "cursor-pointer select-none"
-              ),
-              onClick: e ? v : void 0,
-              role: e ? "button" : void 0,
-              "aria-expanded": e ? !a : void 0,
-              children: [
-                /* @__PURE__ */ o("span", { className: "text-base font-medium text-text-primary", children: r }),
-                /* @__PURE__ */ c("div", { className: "flex items-center gap-2", children: [
-                  s && /* @__PURE__ */ o("div", { onClick: (N) => N.stopPropagation(), children: s }),
-                  e && /* @__PURE__ */ o(
-                    u,
+          d && /* @__PURE__ */ e("div", { className: "py-3", children: /* @__PURE__ */ e("div", { className: "h-px bg-border" }) }),
+          (s || r) && /* @__PURE__ */ n("div", { className: "flex h-6 items-center justify-between", children: [
+            a ? /* @__PURE__ */ n(
+              "button",
+              {
+                type: "button",
+                className: "flex items-center gap-2 cursor-pointer select-none",
+                onClick: u,
+                "aria-expanded": !o,
+                children: [
+                  /* @__PURE__ */ e("span", { className: "text-base font-medium text-text-primary", children: s }),
+                  /* @__PURE__ */ e(
+                    N,
                     {
                       size: 24,
                       className: t(
                         "text-text-secondary transition-transform duration-200",
-                        a && "rotate-180"
+                        o && "rotate-180"
                       )
                     }
                   )
-                ] })
-              ]
+                ]
+              }
+            ) : /* @__PURE__ */ e("span", { className: "text-base font-medium text-text-primary", children: s }),
+            r && /* @__PURE__ */ e("div", { children: r })
+          ] }),
+          /* @__PURE__ */ e(
+            "div",
+            {
+              className: t(
+                "grid transition-[grid-template-rows,opacity] duration-200 ease-in-out",
+                o ? "grid-rows-[0fr] opacity-0" : "grid-rows-[1fr] opacity-100"
+              ),
+              children: /* @__PURE__ */ e("div", { className: "overflow-hidden", children: /* @__PURE__ */ e("div", { className: "flex flex-col gap-2", children: f }) })
             }
-          ),
-          !a && /* @__PURE__ */ o("div", { className: "flex flex-col gap-2", children: f })
+          )
         ]
       }
     );
   }
 );
 y.displayName = "FormSection";
-const w = {
+const v = {
   1: "grid-cols-1",
   2: "grid-cols-2",
   3: "grid-cols-3",
   4: "grid-cols-4"
-}, h = d.forwardRef(
-  ({ className: i, columns: r = 1, children: s, ...e }, n) => /* @__PURE__ */ o(
+}, w = c.forwardRef(
+  ({ className: i, columns: s = 1, children: r, ...a }, l) => /* @__PURE__ */ e(
     "div",
     {
-      ref: n,
+      ref: l,
       className: t(
         "grid gap-2",
-        w[r],
+        v[s],
         i
       ),
-      ...e,
-      children: s
+      ...a,
+      children: r
     }
   )
 );
-h.displayName = "FormRow";
+w.displayName = "FormRow";
 export {
-  h as FormRow,
+  w as FormRow,
   y as FormSection
 };
 //# sourceMappingURL=form-section.mjs.map
