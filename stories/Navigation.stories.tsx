@@ -182,6 +182,38 @@ export const SidebarBasic: Story = {
   },
 }
 
+/** 헤더 네비게이션 - Horizontal 레이아웃 + NavRenderer */
+export const HorizontalWithNavRenderer: Story = {
+  render: function Render() {
+    const [currentPath, setCurrentPath] = useState("/dashboard")
+
+    const handleNavClick = (href: string) => {
+      setCurrentPath(href)
+      console.log("Navigate to:", href)
+    }
+
+    return (
+      <div className="bg-slate-50 dark:bg-slate-950 p-4">
+        <div className="flex items-center gap-4">
+          <span className="font-bold text-lg">LOGO</span>
+          <NavMenu layout="horizontal">
+            <NavRenderer
+              items={sampleNavigation}
+              iconSize={20}
+              currentPath={currentPath}
+              onItemClick={handleNavClick}
+              layout="horizontal"
+            />
+          </NavMenu>
+        </div>
+        <div className="mt-4 p-4 bg-white dark:bg-slate-800 rounded">
+          <p>현재 경로: <code className="text-blue-500">{currentPath}</code></p>
+        </div>
+      </div>
+    )
+  },
+}
+
 /** 사이드바 - Notice/NavInfo 포함 */
 export const SidebarWithNotice: Story = {
   args: {
