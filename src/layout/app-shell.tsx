@@ -93,12 +93,12 @@ const AppShellRoot = React.forwardRef<HTMLDivElement, AppShellProps>(
           {...props}
         >
           {/* 사이드바 */}
-          {sidebar && <aside className="flex-shrink-0 h-full relative z-30">{sidebar}</aside>}
+          {sidebar && <aside className="flex-shrink-0 h-full relative z-40">{sidebar}</aside>}
 
           {/* 메인 영역 (헤더 + 콘텐츠) */}
           <div className="flex flex-col flex-1 min-w-0 bg-slate-50 dark:bg-slate-950 rounded-tl-[20px]">
             {/* 헤더 */}
-            {header && <header className="flex-shrink-0 relative z-40">{header}</header>}
+            {header && <header className="flex-shrink-0 relative z-30">{header}</header>}
 
             {/* 콘텐츠 */}
             <main className="flex-1 overflow-auto">{content}</main>
