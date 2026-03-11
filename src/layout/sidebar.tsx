@@ -60,8 +60,8 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
       <div
         ref={ref}
         className={cn(
-          "relative flex flex-col h-full bg-white dark:bg-black",
-          "pt-8 rounded-r-[40px] border border-slate-100 dark:border-slate-700",
+          "relative flex flex-col h-full pt-4 bg-white dark:bg-black",
+          "rounded-r-[40px] border border-slate-100 dark:border-slate-700",
           "shadow-[1px_0px_41.3px_1px_rgba(0,0,0,0.05)] transition-all duration-300",
           // hidden 모드
           isHidden && "w-0 -translate-x-full opacity-0 border-0 overflow-hidden",
@@ -71,11 +71,11 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
         )}
         {...props}
       >
-        {/* 로고 영역 - 로고가 없어도 자리 유지 */}
+        {/* 로고 영역 - 헤더 높이와 동일 */}
         <div
           className={cn(
-            "flex mb-[55px] flex-shrink-0",
-            collapsed && collapseMode === "mini" ? "justify-center items-center h-[32px]" : "justify-start h-[32px]"
+            "flex h-16 mb-4 flex-shrink-0",
+            collapsed && collapseMode === "mini" ? "justify-center items-center" : "justify-start items-center"
           )}
         >
           {logo?.(collapsed)}

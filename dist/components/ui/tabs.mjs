@@ -1,14 +1,14 @@
-import { jsx as c, jsxs as k, Fragment as M } from "react/jsx-runtime";
-import * as e from "react";
-import * as v from "@radix-ui/react-tabs";
+import { jsx as c, jsxs as k, Fragment as R } from "react/jsx-runtime";
+import * as r from "react";
+import * as g from "@radix-ui/react-tabs";
 import { createPortal as D } from "react-dom";
-import { useSensors as J, useSensor as T, PointerSensor as Q, KeyboardSensor as U, DndContext as V, closestCenter as Z } from "@dnd-kit/core";
-import { SortableContext as $, horizontalListSortingStrategy as K, useSortable as ee, arrayMove as te } from "@dnd-kit/sortable";
-import { arrayMove as he } from "@dnd-kit/sortable";
-import { CSS as re } from "@dnd-kit/utilities";
-import { cn as g } from "../../lib/utils.mjs";
+import { useSensors as C, useSensor as L, PointerSensor as G, KeyboardSensor as J, DndContext as Q, closestCenter as U } from "@dnd-kit/core";
+import { SortableContext as V, horizontalListSortingStrategy as Z, useSortable as $, arrayMove as K } from "@dnd-kit/sortable";
+import { arrayMove as ve } from "@dnd-kit/sortable";
+import { CSS as ee } from "@dnd-kit/utilities";
+import { cn as v } from "../../lib/utils.mjs";
 import { XIcon as P } from "../../icons/XIcon.mjs";
-const z = {
+const T = {
   60: "data-[state=inactive]:max-w-[60px]",
   80: "data-[state=inactive]:max-w-[80px]",
   100: "data-[state=inactive]:max-w-[100px]",
@@ -19,49 +19,49 @@ const z = {
   40: "min-w-[40px]",
   60: "min-w-[60px]",
   80: "min-w-[80px]"
-}, ve = v.Root, ne = e.forwardRef(({ className: l, align: s = "start", children: t, ...n }, d) => /* @__PURE__ */ c(
-  v.List,
+}, xe = g.Root, te = r.forwardRef(({ className: l, align: n = "start", children: e, ...a }, d) => /* @__PURE__ */ c(
+  g.List,
   {
     ref: d,
-    className: g(
+    className: v(
       "flex h-9 items-end shadow-[inset_0_-1px_0_var(--color-border)]",
-      s === "end" ? "justify-end" : "justify-start",
+      n === "end" ? "justify-end" : "justify-start",
       l
     ),
-    ...n,
-    children: t
+    ...a,
+    children: e
   }
 ));
-ne.displayName = v.List.displayName;
-const ae = e.forwardRef(({ className: l, align: s = "start", items: t, onReorder: n, children: d, ...u }, x) => {
-  const f = J(
-    T(Q, {
+te.displayName = g.List.displayName;
+const re = r.forwardRef(({ className: l, align: n = "start", items: e, onReorder: a, children: d, ...u }, x) => {
+  const f = C(
+    L(G, {
       activationConstraint: {
         distance: 8
         // 8px 이상 이동해야 드래그 시작
       }
     }),
-    T(U)
+    L(J)
   );
   return /* @__PURE__ */ c(
-    V,
+    Q,
     {
       sensors: f,
-      collisionDetection: Z,
-      onDragEnd: (o) => {
-        const { active: p, over: i } = o;
-        if (i && p.id !== i.id) {
-          const m = t.indexOf(p.id), w = t.indexOf(i.id);
-          n(te(t, m, w));
+      collisionDetection: U,
+      onDragEnd: (i) => {
+        const { active: b, over: o } = i;
+        if (o && b.id !== o.id) {
+          const m = e.indexOf(b.id), y = e.indexOf(o.id);
+          a(K(e, m, y));
         }
       },
-      children: /* @__PURE__ */ c($, { items: t, strategy: K, children: /* @__PURE__ */ c(
-        v.List,
+      children: /* @__PURE__ */ c(V, { items: e, strategy: Z, children: /* @__PURE__ */ c(
+        g.List,
         {
           ref: x,
-          className: g(
+          className: v(
             "flex h-9 items-end shadow-[inset_0_-1px_0_var(--color-border)]",
-            s === "end" ? "justify-end" : "justify-start",
+            n === "end" ? "justify-end" : "justify-start",
             l
           ),
           ...u,
@@ -71,32 +71,32 @@ const ae = e.forwardRef(({ className: l, align: s = "start", items: t, onReorder
     }
   );
 });
-ae.displayName = "SortableTabsList";
-const se = ({
+re.displayName = "SortableTabsList";
+const ae = ({
   position: l,
-  onClose: s,
-  onCloseTab: t,
-  onCloseTabsToRight: n,
+  onClose: n,
+  onCloseTab: e,
+  onCloseTabsToRight: a,
   onCloseOtherTabs: d
 }) => {
-  const u = e.useRef(null), [x, f] = e.useState(!1);
-  if (e.useEffect(() => {
+  const u = r.useRef(null), [x, f] = r.useState(!1);
+  if (r.useEffect(() => {
     f(!0);
-  }, []), e.useEffect(() => {
-    const o = (m) => {
-      u.current && !u.current.contains(m.target) && s();
-    }, p = () => s(), i = (m) => {
-      m.key === "Escape" && s();
+  }, []), r.useEffect(() => {
+    const i = (m) => {
+      u.current && !u.current.contains(m.target) && n();
+    }, b = () => n(), o = (m) => {
+      m.key === "Escape" && n();
     };
-    return document.addEventListener("mousedown", o), document.addEventListener("scroll", p, !0), document.addEventListener("keydown", i), () => {
-      document.removeEventListener("mousedown", o), document.removeEventListener("scroll", p, !0), document.removeEventListener("keydown", i);
+    return document.addEventListener("mousedown", i), document.addEventListener("scroll", b, !0), document.addEventListener("keydown", o), () => {
+      document.removeEventListener("mousedown", i), document.removeEventListener("scroll", b, !0), document.removeEventListener("keydown", o);
     };
-  }, [s]), !x) return null;
-  const b = [
-    { label: "닫기", onClick: t, show: !!t },
-    { label: "오른쪽 탭 닫기", onClick: n, show: !!n },
+  }, [n]), !x) return null;
+  const p = [
+    { label: "닫기", onClick: e, show: !!e },
+    { label: "오른쪽 탭 닫기", onClick: a, show: !!a },
     { label: "다른 탭 닫기", onClick: d, show: !!d }
-  ].filter((o) => o.show);
+  ].filter((i) => i.show);
   return D(
     /* @__PURE__ */ c(
       "div",
@@ -108,28 +108,28 @@ const se = ({
           left: l.x,
           zIndex: 50
         },
-        className: g(
+        className: v(
           "min-w-[140px] rounded-[5px] border border-slate-100 dark:border-slate-600",
           "bg-white/90 dark:bg-slate-800/90 backdrop-blur-[12px]",
           "p-[5px] shadow-[10px_10px_10px_0px_rgba(0,0,0,0.1)]",
           "animate-in fade-in-0 zoom-in-95"
         ),
-        children: b.map((o, p) => /* @__PURE__ */ c(
+        children: p.map((i, b) => /* @__PURE__ */ c(
           "button",
           {
             type: "button",
             onClick: () => {
-              var i;
-              (i = o.onClick) == null || i.call(o), s();
+              var o;
+              (o = i.onClick) == null || o.call(i), n();
             },
-            className: g(
+            className: v(
               "flex w-full h-[29px] cursor-pointer select-none items-center rounded-[2px] px-[8px]",
               "text-xs text-slate-600 dark:text-slate-300 outline-none transition-colors",
               "hover:bg-slate-100 dark:hover:bg-slate-700"
             ),
-            children: o.label
+            children: i.label
           },
-          p
+          b
         ))
       }
     ),
@@ -137,33 +137,33 @@ const se = ({
   );
 }, j = ({
   children: l,
-  targetRef: s,
-  show: t
+  targetRef: n,
+  show: e
 }) => {
-  const [n, d] = e.useState({ top: 0, left: 0 }), [u, x] = e.useState(!1);
-  return e.useEffect(() => {
+  const [a, d] = r.useState({ top: 0, left: 0 }), [u, x] = r.useState(!1);
+  return r.useEffect(() => {
     x(!0);
-  }, []), e.useEffect(() => {
-    if (t && s.current) {
-      const f = s.current.getBoundingClientRect();
+  }, []), r.useEffect(() => {
+    if (e && n.current) {
+      const f = n.current.getBoundingClientRect();
       d({
         top: f.bottom + window.scrollY + 8,
         left: f.left + f.width / 2 + window.scrollX
       });
     }
-  }, [t, s]), !u || !t ? null : D(
+  }, [e, n]), !u || !e ? null : D(
     /* @__PURE__ */ c(
       "div",
       {
         style: {
           position: "absolute",
-          top: n.top,
-          left: n.left,
+          top: a.top,
+          left: a.left,
           transform: "translateX(-50%)",
           zIndex: 50,
           pointerEvents: "none"
         },
-        className: g(
+        className: v(
           "rounded-md border bg-popover px-4 py-2.5 text-sm text-popover-foreground",
           "shadow-[10px_10px_10px_0px_#0000001A]",
           "animate-in fade-in-0 zoom-in-95",
@@ -177,28 +177,29 @@ const se = ({
     ),
     document.body
   );
-}, oe = e.forwardRef(({ className: l, closable: s, onClose: t, children: n, onKeyDown: d, maxWidth: u = 120, minWidth: x = 60, ...f }, b) => {
-  const o = e.useRef(null), p = e.useRef(null), [i, m] = e.useState(!1), [w, h] = e.useState(!1), S = e.useCallback(
-    (a) => {
-      p.current = a, typeof b == "function" ? b(a) : b && typeof b == "object" && (b.current = a);
+}, ne = r.forwardRef(({ className: l, closable: n, onClose: e, children: a, onKeyDown: d, maxWidth: u = 120, minWidth: x = 60, ...f }, p) => {
+  const i = r.useRef(null), [b, o] = r.useState(!1), m = r.useCallback(
+    (s) => {
+      i.current = s, typeof p == "function" ? p(s) : p && typeof p == "object" && (p.current = s);
     },
-    [b]
+    [p]
   );
-  e.useEffect(() => {
-    const a = () => {
-      o.current && m(o.current.scrollWidth > o.current.clientWidth);
-    };
-    return a(), window.addEventListener("resize", a), () => window.removeEventListener("resize", a);
-  }, [n]);
-  const _ = (a) => {
-    s && (a.key === "Delete" || a.key === "Backspace") && (a.preventDefault(), t == null || t()), d == null || d(a);
+  r.useEffect(() => {
+    const s = i.current;
+    if (s) {
+      const h = s.getAttribute("aria-controls");
+      h && !document.getElementById(h) && s.removeAttribute("aria-controls");
+    }
+  }, []);
+  const y = (s) => {
+    n && (s.key === "Delete" || s.key === "Backspace") && (s.preventDefault(), e == null || e()), d == null || d(s);
   };
-  return /* @__PURE__ */ k(M, { children: [
+  return /* @__PURE__ */ k(R, { children: [
     /* @__PURE__ */ k(
-      v.Trigger,
+      g.Trigger,
       {
-        ref: S,
-        className: g(
+        ref: m,
+        className: v(
           "inline-flex h-9 items-center justify-center gap-0.5 px-3 py-2 text-xs font-bold cursor-pointer",
           "flex-grow-0",
           // 늘어나지 않음
@@ -209,7 +210,7 @@ const se = ({
           // 비활성 탭: 축소 가능, minWidth/maxWidth 적용
           "data-[state=inactive]:flex-shrink",
           I[x],
-          z[u],
+          T[u],
           // 활성 탭: 축소 안 함, 전체 텍스트 표시 (maxWidth 제거)
           "data-[state=active]:flex-shrink-0 data-[state=active]:max-w-none",
           "data-[state=active]:border-border",
@@ -220,27 +221,20 @@ const se = ({
           "disabled:pointer-events-none disabled:opacity-50",
           l
         ),
-        onKeyDown: _,
-        onMouseEnter: () => h(!0),
-        onMouseLeave: () => h(!1),
+        onKeyDown: y,
+        onMouseEnter: () => o(!0),
+        onMouseLeave: () => o(!1),
         ...f,
         children: [
-          /* @__PURE__ */ c(
+          /* @__PURE__ */ c("span", { className: "truncate min-w-0", children: a }),
+          n && /* @__PURE__ */ c(
             "span",
             {
-              ref: o,
-              className: "truncate min-w-0",
-              children: n
-            }
-          ),
-          s && /* @__PURE__ */ c(
-            "span",
-            {
-              onPointerDown: (a) => {
-                a.stopPropagation(), a.preventDefault();
+              onPointerDown: (s) => {
+                s.stopPropagation(), s.preventDefault();
               },
-              onClick: (a) => {
-                a.stopPropagation(), t == null || t();
+              onClick: (s) => {
+                s.stopPropagation(), e == null || e();
               },
               className: "ml-0.5 flex-shrink-0 text-text-secondary hover:text-text-primary transition-colors cursor-pointer",
               "aria-hidden": "true",
@@ -250,47 +244,48 @@ const se = ({
         ]
       }
     ),
-    /* @__PURE__ */ c(j, { targetRef: p, show: i && w, children: n })
+    /* @__PURE__ */ c(j, { targetRef: i, show: b, children: a })
   ] });
 });
-oe.displayName = v.Trigger.displayName;
-const ie = e.forwardRef(({ id: l, className: s, closable: t, onClose: n, onCloseTabsToRight: d, onCloseOtherTabs: u, children: x, onKeyDown: f, maxWidth: b = 120, minWidth: o = 60, ...p }, i) => {
+ne.displayName = g.Trigger.displayName;
+const se = r.forwardRef(({ id: l, className: n, closable: e, onClose: a, onCloseTabsToRight: d, onCloseOtherTabs: u, children: x, onKeyDown: f, maxWidth: p = 120, minWidth: i = 60, ...b }, o) => {
   const {
     attributes: m,
-    listeners: w,
-    setNodeRef: h,
-    transform: S,
-    transition: _,
-    isDragging: a
-  } = ee({ id: l }), { role: de, ...W } = m, y = e.useRef(null), E = e.useRef(null), [H, X] = e.useState(!1), [B, N] = e.useState(!1), O = e.useCallback(
-    (r) => {
-      E.current = r, h(r), typeof i == "function" ? i(r) : i && typeof i == "object" && (i.current = r);
+    listeners: y,
+    setNodeRef: s,
+    transform: h,
+    transition: z,
+    isDragging: w
+  } = $({ id: l }), { role: ie, ...A } = m, _ = r.useRef(null), [B, S] = r.useState(!1), H = r.useCallback(
+    (t) => {
+      _.current = t, s(t), typeof o == "function" ? o(t) : o && typeof o == "object" && (o.current = t);
     },
-    [i, h]
+    [o, s]
   );
-  e.useEffect(() => {
-    const r = () => {
-      y.current && X(y.current.scrollWidth > y.current.clientWidth);
-    };
-    return r(), window.addEventListener("resize", r), () => window.removeEventListener("resize", r);
-  }, [x]);
-  const A = (r) => {
-    t && (r.key === "Delete" || r.key === "Backspace") && (r.preventDefault(), n == null || n()), f == null || f(r);
-  }, Y = {
-    transform: re.Transform.toString(S),
-    transition: _,
-    opacity: a ? 0.5 : 1,
-    zIndex: a ? 10 : void 0
-  }, L = t && (n || d || u), [F, R] = e.useState(!1), [q, C] = e.useState({ x: 0, y: 0 }), G = (r) => {
-    L && (r.preventDefault(), C({ x: r.clientX, y: r.clientY }), R(!0));
+  r.useEffect(() => {
+    const t = _.current;
+    if (t) {
+      const M = t.getAttribute("aria-controls");
+      M && !document.getElementById(M) && t.removeAttribute("aria-controls");
+    }
+  }, []);
+  const X = (t) => {
+    e && (t.key === "Delete" || t.key === "Backspace") && (t.preventDefault(), a == null || a()), f == null || f(t);
+  }, O = {
+    transform: ee.Transform.toString(h),
+    transition: z,
+    opacity: w ? 0.5 : 1,
+    zIndex: w ? 10 : void 0
+  }, E = e && (a || d || u), [W, N] = r.useState(!1), [Y, F] = r.useState({ x: 0, y: 0 }), q = (t) => {
+    E && (t.preventDefault(), F({ x: t.clientX, y: t.clientY }), N(!0));
   };
-  return /* @__PURE__ */ k(M, { children: [
+  return /* @__PURE__ */ k(R, { children: [
     /* @__PURE__ */ k(
-      v.Trigger,
+      g.Trigger,
       {
-        ref: O,
-        style: Y,
-        className: g(
+        ref: H,
+        style: O,
+        className: v(
           "inline-flex h-9 items-center justify-center gap-0.5 px-3 py-2 text-xs font-bold cursor-grab",
           "flex-grow-0",
           // 늘어나지 않음
@@ -300,8 +295,8 @@ const ie = e.forwardRef(({ id: l, className: s, closable: t, onClose: n, onClose
           // 항상 border 유지 (기본 투명)
           // 비활성 탭: 축소 가능, minWidth/maxWidth 적용
           "data-[state=inactive]:flex-shrink",
-          I[o],
-          z[b],
+          I[i],
+          T[p],
           // 활성 탭: 축소 안 함, 전체 텍스트 표시 (maxWidth 제거)
           "data-[state=active]:flex-shrink-0 data-[state=active]:max-w-none",
           "data-[state=active]:border-border",
@@ -310,36 +305,29 @@ const ie = e.forwardRef(({ id: l, className: s, closable: t, onClose: n, onClose
           "dark:data-[state=active]:bg-[linear-gradient(180deg,#444b57_0%,#1b2026_30%)]",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
           "disabled:pointer-events-none disabled:opacity-50",
-          a && "cursor-grabbing",
-          s
+          w && "cursor-grabbing",
+          n
         ),
-        onKeyDown: A,
-        onMouseEnter: () => N(!0),
-        onMouseLeave: () => N(!1),
-        onContextMenu: G,
-        ...W,
-        ...w,
-        ...p,
+        onKeyDown: X,
+        onMouseEnter: () => S(!0),
+        onMouseLeave: () => S(!1),
+        onContextMenu: q,
+        ...A,
+        ...y,
+        ...b,
         children: [
-          /* @__PURE__ */ c(
+          /* @__PURE__ */ c("span", { className: "truncate min-w-0", children: x }),
+          e && /* @__PURE__ */ c(
             "span",
             {
-              ref: y,
-              className: "truncate min-w-0",
-              children: x
-            }
-          ),
-          t && /* @__PURE__ */ c(
-            "span",
-            {
-              onPointerDown: (r) => {
-                r.stopPropagation(), r.preventDefault();
+              onPointerDown: (t) => {
+                t.stopPropagation(), t.preventDefault();
               },
-              onMouseDown: (r) => {
-                r.stopPropagation(), r.preventDefault();
+              onMouseDown: (t) => {
+                t.stopPropagation(), t.preventDefault();
               },
-              onClick: (r) => {
-                r.stopPropagation(), n == null || n();
+              onClick: (t) => {
+                t.stopPropagation(), a == null || a();
               },
               className: "ml-0.5 flex-shrink-0 text-text-secondary hover:text-text-primary transition-colors cursor-pointer",
               "aria-hidden": "true",
@@ -349,39 +337,39 @@ const ie = e.forwardRef(({ id: l, className: s, closable: t, onClose: n, onClose
         ]
       }
     ),
-    /* @__PURE__ */ c(j, { targetRef: E, show: H && B && !a, children: x }),
-    L && F && /* @__PURE__ */ c(
-      se,
+    /* @__PURE__ */ c(j, { targetRef: _, show: B && !w, children: x }),
+    E && W && /* @__PURE__ */ c(
+      ae,
       {
-        position: q,
-        onClose: () => R(!1),
-        onCloseTab: n,
+        position: Y,
+        onClose: () => N(!1),
+        onCloseTab: a,
         onCloseTabsToRight: d,
         onCloseOtherTabs: u
       }
     )
   ] });
 });
-ie.displayName = "SortableTabsTrigger";
-const ce = e.forwardRef(({ className: l, ...s }, t) => /* @__PURE__ */ c(
-  v.Content,
+se.displayName = "SortableTabsTrigger";
+const oe = r.forwardRef(({ className: l, ...n }, e) => /* @__PURE__ */ c(
+  g.Content,
   {
-    ref: t,
-    className: g(
+    ref: e,
+    className: v(
       "mt-4 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
       l
     ),
-    ...s
+    ...n
   }
 ));
-ce.displayName = v.Content.displayName;
+oe.displayName = g.Content.displayName;
 export {
-  ae as SortableTabsList,
-  ie as SortableTabsTrigger,
-  ve as Tabs,
-  ce as TabsContent,
-  ne as TabsList,
-  oe as TabsTrigger,
-  he as arrayMove
+  re as SortableTabsList,
+  se as SortableTabsTrigger,
+  xe as Tabs,
+  oe as TabsContent,
+  te as TabsList,
+  ne as TabsTrigger,
+  ve as arrayMove
 };
 //# sourceMappingURL=tabs.mjs.map

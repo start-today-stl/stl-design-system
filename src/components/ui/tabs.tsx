@@ -293,9 +293,7 @@ const TabsTrigger = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Trigger>,
   TabsTriggerProps
 >(({ className, closable, onClose, children, onKeyDown, maxWidth = 120, minWidth = 60, ...props }, ref) => {
-  const textRef = React.useRef<HTMLSpanElement>(null)
   const triggerRef = React.useRef<HTMLButtonElement | null>(null)
-  const [isTruncated, setIsTruncated] = React.useState(false)
   const [isHovering, setIsHovering] = React.useState(false)
 
   // ref 병합
@@ -311,16 +309,16 @@ const TabsTrigger = React.forwardRef<
     [ref]
   )
 
+  // TabsContent 없이 사용할 때 (네비게이션/필터 용도) aria-controls 제거
   React.useEffect(() => {
-    const checkTruncation = () => {
-      if (textRef.current) {
-        setIsTruncated(textRef.current.scrollWidth > textRef.current.clientWidth)
+    const el = triggerRef.current
+    if (el) {
+      const target = el.getAttribute("aria-controls")
+      if (target && !document.getElementById(target)) {
+        el.removeAttribute("aria-controls")
       }
     }
-    checkTruncation()
-    window.addEventListener("resize", checkTruncation)
-    return () => window.removeEventListener("resize", checkTruncation)
-  }, [children])
+  }, [])
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
     if (closable && (e.key === "Delete" || e.key === "Backspace")) {
@@ -359,10 +357,7 @@ const TabsTrigger = React.forwardRef<
         onMouseLeave={() => setIsHovering(false)}
         {...props}
       >
-        <span
-          ref={textRef}
-          className="truncate min-w-0"
-        >
+        <span className="truncate min-w-0">
           {children}
         </span>
         {closable && (
@@ -382,7 +377,7 @@ const TabsTrigger = React.forwardRef<
           </span>
         )}
       </TabsPrimitive.Trigger>
-      <PortalTooltip targetRef={triggerRef} show={isTruncated && isHovering}>
+      <PortalTooltip targetRef={triggerRef} show={isHovering}>
         {children}
       </PortalTooltip>
     </>
@@ -417,9 +412,7 @@ const SortableTabsTrigger = React.forwardRef<
   // dnd-kit의 role="button"을 제외 (Radix Tab의 role="tab" 유지를 위해)
   const { role: _, ...sortableAttributes } = attributes
 
-  const textRef = React.useRef<HTMLSpanElement>(null)
   const triggerRef = React.useRef<HTMLButtonElement | null>(null)
-  const [isTruncated, setIsTruncated] = React.useState(false)
   const [isHovering, setIsHovering] = React.useState(false)
 
   // ref 병합
@@ -436,16 +429,16 @@ const SortableTabsTrigger = React.forwardRef<
     [ref, setNodeRef]
   )
 
+  // TabsContent 없이 사용할 때 (네비게이션/필터 용도) aria-controls 제거
   React.useEffect(() => {
-    const checkTruncation = () => {
-      if (textRef.current) {
-        setIsTruncated(textRef.current.scrollWidth > textRef.current.clientWidth)
+    const el = triggerRef.current
+    if (el) {
+      const target = el.getAttribute("aria-controls")
+      if (target && !document.getElementById(target)) {
+        el.removeAttribute("aria-controls")
       }
     }
-    checkTruncation()
-    window.addEventListener("resize", checkTruncation)
-    return () => window.removeEventListener("resize", checkTruncation)
-  }, [children])
+  }, [])
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
     if (closable && (e.key === "Delete" || e.key === "Backspace")) {
@@ -508,10 +501,7 @@ const SortableTabsTrigger = React.forwardRef<
         {...listeners}
         {...props}
       >
-        <span
-          ref={textRef}
-          className="truncate min-w-0"
-        >
+        <span className="truncate min-w-0">
           {children}
         </span>
         {closable && (
@@ -535,7 +525,7 @@ const SortableTabsTrigger = React.forwardRef<
           </span>
         )}
       </TabsPrimitive.Trigger>
-      <PortalTooltip targetRef={triggerRef} show={isTruncated && isHovering && !isDragging}>
+      <PortalTooltip targetRef={triggerRef} show={isHovering && !isDragging}>
         {children}
       </PortalTooltip>
       {hasContextMenu && contextMenuOpen && (
