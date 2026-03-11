@@ -335,6 +335,16 @@ export const SidebarHiddenMode: Story = {
  * PageHeader와 탭의 sticky 동작을 테스트할 수 있습니다.
  */
 export const HeaderNavigation: Story = {
+  parameters: {
+    a11y: {
+      config: {
+        rules: [
+          // TabsTrigger without TabsContent causes aria-controls to point to non-existent element
+          { id: "aria-valid-attr-value", enabled: false },
+        ],
+      },
+    },
+  },
   render: function Render() {
     const [currentPath, setCurrentPath] = useState("/dashboard");
     const [activeTab, setActiveTab] = useState("all");

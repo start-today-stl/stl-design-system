@@ -37,7 +37,7 @@ const d = r.forwardRef(
               "w-8 h-8 rounded-[20px] border border-slate-100 dark:border-slate-700",
               "bg-white dark:bg-black hover:bg-slate-50 dark:hover:bg-slate-800",
               "transition-all duration-300 cursor-pointer",
-              t ? "top-[-60px] -right-4" : "top-[-50px] -right-[40px]"
+              t ? "top-[-48px] -right-4" : "top-[-48px] -right-[40px]"
             ),
             "aria-label": t ? "메뉴 펼치기" : "메뉴 접기",
             children: /* @__PURE__ */ n(b, { size: 24, className: "text-slate-500" })
