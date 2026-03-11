@@ -1,30 +1,31 @@
-import { jsxs as z, jsx as p } from "react/jsx-runtime";
+import { jsxs as q, jsx as p } from "react/jsx-runtime";
 import * as c from "react";
 import { format as a, parse as D, isValid as w } from "date-fns";
-import { cn as q } from "../../lib/utils.mjs";
-import { InputField as A } from "./input.mjs";
-import { Calendar as G } from "./calendar.mjs";
-import { Popover as H, PopoverTrigger as J, PopoverContent as K } from "./popover.mjs";
-import { CalendarIcon as L } from "../../icons/CalendarIcon.mjs";
-const g = ({
+import { cn as A } from "../../lib/utils.mjs";
+import { InputField as G } from "./input.mjs";
+import { Calendar as H } from "./calendar.mjs";
+import { Popover as J, PopoverTrigger as K, PopoverContent as L } from "./popover.mjs";
+import { CalendarIcon as Q } from "../../icons/CalendarIcon.mjs";
+const F = ({
   value: s,
   onChange: e,
   label: $,
-  placeholder: k = "yyyy-mm-dd - yyyy-mm-dd",
+  placeholder: b = "yyyy-mm-dd - yyyy-mm-dd",
   dateFormat: n = "yyyy-MM-dd",
-  error: x,
-  errorMessage: M,
-  size: V = "lg",
+  error: k,
+  errorMessage: x,
+  size: M = "lg",
   disabled: I,
-  className: b,
+  className: V,
   reserveLabelSpace: T,
-  required: j
+  required: j,
+  disabledDates: B
 }) => {
   const [R, u] = c.useState(!1), i = c.useRef(0), [d, y] = c.useState(s);
   c.useEffect(() => {
     R || y(s);
   }, [s, R]);
-  const [B, O] = c.useState(/* @__PURE__ */ new Date()), l = (t) => {
+  const [E, O] = c.useState(/* @__PURE__ */ new Date()), l = (t) => {
     if (!t) return "";
     const r = t.from ? a(t.from, n) : "", o = t.to ? a(t.to, n) : "";
     return r && o ? `${r} - ${o}` : r ? `${r} - ` : "";
@@ -32,7 +33,7 @@ const g = ({
   c.useEffect(() => {
     f(l(s));
   }, [s, n]);
-  const E = (t) => {
+  const N = (t) => {
     const r = t.target.value;
     f(r);
     const o = r.split(" - ");
@@ -40,7 +41,7 @@ const g = ({
       const m = D(o[0].trim(), n, /* @__PURE__ */ new Date()), S = D(o[1].trim(), n, /* @__PURE__ */ new Date());
       w(m) && w(S) && (e == null || e({ from: m, to: S }));
     }
-  }, N = () => {
+  }, h = () => {
     if (!P) {
       e == null || e(void 0);
       return;
@@ -54,7 +55,7 @@ const g = ({
       }
     }
     f(l(s));
-  }, h = (t) => {
+  }, z = (t) => {
     if (i.current += 1, i.current === 1) {
       const r = { from: t, to: void 0 };
       y(r), f(l(r)), e == null || e(r);
@@ -63,30 +64,30 @@ const g = ({
       y(m), f(l(m)), e == null || e(m), i.current = 0, u(!1);
     }
   };
-  return /* @__PURE__ */ z(H, { open: R, onOpenChange: (t) => {
+  return /* @__PURE__ */ q(J, { open: R, onOpenChange: (t) => {
     t ? (u(!0), i.current = 0, y(s), s != null && s.from ? O(s.from) : O(/* @__PURE__ */ new Date())) : i.current === 0 && u(!1);
   }, children: [
-    /* @__PURE__ */ p(J, { asChild: !0, disabled: I, children: /* @__PURE__ */ p("div", { role: "combobox", "aria-haspopup": "dialog", className: q("inline-block", b), children: /* @__PURE__ */ p(
-      A,
+    /* @__PURE__ */ p(K, { asChild: !0, disabled: I, children: /* @__PURE__ */ p("div", { role: "combobox", "aria-haspopup": "dialog", className: A("inline-block", V), children: /* @__PURE__ */ p(
+      G,
       {
         label: $,
         value: P,
-        onChange: E,
-        onBlur: N,
-        placeholder: k,
-        error: x,
-        errorMessage: M,
-        size: V,
+        onChange: N,
+        onBlur: h,
+        placeholder: b,
+        error: k,
+        errorMessage: x,
+        size: M,
         disabled: I,
         autoComplete: "off",
-        rightIcon: /* @__PURE__ */ p(L, { size: 24 }),
+        rightIcon: /* @__PURE__ */ p(Q, { size: 24 }),
         onRightIconClick: () => !I && u(!0),
         reserveLabelSpace: T,
         required: j
       }
     ) }) }),
     /* @__PURE__ */ p(
-      K,
+      L,
       {
         className: "w-auto border-0 bg-transparent p-0 shadow-none",
         align: "start",
@@ -97,15 +98,16 @@ const g = ({
           i.current > 0 && t.preventDefault();
         },
         children: /* @__PURE__ */ p(
-          G,
+          H,
           {
             mode: "range",
             selected: d,
             onSelect: () => {
             },
-            onDayClick: h,
-            month: B,
+            onDayClick: z,
+            month: E,
             onMonthChange: O,
+            disabled: B,
             initialFocus: !0
           }
         )
@@ -114,6 +116,6 @@ const g = ({
   ] });
 };
 export {
-  g as DateRangePicker
+  F as DateRangePicker
 };
 //# sourceMappingURL=date-range-picker.mjs.map

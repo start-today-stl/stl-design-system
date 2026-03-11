@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { format, parse, isValid } from "date-fns";
-import type { DateRange } from "react-day-picker";
+import type { DateRange, Matcher } from "react-day-picker";
 
 import { cn } from "@/lib/utils";
 import { InputField, type InputSize } from "@/components/ui/input";
@@ -35,6 +35,8 @@ export interface DateRangePickerProps {
   reserveLabelSpace?: boolean;
   /** 필수 입력 표시 (라벨 앞에 점 표시) */
   required?: boolean;
+  /** 선택 불가 날짜 (Date, Date[], 또는 Matcher 함수) */
+  disabledDates?: Matcher | Matcher[];
 }
 
 const DateRangePicker = ({
@@ -50,6 +52,7 @@ const DateRangePicker = ({
   className,
   reserveLabelSpace,
   required,
+  disabledDates,
 }: DateRangePickerProps) => {
   const [open, setOpen] = React.useState(false);
   // 클릭 횟수 추적 (0: 미선택, 1: 첫번째 선택, 2: 완료)
@@ -216,6 +219,7 @@ const DateRangePicker = ({
           onDayClick={handleDayClick}
           month={month}
           onMonthChange={setMonth}
+          disabled={disabledDates}
           initialFocus
         />
       </PopoverContent>

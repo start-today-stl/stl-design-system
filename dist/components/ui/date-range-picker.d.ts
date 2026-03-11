@@ -1,4 +1,4 @@
-import { DateRange } from 'react-day-picker';
+import { DateRange, Matcher } from 'react-day-picker';
 import { InputSize } from './input';
 export interface DateRangePickerProps {
     /** 선택된 날짜 범위 */
@@ -25,7 +25,9 @@ export interface DateRangePickerProps {
     reserveLabelSpace?: boolean;
     /** 필수 입력 표시 (라벨 앞에 점 표시) */
     required?: boolean;
+    /** 선택 불가 날짜 (Date, Date[], 또는 Matcher 함수) */
+    disabledDates?: Matcher | Matcher[];
 }
-declare const DateRangePicker: ({ value, onChange, label, placeholder, dateFormat, error, errorMessage, size, disabled, className, reserveLabelSpace, required, }: DateRangePickerProps) => import("react/jsx-runtime").JSX.Element;
+declare const DateRangePicker: ({ value, onChange, label, placeholder, dateFormat, error, errorMessage, size, disabled, className, reserveLabelSpace, required, disabledDates, }: DateRangePickerProps) => import("react/jsx-runtime").JSX.Element;
 export { DateRangePicker };
 export type { DateRange };
