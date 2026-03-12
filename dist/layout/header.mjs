@@ -1,32 +1,30 @@
-import { jsxs as t, jsx as e } from "react/jsx-runtime";
-import * as p from "react";
-import { cn as n } from "../lib/utils.mjs";
-const o = p.forwardRef(
-  ({ className: x, logo: a, menuButton: i, nav: d, search: l, center: r, actions: m, children: s, ...f }, c) => /* @__PURE__ */ t(
+import { jsxs as f, jsx as e } from "react/jsx-runtime";
+import * as t from "react";
+import { cn as x } from "../lib/utils.mjs";
+const n = t.forwardRef(
+  ({ className: d, logo: r, menuButton: s, nav: a, actions: l, children: i, ...c }, m) => /* @__PURE__ */ f(
     "div",
     {
-      ref: c,
-      className: n(
+      ref: m,
+      className: x(
         "flex items-center gap-4 w-full h-16 px-3 py-4",
         "bg-slate-50 dark:bg-slate-950 backdrop-blur-[16px]",
         "border-b border-slate-200 dark:border-slate-700",
-        x
+        d
       ),
-      ...f,
+      ...c,
       children: [
-        a && /* @__PURE__ */ e("div", { className: "flex-shrink-0", children: a }),
-        i && /* @__PURE__ */ e("div", { className: "flex-shrink-0", children: i }),
-        d && /* @__PURE__ */ e("div", { className: "flex items-center flex-shrink-0", children: d }),
-        (l || s) && /* @__PURE__ */ e("div", { className: "flex-1 min-w-[200px] max-w-[593px]", children: l || s }),
-        !l && !s && !r && /* @__PURE__ */ e("div", { className: "flex-1" }),
-        r && /* @__PURE__ */ e("div", { className: "flex items-center flex-1 min-w-0", children: r }),
-        m && /* @__PURE__ */ e("div", { className: "flex items-center gap-2 flex-shrink-0 ml-auto", children: m })
+        r && /* @__PURE__ */ e("div", { className: "flex-shrink-0", children: r }),
+        s && /* @__PURE__ */ e("div", { className: "flex-shrink-0", children: s }),
+        a && /* @__PURE__ */ e("div", { className: "flex items-center flex-shrink-0", children: a }),
+        i ? /* @__PURE__ */ e("div", { className: "flex-1 min-w-0", children: i }) : /* @__PURE__ */ e("div", { className: "flex-1" }),
+        l && /* @__PURE__ */ e("div", { className: "flex items-center gap-2 flex-shrink-0", children: l })
       ]
     }
   )
 );
-o.displayName = "Header";
+n.displayName = "Header";
 export {
-  o as Header
+  n as Header
 };
 //# sourceMappingURL=header.mjs.map
