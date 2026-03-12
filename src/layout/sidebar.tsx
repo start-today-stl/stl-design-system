@@ -71,14 +71,26 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
         )}
         {...props}
       >
-        {/* 로고 영역 - 헤더 높이와 동일 */}
-        <div
-          className={cn(
-            "flex h-16 mb-4 flex-shrink-0",
-            collapsed && collapseMode === "mini" ? "justify-center items-center" : "justify-start items-center"
-          )}
-        >
-          {logo?.(collapsed)}
+        {/* 로고 영역 - crossfade 전환 효과 */}
+        <div className="relative h-16 mb-4 flex-shrink-0 w-full">
+          {/* 접힌 상태 로고 */}
+          <div
+            className={cn(
+              "absolute inset-0 flex justify-center items-center transition-opacity duration-300",
+              collapsed && collapseMode === "mini" ? "opacity-100" : "opacity-0 pointer-events-none"
+            )}
+          >
+            {logo?.(true)}
+          </div>
+          {/* 펼친 상태 로고 */}
+          <div
+            className={cn(
+              "absolute inset-0 flex justify-start items-center transition-opacity duration-300",
+              collapsed && collapseMode === "mini" ? "opacity-0 pointer-events-none" : "opacity-100"
+            )}
+          >
+            {logo?.(false)}
+          </div>
         </div>
 
         {/* 네비게이션 메뉴 */}
