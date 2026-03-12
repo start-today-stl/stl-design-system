@@ -9,16 +9,12 @@ export interface HeaderProps extends React.HTMLAttributes<HTMLDivElement> {
   menuButton?: React.ReactNode
   /** 헤더 네비게이션 (사이드바 없이 헤더에 메뉴 배치 시) */
   nav?: React.ReactNode
-  /** 검색 영역 (Search Input) */
-  search?: React.ReactNode
-  /** 중앙 커스텀 영역 */
-  center?: React.ReactNode
-  /** 기능 버튼 영역 (아이콘 등) */
+  /** 기능 버튼 영역 (아이콘 등) - 우측 끝 배치 */
   actions?: React.ReactNode
 }
 
 const Header = React.forwardRef<HTMLDivElement, HeaderProps>(
-  ({ className, logo, menuButton, nav, search, center, actions, children, ...props }, ref) => {
+  ({ className, logo, menuButton, nav, actions, children, ...props }, ref) => {
     return (
       <div
         ref={ref}
@@ -30,7 +26,6 @@ const Header = React.forwardRef<HTMLDivElement, HeaderProps>(
         )}
         {...props}
       >
-
         {/* 로고 (사이드바 없이 헤더에 로고 배치 시) */}
         {logo && (
           <div className="flex-shrink-0">
@@ -52,26 +47,18 @@ const Header = React.forwardRef<HTMLDivElement, HeaderProps>(
           </div>
         )}
 
-        {/* 검색 영역 (왼쪽) - 최소 200px, 공간 있으면 늘어남 */}
-        {(search || children) && (
-          <div className="flex-1 min-w-[200px] max-w-[593px]">
-            {search || children}
+        {/* 메인 콘텐츠 영역 (검색바, 커스텀 콘텐츠 등) */}
+        {children ? (
+          <div className="flex-1 min-w-0">
+            {children}
           </div>
-        )}
-
-        {/* 빈 공간 (검색 없을 때 actions를 우측으로 밀기) */}
-        {!search && !children && !center && <div className="flex-1" />}
-
-        {/* 중앙 커스텀 영역 */}
-        {center && (
-          <div className="flex items-center flex-1 min-w-0">
-            {center}
-          </div>
+        ) : (
+          <div className="flex-1" />
         )}
 
         {/* 기능 버튼 영역 (우측 끝) */}
         {actions && (
-          <div className="flex items-center gap-2 flex-shrink-0 ml-auto">
+          <div className="flex items-center gap-2 flex-shrink-0">
             {actions}
           </div>
         )}

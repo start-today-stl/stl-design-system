@@ -6,11 +6,7 @@ export interface HeaderProps extends React.HTMLAttributes<HTMLDivElement> {
     menuButton?: React.ReactNode;
     /** 헤더 네비게이션 (사이드바 없이 헤더에 메뉴 배치 시) */
     nav?: React.ReactNode;
-    /** 검색 영역 (Search Input) */
-    search?: React.ReactNode;
-    /** 중앙 커스텀 영역 */
-    center?: React.ReactNode;
-    /** 기능 버튼 영역 (아이콘 등) */
+    /** 기능 버튼 영역 (아이콘 등) - 우측 끝 배치 */
     actions?: React.ReactNode;
 }
 declare const Header: React.ForwardRefExoticComponent<HeaderProps & React.RefAttributes<HTMLDivElement>>;
