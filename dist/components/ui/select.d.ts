@@ -36,6 +36,8 @@ interface SelectBaseProps {
     searchable?: boolean;
     /** 검색 플레이스홀더 */
     searchPlaceholder?: string;
+    /** 전체 삭제 버튼 표시 (기본: true) */
+    clearable?: boolean;
 }
 interface SingleSelectProps extends SelectBaseProps {
     /** 다중 선택 모드 */
@@ -47,6 +49,8 @@ interface SingleSelectProps extends SelectBaseProps {
     /** 값 변경 핸들러 */
     onValueChange?: (value: string) => void;
 }
+/** 칩 오버플로우 처리 방식 */
+export type ChipOverflowMode = "wrap" | "truncate";
 interface MultipleSelectProps extends SelectBaseProps {
     /** 다중 선택 모드 */
     multiple: true;
@@ -56,6 +60,10 @@ interface MultipleSelectProps extends SelectBaseProps {
     defaultValue?: string[];
     /** 값 변경 핸들러 */
     onValueChange?: (value: string[]) => void;
+    /** 칩 오버플로우 처리 방식 (기본: truncate) */
+    overflowMode?: ChipOverflowMode;
+    /** truncate 모드에서 최대 표시할 칩 개수 (기본: 2) */
+    maxDisplayCount?: number;
 }
 export type SelectProps = SingleSelectProps | MultipleSelectProps;
 declare const Select: React.ForwardRefExoticComponent<SelectProps & React.RefAttributes<HTMLButtonElement>>;

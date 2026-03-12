@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import * as SelectPrimitive from "@radix-ui/react-select";
 import { Command as CommandPrimitive } from "cmdk";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 
@@ -49,6 +48,8 @@ interface SelectBaseProps {
   searchable?: boolean;
   /** 검색 플레이스홀더 */
   searchPlaceholder?: string;
+  /** 전체 삭제 버튼 표시 (기본: true) */
+  clearable?: boolean;
 }
 
 // Single select props (default)
@@ -63,6 +64,9 @@ interface SingleSelectProps extends SelectBaseProps {
   onValueChange?: (value: string) => void;
 }
 
+/** 칩 오버플로우 처리 방식 */
+export type ChipOverflowMode = "wrap" | "truncate";
+
 // Multiple select props
 interface MultipleSelectProps extends SelectBaseProps {
   /** 다중 선택 모드 */
@@ -73,6 +77,10 @@ interface MultipleSelectProps extends SelectBaseProps {
   defaultValue?: string[];
   /** 값 변경 핸들러 */
   onValueChange?: (value: string[]) => void;
+  /** 칩 오버플로우 처리 방식 (기본: truncate) */
+  overflowMode?: ChipOverflowMode;
+  /** truncate 모드에서 최대 표시할 칩 개수 (기본: 2) */
+  maxDisplayCount?: number;
 }
 
 export type SelectProps = SingleSelectProps | MultipleSelectProps;
@@ -100,79 +108,120 @@ const BasicSelect = React.forwardRef<
       disabled,
       ariaLabel,
       tableMode,
+      clearable = true,
     },
     ref,
   ) => {
+    const [open, setOpen] = React.useState(false);
+    const [isHovered, setIsHovered] = React.useState(false);
+    const [internalValue, setInternalValue] = React.useState(defaultValue || "");
+
+    const currentValue = value !== undefined ? value : internalValue;
+    const selectedOption = options.find((opt) => opt.value === currentValue);
+
+    const handleSelect = (optionValue: string) => {
+      if (value === undefined) {
+        setInternalValue(optionValue);
+      }
+      onValueChange?.(optionValue);
+      setOpen(false);
+    };
+
+    const handleClear = (e: React.MouseEvent) => {
+      e.stopPropagation();
+      if (value === undefined) {
+        setInternalValue("");
+      }
+      onValueChange?.("");
+    };
+
+    // X 버튼 표시 여부 (hover 시에만)
+    const showClearButton = clearable && currentValue && isHovered && !disabled;
+
     return (
-      <SelectPrimitive.Root
-        value={value}
-        defaultValue={defaultValue}
-        onValueChange={onValueChange}
-        disabled={disabled}
-      >
-        <SelectPrimitive.Trigger
+      <PopoverPrimitive.Root open={open} onOpenChange={setOpen}>
+        <PopoverPrimitive.Trigger
           ref={ref}
           id={id}
+          disabled={disabled}
           className={cn(
             "group flex h-9 w-full items-center justify-between rounded-[5px] border bg-white dark:bg-slate-800",
             "px-3 text-xs outline-none transition-colors cursor-pointer",
             "disabled:cursor-not-allowed disabled:opacity-50",
             error
-              ? "border-red-500 dark:border-red-500 data-[state=open]:border-red-500 data-[state=open]:shadow-[0px_0px_6px_0px_rgba(239,68,68,0.5)]"
+              ? "border-red-500 dark:border-red-500 focus-visible:border-red-500 focus-visible:shadow-[0px_0px_6px_0px_rgba(239,68,68,0.5)] data-[state=open]:border-red-500 data-[state=open]:shadow-[0px_0px_6px_0px_rgba(239,68,68,0.5)]"
               : tableMode
-                ? "border-slate-300 dark:border-slate-500 data-[state=open]:border-slate-500 data-[state=open]:border-[1.5px] data-[state=open]:shadow-none dark:data-[state=open]:border-slate-300"
-                : "border-slate-100 dark:border-slate-600 data-[state=open]:border-blue-500 data-[state=open]:shadow-[0px_0px_6px_0px_rgba(23,118,255,0.5)]",
-            "data-[placeholder]:text-slate-300 dark:data-[placeholder]:text-slate-500",
+                ? "border-slate-300 dark:border-slate-500 focus-visible:border-slate-500 focus-visible:border-[1.5px] dark:focus-visible:border-slate-300 data-[state=open]:border-slate-500 data-[state=open]:border-[1.5px] data-[state=open]:shadow-none dark:data-[state=open]:border-slate-300"
+                : "border-slate-100 dark:border-slate-600 focus-visible:border-blue-500 focus-visible:shadow-[0px_0px_6px_0px_rgba(23,118,255,0.5)] data-[state=open]:border-blue-500 data-[state=open]:shadow-[0px_0px_6px_0px_rgba(23,118,255,0.5)]",
           )}
           aria-invalid={error}
           aria-label={ariaLabel}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
         >
-          <SelectPrimitive.Value placeholder={placeholder} />
-          <SelectPrimitive.Icon asChild>
+          <span
+            className={cn(
+              "truncate",
+              !selectedOption && "text-slate-300 dark:text-slate-500",
+            )}
+          >
+            {selectedOption?.label || placeholder}
+          </span>
+          <div className="flex items-center gap-1 flex-shrink-0">
+            {showClearButton && (
+              <span
+                role="button"
+                aria-label="선택 초기화"
+                onClick={handleClear}
+                className="flex items-center"
+              >
+                <span className="p-0.5 rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-100 dark:hover:text-slate-300 dark:hover:bg-slate-700 cursor-pointer transition-colors">
+                  <XIcon size={20} />
+                </span>
+              </span>
+            )}
             <UpIcon
               size={24}
-              className="text-slate-900 transition-transform duration-200 group-data-[state=open]:rotate-180 dark:text-slate-50"
+              className={cn(
+                "text-slate-900 transition-transform duration-200 dark:text-slate-50",
+                open && "rotate-180",
+              )}
             />
-          </SelectPrimitive.Icon>
-        </SelectPrimitive.Trigger>
+          </div>
+        </PopoverPrimitive.Trigger>
 
-        <SelectPrimitive.Portal>
-          <SelectPrimitive.Content
+        <PopoverPrimitive.Portal>
+          <PopoverPrimitive.Content
             className={cn(
-              "relative z-50 overflow-hidden rounded-[5px] border border-slate-100 dark:border-slate-600 w-[var(--radix-select-trigger-width)]",
+              "z-50 rounded-[5px] border border-slate-100 dark:border-slate-600 w-[var(--radix-popover-trigger-width)]",
               "bg-white/50 dark:bg-slate-800/50 backdrop-blur-[12px]",
               "shadow-[10px_10px_10px_0px_rgba(0,0,0,0.05)]",
               "p-[5px]",
-              "data-[state=open]:animate-in data-[state=closed]:animate-out",
-              "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
-              "data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
-              "data-[side=bottom]:slide-in-from-top-2 data-[side=top]:slide-in-from-bottom-2",
+              "animate-in fade-in-0 zoom-in-95",
             )}
-            position="popper"
             sideOffset={4}
+            align="start"
           >
-            <SelectPrimitive.Viewport className="flex flex-col gap-[5px] max-h-[240px] overflow-y-auto">
+            <div className="flex flex-col gap-[5px] max-h-[240px] overflow-y-auto">
               {options.map((option) => (
-                <SelectPrimitive.Item
+                <div
                   key={option.value}
-                  value={option.value}
-                  disabled={option.disabled}
+                  onClick={() => !option.disabled && handleSelect(option.value)}
                   className={cn(
                     "relative flex h-[29px] cursor-pointer select-none items-center rounded-[2px] px-[5px] py-[5px]",
                     "text-xs text-slate-700 dark:text-slate-50 outline-none",
                     "hover:bg-slate-100 dark:hover:bg-slate-700",
-                    "focus:bg-slate-100 dark:focus:bg-slate-700",
-                    "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
-                    "data-[state=checked]:bg-accent data-[state=checked]:text-accent-foreground",
+                    option.disabled && "pointer-events-none opacity-50",
+                    currentValue === option.value && "bg-accent text-accent-foreground",
                   )}
                 >
-                  <SelectPrimitive.ItemText>{option.label}</SelectPrimitive.ItemText>
-                </SelectPrimitive.Item>
+                  {option.label}
+                </div>
               ))}
-            </SelectPrimitive.Viewport>
-          </SelectPrimitive.Content>
-        </SelectPrimitive.Portal>
-      </SelectPrimitive.Root>
+            </div>
+          </PopoverPrimitive.Content>
+        </PopoverPrimitive.Portal>
+      </PopoverPrimitive.Root>
     );
   },
 );
@@ -196,11 +245,13 @@ const SearchableSelect = React.forwardRef<
       disabled,
       ariaLabel,
       tableMode,
+      clearable = true,
     },
     ref,
   ) => {
     const [open, setOpen] = React.useState(false);
     const [search, setSearch] = React.useState("");
+    const [isHovered, setIsHovered] = React.useState(false);
     const [internalValue, setInternalValue] = React.useState(defaultValue || "");
 
     const currentValue = value !== undefined ? value : internalValue;
@@ -219,6 +270,17 @@ const SearchableSelect = React.forwardRef<
       setSearch("");
     };
 
+    const handleClear = (e: React.MouseEvent) => {
+      e.stopPropagation();
+      if (value === undefined) {
+        setInternalValue("");
+      }
+      onValueChange?.("");
+    };
+
+    // X 버튼 표시 여부 (hover 시에만)
+    const showClearButton = clearable && currentValue && isHovered && !disabled;
+
     return (
       <PopoverPrimitive.Root open={open} onOpenChange={setOpen}>
         <PopoverPrimitive.Trigger
@@ -230,29 +292,45 @@ const SearchableSelect = React.forwardRef<
             "px-3 text-xs outline-none transition-colors cursor-pointer",
             "disabled:cursor-not-allowed disabled:opacity-50",
             error
-              ? "border-red-500 dark:border-red-500 data-[state=open]:border-red-500 data-[state=open]:shadow-[0px_0px_6px_0px_rgba(239,68,68,0.5)]"
+              ? "border-red-500 dark:border-red-500 focus-visible:border-red-500 focus-visible:shadow-[0px_0px_6px_0px_rgba(239,68,68,0.5)] data-[state=open]:border-red-500 data-[state=open]:shadow-[0px_0px_6px_0px_rgba(239,68,68,0.5)]"
               : tableMode
-                ? "border-slate-300 dark:border-slate-500 data-[state=open]:border-slate-500 data-[state=open]:border-[1.5px] data-[state=open]:shadow-none dark:data-[state=open]:border-slate-300"
-                : "border-slate-100 dark:border-slate-600 data-[state=open]:border-blue-500 data-[state=open]:shadow-[0px_0px_6px_0px_rgba(23,118,255,0.5)]",
+                ? "border-slate-300 dark:border-slate-500 focus-visible:border-slate-500 focus-visible:border-[1.5px] dark:focus-visible:border-slate-300 data-[state=open]:border-slate-500 data-[state=open]:border-[1.5px] data-[state=open]:shadow-none dark:data-[state=open]:border-slate-300"
+                : "border-slate-100 dark:border-slate-600 focus-visible:border-blue-500 focus-visible:shadow-[0px_0px_6px_0px_rgba(23,118,255,0.5)] data-[state=open]:border-blue-500 data-[state=open]:shadow-[0px_0px_6px_0px_rgba(23,118,255,0.5)]",
           )}
           aria-invalid={error}
           aria-label={ariaLabel}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
         >
           <span
             className={cn(
               "truncate",
-              !selectedOption && "text-slate-500 dark:text-slate-50",
+              !selectedOption && "text-slate-300 dark:text-slate-500",
             )}
           >
             {selectedOption?.label || placeholder}
           </span>
-          <UpIcon
-            size={24}
-            className={cn(
-              "text-slate-900 transition-transform duration-200 dark:text-slate-50",
-              open && "rotate-180",
+          <div className="flex items-center gap-1 flex-shrink-0">
+            {showClearButton && (
+              <span
+                role="button"
+                aria-label="선택 초기화"
+                onClick={handleClear}
+                className="flex items-center"
+              >
+                <span className="p-0.5 rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-100 dark:hover:text-slate-300 dark:hover:bg-slate-700 cursor-pointer transition-colors">
+                  <XIcon size={20} />
+                </span>
+              </span>
             )}
-          />
+            <UpIcon
+              size={24}
+              className={cn(
+                "text-slate-900 transition-transform duration-200 dark:text-slate-50",
+                open && "rotate-180",
+              )}
+            />
+          </div>
         </PopoverPrimitive.Trigger>
 
         <PopoverPrimitive.Portal>
@@ -328,11 +406,15 @@ const MultiSelect = React.forwardRef<
       disabled,
       ariaLabel,
       tableMode,
+      overflowMode = "truncate",
+      maxDisplayCount = 2,
+      clearable = true,
     },
     ref,
   ) => {
     const [open, setOpen] = React.useState(false);
     const [search, setSearch] = React.useState("");
+    const [isHovered, setIsHovered] = React.useState(false);
     const [internalValue, setInternalValue] = React.useState<string[]>(
       defaultValue || [],
     );
@@ -366,6 +448,17 @@ const MultiSelect = React.forwardRef<
       onValueChange?.(newValue);
     };
 
+    const handleClearAll = (e: React.MouseEvent) => {
+      e.stopPropagation();
+      if (value === undefined) {
+        setInternalValue([]);
+      }
+      onValueChange?.([]);
+    };
+
+    // X 버튼 표시 여부 (hover 시에만)
+    const showClearButton = clearable && currentValue.length > 0 && isHovered && !disabled;
+
     return (
       <PopoverPrimitive.Root open={open} onOpenChange={setOpen}>
         <PopoverPrimitive.Trigger
@@ -377,19 +470,48 @@ const MultiSelect = React.forwardRef<
             "px-3 py-1.5 text-xs outline-none transition-colors cursor-pointer",
             "disabled:cursor-not-allowed disabled:opacity-50",
             error
-              ? "border-red-500 dark:border-red-500 data-[state=open]:border-red-500 data-[state=open]:shadow-[0px_0px_6px_0px_rgba(239,68,68,0.5)]"
+              ? "border-red-500 dark:border-red-500 focus-visible:border-red-500 focus-visible:shadow-[0px_0px_6px_0px_rgba(239,68,68,0.5)] data-[state=open]:border-red-500 data-[state=open]:shadow-[0px_0px_6px_0px_rgba(239,68,68,0.5)]"
               : tableMode
-                ? "border-slate-300 dark:border-slate-500 data-[state=open]:border-slate-500 data-[state=open]:border-[1.5px] data-[state=open]:shadow-none dark:data-[state=open]:border-slate-300"
-                : "border-slate-100 dark:border-slate-600 data-[state=open]:border-blue-500 data-[state=open]:shadow-[0px_0px_6px_0px_rgba(23,118,255,0.5)]",
+                ? "border-slate-300 dark:border-slate-500 focus-visible:border-slate-500 focus-visible:border-[1.5px] dark:focus-visible:border-slate-300 data-[state=open]:border-slate-500 data-[state=open]:border-[1.5px] data-[state=open]:shadow-none dark:data-[state=open]:border-slate-300"
+                : "border-slate-100 dark:border-slate-600 focus-visible:border-blue-500 focus-visible:shadow-[0px_0px_6px_0px_rgba(23,118,255,0.5)] data-[state=open]:border-blue-500 data-[state=open]:shadow-[0px_0px_6px_0px_rgba(23,118,255,0.5)]",
           )}
           aria-invalid={error}
           aria-label={ariaLabel}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
         >
-          <div className="flex flex-1 flex-wrap gap-1">
+          <div className={cn(
+            "flex flex-1 gap-1",
+            overflowMode === "wrap" ? "flex-wrap" : "flex-nowrap overflow-hidden"
+          )}>
             {selectedOptions.length === 0 ? (
               <span className="text-slate-500 dark:text-slate-50">
                 {placeholder}
               </span>
+            ) : overflowMode === "truncate" ? (
+              <>
+                {selectedOptions.slice(0, maxDisplayCount).map((option) => (
+                  <span
+                    key={option.value}
+                    className="inline-flex items-center gap-1 rounded bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 text-xs flex-shrink-0"
+                  >
+                    <span className="truncate max-w-[80px]">{option.label}</span>
+                    <span
+                      role="img"
+                      aria-label={`${option.label} 삭제`}
+                      onClick={(e) => handleRemove(option.value, e)}
+                      className="cursor-pointer flex-shrink-0"
+                    >
+                      <XIcon size={18} />
+                    </span>
+                  </span>
+                ))}
+                {selectedOptions.length > maxDisplayCount && (
+                  <span className="inline-flex items-center rounded bg-slate-200 dark:bg-slate-600 px-1.5 py-0.5 text-xs flex-shrink-0">
+                    +{selectedOptions.length - maxDisplayCount}
+                  </span>
+                )}
+              </>
             ) : (
               selectedOptions.map((option) => (
                 <span
@@ -409,13 +531,27 @@ const MultiSelect = React.forwardRef<
               ))
             )}
           </div>
-          <UpIcon
-            size={24}
-            className={cn(
-              "text-slate-900 transition-transform duration-200 dark:text-slate-50 flex-shrink-0",
-              open && "rotate-180",
+          <div className="flex items-center gap-1 flex-shrink-0">
+            {showClearButton && (
+              <span
+                role="button"
+                aria-label="전체 선택 초기화"
+                onClick={handleClearAll}
+                className="flex items-center"
+              >
+                <span className="p-0.5 rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-100 dark:hover:text-slate-300 dark:hover:bg-slate-700 cursor-pointer transition-colors">
+                  <XIcon size={20} />
+                </span>
+              </span>
             )}
-          />
+            <UpIcon
+              size={24}
+              className={cn(
+                "text-slate-900 transition-transform duration-200 dark:text-slate-50",
+                open && "rotate-180",
+              )}
+            />
+          </div>
         </PopoverPrimitive.Trigger>
 
         <PopoverPrimitive.Portal>
