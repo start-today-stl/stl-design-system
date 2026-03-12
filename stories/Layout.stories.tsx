@@ -181,13 +181,6 @@ export const Default: Story = {
           </AppShell.Sidebar>
 
           <AppShell.Header
-            search={
-              <SearchBar
-                placeholder="주문번호, 주문ID, 출고번호, 이름, 전화번호, 우편번호, 이메일, 주소"
-                recentSearches={sampleRecentSearches}
-                className="w-full"
-              />
-            }
             actions={
               <div className="flex items-center gap-2">
                 <Button variant="ghost" size="icon-sm" aria-label="설정">
@@ -289,13 +282,6 @@ export const SidebarHiddenMode: Story = {
           </AppShell.Sidebar>
 
           <AppShell.Header
-            search={
-              <SearchBar
-                placeholder="검색..."
-                recentSearches={sampleRecentSearches}
-                className="w-full"
-              />
-            }
             actions={
               <div className="flex items-center gap-2">
                 <Button variant="ghost" size="icon-sm" aria-label="알림">
@@ -306,7 +292,13 @@ export const SidebarHiddenMode: Story = {
                 </Button>
               </div>
             }
-          />
+          >
+            <SearchBar
+              placeholder="검색..."
+              recentSearches={sampleRecentSearches}
+              className="w-full"
+            />
+          </AppShell.Header>
 
           <AppShell.Content>
             <div className="flex flex-col gap-4">
@@ -409,11 +401,6 @@ export const HeaderNavigation: Story = {
                 </NavGroup>
               </NavMenu>
             }
-            center={
-              <span className="px-3 py-1 rounded-full bg-orange-100 text-orange-600 text-xs font-medium">
-                DEV 환경
-              </span>
-            }
             actions={
               <div className="flex items-center gap-2">
                 <Button variant="ghost" size="icon-sm" aria-label="알림">
@@ -424,7 +411,13 @@ export const HeaderNavigation: Story = {
                 </Button>
               </div>
             }
-          />
+          >
+            <div className="flex justify-center">
+              <span className="px-3 py-1 rounded-full bg-orange-100 text-orange-600 text-xs font-medium">
+                DEV 환경
+              </span>
+            </div>
+          </AppShell.Header>
 
           <AppShell.Content>
             <PageHeader
@@ -520,13 +513,6 @@ export const WithBreadcrumb: Story = {
           </AppShell.Sidebar>
 
           <AppShell.Header
-            search={
-              <SearchBar
-                placeholder="검색..."
-                recentSearches={sampleRecentSearches}
-                className="w-full"
-              />
-            }
             actions={
               <div className="flex items-center gap-2">
                 <Button variant="ghost" size="icon-sm" aria-label="알림">
@@ -562,7 +548,13 @@ export const WithBreadcrumb: Story = {
                 </Dropdown>
               </div>
             }
-          />
+          >
+            <SearchBar
+              placeholder="검색..."
+              recentSearches={sampleRecentSearches}
+              className="w-full"
+            />
+          </AppShell.Header>
 
           <AppShell.Content>
             <div className="flex flex-col gap-2">
@@ -595,7 +587,7 @@ export const WithBreadcrumb: Story = {
 /**
  * 헤더 중앙 커스텀 영역 포함
  *
- * `center` prop으로 헤더 중앙에 커스텀 콘텐츠를 배치합니다.
+ * `children`으로 헤더 중앙에 커스텀 콘텐츠를 배치합니다.
  */
 export const WithHeaderCenter: Story = {
   render: function Render() {
@@ -653,18 +645,6 @@ export const WithHeaderCenter: Story = {
           </AppShell.Sidebar>
 
           <AppShell.Header
-            search={
-              <SearchBar
-                placeholder="검색..."
-                recentSearches={sampleRecentSearches}
-                className="w-full"
-              />
-            }
-            center={
-              <span className="text-sm text-slate-500">
-                중앙 커스텀 영역
-              </span>
-            }
             actions={
               <div className="flex items-center gap-2">
                 <Button variant="ghost" size="icon-sm" aria-label="알림">
@@ -700,7 +680,13 @@ export const WithHeaderCenter: Story = {
                 </Dropdown>
               </div>
             }
-          />
+          >
+            <div className="flex justify-center">
+              <span className="text-sm text-slate-500">
+                중앙 커스텀 영역
+              </span>
+            </div>
+          </AppShell.Header>
 
           <AppShell.Content>
             <div className="flex flex-col gap-4">
@@ -789,13 +775,6 @@ export const SidebarOnly: Story = {
 export const HeaderOnly: Story = {
   render: () => (
     <Header
-      search={
-        <SearchBar
-          placeholder="주문번호, 주문ID, 출고번호, 이름, 전화번호, 우편번호, 이메일, 주소"
-          recentSearches={sampleRecentSearches}
-          className="w-full"
-        />
-      }
       actions={
         <div className="flex items-center gap-2">
           <Button variant="ghost" size="icon-sm" aria-label="설정">
@@ -812,7 +791,13 @@ export const HeaderOnly: Story = {
           </div>
         </div>
       }
-    />
+    >
+      <SearchBar
+        placeholder="주문번호, 주문ID, 출고번호, 이름, 전화번호, 우편번호, 이메일, 주소"
+        recentSearches={sampleRecentSearches}
+        className="w-full"
+      />
+    </Header>
   ),
 };
 
@@ -822,19 +807,18 @@ export const NoSidebar: Story = {
     <div style={{ height: "400px" }}>
       <AppShell>
         <AppShell.Header
-          search={
-            <SearchBar
-              placeholder="전체 검색..."
-              recentSearches={sampleRecentSearches}
-              className="w-[400px]"
-            />
-          }
           actions={
             <Button variant="primary" size="sm">
               로그인
             </Button>
           }
-        />
+        >
+          <SearchBar
+            placeholder="전체 검색..."
+            recentSearches={sampleRecentSearches}
+            className="w-[400px]"
+          />
+        </AppShell.Header>
 
         <AppShell.Content>
           <div className="bg-white dark:bg-slate-800 rounded-lg p-4 h-full">

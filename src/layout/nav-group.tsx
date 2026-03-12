@@ -51,6 +51,14 @@ const NavGroup = React.forwardRef<HTMLDivElement, NavGroupProps>(
     const [expandedState, setExpandedState] = React.useState(defaultExpanded)
     const isExpanded = expandedProp !== undefined ? expandedProp : expandedState
 
+    // collapsed 상태가 안정화된 후에만 flyout 렌더링 (깜빡임 방지)
+    const [stableCollapsed, setStableCollapsed] = React.useState(collapsed)
+
+    React.useEffect(() => {
+      const timer = setTimeout(() => setStableCollapsed(collapsed), 300)
+      return () => clearTimeout(timer)
+    }, [collapsed])
+
     const handleToggle = () => {
       const newExpanded = !isExpanded
       setExpandedState(newExpanded)
@@ -144,6 +152,8 @@ const NavGroup = React.forwardRef<HTMLDivElement, NavGroupProps>(
             hasChildren
           />
           {/* 호버 시 플라이아웃 메뉴 - 사이드바 우측에 간격 두고 표시 */}
+          {/* collapsed 상태가 안정화된 후에만 렌더링 (깜빡임 방지) */}
+          {stableCollapsed && (
           <div className={cn(
             "absolute left-full top-0 ml-4 min-w-[200px] py-2 px-3 rounded-md",
             "bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-700",
@@ -169,6 +179,7 @@ const NavGroup = React.forwardRef<HTMLDivElement, NavGroupProps>(
               })}
             </div>
           </div>
+          )}
         </div>
       )
     }
