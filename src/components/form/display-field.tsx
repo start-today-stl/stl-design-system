@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils"
 import { DuplicationIcon } from "@/icons"
 
 /** 값 표시 타입 */
-export type DisplayFieldType = "text" | "email" | "phone" | "money" | "date"
+export type DisplayFieldType = "text" | "email" | "phone" | "number" | "date"
 
 /** 텍스트 오버플로우 처리 방식 */
 export type TextOverflow = "wrap" | "ellipsis" | "truncate"
@@ -31,6 +31,10 @@ export interface DisplayFieldProps {
   size?: DisplayFieldSize
   /** 값 타입에 따른 자동 포맷팅 */
   type?: DisplayFieldType
+  /** 값 앞에 붙는 접두사 (예: "$", "₩") */
+  prefix?: string
+  /** 값 뒤에 붙는 접미사 (예: "원", "개", "%") */
+  suffix?: string
   /** 텍스트 오버플로우 처리 (기본: "wrap") */
   textOverflow?: TextOverflow
   /** 복사 버튼 표시 */
@@ -51,10 +55,18 @@ export interface DisplayFieldProps {
   renderValue?: (value: React.ReactNode) => React.ReactNode
 }
 
+interface FormatOptions {
+  type?: DisplayFieldType
+  prefix?: string
+  suffix?: string
+}
+
 /**
  * 값 포맷팅 함수
  */
-const formatValue = (value: React.ReactNode, type?: DisplayFieldType): React.ReactNode => {
+const formatValue = (value: React.ReactNode, options: FormatOptions = {}): React.ReactNode => {
+  const { type, prefix, suffix } = options
+
   if (value === null || value === undefined || value === "") return null
 
   // ReactNode가 string이 아닌 경우 그대로 반환
@@ -62,28 +74,45 @@ const formatValue = (value: React.ReactNode, type?: DisplayFieldType): React.Rea
 
   const stringValue = String(value)
 
+  let formattedValue: string
+
   switch (type) {
     case "phone":
       // 전화번호 포맷: 010-1234-5678
-      return stringValue.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3")
+      formattedValue = stringValue.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3")
+      break
 
-    case "money":
-      // 금액 포맷: 1,234,567원
+    case "number": {
+      // 숫자 포맷: 1,234,567 (천단위 구분자)
       const numValue = typeof value === "number" ? value : parseFloat(stringValue.replace(/[^0-9.-]/g, ""))
-      if (isNaN(numValue)) return stringValue
-      return `${numValue.toLocaleString("ko-KR")}원`
+      if (isNaN(numValue)) {
+        formattedValue = stringValue
+      } else {
+        formattedValue = `${prefix || ""}${numValue.toLocaleString("ko-KR")}${suffix || ""}`
+        return formattedValue
+      }
+      break
+    }
 
-    case "date":
+    case "date": {
       // 날짜 포맷: YYYY.MM.DD
       const date = new Date(stringValue)
-      if (isNaN(date.getTime())) return stringValue
-      return `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, "0")}.${String(date.getDate()).padStart(2, "0")}`
+      if (isNaN(date.getTime())) {
+        formattedValue = stringValue
+      } else {
+        formattedValue = `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, "0")}.${String(date.getDate()).padStart(2, "0")}`
+      }
+      break
+    }
 
     case "email":
     case "text":
     default:
-      return stringValue
+      formattedValue = stringValue
   }
+
+  // prefix/suffix 적용 (money 제외 - 위에서 처리됨)
+  return `${prefix || ""}${formattedValue}${suffix || ""}`
 }
 
 /**
@@ -111,6 +140,8 @@ export const DisplayField = React.forwardRef<HTMLDivElement, DisplayFieldProps>(
       emptyText = "-",
       size = "full",
       type = "text",
+      prefix,
+      suffix,
       textOverflow = "wrap",
       copyable = false,
       onCopy,
@@ -129,7 +160,7 @@ export const DisplayField = React.forwardRef<HTMLDivElement, DisplayFieldProps>(
     const isEmpty = value === null || value === undefined || value === ""
 
     // 포맷된 값
-    const formattedValue = isEmpty ? emptyText : formatValue(value, type)
+    const formattedValue = isEmpty ? emptyText : formatValue(value, { type, prefix, suffix })
 
     // 최종 표시 값 (커스텀 렌더러 적용)
     const displayValue = renderValue ? renderValue(formattedValue) : formattedValue
