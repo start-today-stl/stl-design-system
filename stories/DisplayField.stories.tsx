@@ -17,7 +17,7 @@ const meta = {
   argTypes: {
     type: {
       control: "select",
-      options: ["text", "email", "phone", "money", "date"],
+      options: ["text", "email", "phone", "number", "date"],
       description: "값 타입에 따른 자동 포맷팅",
     },
     textOverflow: {
@@ -37,6 +37,14 @@ const meta = {
     required: {
       control: "boolean",
       description: "필수 필드 표시",
+    },
+    prefix: {
+      control: "text",
+      description: "값 앞에 붙는 접두사 (예: $, ₩, €)",
+    },
+    suffix: {
+      control: "text",
+      description: "값 뒤에 붙는 접미사 (예: 원, 개, %)",
     },
   },
 } satisfies Meta<typeof DisplayField>
@@ -79,8 +87,29 @@ export const TypeFormatting: Story = {
       <DisplayField label="일반 텍스트" value="Hello World" type="text" />
       <DisplayField label="이메일" value="test@example.com" type="email" />
       <DisplayField label="전화번호" value="01012345678" type="phone" />
-      <DisplayField label="금액" value={15000} type="money" />
+      <DisplayField label="숫자" value={1234567} type="number" />
+      <DisplayField label="금액" value={15000} type="number" suffix="원" />
       <DisplayField label="날짜" value="2024-03-15" type="date" />
+    </div>
+  ),
+}
+
+/** 다국어 통화 및 단위 (prefix/suffix) */
+export const CurrencyAndUnits: Story = {
+  render: () => (
+    <div style={{ display: "flex", flexDirection: "column", gap: "16px", width: "300px" }}>
+      <span style={{ fontSize: "12px", fontWeight: "bold", color: "#666" }}>통화 표시</span>
+      <DisplayField label="원화" value={15000} type="number" suffix="원" />
+      <DisplayField label="원화 (접두사)" value={15000} type="number" prefix="₩" />
+      <DisplayField label="달러" value={15000} type="number" prefix="$" />
+      <DisplayField label="유로" value={15000} type="number" prefix="€" />
+      <DisplayField label="엔화" value={15000} type="number" suffix="円" />
+
+      <span style={{ fontSize: "12px", fontWeight: "bold", color: "#666", marginTop: "8px" }}>숫자 + 단위</span>
+      <DisplayField label="재고량" value={12500} type="number" suffix="개" />
+      <DisplayField label="조회수" value={1234567} type="number" suffix="회" />
+      <DisplayField label="무게" value={500} type="number" suffix=" kg" />
+      <DisplayField label="할인율" value={15} type="number" suffix="%" />
     </div>
   ),
 }
@@ -251,7 +280,7 @@ export const EditViewModeToggle: Story = {
                       size="full"
                     />
                   ) : (
-                    <DisplayField label="가격" value={formData.price} type="money" required />
+                    <DisplayField label="가격" value={formData.price} type="number" suffix="원" required />
                   )}
                 </FormRow>
                 <FormRow>
@@ -305,7 +334,7 @@ export const DetailViewExample: Story = {
                 <DisplayField label="바코드" value="8801234567890" copyable />
               </FormRow>
               <FormRow>
-                <DisplayField label="판매가" value={89000} type="money" />
+                <DisplayField label="판매가" value={89000} type="number" suffix="원" />
               </FormRow>
               <FormRow>
                 <DisplayField label="등록일" value="2024-03-15T10:30:00" type="date" />
@@ -361,7 +390,7 @@ export const CompareWithInputField: Story = {
         </span>
         <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
           <DisplayField label="상품명" value="테스트 상품" required />
-          <DisplayField label="가격" value={15000} type="money" />
+          <DisplayField label="가격" value={15000} type="number" suffix="원" />
           <DisplayField label="연락처" value="01012345678" type="phone" copyable />
         </div>
       </div>

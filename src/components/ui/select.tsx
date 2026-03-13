@@ -115,9 +115,29 @@ const BasicSelect = React.forwardRef<
     const [open, setOpen] = React.useState(false);
     const [isHovered, setIsHovered] = React.useState(false);
     const [internalValue, setInternalValue] = React.useState(defaultValue || "");
+    const [highlightedIndex, setHighlightedIndex] = React.useState(-1);
+    const listRef = React.useRef<HTMLDivElement>(null);
 
     const currentValue = value !== undefined ? value : internalValue;
     const selectedOption = options.find((opt) => opt.value === currentValue);
+
+    // 드롭다운 열릴 때 현재 선택된 값의 인덱스로 하이라이트 초기화
+    React.useEffect(() => {
+      if (open) {
+        const selectedIndex = options.findIndex((opt) => opt.value === currentValue);
+        setHighlightedIndex(selectedIndex >= 0 ? selectedIndex : 0);
+      }
+    }, [open, currentValue, options]);
+
+    // 하이라이트된 아이템이 보이도록 스크롤
+    React.useEffect(() => {
+      if (open && highlightedIndex >= 0 && listRef.current) {
+        const highlightedElement = listRef.current.children[highlightedIndex] as HTMLElement;
+        if (highlightedElement) {
+          highlightedElement.scrollIntoView({ block: "nearest" });
+        }
+      }
+    }, [highlightedIndex, open]);
 
     const handleSelect = (optionValue: string) => {
       if (value === undefined) {
@@ -133,6 +153,63 @@ const BasicSelect = React.forwardRef<
         setInternalValue("");
       }
       onValueChange?.("");
+    };
+
+    // 키보드 네비게이션 핸들러
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+      if (!open) return;
+
+      const enabledIndices = options
+        .map((opt, i) => (!opt.disabled ? i : -1))
+        .filter((i) => i !== -1);
+
+      switch (e.key) {
+        case "ArrowDown": {
+          e.preventDefault();
+          const currentEnabledIndex = enabledIndices.indexOf(highlightedIndex);
+          const nextEnabledIndex = enabledIndices[
+            (currentEnabledIndex + 1) % enabledIndices.length
+          ];
+          setHighlightedIndex(nextEnabledIndex);
+          break;
+        }
+        case "ArrowUp": {
+          e.preventDefault();
+          const currentEnabledIndex = enabledIndices.indexOf(highlightedIndex);
+          const prevEnabledIndex = enabledIndices[
+            (currentEnabledIndex - 1 + enabledIndices.length) % enabledIndices.length
+          ];
+          setHighlightedIndex(prevEnabledIndex);
+          break;
+        }
+        case "Enter":
+        case " ": {
+          e.preventDefault();
+          if (highlightedIndex >= 0 && !options[highlightedIndex]?.disabled) {
+            handleSelect(options[highlightedIndex].value);
+          }
+          break;
+        }
+        case "Escape": {
+          e.preventDefault();
+          setOpen(false);
+          break;
+        }
+        case "Home": {
+          e.preventDefault();
+          if (enabledIndices.length > 0) {
+            setHighlightedIndex(enabledIndices[0]);
+          }
+          break;
+        }
+        case "End": {
+          e.preventDefault();
+          if (enabledIndices.length > 0) {
+            setHighlightedIndex(enabledIndices[enabledIndices.length - 1]);
+          }
+          break;
+        }
+      }
     };
 
     // X 버튼 표시 여부 (hover 시에만)
@@ -158,6 +235,7 @@ const BasicSelect = React.forwardRef<
           aria-label={ariaLabel}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
+          onKeyDown={handleKeyDown}
         >
           <span
             className={cn(
@@ -201,11 +279,15 @@ const BasicSelect = React.forwardRef<
             )}
             sideOffset={4}
             align="start"
+            onOpenAutoFocus={(e) => e.preventDefault()}
           >
-            <div className="flex flex-col gap-[5px] max-h-[240px] overflow-y-auto">
-              {options.map((option) => (
+            <div ref={listRef} className="flex flex-col gap-[5px] max-h-[240px] overflow-y-auto" role="listbox">
+              {options.map((option, index) => (
                 <div
                   key={option.value}
+                  role="option"
+                  aria-selected={currentValue === option.value}
+                  aria-disabled={option.disabled}
                   onClick={() => !option.disabled && handleSelect(option.value)}
                   className={cn(
                     "relative flex h-[29px] cursor-pointer select-none items-center rounded-[2px] px-[5px] py-[5px]",
@@ -213,6 +295,7 @@ const BasicSelect = React.forwardRef<
                     "hover:bg-slate-100 dark:hover:bg-slate-700",
                     option.disabled && "pointer-events-none opacity-50",
                     currentValue === option.value && "bg-accent text-accent-foreground",
+                    highlightedIndex === index && "bg-slate-100 dark:bg-slate-700",
                   )}
                 >
                   {option.label}
@@ -253,6 +336,8 @@ const SearchableSelect = React.forwardRef<
     const [search, setSearch] = React.useState("");
     const [isHovered, setIsHovered] = React.useState(false);
     const [internalValue, setInternalValue] = React.useState(defaultValue || "");
+    const [highlightedValue, setHighlightedValue] = React.useState("");
+    const listRef = React.useRef<HTMLDivElement>(null);
 
     const currentValue = value !== undefined ? value : internalValue;
     const selectedOption = options.find((opt) => opt.value === currentValue);
@@ -260,6 +345,22 @@ const SearchableSelect = React.forwardRef<
     const filteredOptions = options.filter((option) =>
       option.label.toLowerCase().includes(search.toLowerCase()),
     );
+
+    // 드롭다운 열릴 때 하이라이트 초기화
+    React.useEffect(() => {
+      if (open && filteredOptions.length > 0) {
+        const selected = filteredOptions.find((opt) => opt.value === currentValue);
+        setHighlightedValue(selected?.label || filteredOptions[0].label);
+      }
+    }, [open]);
+
+    // 아이템으로 스크롤 이동
+    const scrollToItem = (label: string) => {
+      if (listRef.current) {
+        const item = listRef.current.querySelector(`[data-value="${label.toLowerCase()}"]`) as HTMLElement;
+        item?.scrollIntoView({ block: "nearest" });
+      }
+    };
 
     const handleSelect = (optionValue: string) => {
       if (value === undefined) {
@@ -276,6 +377,42 @@ const SearchableSelect = React.forwardRef<
         setInternalValue("");
       }
       onValueChange?.("");
+    };
+
+    // 키보드 핸들러 (Home/End + Arrow 순환)
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+      const enabledOptions = filteredOptions.filter((opt) => !opt.disabled);
+      if (enabledOptions.length === 0) return;
+
+      const currentIndex = enabledOptions.findIndex((opt) => opt.label === highlightedValue);
+
+      if (e.key === "Home") {
+        e.preventDefault();
+        const targetLabel = enabledOptions[0].label;
+        setHighlightedValue(targetLabel);
+        scrollToItem(targetLabel);
+      } else if (e.key === "End") {
+        e.preventDefault();
+        const targetLabel = enabledOptions[enabledOptions.length - 1].label;
+        setHighlightedValue(targetLabel);
+        scrollToItem(targetLabel);
+      } else if (e.key === "ArrowDown") {
+        // 마지막에서 아래로 가면 첫 번째로 순환
+        if (currentIndex === enabledOptions.length - 1) {
+          e.preventDefault();
+          const targetLabel = enabledOptions[0].label;
+          setHighlightedValue(targetLabel);
+          scrollToItem(targetLabel);
+        }
+      } else if (e.key === "ArrowUp") {
+        // 첫 번째에서 위로 가면 마지막으로 순환
+        if (currentIndex === 0) {
+          e.preventDefault();
+          const targetLabel = enabledOptions[enabledOptions.length - 1].label;
+          setHighlightedValue(targetLabel);
+          scrollToItem(targetLabel);
+        }
+      }
     };
 
     // X 버튼 표시 여부 (hover 시에만)
@@ -345,7 +482,11 @@ const SearchableSelect = React.forwardRef<
             sideOffset={4}
             align="start"
           >
-            <CommandPrimitive className="flex flex-col">
+            <CommandPrimitive
+              className="flex flex-col"
+              value={highlightedValue}
+              onValueChange={setHighlightedValue}
+            >
               <div className="flex items-center gap-2 px-2 pb-2 border-b border-slate-100 dark:border-slate-600">
                 <SearchIcon size={20} className="text-slate-400" />
                 <CommandPrimitive.Input
@@ -353,9 +494,10 @@ const SearchableSelect = React.forwardRef<
                   onValueChange={setSearch}
                   placeholder={searchPlaceholder}
                   className="flex-1 bg-transparent text-xs outline-none placeholder:text-slate-400"
+                  onKeyDown={handleKeyDown}
                 />
               </div>
-              <CommandPrimitive.List className="flex flex-col gap-[5px] max-h-[240px] overflow-y-auto pt-2">
+              <CommandPrimitive.List ref={listRef} className="flex flex-col gap-[5px] max-h-[240px] overflow-y-auto pt-2">
                 <CommandPrimitive.Empty className="py-2 text-center text-xs text-slate-500">
                   검색 결과가 없습니다.
                 </CommandPrimitive.Empty>
@@ -418,6 +560,8 @@ const MultiSelect = React.forwardRef<
     const [internalValue, setInternalValue] = React.useState<string[]>(
       defaultValue || [],
     );
+    const [highlightedValue, setHighlightedValue] = React.useState("");
+    const listRef = React.useRef<HTMLDivElement>(null);
 
     const currentValue = value !== undefined ? value : internalValue;
     const selectedOptions = options.filter((opt) =>
@@ -427,6 +571,21 @@ const MultiSelect = React.forwardRef<
     const filteredOptions = options.filter((option) =>
       option.label.toLowerCase().includes(search.toLowerCase()),
     );
+
+    // 드롭다운 열릴 때 하이라이트 초기화
+    React.useEffect(() => {
+      if (open && filteredOptions.length > 0) {
+        setHighlightedValue(filteredOptions[0].label);
+      }
+    }, [open]);
+
+    // 아이템으로 스크롤 이동
+    const scrollToItem = (label: string) => {
+      if (listRef.current) {
+        const item = listRef.current.querySelector(`[data-value="${label.toLowerCase()}"]`) as HTMLElement;
+        item?.scrollIntoView({ block: "nearest" });
+      }
+    };
 
     const handleToggle = (optionValue: string) => {
       const newValue = currentValue.includes(optionValue)
@@ -454,6 +613,42 @@ const MultiSelect = React.forwardRef<
         setInternalValue([]);
       }
       onValueChange?.([]);
+    };
+
+    // 키보드 핸들러 (Home/End + Arrow 순환)
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+      const enabledOptions = filteredOptions.filter((opt) => !opt.disabled);
+      if (enabledOptions.length === 0) return;
+
+      const currentIndex = enabledOptions.findIndex((opt) => opt.label === highlightedValue);
+
+      if (e.key === "Home") {
+        e.preventDefault();
+        const targetLabel = enabledOptions[0].label;
+        setHighlightedValue(targetLabel);
+        scrollToItem(targetLabel);
+      } else if (e.key === "End") {
+        e.preventDefault();
+        const targetLabel = enabledOptions[enabledOptions.length - 1].label;
+        setHighlightedValue(targetLabel);
+        scrollToItem(targetLabel);
+      } else if (e.key === "ArrowDown") {
+        // 마지막에서 아래로 가면 첫 번째로 순환
+        if (currentIndex === enabledOptions.length - 1) {
+          e.preventDefault();
+          const targetLabel = enabledOptions[0].label;
+          setHighlightedValue(targetLabel);
+          scrollToItem(targetLabel);
+        }
+      } else if (e.key === "ArrowUp") {
+        // 첫 번째에서 위로 가면 마지막으로 순환
+        if (currentIndex === 0) {
+          e.preventDefault();
+          const targetLabel = enabledOptions[enabledOptions.length - 1].label;
+          setHighlightedValue(targetLabel);
+          scrollToItem(targetLabel);
+        }
+      }
     };
 
     // X 버튼 표시 여부 (hover 시에만)
@@ -566,7 +761,11 @@ const MultiSelect = React.forwardRef<
             sideOffset={4}
             align="start"
           >
-            <CommandPrimitive className="flex flex-col">
+            <CommandPrimitive
+              className="flex flex-col"
+              value={highlightedValue}
+              onValueChange={setHighlightedValue}
+            >
               <div className="flex items-center gap-2 px-2 pb-2 border-b border-slate-100 dark:border-slate-600">
                 <SearchIcon size={20} className="text-slate-400" />
                 <CommandPrimitive.Input
@@ -574,9 +773,10 @@ const MultiSelect = React.forwardRef<
                   onValueChange={setSearch}
                   placeholder={searchPlaceholder}
                   className="flex-1 bg-transparent text-xs outline-none placeholder:text-slate-400"
+                  onKeyDown={handleKeyDown}
                 />
               </div>
-              <CommandPrimitive.List className="flex flex-col gap-[5px] max-h-[240px] overflow-y-auto pt-2">
+              <CommandPrimitive.List ref={listRef} className="flex flex-col gap-[5px] max-h-[240px] overflow-y-auto pt-2">
                 <CommandPrimitive.Empty className="py-2 text-center text-xs text-slate-500">
                   검색 결과가 없습니다.
                 </CommandPrimitive.Empty>

@@ -1,6 +1,6 @@
 import * as React from "react";
 /** 값 표시 타입 */
-export type DisplayFieldType = "text" | "email" | "phone" | "money" | "date";
+export type DisplayFieldType = "text" | "email" | "phone" | "number" | "date";
 /** 텍스트 오버플로우 처리 방식 */
 export type TextOverflow = "wrap" | "ellipsis" | "truncate";
 /** 너비 크기 */
@@ -16,6 +16,10 @@ export interface DisplayFieldProps {
     size?: DisplayFieldSize;
     /** 값 타입에 따른 자동 포맷팅 */
     type?: DisplayFieldType;
+    /** 값 앞에 붙는 접두사 (예: "$", "₩") */
+    prefix?: string;
+    /** 값 뒤에 붙는 접미사 (예: "원", "개", "%") */
+    suffix?: string;
     /** 텍스트 오버플로우 처리 (기본: "wrap") */
     textOverflow?: TextOverflow;
     /** 복사 버튼 표시 */

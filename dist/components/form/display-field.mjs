@@ -1,118 +1,131 @@
-import { jsxs as c, jsx as a } from "react/jsx-runtime";
-import * as g from "react";
-import { cn as l } from "../../lib/utils.mjs";
-import { DuplicationIcon as V } from "../../icons/DuplicationIcon.mjs";
-const z = {
+import { jsxs as x, jsx as i } from "react/jsx-runtime";
+import * as y from "react";
+import { cn as c } from "../../lib/utils.mjs";
+import { DuplicationIcon as R } from "../../icons/DuplicationIcon.mjs";
+const j = {
   sm: "w-[160px]",
   md: "w-[260px]",
   lg: "w-[360px]",
   full: "w-full"
-}, R = (t, e) => {
+}, E = (t, s = {}) => {
+  const { type: d, prefix: n, suffix: l } = s;
   if (t == null || t === "") return null;
   if (typeof t != "string" && typeof t != "number") return t;
-  const r = String(t);
-  switch (e) {
+  const a = String(t);
+  let e;
+  switch (d) {
     case "phone":
-      return r.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
-    case "money":
-      const n = typeof t == "number" ? t : parseFloat(r.replace(/[^0-9.-]/g, ""));
-      return isNaN(n) ? r : `${n.toLocaleString("ko-KR")}원`;
-    case "date":
-      const s = new Date(r);
-      return isNaN(s.getTime()) ? r : `${s.getFullYear()}.${String(s.getMonth() + 1).padStart(2, "0")}.${String(s.getDate()).padStart(2, "0")}`;
+      e = a.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
+      break;
+    case "number": {
+      const r = typeof t == "number" ? t : parseFloat(a.replace(/[^0-9.-]/g, ""));
+      if (isNaN(r))
+        e = a;
+      else
+        return e = `${n || ""}${r.toLocaleString("ko-KR")}${l || ""}`, e;
+      break;
+    }
+    case "date": {
+      const r = new Date(a);
+      isNaN(r.getTime()) ? e = a : e = `${r.getFullYear()}.${String(r.getMonth() + 1).padStart(2, "0")}.${String(r.getDate()).padStart(2, "0")}`;
+      break;
+    }
     case "email":
     case "text":
     default:
-      return r;
+      e = a;
   }
-}, j = g.forwardRef(
+  return `${n || ""}${e}${l || ""}`;
+}, I = y.forwardRef(
   ({
     label: t,
-    value: e,
-    emptyText: r = "-",
+    value: s,
+    emptyText: d = "-",
     size: n = "full",
-    type: s = "text",
-    textOverflow: h = "wrap",
-    copyable: w = !1,
-    onCopy: o,
-    required: y,
-    helper: d,
+    type: l = "text",
+    prefix: a,
+    suffix: e,
+    textOverflow: r = "wrap",
+    copyable: k = !1,
+    onCopy: p,
+    required: b,
+    helper: f,
     className: N,
-    labelClassName: k,
+    labelClassName: $,
     reserveLabelSpace: S,
-    renderValue: p
-  }, b) => {
-    const [x, m] = g.useState(!1), i = e == null || e === "", f = i ? r : R(e, s), $ = p ? p(f) : f, D = async () => {
-      if (i || typeof e != "string" && typeof e != "number") return;
-      const u = String(e);
+    renderValue: m
+  }, D) => {
+    const [u, g] = y.useState(!1), o = s == null || s === "", h = o ? d : E(s, { type: l, prefix: a, suffix: e }), F = m ? m(h) : h, V = async () => {
+      if (o || typeof s != "string" && typeof s != "number") return;
+      const w = String(s);
       try {
-        await navigator.clipboard.writeText(u), m(!0), o == null || o(u), setTimeout(() => m(!1), 2e3);
-      } catch (T) {
-        console.error("Failed to copy:", T);
+        await navigator.clipboard.writeText(w), g(!0), p == null || p(w), setTimeout(() => g(!1), 2e3);
+      } catch (z) {
+        console.error("Failed to copy:", z);
       }
-    }, F = {
+    }, T = {
       wrap: "whitespace-normal break-words",
       ellipsis: "whitespace-nowrap overflow-hidden text-ellipsis",
       truncate: "truncate"
     };
-    return /* @__PURE__ */ c(
+    return /* @__PURE__ */ x(
       "div",
       {
-        ref: b,
-        className: l("flex flex-col gap-1", z[n]),
+        ref: D,
+        className: c("flex flex-col gap-1", j[n]),
         children: [
-          (t || S) && /* @__PURE__ */ c(
+          (t || S) && /* @__PURE__ */ x(
             "span",
             {
-              className: l(
+              className: c(
                 "flex items-center gap-1 text-xs text-slate-600 dark:text-slate-400",
                 !t && "invisible",
-                k
+                $
               ),
               children: [
-                y && /* @__PURE__ */ a("span", { className: "size-2 rounded-full bg-stone-400", "aria-hidden": "true" }),
+                b && /* @__PURE__ */ i("span", { className: "size-2 rounded-full bg-stone-400", "aria-hidden": "true" }),
                 t || " "
               ]
             }
           ),
-          /* @__PURE__ */ c("div", { className: "relative flex items-center gap-2", children: [
-            /* @__PURE__ */ a(
+          /* @__PURE__ */ x("div", { className: "relative flex items-center gap-2", children: [
+            /* @__PURE__ */ i(
               "span",
               {
-                className: l(
+                className: c(
                   "text-sm text-slate-900 dark:text-slate-100",
                   // 최소 높이 확보 (InputField와 동일한 높이감) + 너비 채우기
                   "min-h-[36px] flex items-center flex-1",
-                  i && "text-slate-400 dark:text-slate-500",
-                  F[h],
+                  o && "text-slate-400 dark:text-slate-500",
+                  T[r],
                   N
                 ),
-                children: $
+                children: F
               }
             ),
-            w && !i && /* @__PURE__ */ a(
+            k && !o && /* @__PURE__ */ i(
               "button",
               {
                 type: "button",
-                onClick: D,
-                className: l(
+                onClick: V,
+                className: c(
                   "shrink-0 p-1 rounded transition-colors cursor-pointer",
                   "text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300",
-                  x && "text-green-500 dark:text-green-400"
+                  u && "text-green-500 dark:text-green-400"
                 ),
-                "aria-label": x ? "복사됨" : "복사",
-                children: /* @__PURE__ */ a(V, { size: 20 })
+                "aria-label": u ? "복사됨" : "복사",
+                children: /* @__PURE__ */ i(R, { size: 20 })
               }
             )
           ] }),
-          d && /* @__PURE__ */ a("span", { className: "text-xs text-slate-500 dark:text-slate-400", children: d })
+          f && /* @__PURE__ */ i("span", { className: "text-xs text-slate-500 dark:text-slate-400", children: f })
         ]
       }
     );
   }
 );
-j.displayName = "DisplayField";
+I.displayName = "DisplayField";
 export {
-  j as DisplayField
+  I as DisplayField
 };
 //# sourceMappingURL=display-field.mjs.map
