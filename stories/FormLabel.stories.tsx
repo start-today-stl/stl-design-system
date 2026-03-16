@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import { FormLabel } from "@/components/form/form-label"
+import { FormField } from "@/components/form/form-field"
 import { InputField } from "@/components/ui/input"
+import { Select } from "@/components/ui/select"
 
 const meta: Meta<typeof FormLabel> = {
   title: "Form/FormLabel",
@@ -112,9 +114,71 @@ export const CompareWithInputField: Story = {
         <InputField label="상품명" required placeholder="입력하세요" size="full" />
       </div>
       <div>
-        <p className="text-sm text-slate-500 mb-2">FormLabel + 커스텀 구조:</p>
+        <p className="text-sm text-slate-500 mb-2">FormLabel + 수동 래퍼:</p>
         <div className="flex flex-col gap-1">
           <FormLabel required>상품명</FormLabel>
+          <InputField placeholder="입력하세요" size="full" />
+        </div>
+      </div>
+      <div>
+        <p className="text-sm text-slate-500 mb-2">FormField (권장):</p>
+        <FormField label="상품명" required>
+          <InputField placeholder="입력하세요" size="full" />
+        </FormField>
+      </div>
+    </div>
+  ),
+}
+
+/** FormField 사용 예시 */
+export const FormFieldExample: Story = {
+  render: () => (
+    <div className="flex flex-col gap-4 w-[300px]">
+      <FormField label="상품명" required>
+        <InputField placeholder="상품명을 입력하세요" size="full" />
+      </FormField>
+
+      <FormField label="카테고리" required>
+        <Select
+          options={[
+            { value: "food", label: "식품" },
+            { value: "clothes", label: "의류" },
+            { value: "electronics", label: "전자제품" },
+          ]}
+          placeholder="선택하세요"
+          size="full"
+        />
+      </FormField>
+
+      <FormField label="비고">
+        <InputField placeholder="추가 정보" size="full" />
+      </FormField>
+    </div>
+  ),
+}
+
+/** FormField vs FormLabel 비교 */
+export const FormFieldVsFormLabel: Story = {
+  render: () => (
+    <div className="flex gap-8">
+      <div className="flex flex-col gap-4 w-[250px]">
+        <p className="text-sm font-bold text-slate-700">FormField (래퍼)</p>
+        <FormField label="이름" required>
+          <InputField placeholder="입력하세요" size="full" />
+        </FormField>
+        <FormField label="이메일">
+          <InputField placeholder="입력하세요" size="full" />
+        </FormField>
+      </div>
+
+      <div className="flex flex-col gap-4 w-[250px]">
+        <p className="text-sm font-bold text-slate-700">FormLabel (단독)</p>
+        <div className="flex flex-col gap-1">
+          <FormLabel required>이름</FormLabel>
+          <InputField placeholder="입력하세요" size="full" />
+        </div>
+        <div className="flex flex-col gap-1">
+          <FormLabel>이메일</FormLabel>
           <InputField placeholder="입력하세요" size="full" />
         </div>
       </div>
