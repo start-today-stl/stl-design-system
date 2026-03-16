@@ -38,6 +38,8 @@ interface SelectBaseProps {
     searchPlaceholder?: string;
     /** 전체 삭제 버튼 표시 (기본: true) */
     clearable?: boolean;
+    /** 로딩 상태 (스피너 표시) */
+    loading?: boolean;
 }
 interface SingleSelectProps extends SelectBaseProps {
     /** 다중 선택 모드 */
