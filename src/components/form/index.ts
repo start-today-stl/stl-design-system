@@ -20,6 +20,10 @@ export type { FormSectionProps, FormRowProps } from "./form-section"
 
 export { FormLabel } from "./form-label"
 
+export { FormField } from "./form-field"
+
+export type { FormFieldProps } from "./form-field"
+
 export { DisplayField } from "./display-field"
 
 export type {

@@ -1,0 +1,2 @@
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const e=require("react/jsx-runtime"),c=require("../../lib/utils.cjs"),a=require("./form-label.cjs"),r=({label:i,required:l,invisibleLabel:s,htmlFor:o,children:t,className:n})=>e.jsxs("div",{className:c.cn("flex flex-col gap-1",n),children:[e.jsx(a.FormLabel,{htmlFor:o,required:l,invisible:s,children:i}),t]});r.displayName="FormField";exports.FormField=r;
+//# sourceMappingURL=form-field.cjs.map
