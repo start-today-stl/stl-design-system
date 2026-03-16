@@ -7,6 +7,7 @@ import * as PopoverPrimitive from "@radix-ui/react-popover";
 import { cn } from "@/lib/utils";
 import { UpIcon, SearchIcon, XIcon } from "@/icons";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Spinner } from "@/components/ui/spinner";
 import { inputSizeStyles, type InputSize } from "./input";
 
 /** @deprecated Use InputSize instead */
@@ -50,6 +51,8 @@ interface SelectBaseProps {
   searchPlaceholder?: string;
   /** 전체 삭제 버튼 표시 (기본: true) */
   clearable?: boolean;
+  /** 로딩 상태 (스피너 표시) */
+  loading?: boolean;
 }
 
 // Single select props (default)
@@ -109,6 +112,7 @@ const BasicSelect = React.forwardRef<
       ariaLabel,
       tableMode,
       clearable = true,
+      loading,
     },
     ref,
   ) => {
@@ -213,14 +217,14 @@ const BasicSelect = React.forwardRef<
     };
 
     // X 버튼 표시 여부 (hover 시에만)
-    const showClearButton = clearable && currentValue && isHovered && !disabled;
+    const showClearButton = clearable && currentValue && isHovered && !disabled && !loading;
 
     return (
       <PopoverPrimitive.Root open={open} onOpenChange={setOpen}>
         <PopoverPrimitive.Trigger
           ref={ref}
           id={id}
-          disabled={disabled}
+          disabled={disabled || loading}
           className={cn(
             "group flex h-9 w-full items-center justify-between rounded-[5px] border bg-white dark:bg-slate-800",
             "px-3 text-xs outline-none transition-colors cursor-pointer",
@@ -258,13 +262,17 @@ const BasicSelect = React.forwardRef<
                 </span>
               </span>
             )}
-            <UpIcon
-              size={24}
-              className={cn(
-                "text-slate-900 transition-transform duration-200 dark:text-slate-50",
-                open && "rotate-180",
-              )}
-            />
+            {loading ? (
+              <Spinner size="sm" />
+            ) : (
+              <UpIcon
+                size={24}
+                className={cn(
+                  "text-slate-900 transition-transform duration-200 dark:text-slate-50",
+                  open && "rotate-180",
+                )}
+              />
+            )}
           </div>
         </PopoverPrimitive.Trigger>
 
@@ -329,6 +337,7 @@ const SearchableSelect = React.forwardRef<
       ariaLabel,
       tableMode,
       clearable = true,
+      loading,
     },
     ref,
   ) => {
@@ -416,14 +425,14 @@ const SearchableSelect = React.forwardRef<
     };
 
     // X 버튼 표시 여부 (hover 시에만)
-    const showClearButton = clearable && currentValue && isHovered && !disabled;
+    const showClearButton = clearable && currentValue && isHovered && !disabled && !loading;
 
     return (
       <PopoverPrimitive.Root open={open} onOpenChange={setOpen}>
         <PopoverPrimitive.Trigger
           ref={ref}
           id={id}
-          disabled={disabled}
+          disabled={disabled || loading}
           className={cn(
             "group flex h-9 w-full items-center justify-between rounded-[5px] border bg-white dark:bg-slate-800",
             "px-3 text-xs outline-none transition-colors cursor-pointer",
@@ -460,13 +469,17 @@ const SearchableSelect = React.forwardRef<
                 </span>
               </span>
             )}
-            <UpIcon
-              size={24}
-              className={cn(
-                "text-slate-900 transition-transform duration-200 dark:text-slate-50",
-                open && "rotate-180",
-              )}
-            />
+            {loading ? (
+              <Spinner size="sm" />
+            ) : (
+              <UpIcon
+                size={24}
+                className={cn(
+                  "text-slate-900 transition-transform duration-200 dark:text-slate-50",
+                  open && "rotate-180",
+                )}
+              />
+            )}
           </div>
         </PopoverPrimitive.Trigger>
 
@@ -551,6 +564,7 @@ const MultiSelect = React.forwardRef<
       overflowMode = "truncate",
       maxDisplayCount = 2,
       clearable = true,
+      loading,
     },
     ref,
   ) => {
@@ -652,14 +666,14 @@ const MultiSelect = React.forwardRef<
     };
 
     // X 버튼 표시 여부 (hover 시에만)
-    const showClearButton = clearable && currentValue.length > 0 && isHovered && !disabled;
+    const showClearButton = clearable && currentValue.length > 0 && isHovered && !disabled && !loading;
 
     return (
       <PopoverPrimitive.Root open={open} onOpenChange={setOpen}>
         <PopoverPrimitive.Trigger
           ref={ref}
           id={id}
-          disabled={disabled}
+          disabled={disabled || loading}
           className={cn(
             "group flex min-h-9 w-full items-center justify-between rounded-[5px] border bg-white dark:bg-slate-800",
             "px-3 py-1.5 text-xs outline-none transition-colors cursor-pointer",
@@ -739,13 +753,17 @@ const MultiSelect = React.forwardRef<
                 </span>
               </span>
             )}
-            <UpIcon
-              size={24}
-              className={cn(
-                "text-slate-900 transition-transform duration-200 dark:text-slate-50",
-                open && "rotate-180",
-              )}
-            />
+            {loading ? (
+              <Spinner size="sm" />
+            ) : (
+              <UpIcon
+                size={24}
+                className={cn(
+                  "text-slate-900 transition-transform duration-200 dark:text-slate-50",
+                  open && "rotate-180",
+                )}
+              />
+            )}
           </div>
         </PopoverPrimitive.Trigger>
 

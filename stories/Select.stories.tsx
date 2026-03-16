@@ -35,6 +35,10 @@ const meta: Meta<typeof Select> = {
       control: "boolean",
       description: "전체 삭제 버튼 표시 (기본: true)",
     },
+    loading: {
+      control: "boolean",
+      description: "로딩 상태 (스피너 표시)",
+    },
   },
 }
 
@@ -352,6 +356,64 @@ export const Clearable: Story = {
         </div>
       </div>
     )
+  },
+}
+
+// ============================================
+// 로딩 상태 (Loading)
+// ============================================
+
+/** 로딩 상태 - API에서 옵션을 불러올 때 */
+export const Loading: Story = {
+  render: () => (
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-2">
+        <span className="text-sm text-slate-500">Basic Select - 로딩 중</span>
+        <Select
+          placeholder="선택하세요"
+          options={defaultOptions}
+          loading
+          size="md"
+          aria-label="로딩 중"
+        />
+      </div>
+      <div className="flex flex-col gap-2">
+        <span className="text-sm text-slate-500">Searchable Select - 로딩 중</span>
+        <Select
+          placeholder="지역을 선택하세요"
+          options={manyOptions}
+          searchable
+          loading
+          size="md"
+          aria-label="로딩 중"
+        />
+      </div>
+      <div className="flex flex-col gap-2">
+        <span className="text-sm text-slate-500">Multiple Select - 로딩 중</span>
+        <Select
+          placeholder="지역을 선택하세요"
+          options={manyOptions}
+          multiple
+          loading
+          size="md"
+          aria-label="로딩 중"
+        />
+      </div>
+      <div className="text-xs text-slate-500 mt-2">
+        로딩 중일 때는 화살표 대신 스피너가 표시되고, 클릭이 비활성화됩니다
+      </div>
+    </div>
+  ),
+}
+
+/** 로딩 상태 - 라벨과 함께 */
+export const LoadingWithLabel: Story = {
+  args: {
+    label: "카테고리",
+    placeholder: "카테고리를 선택하세요",
+    options: [],
+    loading: true,
+    size: "md",
   },
 }
 
