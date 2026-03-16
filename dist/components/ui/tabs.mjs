@@ -49,9 +49,9 @@ const re = r.forwardRef(({ className: l, align: n = "start", items: e, onReorder
       sensors: f,
       collisionDetection: U,
       onDragEnd: (i) => {
-        const { active: b, over: o } = i;
-        if (o && b.id !== o.id) {
-          const m = e.indexOf(b.id), y = e.indexOf(o.id);
+        const { active: b, over: s } = i;
+        if (s && b.id !== s.id) {
+          const m = e.indexOf(b.id), y = e.indexOf(s.id);
           a(K(e, m, y));
         }
       },
@@ -85,11 +85,11 @@ const ae = ({
   }, []), r.useEffect(() => {
     const i = (m) => {
       u.current && !u.current.contains(m.target) && n();
-    }, b = () => n(), o = (m) => {
+    }, b = () => n(), s = (m) => {
       m.key === "Escape" && n();
     };
-    return document.addEventListener("mousedown", i), document.addEventListener("scroll", b, !0), document.addEventListener("keydown", o), () => {
-      document.removeEventListener("mousedown", i), document.removeEventListener("scroll", b, !0), document.removeEventListener("keydown", o);
+    return document.addEventListener("mousedown", i), document.addEventListener("scroll", b, !0), document.addEventListener("keydown", s), () => {
+      document.removeEventListener("mousedown", i), document.removeEventListener("scroll", b, !0), document.removeEventListener("keydown", s);
     };
   }, [n]), !x) return null;
   const p = [
@@ -119,8 +119,8 @@ const ae = ({
           {
             type: "button",
             onClick: () => {
-              var o;
-              (o = i.onClick) == null || o.call(i), n();
+              var s;
+              (s = i.onClick) == null || s.call(i), n();
             },
             className: v(
               "flex w-full h-[29px] cursor-pointer select-none items-center rounded-[2px] px-[8px]",
@@ -178,21 +178,21 @@ const ae = ({
     document.body
   );
 }, ne = r.forwardRef(({ className: l, closable: n, onClose: e, children: a, onKeyDown: d, maxWidth: u = 120, minWidth: x = 60, ...f }, p) => {
-  const i = r.useRef(null), [b, o] = r.useState(!1), m = r.useCallback(
-    (s) => {
-      i.current = s, typeof p == "function" ? p(s) : p && typeof p == "object" && (p.current = s);
+  const i = r.useRef(null), [b, s] = r.useState(!1), m = r.useCallback(
+    (o) => {
+      i.current = o, typeof p == "function" ? p(o) : p && typeof p == "object" && (p.current = o);
     },
     [p]
   );
   r.useEffect(() => {
-    const s = i.current;
-    if (s) {
-      const h = s.getAttribute("aria-controls");
-      h && !document.getElementById(h) && s.removeAttribute("aria-controls");
+    const o = i.current;
+    if (o) {
+      const h = o.getAttribute("aria-controls");
+      h && !document.getElementById(h) && o.removeAttribute("aria-controls");
     }
   }, []);
-  const y = (s) => {
-    n && (s.key === "Delete" || s.key === "Backspace") && (s.preventDefault(), e == null || e()), d == null || d(s);
+  const y = (o) => {
+    n && (o.key === "Delete" || o.key === "Backspace") && (o.preventDefault(), e == null || e()), d == null || d(o);
   };
   return /* @__PURE__ */ k(R, { children: [
     /* @__PURE__ */ k(
@@ -205,15 +205,14 @@ const ae = ({
           // 늘어나지 않음
           "rounded-t bg-transparent",
           "text-text-secondary",
-          "border border-b-0 border-transparent",
-          // 항상 border 유지 (기본 투명)
+          "border border-b-0 border-border",
+          // 모든 탭에 테두리 표시
           // 비활성 탭: 축소 가능, minWidth/maxWidth 적용
           "data-[state=inactive]:flex-shrink",
           I[x],
           T[u],
           // 활성 탭: 축소 안 함, 전체 텍스트 표시 (maxWidth 제거)
           "data-[state=active]:flex-shrink-0 data-[state=active]:max-w-none",
-          "data-[state=active]:border-border",
           "data-[state=active]:text-slate-900 dark:data-[state=active]:text-slate-50",
           "data-[state=active]:bg-[linear-gradient(180deg,white_0%,#f4f6f8_30%)]",
           "dark:data-[state=active]:bg-[linear-gradient(180deg,#444b57_0%,#1b2026_30%)]",
@@ -222,19 +221,19 @@ const ae = ({
           l
         ),
         onKeyDown: y,
-        onMouseEnter: () => o(!0),
-        onMouseLeave: () => o(!1),
+        onMouseEnter: () => s(!0),
+        onMouseLeave: () => s(!1),
         ...f,
         children: [
           /* @__PURE__ */ c("span", { className: "truncate min-w-0", children: a }),
           n && /* @__PURE__ */ c(
             "span",
             {
-              onPointerDown: (s) => {
-                s.stopPropagation(), s.preventDefault();
+              onPointerDown: (o) => {
+                o.stopPropagation(), o.preventDefault();
               },
-              onClick: (s) => {
-                s.stopPropagation(), e == null || e();
+              onClick: (o) => {
+                o.stopPropagation(), e == null || e();
               },
               className: "ml-0.5 flex-shrink-0 text-text-secondary hover:text-text-primary transition-colors cursor-pointer",
               "aria-hidden": "true",
@@ -248,19 +247,19 @@ const ae = ({
   ] });
 });
 ne.displayName = g.Trigger.displayName;
-const se = r.forwardRef(({ id: l, className: n, closable: e, onClose: a, onCloseTabsToRight: d, onCloseOtherTabs: u, children: x, onKeyDown: f, maxWidth: p = 120, minWidth: i = 60, ...b }, o) => {
+const oe = r.forwardRef(({ id: l, className: n, closable: e, onClose: a, onCloseTabsToRight: d, onCloseOtherTabs: u, children: x, onKeyDown: f, maxWidth: p = 120, minWidth: i = 60, ...b }, s) => {
   const {
     attributes: m,
     listeners: y,
-    setNodeRef: s,
+    setNodeRef: o,
     transform: h,
     transition: z,
     isDragging: w
   } = $({ id: l }), { role: ie, ...A } = m, _ = r.useRef(null), [B, S] = r.useState(!1), H = r.useCallback(
     (t) => {
-      _.current = t, s(t), typeof o == "function" ? o(t) : o && typeof o == "object" && (o.current = t);
+      _.current = t, o(t), typeof s == "function" ? s(t) : s && typeof s == "object" && (s.current = t);
     },
-    [o, s]
+    [s, o]
   );
   r.useEffect(() => {
     const t = _.current;
@@ -291,15 +290,14 @@ const se = r.forwardRef(({ id: l, className: n, closable: e, onClose: a, onClose
           // 늘어나지 않음
           "rounded-t bg-transparent",
           "text-text-secondary",
-          "border border-b-0 border-transparent",
-          // 항상 border 유지 (기본 투명)
+          "border border-b-0 border-border",
+          // 모든 탭에 테두리 표시
           // 비활성 탭: 축소 가능, minWidth/maxWidth 적용
           "data-[state=inactive]:flex-shrink",
           I[i],
           T[p],
           // 활성 탭: 축소 안 함, 전체 텍스트 표시 (maxWidth 제거)
           "data-[state=active]:flex-shrink-0 data-[state=active]:max-w-none",
-          "data-[state=active]:border-border",
           "data-[state=active]:text-slate-900 dark:data-[state=active]:text-slate-50",
           "data-[state=active]:bg-[linear-gradient(180deg,white_0%,#f4f6f8_30%)]",
           "dark:data-[state=active]:bg-[linear-gradient(180deg,#444b57_0%,#1b2026_30%)]",
@@ -350,8 +348,8 @@ const se = r.forwardRef(({ id: l, className: n, closable: e, onClose: a, onClose
     )
   ] });
 });
-se.displayName = "SortableTabsTrigger";
-const oe = r.forwardRef(({ className: l, ...n }, e) => /* @__PURE__ */ c(
+oe.displayName = "SortableTabsTrigger";
+const se = r.forwardRef(({ className: l, ...n }, e) => /* @__PURE__ */ c(
   g.Content,
   {
     ref: e,
@@ -362,12 +360,12 @@ const oe = r.forwardRef(({ className: l, ...n }, e) => /* @__PURE__ */ c(
     ...n
   }
 ));
-oe.displayName = g.Content.displayName;
+se.displayName = g.Content.displayName;
 export {
   re as SortableTabsList,
-  se as SortableTabsTrigger,
+  oe as SortableTabsTrigger,
   xe as Tabs,
-  oe as TabsContent,
+  se as TabsContent,
   te as TabsList,
   ne as TabsTrigger,
   ve as arrayMove
