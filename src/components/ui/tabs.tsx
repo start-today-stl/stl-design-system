@@ -337,14 +337,13 @@ const TabsTrigger = React.forwardRef<
           "flex-grow-0", // 늘어나지 않음
           "rounded-t bg-transparent",
           "text-text-secondary",
-          "border border-b-0 border-transparent", // 항상 border 유지 (기본 투명)
+          "border border-b-0 border-border", // 모든 탭에 테두리 표시
           // 비활성 탭: 축소 가능, minWidth/maxWidth 적용
           "data-[state=inactive]:flex-shrink",
           minWidthClasses[minWidth],
           maxWidthClasses[maxWidth],
           // 활성 탭: 축소 안 함, 전체 텍스트 표시 (maxWidth 제거)
           "data-[state=active]:flex-shrink-0 data-[state=active]:max-w-none",
-          "data-[state=active]:border-border",
           "data-[state=active]:text-slate-900 dark:data-[state=active]:text-slate-50",
           "data-[state=active]:bg-[linear-gradient(180deg,white_0%,#f4f6f8_30%)]",
           "dark:data-[state=active]:bg-[linear-gradient(180deg,#444b57_0%,#1b2026_30%)]",
@@ -477,14 +476,13 @@ const SortableTabsTrigger = React.forwardRef<
           "flex-grow-0", // 늘어나지 않음
           "rounded-t bg-transparent",
           "text-text-secondary",
-          "border border-b-0 border-transparent", // 항상 border 유지 (기본 투명)
+          "border border-b-0 border-border", // 모든 탭에 테두리 표시
           // 비활성 탭: 축소 가능, minWidth/maxWidth 적용
           "data-[state=inactive]:flex-shrink",
           minWidthClasses[minWidth],
           maxWidthClasses[maxWidth],
           // 활성 탭: 축소 안 함, 전체 텍스트 표시 (maxWidth 제거)
           "data-[state=active]:flex-shrink-0 data-[state=active]:max-w-none",
-          "data-[state=active]:border-border",
           "data-[state=active]:text-slate-900 dark:data-[state=active]:text-slate-50",
           "data-[state=active]:bg-[linear-gradient(180deg,white_0%,#f4f6f8_30%)]",
           "dark:data-[state=active]:bg-[linear-gradient(180deg,#444b57_0%,#1b2026_30%)]",
