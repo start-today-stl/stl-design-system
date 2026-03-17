@@ -122,23 +122,7 @@ const formatValue = (value: React.ReactNode, options: FormatOptions = {}): React
   return `${prefix || ""}${formattedValue}${suffix || ""}`
 }
 
-/**
- * DisplayField - 상세 화면(View Mode)에서 라벨과 값을 표시하는 컴포넌트
- *
- * @example
- * // 기본 사용
- * <DisplayField label="상품명" value="테스트 상품" />
- *
- * // 타입별 포맷팅
- * <DisplayField label="가격" value={15000} type="money" />
- * <DisplayField label="전화번호" value="01012345678" type="phone" />
- *
- * // 복사 기능
- * <DisplayField label="주문번호" value="ORD-2024-001" copyable />
- *
- * // 빈 값 처리
- * <DisplayField label="메모" value="" emptyText="메모 없음" />
- */
+/** 상세 화면(View Mode)에서 라벨과 값을 표시하는 컴포넌트 */
 export const DisplayField = React.forwardRef<HTMLDivElement, DisplayFieldProps>(
   (
     {
