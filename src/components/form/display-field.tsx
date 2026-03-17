@@ -20,6 +20,9 @@ const sizeStyles = {
   full: "w-full",
 } as const
 
+/** 레이아웃 방향 */
+export type DisplayFieldLayout = "vertical" | "horizontal"
+
 export interface DisplayFieldProps {
   /** 라벨 텍스트 */
   label?: string
@@ -53,6 +56,10 @@ export interface DisplayFieldProps {
   reserveLabelSpace?: boolean
   /** 커스텀 값 렌더러 (value를 완전히 커스텀) */
   renderValue?: (value: React.ReactNode) => React.ReactNode
+  /** 레이아웃 방향 (기본: "vertical") */
+  layout?: DisplayFieldLayout
+  /** 라벨 너비 - horizontal 레이아웃에서만 적용 (기본: 100) */
+  labelWidth?: number | string
 }
 
 interface FormatOptions {
@@ -151,9 +158,13 @@ export const DisplayField = React.forwardRef<HTMLDivElement, DisplayFieldProps>(
       labelClassName,
       reserveLabelSpace,
       renderValue,
+      layout = "vertical",
+      labelWidth = 100,
     },
     ref
   ) => {
+    const isHorizontal = layout === "horizontal"
+    const labelWidthStyle = typeof labelWidth === "number" ? `${labelWidth}px` : labelWidth
     const [copied, setCopied] = React.useState(false)
 
     // 값이 비어있는지 확인
@@ -190,7 +201,11 @@ export const DisplayField = React.forwardRef<HTMLDivElement, DisplayFieldProps>(
     return (
       <div
         ref={ref}
-        className={cn("flex flex-col gap-1", sizeStyles[size])}
+        className={cn(
+          "flex gap-1",
+          isHorizontal ? "flex-row items-center" : "flex-col",
+          sizeStyles[size]
+        )}
       >
         {/* 라벨 */}
         {(label || reserveLabelSpace) && (
@@ -198,8 +213,10 @@ export const DisplayField = React.forwardRef<HTMLDivElement, DisplayFieldProps>(
             className={cn(
               "flex items-center gap-1 text-xs text-slate-600 dark:text-slate-400",
               !label && "invisible",
+              isHorizontal && "shrink-0",
               labelClassName
             )}
+            style={isHorizontal ? { width: labelWidthStyle } : undefined}
           >
             {required && (
               <span className="size-2 rounded-full bg-stone-400" aria-hidden="true" />
@@ -209,7 +226,7 @@ export const DisplayField = React.forwardRef<HTMLDivElement, DisplayFieldProps>(
         )}
 
         {/* 값 영역 */}
-        <div className="relative flex items-center gap-2">
+        <div className="relative flex items-center gap-2 flex-1">
           <span
             className={cn(
               "text-sm text-slate-900 dark:text-slate-100",
@@ -240,8 +257,8 @@ export const DisplayField = React.forwardRef<HTMLDivElement, DisplayFieldProps>(
           )}
         </div>
 
-        {/* 도움말 텍스트 */}
-        {helper && (
+        {/* 도움말 텍스트 - vertical에서만 표시 */}
+        {helper && !isHorizontal && (
           <span className="text-xs text-slate-500 dark:text-slate-400">
             {helper}
           </span>

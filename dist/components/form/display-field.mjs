@@ -1,13 +1,13 @@
-import { jsxs as x, jsx as i } from "react/jsx-runtime";
-import * as y from "react";
-import { cn as c } from "../../lib/utils.mjs";
-import { DuplicationIcon as R } from "../../icons/DuplicationIcon.mjs";
-const j = {
+import { jsxs as m, jsx as i } from "react/jsx-runtime";
+import * as $ from "react";
+import { cn as p } from "../../lib/utils.mjs";
+import { DuplicationIcon as I } from "../../icons/DuplicationIcon.mjs";
+const K = {
   sm: "w-[160px]",
   md: "w-[260px]",
   lg: "w-[360px]",
   full: "w-full"
-}, E = (t, s = {}) => {
+}, L = (t, s = {}) => {
   const { type: d, prefix: n, suffix: l } = s;
   if (t == null || t === "") return null;
   if (typeof t != "string" && typeof t != "number") return t;
@@ -36,7 +36,7 @@ const j = {
       e = a;
   }
   return `${n || ""}${e}${l || ""}`;
-}, I = y.forwardRef(
+}, M = $.forwardRef(
   ({
     label: t,
     value: s,
@@ -46,86 +46,94 @@ const j = {
     prefix: a,
     suffix: e,
     textOverflow: r = "wrap",
-    copyable: k = !1,
-    onCopy: p,
-    required: b,
-    helper: f,
-    className: N,
-    labelClassName: $,
-    reserveLabelSpace: S,
-    renderValue: m
-  }, D) => {
-    const [u, g] = y.useState(!1), o = s == null || s === "", h = o ? d : E(s, { type: l, prefix: a, suffix: e }), F = m ? m(h) : h, V = async () => {
-      if (o || typeof s != "string" && typeof s != "number") return;
-      const w = String(s);
+    copyable: b = !1,
+    onCopy: x,
+    required: N,
+    helper: u,
+    className: S,
+    labelClassName: z,
+    reserveLabelSpace: D,
+    renderValue: g,
+    layout: F = "vertical",
+    labelWidth: f = 100
+  }, V) => {
+    const o = F === "horizontal", T = typeof f == "number" ? `${f}px` : f, [h, w] = $.useState(!1), c = s == null || s === "", y = c ? d : L(s, { type: l, prefix: a, suffix: e }), R = g ? g(y) : y, j = async () => {
+      if (c || typeof s != "string" && typeof s != "number") return;
+      const k = String(s);
       try {
-        await navigator.clipboard.writeText(w), g(!0), p == null || p(w), setTimeout(() => g(!1), 2e3);
-      } catch (z) {
-        console.error("Failed to copy:", z);
+        await navigator.clipboard.writeText(k), w(!0), x == null || x(k), setTimeout(() => w(!1), 2e3);
+      } catch (H) {
+        console.error("Failed to copy:", H);
       }
-    }, T = {
+    }, E = {
       wrap: "whitespace-normal break-words",
       ellipsis: "whitespace-nowrap overflow-hidden text-ellipsis",
       truncate: "truncate"
     };
-    return /* @__PURE__ */ x(
+    return /* @__PURE__ */ m(
       "div",
       {
-        ref: D,
-        className: c("flex flex-col gap-1", j[n]),
+        ref: V,
+        className: p(
+          "flex gap-1",
+          o ? "flex-row items-center" : "flex-col",
+          K[n]
+        ),
         children: [
-          (t || S) && /* @__PURE__ */ x(
+          (t || D) && /* @__PURE__ */ m(
             "span",
             {
-              className: c(
+              className: p(
                 "flex items-center gap-1 text-xs text-slate-600 dark:text-slate-400",
                 !t && "invisible",
-                $
+                o && "shrink-0",
+                z
               ),
+              style: o ? { width: T } : void 0,
               children: [
-                b && /* @__PURE__ */ i("span", { className: "size-2 rounded-full bg-stone-400", "aria-hidden": "true" }),
+                N && /* @__PURE__ */ i("span", { className: "size-2 rounded-full bg-stone-400", "aria-hidden": "true" }),
                 t || " "
               ]
             }
           ),
-          /* @__PURE__ */ x("div", { className: "relative flex items-center gap-2", children: [
+          /* @__PURE__ */ m("div", { className: "relative flex items-center gap-2 flex-1", children: [
             /* @__PURE__ */ i(
               "span",
               {
-                className: c(
+                className: p(
                   "text-sm text-slate-900 dark:text-slate-100",
                   // 최소 높이 확보 (InputField와 동일한 높이감) + 너비 채우기
                   "min-h-[36px] flex items-center flex-1",
-                  o && "text-slate-400 dark:text-slate-500",
-                  T[r],
-                  N
+                  c && "text-slate-400 dark:text-slate-500",
+                  E[r],
+                  S
                 ),
-                children: F
+                children: R
               }
             ),
-            k && !o && /* @__PURE__ */ i(
+            b && !c && /* @__PURE__ */ i(
               "button",
               {
                 type: "button",
-                onClick: V,
-                className: c(
+                onClick: j,
+                className: p(
                   "shrink-0 p-1 rounded transition-colors cursor-pointer",
                   "text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300",
-                  u && "text-green-500 dark:text-green-400"
+                  h && "text-green-500 dark:text-green-400"
                 ),
-                "aria-label": u ? "복사됨" : "복사",
-                children: /* @__PURE__ */ i(R, { size: 20 })
+                "aria-label": h ? "복사됨" : "복사",
+                children: /* @__PURE__ */ i(I, { size: 20 })
               }
             )
           ] }),
-          f && /* @__PURE__ */ i("span", { className: "text-xs text-slate-500 dark:text-slate-400", children: f })
+          u && !o && /* @__PURE__ */ i("span", { className: "text-xs text-slate-500 dark:text-slate-400", children: u })
         ]
       }
     );
   }
 );
-I.displayName = "DisplayField";
+M.displayName = "DisplayField";
 export {
-  I as DisplayField
+  M as DisplayField
 };
 //# sourceMappingURL=display-field.mjs.map

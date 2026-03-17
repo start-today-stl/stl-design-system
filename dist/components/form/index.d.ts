@@ -6,4 +6,4 @@ export { FormLabel } from './form-label';
 export { FormField } from './form-field';
 export type { FormFieldProps } from './form-field';
 export { DisplayField } from './display-field';
-export type { DisplayFieldProps, DisplayFieldType, DisplayFieldSize, TextOverflow, } from './display-field';
+export type { DisplayFieldProps, DisplayFieldType, DisplayFieldSize, DisplayFieldLayout, TextOverflow, } from './display-field';
