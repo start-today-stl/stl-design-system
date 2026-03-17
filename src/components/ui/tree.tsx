@@ -105,7 +105,7 @@ const TreeItem = React.forwardRef<HTMLDivElement, TreeItemProps>(
             "group flex items-center gap-2 px-3 py-2 cursor-pointer rounded-lg",
             "transition-colors",
             selected
-              ? "bg-accent text-primary"
+              ? "bg-accent text-slate-900 dark:text-slate-50"
               : "hover:bg-muted",
             className
           )}

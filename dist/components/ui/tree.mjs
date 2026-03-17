@@ -1,9 +1,9 @@
 import { jsx as e, jsxs as v } from "react/jsx-runtime";
-import * as t from "react";
+import * as r from "react";
 import { useState as C } from "react";
 import { cn as i } from "../../lib/utils.mjs";
 import { RightIcon as j } from "../../icons/RightIcon.mjs";
-const P = t.forwardRef(
+const P = r.forwardRef(
   ({ className: n, children: s, ...l }, a) => /* @__PURE__ */ e(
     "div",
     {
@@ -16,7 +16,7 @@ const P = t.forwardRef(
   )
 );
 P.displayName = "Tree";
-const V = t.forwardRef(
+const V = r.forwardRef(
   ({
     className: n,
     icon: s,
@@ -29,23 +29,23 @@ const V = t.forwardRef(
     actions: f,
     depth: u = 0,
     children: x,
-    ...y
-  }, k) => {
-    const [b, T] = C(N), d = t.Children.count(x) > 0, h = p !== void 0, o = h ? p : b, w = (r) => {
-      r.stopPropagation();
+    ...k
+  }, y) => {
+    const [b, T] = C(N), d = r.Children.count(x) > 0, h = p !== void 0, o = h ? p : b, w = (t) => {
+      t.stopPropagation();
       const g = !o;
       h || T(g), c == null || c(g);
     }, I = () => {
       m == null || m();
-    }, R = t.Children.map(x, (r) => t.isValidElement(r) ? t.cloneElement(r, { depth: u + 1 }) : r);
-    return /* @__PURE__ */ v("div", { ref: k, role: "treeitem", "aria-expanded": d ? o : void 0, ...y, children: [
+    }, R = r.Children.map(x, (t) => r.isValidElement(t) ? r.cloneElement(t, { depth: u + 1 }) : t);
+    return /* @__PURE__ */ v("div", { ref: y, role: "treeitem", "aria-expanded": d ? o : void 0, ...k, children: [
       /* @__PURE__ */ v(
         "div",
         {
           className: i(
             "group flex items-center gap-2 px-3 py-2 cursor-pointer rounded-lg",
             "transition-colors",
-            a ? "bg-accent text-primary" : "hover:bg-muted",
+            a ? "bg-accent text-slate-900 dark:text-slate-50" : "hover:bg-muted",
             n
           ),
           style: { paddingLeft: `${12 + u * 20}px` },
@@ -75,7 +75,7 @@ const V = t.forwardRef(
                   "opacity-0 group-hover:opacity-100",
                   a && "opacity-100"
                 ),
-                onClick: (r) => r.stopPropagation(),
+                onClick: (t) => t.stopPropagation(),
                 children: f
               }
             )
