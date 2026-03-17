@@ -30,5 +30,6 @@ export type {
   DisplayFieldProps,
   DisplayFieldType,
   DisplayFieldSize,
+  DisplayFieldLayout,
   TextOverflow,
 } from "./display-field"

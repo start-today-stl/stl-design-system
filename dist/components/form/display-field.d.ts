@@ -5,6 +5,8 @@ export type DisplayFieldType = "text" | "email" | "phone" | "number" | "date";
 export type TextOverflow = "wrap" | "ellipsis" | "truncate";
 /** 너비 크기 */
 export type DisplayFieldSize = "sm" | "md" | "lg" | "full";
+/** 레이아웃 방향 */
+export type DisplayFieldLayout = "vertical" | "horizontal";
 export interface DisplayFieldProps {
     /** 라벨 텍스트 */
     label?: string;
@@ -38,6 +40,10 @@ export interface DisplayFieldProps {
     reserveLabelSpace?: boolean;
     /** 커스텀 값 렌더러 (value를 완전히 커스텀) */
     renderValue?: (value: React.ReactNode) => React.ReactNode;
+    /** 레이아웃 방향 (기본: "vertical") */
+    layout?: DisplayFieldLayout;
+    /** 라벨 너비 - horizontal 레이아웃에서만 적용 (기본: 100) */
+    labelWidth?: number | string;
 }
 /**
  * DisplayField - 상세 화면(View Mode)에서 라벨과 값을 표시하는 컴포넌트
