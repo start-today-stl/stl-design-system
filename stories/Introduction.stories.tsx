@@ -48,7 +48,7 @@ const IntroductionPage = () => (
       <div className={style.grid2}>
         <div className={style.benefitCard}>
           <div className={style.benefitIcon}>⚡</div>
-          <h4 className={style.benefitTitle}>개발 속도 향상</h4>
+          <h3 className={style.benefitTitle}>개발 속도 향상</h3>
           <p className={style.benefitDesc}>
             미리 만들어진 컴포넌트를 조합하여 빠르게 화면을 구성할 수 있습니다.
             반복적인 UI 개발 시간을 줄이고 비즈니스 로직에 집중할 수 있습니다.
@@ -56,7 +56,7 @@ const IntroductionPage = () => (
         </div>
         <div className={style.benefitCard}>
           <div className={style.benefitIcon}>🎨</div>
-          <h4 className={style.benefitTitle}>디자인 일관성</h4>
+          <h3 className={style.benefitTitle}>디자인 일관성</h3>
           <p className={style.benefitDesc}>
             모든 서비스에서 동일한 UI/UX를 제공합니다.
             사용자는 어떤 서비스를 이용하더라도 익숙한 경험을 할 수 있습니다.
@@ -64,7 +64,7 @@ const IntroductionPage = () => (
         </div>
         <div className={style.benefitCard}>
           <div className={style.benefitIcon}>🔧</div>
-          <h4 className={style.benefitTitle}>유지보수 용이</h4>
+          <h3 className={style.benefitTitle}>유지보수 용이</h3>
           <p className={style.benefitDesc}>
             디자인 변경 시 한 곳만 수정하면 모든 서비스에 자동 반영됩니다.
             버그 수정도 한 번에 여러 서비스에 적용됩니다.
@@ -72,7 +72,7 @@ const IntroductionPage = () => (
         </div>
         <div className={style.benefitCard}>
           <div className={style.benefitIcon}>📱</div>
-          <h4 className={style.benefitTitle}>반응형 & 다크모드</h4>
+          <h3 className={style.benefitTitle}>반응형 & 다크모드</h3>
           <p className={style.benefitDesc}>
             모든 컴포넌트가 모바일/태블릿/데스크톱을 지원합니다.
             다크모드도 기본 제공되어 별도 작업이 필요 없습니다.
@@ -111,23 +111,23 @@ const IntroductionPage = () => (
       </p>
       <div className={style.grid}>
         <div className={style.card}>
-          <h4 className={style.cardTitle}>🧩 Components</h4>
+          <h3 className={style.cardTitle}>🧩 Components</h3>
           <p className={style.cardDesc}>Button, Input, Select, Modal, Checkbox, Badge, Tabs 등 기본 UI 컴포넌트</p>
         </div>
         <div className={style.card}>
-          <h4 className={style.cardTitle}>📝 Form</h4>
+          <h3 className={style.cardTitle}>📝 Form</h3>
           <p className={style.cardDesc}>FormCard, FormSection, DisplayField 등 폼 구성에 필요한 컴포넌트</p>
         </div>
         <div className={style.card}>
-          <h4 className={style.cardTitle}>📊 Table</h4>
+          <h3 className={style.cardTitle}>📊 Table</h3>
           <p className={style.cardDesc}>DataTable, Pagination, SearchForm 등 데이터 표시용 컴포넌트</p>
         </div>
         <div className={style.card}>
-          <h4 className={style.cardTitle}>🏗️ Layout</h4>
+          <h3 className={style.cardTitle}>🏗️ Layout</h3>
           <p className={style.cardDesc}>AppShell, Sidebar, Header, Nav 등 페이지 레이아웃 구성 컴포넌트</p>
         </div>
         <div className={style.card}>
-          <h4 className={style.cardTitle}>📈 Dashboard</h4>
+          <h3 className={style.cardTitle}>📈 Dashboard</h3>
           <p className={style.cardDesc}>DashboardCard, StatCard 등 대시보드 전용 컴포넌트</p>
         </div>
       </div>
