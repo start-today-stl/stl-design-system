@@ -16,7 +16,7 @@ const Tree = React.forwardRef<HTMLDivElement, TreeProps>(
       <div
         ref={ref}
         role="tree"
-        className={cn("flex flex-col p-4", className)}
+        className={cn("flex flex-col", className)}
         {...props}
       >
         {children}

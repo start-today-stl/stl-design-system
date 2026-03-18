@@ -9,7 +9,7 @@ const P = r.forwardRef(
     {
       ref: a,
       role: "tree",
-      className: i("flex flex-col p-4", n),
+      className: i("flex flex-col", n),
       ...l,
       children: s
     }
