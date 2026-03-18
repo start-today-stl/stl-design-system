@@ -48,7 +48,7 @@ const d = r.forwardRef(
           {
             className: a(
               "flex flex-col",
-              t ? "items-center gap-0.5 w-full px-2 overflow-visible" : "gap-0.5",
+              t ? "items-center gap-0.5 w-full px-2 overflow-visible" : "gap-0.5 pb-4",
               c && !t && "flex-1 min-h-0 overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
             ),
             children: r.Children.map(o, (e) => r.isValidElement(e) ? r.cloneElement(e, {
