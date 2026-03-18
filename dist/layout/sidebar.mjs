@@ -12,20 +12,20 @@ const _ = N.forwardRef(
     onCollapsedChange: n,
     collapseMode: i = "mini",
     showToggle: o = !0,
-    footer: c,
+    footer: m,
     children: u,
     ...b
   }, h) => {
-    const [v, w] = k(x), m = a !== void 0, e = m ? a : v, y = () => {
+    const [v, w] = k(x), c = a !== void 0, e = c ? a : v, y = () => {
       const l = !e;
-      m || w(l), n == null || n(l);
+      c || w(l), n == null || n(l);
     }, d = i === "hidden" && e;
     return /* @__PURE__ */ f(
       "div",
       {
         ref: h,
         className: s(
-          "relative flex flex-col h-full pt-4 bg-white dark:bg-black",
+          "relative flex flex-col h-full pt-4 pb-8 bg-white dark:bg-black",
           "rounded-r-[40px] border border-slate-100 dark:border-slate-700",
           "shadow-[1px_0px_41.3px_1px_rgba(0,0,0,0.05)] transition-all duration-300",
           // hidden 모드
@@ -69,7 +69,7 @@ const _ = N.forwardRef(
               children: u
             }
           ),
-          !(e && i === "mini") && c && /* @__PURE__ */ r("div", { className: "flex-shrink-0 mb-8", children: c })
+          !(e && i === "mini") && m && /* @__PURE__ */ r("div", { className: "flex-shrink-0 mt-4 mb-8", children: m })
         ]
       }
     );
