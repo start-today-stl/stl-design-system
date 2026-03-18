@@ -60,7 +60,7 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
       <div
         ref={ref}
         className={cn(
-          "relative flex flex-col h-full pt-4 bg-white dark:bg-black",
+          "relative flex flex-col h-full pt-4 pb-8 bg-white dark:bg-black",
           "rounded-r-[40px] border border-slate-100 dark:border-slate-700",
           "shadow-[1px_0px_41.3px_1px_rgba(0,0,0,0.05)] transition-all duration-300",
           // hidden 모드
@@ -106,7 +106,7 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
 
         {/* Footer */}
         {!(collapsed && collapseMode === "mini") && footer && (
-          <div className="flex-shrink-0 mb-8">{footer}</div>
+          <div className="flex-shrink-0 mt-4 mb-8">{footer}</div>
         )}
       </div>
     )
