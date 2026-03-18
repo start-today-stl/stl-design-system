@@ -19,7 +19,7 @@ export const FormLabel = React.forwardRef<HTMLLabelElement, FormLabelProps>(
       <label
         ref={ref}
         className={cn(
-          "flex items-center gap-1 text-xs text-slate-600 dark:text-slate-400",
+          "flex items-center gap-1 text-xs text-slate-700 dark:text-slate-400",
           invisible && "invisible",
           className
         )}

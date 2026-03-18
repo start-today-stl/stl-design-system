@@ -65,7 +65,7 @@ const k = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
   {
     ref: a,
     className: r(
-      "h-9 pl-3 pr-1.5 py-1.5 text-left align-middle font-medium text-[#798698] dark:text-slate-300 [&:has([role=checkbox])]:pr-0",
+      "h-9 pl-3 pr-1.5 py-1.5 text-left align-middle font-medium text-slate-600 dark:text-slate-300 [&:has([role=checkbox])]:pr-0",
       "bg-[#eaedf1] dark:bg-slate-800",
       t
     ),
@@ -77,7 +77,7 @@ const w = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
   "td",
   {
     ref: a,
-    className: r("h-9 pl-3 pr-1.5 py-1.5 align-middle text-[#798698] dark:text-slate-300 [&:has([role=checkbox])]:pr-0", t),
+    className: r("h-9 pl-3 pr-1.5 py-1.5 align-middle text-slate-800 dark:text-slate-200 [&:has([role=checkbox])]:pr-0", t),
     ...e
   }
 ));
@@ -100,7 +100,7 @@ const h = s.forwardRef(({ className: t, sortDirection: e, onSort: a, children: o
     {
       ref: n,
       className: r(
-        "h-9 pl-3 pr-1.5 py-1.5 text-left align-middle font-medium text-[#798698] dark:text-slate-300",
+        "h-9 pl-3 pr-1.5 py-1.5 text-left align-middle font-medium text-slate-600 dark:text-slate-300",
         "bg-[#eaedf1] dark:bg-slate-800 select-none",
         "[&:has([role=checkbox])]:pr-0",
         t

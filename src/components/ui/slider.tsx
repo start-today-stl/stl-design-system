@@ -39,7 +39,7 @@ const Slider = React.forwardRef<
       {label && (
         <span
           id={labelId}
-          className="text-xs text-slate-600 dark:text-slate-400"
+          className="text-xs text-slate-700 dark:text-slate-400"
         >
           {label}
         </span>

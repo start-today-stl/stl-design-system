@@ -7,7 +7,7 @@ const d = m.forwardRef(
     {
       ref: l,
       className: n(
-        "flex items-center gap-1 text-xs text-slate-600 dark:text-slate-400",
+        "flex items-center gap-1 text-xs text-slate-700 dark:text-slate-400",
         r && "invisible",
         e
       ),

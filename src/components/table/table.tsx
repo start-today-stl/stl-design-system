@@ -88,7 +88,7 @@ const TableHead = React.forwardRef<
   <th
     ref={ref}
     className={cn(
-      "h-9 pl-3 pr-1.5 py-1.5 text-left align-middle font-medium text-[#798698] dark:text-slate-300 [&:has([role=checkbox])]:pr-0",
+      "h-9 pl-3 pr-1.5 py-1.5 text-left align-middle font-medium text-slate-600 dark:text-slate-300 [&:has([role=checkbox])]:pr-0",
       "bg-[#eaedf1] dark:bg-slate-800",
       className
     )}
@@ -103,7 +103,7 @@ const TableCell = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <td
     ref={ref}
-    className={cn("h-9 pl-3 pr-1.5 py-1.5 align-middle text-[#798698] dark:text-slate-300 [&:has([role=checkbox])]:pr-0", className)}
+    className={cn("h-9 pl-3 pr-1.5 py-1.5 align-middle text-slate-800 dark:text-slate-200 [&:has([role=checkbox])]:pr-0", className)}
     {...props}
   />
 ))
@@ -147,7 +147,7 @@ const TableSortableHead = React.forwardRef<
     <th
       ref={ref}
       className={cn(
-        "h-9 pl-3 pr-1.5 py-1.5 text-left align-middle font-medium text-[#798698] dark:text-slate-300",
+        "h-9 pl-3 pr-1.5 py-1.5 text-left align-middle font-medium text-slate-600 dark:text-slate-300",
         "bg-[#eaedf1] dark:bg-slate-800 select-none",
         "[&:has([role=checkbox])]:pr-0",
         className

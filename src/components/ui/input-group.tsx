@@ -30,7 +30,7 @@ const InputGroup = React.forwardRef<HTMLDivElement, InputGroupProps>(
           <label
             htmlFor={groupId}
             className={cn(
-              "flex items-center gap-1 text-xs text-slate-600 dark:text-slate-400",
+              "flex items-center gap-1 text-xs text-slate-700 dark:text-slate-400",
               !label && "invisible"
             )}
           >
