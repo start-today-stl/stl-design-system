@@ -9,7 +9,7 @@ const P = r.forwardRef(
     {
       ref: a,
       role: "tree",
-      className: i("flex flex-col", n),
+      className: i("flex flex-col p-4", n),
       ...l,
       children: s
     }
@@ -62,7 +62,7 @@ const V = r.forwardRef(
                 ),
                 onClick: w,
                 "aria-label": o ? "접기" : "펼치기",
-                children: /* @__PURE__ */ e(j, { size: 16, className: "text-muted-foreground" })
+                children: /* @__PURE__ */ e(j, { size: 24, className: "text-muted-foreground" })
               }
             ) : /* @__PURE__ */ e("span", { className: "w-5 flex-shrink-0" }),
             s && /* @__PURE__ */ e("span", { className: "flex-shrink-0 text-muted-foreground", children: s }),
