@@ -56,7 +56,7 @@ const k = (n) => {
         ref: $,
         className: v("flex flex-col gap-2", A[y], B),
         children: [
-          n && /* @__PURE__ */ a("label", { className: "flex items-center gap-1 text-xs text-slate-600 dark:text-slate-400", children: [
+          n && /* @__PURE__ */ a("label", { className: "flex items-center gap-1 text-xs text-slate-700 dark:text-slate-400", children: [
             z && /* @__PURE__ */ r("span", { className: "size-2 rounded-full bg-stone-400", "aria-hidden": "true" }),
             n
           ] }),
