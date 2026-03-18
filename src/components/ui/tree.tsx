@@ -16,7 +16,7 @@ const Tree = React.forwardRef<HTMLDivElement, TreeProps>(
       <div
         ref={ref}
         role="tree"
-        className={cn("flex flex-col", className)}
+        className={cn("flex flex-col p-4", className)}
         {...props}
       >
         {children}
@@ -124,7 +124,7 @@ const TreeItem = React.forwardRef<HTMLDivElement, TreeItemProps>(
               onClick={handleToggle}
               aria-label={expanded ? "접기" : "펼치기"}
             >
-              <RightIcon size={16} className="text-muted-foreground" />
+              <RightIcon size={24} className="text-muted-foreground" />
             </button>
           ) : (
             <span className="w-5 flex-shrink-0" /> // placeholder for alignment
