@@ -33,8 +33,8 @@ coverage/
 # Misc
 *.local
 
-# Documentation (내부 문서)
-docs/
+# Documentation (개발 문서)
+docs/dev
 
 # Claude
 .claude/
