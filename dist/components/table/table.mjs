@@ -2,8 +2,8 @@ import { jsx as l, jsxs as c } from "react/jsx-runtime";
 import * as s from "react";
 import { cn as r } from "../../lib/utils.mjs";
 import { DownIcon as i } from "../../icons/DownIcon.mjs";
-import { UpIcon as f } from "../../icons/UpIcon.mjs";
-const p = s.forwardRef(
+import { UpIcon as p } from "../../icons/UpIcon.mjs";
+const f = s.forwardRef(
   ({ className: t, maxHeight: e, ...a }, o) => {
     const d = e ? { maxHeight: typeof e == "number" ? `${e}px` : e } : {};
     return /* @__PURE__ */ l(
@@ -24,8 +24,8 @@ const p = s.forwardRef(
     );
   }
 );
-p.displayName = "Table";
-const x = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l("thead", { ref: a, className: r("sticky top-0 z-20 bg-[#eaedf1] dark:bg-slate-800 [&_tr]:border-b [&_tr]:border-slate-200 dark:[&_tr]:border-slate-700", t), ...e }));
+f.displayName = "Table";
+const x = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l("thead", { ref: a, className: r("sticky top-0 z-20 bg-slate-100 dark:bg-slate-800 [&_tr]:border-b [&_tr]:border-slate-200 dark:[&_tr]:border-slate-700", t), ...e }));
 x.displayName = "TableHeader";
 const y = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
   "tbody",
@@ -66,7 +66,7 @@ const k = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
     ref: a,
     className: r(
       "h-9 pl-3 pr-1.5 py-1.5 text-left align-middle font-medium text-slate-600 dark:text-slate-300 [&:has([role=checkbox])]:pr-0",
-      "bg-[#eaedf1] dark:bg-slate-800",
+      "bg-slate-100 dark:bg-slate-800",
       t
     ),
     ...e
@@ -101,7 +101,7 @@ const h = s.forwardRef(({ className: t, sortDirection: e, onSort: a, children: o
       ref: n,
       className: r(
         "h-9 pl-3 pr-1.5 py-1.5 text-left align-middle font-medium text-slate-600 dark:text-slate-300",
-        "bg-[#eaedf1] dark:bg-slate-800 select-none",
+        "bg-slate-100 dark:bg-slate-800 select-none",
         "[&:has([role=checkbox])]:pr-0",
         t
       ),
@@ -118,7 +118,7 @@ const h = s.forwardRef(({ className: t, sortDirection: e, onSort: a, children: o
             o,
             /* @__PURE__ */ c("span", { className: "flex flex-col -space-y-1", children: [
               /* @__PURE__ */ l(
-                f,
+                p,
                 {
                   size: 14,
                   className: r(
@@ -146,7 +146,7 @@ const h = s.forwardRef(({ className: t, sortDirection: e, onSort: a, children: o
 });
 h.displayName = "TableSortableHead";
 export {
-  p as Table,
+  f as Table,
   y as TableBody,
   g as TableCaption,
   w as TableCell,

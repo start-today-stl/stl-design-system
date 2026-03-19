@@ -281,7 +281,7 @@ function SortableHeaderCell({
       style={dragStyle}
       className={cn(
         "group/drag h-9 pl-1.5 pr-1.5 py-1.5 text-left align-middle font-medium text-slate-600 dark:text-slate-300",
-        "bg-[#eaedf1] dark:bg-slate-800",
+        "bg-slate-100 dark:bg-slate-800",
         "[&:has([role=checkbox])]:pr-0",
         "hover:bg-slate-200/70 dark:hover:bg-slate-700/70",
         "transition-colors",
@@ -713,6 +713,25 @@ function DataTable<T extends { id: string | number }>({
     }
   }
 
+  // 전체 펼침/접힘 관련
+  const expandableRowIds = React.useMemo(() => {
+    if (!expandable) return []
+    return data.filter((row) => isRowExpandable(row)).map((row) => row.id)
+  }, [data, expandable])
+
+  const isAllExpanded = expandableRowIds.length > 0 &&
+    expandableRowIds.every((id) => expandedRowIds.includes(id))
+
+  const handleExpandAll = () => {
+    if (isAllExpanded) {
+      // 모두 접기
+      setExpandedRowIds([])
+    } else {
+      // 모두 펼치기
+      setExpandedRowIds(expandableRowIds)
+    }
+  }
+
   // rowActions 설정
   const showRowDelete = rowActions?.showDelete ?? !!rowActions?.onRowDelete
   const showRowAdd = rowActions?.showAdd ?? !!rowActions?.onRowAdd
@@ -885,7 +904,7 @@ function DataTable<T extends { id: string | number }>({
           className: cn(
             "transition-colors",
             isHeader
-              ? "bg-[#eaedf1] dark:bg-slate-800"
+              ? "bg-slate-100 dark:bg-slate-800"
               : effectiveSelected
                 ? "bg-blue-50 dark:bg-blue-900"
                 : "bg-slate-100 dark:bg-slate-800",
@@ -903,7 +922,7 @@ function DataTable<T extends { id: string | number }>({
         className: cn(
           "transition-colors",
           isHeader
-            ? "bg-[#eaedf1] dark:bg-slate-800"
+            ? "bg-slate-100 dark:bg-slate-800"
             : effectiveSelected
               ? "bg-blue-50 dark:bg-blue-900"
               : "bg-slate-100 dark:bg-slate-800",
@@ -1108,7 +1127,7 @@ function DataTable<T extends { id: string | number }>({
             {/* 드래그 핸들, 체크박스, 확장 버튼 컬럼용 빈 셀 */}
             {rowReorderable && (
               <TableHead
-                className="!p-0 bg-[#eaedf1] dark:bg-slate-800 border-b-0"
+                className="!p-0 bg-slate-100 dark:bg-slate-800 border-b-0"
                 rowSpan={2}
                 style={{
                   width: `${DRAG_HANDLE_WIDTH}px`,
@@ -1119,7 +1138,7 @@ function DataTable<T extends { id: string | number }>({
             )}
             {selectable && (
               <TableHead
-                className="!p-0 bg-[#eaedf1] dark:bg-slate-800 border-b-0"
+                className="!p-0 bg-slate-100 dark:bg-slate-800 border-b-0"
                 rowSpan={2}
                 style={{
                   width: `${CHECKBOX_WIDTH}px`,
@@ -1139,19 +1158,34 @@ function DataTable<T extends { id: string | number }>({
             )}
             {expandable && (
               <TableHead
-                className="bg-[#eaedf1] dark:bg-slate-800 border-b-0"
+                className="bg-slate-100 dark:bg-slate-800 border-b-0 !p-0"
                 rowSpan={2}
                 style={{
                   width: `${EXPAND_WIDTH}px`,
                   minWidth: `${EXPAND_WIDTH}px`,
                   ...(hasLeftStickyColumns && { position: "sticky", left: getExpandHeaderLeftOffset(), zIndex: 20 }),
                 }}
-              />
+              >
+                {expandableRowIds.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={handleExpandAll}
+                    className="flex h-9 w-10 items-center justify-center text-slate-500 hover:text-slate-700 dark:hover:text-slate-200 transition-colors"
+                    aria-label={isAllExpanded ? "모두 접기" : "모두 펼치기"}
+                  >
+                    {isAllExpanded ? (
+                      <DownIcon size={24} />
+                    ) : (
+                      <RightIcon size={24} />
+                    )}
+                  </button>
+                )}
+              </TableHead>
             )}
             {/* 행 삭제 액션 컬럼 헤더 (headerGroups) */}
             {showRowDelete && (
               <TableHead
-                className="!p-0 bg-[#eaedf1] dark:bg-slate-800 border-b-0"
+                className="!p-0 bg-slate-100 dark:bg-slate-800 border-b-0"
                 rowSpan={2}
                 style={{
                   width: `${ROW_ACTIONS_WIDTH}px`,
@@ -1190,7 +1224,7 @@ function DataTable<T extends { id: string | number }>({
                         key={`group-${String(group.columns[0])}`}
                         colSpan={colSpan}
                         className={cn(
-                          "text-center font-medium bg-[#eaedf1] dark:bg-slate-800",
+                          "text-center font-medium bg-slate-100 dark:bg-slate-800",
                           group.align === "left" && "text-left",
                           group.align === "right" && "text-right"
                         )}
@@ -1208,7 +1242,7 @@ function DataTable<T extends { id: string | number }>({
                       rowSpan={2}
                       className={cn(
                         getAlignClass(col.align),
-                        "bg-[#eaedf1] dark:bg-slate-800 border-b-0",
+                        "bg-slate-100 dark:bg-slate-800 border-b-0",
                         stickyData.className
                       )}
                       style={stickyData.style}
@@ -1229,7 +1263,7 @@ function DataTable<T extends { id: string | number }>({
           {/* headerGroups가 있으면 이 컬럼들은 위 행에서 rowSpan=2로 렌더링됨 */}
           {!headerGroups && rowReorderable && (
             <TableHead
-              className="!p-0 bg-[#eaedf1] dark:bg-slate-800"
+              className="!p-0 bg-slate-100 dark:bg-slate-800"
               style={hasLeftStickyColumns ? {
                 position: "sticky",
                 left: getDragHandleHeaderLeftOffset(),
@@ -1250,7 +1284,7 @@ function DataTable<T extends { id: string | number }>({
 
           {!headerGroups && selectable && (
             <TableHead
-              className="!p-0 bg-[#eaedf1] dark:bg-slate-800"
+              className="!p-0 bg-slate-100 dark:bg-slate-800"
               style={hasLeftStickyColumns ? {
                 position: "sticky",
                 left: getCheckboxHeaderLeftOffset(),
@@ -1277,7 +1311,7 @@ function DataTable<T extends { id: string | number }>({
 
           {!headerGroups && expandable && (
             <TableHead
-              className="bg-[#eaedf1] dark:bg-slate-800"
+              className="bg-slate-100 dark:bg-slate-800 !p-0"
               style={hasLeftStickyColumns ? {
                 position: "sticky",
                 left: getExpandHeaderLeftOffset(),
@@ -1292,14 +1326,29 @@ function DataTable<T extends { id: string | number }>({
               }}
               aria-label="확장"
             >
-              <span className="sr-only">확장</span>
+              {expandableRowIds.length > 0 ? (
+                <button
+                  type="button"
+                  onClick={handleExpandAll}
+                  className="flex h-9 w-10 items-center justify-center text-slate-500 hover:text-slate-700 dark:hover:text-slate-200 transition-colors"
+                  aria-label={isAllExpanded ? "모두 접기" : "모두 펼치기"}
+                >
+                  {isAllExpanded ? (
+                    <DownIcon size={24} />
+                  ) : (
+                    <RightIcon size={24} />
+                  )}
+                </button>
+              ) : (
+                <span className="sr-only">확장</span>
+              )}
             </TableHead>
           )}
 
           {/* 행 삭제 액션 컬럼 헤더 */}
           {!headerGroups && showRowDelete && (
             <TableHead
-              className="!p-0 bg-[#eaedf1] dark:bg-slate-800"
+              className="!p-0 bg-slate-100 dark:bg-slate-800"
               style={{
                 width: `${ROW_ACTIONS_WIDTH}px`,
                 minWidth: `${ROW_ACTIONS_WIDTH}px`,

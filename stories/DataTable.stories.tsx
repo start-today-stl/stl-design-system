@@ -1773,14 +1773,14 @@ export const RowActionsEditableExternal: Story = {
  *
  * ## 언제 어떤 방식을 사용해야 할까?
  *
- * ### 1. `editable` prop (기존 데이터 일부 수정)
- * - 이미 저장된 데이터 중 **일부 셀만** 수정하는 경우
+ * ### 1. `editable` prop (기존 데이터 수정)
+ * - 이미 저장된 데이터의 **셀 값을 수정**하는 경우
  * - 예: 재고 수량 수정, 메모 수정, 가격 조정
  * - 호버 시 편집 아이콘 표시로 편집 가능 여부를 나타냄
  *
- * ### 2. 커스텀 렌더러 (새 데이터 전체 입력)
- * - **모든 셀**에 직접 입력이 필요한 폼 형태
- * - 예: 신규 등록 폼, 일괄 입력, 주문 상품 입력
+ * ### 2. 커스텀 렌더러 (새 행에 값 입력)
+ * - **새로 추가된 행**에 처음부터 값을 입력해야 하는 경우
+ * - 예: 상품 목록에 새 상품 추가, 주문 항목 추가
  * - cell 렌더러로 Input, Select 등을 직접 렌더링
  */
 export const EditingPatterns: Story = {
@@ -1914,13 +1914,13 @@ export const EditingPatterns: Story = {
               패턴 1: editable prop (기존 데이터 수정)
             </h3>
             <p className="text-sm text-blue-700 dark:text-blue-300">
-              이미 저장된 데이터 중 <strong>일부 셀만</strong> 수정할 때 사용합니다.
+              이미 저장된 데이터의 <strong>셀 값을 수정</strong>할 때 사용합니다.
               <br />
               호버 시 편집 아이콘이 표시되어 편집 가능 여부를 나타냅니다.
             </p>
           </div>
           <p className="text-xs text-slate-500">
-            예시: 재고 수량과 메모만 편집 가능 (SKU, 상품명은 읽기 전용)
+            예시: 기존 상품의 재고 수량과 메모 수정 (SKU, 상품명은 읽기 전용)
           </p>
           <DataTable
             columns={inventoryColumns}
@@ -1933,17 +1933,17 @@ export const EditingPatterns: Story = {
         <div className="space-y-3">
           <div className="p-4 bg-green-50 dark:bg-green-900/30 rounded-md">
             <h3 className="font-bold text-green-800 dark:text-green-200 mb-2">
-              패턴 2: 커스텀 렌더러 (새 데이터 입력)
+              패턴 2: 커스텀 렌더러 (새 행에 값 입력)
             </h3>
             <p className="text-sm text-green-700 dark:text-green-300">
-              <strong>모든 셀</strong>에 직접 입력이 필요한 폼 형태일 때 사용합니다.
+              <strong>새로 추가된 행</strong>에 처음부터 값을 입력해야 할 때 사용합니다.
               <br />
               cell 렌더러로 Input, Select 등 컴포넌트를 직접 렌더링합니다.
             </p>
           </div>
           <div className="flex items-center justify-between">
             <p className="text-xs text-slate-500">
-              예시: 주문 상품 입력 폼 (모든 필드 직접 입력)
+              예시: 주문 항목 추가 (새 행에 상품명, 수량, 단가 입력)
             </p>
             <Button variant="ghost" size="sm" onClick={addOrderRow}>
               + 행 추가
