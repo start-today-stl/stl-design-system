@@ -83,7 +83,7 @@ const IntroductionPage = () => (
 
     {/* 통계 */}
     <section className={style.section}>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-[#f8f9fa] dark:bg-[#1e1e1e] rounded-2xl p-4">
+      <div className="grid grid-cols-3 gap-4 bg-[#f8f9fa] dark:bg-[#1e1e1e] rounded-2xl p-4">
         <div className={style.stat}>
           <div className={style.statNumber}>50+</div>
           <div className={style.statLabel}>UI 컴포넌트</div>
@@ -91,10 +91,6 @@ const IntroductionPage = () => (
         <div className={style.stat}>
           <div className={style.statNumber}>100+</div>
           <div className={style.statLabel}>아이콘</div>
-        </div>
-        <div className={style.stat}>
-          <div className={style.statNumber}>100%</div>
-          <div className={style.statLabel}>TypeScript</div>
         </div>
         <div className={style.stat}>
           <div className={style.statNumber}>✓</div>
@@ -141,29 +137,24 @@ const IntroductionPage = () => (
           <tr>
             <th className={style.th}>구분</th>
             <th className={style.th}>기술</th>
-            <th className={style.th}>설명</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td className={style.td}>Framework</td>
             <td className={style.td}>React 18</td>
-            <td className={style.td}>가장 널리 사용되는 UI 라이브러리</td>
           </tr>
           <tr>
             <td className={style.td}>Language</td>
             <td className={style.td}>TypeScript</td>
-            <td className={style.td}>타입 안정성과 자동완성 지원</td>
           </tr>
           <tr>
             <td className={style.td}>Styling</td>
             <td className={style.td}>Tailwind CSS 4</td>
-            <td className={style.td}>유틸리티 기반 CSS 프레임워크</td>
           </tr>
           <tr>
             <td className={style.td}>UI Base</td>
             <td className={style.td}>Radix UI</td>
-            <td className={style.td}>접근성을 고려한 헤드리스 컴포넌트</td>
           </tr>
         </tbody>
       </table>
