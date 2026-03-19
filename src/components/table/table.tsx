@@ -35,7 +35,7 @@ const TableHeader = React.forwardRef<
   HTMLTableSectionElement,
   React.HTMLAttributes<HTMLTableSectionElement>
 >(({ className, ...props }, ref) => (
-  <thead ref={ref} className={cn("sticky top-0 z-20 bg-[#eaedf1] dark:bg-slate-800 [&_tr]:border-b [&_tr]:border-slate-200 dark:[&_tr]:border-slate-700", className)} {...props} />
+  <thead ref={ref} className={cn("sticky top-0 z-20 bg-slate-100 dark:bg-slate-800 [&_tr]:border-b [&_tr]:border-slate-200 dark:[&_tr]:border-slate-700", className)} {...props} />
 ))
 TableHeader.displayName = "TableHeader"
 
@@ -89,7 +89,7 @@ const TableHead = React.forwardRef<
     ref={ref}
     className={cn(
       "h-9 pl-3 pr-1.5 py-1.5 text-left align-middle font-medium text-slate-600 dark:text-slate-300 [&:has([role=checkbox])]:pr-0",
-      "bg-[#eaedf1] dark:bg-slate-800",
+      "bg-slate-100 dark:bg-slate-800",
       className
     )}
     {...props}
@@ -148,7 +148,7 @@ const TableSortableHead = React.forwardRef<
       ref={ref}
       className={cn(
         "h-9 pl-3 pr-1.5 py-1.5 text-left align-middle font-medium text-slate-600 dark:text-slate-300",
-        "bg-[#eaedf1] dark:bg-slate-800 select-none",
+        "bg-slate-100 dark:bg-slate-800 select-none",
         "[&:has([role=checkbox])]:pr-0",
         className
       )}
