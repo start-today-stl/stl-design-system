@@ -75,6 +75,8 @@ export interface ExpandableConfig<T> {
     expandedRowIds?: (string | number)[];
     /** 확장 상태 변경 핸들러 */
     onExpandedChange?: (expandedRowIds: (string | number)[]) => void;
+    /** 헤더에 전체 펼치기/접기 버튼 표시 여부 (기본: true) */
+    showExpandAll?: boolean;
 }
 /** 행 추가/삭제 액션 설정 */
 export interface RowActionsConfig<T> {

@@ -117,6 +117,8 @@ export interface ExpandableConfig<T> {
   expandedRowIds?: (string | number)[]
   /** 확장 상태 변경 핸들러 */
   onExpandedChange?: (expandedRowIds: (string | number)[]) => void
+  /** 헤더에 전체 펼치기/접기 버튼 표시 여부 (기본: true) */
+  showExpandAll?: boolean
 }
 
 /** 편집 중인 셀 상태 */
@@ -1166,7 +1168,7 @@ function DataTable<T extends { id: string | number }>({
                   ...(hasLeftStickyColumns && { position: "sticky", left: getExpandHeaderLeftOffset(), zIndex: 20 }),
                 }}
               >
-                {expandableRowIds.length > 0 && (
+                {expandable?.showExpandAll !== false && expandableRowIds.length > 0 && (
                   <button
                     type="button"
                     onClick={handleExpandAll}
@@ -1326,7 +1328,7 @@ function DataTable<T extends { id: string | number }>({
               }}
               aria-label="확장"
             >
-              {expandableRowIds.length > 0 ? (
+              {expandable?.showExpandAll !== false && expandableRowIds.length > 0 ? (
                 <button
                   type="button"
                   onClick={handleExpandAll}
