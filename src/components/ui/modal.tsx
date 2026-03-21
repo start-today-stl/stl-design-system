@@ -50,12 +50,12 @@ const Modal = ({
   loading = false,
   showCloseButton = false,
 }: ModalProps) => {
-  // Size configuration
+  // Size configuration (width + loading min-height)
   const sizeConfig = {
-    s: "max-w-[400px]",
-    m: "max-w-[600px]",
-    l: "max-w-[900px]",
-    xl: "max-w-[1200px]",
+    s: { width: "max-w-[400px]", loadingHeight: "min-h-[200px]" },
+    m: { width: "max-w-[600px]", loadingHeight: "min-h-[250px]" },
+    l: { width: "max-w-[900px]", loadingHeight: "min-h-[300px]" },
+    xl: { width: "max-w-[1200px]", loadingHeight: "min-h-[350px]" },
   };
 
   // footer 자식 개수에 따른 정렬 (Fragment 내부 자식도 카운트)
@@ -88,7 +88,11 @@ const Modal = ({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        className={cn(sizeConfig[size], className)}
+        className={cn(
+          sizeConfig[size].width,
+          loading && sizeConfig[size].loadingHeight,
+          className
+        )}
         loading={loading}
         aria-describedby={!description ? undefined : undefined}
       >
