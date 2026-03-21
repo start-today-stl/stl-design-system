@@ -1,54 +1,58 @@
-import { jsx as e, jsxs as a, Fragment as y } from "react/jsx-runtime";
-import * as n from "react";
-import * as v from "@radix-ui/react-visually-hidden";
-import { cn as m } from "../../lib/utils.mjs";
-import { Dialog as w, DialogContent as N, DialogTitle as c, DialogHeader as D, DialogDescription as b, DialogClose as j } from "./dialog.mjs";
-import { STLArrowIcon as z } from "../../icons/STLArrowIcon.mjs";
-import { XIcon as H } from "../../icons/XIcon.mjs";
+import { jsx as e, jsxs as t, Fragment as C } from "react/jsx-runtime";
+import * as a from "react";
+import * as y from "@radix-ui/react-visually-hidden";
+import { cn as c } from "../../lib/utils.mjs";
+import { Dialog as v, DialogContent as H, DialogTitle as h, DialogHeader as N, DialogDescription as D, DialogClose as b } from "./dialog.mjs";
+import { STLArrowIcon as j } from "../../icons/STLArrowIcon.mjs";
+import { XIcon as I } from "../../icons/XIcon.mjs";
 const A = ({
-  size: d = "l",
+  size: s = "l",
   open: p,
   onOpenChange: u,
-  title: r,
-  description: s,
-  children: t,
-  footer: i,
-  className: f,
-  loading: l = !1,
+  title: i,
+  description: r,
+  children: m,
+  footer: l,
+  className: g,
+  loading: n = !1,
   showCloseButton: x = !1
 }) => {
-  const h = {
-    s: "max-w-[400px]",
-    m: "max-w-[600px]",
-    l: "max-w-[900px]",
-    xl: "max-w-[1200px]"
-  }, g = ((o) => o ? n.isValidElement(o) && o.type === n.Fragment ? n.Children.count(o.props.children) : n.Children.count(o) : 0)(i), C = () => x ? /* @__PURE__ */ a(j, { className: "absolute right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none disabled:pointer-events-none cursor-pointer", children: [
-    /* @__PURE__ */ e(H, { size: 24 }),
+  const d = {
+    s: { width: "max-w-[400px]", loadingHeight: "min-h-[200px]" },
+    m: { width: "max-w-[600px]", loadingHeight: "min-h-[250px]" },
+    l: { width: "max-w-[900px]", loadingHeight: "min-h-[300px]" },
+    xl: { width: "max-w-[1200px]", loadingHeight: "min-h-[350px]" }
+  }, f = ((o) => o ? a.isValidElement(o) && o.type === a.Fragment ? a.Children.count(o.props.children) : a.Children.count(o) : 0)(l), w = () => x ? /* @__PURE__ */ t(b, { className: "absolute right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none disabled:pointer-events-none cursor-pointer", children: [
+    /* @__PURE__ */ e(I, { size: 24 }),
     /* @__PURE__ */ e("span", { className: "sr-only", children: "닫기" })
-  ] }) : /* @__PURE__ */ e("div", { className: "absolute right-4 top-4", children: /* @__PURE__ */ e(z, { size: 29, className: "text-slate-200 dark:text-slate-600" }) });
-  return /* @__PURE__ */ e(w, { open: p, onOpenChange: u, children: /* @__PURE__ */ a(
-    N,
+  ] }) : /* @__PURE__ */ e("div", { className: "absolute right-4 top-4", children: /* @__PURE__ */ e(j, { size: 29, className: "text-slate-200 dark:text-slate-600" }) });
+  return /* @__PURE__ */ e(v, { open: p, onOpenChange: u, children: /* @__PURE__ */ t(
+    H,
     {
-      className: m(h[d], f),
-      loading: l,
+      className: c(
+        d[s].width,
+        n && d[s].loadingHeight,
+        g
+      ),
+      loading: n,
       "aria-describedby": void 0,
       children: [
-        l || !r ? /* @__PURE__ */ e(v.Root, { children: /* @__PURE__ */ e(c, { children: r || "모달" }) }) : null,
-        !l && /* @__PURE__ */ a(y, { children: [
-          C(),
-          (r || s) && /* @__PURE__ */ a(D, { className: "pr-10", children: [
-            r && /* @__PURE__ */ e(c, { children: r }),
-            s && /* @__PURE__ */ e(b, { children: s })
+        n || !i ? /* @__PURE__ */ e(y.Root, { children: /* @__PURE__ */ e(h, { children: i || "모달" }) }) : null,
+        !n && /* @__PURE__ */ t(C, { children: [
+          w(),
+          (i || r) && /* @__PURE__ */ t(N, { className: "pr-10", children: [
+            i && /* @__PURE__ */ e(h, { children: i }),
+            r && /* @__PURE__ */ e(D, { children: r })
           ] }),
-          t && /* @__PURE__ */ e("div", { className: "py-4", children: t }),
-          i && /* @__PURE__ */ e(
+          m && /* @__PURE__ */ e("div", { className: "py-4", children: m }),
+          l && /* @__PURE__ */ e(
             "div",
             {
-              className: m(
+              className: c(
                 "flex flex-col-reverse gap-2 sm:flex-row w-full",
-                g === 1 ? "sm:justify-end" : "sm:justify-between"
+                f === 1 ? "sm:justify-end" : "sm:justify-between"
               ),
-              children: i
+              children: l
             }
           )
         ] })
