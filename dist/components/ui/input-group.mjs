@@ -15,7 +15,7 @@ const x = l.forwardRef(
             !t && "invisible"
           ),
           children: [
-            c && /* @__PURE__ */ e("span", { className: "size-2 rounded-full bg-stone-400", "aria-hidden": "true" }),
+            c && /* @__PURE__ */ e("span", { className: "size-2 rounded-full bg-red-400", "aria-hidden": "true" }),
             t || " "
           ]
         }

@@ -167,7 +167,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             )}
           >
             {required && (
-              <span className="size-2 rounded-full bg-stone-400" aria-hidden="true" />
+              <span className="size-2 rounded-full bg-red-400" aria-hidden="true" />
             )}
             {label || "\u00A0"}
           </label>

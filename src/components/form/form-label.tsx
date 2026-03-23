@@ -26,7 +26,7 @@ export const FormLabel = React.forwardRef<HTMLLabelElement, FormLabelProps>(
         {...props}
       >
         {required && (
-          <span className="size-2 rounded-full bg-stone-400" aria-hidden="true" />
+          <span className="size-2 rounded-full bg-red-400" aria-hidden="true" />
         )}
         {children}
       </label>

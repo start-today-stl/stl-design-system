@@ -59,7 +59,7 @@ const Checkbox = React.forwardRef<
         {checkbox}
         <span className="flex items-center gap-1 text-xs text-slate-600 tracking-[-0.12px] dark:text-slate-200 leading-none">
           {required && (
-            <span className="size-2 rounded-full bg-stone-400" aria-hidden="true" />
+            <span className="size-2 rounded-full bg-red-400" aria-hidden="true" />
           )}
           {label}
         </span>

@@ -1,6 +1,6 @@
 import { jsx as a, jsxs as p } from "react/jsx-runtime";
 import * as f from "react";
-import { cn as o } from "../../lib/utils.mjs";
+import { cn as l } from "../../lib/utils.mjs";
 const b = [
   "flex w-full rounded-[5px] border bg-slate-50/50 dark:bg-slate-800",
   "min-h-[80px] px-3 py-2 text-xs text-slate-900 dark:text-slate-100",
@@ -19,7 +19,7 @@ const b = [
   "placeholder:text-slate-300 dark:placeholder:text-slate-500",
   "focus:border-slate-500 focus:border-[1.5px] focus:shadow-none dark:focus:border-slate-300"
 ].join(" "), m = f.forwardRef(
-  ({ className: l, label: e, error: t, errorMessage: r, id: h, reserveLabelSpace: i, required: s, tableMode: x, ...n }, c) => {
+  ({ className: o, label: e, error: t, errorMessage: r, id: h, reserveLabelSpace: i, required: s, tableMode: x, ...n }, c) => {
     const d = h || f.useId(), u = () => t ? y : x ? _ : k;
     return x && !e && !i && !r ? /* @__PURE__ */ a(
       "textarea",
@@ -27,7 +27,7 @@ const b = [
         id: d,
         ref: c,
         required: s,
-        className: o(b, u(), l),
+        className: l(b, u(), o),
         "aria-invalid": t,
         ...n
       }
@@ -36,12 +36,12 @@ const b = [
         "label",
         {
           htmlFor: d,
-          className: o(
+          className: l(
             "flex items-center gap-1 text-xs text-slate-700 dark:text-slate-400",
             !e && "invisible"
           ),
           children: [
-            s && /* @__PURE__ */ a("span", { className: "size-2 rounded-full bg-stone-400", "aria-hidden": "true" }),
+            s && /* @__PURE__ */ a("span", { className: "size-2 rounded-full bg-red-400", "aria-hidden": "true" }),
             e || " "
           ]
         }
@@ -52,7 +52,7 @@ const b = [
           id: d,
           ref: c,
           required: s,
-          className: o(b, u(), l),
+          className: l(b, u(), o),
           "aria-invalid": t,
           ...n
         }
