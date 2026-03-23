@@ -146,7 +146,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
         {label && (
           <label className="flex items-center gap-1 text-xs text-slate-700 dark:text-slate-400">
             {required && (
-              <span className="size-2 rounded-full bg-stone-400" aria-hidden="true" />
+              <span className="size-2 rounded-full bg-red-400" aria-hidden="true" />
             )}
             {label}
           </label>

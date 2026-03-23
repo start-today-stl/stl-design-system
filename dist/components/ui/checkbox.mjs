@@ -35,7 +35,7 @@ const x = b.forwardRef(({ className: n, label: a, indeterminate: r, checked: c, 
   return a ? /* @__PURE__ */ d("label", { className: "inline-flex items-center gap-1.5 cursor-pointer align-middle", children: [
     i,
     /* @__PURE__ */ d("span", { className: "flex items-center gap-1 text-xs text-slate-600 tracking-[-0.12px] dark:text-slate-200 leading-none", children: [
-      s && /* @__PURE__ */ e("span", { className: "size-2 rounded-full bg-stone-400", "aria-hidden": "true" }),
+      s && /* @__PURE__ */ e("span", { className: "size-2 rounded-full bg-red-400", "aria-hidden": "true" }),
       a
     ] })
   ] }) : i;

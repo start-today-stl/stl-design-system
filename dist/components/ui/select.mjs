@@ -630,7 +630,7 @@ const ae = s.forwardRef(
                 !b && "invisible"
               ),
               children: [
-                B && /* @__PURE__ */ t("span", { className: "size-2 rounded-full bg-stone-400", "aria-hidden": "true" }),
+                B && /* @__PURE__ */ t("span", { className: "size-2 rounded-full bg-red-400", "aria-hidden": "true" }),
                 b || " "
               ]
             }

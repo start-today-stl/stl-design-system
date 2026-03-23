@@ -1,4 +1,4 @@
-import { jsx as e, jsxs as r } from "react/jsx-runtime";
+import { jsx as e, jsxs as n } from "react/jsx-runtime";
 import * as u from "react";
 import * as t from "@radix-ui/react-switch";
 import { cva as l } from "class-variance-authority";
@@ -34,7 +34,7 @@ const m = l(
     }
   }
 ), p = u.forwardRef(({ className: c, size: a, label: s, required: i, ...d }, f) => {
-  const n = /* @__PURE__ */ e(
+  const r = /* @__PURE__ */ e(
     t.Root,
     {
       className: o(m({ size: a }), c),
@@ -44,13 +44,13 @@ const m = l(
       children: /* @__PURE__ */ e(t.Thumb, { className: o(h({ size: a })) })
     }
   );
-  return s ? /* @__PURE__ */ r("div", { className: "inline-flex items-center gap-2", children: [
-    n,
-    /* @__PURE__ */ r("span", { className: "flex items-center gap-1 text-xs text-slate-700 dark:text-slate-400", children: [
-      i && /* @__PURE__ */ e("span", { className: "size-2 rounded-full bg-stone-400", "aria-hidden": "true" }),
+  return s ? /* @__PURE__ */ n("div", { className: "inline-flex items-center gap-2", children: [
+    r,
+    /* @__PURE__ */ n("span", { className: "flex items-center gap-1 text-xs text-slate-700 dark:text-slate-400", children: [
+      i && /* @__PURE__ */ e("span", { className: "size-2 rounded-full bg-red-400", "aria-hidden": "true" }),
       s
     ] })
-  ] }) : n;
+  ] }) : r;
 });
 p.displayName = t.Root.displayName;
 export {

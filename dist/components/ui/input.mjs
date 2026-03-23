@@ -26,16 +26,16 @@ const S = [
   lg: "w-[360px]",
   full: "w-full"
 }, j = u.forwardRef(
-  ({ className: c, label: s, error: a, errorMessage: l, size: x = "full", id: I, rightIcon: o, onRightIconClick: C, rightIconLabel: P = "아이콘 버튼", reserveLabelSpace: p, loading: h, showPasswordToggle: R, required: n, type: b, tableMode: f, ...m }, k) => {
-    const d = I || u.useId(), [r, T] = u.useState(!1), w = b === "password", y = w && R !== !1, v = o || h || y, g = w && r ? "text" : b, N = () => a ? D : f ? B : M;
+  ({ className: c, label: s, error: a, errorMessage: l, size: x = "full", id: I, rightIcon: o, onRightIconClick: C, rightIconLabel: P = "아이콘 버튼", reserveLabelSpace: p, loading: h, showPasswordToggle: R, required: d, type: b, tableMode: f, ...m }, k) => {
+    const n = I || u.useId(), [r, T] = u.useState(!1), w = b === "password", y = w && R !== !1, v = o || h || y, g = w && r ? "text" : b, N = () => a ? D : f ? B : M;
     if (f && !s && !p && !l && !v)
       return /* @__PURE__ */ t(
         "input",
         {
-          id: d,
+          id: n,
           ref: k,
           type: g,
-          required: n,
+          required: d,
           className: e(S, N(), _[x], c),
           "aria-invalid": a,
           ...m
@@ -69,13 +69,13 @@ const S = [
       (s || p) && /* @__PURE__ */ i(
         "label",
         {
-          htmlFor: d,
+          htmlFor: n,
           className: e(
             "flex items-center gap-1 text-xs text-slate-700 dark:text-slate-400",
             !s && "invisible"
           ),
           children: [
-            n && /* @__PURE__ */ t("span", { className: "size-2 rounded-full bg-stone-400", "aria-hidden": "true" }),
+            d && /* @__PURE__ */ t("span", { className: "size-2 rounded-full bg-red-400", "aria-hidden": "true" }),
             s || " "
           ]
         }
@@ -84,10 +84,10 @@ const S = [
         /* @__PURE__ */ t(
           "input",
           {
-            id: d,
+            id: n,
             ref: k,
             type: g,
-            required: n,
+            required: d,
             className: e(S, N(), "w-full", v && "pr-9", c),
             "aria-invalid": a,
             ...m

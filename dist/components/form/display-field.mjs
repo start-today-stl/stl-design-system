@@ -1,6 +1,6 @@
 import { jsxs as m, jsx as i } from "react/jsx-runtime";
 import * as $ from "react";
-import { cn as p } from "../../lib/utils.mjs";
+import { cn as d } from "../../lib/utils.mjs";
 import { DuplicationIcon as I } from "../../icons/DuplicationIcon.mjs";
 const K = {
   sm: "w-[160px]",
@@ -8,12 +8,12 @@ const K = {
   lg: "w-[360px]",
   full: "w-full"
 }, L = (t, s = {}) => {
-  const { type: d, prefix: n, suffix: l } = s;
+  const { type: p, prefix: n, suffix: l } = s;
   if (t == null || t === "") return null;
   if (typeof t != "string" && typeof t != "number") return t;
   const a = String(t);
   let e;
-  switch (d) {
+  switch (p) {
     case "phone":
       e = a.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
       break;
@@ -40,7 +40,7 @@ const K = {
   ({
     label: t,
     value: s,
-    emptyText: d = "-",
+    emptyText: p = "-",
     size: n = "full",
     type: l = "text",
     prefix: a,
@@ -57,7 +57,7 @@ const K = {
     layout: F = "vertical",
     labelWidth: f = 100
   }, V) => {
-    const o = F === "horizontal", T = typeof f == "number" ? `${f}px` : f, [h, w] = $.useState(!1), c = s == null || s === "", y = c ? d : L(s, { type: l, prefix: a, suffix: e }), R = g ? g(y) : y, j = async () => {
+    const o = F === "horizontal", T = typeof f == "number" ? `${f}px` : f, [h, w] = $.useState(!1), c = s == null || s === "", y = c ? p : L(s, { type: l, prefix: a, suffix: e }), R = g ? g(y) : y, j = async () => {
       if (c || typeof s != "string" && typeof s != "number") return;
       const k = String(s);
       try {
@@ -74,7 +74,7 @@ const K = {
       "div",
       {
         ref: V,
-        className: p(
+        className: d(
           "flex gap-1",
           o ? "flex-row items-center" : "flex-col",
           K[n]
@@ -83,7 +83,7 @@ const K = {
           (t || D) && /* @__PURE__ */ m(
             "span",
             {
-              className: p(
+              className: d(
                 "flex items-center gap-1 text-xs text-slate-700 dark:text-slate-400",
                 !t && "invisible",
                 o && "shrink-0",
@@ -91,7 +91,7 @@ const K = {
               ),
               style: o ? { width: T } : void 0,
               children: [
-                N && /* @__PURE__ */ i("span", { className: "size-2 rounded-full bg-stone-400", "aria-hidden": "true" }),
+                N && /* @__PURE__ */ i("span", { className: "size-2 rounded-full bg-red-400", "aria-hidden": "true" }),
                 t || " "
               ]
             }
@@ -100,7 +100,7 @@ const K = {
             /* @__PURE__ */ i(
               "span",
               {
-                className: p(
+                className: d(
                   "text-sm text-slate-900 dark:text-slate-100",
                   // 최소 높이 확보 (InputField와 동일한 높이감) + 너비 채우기
                   "min-h-[36px] flex items-center flex-1",
@@ -116,7 +116,7 @@ const K = {
               {
                 type: "button",
                 onClick: j,
-                className: p(
+                className: d(
                   "shrink-0 p-1 rounded transition-colors cursor-pointer",
                   "text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300",
                   h && "text-green-500 dark:text-green-400"

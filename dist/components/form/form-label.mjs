@@ -1,26 +1,26 @@
-import { jsxs as o, jsx as i } from "react/jsx-runtime";
-import * as m from "react";
-import { cn as n } from "../../lib/utils.mjs";
-const d = m.forwardRef(
-  ({ className: e, required: a, invisible: r, children: t, ...s }, l) => /* @__PURE__ */ o(
+import { jsxs as i, jsx as m } from "react/jsx-runtime";
+import * as o from "react";
+import { cn as d } from "../../lib/utils.mjs";
+const n = o.forwardRef(
+  ({ className: e, required: r, invisible: a, children: t, ...s }, l) => /* @__PURE__ */ i(
     "label",
     {
       ref: l,
-      className: n(
+      className: d(
         "flex items-center gap-1 text-xs text-slate-700 dark:text-slate-400",
-        r && "invisible",
+        a && "invisible",
         e
       ),
       ...s,
       children: [
-        a && /* @__PURE__ */ i("span", { className: "size-2 rounded-full bg-stone-400", "aria-hidden": "true" }),
+        r && /* @__PURE__ */ m("span", { className: "size-2 rounded-full bg-red-400", "aria-hidden": "true" }),
         t
       ]
     }
   )
 );
-d.displayName = "FormLabel";
+n.displayName = "FormLabel";
 export {
-  d as FormLabel
+  n as FormLabel
 };
 //# sourceMappingURL=form-label.mjs.map
