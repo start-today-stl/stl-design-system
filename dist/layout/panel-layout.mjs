@@ -6,7 +6,7 @@ const f = d.forwardRef(
     "div",
     {
       ref: r,
-      className: n("flex h-full w-full gap-6", l),
+      className: n("flex h-full w-full gap-4", l),
       ...a,
       children: e
     }

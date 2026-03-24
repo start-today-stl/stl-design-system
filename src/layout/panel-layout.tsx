@@ -13,7 +13,7 @@ const PanelLayout = React.forwardRef<HTMLDivElement, PanelLayoutProps>(
     return (
       <div
         ref={ref}
-        className={cn("flex h-full w-full gap-6", className)}
+        className={cn("flex h-full w-full gap-4", className)}
         {...props}
       >
         {children}
