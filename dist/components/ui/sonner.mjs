@@ -35,7 +35,7 @@ const y = ({ ...r }) => /* @__PURE__ */ t(
         /* @__PURE__ */ t(o, {}),
         /* @__PURE__ */ a("div", { className: "flex flex-col gap-3", children: [
           /* @__PURE__ */ t("p", { className: "text-sm font-medium text-slate-900 dark:text-slate-100", children: e }),
-          /* @__PURE__ */ t("p", { className: "text-[10px] text-slate-600 dark:text-slate-400", children: l })
+          /* @__PURE__ */ t("p", { className: "text-xs text-slate-600 dark:text-slate-400", children: l })
         ] })
       ] }) : /* @__PURE__ */ a(d, { children: [
         /* @__PURE__ */ t(o, {}),
