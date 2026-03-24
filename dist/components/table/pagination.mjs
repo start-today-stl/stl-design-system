@@ -1,15 +1,15 @@
-import { jsxs as p, jsx as m } from "react/jsx-runtime";
+import { jsxs as p, jsx as a } from "react/jsx-runtime";
 import * as v from "react";
 import { cn as u } from "../../lib/utils.mjs";
 import { Button as h } from "../ui/button.mjs";
-import { Select as R } from "../ui/select.mjs";
-import { LeftIcon as b } from "../../icons/LeftIcon.mjs";
+import { Select as b } from "../ui/select.mjs";
+import { LeftIcon as R } from "../../icons/LeftIcon.mjs";
 import { RightIcon as w } from "../../icons/RightIcon.mjs";
-function I(o, t, e) {
-  const a = e * 2 + 3 + 2;
-  if (t <= a)
+function I(m, t, e) {
+  const o = e * 2 + 3 + 2;
+  if (t <= o)
     return Array.from({ length: t }, (s, i) => i + 1);
-  const n = Math.max(o - e, 1), r = Math.min(o + e, t), f = n > 2, d = r < t - 1;
+  const n = Math.max(m - e, 1), l = Math.min(m + e, t), f = n > 2, d = l < t - 1;
   if (!f && d) {
     const s = 3 + 2 * e;
     return [...Array.from({ length: s }, (x, c) => c + 1), "ellipsis", t];
@@ -22,29 +22,29 @@ function I(o, t, e) {
     )];
   }
   return [1, "ellipsis", ...Array.from(
-    { length: r - n + 1 },
+    { length: l - n + 1 },
     (s, i) => n + i
   ), "ellipsis", t];
 }
 const k = v.forwardRef(
   ({
-    className: o,
+    className: m,
     currentPage: t,
     totalPages: e,
-    onPageChange: l,
-    siblingCount: a = 1,
+    onPageChange: r,
+    siblingCount: o = 1,
     previousLabel: n = "Previous",
-    nextLabel: r = "Next",
+    nextLabel: l = "Next",
     ...f
   }, d) => {
-    const N = I(t, e, a), s = (i) => {
-      i >= 1 && i <= e && i !== t && (l == null || l(i));
+    const N = I(t, e, o), s = (i) => {
+      i >= 1 && i <= e && i !== t && (r == null || r(i));
     };
     return /* @__PURE__ */ p(
       "div",
       {
         ref: d,
-        className: u("flex items-center gap-2", o),
+        className: u("flex items-center gap-2", m),
         ...f,
         children: [
           /* @__PURE__ */ p(
@@ -56,14 +56,14 @@ const k = v.forwardRef(
               disabled: t <= 1,
               "aria-label": "이전 페이지",
               children: [
-                /* @__PURE__ */ m(b, { size: 20 }),
+                /* @__PURE__ */ a(R, { size: 20 }),
                 n
               ]
             }
           ),
-          /* @__PURE__ */ m("div", { className: "flex items-center gap-1", children: N.map((i, x) => {
+          /* @__PURE__ */ a("div", { className: "flex items-center gap-1", children: N.map((i, x) => {
             if (i === "ellipsis")
-              return /* @__PURE__ */ m(
+              return /* @__PURE__ */ a(
                 "span",
                 {
                   className: "px-2 text-sm text-slate-400",
@@ -72,7 +72,7 @@ const k = v.forwardRef(
                 `ellipsis-${x}`
               );
             const c = i === t;
-            return /* @__PURE__ */ m(
+            return /* @__PURE__ */ a(
               h,
               {
                 variant: "text",
@@ -98,8 +98,8 @@ const k = v.forwardRef(
               disabled: t >= e,
               "aria-label": "다음 페이지",
               children: [
-                r,
-                /* @__PURE__ */ m(w, { size: 20 })
+                l,
+                /* @__PURE__ */ a(w, { size: 20 })
               ]
             }
           )
@@ -110,27 +110,28 @@ const k = v.forwardRef(
 );
 k.displayName = "Pagination";
 function B({
-  className: o,
+  className: m,
   pageSize: t,
   options: e = [10, 20, 50, 100],
-  onPageSizeChange: l,
-  label: a = "페이지당 항목 수"
+  onPageSizeChange: r,
+  label: o = "페이지당 항목 수"
 }) {
-  const n = e.map((r) => ({
-    label: String(r),
-    value: String(r)
+  const n = e.map((l) => ({
+    label: String(l),
+    value: String(l)
   }));
-  return /* @__PURE__ */ p("div", { className: u("flex items-center gap-2", o), children: [
-    a && /* @__PURE__ */ m("span", { className: "text-xs text-slate-500 dark:text-slate-300 whitespace-nowrap", children: a }),
-    /* @__PURE__ */ m(
-      R,
+  return /* @__PURE__ */ p("div", { className: u("flex items-center gap-2", m), children: [
+    o && /* @__PURE__ */ a("span", { className: "text-xs text-slate-500 dark:text-slate-300 whitespace-nowrap", children: o }),
+    /* @__PURE__ */ a(
+      b,
       {
         value: String(t),
-        onValueChange: (r) => l == null ? void 0 : l(Number(r)),
+        onValueChange: (l) => r == null ? void 0 : r(Number(l)),
         options: n,
         size: "sm",
         className: "!w-[70px]",
-        "aria-label": "페이지당 항목 수"
+        "aria-label": "페이지당 항목 수",
+        clearable: !1
       }
     )
   ] });

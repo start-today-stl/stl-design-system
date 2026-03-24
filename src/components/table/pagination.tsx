@@ -191,6 +191,7 @@ function PageSizeSelector({
         size="sm"
         className="!w-[70px]"
         aria-label="페이지당 항목 수"
+        clearable={false}
       />
     </div>
   )
