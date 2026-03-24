@@ -52,7 +52,7 @@ const CustomToast = ({ type, title, description }: CustomToastProps) => {
           <Icon />
           <div className="flex flex-col gap-3">
             <p className="text-sm font-medium text-slate-900 dark:text-slate-100">{title}</p>
-            <p className="text-[10px] text-slate-600 dark:text-slate-400">{description}</p>
+            <p className="text-xs text-slate-600 dark:text-slate-400">{description}</p>
           </div>
         </>
       ) : (
