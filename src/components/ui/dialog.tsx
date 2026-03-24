@@ -22,7 +22,7 @@ const DialogOverlay = React.forwardRef<
   <DialogPrimitive.Overlay
     ref={ref}
     className={cn(
-      "fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+      "fixed inset-0 z-50 flex items-center justify-center bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
       className
     )}
     {...props}
@@ -41,26 +41,27 @@ const DialogContent = React.forwardRef<
   DialogContentProps
 >(({ className, children, loading = false, ...props }, ref) => (
   <DialogPortal>
-    <DialogOverlay />
-    <DialogPrimitive.Content
-      ref={ref}
-      className={cn(
-        "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-card text-card-foreground p-6 shadow-lg duration-200 ease-out data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 will-change-transform sm:rounded-lg",
-        loading && "min-h-[200px] items-center justify-center",
-        className
-      )}
-      {...props}
-    >
-      {loading ? (
-        <>
-          <VisuallyHidden.Root>
-            <DialogPrimitive.Title>로딩 중</DialogPrimitive.Title>
-            <DialogPrimitive.Description>콘텐츠를 불러오는 중입니다</DialogPrimitive.Description>
-          </VisuallyHidden.Root>
-          <SplashScreen />
-        </>
-      ) : children}
-    </DialogPrimitive.Content>
+    <DialogOverlay>
+      <DialogPrimitive.Content
+        ref={ref}
+        className={cn(
+          "relative z-50 grid w-full max-w-lg gap-4 border bg-card text-card-foreground p-6 shadow-lg duration-200 ease-out data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 sm:rounded-lg",
+          loading && "min-h-[200px] items-center justify-center",
+          className
+        )}
+        {...props}
+      >
+        {loading ? (
+          <>
+            <VisuallyHidden.Root>
+              <DialogPrimitive.Title>로딩 중</DialogPrimitive.Title>
+              <DialogPrimitive.Description>콘텐츠를 불러오는 중입니다</DialogPrimitive.Description>
+            </VisuallyHidden.Root>
+            <SplashScreen />
+          </>
+        ) : children}
+      </DialogPrimitive.Content>
+    </DialogOverlay>
   </DialogPortal>
 ))
 DialogContent.displayName = DialogPrimitive.Content.displayName
