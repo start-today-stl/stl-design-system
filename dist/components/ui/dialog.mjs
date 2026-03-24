@@ -1,43 +1,40 @@
-import { jsxs as r, jsx as o, Fragment as c } from "react/jsx-runtime";
+import { jsx as o, jsxs as r, Fragment as m } from "react/jsx-runtime";
 import * as l from "react";
 import * as e from "@radix-ui/react-dialog";
 import * as f from "@radix-ui/react-visually-hidden";
-import { cn as i } from "../../lib/utils.mjs";
+import { cn as s } from "../../lib/utils.mjs";
 import { SplashScreen as p } from "./splash-screen.mjs";
-const R = e.Root, T = e.Trigger, g = e.Portal, b = e.Close, n = l.forwardRef(({ className: a, ...t }, s) => /* @__PURE__ */ o(
+const R = e.Root, T = e.Trigger, g = e.Portal, b = e.Close, n = l.forwardRef(({ className: a, ...t }, i) => /* @__PURE__ */ o(
   e.Overlay,
   {
-    ref: s,
-    className: i(
-      "fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+    ref: i,
+    className: s(
+      "fixed inset-0 z-50 flex items-center justify-center bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
       a
     ),
     ...t
   }
 ));
 n.displayName = e.Overlay.displayName;
-const x = l.forwardRef(({ className: a, children: t, loading: s = !1, ...d }, m) => /* @__PURE__ */ r(g, { children: [
-  /* @__PURE__ */ o(n, {}),
-  /* @__PURE__ */ o(
-    e.Content,
-    {
-      ref: m,
-      className: i(
-        "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-card text-card-foreground p-6 shadow-lg duration-200 ease-out data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 will-change-transform sm:rounded-lg",
-        s && "min-h-[200px] items-center justify-center",
-        a
-      ),
-      ...d,
-      children: s ? /* @__PURE__ */ r(c, { children: [
-        /* @__PURE__ */ r(f.Root, { children: [
-          /* @__PURE__ */ o(e.Title, { children: "로딩 중" }),
-          /* @__PURE__ */ o(e.Description, { children: "콘텐츠를 불러오는 중입니다" })
-        ] }),
-        /* @__PURE__ */ o(p, {})
-      ] }) : t
-    }
-  )
-] }));
+const x = l.forwardRef(({ className: a, children: t, loading: i = !1, ...d }, c) => /* @__PURE__ */ o(g, { children: /* @__PURE__ */ o(n, { children: /* @__PURE__ */ o(
+  e.Content,
+  {
+    ref: c,
+    className: s(
+      "relative z-50 grid w-full max-w-lg gap-4 border bg-card text-card-foreground p-6 shadow-lg duration-200 ease-out data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 sm:rounded-lg",
+      i && "min-h-[200px] items-center justify-center",
+      a
+    ),
+    ...d,
+    children: i ? /* @__PURE__ */ r(m, { children: [
+      /* @__PURE__ */ r(f.Root, { children: [
+        /* @__PURE__ */ o(e.Title, { children: "로딩 중" }),
+        /* @__PURE__ */ o(e.Description, { children: "콘텐츠를 불러오는 중입니다" })
+      ] }),
+      /* @__PURE__ */ o(p, {})
+    ] }) : t
+  }
+) }) }));
 x.displayName = e.Content.displayName;
 const y = ({
   className: a,
@@ -45,7 +42,7 @@ const y = ({
 }) => /* @__PURE__ */ o(
   "div",
   {
-    className: i(
+    className: s(
       "flex flex-col space-y-1.5 text-center sm:text-left",
       a
     ),
@@ -59,7 +56,7 @@ const D = ({
 }) => /* @__PURE__ */ o(
   "div",
   {
-    className: i(
+    className: s(
       "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
       a
     ),
@@ -67,37 +64,37 @@ const D = ({
   }
 );
 D.displayName = "DialogFooter";
-const N = l.forwardRef(({ className: a, ...t }, s) => /* @__PURE__ */ o(
+const u = l.forwardRef(({ className: a, ...t }, i) => /* @__PURE__ */ o(
   e.Title,
   {
-    ref: s,
-    className: i(
+    ref: i,
+    className: s(
       "text-lg font-semibold leading-none tracking-tight",
       a
     ),
     ...t
   }
 ));
-N.displayName = e.Title.displayName;
-const u = l.forwardRef(({ className: a, ...t }, s) => /* @__PURE__ */ o(
+u.displayName = e.Title.displayName;
+const N = l.forwardRef(({ className: a, ...t }, i) => /* @__PURE__ */ o(
   e.Description,
   {
-    ref: s,
-    className: i("text-sm text-muted-foreground", a),
+    ref: i,
+    className: s("text-sm text-muted-foreground", a),
     ...t
   }
 ));
-u.displayName = e.Description.displayName;
+N.displayName = e.Description.displayName;
 export {
   R as Dialog,
   b as DialogClose,
   x as DialogContent,
-  u as DialogDescription,
+  N as DialogDescription,
   D as DialogFooter,
   y as DialogHeader,
   n as DialogOverlay,
   g as DialogPortal,
-  N as DialogTitle,
+  u as DialogTitle,
   T as DialogTrigger
 };
 //# sourceMappingURL=dialog.mjs.map
