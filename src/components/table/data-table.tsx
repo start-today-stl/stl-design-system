@@ -448,23 +448,27 @@ function DataTable<T extends { id: string | number }>({
 }: DataTableProps<T>) {
   // rowGrouping과 rowReorderable은 함께 사용할 수 없음 (rowSpan 셀 드래그 시 레이아웃 깨짐)
   const rowReorderable = rowGrouping ? false : rowReorderableProp
+  const shouldWarn =
+    typeof process !== "undefined"
+      ? process.env.NODE_ENV !== "production"
+      : false
 
   React.useEffect(() => {
-    if (rowGrouping && rowReorderableProp) {
+    if (shouldWarn && rowGrouping && rowReorderableProp) {
       console.warn(
         "[DataTable] rowGrouping과 rowReorderable은 함께 사용할 수 없습니다. " +
         "rowSpan 셀이 있는 행을 드래그하면 레이아웃이 깨지므로 rowReorderable이 무시됩니다."
       )
     }
-  }, [rowGrouping, rowReorderableProp])
+  }, [rowGrouping, rowReorderableProp, shouldWarn])
 
   React.useEffect(() => {
-    if (loadingContent && loadingMode !== "splash") {
+    if (shouldWarn && loadingContent && loadingMode !== "splash") {
       console.warn(
         "[DataTable] loadingContent와 loadingMode가 함께 전달되었습니다. loadingContent가 우선 적용됩니다."
       )
     }
-  }, [loadingContent, loadingMode])
+  }, [loadingContent, loadingMode, shouldWarn])
 
   const [editingCell, setEditingCell] = React.useState<EditingCell<T> | null>(null)
   const [editValue, setEditValue] = React.useState<T[keyof T] | null>(null)
@@ -516,6 +520,78 @@ function DataTable<T extends { id: string | number }>({
       .map((key) => columns.find((col) => col.accessorKey === key))
       .filter((col): col is DataTableColumn<T> => col !== undefined)
   }, [columns, currentColumnOrder, columnReorderable])
+
+  // headerGroups + sticky 제약: 그룹 내 sticky 구성이 혼합되면 1행 그룹 헤더 sticky 불가
+  const mixedStickyHeaderGroups = React.useMemo(() => {
+    if (!headerGroups || headerGroups.length === 0) return []
+
+    const columnMap = new Map<keyof T, DataTableColumn<T>>(
+      columns.map((col) => [col.accessorKey, col])
+    )
+
+    return headerGroups.flatMap((group, groupIndex) => {
+      const groupColumns = group.columns
+        .map((columnKey) => columnMap.get(columnKey))
+        .filter((col): col is DataTableColumn<T> => col !== undefined)
+
+      if (groupColumns.length === 0) return []
+
+      const stickyDirections = new Set(
+        groupColumns
+          .map((col) => col.sticky)
+          .filter((direction): direction is "left" | "right" => direction !== undefined)
+      )
+
+      const hasSticky = stickyDirections.size > 0
+      const hasNonSticky = groupColumns.some((col) => !col.sticky)
+      const hasMixedStickyDirection = stickyDirections.size > 1
+      const isMixedStickyConfig = hasSticky && (hasNonSticky || hasMixedStickyDirection)
+
+      if (!isMixedStickyConfig) return []
+
+      const headerLabel =
+        typeof group.header === "string" || typeof group.header === "number"
+          ? String(group.header)
+          : `#${groupIndex + 1}`
+
+      return [
+        {
+          headerLabel,
+          reason: hasMixedStickyDirection
+            ? "left/right sticky 혼합"
+            : "sticky/non-sticky 혼합",
+        },
+      ]
+    })
+  }, [headerGroups, columns])
+
+  const mixedStickyWarningKey = React.useMemo(
+    () =>
+      mixedStickyHeaderGroups
+        .map((group) => `${group.headerLabel}:${group.reason}`)
+        .join("|"),
+    [mixedStickyHeaderGroups]
+  )
+  const mixedStickyWarnedKeyRef = React.useRef("")
+
+  React.useEffect(() => {
+    if (!shouldWarn) return
+    if (!mixedStickyWarningKey) {
+      mixedStickyWarnedKeyRef.current = ""
+      return
+    }
+    if (mixedStickyWarnedKeyRef.current === mixedStickyWarningKey) return
+    mixedStickyWarnedKeyRef.current = mixedStickyWarningKey
+
+    const groupSummary = mixedStickyHeaderGroups
+      .map((group) => `${group.headerLabel}(${group.reason})`)
+      .join(", ")
+
+    console.warn(
+      "[DataTable] headerGroups 내 sticky 구성이 혼합되어 해당 그룹의 1행 그룹 헤더는 sticky가 적용되지 않습니다. " +
+      "그룹별로 sticky 방향을 통일하세요. 대상 그룹: " + groupSummary
+    )
+  }, [mixedStickyWarningKey, mixedStickyHeaderGroups, shouldWarn])
 
   // dnd-kit 센서 설정
   const sensors = useSensors(
@@ -1107,12 +1183,12 @@ function DataTable<T extends { id: string | number }>({
     return offset
   }
 
-  // 헤더 그룹의 colSpan 계산 (sticky 컬럼은 제외 - rowSpan=2로 별도 렌더링)
+  // 헤더 그룹의 colSpan 계산 (실제 렌더링되는 그룹 컬럼 전체)
   const getHeaderGroupColSpan = React.useCallback(
     (group: HeaderGroup<T>): number => {
-      // 실제 렌더링되는 컬럼 순서에서 해당 그룹에 속하면서 sticky가 아닌 컬럼 수 계산
+      // 실제 렌더링되는 컬럼 순서에서 해당 그룹에 속한 컬럼 수 계산
       return columnsToRender.filter((col) =>
-        group.columns.includes(col.accessorKey) && !col.sticky
+        group.columns.includes(col.accessorKey)
       ).length
     },
     [columnsToRender]
@@ -1152,10 +1228,48 @@ function DataTable<T extends { id: string | number }>({
     return borderCols
   }, [headerGroups, columnsToRender, groupedColumnsSet])
 
-  // 헤더 그룹 행에 렌더링할 아이템들 (standalone, stickyInGroup, 또는 group) - 미리 계산
+  // 헤더 그룹 셀이 sticky 가능하면(그룹 내 컬럼이 모두 같은 방향 sticky) sticky 적용
+  const getHeaderGroupStickyData = React.useCallback(
+    (group: HeaderGroup<T>): { style: React.CSSProperties; className: string } => {
+      const groupCols = columnsToRender.filter((col) => group.columns.includes(col.accessorKey))
+      if (groupCols.length === 0) return { style: {}, className: "" }
+
+      const allLeftSticky = groupCols.every((col) => col.sticky === "left")
+      const allRightSticky = groupCols.every((col) => col.sticky === "right")
+      if (!allLeftSticky && !allRightSticky) return { style: {}, className: "" }
+
+      const anchorColumn = allLeftSticky
+        ? groupCols[0]
+        : groupCols[groupCols.length - 1]
+      const anchorSticky = getStickyStyles(anchorColumn, true)
+
+      const getNumericWidth = (col: DataTableColumn<T>) => {
+        const resizedWidth = resizable ? getColumnWidth(col) : undefined
+        if (resizedWidth !== undefined) return resizedWidth
+        const width = col.width ?? col.minWidth
+        if (typeof width === "number") return width
+        const parsed = parseInt(String(width), 10)
+        return Number.isFinite(parsed) ? parsed : 150
+      }
+      const totalWidth = groupCols.reduce((sum, col) => sum + getNumericWidth(col), 0)
+      const widthPx = `${totalWidth}px`
+
+      return {
+        style: {
+          ...anchorSticky.style,
+          width: widthPx,
+          minWidth: widthPx,
+          maxWidth: widthPx,
+        },
+        className: anchorSticky.className,
+      }
+    },
+    [columnsToRender, getStickyStyles, getColumnWidth, resizable]
+  )
+
+  // 헤더 그룹 행에 렌더링할 아이템들 (standalone 또는 group) - 미리 계산
   type HeaderItem =
     | { type: "standalone"; col: DataTableColumn<T> }
-    | { type: "stickyInGroup"; col: DataTableColumn<T> }
     | { type: "group"; group: HeaderGroup<T> }
   const headerGroupItems = React.useMemo<HeaderItem[]>(() => {
     if (!headerGroups || headerGroups.length === 0) return []
@@ -1165,10 +1279,7 @@ function DataTable<T extends { id: string | number }>({
     for (const col of columnsToRender) {
       const groupIndex = headerGroups.findIndex(g => g.columns.includes(col.accessorKey))
       if (groupIndex !== -1) {
-        // 그룹에 속하지만 sticky인 컬럼은 별도로 rowSpan=2로 렌더링
-        if (col.sticky) {
-          items.push({ type: "stickyInGroup", col })
-        } else if (!processedGroups.has(groupIndex)) {
+        if (!processedGroups.has(groupIndex)) {
           processedGroups.add(groupIndex)
           items.push({ type: "group", group: headerGroups[groupIndex] })
         }
@@ -1267,8 +1378,9 @@ function DataTable<T extends { id: string | number }>({
 
               if (item.type === "group") {
                 const colSpan = getHeaderGroupColSpan(item.group)
-                // colSpan이 0이면 (모든 컬럼이 sticky인 경우) 렌더링하지 않음
+                // colSpan이 0이면 렌더링 대상 컬럼이 없는 그룹이므로 스킵
                 if (colSpan === 0) return null
+                const groupStickyData = getHeaderGroupStickyData(item.group)
                 return (
                   <TableHead
                     key={`group-${String(item.group.columns[0])}`}
@@ -1277,27 +1389,12 @@ function DataTable<T extends { id: string | number }>({
                       "text-center font-medium bg-slate-100 dark:bg-slate-800",
                       item.group.align === "left" && "text-left",
                       item.group.align === "right" && "text-right",
-                      needsBorder && "border-r border-slate-200 dark:border-slate-700"
+                      needsBorder && "border-r border-slate-200 dark:border-slate-700",
+                      groupStickyData.className
                     )}
+                    style={groupStickyData.style}
                   >
                     {item.group.header}
-                  </TableHead>
-                )
-              } else if (item.type === "stickyInGroup") {
-                // 그룹에 속하지만 sticky인 컬럼: rowSpan=2로 렌더링
-                const stickyData = getStickyStyles(item.col, true)
-                return (
-                  <TableHead
-                    key={`stickyInGroup-${String(item.col.accessorKey)}`}
-                    rowSpan={2}
-                    className={cn(
-                      getAlignClass(item.col.align),
-                      "bg-slate-100 dark:bg-slate-800 border-b-0",
-                      stickyData.className
-                    )}
-                    style={stickyData.style}
-                  >
-                    {item.col.header}
                   </TableHead>
                 )
               } else {
@@ -1324,7 +1421,7 @@ function DataTable<T extends { id: string | number }>({
 
         {/* 메인 헤더 행 */}
         <TableRow>
-          {/* headerGroups가 있으면 이 컬럼들은 위 행에서 rowSpan=2로 렌더링됨 */}
+          {/* headerGroups가 없을 때만 보조 컬럼 헤더(드래그/체크박스/확장/행삭제)를 렌더링 */}
           {!headerGroups && rowReorderable && (
             <TableHead
               className="!p-0 bg-slate-100 dark:bg-slate-800"
@@ -1424,17 +1521,17 @@ function DataTable<T extends { id: string | number }>({
             </TableHead>
           )}
 
-          {/* headerGroups가 있으면 그룹에 속한 컬럼만 렌더링 (독립 컬럼 및 sticky 컬럼은 위 행에서 rowSpan=2) */}
+          {/* headerGroups가 있으면 그룹에 속한 컬럼만 2행(메인 헤더)에 렌더링 */}
           {headerGroups ? (
             columnReorderable ? (
               <SortableContext items={columnIds} strategy={horizontalListSortingStrategy}>
                 {columnsToRender
-                  .filter((col) => groupedColumnsSet.has(col.accessorKey) && !col.sticky)
+                  .filter((col) => groupedColumnsSet.has(col.accessorKey))
                   .map(renderColumnHeader)}
               </SortableContext>
             ) : (
               columnsToRender
-                .filter((col) => groupedColumnsSet.has(col.accessorKey) && !col.sticky)
+                .filter((col) => groupedColumnsSet.has(col.accessorKey))
                 .map(renderColumnHeader)
             )
           ) : (
