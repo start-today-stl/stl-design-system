@@ -1325,6 +1325,9 @@ export const HeaderGrouping: Story = {
         <p className="mb-4 text-xs text-slate-400">
           "주소" 헤더가 시/구/동 컬럼을, "연락처" 헤더가 전화/휴대폰 컬럼을 그룹핑합니다.
           "이름" 컬럼은 그룹에 속하지 않아 두 행에 걸쳐 표시됩니다.
+          <br />
+          * headerGroups + sticky 사용 시, 같은 그룹 내부 컬럼의 sticky 방향(left/right/none)을 통일해야
+          1행 그룹 헤더도 sticky가 정상 동작합니다.
         </p>
         <DataTable
           columns={addressColumns}
