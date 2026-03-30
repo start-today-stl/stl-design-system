@@ -1026,6 +1026,10 @@ function DataTable<T extends { id: string | number }>({
     }
     const style = { ...baseStyle, ...stickyData.style }
 
+    // 그룹 구분선 클래스 (그룹 경계 컬럼에 적용)
+    const needsRightBorder = columnsWithRightBorder.has(column.accessorKey)
+    const groupBorderClass = needsRightBorder && "border-r border-slate-200 dark:border-slate-700"
+
     // 리사이즈 핸들 컴포넌트
     const resizeHandle = resizable && (
       <div
@@ -1052,7 +1056,7 @@ function DataTable<T extends { id: string | number }>({
           key={String(column.accessorKey)}
           id={String(column.accessorKey)}
           style={style}
-          className={cn(getAlignClass(column.align), stickyData.className, resizable && "relative overflow-visible")}
+          className={cn(getAlignClass(column.align), stickyData.className, resizable && "relative overflow-visible", groupBorderClass)}
         >
           {column.header}
           {resizeHandle}
@@ -1067,7 +1071,7 @@ function DataTable<T extends { id: string | number }>({
           sortDirection={getSortDirection(column.accessorKey)}
           onSort={() => handleSort(column.accessorKey)}
           style={style}
-          className={cn(getAlignClass(column.align), stickyData.className, resizable && "relative overflow-visible")}
+          className={cn(getAlignClass(column.align), stickyData.className, resizable && "relative overflow-visible", groupBorderClass)}
         >
           {column.header}
           {resizeHandle}
@@ -1079,7 +1083,7 @@ function DataTable<T extends { id: string | number }>({
       <TableHead
         key={String(column.accessorKey)}
         style={style}
-        className={cn(getAlignClass(column.align), stickyData.className, resizable && "relative overflow-visible")}
+        className={cn(getAlignClass(column.align), stickyData.className, resizable && "relative overflow-visible", groupBorderClass)}
       >
         {column.header}
         {resizeHandle}
@@ -1119,6 +1123,55 @@ function DataTable<T extends { id: string | number }>({
     if (!headerGroups) return new Set<keyof T>()
     return new Set(headerGroups.flatMap((g) => g.columns))
   }, [headerGroups])
+
+  // 구분선이 필요한 컬럼들 (그룹 경계 또는 단일↔그룹 경계)
+  const columnsWithRightBorder = React.useMemo(() => {
+    if (!headerGroups || headerGroups.length === 0) return new Set<keyof T>()
+    const borderCols = new Set<keyof T>()
+
+    // 컬럼이 어느 그룹에 속하는지 찾는 헬퍼
+    const getGroupIndex = (col: DataTableColumn<T>) => {
+      return headerGroups.findIndex(g => g.columns.includes(col.accessorKey))
+    }
+
+    // 그룹에 속한 컬럼들만 필터링
+    const groupedCols = columnsToRender.filter(col => groupedColumnsSet.has(col.accessorKey))
+
+    for (let i = 0; i < groupedCols.length - 1; i++) {
+      const currentCol = groupedCols[i]
+      const nextCol = groupedCols[i + 1]
+      const currentGroupIdx = getGroupIndex(currentCol)
+      const nextGroupIdx = getGroupIndex(nextCol)
+
+      // 다른 그룹으로 넘어가면 구분선 추가
+      if (currentGroupIdx !== nextGroupIdx) {
+        borderCols.add(currentCol.accessorKey)
+      }
+    }
+
+    return borderCols
+  }, [headerGroups, columnsToRender, groupedColumnsSet])
+
+  // 헤더 그룹 행에 렌더링할 아이템들 (standalone 또는 group) - 미리 계산
+  type HeaderItem = { type: "standalone"; col: DataTableColumn<T> } | { type: "group"; group: HeaderGroup<T> }
+  const headerGroupItems = React.useMemo<HeaderItem[]>(() => {
+    if (!headerGroups || headerGroups.length === 0) return []
+    const items: HeaderItem[] = []
+    const processedGroups = new Set<number>()
+
+    for (const col of columnsToRender) {
+      const groupIndex = headerGroups.findIndex(g => g.columns.includes(col.accessorKey))
+      if (groupIndex !== -1) {
+        if (!processedGroups.has(groupIndex)) {
+          processedGroups.add(groupIndex)
+          items.push({ type: "group", group: headerGroups[groupIndex] })
+        }
+      } else {
+        items.push({ type: "standalone", col })
+      }
+    }
+    return items
+  }, [headerGroups, columnsToRender])
 
   const tableContent = (
     <Table className={className} maxHeight={maxHeight}>
@@ -1201,62 +1254,44 @@ function DataTable<T extends { id: string | number }>({
             )}
 
             {/* 헤더 그룹과 독립 컬럼들 렌더링 */}
-            {(() => {
-              const groupedColumns = new Set(headerGroups.flatMap((g) => g.columns))
-              const elements: React.ReactNode[] = []
-              let i = 0
+            {headerGroupItems.map((item, idx) => {
+              const needsBorder = idx < headerGroupItems.length - 1
 
-              while (i < columnsToRender.length) {
-                const col = columnsToRender[i]
-
-                // 이 컬럼이 어떤 그룹에 속하는지 확인
-                const group = headerGroups.find((g) =>
-                  g.columns.includes(col.accessorKey)
+              if (item.type === "group") {
+                const colSpan = getHeaderGroupColSpan(item.group)
+                return (
+                  <TableHead
+                    key={`group-${String(item.group.columns[0])}`}
+                    colSpan={colSpan}
+                    className={cn(
+                      "text-center font-medium bg-slate-100 dark:bg-slate-800",
+                      item.group.align === "left" && "text-left",
+                      item.group.align === "right" && "text-right",
+                      needsBorder && "border-r border-slate-200 dark:border-slate-700"
+                    )}
+                  >
+                    {item.group.header}
+                  </TableHead>
                 )
-
-                if (group) {
-                  // 그룹의 첫 번째 컬럼인 경우에만 그룹 헤더 렌더링
-                  const groupFirstCol = columnsToRender.find((c) =>
-                    group.columns.includes(c.accessorKey)
-                  )
-                  if (groupFirstCol?.accessorKey === col.accessorKey) {
-                    const colSpan = getHeaderGroupColSpan(group)
-                    elements.push(
-                      <TableHead
-                        key={`group-${String(group.columns[0])}`}
-                        colSpan={colSpan}
-                        className={cn(
-                          "text-center font-medium bg-slate-100 dark:bg-slate-800",
-                          group.align === "left" && "text-left",
-                          group.align === "right" && "text-right"
-                        )}
-                      >
-                        {group.header}
-                      </TableHead>
-                    )
-                  }
-                } else if (!groupedColumns.has(col.accessorKey)) {
-                  // 독립 컬럼 (그룹에 속하지 않음) - rowSpan=2
-                  const stickyData = getStickyStyles(col, true)
-                  elements.push(
-                    <TableHead
-                      key={`standalone-${String(col.accessorKey)}`}
-                      rowSpan={2}
-                      className={cn(
-                        getAlignClass(col.align),
-                        "bg-slate-100 dark:bg-slate-800 border-b-0",
-                        stickyData.className
-                      )}
-                      style={stickyData.style}
-                    >
-                      {col.header}
-                    </TableHead>
-                  )
-                }
-                i++
+              } else {
+                const stickyData = getStickyStyles(item.col, true)
+                return (
+                  <TableHead
+                    key={`standalone-${String(item.col.accessorKey)}`}
+                    rowSpan={2}
+                    className={cn(
+                      getAlignClass(item.col.align),
+                      "bg-slate-100 dark:bg-slate-800 border-b-0",
+                      needsBorder && "border-r border-slate-200 dark:border-slate-700",
+                      stickyData.className
+                    )}
+                    style={stickyData.style}
+                  >
+                    {item.col.header}
+                  </TableHead>
+                )
               }
-              return elements
-            })()}
+            })}
           </TableRow>
         )}
 
