@@ -1255,7 +1255,9 @@ function DataTable<T extends { id: string | number }>({
 
             {/* 헤더 그룹과 독립 컬럼들 렌더링 */}
             {headerGroupItems.map((item, idx) => {
-              const needsBorder = idx < headerGroupItems.length - 1
+              // 그룹↔그룹 사이에만 구분선 (단일 컬럼은 구분선 없음)
+              const nextItem = headerGroupItems[idx + 1]
+              const needsBorder = item.type === "group" && nextItem?.type === "group"
 
               if (item.type === "group") {
                 const colSpan = getHeaderGroupColSpan(item.group)
@@ -1282,7 +1284,6 @@ function DataTable<T extends { id: string | number }>({
                     className={cn(
                       getAlignClass(item.col.align),
                       "bg-slate-100 dark:bg-slate-800 border-b-0",
-                      needsBorder && "border-r border-slate-200 dark:border-slate-700",
                       stickyData.className
                     )}
                     style={stickyData.style}
