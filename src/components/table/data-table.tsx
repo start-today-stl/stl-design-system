@@ -1107,12 +1107,12 @@ function DataTable<T extends { id: string | number }>({
     return offset
   }
 
-  // 헤더 그룹의 colSpan 계산
+  // 헤더 그룹의 colSpan 계산 (sticky 컬럼은 제외 - rowSpan=2로 별도 렌더링)
   const getHeaderGroupColSpan = React.useCallback(
     (group: HeaderGroup<T>): number => {
-      // 실제 렌더링되는 컬럼 순서에서 해당 그룹에 속하는 컬럼 수 계산
+      // 실제 렌더링되는 컬럼 순서에서 해당 그룹에 속하면서 sticky가 아닌 컬럼 수 계산
       return columnsToRender.filter((col) =>
-        group.columns.includes(col.accessorKey)
+        group.columns.includes(col.accessorKey) && !col.sticky
       ).length
     },
     [columnsToRender]
@@ -1152,8 +1152,11 @@ function DataTable<T extends { id: string | number }>({
     return borderCols
   }, [headerGroups, columnsToRender, groupedColumnsSet])
 
-  // 헤더 그룹 행에 렌더링할 아이템들 (standalone 또는 group) - 미리 계산
-  type HeaderItem = { type: "standalone"; col: DataTableColumn<T> } | { type: "group"; group: HeaderGroup<T> }
+  // 헤더 그룹 행에 렌더링할 아이템들 (standalone, stickyInGroup, 또는 group) - 미리 계산
+  type HeaderItem =
+    | { type: "standalone"; col: DataTableColumn<T> }
+    | { type: "stickyInGroup"; col: DataTableColumn<T> }
+    | { type: "group"; group: HeaderGroup<T> }
   const headerGroupItems = React.useMemo<HeaderItem[]>(() => {
     if (!headerGroups || headerGroups.length === 0) return []
     const items: HeaderItem[] = []
@@ -1162,7 +1165,10 @@ function DataTable<T extends { id: string | number }>({
     for (const col of columnsToRender) {
       const groupIndex = headerGroups.findIndex(g => g.columns.includes(col.accessorKey))
       if (groupIndex !== -1) {
-        if (!processedGroups.has(groupIndex)) {
+        // 그룹에 속하지만 sticky인 컬럼은 별도로 rowSpan=2로 렌더링
+        if (col.sticky) {
+          items.push({ type: "stickyInGroup", col })
+        } else if (!processedGroups.has(groupIndex)) {
           processedGroups.add(groupIndex)
           items.push({ type: "group", group: headerGroups[groupIndex] })
         }
@@ -1261,6 +1267,8 @@ function DataTable<T extends { id: string | number }>({
 
               if (item.type === "group") {
                 const colSpan = getHeaderGroupColSpan(item.group)
+                // colSpan이 0이면 (모든 컬럼이 sticky인 경우) 렌더링하지 않음
+                if (colSpan === 0) return null
                 return (
                   <TableHead
                     key={`group-${String(item.group.columns[0])}`}
@@ -1275,7 +1283,25 @@ function DataTable<T extends { id: string | number }>({
                     {item.group.header}
                   </TableHead>
                 )
+              } else if (item.type === "stickyInGroup") {
+                // 그룹에 속하지만 sticky인 컬럼: rowSpan=2로 렌더링
+                const stickyData = getStickyStyles(item.col, true)
+                return (
+                  <TableHead
+                    key={`stickyInGroup-${String(item.col.accessorKey)}`}
+                    rowSpan={2}
+                    className={cn(
+                      getAlignClass(item.col.align),
+                      "bg-slate-100 dark:bg-slate-800 border-b-0",
+                      stickyData.className
+                    )}
+                    style={stickyData.style}
+                  >
+                    {item.col.header}
+                  </TableHead>
+                )
               } else {
+                // standalone
                 const stickyData = getStickyStyles(item.col, true)
                 return (
                   <TableHead
@@ -1398,17 +1424,17 @@ function DataTable<T extends { id: string | number }>({
             </TableHead>
           )}
 
-          {/* headerGroups가 있으면 그룹에 속한 컬럼만 렌더링 (독립 컬럼은 위 행에서 rowSpan=2) */}
+          {/* headerGroups가 있으면 그룹에 속한 컬럼만 렌더링 (독립 컬럼 및 sticky 컬럼은 위 행에서 rowSpan=2) */}
           {headerGroups ? (
             columnReorderable ? (
               <SortableContext items={columnIds} strategy={horizontalListSortingStrategy}>
                 {columnsToRender
-                  .filter((col) => groupedColumnsSet.has(col.accessorKey))
+                  .filter((col) => groupedColumnsSet.has(col.accessorKey) && !col.sticky)
                   .map(renderColumnHeader)}
               </SortableContext>
             ) : (
               columnsToRender
-                .filter((col) => groupedColumnsSet.has(col.accessorKey))
+                .filter((col) => groupedColumnsSet.has(col.accessorKey) && !col.sticky)
                 .map(renderColumnHeader)
             )
           ) : (
