@@ -170,15 +170,28 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
             "[&>*:not(:last-child)_input]:border-r-0"
           )}
         >
-          <Input
-            value={inputDisplayText}
-            placeholder=""
-            readOnly
-            disabled={disabled}
-            error={error}
-            className="flex-1"
-            aria-label={label || "선택된 파일"}
-          />
+          <div className="relative flex-1">
+            <Input
+              value={inputDisplayText}
+              placeholder=""
+              readOnly
+              disabled={disabled}
+              error={error}
+              className={cn("w-full", maxFiles === 1 && files.length > 0 && "pr-8")}
+              aria-label={label || "선택된 파일"}
+            />
+            {/* 단일 파일 삭제 버튼 */}
+            {maxFiles === 1 && files.length > 0 && !disabled && (
+              <button
+                type="button"
+                onClick={() => handleRemoveFile(0)}
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                aria-label="파일 삭제"
+              >
+                <XIcon size={18} />
+              </button>
+            )}
+          </div>
           <Button
             type="button"
             variant="primary"
