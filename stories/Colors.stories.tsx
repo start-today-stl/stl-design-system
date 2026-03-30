@@ -1,4 +1,3 @@
-import * as React from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
@@ -162,12 +161,10 @@ const SemanticColorCard = ({
   name,
   color,
   variable,
-  textColor = "#fff",
 }: {
   name: string;
   color: string;
   variable: string;
-  textColor?: string;
 }) => (
   <div
     style={{

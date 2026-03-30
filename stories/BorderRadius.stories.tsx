@@ -1,4 +1,3 @@
-import * as React from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
@@ -23,12 +22,10 @@ const radiusTokens = [
 const RadiusCard = ({
   name,
   value,
-  variable,
   px,
 }: {
   name: string;
   value: string;
-  variable: string;
   px: number;
 }) => (
   <div
@@ -77,7 +74,7 @@ export const Scale: Story = {
         }}
       >
         {radiusTokens.map((token) => (
-          <RadiusCard key={token.name} {...token} />
+          <RadiusCard key={token.name} name={token.name} value={token.value} px={token.px} />
         ))}
       </div>
     </div>
