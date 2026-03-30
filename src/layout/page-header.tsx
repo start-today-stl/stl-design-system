@@ -69,7 +69,7 @@ const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>(
           ref={ref}
           className={cn(
             "flex items-end w-full",
-            sticky && "sticky top-0 z-10 bg-slate-50 dark:bg-slate-950",
+            sticky && "sticky top-0 z-30 bg-slate-50 dark:bg-slate-950",
             sticky && isStuck && "[box-shadow:0_4px_4px_-4px_rgb(0_0_0/0.15)]",
             className
           )}
