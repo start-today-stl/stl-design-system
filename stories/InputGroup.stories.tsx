@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react"
 import { InputGroup } from "../src/components/ui/input-group"
 import { Input } from "../src/components/ui/input"
 import { Button } from "../src/components/ui/button"
+import { Select } from "../src/components/ui/select"
 import { SearchIcon } from "../src/icons"
 
 const meta: Meta<typeof InputGroup> = {
@@ -95,6 +96,45 @@ export const MultipleElements: Story = {
       <Button variant="ghost">KRW</Button>
       <Input placeholder="금액을 입력하세요" type="number" className="flex-1" />
       <Button variant="primary">확인</Button>
+    </InputGroup>
+  ),
+}
+
+/** 셀렉트 + 인풋 조합 */
+export const WithSelect: Story = {
+  render: () => (
+    <InputGroup label="전화번호" size="lg">
+      <Select
+        options={[
+          { label: "+82", value: "82" },
+          { label: "+1", value: "1" },
+          { label: "+81", value: "81" },
+          { label: "+86", value: "86" },
+        ]}
+        value="82"
+        className="w-[100px]"
+      />
+      <Input placeholder="전화번호를 입력하세요" className="flex-1" />
+    </InputGroup>
+  ),
+}
+
+/** 셀렉트 + 인풋 + 버튼 조합 */
+export const SelectInputButton: Story = {
+  render: () => (
+    <InputGroup label="검색" size="lg">
+      <Select
+        options={[
+          { label: "전체", value: "all" },
+          { label: "제목", value: "title" },
+          { label: "내용", value: "content" },
+          { label: "작성자", value: "author" },
+        ]}
+        value="all"
+        className="w-[100px]"
+      />
+      <Input placeholder="검색어를 입력하세요" className="flex-1" />
+      <Button variant="primary">검색</Button>
     </InputGroup>
   ),
 }
