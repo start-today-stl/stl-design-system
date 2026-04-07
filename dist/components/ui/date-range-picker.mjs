@@ -1,113 +1,113 @@
-import { jsxs as q, jsx as p } from "react/jsx-runtime";
+import { jsxs as q, jsx as l } from "react/jsx-runtime";
 import * as c from "react";
 import { format as a, parse as D, isValid as w } from "date-fns";
 import { cn as A } from "../../lib/utils.mjs";
-import { InputField as G } from "./input.mjs";
-import { Calendar as H } from "./calendar.mjs";
-import { Popover as J, PopoverTrigger as K, PopoverContent as L } from "./popover.mjs";
-import { CalendarIcon as Q } from "../../icons/CalendarIcon.mjs";
-const F = ({
+import { InputField as G, inputSizeStyles as H } from "./input.mjs";
+import { Calendar as J } from "./calendar.mjs";
+import { Popover as K, PopoverTrigger as L, PopoverContent as Q } from "./popover.mjs";
+import { CalendarIcon as U } from "../../icons/CalendarIcon.mjs";
+const C = ({
   value: s,
-  onChange: e,
+  onChange: r,
   label: $,
   placeholder: b = "yyyy-mm-dd - yyyy-mm-dd",
-  dateFormat: n = "yyyy-MM-dd",
+  dateFormat: i = "yyyy-MM-dd",
   error: k,
   errorMessage: x,
   size: M = "lg",
   disabled: I,
   className: V,
-  reserveLabelSpace: T,
-  required: j,
-  disabledDates: B
+  reserveLabelSpace: z,
+  required: T,
+  disabledDates: j
 }) => {
-  const [R, u] = c.useState(!1), i = c.useRef(0), [d, y] = c.useState(s);
+  const [R, u] = c.useState(!1), n = c.useRef(0), [d, y] = c.useState(s);
   c.useEffect(() => {
     R || y(s);
   }, [s, R]);
-  const [E, O] = c.useState(/* @__PURE__ */ new Date()), l = (t) => {
+  const [B, S] = c.useState(/* @__PURE__ */ new Date()), p = (t) => {
     if (!t) return "";
-    const r = t.from ? a(t.from, n) : "", o = t.to ? a(t.to, n) : "";
-    return r && o ? `${r} - ${o}` : r ? `${r} - ` : "";
-  }, [P, f] = c.useState(l(s));
+    const e = t.from ? a(t.from, i) : "", o = t.to ? a(t.to, i) : "";
+    return e && o ? `${e} - ${o}` : e ? `${e} - ` : "";
+  }, [O, f] = c.useState(p(s));
   c.useEffect(() => {
-    f(l(s));
-  }, [s, n]);
-  const N = (t) => {
-    const r = t.target.value;
-    f(r);
-    const o = r.split(" - ");
+    f(p(s));
+  }, [s, i]);
+  const E = (t) => {
+    const e = t.target.value;
+    f(e);
+    const o = e.split(" - ");
     if (o.length === 2) {
-      const m = D(o[0].trim(), n, /* @__PURE__ */ new Date()), S = D(o[1].trim(), n, /* @__PURE__ */ new Date());
-      w(m) && w(S) && (e == null || e({ from: m, to: S }));
+      const m = D(o[0].trim(), i, /* @__PURE__ */ new Date()), P = D(o[1].trim(), i, /* @__PURE__ */ new Date());
+      w(m) && w(P) && (r == null || r({ from: m, to: P }));
     }
-  }, h = () => {
-    if (!P) {
-      e == null || e(void 0);
+  }, N = () => {
+    if (!O) {
+      r == null || r(void 0);
       return;
     }
-    const t = P.split(" - ");
+    const t = O.split(" - ");
     if (t.length === 2) {
-      const r = D(t[0].trim(), n, /* @__PURE__ */ new Date()), o = D(t[1].trim(), n, /* @__PURE__ */ new Date());
-      if (w(r) && w(o)) {
-        f(`${a(r, n)} - ${a(o, n)}`), e == null || e({ from: r, to: o });
+      const e = D(t[0].trim(), i, /* @__PURE__ */ new Date()), o = D(t[1].trim(), i, /* @__PURE__ */ new Date());
+      if (w(e) && w(o)) {
+        f(`${a(e, i)} - ${a(o, i)}`), r == null || r({ from: e, to: o });
         return;
       }
     }
-    f(l(s));
-  }, z = (t) => {
-    if (i.current += 1, i.current === 1) {
-      const r = { from: t, to: void 0 };
-      y(r), f(l(r)), e == null || e(r);
+    f(p(s));
+  }, h = (t) => {
+    if (n.current += 1, n.current === 1) {
+      const e = { from: t, to: void 0 };
+      y(e), f(p(e)), r == null || r(e);
     } else {
-      const r = (d == null ? void 0 : d.from) || t, o = t, m = r.getTime() <= o.getTime() ? { from: r, to: o } : { from: o, to: r };
-      y(m), f(l(m)), e == null || e(m), i.current = 0, u(!1);
+      const e = (d == null ? void 0 : d.from) || t, o = t, m = e.getTime() <= o.getTime() ? { from: e, to: o } : { from: o, to: e };
+      y(m), f(p(m)), r == null || r(m), n.current = 0, u(!1);
     }
   };
-  return /* @__PURE__ */ q(J, { open: R, onOpenChange: (t) => {
-    t ? (u(!0), i.current = 0, y(s), s != null && s.from ? O(s.from) : O(/* @__PURE__ */ new Date())) : i.current === 0 && u(!1);
+  return /* @__PURE__ */ q(K, { open: R, onOpenChange: (t) => {
+    t ? (u(!0), n.current = 0, y(s), s != null && s.from ? S(s.from) : S(/* @__PURE__ */ new Date())) : n.current === 0 && u(!1);
   }, children: [
-    /* @__PURE__ */ p(K, { asChild: !0, disabled: I, children: /* @__PURE__ */ p("div", { role: "combobox", "aria-haspopup": "dialog", className: A("inline-block", V), children: /* @__PURE__ */ p(
+    /* @__PURE__ */ l(L, { asChild: !0, disabled: I, children: /* @__PURE__ */ l("div", { role: "combobox", "aria-haspopup": "dialog", className: A("block", H[M], V), children: /* @__PURE__ */ l(
       G,
       {
         label: $,
-        value: P,
-        onChange: N,
-        onBlur: h,
+        value: O,
+        onChange: E,
+        onBlur: N,
         placeholder: b,
         error: k,
         errorMessage: x,
-        size: M,
+        size: "full",
         disabled: I,
         autoComplete: "off",
-        rightIcon: /* @__PURE__ */ p(Q, { size: 24 }),
+        rightIcon: /* @__PURE__ */ l(U, { size: 24 }),
         onRightIconClick: () => !I && u(!0),
-        reserveLabelSpace: T,
-        required: j
+        reserveLabelSpace: z,
+        required: T
       }
     ) }) }),
-    /* @__PURE__ */ p(
-      L,
+    /* @__PURE__ */ l(
+      Q,
       {
         className: "w-auto border-0 bg-transparent p-0 shadow-none",
         align: "start",
         onPointerDownOutside: (t) => {
-          i.current > 0 && t.preventDefault();
+          n.current > 0 && t.preventDefault();
         },
         onInteractOutside: (t) => {
-          i.current > 0 && t.preventDefault();
+          n.current > 0 && t.preventDefault();
         },
-        children: /* @__PURE__ */ p(
-          H,
+        children: /* @__PURE__ */ l(
+          J,
           {
             mode: "range",
             selected: d,
             onSelect: () => {
             },
-            onDayClick: z,
-            month: E,
-            onMonthChange: O,
-            disabled: B,
+            onDayClick: h,
+            month: B,
+            onMonthChange: S,
+            disabled: j,
             initialFocus: !0
           }
         )
@@ -116,6 +116,6 @@ const F = ({
   ] });
 };
 export {
-  F as DateRangePicker
+  C as DateRangePicker
 };
 //# sourceMappingURL=date-range-picker.mjs.map
