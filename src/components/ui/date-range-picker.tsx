@@ -5,7 +5,7 @@ import { format, parse, isValid } from "date-fns";
 import type { DateRange, Matcher } from "react-day-picker";
 
 import { cn } from "@/lib/utils";
-import { InputField, type InputSize } from "@/components/ui/input";
+import { InputField, type InputSize, inputSizeStyles } from "@/components/ui/input";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { CalendarIcon } from "@/icons";
@@ -177,7 +177,7 @@ const DateRangePicker = ({
   return (
     <Popover open={open} onOpenChange={handleOpenChange}>
       <PopoverTrigger asChild disabled={disabled}>
-        <div role="combobox" aria-haspopup="dialog" className={cn("inline-block", className)}>
+        <div role="combobox" aria-haspopup="dialog" className={cn("block", inputSizeStyles[size], className)}>
           <InputField
             label={label}
             value={inputValue}
@@ -186,7 +186,7 @@ const DateRangePicker = ({
             placeholder={placeholder}
             error={error}
             errorMessage={errorMessage}
-            size={size}
+            size="full"
             disabled={disabled}
             autoComplete="off"
             rightIcon={<CalendarIcon size={24} />}
