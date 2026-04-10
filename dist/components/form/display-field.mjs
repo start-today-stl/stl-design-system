@@ -7,45 +7,45 @@ const K = {
   md: "w-[260px]",
   lg: "w-[360px]",
   full: "w-full"
-}, L = (e, r = {}) => {
-  const { type: d, prefix: n, suffix: l } = r;
-  if (e == null || e === "") return null;
-  if (typeof e != "string" && typeof e != "number") return e;
-  const a = String(e);
-  let t;
+}, L = (t, s = {}) => {
+  const { type: d, prefix: n, suffix: l } = s;
+  if (t == null || t === "") return null;
+  if (typeof t != "string" && typeof t != "number") return t;
+  const a = String(t);
+  let e;
   switch (d) {
     case "phone":
-      t = a.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
+      e = a.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
       break;
     case "number": {
-      const s = typeof e == "number" ? e : parseFloat(a.replace(/[^0-9.-]/g, ""));
-      if (isNaN(s))
-        t = a;
+      const r = typeof t == "number" ? t : parseFloat(a.replace(/[^0-9.-]/g, ""));
+      if (isNaN(r))
+        e = a;
       else
-        return t = `${n || ""}${s.toLocaleString("ko-KR")}${l || ""}`, t;
+        return e = `${n || ""}${r.toLocaleString("ko-KR")}${l || ""}`, e;
       break;
     }
     case "date": {
-      const s = new Date(a);
-      isNaN(s.getTime()) ? t = a : t = `${s.getFullYear()}.${String(s.getMonth() + 1).padStart(2, "0")}.${String(s.getDate()).padStart(2, "0")}`;
+      const r = new Date(a);
+      isNaN(r.getTime()) ? e = a : e = `${r.getFullYear()}.${String(r.getMonth() + 1).padStart(2, "0")}.${String(r.getDate()).padStart(2, "0")}`;
       break;
     }
     case "email":
     case "text":
     default:
-      t = a;
+      e = a;
   }
-  return `${n || ""}${t}${l || ""}`;
+  return `${n || ""}${e}${l || ""}`;
 }, M = $.forwardRef(
   ({
-    label: e,
-    value: r,
+    label: t,
+    value: s,
     emptyText: d = "-",
     size: n = "full",
     type: l = "text",
     prefix: a,
-    suffix: t,
-    textOverflow: s = "wrap",
+    suffix: e,
+    textOverflow: r = "wrap",
     copyable: b = !1,
     onCopy: x,
     required: N,
@@ -57,9 +57,9 @@ const K = {
     layout: F = "vertical",
     labelWidth: f = 100
   }, V) => {
-    const o = F === "horizontal", T = typeof f == "number" ? `${f}px` : f, [g, h] = $.useState(!1), c = r == null || r === "", y = c ? d : L(r, { type: l, prefix: a, suffix: t }), R = w ? w(y) : y, j = async () => {
-      if (c || typeof r != "string" && typeof r != "number") return;
-      const k = String(r);
+    const o = F === "horizontal", T = typeof f == "number" ? `${f}px` : f, [g, h] = $.useState(!1), c = s == null || s === "", y = c ? d : L(s, { type: l, prefix: a, suffix: e }), R = w ? w(y) : y, j = async () => {
+      if (c || typeof s != "string" && typeof s != "number") return;
+      const k = String(s);
       try {
         await navigator.clipboard.writeText(k), h(!0), x == null || x(k), setTimeout(() => h(!1), 2e3);
       } catch (H) {
@@ -80,32 +80,32 @@ const K = {
           K[n]
         ),
         children: [
-          (e || D) && /* @__PURE__ */ m(
+          (t || D) && /* @__PURE__ */ m(
             "span",
             {
               className: p(
                 "flex items-center gap-1 text-xs text-slate-700 dark:text-slate-400",
-                !e && "invisible",
+                !t && "invisible",
                 o && "shrink-0",
                 z
               ),
               style: o ? { width: T } : void 0,
               children: [
                 N && /* @__PURE__ */ i("span", { className: "size-2 rounded-full bg-red-400", "aria-hidden": "true" }),
-                e || " "
+                t || " "
               ]
             }
           ),
-          /* @__PURE__ */ m("div", { className: "relative flex items-center gap-2 flex-1 min-w-0", children: [
+          /* @__PURE__ */ m("div", { className: "relative flex items-start gap-2 flex-1 min-w-0", children: [
             /* @__PURE__ */ i(
               "span",
               {
                 className: p(
                   "text-sm text-slate-900 dark:text-slate-100",
-                  // 최소 높이 확보 (InputField와 동일한 높이감) + 너비 채우기
-                  "min-h-[36px] flex items-center flex-1 min-w-0",
+                  // 최소 높이 확보 (InputField와 동일한 높이감)
+                  "min-h-[36px] py-[8px] flex-1 min-w-0",
                   c && "text-slate-400 dark:text-slate-500",
-                  E[s],
+                  E[r],
                   S
                 ),
                 children: R
