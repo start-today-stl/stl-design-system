@@ -177,7 +177,7 @@ export const DisplayField = React.forwardRef<HTMLDivElement, DisplayFieldProps>(
 
     // 텍스트 오버플로우 스타일
     const textOverflowStyles = {
-      wrap: "whitespace-normal break-words",
+      wrap: "whitespace-pre-wrap break-words",
       ellipsis: "whitespace-nowrap overflow-hidden text-ellipsis",
       truncate: "truncate",
     }
@@ -210,12 +210,12 @@ export const DisplayField = React.forwardRef<HTMLDivElement, DisplayFieldProps>(
         )}
 
         {/* 값 영역 */}
-        <div className="relative flex items-center gap-2 flex-1">
+        <div className="relative flex items-center gap-2 flex-1 min-w-0">
           <span
             className={cn(
               "text-sm text-slate-900 dark:text-slate-100",
               // 최소 높이 확보 (InputField와 동일한 높이감) + 너비 채우기
-              "min-h-[36px] flex items-center flex-1",
+              "min-h-[36px] flex items-center flex-1 min-w-0",
               isEmpty && "text-slate-400 dark:text-slate-500",
               textOverflowStyles[textOverflow],
               className
