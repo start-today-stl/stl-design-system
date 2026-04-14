@@ -9,7 +9,7 @@ const f = s.forwardRef(
     return /* @__PURE__ */ l(
       "div",
       {
-        className: r("relative w-full overflow-x-auto flex-1 bg-white dark:bg-slate-900", e && "overflow-y-auto", t),
+        className: r("relative w-full overflow-x-auto overflow-y-auto flex-1 bg-white dark:bg-slate-900", t),
         style: d,
         children: /* @__PURE__ */ l(
           "table",
@@ -73,7 +73,7 @@ const g = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
   }
 ));
 g.displayName = "TableHead";
-const k = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
+const h = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
   "td",
   {
     ref: a,
@@ -81,8 +81,8 @@ const k = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
     ...e
   }
 ));
-k.displayName = "TableCell";
-const w = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
+h.displayName = "TableCell";
+const k = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
   "caption",
   {
     ref: a,
@@ -90,8 +90,8 @@ const w = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
     ...e
   }
 ));
-w.displayName = "TableCaption";
-const h = s.forwardRef(({ className: t, sortDirection: e, onSort: a, children: o, ...d }, n) => {
+k.displayName = "TableCaption";
+const w = s.forwardRef(({ className: t, sortDirection: e, onSort: a, children: o, ...d }, n) => {
   const i = (b) => {
     a && (b.key === "Enter" || b.key === " ") && (b.preventDefault(), a());
   };
@@ -144,16 +144,16 @@ const h = s.forwardRef(({ className: t, sortDirection: e, onSort: a, children: o
     }
   );
 });
-h.displayName = "TableSortableHead";
+w.displayName = "TableSortableHead";
 export {
   f as Table,
   y as TableBody,
-  w as TableCaption,
-  k as TableCell,
+  k as TableCaption,
+  h as TableCell,
   u as TableFooter,
   g as TableHead,
   x as TableHeader,
   N as TableRow,
-  h as TableSortableHead
+  w as TableSortableHead
 };
 //# sourceMappingURL=table.mjs.map

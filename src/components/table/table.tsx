@@ -16,7 +16,7 @@ const Table = React.forwardRef<HTMLTableElement, TableProps>(
 
     return (
       <div
-        className={cn("relative w-full overflow-x-auto flex-1 bg-white dark:bg-slate-900", maxHeight && "overflow-y-auto", className)}
+        className={cn("relative w-full overflow-x-auto overflow-y-auto flex-1 bg-white dark:bg-slate-900", className)}
         style={wrapperStyle}
       >
         <table
