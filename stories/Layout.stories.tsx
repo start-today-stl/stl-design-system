@@ -833,18 +833,18 @@ export const NoSidebar: Story = {
 /**
  * ## Content 영역
  *
- * `AppShell.Content`는 `h-full flex flex-col overflow-auto`로 구성되어 있습니다.
+ * `AppShell.Content`는 `h-full flex flex-col`로 구성되어 있습니다.
  *
  * - 자식에서 `flex-1`을 사용하면 남은 세로 공간을 채울 수 있습니다.
- * - 컨텐츠가 영역보다 길면 자동 스크롤됩니다.
+ * - 자식이 공간을 채우면서 내부 스크롤이 필요한 경우, flex 체인의 모든 중간 요소에 `min-h-0`이 필요합니다.
  *
  * ### 디자인시스템 내장 동작
  * | 컴포넌트 | 기본 동작 |
  * |---|---|
- * | `Content` | `h-full flex flex-col overflow-auto` |
+ * | `Content` | `h-full flex flex-col` |
  * | `SearchForm` | `shrink-0` — flex 부모 안에서 줄어들지 않음 |
  * | `TableContainer` | `flex flex-col` — `grow` prop으로 남은 공간 채움 가능 |
- * | `Table` wrapper | `flex-1 bg-white` — 빈 데이터일 때도 배경 유지 |
+ * | `Table` wrapper | `flex-1 overflow-y-auto bg-white` — 내부 스크롤, 빈 데이터 배경 유지 |
  * | `PaginationFooter` | `mt-auto` — 컨테이너 하단 고정 |
  */
 export const ContentLayout: StoryObj = {
