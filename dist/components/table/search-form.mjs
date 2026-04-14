@@ -14,7 +14,7 @@ const k = j.forwardRef(
       {
         ref: w,
         className: i(
-          "w-full bg-card border border-border rounded-2xl overflow-hidden",
+          "w-full bg-card border border-border rounded-2xl overflow-hidden shrink-0",
           b
         ),
         ...v,

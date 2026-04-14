@@ -45,7 +45,7 @@ export const SearchForm = React.forwardRef<HTMLDivElement, SearchFormProps>(
       <div
         ref={ref}
         className={cn(
-          "w-full bg-card border border-border rounded-2xl overflow-hidden",
+          "w-full bg-card border border-border rounded-2xl overflow-hidden shrink-0",
           className
         )}
         {...props}

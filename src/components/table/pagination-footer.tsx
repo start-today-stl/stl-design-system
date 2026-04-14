@@ -63,7 +63,7 @@ const PaginationFooter = React.forwardRef<HTMLDivElement, PaginationFooterProps>
       <div
         ref={ref}
         className={cn(
-          "flex items-center py-3 px-4",
+          "flex items-center py-3 px-4 mt-auto",
           "bg-white dark:bg-slate-900",
           "border-t border-slate-200 dark:border-slate-700",
           className

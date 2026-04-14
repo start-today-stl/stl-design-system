@@ -1,7 +1,7 @@
 import { jsx as l, jsxs as c } from "react/jsx-runtime";
 import * as s from "react";
 import { cn as r } from "../../lib/utils.mjs";
-import { DownIcon as i } from "../../icons/DownIcon.mjs";
+import { DownIcon as m } from "../../icons/DownIcon.mjs";
 import { UpIcon as p } from "../../icons/UpIcon.mjs";
 const f = s.forwardRef(
   ({ className: t, maxHeight: e, ...a }, o) => {
@@ -9,13 +9,13 @@ const f = s.forwardRef(
     return /* @__PURE__ */ l(
       "div",
       {
-        className: r("relative w-full overflow-x-auto", e && "overflow-y-auto"),
+        className: r("relative w-full overflow-x-auto flex-1 bg-white dark:bg-slate-900", e && "overflow-y-auto", t),
         style: d,
         children: /* @__PURE__ */ l(
           "table",
           {
             ref: o,
-            className: r("caption-bottom text-xs", t),
+            className: r("caption-bottom text-xs"),
             style: { borderSpacing: 0, minWidth: "100%" },
             ...a
           }
@@ -60,7 +60,7 @@ const N = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
   }
 ));
 N.displayName = "TableRow";
-const k = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
+const g = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
   "th",
   {
     ref: a,
@@ -72,8 +72,8 @@ const k = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
     ...e
   }
 ));
-k.displayName = "TableHead";
-const w = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
+g.displayName = "TableHead";
+const k = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
   "td",
   {
     ref: a,
@@ -81,8 +81,8 @@ const w = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
     ...e
   }
 ));
-w.displayName = "TableCell";
-const g = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
+k.displayName = "TableCell";
+const w = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
   "caption",
   {
     ref: a,
@@ -90,9 +90,9 @@ const g = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
     ...e
   }
 ));
-g.displayName = "TableCaption";
+w.displayName = "TableCaption";
 const h = s.forwardRef(({ className: t, sortDirection: e, onSort: a, children: o, ...d }, n) => {
-  const m = (b) => {
+  const i = (b) => {
     a && (b.key === "Enter" || b.key === " ") && (b.preventDefault(), a());
   };
   return /* @__PURE__ */ l(
@@ -113,7 +113,7 @@ const h = s.forwardRef(({ className: t, sortDirection: e, onSort: a, children: o
           type: "button",
           className: "flex w-full items-center gap-1 text-left cursor-pointer",
           onClick: a,
-          onKeyDown: m,
+          onKeyDown: i,
           children: [
             o,
             /* @__PURE__ */ c("span", { className: "flex flex-col -space-y-1", children: [
@@ -128,7 +128,7 @@ const h = s.forwardRef(({ className: t, sortDirection: e, onSort: a, children: o
                 }
               ),
               /* @__PURE__ */ l(
-                i,
+                m,
                 {
                   size: 14,
                   className: r(
@@ -148,10 +148,10 @@ h.displayName = "TableSortableHead";
 export {
   f as Table,
   y as TableBody,
-  g as TableCaption,
-  w as TableCell,
+  w as TableCaption,
+  k as TableCell,
   u as TableFooter,
-  k as TableHead,
+  g as TableHead,
   x as TableHeader,
   N as TableRow,
   h as TableSortableHead

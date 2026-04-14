@@ -1,15 +1,15 @@
 import { jsxs as w, jsx as e } from "react/jsx-runtime";
 import * as y from "react";
 import { cn as S } from "../../lib/utils.mjs";
-import { Pagination as k, PageSizeSelector as L } from "./pagination.mjs";
-const P = y.forwardRef(
+import { Pagination as k, PageSizeSelector as u } from "./pagination.mjs";
+const L = y.forwardRef(
   ({
     className: n,
-    currentPage: r,
+    currentPage: o,
     totalPages: c,
     onPageChange: d,
     totalItems: t,
-    pageSize: o = 10,
+    pageSize: r = 10,
     pageSizeOptions: m = [10, 30, 50, 100],
     onPageSizeChange: l,
     previousLabel: f = "Previous",
@@ -20,13 +20,13 @@ const P = y.forwardRef(
     hideItemRange: b = !1,
     ...v
   }, g) => {
-    const s = t ? (r - 1) * o + 1 : 0, a = t ? Math.min(r * o, t) : 0, i = !b && t !== void 0, j = !N && l;
+    const s = t ? (o - 1) * r + 1 : 0, a = t ? Math.min(o * r, t) : 0, i = !b && t !== void 0, j = !N && l;
     return /* @__PURE__ */ w(
       "div",
       {
         ref: g,
         className: S(
-          "flex items-center py-3 px-4",
+          "flex items-center py-3 px-4 mt-auto",
           "bg-white dark:bg-slate-900",
           "border-t border-slate-200 dark:border-slate-700",
           n
@@ -37,7 +37,7 @@ const P = y.forwardRef(
           /* @__PURE__ */ e("div", { className: "flex items-center justify-center", children: /* @__PURE__ */ e(
             k,
             {
-              currentPage: r,
+              currentPage: o,
               totalPages: c,
               onPageChange: d,
               previousLabel: f,
@@ -45,9 +45,9 @@ const P = y.forwardRef(
             }
           ) }),
           /* @__PURE__ */ e("div", { className: "flex-1 flex justify-end", children: j && /* @__PURE__ */ e(
-            L,
+            u,
             {
-              pageSize: o,
+              pageSize: r,
               options: m,
               onPageSizeChange: l,
               label: p
@@ -58,8 +58,8 @@ const P = y.forwardRef(
     );
   }
 );
-P.displayName = "PaginationFooter";
+L.displayName = "PaginationFooter";
 export {
-  P as PaginationFooter
+  L as PaginationFooter
 };
 //# sourceMappingURL=pagination-footer.mjs.map

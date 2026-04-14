@@ -1,23 +1,24 @@
 import { jsx as d } from "react/jsx-runtime";
-import * as t from "react";
-import { cn as s } from "../../lib/utils.mjs";
-const m = t.forwardRef(
-  ({ className: r, children: e, ...o }, a) => /* @__PURE__ */ d(
+import * as s from "react";
+import { cn as t } from "../../lib/utils.mjs";
+const f = s.forwardRef(
+  ({ className: e, children: r, grow: o = !1, ...a }, l) => /* @__PURE__ */ d(
     "div",
     {
-      ref: a,
-      className: s(
-        "rounded-2xl overflow-hidden shadow-sm",
+      ref: l,
+      className: t(
+        "rounded-2xl overflow-hidden shadow-sm flex flex-col",
         "border border-slate-200 dark:border-slate-700",
-        r
+        o && "flex-1 min-h-0",
+        e
       ),
-      ...o,
-      children: e
+      ...a,
+      children: r
     }
   )
 );
-m.displayName = "TableContainer";
+f.displayName = "TableContainer";
 export {
-  m as TableContainer
+  f as TableContainer
 };
 //# sourceMappingURL=table-container.mjs.map

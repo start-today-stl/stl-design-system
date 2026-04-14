@@ -829,3 +829,41 @@ export const NoSidebar: Story = {
     </div>
   ),
 };
+
+/**
+ * ## Content 영역
+ *
+ * `AppShell.Content`는 `h-full flex flex-col overflow-auto`로 구성되어 있습니다.
+ *
+ * - 자식에서 `flex-1`을 사용하면 남은 세로 공간을 채울 수 있습니다.
+ * - 컨텐츠가 영역보다 길면 자동 스크롤됩니다.
+ *
+ * ### 디자인시스템 내장 동작
+ * | 컴포넌트 | 기본 동작 |
+ * |---|---|
+ * | `Content` | `h-full flex flex-col overflow-auto` |
+ * | `SearchForm` | `shrink-0` — flex 부모 안에서 줄어들지 않음 |
+ * | `TableContainer` | `flex flex-col` — `grow` prop으로 남은 공간 채움 가능 |
+ * | `Table` wrapper | `flex-1 bg-white` — 빈 데이터일 때도 배경 유지 |
+ * | `PaginationFooter` | `mt-auto` — 컨테이너 하단 고정 |
+ */
+export const ContentLayout: StoryObj = {
+  name: "Content",
+  render: () => (
+    <div style={{ height: 500 }} className="border rounded-lg overflow-hidden">
+      <div className="h-full flex flex-col p-4 gap-2">
+        <div className="bg-slate-100 rounded-xl p-4 shrink-0 text-sm text-slate-500">
+          shrink-0 영역 (줄어들지 않음)
+        </div>
+        <div className="flex-1 min-h-0 flex flex-col border rounded-xl overflow-hidden">
+          <div className="flex-1 bg-white flex items-center justify-center text-slate-400">
+            flex-1 영역 (남은 공간 채움)
+          </div>
+          <div className="px-4 py-2 bg-white border-t text-sm text-slate-500 mt-auto">
+            mt-auto 영역 (하단 고정)
+          </div>
+        </div>
+      </div>
+    </div>
+  ),
+};
