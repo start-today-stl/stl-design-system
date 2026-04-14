@@ -16,12 +16,12 @@ const Table = React.forwardRef<HTMLTableElement, TableProps>(
 
     return (
       <div
-        className={cn("relative w-full overflow-x-auto", maxHeight && "overflow-y-auto")}
+        className={cn("relative w-full overflow-x-auto flex-1 bg-white dark:bg-slate-900", maxHeight && "overflow-y-auto", className)}
         style={wrapperStyle}
       >
         <table
           ref={ref}
-          className={cn("caption-bottom text-xs", className)}
+          className={cn("caption-bottom text-xs")}
           style={{ borderSpacing: 0, minWidth: "100%" }}
           {...props}
         />

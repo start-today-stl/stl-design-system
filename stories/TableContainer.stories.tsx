@@ -10,6 +10,9 @@ const meta = {
   parameters: {
     layout: "padded",
   },
+  args: {
+    children: null,
+  },
 } satisfies Meta<typeof TableContainer>
 
 export default meta
@@ -142,5 +145,68 @@ export const TableOnly: Story = {
     <TableContainer>
       <DataTable columns={columns} data={sampleData} />
     </TableContainer>
+  ),
+}
+
+/**
+ * ## grow
+ *
+ * flex 부모의 남은 세로 공간을 채웁니다.
+ * 데이터가 없거나 적어도 일정한 높이를 유지해야 할 때 사용합니다.
+ *
+ * ```tsx
+ * <TableContainer grow>
+ *   ...
+ * </TableContainer>
+ * ```
+ *
+ * - 내부적으로 `flex-1 min-h-0` 적용
+ * - 빈 데이터일 때도 테이블 배경이 유지됨
+ * - PaginationFooter는 자동으로 하단 고정
+ */
+export const Grow: Story = {
+  render: () => (
+    <div style={{ height: 500, display: "flex", flexDirection: "column", gap: 8 }}>
+      <div style={{ padding: 16, background: "#f1f5f9", borderRadius: 12, flexShrink: 0 }}>
+        서치폼 영역 (shrink-0)
+      </div>
+      <TableContainer grow>
+        <TableToolbar totalCount={2}>
+          <Button variant="ghost" size="sm">다운로드</Button>
+        </TableToolbar>
+        <DataTable columns={columns} data={sampleData.slice(0, 2)} />
+        <PaginationFooter
+          currentPage={1}
+          totalPages={1}
+          pageSize={10}
+          onPageChange={() => {}}
+          onPageSizeChange={() => {}}
+        />
+      </TableContainer>
+    </div>
+  ),
+}
+
+/** grow + 빈 데이터 */
+export const GrowEmpty: Story = {
+  render: () => (
+    <div style={{ height: 500, display: "flex", flexDirection: "column", gap: 8 }}>
+      <div style={{ padding: 16, background: "#f1f5f9", borderRadius: 12, flexShrink: 0 }}>
+        서치폼 영역 (shrink-0)
+      </div>
+      <TableContainer grow>
+        <TableToolbar totalCount={0}>
+          <Button variant="ghost" size="sm">다운로드</Button>
+        </TableToolbar>
+        <DataTable columns={columns} data={[]} emptyMessage="데이터가 없습니다." />
+        <PaginationFooter
+          currentPage={1}
+          totalPages={0}
+          pageSize={10}
+          onPageChange={() => {}}
+          onPageSizeChange={() => {}}
+        />
+      </TableContainer>
+    </div>
   ),
 }

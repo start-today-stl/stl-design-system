@@ -1,23 +1,23 @@
-import { jsx as n } from "react/jsx-runtime";
-import * as p from "react";
-import { cn as a } from "../lib/utils.mjs";
-const f = p.forwardRef(
-  ({ className: t, padded: r = !0, children: o, ...e }, m) => /* @__PURE__ */ n(
+import { jsx as a } from "react/jsx-runtime";
+import * as l from "react";
+import { cn as m } from "../lib/utils.mjs";
+const p = l.forwardRef(
+  ({ className: o, padded: t = !0, children: r, ...e }, f) => /* @__PURE__ */ a(
     "div",
     {
-      ref: m,
-      className: a(
-        "min-h-full",
-        r && "px-4 pt-2.5 pb-4",
-        t
+      ref: f,
+      className: m(
+        "h-full flex flex-col overflow-auto",
+        t && "px-4 pt-2.5 pb-4",
+        o
       ),
       ...e,
-      children: o
+      children: r
     }
   )
 );
-f.displayName = "Content";
+p.displayName = "Content";
 export {
-  f as Content
+  p as Content
 };
 //# sourceMappingURL=content.mjs.map
