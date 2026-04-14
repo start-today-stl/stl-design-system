@@ -53,11 +53,11 @@ const K = {
     className: S,
     labelClassName: z,
     reserveLabelSpace: D,
-    renderValue: w,
+    renderValue: g,
     layout: F = "vertical",
     labelWidth: f = 100
   }, V) => {
-    const o = F === "horizontal", T = typeof f == "number" ? `${f}px` : f, [g, h] = $.useState(!1), c = s == null || s === "", y = c ? d : L(s, { type: l, prefix: a, suffix: e }), R = w ? w(y) : y, j = async () => {
+    const o = F === "horizontal", T = typeof f == "number" ? `${f}px` : f, [w, h] = $.useState(!1), c = s == null || s === "", y = c ? d : L(s, { type: l, prefix: a, suffix: e }), R = g ? g(y) : y, j = async () => {
       if (c || typeof s != "string" && typeof s != "number") return;
       const k = String(s);
       try {
@@ -96,14 +96,12 @@ const K = {
               ]
             }
           ),
-          /* @__PURE__ */ m("div", { className: "relative flex items-start gap-2 flex-1 min-w-0", children: [
+          /* @__PURE__ */ m("div", { className: "flex-1 min-w-0 min-h-[36px] py-[8px]", children: [
             /* @__PURE__ */ i(
               "span",
               {
                 className: p(
-                  "text-sm text-slate-900 dark:text-slate-100",
-                  // 최소 높이 확보 (InputField와 동일한 높이감)
-                  "min-h-[36px] py-[8px] flex-1 min-w-0",
+                  "text-sm text-slate-900 dark:text-slate-100 inline",
                   c && "text-slate-400 dark:text-slate-500",
                   E[r],
                   S
@@ -117,11 +115,11 @@ const K = {
                 type: "button",
                 onClick: j,
                 className: p(
-                  "shrink-0 p-1 rounded transition-colors cursor-pointer",
+                  "inline-flex align-middle ml-1 p-1 rounded transition-colors cursor-pointer",
                   "text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300",
-                  g && "text-green-500 dark:text-green-400"
+                  w && "text-green-500 dark:text-green-400"
                 ),
-                "aria-label": g ? "복사됨" : "복사",
+                "aria-label": w ? "복사됨" : "복사",
                 children: /* @__PURE__ */ i(I, { size: 20 })
               }
             )
