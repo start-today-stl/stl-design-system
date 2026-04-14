@@ -63,9 +63,9 @@ export const SearchForm = React.forwardRef<HTMLDivElement, SearchFormProps>(
                 type="button"
                 onClick={toggleCollapse}
                 aria-label={isCollapsed ? "펼치기" : "접기"}
-                className="flex items-center justify-center size-5 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                className="flex items-center justify-center size-8 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
               >
-                {isCollapsed ? <DownIcon size={20} /> : <UpIcon size={20} />}
+                {isCollapsed ? <DownIcon size={24} /> : <UpIcon size={24} />}
               </button>
             )}
           </div>
@@ -77,9 +77,9 @@ export const SearchForm = React.forwardRef<HTMLDivElement, SearchFormProps>(
               type="button"
               onClick={toggleCollapse}
               aria-label={isCollapsed ? "펼치기" : "접기"}
-              className="flex items-center justify-center size-5 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+              className="flex items-center justify-center size-8 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
             >
-              {isCollapsed ? <DownIcon size={20} /> : <UpIcon size={20} />}
+              {isCollapsed ? <DownIcon size={24} /> : <UpIcon size={24} />}
             </button>
           </div>
         )}
