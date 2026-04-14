@@ -34,8 +34,8 @@ const k = j.forwardRef(
                     type: "button",
                     onClick: f,
                     "aria-label": r ? "펼치기" : "접기",
-                    className: "flex items-center justify-center size-5 text-muted-foreground hover:text-foreground transition-colors cursor-pointer",
-                    children: r ? /* @__PURE__ */ e(u, { size: 20 }) : /* @__PURE__ */ e(x, { size: 20 })
+                    className: "flex items-center justify-center size-8 text-muted-foreground hover:text-foreground transition-colors cursor-pointer",
+                    children: r ? /* @__PURE__ */ e(u, { size: 24 }) : /* @__PURE__ */ e(x, { size: 24 })
                   }
                 )
               ]
@@ -47,8 +47,8 @@ const k = j.forwardRef(
               type: "button",
               onClick: f,
               "aria-label": r ? "펼치기" : "접기",
-              className: "flex items-center justify-center size-5 text-muted-foreground hover:text-foreground transition-colors cursor-pointer",
-              children: r ? /* @__PURE__ */ e(u, { size: 20 }) : /* @__PURE__ */ e(x, { size: 20 })
+              className: "flex items-center justify-center size-8 text-muted-foreground hover:text-foreground transition-colors cursor-pointer",
+              children: r ? /* @__PURE__ */ e(u, { size: 24 }) : /* @__PURE__ */ e(x, { size: 24 })
             }
           ) }),
           c && /* @__PURE__ */ e(
