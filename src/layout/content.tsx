@@ -13,7 +13,7 @@ const Content = React.forwardRef<HTMLDivElement, ContentProps>(
       <div
         ref={ref}
         className={cn(
-          "h-full flex flex-col overflow-auto",
+          "h-full flex flex-col",
           padded && "px-4 pt-2.5 pb-4",
           className
         )}
