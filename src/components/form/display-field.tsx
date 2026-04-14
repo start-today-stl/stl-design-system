@@ -210,12 +210,10 @@ export const DisplayField = React.forwardRef<HTMLDivElement, DisplayFieldProps>(
         )}
 
         {/* 값 영역 */}
-        <div className="relative flex items-start gap-2 flex-1 min-w-0">
+        <div className="flex-1 min-w-0 min-h-[36px] py-[8px]">
           <span
             className={cn(
-              "text-sm text-slate-900 dark:text-slate-100",
-              // 최소 높이 확보 (InputField와 동일한 높이감)
-              "min-h-[36px] py-[8px] flex-1 min-w-0",
+              "text-sm text-slate-900 dark:text-slate-100 inline",
               isEmpty && "text-slate-400 dark:text-slate-500",
               textOverflowStyles[textOverflow],
               className
@@ -223,14 +221,13 @@ export const DisplayField = React.forwardRef<HTMLDivElement, DisplayFieldProps>(
           >
             {displayValue}
           </span>
-
-          {/* 복사 버튼 */}
+          {/* 복사 버튼 - 텍스트 바로 옆에 붙음 */}
           {copyable && !isEmpty && (
             <button
               type="button"
               onClick={handleCopy}
               className={cn(
-                "shrink-0 p-1 rounded transition-colors cursor-pointer",
+                "inline-flex align-middle ml-1 p-1 rounded transition-colors cursor-pointer",
                 "text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300",
                 copied && "text-green-500 dark:text-green-400"
               )}
