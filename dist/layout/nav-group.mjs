@@ -1,130 +1,165 @@
-import { jsxs as s, jsx as e } from "react/jsx-runtime";
-import * as a from "react";
-import * as r from "@radix-ui/react-hover-card";
-import { cn as c } from "../lib/utils.mjs";
-import { NavItem as m } from "./nav-item.mjs";
-const y = c(
+import { jsxs as l, jsx as t } from "react/jsx-runtime";
+import * as r from "react";
+import * as o from "@radix-ui/react-popover";
+import { cn as p } from "../lib/utils.mjs";
+import { NavItem as f } from "./nav-item.mjs";
+const y = p(
   "min-w-[200px] py-2 px-3 rounded-md z-50",
   "bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-700",
   "shadow-lg",
+  "transition-all duration-150 ease-out",
   "data-[state=open]:animate-in data-[state=closed]:animate-out",
   "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
-  "data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
-  "data-[side=bottom]:slide-in-from-top-2 data-[side=right]:slide-in-from-left-2"
-), j = a.forwardRef(
+  "data-[state=closed]:zoom-out-98 data-[state=open]:zoom-in-98",
+  "data-[side=bottom]:slide-in-from-top-1 data-[side=right]:slide-in-from-left-1"
+), P = r.forwardRef(
   ({
-    className: f,
-    icon: o,
-    label: l,
+    className: h,
+    icon: d,
+    label: a,
     active: i,
-    defaultExpanded: k = !1,
-    expanded: g,
-    onExpandedChange: u,
-    collapsed: n,
-    layout: w = "vertical",
-    depth: p = 1,
-    _inFlyout: S = !1,
-    children: h,
-    ...x
-  }, v) => {
-    const [z, D] = a.useState(k), d = g !== void 0 ? g : z, [T, E] = a.useState(n);
-    a.useEffect(() => {
-      const t = setTimeout(() => E(n), 300);
-      return () => clearTimeout(t);
-    }, [n]);
-    const N = () => {
-      const t = !d;
-      D(t), u == null || u(t);
-    }, C = (t, R) => a.Children.map(h, (b) => a.isValidElement(b) ? a.cloneElement(b, {
+    defaultExpanded: S = !1,
+    expanded: E,
+    onExpandedChange: v,
+    collapsed: u,
+    layout: F = "vertical",
+    depth: x = 1,
+    _inFlyout: R = !1,
+    children: b,
+    ...g
+  }, C) => {
+    const [z, D] = r.useState(S), n = E !== void 0 ? E : z, [M, T] = r.useState(!1), s = r.useRef(null), c = () => {
+      s.current && (clearTimeout(s.current), s.current = null), T(!0);
+    }, m = () => {
+      s.current = setTimeout(() => {
+        T(!1);
+      }, 30);
+    }, [L, A] = r.useState(u);
+    r.useEffect(() => {
+      const e = setTimeout(() => A(u), 300);
+      return () => clearTimeout(e);
+    }, [u]), r.useEffect(() => () => {
+      s.current && clearTimeout(s.current);
+    }, []);
+    const k = () => {
+      const e = !n;
+      D(e), v == null || v(e);
+    }, w = (e, O) => r.Children.map(b, (N) => r.isValidElement(N) ? r.cloneElement(N, {
       layout: "vertical",
-      depth: R,
-      _inFlyout: t,
+      depth: O,
+      _inFlyout: e,
       collapsed: !1
-    }) : b);
-    return w === "horizontal" ? /* @__PURE__ */ s(r.Root, { openDelay: 0, closeDelay: 50, children: [
-      /* @__PURE__ */ e(r.Trigger, { asChild: !0, children: /* @__PURE__ */ e("div", { ref: v, className: c("relative", f), ...x, children: /* @__PURE__ */ e(
-        m,
+    }) : N);
+    return F === "horizontal" ? /* @__PURE__ */ l(o.Root, { open: M, children: [
+      /* @__PURE__ */ t(o.Trigger, { asChild: !0, children: /* @__PURE__ */ t(
+        "div",
         {
-          icon: o,
-          label: l,
-          active: i,
-          layout: "horizontal",
-          hasChildren: !0
+          ref: C,
+          className: p("relative", h),
+          onMouseEnter: c,
+          onMouseLeave: m,
+          ...g,
+          children: /* @__PURE__ */ t(
+            f,
+            {
+              icon: d,
+              label: a,
+              active: i,
+              layout: "horizontal",
+              hasChildren: !0
+            }
+          )
         }
-      ) }) }),
-      /* @__PURE__ */ e(r.Portal, { children: /* @__PURE__ */ s(
-        r.Content,
+      ) }),
+      /* @__PURE__ */ t(o.Portal, { children: /* @__PURE__ */ l(
+        o.Content,
         {
           className: y,
           sideOffset: 4,
           align: "start",
+          onMouseEnter: c,
+          onMouseLeave: m,
+          onOpenAutoFocus: (e) => e.preventDefault(),
+          onCloseAutoFocus: (e) => e.preventDefault(),
           children: [
-            /* @__PURE__ */ e("div", { className: "text-sm font-medium text-slate-600 dark:text-slate-300 mb-2 pb-2 border-b border-slate-100 dark:border-slate-700", children: l }),
-            /* @__PURE__ */ e("div", { className: "flex flex-col gap-0.5", children: C(!0, 2) })
+            /* @__PURE__ */ t("div", { className: "text-sm font-medium text-slate-600 dark:text-slate-300 mb-2 pb-2 border-b border-slate-100 dark:border-slate-700", children: a }),
+            /* @__PURE__ */ t("div", { className: "flex flex-col gap-0.5", children: w(!0, 2) })
           ]
         }
       ) })
-    ] }) : S ? /* @__PURE__ */ s("div", { ref: v, className: c("flex flex-col gap-0.5", f), ...x, children: [
-      /* @__PURE__ */ e(
-        m,
+    ] }) : R ? /* @__PURE__ */ l("div", { ref: C, className: p("flex flex-col gap-0.5", h), ...g, children: [
+      /* @__PURE__ */ t(
+        f,
         {
-          icon: o,
-          label: l,
+          icon: d,
+          label: a,
           active: i,
-          depth: p,
+          depth: x,
           hasChildren: !0,
-          expanded: d,
-          onClick: N
+          expanded: n,
+          onClick: k
         }
       ),
-      d && /* @__PURE__ */ e("div", { className: "flex flex-col gap-0.5", children: a.Children.map(h, (t) => a.isValidElement(t) ? a.cloneElement(t, {
+      n && /* @__PURE__ */ t("div", { className: "flex flex-col gap-0.5", children: r.Children.map(b, (e) => r.isValidElement(e) ? r.cloneElement(e, {
         collapsed: !1,
-        depth: (p || 1) + 1,
+        depth: (x || 1) + 1,
         _inFlyout: !0
-      }) : t) })
-    ] }) : n ? /* @__PURE__ */ s(r.Root, { openDelay: 0, closeDelay: 50, children: [
-      /* @__PURE__ */ e(r.Trigger, { asChild: !0, children: /* @__PURE__ */ e("div", { className: "relative w-full", children: /* @__PURE__ */ e(
-        m,
+      }) : e) })
+    ] }) : u ? /* @__PURE__ */ l(o.Root, { open: M, children: [
+      /* @__PURE__ */ t(o.Trigger, { asChild: !0, children: /* @__PURE__ */ t(
+        "div",
         {
-          icon: o,
-          label: l,
-          active: i,
-          collapsed: !0,
-          hasChildren: !0
+          className: "relative w-full",
+          onMouseEnter: c,
+          onMouseLeave: m,
+          children: /* @__PURE__ */ t(
+            f,
+            {
+              icon: d,
+              label: a,
+              active: i,
+              collapsed: !0,
+              hasChildren: !0
+            }
+          )
         }
-      ) }) }),
-      T && /* @__PURE__ */ e(r.Portal, { children: /* @__PURE__ */ s(
-        r.Content,
+      ) }),
+      L && /* @__PURE__ */ t(o.Portal, { children: /* @__PURE__ */ l(
+        o.Content,
         {
           className: y,
           side: "right",
           sideOffset: 16,
           align: "start",
+          onMouseEnter: c,
+          onMouseLeave: m,
+          onOpenAutoFocus: (e) => e.preventDefault(),
+          onCloseAutoFocus: (e) => e.preventDefault(),
           children: [
-            /* @__PURE__ */ e("div", { className: "text-sm font-medium text-slate-600 dark:text-slate-300 mb-2 pb-2 border-b border-slate-100 dark:border-slate-700", children: l }),
-            /* @__PURE__ */ e("div", { className: "flex flex-col gap-0.5", children: C(!0, 2) })
+            /* @__PURE__ */ t("div", { className: "text-sm font-medium text-slate-600 dark:text-slate-300 mb-2 pb-2 border-b border-slate-100 dark:border-slate-700", children: a }),
+            /* @__PURE__ */ t("div", { className: "flex flex-col gap-0.5", children: w(!0, 2) })
           ]
         }
       ) })
-    ] }) : /* @__PURE__ */ s("div", { ref: v, className: c("flex flex-col gap-0.5", f), ...x, children: [
-      /* @__PURE__ */ e(
-        m,
+    ] }) : /* @__PURE__ */ l("div", { ref: C, className: p("flex flex-col gap-0.5", h), ...g, children: [
+      /* @__PURE__ */ t(
+        f,
         {
-          icon: o,
-          label: l,
+          icon: d,
+          label: a,
           active: i,
-          depth: p,
+          depth: x,
           hasChildren: !0,
-          expanded: d,
-          onClick: N
+          expanded: n,
+          onClick: k
         }
       ),
-      d && /* @__PURE__ */ e("div", { className: "flex flex-col gap-0.5", children: h })
+      n && /* @__PURE__ */ t("div", { className: "flex flex-col gap-0.5", children: b })
     ] });
   }
 );
-j.displayName = "NavGroup";
+P.displayName = "NavGroup";
 export {
-  j as NavGroup
+  P as NavGroup
 };
 //# sourceMappingURL=nav-group.mjs.map
