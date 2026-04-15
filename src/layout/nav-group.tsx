@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import * as HoverCardPrimitive from "@radix-ui/react-hover-card"
+import * as PopoverPrimitive from "@radix-ui/react-popover"
 
 import { cn } from "@/lib/utils"
 import { NavItem } from "./nav-item"
@@ -35,10 +35,11 @@ const dropdownContentStyles = cn(
   "min-w-[200px] py-2 px-3 rounded-md z-50",
   "bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-700",
   "shadow-lg",
+  "transition-all duration-150 ease-out",
   "data-[state=open]:animate-in data-[state=closed]:animate-out",
   "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
-  "data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
-  "data-[side=bottom]:slide-in-from-top-2 data-[side=right]:slide-in-from-left-2"
+  "data-[state=closed]:zoom-out-98 data-[state=open]:zoom-in-98",
+  "data-[side=bottom]:slide-in-from-top-1 data-[side=right]:slide-in-from-left-1"
 )
 
 const NavGroup = React.forwardRef<HTMLDivElement, NavGroupProps>(
@@ -63,6 +64,24 @@ const NavGroup = React.forwardRef<HTMLDivElement, NavGroupProps>(
     const [expandedState, setExpandedState] = React.useState(defaultExpanded)
     const isExpanded = expandedProp !== undefined ? expandedProp : expandedState
 
+    // hover 상태 관리 (Popover용)
+    const [isHovered, setIsHovered] = React.useState(false)
+    const hoverTimeoutRef = React.useRef<NodeJS.Timeout | null>(null)
+
+    const handleMouseEnter = () => {
+      if (hoverTimeoutRef.current) {
+        clearTimeout(hoverTimeoutRef.current)
+        hoverTimeoutRef.current = null
+      }
+      setIsHovered(true)
+    }
+
+    const handleMouseLeave = () => {
+      hoverTimeoutRef.current = setTimeout(() => {
+        setIsHovered(false)
+      }, 30)
+    }
+
     // collapsed 상태가 안정화된 후에만 flyout 렌더링 (깜빡임 방지)
     const [stableCollapsed, setStableCollapsed] = React.useState(collapsed)
 
@@ -70,6 +89,15 @@ const NavGroup = React.forwardRef<HTMLDivElement, NavGroupProps>(
       const timer = setTimeout(() => setStableCollapsed(collapsed), 300)
       return () => clearTimeout(timer)
     }, [collapsed])
+
+    // cleanup timeout on unmount
+    React.useEffect(() => {
+      return () => {
+        if (hoverTimeoutRef.current) {
+          clearTimeout(hoverTimeoutRef.current)
+        }
+      }
+    }, [])
 
     const handleToggle = () => {
       const newExpanded = !isExpanded
@@ -92,12 +120,18 @@ const NavGroup = React.forwardRef<HTMLDivElement, NavGroupProps>(
       })
     }
 
-    // Horizontal 레이아웃: 호버 시 드롭다운 표시 (HoverCard Portal)
+    // Horizontal 레이아웃: 호버 시 드롭다운 표시 (Popover Portal)
     if (layout === "horizontal") {
       return (
-        <HoverCardPrimitive.Root openDelay={0} closeDelay={50}>
-          <HoverCardPrimitive.Trigger asChild>
-            <div ref={ref} className={cn("relative", className)} {...props}>
+        <PopoverPrimitive.Root open={isHovered}>
+          <PopoverPrimitive.Trigger asChild>
+            <div
+              ref={ref}
+              className={cn("relative", className)}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              {...props}
+            >
               <NavItem
                 icon={icon}
                 label={label}
@@ -106,12 +140,16 @@ const NavGroup = React.forwardRef<HTMLDivElement, NavGroupProps>(
                 hasChildren
               />
             </div>
-          </HoverCardPrimitive.Trigger>
-          <HoverCardPrimitive.Portal>
-            <HoverCardPrimitive.Content
+          </PopoverPrimitive.Trigger>
+          <PopoverPrimitive.Portal>
+            <PopoverPrimitive.Content
               className={dropdownContentStyles}
               sideOffset={4}
               align="start"
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              onOpenAutoFocus={(e) => e.preventDefault()}
+              onCloseAutoFocus={(e) => e.preventDefault()}
             >
               {/* 그룹 라벨 */}
               <div className="text-sm font-medium text-slate-600 dark:text-slate-300 mb-2 pb-2 border-b border-slate-100 dark:border-slate-700">
@@ -121,9 +159,9 @@ const NavGroup = React.forwardRef<HTMLDivElement, NavGroupProps>(
               <div className="flex flex-col gap-0.5">
                 {renderDropdownChildren(true, 2)}
               </div>
-            </HoverCardPrimitive.Content>
-          </HoverCardPrimitive.Portal>
-        </HoverCardPrimitive.Root>
+            </PopoverPrimitive.Content>
+          </PopoverPrimitive.Portal>
+        </PopoverPrimitive.Root>
       )
     }
 
@@ -160,12 +198,16 @@ const NavGroup = React.forwardRef<HTMLDivElement, NavGroupProps>(
       )
     }
 
-    // 축소 모드에서는 아이콘 + 라벨 표시 + 호버 시 플라이아웃 (HoverCard Portal)
+    // 축소 모드에서는 아이콘 + 라벨 표시 + 호버 시 플라이아웃 (Popover Portal)
     if (collapsed) {
       return (
-        <HoverCardPrimitive.Root openDelay={0} closeDelay={50}>
-          <HoverCardPrimitive.Trigger asChild>
-            <div className="relative w-full">
+        <PopoverPrimitive.Root open={isHovered}>
+          <PopoverPrimitive.Trigger asChild>
+            <div
+              className="relative w-full"
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+            >
               <NavItem
                 icon={icon}
                 label={label}
@@ -174,14 +216,18 @@ const NavGroup = React.forwardRef<HTMLDivElement, NavGroupProps>(
                 hasChildren
               />
             </div>
-          </HoverCardPrimitive.Trigger>
+          </PopoverPrimitive.Trigger>
           {stableCollapsed && (
-            <HoverCardPrimitive.Portal>
-              <HoverCardPrimitive.Content
+            <PopoverPrimitive.Portal>
+              <PopoverPrimitive.Content
                 className={dropdownContentStyles}
                 side="right"
                 sideOffset={16}
                 align="start"
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                onOpenAutoFocus={(e) => e.preventDefault()}
+                onCloseAutoFocus={(e) => e.preventDefault()}
               >
                 {/* 그룹 라벨 */}
                 <div className="text-sm font-medium text-slate-600 dark:text-slate-300 mb-2 pb-2 border-b border-slate-100 dark:border-slate-700">
@@ -191,10 +237,10 @@ const NavGroup = React.forwardRef<HTMLDivElement, NavGroupProps>(
                 <div className="flex flex-col gap-0.5">
                   {renderDropdownChildren(true, 2)}
                 </div>
-              </HoverCardPrimitive.Content>
-            </HoverCardPrimitive.Portal>
+              </PopoverPrimitive.Content>
+            </PopoverPrimitive.Portal>
           )}
-        </HoverCardPrimitive.Root>
+        </PopoverPrimitive.Root>
       )
     }
 
