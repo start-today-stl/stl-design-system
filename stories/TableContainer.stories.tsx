@@ -164,6 +164,7 @@ export const TableOnly: Story = {
  * - 빈 데이터일 때도 테이블 배경이 유지됨
  * - PaginationFooter는 자동으로 하단 고정
  * - 부모 flex 체인의 모든 중간 요소에 `min-h-0`이 있어야 테이블 내부 스크롤이 정상 동작합니다
+ * - `DataTable`의 `maxHeight`와 함께 사용하지 마세요. `grow`는 남은 공간을 채우고, `maxHeight`는 높이를 제한하므로 충돌합니다
  */
 export const Grow: Story = {
   render: () => (
