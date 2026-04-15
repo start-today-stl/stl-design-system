@@ -41,7 +41,7 @@ const y = c(
       _inFlyout: t,
       collapsed: !1
     }) : b);
-    return w === "horizontal" ? /* @__PURE__ */ s(r.Root, { openDelay: 0, closeDelay: 150, children: [
+    return w === "horizontal" ? /* @__PURE__ */ s(r.Root, { openDelay: 0, closeDelay: 50, children: [
       /* @__PURE__ */ e(r.Trigger, { asChild: !0, children: /* @__PURE__ */ e("div", { ref: v, className: c("relative", f), ...x, children: /* @__PURE__ */ e(
         m,
         {
@@ -82,7 +82,7 @@ const y = c(
         depth: (p || 1) + 1,
         _inFlyout: !0
       }) : t) })
-    ] }) : n ? /* @__PURE__ */ s(r.Root, { openDelay: 0, closeDelay: 150, children: [
+    ] }) : n ? /* @__PURE__ */ s(r.Root, { openDelay: 0, closeDelay: 50, children: [
       /* @__PURE__ */ e(r.Trigger, { asChild: !0, children: /* @__PURE__ */ e("div", { className: "relative w-full", children: /* @__PURE__ */ e(
         m,
         {
