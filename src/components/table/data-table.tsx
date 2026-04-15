@@ -947,14 +947,8 @@ function DataTable<T extends { id: string | number }>({
     }
 
     // 마지막 왼쪽/첫 번째 오른쪽 고정 컬럼 (그림자용)
-    const lastLeftSticky = leftColumns.length > 0 ? leftColumns[leftColumns.length - 1].accessorKey : null
-    const firstRightSticky = rightColumns.length > 0 ? rightColumns[0].accessorKey : null
-
     return (column: DataTableColumn<T>, isHeader: boolean, isSelected?: boolean, groupCellSelected?: boolean) => {
       if (!column.sticky) return { style: {}, className: "" }
-
-      const isLastLeft = column.accessorKey === lastLeftSticky
-      const isFirstRight = column.accessorKey === firstRightSticky
 
       // 컬럼 너비 (px 단위 문자열로 변환) - sticky는 고정 너비 필요
       const colWidth = getColWidth(column)
@@ -986,7 +980,6 @@ function DataTable<T extends { id: string | number }>({
               : effectiveSelected
                 ? "bg-blue-50 dark:bg-blue-900"
                 : "bg-slate-100 dark:bg-slate-800",
-            isLastLeft && "shadow-[2px_0_4px_rgba(0,0,0,0.08)]"
           ),
         }
       }
@@ -1004,7 +997,6 @@ function DataTable<T extends { id: string | number }>({
             : effectiveSelected
               ? "bg-blue-50 dark:bg-blue-900"
               : "bg-slate-100 dark:bg-slate-800",
-          isFirstRight && "shadow-[-2px_0_4px_rgba(0,0,0,0.08)]"
         ),
       }
     }
@@ -1299,7 +1291,7 @@ function DataTable<T extends { id: string | number }>({
             {/* 드래그 핸들, 체크박스, 확장 버튼 컬럼용 빈 셀 */}
             {rowReorderable && (
               <TableHead
-                className="!p-0 bg-slate-100 dark:bg-slate-800 border-b-0"
+                className="!p-0 bg-slate-100 dark:bg-slate-800"
                 rowSpan={2}
                 style={{
                   width: `${DRAG_HANDLE_WIDTH}px`,
@@ -1310,7 +1302,7 @@ function DataTable<T extends { id: string | number }>({
             )}
             {selectable && (
               <TableHead
-                className="!p-0 bg-slate-100 dark:bg-slate-800 border-b-0"
+                className="!p-0 bg-slate-100 dark:bg-slate-800"
                 rowSpan={2}
                 style={{
                   width: `${CHECKBOX_WIDTH}px`,
@@ -1330,7 +1322,7 @@ function DataTable<T extends { id: string | number }>({
             )}
             {expandable && (
               <TableHead
-                className="bg-slate-100 dark:bg-slate-800 border-b-0 !p-0"
+                className="bg-slate-100 dark:bg-slate-800 !p-0"
                 rowSpan={2}
                 style={{
                   width: `${EXPAND_WIDTH}px`,
