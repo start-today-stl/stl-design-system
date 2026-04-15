@@ -16,7 +16,7 @@ const f = s.forwardRef(
           {
             ref: o,
             className: r("caption-bottom text-xs"),
-            style: { borderSpacing: 0, minWidth: "100%" },
+            style: { borderCollapse: "separate", borderSpacing: 0, minWidth: "100%" },
             ...a
           }
         )
@@ -25,13 +25,13 @@ const f = s.forwardRef(
   }
 );
 f.displayName = "Table";
-const x = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l("thead", { ref: a, className: r("sticky top-0 z-20 bg-slate-100 dark:bg-slate-800 [&_tr]:border-b [&_tr]:border-slate-200 dark:[&_tr]:border-slate-700", t), ...e }));
+const x = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l("thead", { ref: a, className: r("sticky top-0 z-20 bg-slate-100 dark:bg-slate-800", t), ...e }));
 x.displayName = "TableHeader";
 const y = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
   "tbody",
   {
     ref: a,
-    className: r("[&_tr:last-child]:border-0", t),
+    className: r("[&_tr:last-child_td]:border-0", t),
     ...e
   }
 ));
@@ -53,7 +53,7 @@ const N = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
   {
     ref: a,
     className: r(
-      "group border-b border-slate-200 dark:border-slate-700 transition-colors bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 data-[state=selected]:bg-blue-50 dark:data-[state=selected]:bg-blue-900",
+      "group transition-colors bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 data-[state=selected]:bg-blue-50 dark:data-[state=selected]:bg-blue-900",
       t
     ),
     ...e
@@ -67,6 +67,7 @@ const g = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
     className: r(
       "h-9 pl-3 pr-1.5 py-1.5 text-left align-middle font-medium text-slate-600 dark:text-slate-300 [&:has([role=checkbox])]:pr-0",
       "bg-slate-100 dark:bg-slate-800",
+      "border-b border-slate-200 dark:border-slate-700",
       t
     ),
     ...e
@@ -77,7 +78,7 @@ const h = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
   "td",
   {
     ref: a,
-    className: r("h-9 pl-3 pr-1.5 py-1.5 align-middle text-slate-800 dark:text-slate-200 [&:has([role=checkbox])]:pr-0", t),
+    className: r("h-9 pl-3 pr-1.5 py-1.5 align-middle text-slate-800 dark:text-slate-200 [&:has([role=checkbox])]:pr-0 border-b border-slate-200 dark:border-slate-700", t),
     ...e
   }
 ));
