@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import * as HoverCardPrimitive from "@radix-ui/react-hover-card"
 
 import { cn } from "@/lib/utils"
 import { NavItem } from "./nav-item"
@@ -28,6 +29,17 @@ export interface NavGroupProps extends React.HTMLAttributes<HTMLDivElement> {
   /** @internal 플라이아웃 내부 여부 (collapsed 모드에서 중첩 NavGroup 처리용) */
   _inFlyout?: boolean
 }
+
+/** 드롭다운 컨텐츠 공통 스타일 */
+const dropdownContentStyles = cn(
+  "min-w-[200px] py-2 px-3 rounded-md z-50",
+  "bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-700",
+  "shadow-lg",
+  "data-[state=open]:animate-in data-[state=closed]:animate-out",
+  "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+  "data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
+  "data-[side=bottom]:slide-in-from-top-2 data-[side=right]:slide-in-from-left-2"
+)
 
 const NavGroup = React.forwardRef<HTMLDivElement, NavGroupProps>(
   (
@@ -65,44 +77,53 @@ const NavGroup = React.forwardRef<HTMLDivElement, NavGroupProps>(
       onExpandedChange?.(newExpanded)
     }
 
-    // Horizontal 레이아웃: 호버 시 드롭다운 표시
+    // 드롭다운 children 렌더링 헬퍼
+    const renderDropdownChildren = (inFlyout: boolean, childDepth: number) => {
+      return React.Children.map(children, (child) => {
+        if (React.isValidElement(child)) {
+          return React.cloneElement(child as React.ReactElement<{ layout?: NavMenuLayout; depth?: number; _inFlyout?: boolean; collapsed?: boolean }>, {
+            layout: "vertical",
+            depth: childDepth,
+            _inFlyout: inFlyout,
+            collapsed: false,
+          })
+        }
+        return child
+      })
+    }
+
+    // Horizontal 레이아웃: 호버 시 드롭다운 표시 (HoverCard Portal)
     if (layout === "horizontal") {
       return (
-        <div ref={ref} className={cn("relative group", className)} {...props}>
-          {/* 메뉴 버튼 */}
-          <NavItem
-            icon={icon}
-            label={label}
-            active={active}
-            layout="horizontal"
-            hasChildren
-          />
-          {/* 호버 시 드롭다운 메뉴 - 사이드바 mini flyout과 동일한 스타일 */}
-          <div className={cn(
-            "absolute top-full left-0 mt-1 min-w-[200px] py-2 px-3 rounded-md",
-            "bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-700",
-            "shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible",
-            "transition-all duration-200 z-50"
-          )}>
-            {/* 그룹 라벨 */}
-            <div className="text-sm font-medium text-slate-600 dark:text-slate-300 mb-2 pb-2 border-b border-slate-100 dark:border-slate-700">
-              {label}
+        <HoverCardPrimitive.Root openDelay={0} closeDelay={50}>
+          <HoverCardPrimitive.Trigger asChild>
+            <div ref={ref} className={cn("relative", className)} {...props}>
+              <NavItem
+                icon={icon}
+                label={label}
+                active={active}
+                layout="horizontal"
+                hasChildren
+              />
             </div>
-            {/* 하위 메뉴 */}
-            <div className="flex flex-col gap-0.5">
-              {React.Children.map(children, (child) => {
-                if (React.isValidElement(child)) {
-                  return React.cloneElement(child as React.ReactElement<{ layout?: NavMenuLayout; depth?: number; _inFlyout?: boolean }>, {
-                    layout: "vertical", // 드롭다운 내부는 vertical
-                    depth: 2,
-                    _inFlyout: true,
-                  })
-                }
-                return child
-              })}
-            </div>
-          </div>
-        </div>
+          </HoverCardPrimitive.Trigger>
+          <HoverCardPrimitive.Portal>
+            <HoverCardPrimitive.Content
+              className={dropdownContentStyles}
+              sideOffset={4}
+              align="start"
+            >
+              {/* 그룹 라벨 */}
+              <div className="text-sm font-medium text-slate-600 dark:text-slate-300 mb-2 pb-2 border-b border-slate-100 dark:border-slate-700">
+                {label}
+              </div>
+              {/* 하위 메뉴 */}
+              <div className="flex flex-col gap-0.5">
+                {renderDropdownChildren(true, 2)}
+              </div>
+            </HoverCardPrimitive.Content>
+          </HoverCardPrimitive.Portal>
+        </HoverCardPrimitive.Root>
       )
     }
 
@@ -139,48 +160,41 @@ const NavGroup = React.forwardRef<HTMLDivElement, NavGroupProps>(
       )
     }
 
-    // 축소 모드에서는 아이콘 + 라벨 표시 + 호버 시 플라이아웃
+    // 축소 모드에서는 아이콘 + 라벨 표시 + 호버 시 플라이아웃 (HoverCard Portal)
     if (collapsed) {
       return (
-        <div className="relative group w-full">
-          {/* 아이콘 + 라벨 (NavItem 사용) */}
-          <NavItem
-            icon={icon}
-            label={label}
-            active={active}
-            collapsed
-            hasChildren
-          />
-          {/* 호버 시 플라이아웃 메뉴 - 사이드바 우측에 간격 두고 표시 */}
-          {/* collapsed 상태가 안정화된 후에만 렌더링 (깜빡임 방지) */}
+        <HoverCardPrimitive.Root openDelay={0} closeDelay={50}>
+          <HoverCardPrimitive.Trigger asChild>
+            <div className="relative w-full">
+              <NavItem
+                icon={icon}
+                label={label}
+                active={active}
+                collapsed
+                hasChildren
+              />
+            </div>
+          </HoverCardPrimitive.Trigger>
           {stableCollapsed && (
-          <div className={cn(
-            "absolute left-full top-0 ml-4 min-w-[200px] py-2 px-3 rounded-md",
-            "bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-700",
-            "shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible",
-            "transition-all duration-200 z-50"
-          )}>
-            {/* 그룹 라벨 */}
-            <div className="text-sm font-medium text-slate-600 dark:text-slate-300 mb-2 pb-2 border-b border-slate-100 dark:border-slate-700">
-              {label}
-            </div>
-            {/* 하위 메뉴 */}
-            <div className="flex flex-col gap-0.5">
-              {React.Children.map(children, (child) => {
-                if (React.isValidElement(child)) {
-                  // 하위 메뉴는 collapsed 해제하고 depth 조정, 플라이아웃 내부 표시
-                  return React.cloneElement(child as React.ReactElement<{ collapsed?: boolean; depth?: number; _inFlyout?: boolean }>, {
-                    collapsed: false,
-                    depth: 2,
-                    _inFlyout: true,
-                  })
-                }
-                return child
-              })}
-            </div>
-          </div>
+            <HoverCardPrimitive.Portal>
+              <HoverCardPrimitive.Content
+                className={dropdownContentStyles}
+                side="right"
+                sideOffset={16}
+                align="start"
+              >
+                {/* 그룹 라벨 */}
+                <div className="text-sm font-medium text-slate-600 dark:text-slate-300 mb-2 pb-2 border-b border-slate-100 dark:border-slate-700">
+                  {label}
+                </div>
+                {/* 하위 메뉴 */}
+                <div className="flex flex-col gap-0.5">
+                  {renderDropdownChildren(true, 2)}
+                </div>
+              </HoverCardPrimitive.Content>
+            </HoverCardPrimitive.Portal>
           )}
-        </div>
+        </HoverCardPrimitive.Root>
       )
     }
 

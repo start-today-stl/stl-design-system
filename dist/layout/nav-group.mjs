@@ -1,118 +1,130 @@
-import { jsxs as a, jsx as r } from "react/jsx-runtime";
-import * as t from "react";
-import { cn as o } from "../lib/utils.mjs";
+import { jsxs as s, jsx as e } from "react/jsx-runtime";
+import * as a from "react";
+import * as r from "@radix-ui/react-hover-card";
+import { cn as c } from "../lib/utils.mjs";
 import { NavItem as m } from "./nav-item.mjs";
-const S = t.forwardRef(
+const y = c(
+  "min-w-[200px] py-2 px-3 rounded-md z-50",
+  "bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-700",
+  "shadow-lg",
+  "data-[state=open]:animate-in data-[state=closed]:animate-out",
+  "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+  "data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
+  "data-[side=bottom]:slide-in-from-top-2 data-[side=right]:slide-in-from-left-2"
+), j = a.forwardRef(
   ({
-    className: p,
-    icon: i,
+    className: f,
+    icon: o,
     label: l,
-    active: d,
-    defaultExpanded: g = !1,
-    expanded: v,
-    onExpandedChange: f,
+    active: i,
+    defaultExpanded: k = !1,
+    expanded: g,
+    onExpandedChange: u,
     collapsed: n,
-    layout: N = "vertical",
-    depth: c = 1,
-    _inFlyout: y = !1,
-    children: u,
+    layout: w = "vertical",
+    depth: p = 1,
+    _inFlyout: S = !1,
+    children: h,
     ...x
-  }, b) => {
-    const [k, w] = t.useState(g), s = v !== void 0 ? v : k, [C, E] = t.useState(n);
-    t.useEffect(() => {
-      const e = setTimeout(() => E(n), 300);
-      return () => clearTimeout(e);
+  }, v) => {
+    const [z, D] = a.useState(k), d = g !== void 0 ? g : z, [T, E] = a.useState(n);
+    a.useEffect(() => {
+      const t = setTimeout(() => E(n), 300);
+      return () => clearTimeout(t);
     }, [n]);
-    const h = () => {
-      const e = !s;
-      w(e), f == null || f(e);
-    };
-    return N === "horizontal" ? /* @__PURE__ */ a("div", { ref: b, className: o("relative group", p), ...x, children: [
-      /* @__PURE__ */ r(
+    const N = () => {
+      const t = !d;
+      D(t), u == null || u(t);
+    }, C = (t, R) => a.Children.map(h, (b) => a.isValidElement(b) ? a.cloneElement(b, {
+      layout: "vertical",
+      depth: R,
+      _inFlyout: t,
+      collapsed: !1
+    }) : b);
+    return w === "horizontal" ? /* @__PURE__ */ s(r.Root, { openDelay: 0, closeDelay: 150, children: [
+      /* @__PURE__ */ e(r.Trigger, { asChild: !0, children: /* @__PURE__ */ e("div", { ref: v, className: c("relative", f), ...x, children: /* @__PURE__ */ e(
         m,
         {
-          icon: i,
+          icon: o,
           label: l,
-          active: d,
+          active: i,
           layout: "horizontal",
           hasChildren: !0
         }
-      ),
-      /* @__PURE__ */ a("div", { className: o(
-        "absolute top-full left-0 mt-1 min-w-[200px] py-2 px-3 rounded-md",
-        "bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-700",
-        "shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible",
-        "transition-all duration-200 z-50"
-      ), children: [
-        /* @__PURE__ */ r("div", { className: "text-sm font-medium text-slate-600 dark:text-slate-300 mb-2 pb-2 border-b border-slate-100 dark:border-slate-700", children: l }),
-        /* @__PURE__ */ r("div", { className: "flex flex-col gap-0.5", children: t.Children.map(u, (e) => t.isValidElement(e) ? t.cloneElement(e, {
-          layout: "vertical",
-          // 드롭다운 내부는 vertical
-          depth: 2,
-          _inFlyout: !0
-        }) : e) })
-      ] })
-    ] }) : y ? /* @__PURE__ */ a("div", { ref: b, className: o("flex flex-col gap-0.5", p), ...x, children: [
-      /* @__PURE__ */ r(
+      ) }) }),
+      /* @__PURE__ */ e(r.Portal, { children: /* @__PURE__ */ s(
+        r.Content,
+        {
+          className: y,
+          sideOffset: 4,
+          align: "start",
+          children: [
+            /* @__PURE__ */ e("div", { className: "text-sm font-medium text-slate-600 dark:text-slate-300 mb-2 pb-2 border-b border-slate-100 dark:border-slate-700", children: l }),
+            /* @__PURE__ */ e("div", { className: "flex flex-col gap-0.5", children: C(!0, 2) })
+          ]
+        }
+      ) })
+    ] }) : S ? /* @__PURE__ */ s("div", { ref: v, className: c("flex flex-col gap-0.5", f), ...x, children: [
+      /* @__PURE__ */ e(
         m,
         {
-          icon: i,
+          icon: o,
           label: l,
-          active: d,
-          depth: c,
+          active: i,
+          depth: p,
           hasChildren: !0,
-          expanded: s,
-          onClick: h
+          expanded: d,
+          onClick: N
         }
       ),
-      s && /* @__PURE__ */ r("div", { className: "flex flex-col gap-0.5", children: t.Children.map(u, (e) => t.isValidElement(e) ? t.cloneElement(e, {
+      d && /* @__PURE__ */ e("div", { className: "flex flex-col gap-0.5", children: a.Children.map(h, (t) => a.isValidElement(t) ? a.cloneElement(t, {
         collapsed: !1,
-        depth: (c || 1) + 1,
+        depth: (p || 1) + 1,
         _inFlyout: !0
-      }) : e) })
-    ] }) : n ? /* @__PURE__ */ a("div", { className: "relative group w-full", children: [
-      /* @__PURE__ */ r(
+      }) : t) })
+    ] }) : n ? /* @__PURE__ */ s(r.Root, { openDelay: 0, closeDelay: 150, children: [
+      /* @__PURE__ */ e(r.Trigger, { asChild: !0, children: /* @__PURE__ */ e("div", { className: "relative w-full", children: /* @__PURE__ */ e(
         m,
         {
-          icon: i,
+          icon: o,
           label: l,
-          active: d,
+          active: i,
           collapsed: !0,
           hasChildren: !0
         }
-      ),
-      C && /* @__PURE__ */ a("div", { className: o(
-        "absolute left-full top-0 ml-4 min-w-[200px] py-2 px-3 rounded-md",
-        "bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-700",
-        "shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible",
-        "transition-all duration-200 z-50"
-      ), children: [
-        /* @__PURE__ */ r("div", { className: "text-sm font-medium text-slate-600 dark:text-slate-300 mb-2 pb-2 border-b border-slate-100 dark:border-slate-700", children: l }),
-        /* @__PURE__ */ r("div", { className: "flex flex-col gap-0.5", children: t.Children.map(u, (e) => t.isValidElement(e) ? t.cloneElement(e, {
-          collapsed: !1,
-          depth: 2,
-          _inFlyout: !0
-        }) : e) })
-      ] })
-    ] }) : /* @__PURE__ */ a("div", { ref: b, className: o("flex flex-col gap-0.5", p), ...x, children: [
-      /* @__PURE__ */ r(
+      ) }) }),
+      T && /* @__PURE__ */ e(r.Portal, { children: /* @__PURE__ */ s(
+        r.Content,
+        {
+          className: y,
+          side: "right",
+          sideOffset: 16,
+          align: "start",
+          children: [
+            /* @__PURE__ */ e("div", { className: "text-sm font-medium text-slate-600 dark:text-slate-300 mb-2 pb-2 border-b border-slate-100 dark:border-slate-700", children: l }),
+            /* @__PURE__ */ e("div", { className: "flex flex-col gap-0.5", children: C(!0, 2) })
+          ]
+        }
+      ) })
+    ] }) : /* @__PURE__ */ s("div", { ref: v, className: c("flex flex-col gap-0.5", f), ...x, children: [
+      /* @__PURE__ */ e(
         m,
         {
-          icon: i,
+          icon: o,
           label: l,
-          active: d,
-          depth: c,
+          active: i,
+          depth: p,
           hasChildren: !0,
-          expanded: s,
-          onClick: h
+          expanded: d,
+          onClick: N
         }
       ),
-      s && /* @__PURE__ */ r("div", { className: "flex flex-col gap-0.5", children: u })
+      d && /* @__PURE__ */ e("div", { className: "flex flex-col gap-0.5", children: h })
     ] });
   }
 );
-S.displayName = "NavGroup";
+j.displayName = "NavGroup";
 export {
-  S as NavGroup
+  j as NavGroup
 };
 //# sourceMappingURL=nav-group.mjs.map
