@@ -2,7 +2,7 @@ import { jsxs as p, jsx as a } from "react/jsx-runtime";
 import * as v from "react";
 import { cn as u } from "../../lib/utils.mjs";
 import { Button as h } from "../ui/button.mjs";
-import { Select as b } from "../ui/select.mjs";
+import { Select as b } from "../ui/select/index.mjs";
 import { LeftIcon as R } from "../../icons/LeftIcon.mjs";
 import { RightIcon as w } from "../../icons/RightIcon.mjs";
 function I(m, t, e) {
