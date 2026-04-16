@@ -1,5 +1,4 @@
-import { inputSizeStyles, InputSize } from './input';
-import * as React from "react";
+import { InputSize } from '../input';
 /** @deprecated Use InputSize instead */
 export type SelectSize = InputSize;
 export interface SelectOption {
@@ -7,7 +6,7 @@ export interface SelectOption {
     value: string;
     disabled?: boolean;
 }
-interface SelectBaseProps {
+export interface SelectBaseProps {
     /** 라벨 텍스트 */
     label?: string;
     /** 플레이스홀더 */
@@ -40,8 +39,10 @@ interface SelectBaseProps {
     clearable?: boolean;
     /** 로딩 상태 (스피너 표시) */
     loading?: boolean;
+    /** 콤보박스 모드 (직접 입력 가능, 옵션에 없는 값도 사용 가능) */
+    combobox?: boolean;
 }
-interface SingleSelectProps extends SelectBaseProps {
+export interface SingleSelectProps extends SelectBaseProps {
     /** 다중 선택 모드 */
     multiple?: false;
     /** 선택된 값 */
@@ -53,7 +54,7 @@ interface SingleSelectProps extends SelectBaseProps {
 }
 /** 칩 오버플로우 처리 방식 */
 export type ChipOverflowMode = "wrap" | "truncate";
-interface MultipleSelectProps extends SelectBaseProps {
+export interface MultipleSelectProps extends SelectBaseProps {
     /** 다중 선택 모드 */
     multiple: true;
     /** 선택된 값 배열 */
@@ -68,5 +69,7 @@ interface MultipleSelectProps extends SelectBaseProps {
     maxDisplayCount?: number;
 }
 export type SelectProps = SingleSelectProps | MultipleSelectProps;
-declare const Select: React.ForwardRefExoticComponent<SelectProps & React.RefAttributes<HTMLButtonElement>>;
-export { Select, inputSizeStyles };
+export interface InternalSelectProps {
+    id: string;
+    ariaLabel?: string;
+}

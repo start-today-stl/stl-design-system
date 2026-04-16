@@ -24,7 +24,7 @@ import { Label as No } from "./components/ui/label.mjs";
 import { Popover as Wo, PopoverContent as Xo, PopoverTrigger as Yo } from "./components/ui/popover.mjs";
 import { RadioGroup as _o, RadioGroupField as $o, RadioGroupItem as or } from "./components/ui/radio-group.mjs";
 import { ScrollArea as er, ScrollBar as tr } from "./components/ui/scroll-area.mjs";
-import { Select as pr } from "./components/ui/select.mjs";
+import { Select as pr } from "./components/ui/select/index.mjs";
 import { Separator as ir } from "./components/ui/separator.mjs";
 import { Sheet as lr, SheetClose as xr, SheetContent as dr, SheetDescription as fr, SheetFooter as Cr, SheetHeader as Tr, SheetOverlay as Sr, SheetPortal as gr, SheetTitle as ur, SheetTrigger as br } from "./components/ui/sheet.mjs";
 import { Slider as Dr } from "./components/ui/slider.mjs";

@@ -421,6 +421,97 @@ export const LoadingWithLabel: Story = {
 // 비교 (Comparison)
 // ============================================
 
+// ============================================
+// 콤보박스 (Combobox)
+// ============================================
+
+/** 콤보박스 - 단일 선택 (직접 입력 가능) */
+export const Combobox: Story = {
+  render: function Render() {
+    const [value, setValue] = useState<string>("")
+
+    return (
+      <div className="flex flex-col gap-4">
+        <Select
+          label="거래처"
+          placeholder="거래처명을 입력하거나 선택하세요"
+          options={manyOptions}
+          combobox
+          value={value}
+          onValueChange={setValue}
+          size="lg"
+        />
+        <div className="text-xs text-slate-500">
+          선택된 값: {value || "없음"}
+        </div>
+      </div>
+    )
+  },
+}
+
+/** 콤보박스 - 다중 선택 (직접 입력 + 다중) */
+export const ComboboxMultiple: Story = {
+  render: function Render() {
+    const [value, setValue] = useState<string[]>([])
+
+    return (
+      <div className="flex flex-col gap-4">
+        <Select
+          label="태그 입력"
+          placeholder="태그를 입력하거나 선택하세요"
+          options={[
+            { label: "긴급", value: "urgent" },
+            { label: "중요", value: "important" },
+            { label: "일반", value: "normal" },
+            { label: "보류", value: "pending" },
+            { label: "완료", value: "done" },
+          ]}
+          combobox
+          multiple
+          value={value}
+          onValueChange={setValue}
+          size="lg"
+        />
+        <div className="text-xs text-slate-500">
+          선택된 값: {value.length > 0 ? value.join(", ") : "없음"}
+        </div>
+      </div>
+    )
+  },
+}
+
+/** 콤보박스 - 자유 입력 예시 (옵션에 없는 값 입력) */
+export const ComboboxFreeform: Story = {
+  render: function Render() {
+    const [value, setValue] = useState<string>("")
+
+    return (
+      <div className="flex flex-col gap-4">
+        <Select
+          label="배송지"
+          placeholder="직접 입력하거나 선택하세요"
+          options={[
+            { label: "서울 본사", value: "seoul-hq" },
+            { label: "부산 지점", value: "busan-branch" },
+            { label: "대구 물류센터", value: "daegu-warehouse" },
+          ]}
+          combobox
+          value={value}
+          onValueChange={setValue}
+          size="lg"
+        />
+        <div className="text-xs text-slate-500">
+          선택된 값: {value || "없음"} {!["seoul-hq", "busan-branch", "daegu-warehouse"].includes(value) && value ? "(직접 입력)" : ""}
+        </div>
+      </div>
+    )
+  },
+}
+
+// ============================================
+// 크기 비교 (Sizes)
+// ============================================
+
 /** 모든 크기 비교 */
 export const AllSizes: Story = {
   render: () => (
@@ -504,6 +595,27 @@ export const AllModes: Story = {
           label="지역 (다중)"
           placeholder="지역을 선택하세요"
           options={manyOptions}
+          multiple
+          size="md"
+        />
+      </div>
+      <div className="flex flex-col gap-2">
+        <span className="text-sm text-slate-500">Combobox (직접 입력)</span>
+        <Select
+          label="거래처"
+          placeholder="입력 또는 선택"
+          options={manyOptions}
+          combobox
+          size="md"
+        />
+      </div>
+      <div className="flex flex-col gap-2">
+        <span className="text-sm text-slate-500">Combobox + Multiple (직접 입력 + 다중)</span>
+        <Select
+          label="태그"
+          placeholder="입력 또는 선택"
+          options={defaultOptions}
+          combobox
           multiple
           size="md"
         />

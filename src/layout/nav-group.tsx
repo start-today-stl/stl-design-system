@@ -124,7 +124,7 @@ const NavGroup = React.forwardRef<HTMLDivElement, NavGroupProps>(
     if (layout === "horizontal") {
       return (
         <PopoverPrimitive.Root open={isHovered}>
-          <PopoverPrimitive.Trigger asChild>
+          <PopoverPrimitive.Anchor asChild>
             <div
               ref={ref}
               className={cn("relative", className)}
@@ -140,7 +140,7 @@ const NavGroup = React.forwardRef<HTMLDivElement, NavGroupProps>(
                 hasChildren
               />
             </div>
-          </PopoverPrimitive.Trigger>
+          </PopoverPrimitive.Anchor>
           <PopoverPrimitive.Portal>
             <PopoverPrimitive.Content
               className={dropdownContentStyles}
@@ -202,7 +202,7 @@ const NavGroup = React.forwardRef<HTMLDivElement, NavGroupProps>(
     if (collapsed) {
       return (
         <PopoverPrimitive.Root open={isHovered}>
-          <PopoverPrimitive.Trigger asChild>
+          <PopoverPrimitive.Anchor asChild>
             <div
               className="relative w-full"
               onMouseEnter={handleMouseEnter}
@@ -216,7 +216,7 @@ const NavGroup = React.forwardRef<HTMLDivElement, NavGroupProps>(
                 hasChildren
               />
             </div>
-          </PopoverPrimitive.Trigger>
+          </PopoverPrimitive.Anchor>
           {stableCollapsed && (
             <PopoverPrimitive.Portal>
               <PopoverPrimitive.Content

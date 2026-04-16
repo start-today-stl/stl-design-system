@@ -1,0 +1,87 @@
+import type { InputSize } from "../input";
+
+/** @deprecated Use InputSize instead */
+export type SelectSize = InputSize;
+
+export interface SelectOption {
+  label: string;
+  value: string;
+  disabled?: boolean;
+}
+
+// Base props shared by all variants
+export interface SelectBaseProps {
+  /** 라벨 텍스트 */
+  label?: string;
+  /** 플레이스홀더 */
+  placeholder?: string;
+  /** 옵션 목록 */
+  options: SelectOption[];
+  /** 너비 크기 */
+  size?: SelectSize;
+  /** 에러 상태 */
+  error?: boolean;
+  /** 에러 메시지 */
+  errorMessage?: string;
+  /** 비활성화 */
+  disabled?: boolean;
+  /** 추가 className */
+  className?: string;
+  /** 접근성 라벨 (label이 없을 때 사용) */
+  "aria-label"?: string;
+  /** 테이블 모드 (파란 glow 대신 border 강조) */
+  tableMode?: boolean;
+  /** 라벨이 없어도 라벨 공간 유지 */
+  reserveLabelSpace?: boolean;
+  /** 필수 입력 표시 (라벨 앞에 점 표시) */
+  required?: boolean;
+  /** 검색 기능 활성화 */
+  searchable?: boolean;
+  /** 검색 플레이스홀더 */
+  searchPlaceholder?: string;
+  /** 전체 삭제 버튼 표시 (기본: true) */
+  clearable?: boolean;
+  /** 로딩 상태 (스피너 표시) */
+  loading?: boolean;
+  /** 콤보박스 모드 (직접 입력 가능, 옵션에 없는 값도 사용 가능) */
+  combobox?: boolean;
+}
+
+// Single select props (default)
+export interface SingleSelectProps extends SelectBaseProps {
+  /** 다중 선택 모드 */
+  multiple?: false;
+  /** 선택된 값 */
+  value?: string;
+  /** 기본 선택 값 */
+  defaultValue?: string;
+  /** 값 변경 핸들러 */
+  onValueChange?: (value: string) => void;
+}
+
+/** 칩 오버플로우 처리 방식 */
+export type ChipOverflowMode = "wrap" | "truncate";
+
+// Multiple select props
+export interface MultipleSelectProps extends SelectBaseProps {
+  /** 다중 선택 모드 */
+  multiple: true;
+  /** 선택된 값 배열 */
+  value?: string[];
+  /** 기본 선택 값 배열 */
+  defaultValue?: string[];
+  /** 값 변경 핸들러 */
+  onValueChange?: (value: string[]) => void;
+  /** 칩 오버플로우 처리 방식 (기본: truncate) */
+  overflowMode?: ChipOverflowMode;
+  /** truncate 모드에서 최대 표시할 칩 개수 (기본: 2) */
+  maxDisplayCount?: number;
+}
+
+export type SelectProps = SingleSelectProps | MultipleSelectProps;
+
+// Internal props for sub-components
+export interface InternalSelectProps {
+  id: string;
+  ariaLabel?: string;
+}
