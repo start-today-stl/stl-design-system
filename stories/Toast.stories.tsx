@@ -110,6 +110,26 @@ export const WithDescription: Story = {
   ),
 }
 
+/** 긴 텍스트 토스트 */
+export const LongText: Story = {
+  render: () => (
+    <div className="flex gap-2">
+      <Button
+        variant="danger"
+        onClick={() => toast.error("출력 가능한 송장이 없습니다. 실패 건 재접수 후 다시 시도해 주세요.")}
+      >
+        긴 에러 메시지
+      </Button>
+      <Button
+        variant="success"
+        onClick={() => toast.success("주문 데이터 일괄 처리가 완료되었습니다. 총 128건이 성공적으로 반영되었습니다.")}
+      >
+        긴 성공 메시지
+      </Button>
+    </div>
+  ),
+}
+
 /** 모든 타입 비교 */
 export const AllTypes: Story = {
   render: () => (

@@ -44,7 +44,7 @@ const CustomToast = ({ type, title, description }: CustomToastProps) => {
         "bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl w-[368px] shadow-lg",
         isLarge
           ? "flex flex-col items-start p-3 gap-8 mt-1"
-          : "flex flex-row items-center justify-between h-12 py-3 pl-3 pr-4"
+          : "flex flex-row items-center gap-3 min-h-12 py-3 pl-3 pr-4"
       )}
     >
       {isLarge ? (
@@ -57,7 +57,7 @@ const CustomToast = ({ type, title, description }: CustomToastProps) => {
         </>
       ) : (
         <>
-          <Icon />
+          <span className="shrink-0"><Icon /></span>
           <p className="text-sm font-medium text-slate-900 dark:text-slate-100">{title}</p>
         </>
       )}
