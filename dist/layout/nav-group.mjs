@@ -1,9 +1,9 @@
-import { jsxs as l, jsx as t } from "react/jsx-runtime";
+import { jsxs as n, jsx as t } from "react/jsx-runtime";
 import * as r from "react";
 import * as o from "@radix-ui/react-popover";
 import { cn as p } from "../lib/utils.mjs";
 import { NavItem as f } from "./nav-item.mjs";
-const y = p(
+const S = p(
   "min-w-[200px] py-2 px-3 rounded-md z-50",
   "bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-700",
   "shadow-lg",
@@ -18,47 +18,47 @@ const y = p(
     icon: d,
     label: a,
     active: i,
-    defaultExpanded: S = !1,
+    defaultExpanded: T = !1,
     expanded: E,
     onExpandedChange: v,
     collapsed: u,
-    layout: F = "vertical",
+    layout: A = "vertical",
     depth: x = 1,
-    _inFlyout: R = !1,
+    _inFlyout: F = !1,
     children: b,
-    ...g
-  }, C) => {
-    const [z, D] = r.useState(S), n = E !== void 0 ? E : z, [M, T] = r.useState(!1), s = r.useRef(null), c = () => {
-      s.current && (clearTimeout(s.current), s.current = null), T(!0);
+    ...C
+  }, N) => {
+    const [R, z] = r.useState(T), l = E !== void 0 ? E : R, [M, k] = r.useState(!1), s = r.useRef(null), c = () => {
+      s.current && (clearTimeout(s.current), s.current = null), k(!0);
     }, m = () => {
       s.current = setTimeout(() => {
-        T(!1);
+        k(!1);
       }, 30);
-    }, [L, A] = r.useState(u);
+    }, [D, L] = r.useState(u);
     r.useEffect(() => {
-      const e = setTimeout(() => A(u), 300);
+      const e = setTimeout(() => L(u), 300);
       return () => clearTimeout(e);
     }, [u]), r.useEffect(() => () => {
       s.current && clearTimeout(s.current);
     }, []);
-    const k = () => {
-      const e = !n;
-      D(e), v == null || v(e);
-    }, w = (e, O) => r.Children.map(b, (N) => r.isValidElement(N) ? r.cloneElement(N, {
+    const w = () => {
+      const e = !l;
+      z(e), v == null || v(e);
+    }, y = (e, O) => r.Children.map(b, (g) => r.isValidElement(g) ? r.cloneElement(g, {
       layout: "vertical",
       depth: O,
       _inFlyout: e,
       collapsed: !1
-    }) : N);
-    return F === "horizontal" ? /* @__PURE__ */ l(o.Root, { open: M, children: [
-      /* @__PURE__ */ t(o.Trigger, { asChild: !0, children: /* @__PURE__ */ t(
+    }) : g);
+    return A === "horizontal" ? /* @__PURE__ */ n(o.Root, { open: M, children: [
+      /* @__PURE__ */ t(o.Anchor, { asChild: !0, children: /* @__PURE__ */ t(
         "div",
         {
-          ref: C,
+          ref: N,
           className: p("relative", h),
           onMouseEnter: c,
           onMouseLeave: m,
-          ...g,
+          ...C,
           children: /* @__PURE__ */ t(
             f,
             {
@@ -71,10 +71,10 @@ const y = p(
           )
         }
       ) }),
-      /* @__PURE__ */ t(o.Portal, { children: /* @__PURE__ */ l(
+      /* @__PURE__ */ t(o.Portal, { children: /* @__PURE__ */ n(
         o.Content,
         {
-          className: y,
+          className: S,
           sideOffset: 4,
           align: "start",
           onMouseEnter: c,
@@ -83,11 +83,11 @@ const y = p(
           onCloseAutoFocus: (e) => e.preventDefault(),
           children: [
             /* @__PURE__ */ t("div", { className: "text-sm font-medium text-slate-600 dark:text-slate-300 mb-2 pb-2 border-b border-slate-100 dark:border-slate-700", children: a }),
-            /* @__PURE__ */ t("div", { className: "flex flex-col gap-0.5", children: w(!0, 2) })
+            /* @__PURE__ */ t("div", { className: "flex flex-col gap-0.5", children: y(!0, 2) })
           ]
         }
       ) })
-    ] }) : R ? /* @__PURE__ */ l("div", { ref: C, className: p("flex flex-col gap-0.5", h), ...g, children: [
+    ] }) : F ? /* @__PURE__ */ n("div", { ref: N, className: p("flex flex-col gap-0.5", h), ...C, children: [
       /* @__PURE__ */ t(
         f,
         {
@@ -96,17 +96,17 @@ const y = p(
           active: i,
           depth: x,
           hasChildren: !0,
-          expanded: n,
-          onClick: k
+          expanded: l,
+          onClick: w
         }
       ),
-      n && /* @__PURE__ */ t("div", { className: "flex flex-col gap-0.5", children: r.Children.map(b, (e) => r.isValidElement(e) ? r.cloneElement(e, {
+      l && /* @__PURE__ */ t("div", { className: "flex flex-col gap-0.5", children: r.Children.map(b, (e) => r.isValidElement(e) ? r.cloneElement(e, {
         collapsed: !1,
         depth: (x || 1) + 1,
         _inFlyout: !0
       }) : e) })
-    ] }) : u ? /* @__PURE__ */ l(o.Root, { open: M, children: [
-      /* @__PURE__ */ t(o.Trigger, { asChild: !0, children: /* @__PURE__ */ t(
+    ] }) : u ? /* @__PURE__ */ n(o.Root, { open: M, children: [
+      /* @__PURE__ */ t(o.Anchor, { asChild: !0, children: /* @__PURE__ */ t(
         "div",
         {
           className: "relative w-full",
@@ -124,10 +124,10 @@ const y = p(
           )
         }
       ) }),
-      L && /* @__PURE__ */ t(o.Portal, { children: /* @__PURE__ */ l(
+      D && /* @__PURE__ */ t(o.Portal, { children: /* @__PURE__ */ n(
         o.Content,
         {
-          className: y,
+          className: S,
           side: "right",
           sideOffset: 16,
           align: "start",
@@ -137,11 +137,11 @@ const y = p(
           onCloseAutoFocus: (e) => e.preventDefault(),
           children: [
             /* @__PURE__ */ t("div", { className: "text-sm font-medium text-slate-600 dark:text-slate-300 mb-2 pb-2 border-b border-slate-100 dark:border-slate-700", children: a }),
-            /* @__PURE__ */ t("div", { className: "flex flex-col gap-0.5", children: w(!0, 2) })
+            /* @__PURE__ */ t("div", { className: "flex flex-col gap-0.5", children: y(!0, 2) })
           ]
         }
       ) })
-    ] }) : /* @__PURE__ */ l("div", { ref: C, className: p("flex flex-col gap-0.5", h), ...g, children: [
+    ] }) : /* @__PURE__ */ n("div", { ref: N, className: p("flex flex-col gap-0.5", h), ...C, children: [
       /* @__PURE__ */ t(
         f,
         {
@@ -150,11 +150,11 @@ const y = p(
           active: i,
           depth: x,
           hasChildren: !0,
-          expanded: n,
-          onClick: k
+          expanded: l,
+          onClick: w
         }
       ),
-      n && /* @__PURE__ */ t("div", { className: "flex flex-col gap-0.5", children: b })
+      l && /* @__PURE__ */ t("div", { className: "flex flex-col gap-0.5", children: b })
     ] });
   }
 );
