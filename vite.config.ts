@@ -55,6 +55,7 @@ export default defineConfig({
         'react-day-picker',
         /^date-fns.*/,
         'cmdk',
+        /^use-sync-external-store.*/,
       ],
       output: {
         globals: {
