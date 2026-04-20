@@ -142,6 +142,8 @@ const DatePicker = ({
           month={month}
           onMonthChange={setMonth}
           disabled={disabledDates}
+          startMonth={new Date(2000, 0)}
+          endMonth={new Date(2099, 11)}
           initialFocus
         />
       </PopoverContent>
