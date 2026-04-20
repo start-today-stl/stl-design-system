@@ -1,16 +1,15 @@
 import * as React from "react"
-import { ChevronDownIcon } from "lucide-react"
 import { DayButton, DayPicker, getDefaultClassNames } from "react-day-picker"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { LeftIcon } from "@/icons"
+import { LeftIcon, DownIcon } from "@/icons"
 
 function Calendar({
   className,
   classNames,
   showOutsideDays = true,
-  captionLayout = "label",
+  captionLayout = "dropdown",
   buttonVariant = "ghost",
   formatters,
   components,
@@ -74,16 +73,16 @@ function Calendar({
           defaultClassNames.dropdowns
         ),
         dropdown_root: cn(
-          "has-focus:border-ring border-input shadow-xs has-focus:ring-ring/50 has-focus:ring-[3px] relative rounded-md border",
+          "relative inline-flex items-center gap-0.5",
           defaultClassNames.dropdown_root
         ),
         dropdown: cn(
-          "bg-popover absolute inset-0 opacity-0",
+          "absolute inset-0 opacity-0 cursor-pointer",
           defaultClassNames.dropdown
         ),
         // 피그마: 12px, slate-700, 다크모드: slate-50
         caption_label: cn(
-          "select-none text-xs font-normal text-slate-700 tracking-[-0.18px] dark:text-slate-50",
+          "inline-flex items-center gap-0.5 select-none text-xs font-normal text-slate-700 tracking-[-0.18px] dark:text-slate-50",
           defaultClassNames.caption_label
         ),
         table: "w-full border-collapse mt-1",
@@ -139,7 +138,7 @@ function Calendar({
             />
           )
         },
-        Chevron: ({ className, orientation, ...props }) => {
+        Chevron: ({ className, orientation }) => {
           if (orientation === "left") {
             return (
               <LeftIcon size={24} className={cn("text-slate-400 dark:text-slate-50", className)} />
@@ -153,7 +152,7 @@ function Calendar({
           }
 
           return (
-            <ChevronDownIcon className={cn("size-4", className)} {...props} />
+            <DownIcon size={16} className={cn("text-slate-400 dark:text-slate-50", className)} />
           )
         },
         DayButton: CalendarDayButton,

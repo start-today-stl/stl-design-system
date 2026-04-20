@@ -1,6 +1,6 @@
 import { jsxs as B, jsx as o } from "react/jsx-runtime";
-import * as n from "react";
-import { format as l, parse as a, isValid as y } from "date-fns";
+import * as l from "react";
+import { format as n, parse as a, isValid as w } from "date-fns";
 import { cn as N } from "../../lib/utils.mjs";
 import { InputField as R, inputSizeStyles as E } from "./input.mjs";
 import { Calendar as T } from "./calendar.mjs";
@@ -9,59 +9,59 @@ import { CalendarIcon as H } from "../../icons/CalendarIcon.mjs";
 const Z = ({
   value: r,
   onChange: e,
-  label: w,
-  placeholder: I = "yyyy-mm-dd",
+  label: y,
+  placeholder: h = "yyyy-mm-dd",
   dateFormat: s = "yyyy-MM-dd",
-  error: S,
-  errorMessage: h,
-  size: D = "md",
+  error: D,
+  errorMessage: I,
+  size: S = "md",
   disabled: c,
-  className: b,
-  reserveLabelSpace: x,
-  required: M,
+  className: M,
+  reserveLabelSpace: b,
+  required: x,
   disabledDates: P
 }) => {
-  const [V, p] = n.useState(!1), [k, u] = n.useState(r || /* @__PURE__ */ new Date()), [f, i] = n.useState(
-    r ? l(r, s) : ""
+  const [V, p] = l.useState(!1), [k, m] = l.useState(r || /* @__PURE__ */ new Date()), [f, i] = l.useState(
+    r ? n(r, s) : ""
   );
-  n.useEffect(() => {
-    i(r ? l(r, s) : "");
+  l.useEffect(() => {
+    i(r ? n(r, s) : "");
   }, [r, s]);
   const z = (t) => {
-    const m = t.target.value;
-    i(m);
-    const d = a(m, s, /* @__PURE__ */ new Date());
-    y(d) && m.length === s.length && (e == null || e(d));
+    const d = t.target.value;
+    i(d);
+    const u = a(d, s, /* @__PURE__ */ new Date());
+    w(u) && d.length === s.length && (e == null || e(u));
   }, O = () => {
     if (!f) {
       e == null || e(void 0);
       return;
     }
     const t = a(f, s, /* @__PURE__ */ new Date());
-    y(t) ? (i(l(t, s)), e == null || e(t)) : i(r ? l(r, s) : "");
+    w(t) ? (i(n(t, s)), e == null || e(t)) : i(r ? n(r, s) : "");
   }, j = (t) => {
-    t && (i(l(t, s)), e == null || e(t)), p(!1);
+    t && (i(n(t, s)), e == null || e(t)), p(!1);
   };
   return /* @__PURE__ */ B(q, { open: V, onOpenChange: (t) => {
-    p(t), t && u(r || /* @__PURE__ */ new Date());
+    p(t), t && m(r || /* @__PURE__ */ new Date());
   }, children: [
-    /* @__PURE__ */ o(A, { asChild: !0, disabled: c, children: /* @__PURE__ */ o("div", { role: "combobox", "aria-haspopup": "dialog", className: N("block", E[D], b), children: /* @__PURE__ */ o(
+    /* @__PURE__ */ o(A, { asChild: !0, disabled: c, children: /* @__PURE__ */ o("div", { role: "combobox", "aria-haspopup": "dialog", className: N("block", E[S], M), children: /* @__PURE__ */ o(
       R,
       {
-        label: w,
+        label: y,
         value: f,
         onChange: z,
         onBlur: O,
-        placeholder: I,
-        error: S,
-        errorMessage: h,
+        placeholder: h,
+        error: D,
+        errorMessage: I,
         size: "full",
         disabled: c,
         autoComplete: "off",
         rightIcon: /* @__PURE__ */ o(H, { size: 24 }),
         onRightIconClick: () => !c && p(!0),
-        reserveLabelSpace: x,
-        required: M
+        reserveLabelSpace: b,
+        required: x
       }
     ) }) }),
     /* @__PURE__ */ o(G, { className: "w-auto border-0 bg-transparent p-0 shadow-none", align: "start", children: /* @__PURE__ */ o(
@@ -71,8 +71,10 @@ const Z = ({
         selected: r,
         onSelect: j,
         month: k,
-        onMonthChange: u,
+        onMonthChange: m,
         disabled: P,
+        startMonth: new Date(2e3, 0),
+        endMonth: new Date(2099, 11),
         initialFocus: !0
       }
     ) })

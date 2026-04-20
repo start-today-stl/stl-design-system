@@ -1,31 +1,31 @@
 import { jsx as n } from "react/jsx-runtime";
-import * as x from "react";
-import { ChevronDownIcon as b } from "lucide-react";
-import { getDefaultClassNames as w, DayPicker as h } from "react-day-picker";
+import * as c from "react";
+import { getDefaultClassNames as b, DayPicker as w } from "react-day-picker";
 import { cn as e } from "../../lib/utils.mjs";
 import { Button as y } from "./button.mjs";
-import { LeftIcon as p } from "../../icons/LeftIcon.mjs";
-function C({
+import { DownIcon as h } from "../../icons/DownIcon.mjs";
+import { LeftIcon as x } from "../../icons/LeftIcon.mjs";
+function S({
   className: s,
   classNames: l,
   showOutsideDays: a = !0,
-  captionLayout: u = "label",
+  captionLayout: u = "dropdown",
   buttonVariant: i = "ghost",
   formatters: d,
-  components: g,
-  unstyled: f = !1,
-  ...m
+  components: p,
+  unstyled: g = !1,
+  ...f
 }) {
-  const t = w();
+  const t = b();
   return /* @__PURE__ */ n(
-    h,
+    w,
     {
       showOutsideDays: a,
       className: e(
         "group/calendar",
         // 피그마: backdrop-blur, 흰색 배경, border gray-100, rounded-[5px], shadow
         // 너비 260px = Input md 사이즈와 동일
-        !f && "w-[260px] rounded-[5px] border border-slate-100 bg-white/95 p-3 shadow-[10px_10px_10px_0px_rgba(0,0,0,0.05)] backdrop-blur-[12px] dark:border-slate-600 dark:bg-slate-800/95",
+        !g && "w-[260px] rounded-[5px] border border-slate-100 bg-white/95 p-3 shadow-[10px_10px_10px_0px_rgba(0,0,0,0.05)] backdrop-blur-[12px] dark:border-slate-600 dark:bg-slate-800/95",
         String.raw`rtl:**:[.rdp-button\_next>svg]:rotate-180`,
         String.raw`rtl:**:[.rdp-button\_previous>svg]:rotate-180`,
         s
@@ -67,16 +67,16 @@ function C({
           t.dropdowns
         ),
         dropdown_root: e(
-          "has-focus:border-ring border-input shadow-xs has-focus:ring-ring/50 has-focus:ring-[3px] relative rounded-md border",
+          "relative inline-flex items-center gap-0.5",
           t.dropdown_root
         ),
         dropdown: e(
-          "bg-popover absolute inset-0 opacity-0",
+          "absolute inset-0 opacity-0 cursor-pointer",
           t.dropdown
         ),
         // 피그마: 12px, slate-700, 다크모드: slate-50
         caption_label: e(
-          "select-none text-xs font-normal text-slate-700 tracking-[-0.18px] dark:text-slate-50",
+          "inline-flex items-center gap-0.5 select-none text-xs font-normal text-slate-700 tracking-[-0.18px] dark:text-slate-50",
           t.caption_label
         ),
         table: "w-full border-collapse mt-1",
@@ -122,21 +122,21 @@ function C({
         ...l
       },
       components: {
-        Root: ({ className: r, rootRef: o, ...c }) => /* @__PURE__ */ n(
+        Root: ({ className: r, rootRef: o, ...m }) => /* @__PURE__ */ n(
           "div",
           {
             "data-slot": "calendar",
             ref: o,
             className: e(r),
-            ...c
+            ...m
           }
         ),
-        Chevron: ({ className: r, orientation: o, ...c }) => o === "left" ? /* @__PURE__ */ n(p, { size: 24, className: e("text-slate-400 dark:text-slate-50", r) }) : o === "right" ? /* @__PURE__ */ n(p, { size: 24, className: e("rotate-180 text-slate-400 dark:text-slate-50", r) }) : /* @__PURE__ */ n(b, { className: e("size-4", r), ...c }),
+        Chevron: ({ className: r, orientation: o }) => o === "left" ? /* @__PURE__ */ n(x, { size: 24, className: e("text-slate-400 dark:text-slate-50", r) }) : o === "right" ? /* @__PURE__ */ n(x, { size: 24, className: e("rotate-180 text-slate-400 dark:text-slate-50", r) }) : /* @__PURE__ */ n(h, { size: 16, className: e("text-slate-400 dark:text-slate-50", r) }),
         DayButton: _,
         WeekNumber: ({ children: r, ...o }) => /* @__PURE__ */ n("td", { ...o, children: /* @__PURE__ */ n("div", { className: "flex size-[--cell-size] items-center justify-center text-center", children: r }) }),
-        ...g
+        ...p
       },
-      ...m
+      ...f
     }
   );
 }
@@ -146,8 +146,8 @@ function _({
   modifiers: a,
   ...u
 }) {
-  const i = x.useRef(null);
-  return x.useEffect(() => {
+  const i = c.useRef(null);
+  return c.useEffect(() => {
     var d;
     a.focused && ((d = i.current) == null || d.focus());
   }, [a.focused]), /* @__PURE__ */ n(
@@ -196,7 +196,7 @@ function _({
   );
 }
 export {
-  C as Calendar,
+  S as Calendar,
   _ as CalendarDayButton
 };
 //# sourceMappingURL=calendar.mjs.map
