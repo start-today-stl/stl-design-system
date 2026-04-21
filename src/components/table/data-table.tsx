@@ -1765,7 +1765,7 @@ function DataTable<T extends { id: string | number }>({
                         <TableCell
                           ref={editingCellRef}
                           key={String(column.accessorKey)}
-                          className={cn(getAlignClass(column.align), "p-1 overflow-hidden", stickyData.className)}
+                          className={cn(getAlignClass(column.align), "p-1 overflow-hidden break-all", stickyData.className)}
                           style={cellStyle}
                           onClick={(e) => e.stopPropagation()}
                           rowSpan={hasRowSpan ? rowSpan : undefined}
@@ -2038,7 +2038,7 @@ function DataTable<T extends { id: string | number }>({
                       <TableCell
                         ref={editingCellRef}
                         key={String(column.accessorKey)}
-                        className={cn(getAlignClass(column.align), "p-1 overflow-hidden", stickyData.className)}
+                        className={cn(getAlignClass(column.align), "p-1 overflow-hidden break-all", stickyData.className)}
                         style={cellStyle}
                         onClick={(e) => e.stopPropagation()}
                         rowSpan={hasRowSpan ? rowSpan : undefined}
