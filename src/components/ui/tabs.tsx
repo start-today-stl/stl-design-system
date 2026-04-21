@@ -274,7 +274,7 @@ const PortalTooltip = ({
         pointerEvents: "none",
       }}
       className={cn(
-        "rounded-md border bg-popover px-4 py-2.5 text-sm text-popover-foreground",
+        "rounded-md border bg-popover px-4 py-2.5 text-sm text-popover-foreground max-w-[300px] whitespace-pre-wrap break-all",
         "shadow-[10px_10px_10px_0px_#0000001A]",
         "animate-in fade-in-0 zoom-in-95",
         // 화살표
