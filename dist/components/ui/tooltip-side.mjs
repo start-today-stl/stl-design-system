@@ -1,12 +1,12 @@
-import { jsx as o } from "react/jsx-runtime";
-import * as d from "react";
-import * as i from "@radix-ui/react-tooltip";
+import { jsx as t } from "react/jsx-runtime";
+import * as i from "react";
+import * as e from "@radix-ui/react-tooltip";
 import { cn as f } from "../../lib/utils.mjs";
-const s = d.forwardRef(({ className: t, sideOffset: e = 4, ...r }, a) => /* @__PURE__ */ o(
-  i.Content,
+const s = e.Portal, b = i.forwardRef(({ className: r, sideOffset: a = 4, ...o }, d) => /* @__PURE__ */ t(s, { children: /* @__PURE__ */ t(
+  e.Content,
   {
-    ref: a,
-    sideOffset: e + 14,
+    ref: d,
+    sideOffset: a + 14,
     className: f(
       "z-50 rounded-md border bg-popover px-4 py-2.5 text-sm text-popover-foreground shadow-[10px_10px_10px_0px_#0000001A] animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-tooltip-content-transform-origin]",
       "relative overflow-visible",
@@ -24,13 +24,13 @@ const s = d.forwardRef(({ className: t, sideOffset: e = 4, ...r }, a) => /* @__P
       // Right arrow
       "data-[side=right]:after:right-full data-[side=right]:after:top-1/2 data-[side=right]:after:-mt-[10px] data-[side=right]:after:border-r-white data-[side=right]:after:border-r-[18px] dark:data-[side=right]:after:border-r-[var(--color-slate-900)]",
       "data-[side=right]:before:right-full data-[side=right]:before:top-1/2 data-[side=right]:before:-mt-[11px] data-[side=right]:before:border-r-border data-[side=right]:before:border-r-[19px]",
-      t
+      r
     ),
-    ...r
+    ...o
   }
-));
-s.displayName = "TooltipArrowContent";
+) }));
+b.displayName = "TooltipArrowContent";
 export {
-  s as TooltipArrowContent
+  b as TooltipArrowContent
 };
 //# sourceMappingURL=tooltip-side.mjs.map
