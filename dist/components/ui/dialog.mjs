@@ -4,7 +4,7 @@ import * as e from "@radix-ui/react-dialog";
 import * as f from "@radix-ui/react-visually-hidden";
 import { cn as s } from "../../lib/utils.mjs";
 import { SplashScreen as p } from "./splash-screen.mjs";
-const R = e.Root, T = e.Trigger, g = e.Portal, b = e.Close, n = l.forwardRef(({ className: a, ...t }, i) => /* @__PURE__ */ o(
+const R = e.Root, T = e.Trigger, g = e.Portal, b = e.Close, d = l.forwardRef(({ className: a, ...t }, i) => /* @__PURE__ */ o(
   e.Overlay,
   {
     ref: i,
@@ -15,17 +15,17 @@ const R = e.Root, T = e.Trigger, g = e.Portal, b = e.Close, n = l.forwardRef(({ 
     ...t
   }
 ));
-n.displayName = e.Overlay.displayName;
-const x = l.forwardRef(({ className: a, children: t, loading: i = !1, ...d }, c) => /* @__PURE__ */ o(g, { children: /* @__PURE__ */ o(n, { children: /* @__PURE__ */ o(
+d.displayName = e.Overlay.displayName;
+const x = l.forwardRef(({ className: a, children: t, loading: i = !1, ...n }, c) => /* @__PURE__ */ o(g, { children: /* @__PURE__ */ o(d, { children: /* @__PURE__ */ o(
   e.Content,
   {
     ref: c,
     className: s(
-      "relative z-50 grid w-full max-w-lg gap-4 border bg-card text-card-foreground p-6 shadow-lg duration-200 ease-out data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 sm:rounded-lg",
+      "relative z-50 grid w-full max-w-lg gap-4 border bg-card text-card-foreground p-6 shadow-lg duration-200 ease-out data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 sm:rounded-lg overflow-hidden",
       i && "min-h-[200px] items-center justify-center",
       a
     ),
-    ...d,
+    ...n,
     children: i ? /* @__PURE__ */ r(m, { children: [
       /* @__PURE__ */ r(f.Root, { children: [
         /* @__PURE__ */ o(e.Title, { children: "로딩 중" }),
@@ -92,7 +92,7 @@ export {
   N as DialogDescription,
   D as DialogFooter,
   y as DialogHeader,
-  n as DialogOverlay,
+  d as DialogOverlay,
   g as DialogPortal,
   u as DialogTitle,
   T as DialogTrigger
