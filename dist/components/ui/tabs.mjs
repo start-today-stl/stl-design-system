@@ -19,21 +19,21 @@ const T = {
   40: "min-w-[40px]",
   60: "min-w-[60px]",
   80: "min-w-[80px]"
-}, xe = g.Root, te = r.forwardRef(({ className: l, align: n = "start", children: e, ...a }, d) => /* @__PURE__ */ c(
+}, xe = g.Root, te = r.forwardRef(({ className: l, align: a = "start", children: e, ...n }, d) => /* @__PURE__ */ c(
   g.List,
   {
     ref: d,
     className: v(
       "flex h-9 items-end shadow-[inset_0_-1px_0_var(--color-border)]",
-      n === "end" ? "justify-end" : "justify-start",
+      a === "end" ? "justify-end" : "justify-start",
       l
     ),
-    ...a,
+    ...n,
     children: e
   }
 ));
 te.displayName = g.List.displayName;
-const re = r.forwardRef(({ className: l, align: n = "start", items: e, onReorder: a, children: d, ...u }, x) => {
+const re = r.forwardRef(({ className: l, align: a = "start", items: e, onReorder: n, children: d, ...u }, x) => {
   const f = C(
     L(G, {
       activationConstraint: {
@@ -52,7 +52,7 @@ const re = r.forwardRef(({ className: l, align: n = "start", items: e, onReorder
         const { active: b, over: s } = i;
         if (s && b.id !== s.id) {
           const m = e.indexOf(b.id), y = e.indexOf(s.id);
-          a(K(e, m, y));
+          n(K(e, m, y));
         }
       },
       children: /* @__PURE__ */ c(V, { items: e, strategy: Z, children: /* @__PURE__ */ c(
@@ -61,7 +61,7 @@ const re = r.forwardRef(({ className: l, align: n = "start", items: e, onReorder
           ref: x,
           className: v(
             "flex h-9 items-end shadow-[inset_0_-1px_0_var(--color-border)]",
-            n === "end" ? "justify-end" : "justify-start",
+            a === "end" ? "justify-end" : "justify-start",
             l
           ),
           ...u,
@@ -72,11 +72,11 @@ const re = r.forwardRef(({ className: l, align: n = "start", items: e, onReorder
   );
 });
 re.displayName = "SortableTabsList";
-const ae = ({
+const ne = ({
   position: l,
-  onClose: n,
+  onClose: a,
   onCloseTab: e,
-  onCloseTabsToRight: a,
+  onCloseTabsToRight: n,
   onCloseOtherTabs: d
 }) => {
   const u = r.useRef(null), [x, f] = r.useState(!1);
@@ -84,17 +84,17 @@ const ae = ({
     f(!0);
   }, []), r.useEffect(() => {
     const i = (m) => {
-      u.current && !u.current.contains(m.target) && n();
-    }, b = () => n(), s = (m) => {
-      m.key === "Escape" && n();
+      u.current && !u.current.contains(m.target) && a();
+    }, b = () => a(), s = (m) => {
+      m.key === "Escape" && a();
     };
     return document.addEventListener("mousedown", i), document.addEventListener("scroll", b, !0), document.addEventListener("keydown", s), () => {
       document.removeEventListener("mousedown", i), document.removeEventListener("scroll", b, !0), document.removeEventListener("keydown", s);
     };
-  }, [n]), !x) return null;
+  }, [a]), !x) return null;
   const p = [
     { label: "닫기", onClick: e, show: !!e },
-    { label: "오른쪽 탭 닫기", onClick: a, show: !!a },
+    { label: "오른쪽 탭 닫기", onClick: n, show: !!n },
     { label: "다른 탭 닫기", onClick: d, show: !!d }
   ].filter((i) => i.show);
   return D(
@@ -120,7 +120,7 @@ const ae = ({
             type: "button",
             onClick: () => {
               var s;
-              (s = i.onClick) == null || s.call(i), n();
+              (s = i.onClick) == null || s.call(i), a();
             },
             className: v(
               "flex w-full h-[29px] cursor-pointer select-none items-center rounded-[2px] px-[8px]",
@@ -137,28 +137,28 @@ const ae = ({
   );
 }, j = ({
   children: l,
-  targetRef: n,
+  targetRef: a,
   show: e
 }) => {
-  const [a, d] = r.useState({ top: 0, left: 0 }), [u, x] = r.useState(!1);
+  const [n, d] = r.useState({ top: 0, left: 0 }), [u, x] = r.useState(!1);
   return r.useEffect(() => {
     x(!0);
   }, []), r.useEffect(() => {
-    if (e && n.current) {
-      const f = n.current.getBoundingClientRect();
+    if (e && a.current) {
+      const f = a.current.getBoundingClientRect();
       d({
         top: f.bottom + window.scrollY + 8,
         left: f.left + f.width / 2 + window.scrollX
       });
     }
-  }, [e, n]), !u || !e ? null : D(
+  }, [e, a]), !u || !e ? null : D(
     /* @__PURE__ */ c(
       "div",
       {
         style: {
           position: "absolute",
-          top: a.top,
-          left: a.left,
+          top: n.top,
+          left: n.left,
           transform: "translateX(-50%)",
           zIndex: 50,
           pointerEvents: "none"
@@ -177,7 +177,7 @@ const ae = ({
     ),
     document.body
   );
-}, ne = r.forwardRef(({ className: l, closable: n, onClose: e, children: a, onKeyDown: d, maxWidth: u = 120, minWidth: x = 60, ...f }, p) => {
+}, ae = r.forwardRef(({ className: l, closable: a, onClose: e, children: n, onKeyDown: d, maxWidth: u = 120, minWidth: x = 60, ...f }, p) => {
   const i = r.useRef(null), [b, s] = r.useState(!1), m = r.useCallback(
     (o) => {
       i.current = o, typeof p == "function" ? p(o) : p && typeof p == "object" && (p.current = o);
@@ -192,7 +192,7 @@ const ae = ({
     }
   }, []);
   const y = (o) => {
-    n && (o.key === "Delete" || o.key === "Backspace") && (o.preventDefault(), e == null || e()), d == null || d(o);
+    a && (o.key === "Delete" || o.key === "Backspace") && (o.preventDefault(), e == null || e()), d == null || d(o);
   };
   return /* @__PURE__ */ k(R, { children: [
     /* @__PURE__ */ k(
@@ -211,8 +211,8 @@ const ae = ({
           "data-[state=inactive]:flex-shrink",
           I[x],
           T[u],
-          // 활성 탭: 축소 안 함, 전체 텍스트 표시 (maxWidth 제거)
-          "data-[state=active]:flex-shrink-0 data-[state=active]:max-w-none",
+          // 활성 탭: 축소 안 함, maxWidth 유지하여 말줄임 처리
+          "data-[state=active]:flex-shrink-0",
           "data-[state=active]:text-slate-900 dark:data-[state=active]:text-slate-50",
           "data-[state=active]:bg-[linear-gradient(180deg,white_0%,#f4f6f8_30%)]",
           "dark:data-[state=active]:bg-[linear-gradient(180deg,#444b57_0%,#1b2026_30%)]",
@@ -225,8 +225,8 @@ const ae = ({
         onMouseLeave: () => s(!1),
         ...f,
         children: [
-          /* @__PURE__ */ c("span", { className: "truncate min-w-0", children: a }),
-          n && /* @__PURE__ */ c(
+          /* @__PURE__ */ c("span", { className: "truncate min-w-0", children: n }),
+          a && /* @__PURE__ */ c(
             "span",
             {
               onPointerDown: (o) => {
@@ -243,11 +243,11 @@ const ae = ({
         ]
       }
     ),
-    /* @__PURE__ */ c(j, { targetRef: i, show: b, children: a })
+    /* @__PURE__ */ c(j, { targetRef: i, show: b, children: n })
   ] });
 });
-ne.displayName = g.Trigger.displayName;
-const oe = r.forwardRef(({ id: l, className: n, closable: e, onClose: a, onCloseTabsToRight: d, onCloseOtherTabs: u, children: x, onKeyDown: f, maxWidth: p = 120, minWidth: i = 60, ...b }, s) => {
+ae.displayName = g.Trigger.displayName;
+const oe = r.forwardRef(({ id: l, className: a, closable: e, onClose: n, onCloseTabsToRight: d, onCloseOtherTabs: u, children: x, onKeyDown: f, maxWidth: p = 120, minWidth: i = 60, ...b }, s) => {
   const {
     attributes: m,
     listeners: y,
@@ -269,13 +269,13 @@ const oe = r.forwardRef(({ id: l, className: n, closable: e, onClose: a, onClose
     }
   }, []);
   const X = (t) => {
-    e && (t.key === "Delete" || t.key === "Backspace") && (t.preventDefault(), a == null || a()), f == null || f(t);
+    e && (t.key === "Delete" || t.key === "Backspace") && (t.preventDefault(), n == null || n()), f == null || f(t);
   }, O = {
     transform: ee.Transform.toString(h),
     transition: z,
     opacity: w ? 0.5 : 1,
     zIndex: w ? 10 : void 0
-  }, E = e && (a || d || u), [W, N] = r.useState(!1), [Y, F] = r.useState({ x: 0, y: 0 }), q = (t) => {
+  }, E = e && (n || d || u), [W, N] = r.useState(!1), [Y, F] = r.useState({ x: 0, y: 0 }), q = (t) => {
     E && (t.preventDefault(), F({ x: t.clientX, y: t.clientY }), N(!0));
   };
   return /* @__PURE__ */ k(R, { children: [
@@ -296,15 +296,15 @@ const oe = r.forwardRef(({ id: l, className: n, closable: e, onClose: a, onClose
           "data-[state=inactive]:flex-shrink",
           I[i],
           T[p],
-          // 활성 탭: 축소 안 함, 전체 텍스트 표시 (maxWidth 제거)
-          "data-[state=active]:flex-shrink-0 data-[state=active]:max-w-none",
+          // 활성 탭: 축소 안 함, maxWidth 유지하여 말줄임 처리
+          "data-[state=active]:flex-shrink-0",
           "data-[state=active]:text-slate-900 dark:data-[state=active]:text-slate-50",
           "data-[state=active]:bg-[linear-gradient(180deg,white_0%,#f4f6f8_30%)]",
           "dark:data-[state=active]:bg-[linear-gradient(180deg,#444b57_0%,#1b2026_30%)]",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
           "disabled:pointer-events-none disabled:opacity-50",
           w && "cursor-grabbing",
-          n
+          a
         ),
         onKeyDown: X,
         onMouseEnter: () => S(!0),
@@ -325,7 +325,7 @@ const oe = r.forwardRef(({ id: l, className: n, closable: e, onClose: a, onClose
                 t.stopPropagation(), t.preventDefault();
               },
               onClick: (t) => {
-                t.stopPropagation(), a == null || a();
+                t.stopPropagation(), n == null || n();
               },
               className: "ml-0.5 flex-shrink-0 text-text-secondary hover:text-text-primary transition-colors cursor-pointer",
               "aria-hidden": "true",
@@ -337,11 +337,11 @@ const oe = r.forwardRef(({ id: l, className: n, closable: e, onClose: a, onClose
     ),
     /* @__PURE__ */ c(j, { targetRef: _, show: B && !w, children: x }),
     E && W && /* @__PURE__ */ c(
-      ae,
+      ne,
       {
         position: Y,
         onClose: () => N(!1),
-        onCloseTab: a,
+        onCloseTab: n,
         onCloseTabsToRight: d,
         onCloseOtherTabs: u
       }
@@ -349,7 +349,7 @@ const oe = r.forwardRef(({ id: l, className: n, closable: e, onClose: a, onClose
   ] });
 });
 oe.displayName = "SortableTabsTrigger";
-const se = r.forwardRef(({ className: l, ...n }, e) => /* @__PURE__ */ c(
+const se = r.forwardRef(({ className: l, ...a }, e) => /* @__PURE__ */ c(
   g.Content,
   {
     ref: e,
@@ -357,7 +357,7 @@ const se = r.forwardRef(({ className: l, ...n }, e) => /* @__PURE__ */ c(
       "mt-4 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
       l
     ),
-    ...n
+    ...a
   }
 ));
 se.displayName = g.Content.displayName;
@@ -367,7 +367,7 @@ export {
   xe as Tabs,
   se as TabsContent,
   te as TabsList,
-  ne as TabsTrigger,
+  ae as TabsTrigger,
   ve as arrayMove
 };
 //# sourceMappingURL=tabs.mjs.map
