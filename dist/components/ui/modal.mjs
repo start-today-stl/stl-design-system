@@ -1,4 +1,4 @@
-import { jsx as e, jsxs as t, Fragment as C } from "react/jsx-runtime";
+import { jsx as e, jsxs as n, Fragment as C } from "react/jsx-runtime";
 import * as a from "react";
 import * as y from "@radix-ui/react-visually-hidden";
 import { cn as c } from "../../lib/utils.mjs";
@@ -14,7 +14,7 @@ const A = ({
   children: m,
   footer: l,
   className: g,
-  loading: n = !1,
+  loading: t = !1,
   showCloseButton: x = !1
 }) => {
   const d = {
@@ -22,29 +22,29 @@ const A = ({
     m: { width: "max-w-[600px]", loadingHeight: "min-h-[250px]" },
     l: { width: "max-w-[900px]", loadingHeight: "min-h-[300px]" },
     xl: { width: "max-w-[1200px]", loadingHeight: "min-h-[350px]" }
-  }, f = ((o) => o ? a.isValidElement(o) && o.type === a.Fragment ? a.Children.count(o.props.children) : a.Children.count(o) : 0)(l), w = () => x ? /* @__PURE__ */ t(b, { className: "absolute right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none disabled:pointer-events-none cursor-pointer", children: [
+  }, f = ((o) => o ? a.isValidElement(o) && o.type === a.Fragment ? a.Children.count(o.props.children) : a.Children.count(o) : 0)(l), w = () => x ? /* @__PURE__ */ n(b, { className: "absolute right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none disabled:pointer-events-none cursor-pointer", children: [
     /* @__PURE__ */ e(I, { size: 24 }),
     /* @__PURE__ */ e("span", { className: "sr-only", children: "닫기" })
   ] }) : /* @__PURE__ */ e("div", { className: "absolute right-4 top-4", children: /* @__PURE__ */ e(j, { size: 29, className: "text-slate-200 dark:text-slate-600" }) });
-  return /* @__PURE__ */ e(v, { open: p, onOpenChange: u, children: /* @__PURE__ */ t(
+  return /* @__PURE__ */ e(v, { open: p, onOpenChange: u, children: /* @__PURE__ */ n(
     H,
     {
       className: c(
         d[s].width,
-        n && d[s].loadingHeight,
+        t && d[s].loadingHeight,
         g
       ),
-      loading: n,
+      loading: t,
       "aria-describedby": void 0,
       children: [
-        n || !i ? /* @__PURE__ */ e(y.Root, { children: /* @__PURE__ */ e(h, { children: i || "모달" }) }) : null,
-        !n && /* @__PURE__ */ t(C, { children: [
+        t || !i ? /* @__PURE__ */ e(y.Root, { children: /* @__PURE__ */ e(h, { children: i || "모달" }) }) : null,
+        !t && /* @__PURE__ */ n(C, { children: [
           w(),
-          (i || r) && /* @__PURE__ */ t(N, { className: "pr-10", children: [
+          (i || r) && /* @__PURE__ */ n(N, { className: "pr-10", children: [
             i && /* @__PURE__ */ e(h, { children: i }),
             r && /* @__PURE__ */ e(D, { children: r })
           ] }),
-          m && /* @__PURE__ */ e("div", { className: "py-4", children: m }),
+          m && /* @__PURE__ */ e("div", { className: "py-4 overflow-auto", children: m }),
           l && /* @__PURE__ */ e(
             "div",
             {

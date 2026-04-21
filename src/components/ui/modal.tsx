@@ -112,7 +112,7 @@ const Modal = ({
               </DialogHeader>
             )}
 
-            {children && <div className="py-4">{children}</div>}
+            {children && <div className="py-4 overflow-auto">{children}</div>}
 
             {footer && (
               <div
