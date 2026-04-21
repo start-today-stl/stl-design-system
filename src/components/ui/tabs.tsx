@@ -26,12 +26,12 @@ export type TabMaxWidth = 60 | 80 | 100 | 120 | 140 | 160
 
 /** maxWidth preset을 Tailwind 클래스로 매핑 */
 const maxWidthClasses: Record<TabMaxWidth, string> = {
-  60: "data-[state=inactive]:max-w-[60px]",
-  80: "data-[state=inactive]:max-w-[80px]",
-  100: "data-[state=inactive]:max-w-[100px]",
-  120: "data-[state=inactive]:max-w-[120px]",
-  140: "data-[state=inactive]:max-w-[140px]",
-  160: "data-[state=inactive]:max-w-[160px]",
+  60: "max-w-[60px]",
+  80: "max-w-[80px]",
+  100: "max-w-[100px]",
+  120: "max-w-[120px]",
+  140: "max-w-[140px]",
+  160: "max-w-[160px]",
 }
 
 /** minWidth preset을 Tailwind 클래스로 매핑 */

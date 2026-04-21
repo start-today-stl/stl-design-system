@@ -276,7 +276,7 @@ export const CustomMaxWidth: Story = {
   render: () => (
     <div className="space-y-4">
       <p className="text-sm text-muted-foreground">
-        비활성 탭에만 maxWidth가 적용됩니다. 탭을 클릭해서 확인해보세요.
+        활성/비활성 탭 모두 maxWidth가 적용되어 긴 텍스트는 말줄임 처리됩니다.
       </p>
       <Tabs defaultValue="tab1" className="w-[600px]">
         <TabsList>
