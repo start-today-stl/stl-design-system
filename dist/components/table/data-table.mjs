@@ -930,7 +930,7 @@ function Ns({
                 E,
                 {
                   ref: Pe,
-                  className: v(J(r.align), "p-1 overflow-hidden break-all", O.className),
+                  className: v(J(r.align), "p-1 overflow-hidden break-all [overflow-wrap:break-word]", O.className),
                   style: Q,
                   onClick: (Z) => Z.stopPropagation(),
                   rowSpan: c ? n : void 0,
@@ -1152,7 +1152,7 @@ function Ns({
                 E,
                 {
                   ref: Pe,
-                  className: v(J(r.align), "p-1 overflow-hidden break-all", O.className),
+                  className: v(J(r.align), "p-1 overflow-hidden break-all [overflow-wrap:break-word]", O.className),
                   style: Q,
                   onClick: (Z) => Z.stopPropagation(),
                   rowSpan: c ? n : void 0,
