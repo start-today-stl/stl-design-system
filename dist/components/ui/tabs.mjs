@@ -19,21 +19,21 @@ const T = {
   40: "min-w-[40px]",
   60: "min-w-[60px]",
   80: "min-w-[80px]"
-}, xe = g.Root, te = r.forwardRef(({ className: l, align: a = "start", children: e, ...n }, d) => /* @__PURE__ */ c(
+}, xe = g.Root, te = r.forwardRef(({ className: d, align: a = "start", children: e, ...n }, l) => /* @__PURE__ */ c(
   g.List,
   {
-    ref: d,
+    ref: l,
     className: v(
       "flex h-9 items-end shadow-[inset_0_-1px_0_var(--color-border)]",
       a === "end" ? "justify-end" : "justify-start",
-      l
+      d
     ),
     ...n,
     children: e
   }
 ));
 te.displayName = g.List.displayName;
-const re = r.forwardRef(({ className: l, align: a = "start", items: e, onReorder: n, children: d, ...u }, x) => {
+const re = r.forwardRef(({ className: d, align: a = "start", items: e, onReorder: n, children: l, ...u }, x) => {
   const f = C(
     L(G, {
       activationConstraint: {
@@ -62,10 +62,10 @@ const re = r.forwardRef(({ className: l, align: a = "start", items: e, onReorder
           className: v(
             "flex h-9 items-end shadow-[inset_0_-1px_0_var(--color-border)]",
             a === "end" ? "justify-end" : "justify-start",
-            l
+            d
           ),
           ...u,
-          children: d
+          children: l
         }
       ) })
     }
@@ -73,11 +73,11 @@ const re = r.forwardRef(({ className: l, align: a = "start", items: e, onReorder
 });
 re.displayName = "SortableTabsList";
 const ne = ({
-  position: l,
+  position: d,
   onClose: a,
   onCloseTab: e,
   onCloseTabsToRight: n,
-  onCloseOtherTabs: d
+  onCloseOtherTabs: l
 }) => {
   const u = r.useRef(null), [x, f] = r.useState(!1);
   if (r.useEffect(() => {
@@ -95,7 +95,7 @@ const ne = ({
   const p = [
     { label: "닫기", onClick: e, show: !!e },
     { label: "오른쪽 탭 닫기", onClick: n, show: !!n },
-    { label: "다른 탭 닫기", onClick: d, show: !!d }
+    { label: "다른 탭 닫기", onClick: l, show: !!l }
   ].filter((i) => i.show);
   return D(
     /* @__PURE__ */ c(
@@ -104,8 +104,8 @@ const ne = ({
         ref: u,
         style: {
           position: "fixed",
-          top: l.y,
-          left: l.x,
+          top: d.y,
+          left: d.x,
           zIndex: 50
         },
         className: v(
@@ -136,17 +136,17 @@ const ne = ({
     document.body
   );
 }, j = ({
-  children: l,
+  children: d,
   targetRef: a,
   show: e
 }) => {
-  const [n, d] = r.useState({ top: 0, left: 0 }), [u, x] = r.useState(!1);
+  const [n, l] = r.useState({ top: 0, left: 0 }), [u, x] = r.useState(!1);
   return r.useEffect(() => {
     x(!0);
   }, []), r.useEffect(() => {
     if (e && a.current) {
       const f = a.current.getBoundingClientRect();
-      d({
+      l({
         top: f.bottom + window.scrollY + 8,
         left: f.left + f.width / 2 + window.scrollX
       });
@@ -164,7 +164,7 @@ const ne = ({
           pointerEvents: "none"
         },
         className: v(
-          "rounded-md border bg-popover px-4 py-2.5 text-sm text-popover-foreground",
+          "rounded-md border bg-popover px-4 py-2.5 text-sm text-popover-foreground max-w-[300px] whitespace-pre-wrap break-all",
           "shadow-[10px_10px_10px_0px_#0000001A]",
           "animate-in fade-in-0 zoom-in-95",
           // 화살표
@@ -172,12 +172,12 @@ const ne = ({
           "before:absolute before:bottom-full before:left-1/2 before:-ml-[11px] before:border-[11px] before:border-transparent before:border-b-border before:content-['']",
           "after:absolute after:bottom-full after:left-1/2 after:-ml-[10px] after:border-[10px] after:border-transparent after:border-b-white dark:after:border-b-[var(--color-slate-900)] after:content-['']"
         ),
-        children: l
+        children: d
       }
     ),
     document.body
   );
-}, ae = r.forwardRef(({ className: l, closable: a, onClose: e, children: n, onKeyDown: d, maxWidth: u = 120, minWidth: x = 60, ...f }, p) => {
+}, ae = r.forwardRef(({ className: d, closable: a, onClose: e, children: n, onKeyDown: l, maxWidth: u = 120, minWidth: x = 60, ...f }, p) => {
   const i = r.useRef(null), [b, s] = r.useState(!1), m = r.useCallback(
     (o) => {
       i.current = o, typeof p == "function" ? p(o) : p && typeof p == "object" && (p.current = o);
@@ -192,7 +192,7 @@ const ne = ({
     }
   }, []);
   const y = (o) => {
-    a && (o.key === "Delete" || o.key === "Backspace") && (o.preventDefault(), e == null || e()), d == null || d(o);
+    a && (o.key === "Delete" || o.key === "Backspace") && (o.preventDefault(), e == null || e()), l == null || l(o);
   };
   return /* @__PURE__ */ k(R, { children: [
     /* @__PURE__ */ k(
@@ -218,7 +218,7 @@ const ne = ({
           "dark:data-[state=active]:bg-[linear-gradient(180deg,#444b57_0%,#1b2026_30%)]",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
           "disabled:pointer-events-none disabled:opacity-50",
-          l
+          d
         ),
         onKeyDown: y,
         onMouseEnter: () => s(!0),
@@ -247,7 +247,7 @@ const ne = ({
   ] });
 });
 ae.displayName = g.Trigger.displayName;
-const oe = r.forwardRef(({ id: l, className: a, closable: e, onClose: n, onCloseTabsToRight: d, onCloseOtherTabs: u, children: x, onKeyDown: f, maxWidth: p = 120, minWidth: i = 60, ...b }, s) => {
+const oe = r.forwardRef(({ id: d, className: a, closable: e, onClose: n, onCloseTabsToRight: l, onCloseOtherTabs: u, children: x, onKeyDown: f, maxWidth: p = 120, minWidth: i = 60, ...b }, s) => {
   const {
     attributes: m,
     listeners: y,
@@ -255,7 +255,7 @@ const oe = r.forwardRef(({ id: l, className: a, closable: e, onClose: n, onClose
     transform: h,
     transition: z,
     isDragging: w
-  } = $({ id: l }), { role: ie, ...A } = m, _ = r.useRef(null), [B, S] = r.useState(!1), H = r.useCallback(
+  } = $({ id: d }), { role: ie, ...A } = m, _ = r.useRef(null), [B, S] = r.useState(!1), H = r.useCallback(
     (t) => {
       _.current = t, o(t), typeof s == "function" ? s(t) : s && typeof s == "object" && (s.current = t);
     },
@@ -275,7 +275,7 @@ const oe = r.forwardRef(({ id: l, className: a, closable: e, onClose: n, onClose
     transition: z,
     opacity: w ? 0.5 : 1,
     zIndex: w ? 10 : void 0
-  }, E = e && (n || d || u), [W, N] = r.useState(!1), [Y, F] = r.useState({ x: 0, y: 0 }), q = (t) => {
+  }, E = e && (n || l || u), [W, N] = r.useState(!1), [Y, F] = r.useState({ x: 0, y: 0 }), q = (t) => {
     E && (t.preventDefault(), F({ x: t.clientX, y: t.clientY }), N(!0));
   };
   return /* @__PURE__ */ k(R, { children: [
@@ -342,20 +342,20 @@ const oe = r.forwardRef(({ id: l, className: a, closable: e, onClose: n, onClose
         position: Y,
         onClose: () => N(!1),
         onCloseTab: n,
-        onCloseTabsToRight: d,
+        onCloseTabsToRight: l,
         onCloseOtherTabs: u
       }
     )
   ] });
 });
 oe.displayName = "SortableTabsTrigger";
-const se = r.forwardRef(({ className: l, ...a }, e) => /* @__PURE__ */ c(
+const se = r.forwardRef(({ className: d, ...a }, e) => /* @__PURE__ */ c(
   g.Content,
   {
     ref: e,
     className: v(
       "mt-4 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-      l
+      d
     ),
     ...a
   }
