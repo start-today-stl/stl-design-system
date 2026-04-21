@@ -1765,7 +1765,7 @@ function DataTable<T extends { id: string | number }>({
                         <TableCell
                           ref={editingCellRef}
                           key={String(column.accessorKey)}
-                          className={cn(getAlignClass(column.align), "p-1 overflow-hidden break-all [overflow-wrap:break-word]", stickyData.className)}
+                          className={cn(getAlignClass(column.align), "p-1 overflow-hidden", stickyData.className)}
                           style={cellStyle}
                           onClick={(e) => e.stopPropagation()}
                           rowSpan={hasRowSpan ? rowSpan : undefined}
@@ -1829,6 +1829,7 @@ function DataTable<T extends { id: string | number }>({
                         key={String(column.accessorKey)}
                         className={cn(
                           getAlignClass(column.align),
+                          "overflow-hidden break-all [overflow-wrap:break-word]",
                           hasRowSpan && "align-middle transition-colors",
                           hasRowSpan && !isGroupSpanToEnd && "border-b border-slate-200 dark:border-slate-700",
                           // 그룹 셀 hover/selected 스타일
@@ -2038,7 +2039,7 @@ function DataTable<T extends { id: string | number }>({
                       <TableCell
                         ref={editingCellRef}
                         key={String(column.accessorKey)}
-                        className={cn(getAlignClass(column.align), "p-1 overflow-hidden break-all [overflow-wrap:break-word]", stickyData.className)}
+                        className={cn(getAlignClass(column.align), "p-1 overflow-hidden", stickyData.className)}
                         style={cellStyle}
                         onClick={(e) => e.stopPropagation()}
                         rowSpan={hasRowSpan ? rowSpan : undefined}
@@ -2108,6 +2109,7 @@ function DataTable<T extends { id: string | number }>({
                       key={String(column.accessorKey)}
                       className={cn(
                         getAlignClass(column.align),
+                        "overflow-hidden break-all [overflow-wrap:break-word]",
                         hasRowSpan && "align-middle transition-colors",
                         hasRowSpan && !isGroupSpanToEnd && "border-b border-slate-200 dark:border-slate-700",
                         // 그룹 셀 hover/selected 스타일
