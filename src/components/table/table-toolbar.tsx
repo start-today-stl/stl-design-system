@@ -40,7 +40,7 @@ const TableToolbar = React.forwardRef<HTMLDivElement, TableToolbarProps>(
         {/* 왼쪽: 카운트 영역 (고정) */}
         <div className="flex items-center gap-2 shrink-0">
           {totalCount !== undefined && (
-            <span className="text-base font-semibold text-slate-600 dark:text-slate-300">
+            <span className="text-base font-semibold text-slate-700 dark:text-slate-300">
               {formatTotal(totalCount)}
             </span>
           )}
