@@ -23,7 +23,7 @@ const b = n.forwardRef(
       ...m,
       children: [
         /* @__PURE__ */ t("div", { className: "flex items-center gap-2 shrink-0", children: [
-          r !== void 0 && /* @__PURE__ */ a("span", { className: "text-base font-semibold text-slate-600 dark:text-slate-300", children: i(r) }),
+          r !== void 0 && /* @__PURE__ */ a("span", { className: "text-base font-semibold text-slate-700 dark:text-slate-300", children: i(r) }),
           s > 0 && /* @__PURE__ */ a("span", { className: "text-xs text-blue-500", children: o(s) })
         ] }),
         /* @__PURE__ */ a("div", { className: "flex-1 flex items-center justify-end gap-2", children: d })
