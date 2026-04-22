@@ -8,7 +8,7 @@ const b = [
   "disabled:cursor-not-allowed disabled:opacity-50"
 ].join(" "), k = [
   "border-slate-100 dark:border-slate-500",
-  "placeholder:text-slate-400 dark:placeholder:text-slate-500",
+  "placeholder:text-slate-500 dark:placeholder:text-slate-500",
   "focus:border-blue-500 focus:shadow-[0px_0px_6px_0px_rgba(23,118,255,0.5)]"
 ].join(" "), y = [
   "border-destructive dark:border-red-500",

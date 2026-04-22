@@ -95,7 +95,7 @@ const C = n.forwardRef(
             /* @__PURE__ */ a("div", { className: b(
               "flex flex-1 gap-1",
               I === "wrap" ? "flex-wrap" : "flex-nowrap overflow-hidden"
-            ), children: p.length === 0 ? /* @__PURE__ */ a("span", { className: "text-slate-400 dark:text-slate-50", children: P }) : I === "truncate" ? /* @__PURE__ */ l(J, { children: [
+            ), children: p.length === 0 ? /* @__PURE__ */ a("span", { className: "text-slate-500 dark:text-slate-50", children: P }) : I === "truncate" ? /* @__PURE__ */ l(J, { children: [
               p.slice(0, g).map((e) => /* @__PURE__ */ l(
                 "span",
                 {

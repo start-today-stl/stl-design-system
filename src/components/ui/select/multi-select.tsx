@@ -158,7 +158,7 @@ const MultiSelect = React.forwardRef<
             overflowMode === "wrap" ? "flex-wrap" : "flex-nowrap overflow-hidden"
           )}>
             {selectedOptions.length === 0 ? (
-              <span className="text-slate-400 dark:text-slate-50">
+              <span className="text-slate-500 dark:text-slate-50">
                 {placeholder}
               </span>
             ) : overflowMode === "truncate" ? (

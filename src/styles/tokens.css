@@ -111,7 +111,7 @@
   /* Text Colors (Semantic) */
   --color-text-primary: var(--color-slate-900);
   --color-text-secondary: var(--color-slate-700);
-  --color-text-disabled: var(--color-slate-400);
+  --color-text-disabled: var(--color-slate-500);
 
   /* Icon Colors */
   --color-icon: var(--color-slate-500);
