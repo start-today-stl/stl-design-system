@@ -280,7 +280,7 @@ const ComboboxMultiSelect = React.forwardRef<
                 onCompositionEnd={() => { isComposingRef.current = false; }}
                 className={cn(
                   "flex-1 bg-transparent text-xs outline-none min-w-[60px]",
-                  "placeholder:text-slate-400 dark:placeholder:text-slate-500",
+                  "placeholder:text-slate-500 dark:placeholder:text-slate-500",
                   "text-slate-900 dark:text-slate-50",
                 )}
                 aria-invalid={error}

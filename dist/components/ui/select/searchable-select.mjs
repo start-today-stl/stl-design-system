@@ -88,7 +88,7 @@ const G = s.forwardRef(
               {
                 className: c(
                   "truncate",
-                  !f && "text-slate-400 dark:text-slate-500"
+                  !f && "text-slate-500 dark:text-slate-500"
                 ),
                 children: (f == null ? void 0 : f.label) || R
               }

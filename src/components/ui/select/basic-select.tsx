@@ -157,7 +157,7 @@ const BasicSelect = React.forwardRef<
           <span
             className={cn(
               "truncate",
-              !selectedOption && "text-slate-400 dark:text-slate-500",
+              !selectedOption && "text-slate-500 dark:text-slate-500",
             )}
           >
             {selectedOption?.label || placeholder}
