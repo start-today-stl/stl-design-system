@@ -95,7 +95,7 @@ const C = n.forwardRef(
             /* @__PURE__ */ a("div", { className: b(
               "flex flex-1 gap-1",
               I === "wrap" ? "flex-wrap" : "flex-nowrap overflow-hidden"
-            ), children: p.length === 0 ? /* @__PURE__ */ a("span", { className: "text-slate-500 dark:text-slate-50", children: P }) : I === "truncate" ? /* @__PURE__ */ l(J, { children: [
+            ), children: p.length === 0 ? /* @__PURE__ */ a("span", { className: "text-slate-400 dark:text-slate-50", children: P }) : I === "truncate" ? /* @__PURE__ */ l(J, { children: [
               p.slice(0, g).map((e) => /* @__PURE__ */ l(
                 "span",
                 {
@@ -209,7 +209,7 @@ const C = n.forwardRef(
                         onSelect: () => B(e.value),
                         className: b(
                           "relative flex h-[29px] cursor-pointer select-none items-center gap-2 rounded-[2px] px-[5px] py-[5px]",
-                          "text-xs text-slate-700 dark:text-slate-50 outline-none",
+                          "text-xs text-slate-800 dark:text-slate-50 outline-none",
                           "hover:bg-slate-100 dark:hover:bg-slate-700",
                           "data-[selected=true]:bg-slate-100 dark:data-[selected=true]:bg-slate-700",
                           "data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50"

@@ -26,17 +26,17 @@ const navItemVariants = cva(
       {
         active: false,
         depth: 1,
-        className: "text-slate-800 dark:text-slate-200 [&_svg]:text-slate-800 [&_svg]:dark:text-slate-200",
+        className: "text-slate-900 dark:text-slate-200 [&_svg]:text-slate-900 [&_svg]:dark:text-slate-200",
       },
       {
         active: false,
         depth: 2,
-        className: "text-slate-600 dark:text-slate-300 [&_svg]:text-slate-600 [&_svg]:dark:text-slate-300",
+        className: "text-slate-700 dark:text-slate-300 [&_svg]:text-slate-700 [&_svg]:dark:text-slate-300",
       },
       {
         active: false,
         depth: 3,
-        className: "text-slate-600 dark:text-slate-300 [&_svg]:text-slate-600 [&_svg]:dark:text-slate-300",
+        className: "text-slate-700 dark:text-slate-300 [&_svg]:text-slate-700 [&_svg]:dark:text-slate-300",
       },
       // active: true - 모든 depth에서 파란색
       {
@@ -106,7 +106,7 @@ const NavItem = React.forwardRef<HTMLButtonElement, NavItemProps>(
             "hover:[&_svg]:text-blue-500 dark:hover:[&_svg]:text-blue-300",
             active
               ? "text-blue-500 dark:text-blue-300 [&_svg]:text-blue-500 [&_svg]:dark:text-blue-300"
-              : "text-slate-800 dark:text-slate-200 [&_svg]:text-slate-800 [&_svg]:dark:text-slate-200",
+              : "text-slate-900 dark:text-slate-200 [&_svg]:text-slate-900 [&_svg]:dark:text-slate-200",
             className
           )}
           {...props}

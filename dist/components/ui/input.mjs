@@ -10,7 +10,7 @@ const S = [
   "disabled:cursor-not-allowed disabled:opacity-50"
 ].join(" "), M = [
   "border-slate-100 dark:border-slate-500",
-  "placeholder:text-slate-300 dark:placeholder:text-slate-500",
+  "placeholder:text-slate-400 dark:placeholder:text-slate-500",
   "focus:border-blue-500 focus:shadow-[0px_0px_6px_0px_rgba(23,118,255,0.5)]"
 ].join(" "), B = [
   "border-slate-300 dark:border-slate-500",
@@ -71,7 +71,7 @@ const S = [
         {
           htmlFor: n,
           className: e(
-            "flex items-center gap-1 text-xs text-slate-700 dark:text-slate-400",
+            "flex items-center gap-1 text-xs text-slate-800 dark:text-slate-400",
             !s && "invisible"
           ),
           children: [

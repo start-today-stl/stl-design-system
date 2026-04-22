@@ -41,10 +41,10 @@ const buttonVariants = cva(
       variant: {
         // Ghost (Slate) - 중립 버튼 (Figma: ButtonGhost)
         ghost:
-          "bg-slate-50 border-[0.75px] border-slate-200 text-slate-600 hover:bg-slate-200 active:bg-slate-300 dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-600 dark:active:bg-slate-500",
+          "bg-slate-50 border-[0.75px] border-slate-200 text-slate-700 hover:bg-slate-200 active:bg-slate-300 dark:bg-slate-700 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-600 dark:active:bg-slate-500",
         // Ghost Outline (Slate) - 중립 버튼 아웃라인
         "ghost-outline":
-          "border-[0.75px] border-slate-500 text-slate-500 bg-transparent hover:bg-slate-500/50 hover:text-white active:bg-slate-500 active:text-white dark:border-slate-200 dark:text-slate-200 dark:hover:bg-slate-200/50 dark:active:bg-slate-200",
+          "border-[0.75px] border-slate-500 text-slate-600 bg-transparent hover:bg-slate-500/50 hover:text-white active:bg-slate-500 active:text-white dark:border-slate-200 dark:text-slate-200 dark:hover:bg-slate-200/50 dark:active:bg-slate-200",
         // Primary (Blue) - 주요 액션 버튼 (Figma: ButtonPrimary)
         primary:
           "bg-blue-500 text-white hover:bg-blue-600 active:bg-blue-700",
@@ -64,7 +64,7 @@ const buttonVariants = cva(
         "success-outline":
           "border-[0.75px] border-green-500 text-green-500 bg-transparent hover:bg-green-500/50 hover:text-white active:bg-green-500 active:text-white",
         // Text - 텍스트만 있는 버튼 (배경/테두리 없음)
-        text: "bg-transparent text-slate-600 hover:text-blue-500 active:text-blue-600 dark:text-slate-300 dark:hover:text-blue-400 dark:active:text-blue-500",
+        text: "bg-transparent text-slate-700 hover:text-blue-500 active:text-blue-600 dark:text-slate-300 dark:hover:text-blue-400 dark:active:text-blue-500",
       },
       size: {
         // 텍스트 또는 아이콘+텍스트 버튼

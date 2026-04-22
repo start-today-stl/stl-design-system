@@ -25,17 +25,17 @@ const v = p(
       {
         active: !1,
         depth: 1,
-        className: "text-slate-800 dark:text-slate-200 [&_svg]:text-slate-800 [&_svg]:dark:text-slate-200"
+        className: "text-slate-900 dark:text-slate-200 [&_svg]:text-slate-900 [&_svg]:dark:text-slate-200"
       },
       {
         active: !1,
         depth: 2,
-        className: "text-slate-600 dark:text-slate-300 [&_svg]:text-slate-600 [&_svg]:dark:text-slate-300"
+        className: "text-slate-700 dark:text-slate-300 [&_svg]:text-slate-700 [&_svg]:dark:text-slate-300"
       },
       {
         active: !1,
         depth: 3,
-        className: "text-slate-600 dark:text-slate-300 [&_svg]:text-slate-600 [&_svg]:dark:text-slate-300"
+        className: "text-slate-700 dark:text-slate-300 [&_svg]:text-slate-700 [&_svg]:dark:text-slate-300"
       },
       // active: true - 모든 depth에서 파란색
       {
@@ -72,7 +72,7 @@ const v = p(
         "hover:bg-slate-50 dark:hover:bg-slate-800",
         "hover:text-blue-500 dark:hover:text-blue-300",
         "hover:[&_svg]:text-blue-500 dark:hover:[&_svg]:text-blue-300",
-        n ? "text-blue-500 dark:text-blue-300 [&_svg]:text-blue-500 [&_svg]:dark:text-blue-300" : "text-slate-800 dark:text-slate-200 [&_svg]:text-slate-800 [&_svg]:dark:text-slate-200",
+        n ? "text-blue-500 dark:text-blue-300 [&_svg]:text-blue-500 [&_svg]:dark:text-blue-300" : "text-slate-900 dark:text-slate-200 [&_svg]:text-slate-900 [&_svg]:dark:text-slate-200",
         r
       ),
       ...x,

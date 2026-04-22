@@ -11,7 +11,7 @@ const x = o.forwardRef(
         {
           htmlFor: f,
           className: e(
-            "flex items-center gap-1 text-xs text-slate-700 dark:text-slate-400",
+            "flex items-center gap-1 text-xs text-slate-800 dark:text-slate-400",
             !t && "invisible"
           ),
           children: [

@@ -82,7 +82,7 @@ const S = p(
           onOpenAutoFocus: (e) => e.preventDefault(),
           onCloseAutoFocus: (e) => e.preventDefault(),
           children: [
-            /* @__PURE__ */ t("div", { className: "text-sm font-medium text-slate-600 dark:text-slate-300 mb-2 pb-2 border-b border-slate-100 dark:border-slate-700", children: a }),
+            /* @__PURE__ */ t("div", { className: "text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 pb-2 border-b border-slate-100 dark:border-slate-700", children: a }),
             /* @__PURE__ */ t("div", { className: "flex flex-col gap-0.5", children: y(!0, 2) })
           ]
         }
@@ -136,7 +136,7 @@ const S = p(
           onOpenAutoFocus: (e) => e.preventDefault(),
           onCloseAutoFocus: (e) => e.preventDefault(),
           children: [
-            /* @__PURE__ */ t("div", { className: "text-sm font-medium text-slate-600 dark:text-slate-300 mb-2 pb-2 border-b border-slate-100 dark:border-slate-700", children: a }),
+            /* @__PURE__ */ t("div", { className: "text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 pb-2 border-b border-slate-100 dark:border-slate-700", children: a }),
             /* @__PURE__ */ t("div", { className: "flex flex-col gap-0.5", children: y(!0, 2) })
           ]
         }

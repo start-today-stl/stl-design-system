@@ -195,7 +195,7 @@ const se = l.forwardRef(
                   },
                   className: p(
                     "flex-1 bg-transparent text-xs outline-none min-w-[60px]",
-                    "placeholder:text-slate-300 dark:placeholder:text-slate-500",
+                    "placeholder:text-slate-400 dark:placeholder:text-slate-500",
                     "text-slate-900 dark:text-slate-50"
                   ),
                   "aria-invalid": A,
@@ -257,7 +257,7 @@ const se = l.forwardRef(
                 onClick: () => !e.disabled && F(e.value),
                 className: p(
                   "relative flex h-[29px] cursor-pointer select-none items-center gap-2 rounded-[2px] px-[5px] py-[5px]",
-                  "text-xs text-slate-700 dark:text-slate-50 outline-none",
+                  "text-xs text-slate-800 dark:text-slate-50 outline-none",
                   "hover:bg-slate-100 dark:hover:bg-slate-700",
                   e.disabled && "pointer-events-none opacity-50",
                   o === t && "bg-slate-100 dark:bg-slate-700"

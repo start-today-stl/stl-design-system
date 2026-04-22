@@ -152,7 +152,7 @@ const NavGroup = React.forwardRef<HTMLDivElement, NavGroupProps>(
               onCloseAutoFocus={(e) => e.preventDefault()}
             >
               {/* 그룹 라벨 */}
-              <div className="text-sm font-medium text-slate-600 dark:text-slate-300 mb-2 pb-2 border-b border-slate-100 dark:border-slate-700">
+              <div className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 pb-2 border-b border-slate-100 dark:border-slate-700">
                 {label}
               </div>
               {/* 하위 메뉴 */}
@@ -230,7 +230,7 @@ const NavGroup = React.forwardRef<HTMLDivElement, NavGroupProps>(
                 onCloseAutoFocus={(e) => e.preventDefault()}
               >
                 {/* 그룹 라벨 */}
-                <div className="text-sm font-medium text-slate-600 dark:text-slate-300 mb-2 pb-2 border-b border-slate-100 dark:border-slate-700">
+                <div className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 pb-2 border-b border-slate-100 dark:border-slate-700">
                   {label}
                 </div>
                 {/* 하위 메뉴 */}
