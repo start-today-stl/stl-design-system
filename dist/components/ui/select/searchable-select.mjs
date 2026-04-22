@@ -76,7 +76,7 @@ const G = s.forwardRef(
             "group flex h-9 w-full items-center justify-between rounded-[5px] border bg-white dark:bg-slate-800",
             "px-3 text-xs outline-none transition-colors cursor-pointer",
             "disabled:cursor-not-allowed disabled:opacity-50",
-            w ? "border-red-500 dark:border-red-500 focus-visible:border-red-500 focus-visible:shadow-[0px_0px_6px_0px_rgba(239,68,68,0.5)] data-[state=open]:border-red-500 data-[state=open]:shadow-[0px_0px_6px_0px_rgba(239,68,68,0.5)]" : P ? "border-slate-300 dark:border-slate-500 focus-visible:border-slate-500 focus-visible:border-[1.5px] dark:focus-visible:border-slate-300 data-[state=open]:border-slate-500 data-[state=open]:border-[1.5px] data-[state=open]:shadow-none dark:data-[state=open]:border-slate-300" : "border-slate-100 dark:border-slate-600 focus-visible:border-blue-500 focus-visible:shadow-[0px_0px_6px_0px_rgba(23,118,255,0.5)] data-[state=open]:border-blue-500 data-[state=open]:shadow-[0px_0px_6px_0px_rgba(23,118,255,0.5)]"
+            w ? "border-red-500 dark:border-red-500 focus-visible:border-red-500 focus-visible:shadow-[0px_0px_6px_0px_rgba(239,68,68,0.5)] data-[state=open]:border-red-500 data-[state=open]:shadow-[0px_0px_6px_0px_rgba(239,68,68,0.5)]" : P ? "border-slate-300 dark:border-slate-500 focus-visible:border-slate-500 focus-visible:border-[1.5px] dark:focus-visible:border-slate-300 data-[state=open]:border-slate-500 data-[state=open]:border-[1.5px] data-[state=open]:shadow-none dark:data-[state=open]:border-slate-300" : "border-slate-200 dark:border-slate-600 focus-visible:border-blue-500 focus-visible:shadow-[0px_0px_6px_0px_rgba(23,118,255,0.5)] data-[state=open]:border-blue-500 data-[state=open]:shadow-[0px_0px_6px_0px_rgba(23,118,255,0.5)]"
           ),
           "aria-invalid": w,
           "aria-label": O,
@@ -122,7 +122,7 @@ const G = s.forwardRef(
         m.Content,
         {
           className: c(
-            "z-50 rounded-[5px] border border-slate-100 dark:border-slate-600 w-[var(--radix-popover-trigger-width)]",
+            "z-50 rounded-[5px] border border-slate-200 dark:border-slate-600 w-[var(--radix-popover-trigger-width)]",
             "bg-white/50 dark:bg-slate-800/50 backdrop-blur-[12px]",
             "shadow-[10px_10px_10px_0px_rgba(0,0,0,0.05)]",
             "p-[5px]",
@@ -137,7 +137,7 @@ const G = s.forwardRef(
               value: L,
               onValueChange: o,
               children: [
-                /* @__PURE__ */ n("div", { className: "flex items-center gap-2 px-2 pb-2 border-b border-slate-100 dark:border-slate-600", children: [
+                /* @__PURE__ */ n("div", { className: "flex items-center gap-2 px-2 pb-2 border-b border-slate-200 dark:border-slate-600", children: [
                   /* @__PURE__ */ r(B, { size: 20, className: "text-slate-400" }),
                   /* @__PURE__ */ r(
                     i.Input,

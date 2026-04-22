@@ -144,7 +144,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
       >
         {/* 라벨 */}
         {label && (
-          <label className="flex items-center gap-1 text-xs text-slate-700 dark:text-slate-400">
+          <label className="flex items-center gap-1 text-xs text-slate-800 dark:text-slate-400">
             {required && (
               <span className="size-2 rounded-full bg-red-400" aria-hidden="true" />
             )}
@@ -225,7 +225,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
 
         {/* 도움말 */}
         {generatedHelperText && (
-          <div className="text-xs text-slate-500 dark:text-slate-400 whitespace-pre-line leading-5">
+          <div className="text-xs text-slate-600 dark:text-slate-400 whitespace-pre-line leading-5">
             {generatedHelperText}
           </div>
         )}
@@ -238,11 +238,11 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
                 key={`${file.name}-${index}`}
                 className="flex items-center justify-between py-1"
               >
-                <span className="text-xs text-slate-700 dark:text-slate-300">
+                <span className="text-xs text-slate-800 dark:text-slate-300">
                   {index + 1}. {file.name}
                 </span>
                 <div className="flex items-center gap-2">
-                  <span className="text-xs text-slate-500 dark:text-slate-400">
+                  <span className="text-xs text-slate-600 dark:text-slate-400">
                     [{formatFileSize(file.size)}]
                   </span>
                   <button
