@@ -345,7 +345,7 @@ const TabsTrigger = React.forwardRef<
           // 활성 탭: 축소 안 함, maxWidth 유지하여 말줄임 처리
           "data-[state=active]:flex-shrink-0",
           "data-[state=active]:text-slate-900 dark:data-[state=active]:text-slate-50",
-          "data-[state=active]:bg-[linear-gradient(180deg,white_0%,#f4f6f8_30%)]",
+          "data-[state=active]:bg-[linear-gradient(180deg,white_0%,#e2e8f0_50%,#f4f6f8_100%)]",
           "dark:data-[state=active]:bg-[linear-gradient(180deg,#444b57_0%,#1b2026_30%)]",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
           "disabled:pointer-events-none disabled:opacity-50",
@@ -484,7 +484,7 @@ const SortableTabsTrigger = React.forwardRef<
           // 활성 탭: 축소 안 함, maxWidth 유지하여 말줄임 처리
           "data-[state=active]:flex-shrink-0",
           "data-[state=active]:text-slate-900 dark:data-[state=active]:text-slate-50",
-          "data-[state=active]:bg-[linear-gradient(180deg,white_0%,#f4f6f8_30%)]",
+          "data-[state=active]:bg-[linear-gradient(180deg,white_0%,#e2e8f0_50%,#f4f6f8_100%)]",
           "dark:data-[state=active]:bg-[linear-gradient(180deg,#444b57_0%,#1b2026_30%)]",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
           "disabled:pointer-events-none disabled:opacity-50",
