@@ -46,7 +46,7 @@ const m = l(
   );
   return s ? /* @__PURE__ */ n("div", { className: "inline-flex items-center gap-2", children: [
     r,
-    /* @__PURE__ */ n("span", { className: "flex items-center gap-1 text-xs text-slate-700 dark:text-slate-400", children: [
+    /* @__PURE__ */ n("span", { className: "flex items-center gap-1 text-xs text-slate-800 dark:text-slate-400", children: [
       i && /* @__PURE__ */ e("span", { className: "size-2 rounded-full bg-red-400", "aria-hidden": "true" }),
       s
     ] })

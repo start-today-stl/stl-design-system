@@ -96,7 +96,7 @@ const L = s.forwardRef(
               {
                 className: b(
                   "truncate",
-                  !f && "text-slate-300 dark:text-slate-500"
+                  !f && "text-slate-400 dark:text-slate-500"
                 ),
                 children: (f == null ? void 0 : f.label) || y
               }
@@ -148,7 +148,7 @@ const L = s.forwardRef(
               onClick: () => !e.disabled && E(e.value),
               className: b(
                 "relative flex h-[29px] cursor-pointer select-none items-center rounded-[2px] px-[5px] py-[5px]",
-                "text-xs text-slate-700 dark:text-slate-50 outline-none",
+                "text-xs text-slate-800 dark:text-slate-50 outline-none",
                 "hover:bg-slate-100 dark:hover:bg-slate-700",
                 e.disabled && "pointer-events-none opacity-50",
                 i === e.value && "bg-accent text-accent-foreground",

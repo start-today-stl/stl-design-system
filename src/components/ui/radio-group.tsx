@@ -78,7 +78,7 @@ const RadioGroupItem = React.forwardRef<
     return (
       <label className="inline-flex items-center gap-1.5 cursor-pointer align-middle">
         {radio}
-        <span className="text-xs text-slate-600 tracking-[-0.12px] dark:text-slate-200 leading-none">
+        <span className="text-xs text-slate-700 tracking-[-0.12px] dark:text-slate-200 leading-none">
           {label}
         </span>
       </label>
@@ -105,7 +105,7 @@ const RadioGroupField = React.forwardRef<
   return (
     <div className="flex flex-col gap-1.5">
       {label && (
-        <span className="flex items-center gap-1 text-xs text-slate-700 dark:text-slate-400">
+        <span className="flex items-center gap-1 text-xs text-slate-800 dark:text-slate-400">
           {required && (
             <span className="size-2 rounded-full bg-red-400" aria-hidden="true" />
           )}

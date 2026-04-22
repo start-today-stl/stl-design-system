@@ -195,7 +195,7 @@ export const DisplayField = React.forwardRef<HTMLDivElement, DisplayFieldProps>(
         {(label || reserveLabelSpace) && (
           <span
             className={cn(
-              "flex items-center gap-1 text-xs text-slate-700 dark:text-slate-400",
+              "flex items-center gap-1 text-xs text-slate-800 dark:text-slate-400",
               !label && "invisible",
               isHorizontal && "shrink-0",
               labelClassName

@@ -88,7 +88,7 @@ const G = s.forwardRef(
               {
                 className: c(
                   "truncate",
-                  !f && "text-slate-300 dark:text-slate-500"
+                  !f && "text-slate-400 dark:text-slate-500"
                 ),
                 children: (f == null ? void 0 : f.label) || R
               }
@@ -160,7 +160,7 @@ const G = s.forwardRef(
                       onSelect: () => M(e.value),
                       className: c(
                         "relative flex h-[29px] cursor-pointer select-none items-center rounded-[2px] px-[5px] py-[5px]",
-                        "text-xs text-slate-700 dark:text-slate-50 outline-none",
+                        "text-xs text-slate-800 dark:text-slate-50 outline-none",
                         "hover:bg-slate-100 dark:hover:bg-slate-700",
                         "data-[selected=true]:bg-slate-100 dark:data-[selected=true]:bg-slate-700",
                         "data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",

@@ -54,12 +54,12 @@ const u = {
   );
   return e ? /* @__PURE__ */ l("label", { className: "inline-flex items-center gap-1.5 cursor-pointer align-middle", children: [
     g,
-    /* @__PURE__ */ r("span", { className: "text-xs text-slate-600 tracking-[-0.12px] dark:text-slate-200 leading-none", children: e })
+    /* @__PURE__ */ r("span", { className: "text-xs text-slate-700 tracking-[-0.12px] dark:text-slate-200 leading-none", children: e })
   ] }) : g;
 });
 m.displayName = o.Item.displayName;
 const b = n.forwardRef(({ className: a, label: e, children: s, required: t, ...d }, i) => /* @__PURE__ */ l("div", { className: "flex flex-col gap-1.5", children: [
-  e && /* @__PURE__ */ l("span", { className: "flex items-center gap-1 text-xs text-slate-700 dark:text-slate-400", children: [
+  e && /* @__PURE__ */ l("span", { className: "flex items-center gap-1 text-xs text-slate-800 dark:text-slate-400", children: [
     t && /* @__PURE__ */ r("span", { className: "size-2 rounded-full bg-red-400", "aria-hidden": "true" }),
     e
   ] }),
