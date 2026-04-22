@@ -103,7 +103,7 @@ const te = r.forwardRef(
             "group flex h-9 w-full items-center justify-between rounded-[5px] border bg-white dark:bg-slate-800",
             "px-3 text-xs outline-none transition-colors",
             "has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-50",
-            A ? "border-red-500 dark:border-red-500 focus-within:border-red-500 focus-within:shadow-[0px_0px_6px_0px_rgba(239,68,68,0.5)]" : H ? "border-slate-300 dark:border-slate-500 focus-within:border-slate-500 focus-within:border-[1.5px] dark:focus-within:border-slate-300" : "border-slate-100 dark:border-slate-600 focus-within:border-blue-500 focus-within:shadow-[0px_0px_6px_0px_rgba(23,118,255,0.5)]"
+            A ? "border-red-500 dark:border-red-500 focus-within:border-red-500 focus-within:shadow-[0px_0px_6px_0px_rgba(239,68,68,0.5)]" : H ? "border-slate-300 dark:border-slate-500 focus-within:border-slate-500 focus-within:border-[1.5px] dark:focus-within:border-slate-300" : "border-slate-200 dark:border-slate-600 focus-within:border-blue-500 focus-within:shadow-[0px_0px_6px_0px_rgba(23,118,255,0.5)]"
           ),
           onMouseEnter: () => z(!0),
           onMouseLeave: () => z(!1),
@@ -169,7 +169,7 @@ const te = r.forwardRef(
         C.Content,
         {
           className: b(
-            "z-50 rounded-[5px] border border-slate-100 dark:border-slate-600 w-[var(--radix-popover-trigger-width)]",
+            "z-50 rounded-[5px] border border-slate-200 dark:border-slate-600 w-[var(--radix-popover-trigger-width)]",
             "bg-white/50 dark:bg-slate-800/50 backdrop-blur-[12px]",
             "shadow-[10px_10px_10px_0px_rgba(0,0,0,0.05)]",
             "p-[5px]",

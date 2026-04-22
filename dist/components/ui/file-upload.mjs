@@ -56,7 +56,7 @@ const z = (r) => {
         ref: w,
         className: f("flex flex-col gap-2", F[b], $),
         children: [
-          r && /* @__PURE__ */ a("label", { className: "flex items-center gap-1 text-xs text-slate-700 dark:text-slate-400", children: [
+          r && /* @__PURE__ */ a("label", { className: "flex items-center gap-1 text-xs text-slate-800 dark:text-slate-400", children: [
             B && /* @__PURE__ */ l("span", { className: "size-2 rounded-full bg-red-400", "aria-hidden": "true" }),
             r
           ] }),
@@ -134,19 +134,19 @@ const z = (r) => {
             }
           ),
           x && g && /* @__PURE__ */ l("span", { className: "text-xs text-destructive dark:text-red-400", children: g }),
-          k && /* @__PURE__ */ l("div", { className: "text-xs text-slate-500 dark:text-slate-400 whitespace-pre-line leading-5", children: k }),
+          k && /* @__PURE__ */ l("div", { className: "text-xs text-slate-600 dark:text-slate-400 whitespace-pre-line leading-5", children: k }),
           n > 1 && t.length > 0 && /* @__PURE__ */ l("div", { className: "flex flex-col gap-1", children: t.map((e, s) => /* @__PURE__ */ a(
             "div",
             {
               className: "flex items-center justify-between py-1",
               children: [
-                /* @__PURE__ */ a("span", { className: "text-xs text-slate-700 dark:text-slate-300", children: [
+                /* @__PURE__ */ a("span", { className: "text-xs text-slate-800 dark:text-slate-300", children: [
                   s + 1,
                   ". ",
                   e.name
                 ] }),
                 /* @__PURE__ */ a("div", { className: "flex items-center gap-2", children: [
-                  /* @__PURE__ */ a("span", { className: "text-xs text-slate-500 dark:text-slate-400", children: [
+                  /* @__PURE__ */ a("span", { className: "text-xs text-slate-600 dark:text-slate-400", children: [
                     "[",
                     z(e.size),
                     "]"
