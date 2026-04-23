@@ -121,7 +121,7 @@ function B({
     value: String(l)
   }));
   return /* @__PURE__ */ p("div", { className: u("flex items-center gap-2", m), children: [
-    o && /* @__PURE__ */ a("span", { className: "text-xs text-slate-500 dark:text-slate-300 whitespace-nowrap", children: o }),
+    o && /* @__PURE__ */ a("span", { className: "text-xs text-slate-800 dark:text-slate-400 whitespace-nowrap", children: o }),
     /* @__PURE__ */ a(
       b,
       {
