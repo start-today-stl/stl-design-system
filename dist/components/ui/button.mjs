@@ -1,11 +1,11 @@
-import { jsxs as g, jsx as s } from "react/jsx-runtime";
+import { jsxs as l, jsx as s } from "react/jsx-runtime";
 import * as c from "react";
-import { Slot as m } from "@radix-ui/react-slot";
-import { cva as y } from "class-variance-authority";
+import { Slot as w } from "@radix-ui/react-slot";
+import { cva as k } from "class-variance-authority";
 import { cn as b } from "../../lib/utils.mjs";
-function w({ size: a }) {
+function I({ size: a }) {
   const e = c.useId();
-  return /* @__PURE__ */ g(
+  return /* @__PURE__ */ l(
     "svg",
     {
       className: b("animate-spin", a === "sm" ? "size-3" : "size-6"),
@@ -13,7 +13,7 @@ function w({ size: a }) {
       fill: "none",
       xmlns: "http://www.w3.org/2000/svg",
       children: [
-        /* @__PURE__ */ s("defs", { children: /* @__PURE__ */ g("linearGradient", { id: e, x1: "0%", y1: "0%", x2: "100%", y2: "100%", children: [
+        /* @__PURE__ */ s("defs", { children: /* @__PURE__ */ l("linearGradient", { id: e, x1: "0%", y1: "0%", x2: "100%", y2: "100%", children: [
           /* @__PURE__ */ s("stop", { offset: "0%", stopColor: "rgba(255,255,255,1)" }),
           /* @__PURE__ */ s("stop", { offset: "100%", stopColor: "rgba(255,255,255,0.3)" })
         ] }) }),
@@ -32,7 +32,7 @@ function w({ size: a }) {
     }
   );
 }
-const k = y(
+const N = k(
   "inline-flex items-center justify-center gap-0.5 whitespace-nowrap font-normal transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-30 [&_svg]:pointer-events-none [&_svg]:shrink-0",
   {
     variants: {
@@ -71,40 +71,43 @@ const k = y(
     }
   }
 );
-function I(a) {
+function S(a) {
   const e = c.Children.toArray(a);
   if (e.length === 0) return { hasIconLeft: !1, hasIconRight: !1, isIconOnly: !1 };
-  const t = e[0], d = e[e.length - 1], r = (n) => {
-    var i, l;
-    return c.isValidElement(n) ? n.type === "svg" || typeof n.type == "function" && ((i = n.type.displayName) == null ? void 0 : i.includes("Icon")) || typeof n.type == "function" && ((l = n.type.name) == null ? void 0 : l.includes("Icon")) : !1;
-  }, o = e.length === 1 && r(t);
+  const r = e[0], d = e[e.length - 1], n = (t) => {
+    var i, o;
+    return c.isValidElement(t) ? t.type === "svg" || typeof t.type == "function" && ((i = t.type.displayName) == null ? void 0 : i.includes("Icon")) || typeof t.type == "function" && ((o = t.type.name) == null ? void 0 : o.includes("Icon")) : !1;
+  }, g = e.length === 1 && n(r);
   return {
-    hasIconLeft: r(t) && e.length > 1,
-    hasIconRight: r(d) && e.length > 1,
-    isIconOnly: o
+    hasIconLeft: n(r) && e.length > 1,
+    hasIconRight: n(d) && e.length > 1,
+    isIconOnly: g
   };
 }
-const N = c.forwardRef(
-  ({ className: a, variant: e, size: t, asChild: d = !1, loading: r = !1, children: o, disabled: n, ...i }, l) => {
-    const x = d ? m : "button", h = t === "sm" ? "sm" : "default", { hasIconLeft: p, hasIconRight: u, isIconOnly: v } = I(o), f = () => t === "icon" || t === "icon-sm" ? "" : v ? "!px-1.5" : p && u ? "!pl-[7px] !pr-[7px]" : p ? "!pl-[7px] !pr-3" : u ? "!pl-3 !pr-[7px]" : "";
-    return /* @__PURE__ */ g(
-      x,
+const C = c.forwardRef(
+  ({ className: a, variant: e, size: r, asChild: d = !1, loading: n = !1, reserveLabelSpace: g = !1, children: t, disabled: i, ...o }, f) => {
+    const h = d ? w : "button", v = r === "sm" ? "sm" : "default", { hasIconLeft: p, hasIconRight: u, isIconOnly: m } = S(t), y = () => r === "icon" || r === "icon-sm" ? "" : m ? "!px-1.5" : p && u ? "!pl-[7px] !pr-[7px]" : p ? "!pl-[7px] !pr-3" : u ? "!pl-3 !pr-[7px]" : "", x = /* @__PURE__ */ l(
+      h,
       {
-        className: b(k({ variant: e, size: t, className: a }), f(), r && "relative"),
-        ref: l,
-        disabled: n || r,
-        ...i,
+        className: b(N({ variant: e, size: r, className: a }), y(), n && "relative"),
+        ref: f,
+        disabled: i || n,
+        ...o,
         children: [
-          r && /* @__PURE__ */ s("span", { className: "absolute inset-0 flex items-center justify-center", children: /* @__PURE__ */ s(w, { size: h }) }),
-          /* @__PURE__ */ s("span", { className: b("inline-flex items-center gap-0.5", r && "invisible"), children: o })
+          n && /* @__PURE__ */ s("span", { className: "absolute inset-0 flex items-center justify-center", children: /* @__PURE__ */ s(I, { size: v }) }),
+          /* @__PURE__ */ s("span", { className: b("inline-flex items-center gap-0.5", n && "invisible"), children: t })
         ]
       }
     );
+    return g ? /* @__PURE__ */ l("div", { className: "flex flex-col gap-1", children: [
+      /* @__PURE__ */ s("span", { className: "invisible text-xs", children: " " }),
+      x
+    ] }) : x;
   }
 );
-N.displayName = "Button";
+C.displayName = "Button";
 export {
-  N as Button,
-  k as buttonVariants
+  C as Button,
+  N as buttonVariants
 };
 //# sourceMappingURL=button.mjs.map

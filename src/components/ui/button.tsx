@@ -88,6 +88,8 @@ export interface ButtonProps
   asChild?: boolean
   /** 로딩 상태 (스피너 표시) */
   loading?: boolean
+  /** 라벨이 없어도 라벨 공간 유지 (폼 요소와 높이 맞춤) */
+  reserveLabelSpace?: boolean
 }
 
 /** 아이콘 위치 감지 */
@@ -119,7 +121,7 @@ function detectIconPosition(children: React.ReactNode) {
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, loading = false, children, disabled, ...props }, ref) => {
+  ({ className, variant, size, asChild = false, loading = false, reserveLabelSpace = false, children, disabled, ...props }, ref) => {
     const Comp = asChild ? Slot : "button"
     const spinnerSize = size === "sm" ? "sm" : "default"
 
@@ -136,7 +138,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       return "" // 텍스트만 (기본 px-2.5 = 10px)
     }
 
-    return (
+    const button = (
       <Comp
         className={cn(buttonVariants({ variant, size, className }), getPaddingClass(), loading && "relative")}
         ref={ref}
@@ -151,6 +153,17 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         <span className={cn("inline-flex items-center gap-0.5", loading && "invisible")}>{children}</span>
       </Comp>
     )
+
+    if (reserveLabelSpace) {
+      return (
+        <div className="flex flex-col gap-1">
+          <span className="invisible text-xs">&nbsp;</span>
+          {button}
+        </div>
+      )
+    }
+
+    return button
   }
 )
 Button.displayName = "Button"
