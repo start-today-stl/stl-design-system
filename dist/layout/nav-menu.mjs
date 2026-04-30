@@ -1,29 +1,29 @@
-import { jsx as n, jsxs as x } from "react/jsx-runtime";
+import { jsx as n, jsxs as b } from "react/jsx-runtime";
 import * as r from "react";
 import { cn as a } from "../lib/utils.mjs";
-import { MenuVerticalIcon as b } from "../icons/MenuVerticalIcon.mjs";
-const d = r.forwardRef(
-  ({ className: i, layout: l = "vertical", collapsed: t, showToggle: f = !1, scrollable: c = !1, onToggle: u, children: o, ...s }, m) => l === "horizontal" ? /* @__PURE__ */ n(
+import { MenuVerticalIcon as c } from "../icons/MenuVerticalIcon.mjs";
+const p = r.forwardRef(
+  ({ className: l, layout: i = "vertical", collapsed: t, showToggle: f = !1, scrollable: u = !1, onToggle: x, children: o, ...s }, m) => i === "horizontal" ? /* @__PURE__ */ n(
     "nav",
     {
       ref: m,
       className: a(
         "flex items-center gap-1",
-        i
+        l
       ),
       ...s,
       children: r.Children.map(o, (e) => r.isValidElement(e) ? r.cloneElement(e, {
-        layout: l
+        layout: i
       }) : e)
     }
-  ) : /* @__PURE__ */ x(
+  ) : /* @__PURE__ */ b(
     "nav",
     {
       ref: m,
       className: a(
         "relative flex flex-col min-h-0 transition-all duration-300",
         t ? "w-[88px] items-center" : "w-full",
-        i
+        l
       ),
       ...s,
       children: [
@@ -31,7 +31,7 @@ const d = r.forwardRef(
           "button",
           {
             type: "button",
-            onClick: u,
+            onClick: x,
             className: a(
               "absolute flex items-center justify-center z-20",
               "w-8 h-8 rounded-[20px] border border-slate-100 dark:border-slate-700",
@@ -40,7 +40,7 @@ const d = r.forwardRef(
               t ? "top-[-48px] -right-4" : "top-[-48px] -right-[40px]"
             ),
             "aria-label": t ? "메뉴 펼치기" : "메뉴 접기",
-            children: /* @__PURE__ */ n(b, { size: 24, className: "text-slate-500" })
+            children: /* @__PURE__ */ n(c, { size: 24, className: "text-slate-500" })
           }
         ),
         /* @__PURE__ */ n(
@@ -49,11 +49,11 @@ const d = r.forwardRef(
             className: a(
               "flex flex-col",
               t ? "items-center gap-0.5 w-full px-2 overflow-visible" : "gap-0.5 pb-4",
-              c && !t && "flex-1 min-h-0 overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+              u && !t && "flex-1 min-h-0 overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
             ),
-            children: r.Children.map(o, (e) => r.isValidElement(e) ? r.cloneElement(e, {
+            children: r.Children.map(o, (e) => r.isValidElement(e) && typeof e.type != "string" ? r.cloneElement(e, {
               collapsed: t,
-              layout: l
+              layout: i
             }) : e)
           }
         )
@@ -61,8 +61,8 @@ const d = r.forwardRef(
     }
   )
 );
-d.displayName = "NavMenu";
+p.displayName = "NavMenu";
 export {
-  d as NavMenu
+  p as NavMenu
 };
 //# sourceMappingURL=nav-menu.mjs.map
