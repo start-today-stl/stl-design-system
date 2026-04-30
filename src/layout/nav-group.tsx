@@ -108,7 +108,7 @@ const NavGroup = React.forwardRef<HTMLDivElement, NavGroupProps>(
     // 드롭다운 children 렌더링 헬퍼
     const renderDropdownChildren = (inFlyout: boolean, childDepth: number) => {
       return React.Children.map(children, (child) => {
-        if (React.isValidElement(child)) {
+        if (React.isValidElement(child) && typeof child.type !== 'string') {
           return React.cloneElement(child as React.ReactElement<{ layout?: NavMenuLayout; depth?: number; _inFlyout?: boolean; collapsed?: boolean }>, {
             layout: "vertical",
             depth: childDepth,
@@ -183,7 +183,7 @@ const NavGroup = React.forwardRef<HTMLDivElement, NavGroupProps>(
           {isExpanded && (
             <div className="flex flex-col gap-0.5">
               {React.Children.map(children, (child) => {
-                if (React.isValidElement(child)) {
+                if (React.isValidElement(child) && typeof child.type !== 'string') {
                   return React.cloneElement(child as React.ReactElement<{ collapsed?: boolean; depth?: number; _inFlyout?: boolean }>, {
                     collapsed: false,
                     depth: (depth || 1) + 1 as 1 | 2 | 3,

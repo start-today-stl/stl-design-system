@@ -81,9 +81,9 @@ const NavMenu = React.forwardRef<HTMLDivElement, NavMenuProps>(
             scrollable && !collapsed && "flex-1 min-h-0 overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
           )}
         >
-          {/* children에 collapsed prop 전달 */}
+          {/* children에 collapsed prop 전달 (React 컴포넌트에만) */}
           {React.Children.map(children, (child) => {
-            if (React.isValidElement(child)) {
+            if (React.isValidElement(child) && typeof child.type !== 'string') {
               return React.cloneElement(child as React.ReactElement<{ collapsed?: boolean; layout?: NavMenuLayout }>, {
                 collapsed,
                 layout,
