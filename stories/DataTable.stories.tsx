@@ -331,7 +331,7 @@ export const Editable: Story = {
           마지막 변경: {lastChange || "없음"}
         </p>
         <p className="mb-4 text-xs text-slate-400">
-          셀을 클릭하여 편집하세요. Enter로 저장, Escape 또는 다른 곳 클릭으로 취소.
+          셀을 클릭하여 편집하세요. Enter 또는 다른 곳 클릭으로 저장, Escape로 취소.
         </p>
         <DataTable
           columns={editableColumns}
@@ -1624,7 +1624,7 @@ export const RowActionsEditable: Story = {
           <h3 className="font-bold mb-2">행 추가/삭제 + 셀 편집</h3>
           <p className="text-slate-600 dark:text-slate-300">
             rowActions와 editable 컬럼을 함께 사용합니다.
-            셀을 클릭하면 편집 모드로 전환되며, Enter로 저장, Escape로 취소합니다.
+            셀을 클릭하면 편집 모드로 전환되며, Enter 또는 다른 곳 클릭으로 저장, Escape로 취소합니다.
           </p>
         </div>
         <p className="text-sm text-slate-500">
@@ -1749,7 +1749,7 @@ export const RowActionsEditableExternal: Story = {
           <h3 className="font-bold mb-2">행 추가/삭제 + 셀 편집 (외부 추가 버튼)</h3>
           <p className="text-slate-600 dark:text-slate-300">
             테이블 내부에는 삭제 아이콘만 표시하고, 행 추가는 테이블 위의 별도 버튼으로 처리합니다.
-            셀을 클릭하면 편집 모드로 전환되며, Enter로 저장, Escape로 취소합니다.
+            셀을 클릭하면 편집 모드로 전환되며, Enter 또는 다른 곳 클릭으로 저장, Escape로 취소합니다.
           </p>
         </div>
         <div className="flex items-center justify-between">
