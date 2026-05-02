@@ -231,6 +231,7 @@ function DefaultEditComponent<T>({
         value={String(value ?? "")}
         onChange={(e) => onChange(e.target.value as T[keyof T])}
         onKeyDown={handleKeyDown}
+        onBlur={onComplete}
         error={!!error}
         tableMode
         className="w-full px-2 text-xs"
@@ -747,6 +748,25 @@ function DataTable<T extends { id: string | number }>({
     editValueRef.current = null
   }
 
+  // editingCell에서 column/row를 찾아서 completeEditing 호출
+  const completeEditingFromState = React.useCallback(() => {
+    if (!editingCell) return
+    const column = columns.find((col) => col.accessorKey === editingCell.columnKey)
+    const row = data.find((r) => r.id === editingCell.rowId)
+    if (column && row) {
+      completeEditing(column, row)
+    } else {
+      // column/row를 못 찾으면 값만 커밋 (유효성 검증 없이)
+      const currentValue = editValueRef.current
+      if (currentValue !== null && onCellChange) {
+        onCellChange(editingCell.rowId, editingCell.columnKey, currentValue)
+      }
+      setEditingCell(null)
+      setEditValue(null)
+      editValueRef.current = null
+    }
+  }, [editingCell, columns, data, onCellChange])
+
   const cancelEditing = React.useCallback(() => {
     setEditingCell(null)
     setEditValue(null)
@@ -762,12 +782,13 @@ function DataTable<T extends { id: string | number }>({
       // Radix 포털 (Select 드롭다운) 내부 클릭은 무시해야 함
       const radixPortal = (target as Element).closest?.("[data-radix-popper-content-wrapper]")
       if (radixPortal) return
-      cancelEditing()
+      // blur 시 저장 (Escape만 취소)
+      completeEditingFromState()
     }
 
     document.addEventListener("mousedown", handleClickOutside)
     return () => document.removeEventListener("mousedown", handleClickOutside)
-  }, [editingCell, cancelEditing])
+  }, [editingCell, completeEditingFromState])
 
   const isEditing = (rowId: string | number, columnKey: keyof T) => {
     return editingCell?.rowId === rowId && editingCell?.columnKey === columnKey
