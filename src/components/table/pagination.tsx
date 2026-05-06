@@ -189,7 +189,7 @@ function PageSizeSelector({
         onValueChange={(value) => onPageSizeChange?.(Number(value))}
         options={selectOptions}
         size="sm"
-        className="!w-[70px]"
+        className="!w-[90px]"
         aria-label="페이지당 항목 수"
         clearable={false}
       />
