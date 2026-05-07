@@ -63,6 +63,12 @@ const buttonVariants = cva(
         // Success Outline (Green) - 완료/긍정 버튼 아웃라인
         "success-outline":
           "border-[0.75px] border-green-500 text-green-500 bg-transparent hover:bg-green-500/50 hover:text-white active:bg-green-500 active:text-white",
+        // Warning (Yellow) - 주의/경고 버튼
+        warning:
+          "bg-yellow-500 text-white hover:bg-yellow-600 active:bg-yellow-700",
+        // Warning Outline (Yellow) - 주의/경고 버튼 아웃라인
+        "warning-outline":
+          "border-[0.75px] border-yellow-500 text-yellow-500 bg-transparent hover:bg-yellow-500/50 hover:text-white active:bg-yellow-500 active:text-white",
         // Text - 텍스트만 있는 버튼 (배경/테두리 없음)
         text: "bg-transparent text-slate-700 hover:text-blue-500 active:text-blue-600 dark:text-slate-300 dark:hover:text-blue-400 dark:active:text-blue-500",
       },

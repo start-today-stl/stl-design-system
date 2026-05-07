@@ -1,5 +1,5 @@
 import { Toaster as Sonner, toast as sonnerToast } from "sonner"
-import { ToastOIcon, ToastXIcon } from "@/icons"
+import { ToastOIcon, ToastXIcon, ToastWarningIcon } from "@/icons"
 import { Spinner } from "./spinner"
 import { cn } from "@/lib/utils"
 
@@ -19,7 +19,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
 
 // 커스텀 토스트 컴포넌트
 interface CustomToastProps {
-  type: "success" | "error" | "loading"
+  type: "success" | "error" | "warning" | "loading"
   title: string
   description?: string
 }
@@ -33,6 +33,8 @@ const CustomToast = ({ type, title, description }: CustomToastProps) => {
         return <ToastOIcon size={26} />
       case "error":
         return <ToastXIcon size={26} />
+      case "warning":
+        return <ToastWarningIcon size={26} />
       case "loading":
         return <Spinner className="size-[26px]" />
     }
@@ -75,6 +77,11 @@ const toast = {
   error: (title: string, options?: { description?: string }) => {
     return sonnerToast.custom(() => (
       <CustomToast type="error" title={title} description={options?.description} />
+    ))
+  },
+  warning: (title: string, options?: { description?: string }) => {
+    return sonnerToast.custom(() => (
+      <CustomToast type="warning" title={title} description={options?.description} />
     ))
   },
   loading: (title: string, options?: { description?: string }) => {

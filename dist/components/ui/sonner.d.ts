@@ -8,6 +8,9 @@ declare const toast: {
     error: (title: string, options?: {
         description?: string;
     }) => string | number;
+    warning: (title: string, options?: {
+        description?: string;
+    }) => string | number;
     loading: (title: string, options?: {
         description?: string;
     }) => string | number;

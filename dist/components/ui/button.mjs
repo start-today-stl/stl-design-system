@@ -1,14 +1,14 @@
 import { jsxs as l, jsx as s } from "react/jsx-runtime";
 import * as c from "react";
-import { Slot as w } from "@radix-ui/react-slot";
+import { Slot as y } from "@radix-ui/react-slot";
 import { cva as k } from "class-variance-authority";
-import { cn as b } from "../../lib/utils.mjs";
+import { cn as d } from "../../lib/utils.mjs";
 function I({ size: a }) {
   const e = c.useId();
   return /* @__PURE__ */ l(
     "svg",
     {
-      className: b("animate-spin", a === "sm" ? "size-3" : "size-6"),
+      className: d("animate-spin", a === "sm" ? "size-3" : "size-6"),
       viewBox: "0 0 24 24",
       fill: "none",
       xmlns: "http://www.w3.org/2000/svg",
@@ -53,6 +53,10 @@ const N = k(
         success: "bg-green-500 text-white hover:bg-green-600 active:bg-green-700",
         // Success Outline (Green) - 완료/긍정 버튼 아웃라인
         "success-outline": "border-[0.75px] border-green-500 text-green-500 bg-transparent hover:bg-green-500/50 hover:text-white active:bg-green-500 active:text-white",
+        // Warning (Yellow) - 주의/경고 버튼
+        warning: "bg-yellow-500 text-white hover:bg-yellow-600 active:bg-yellow-700",
+        // Warning Outline (Yellow) - 주의/경고 버튼 아웃라인
+        "warning-outline": "border-[0.75px] border-yellow-500 text-yellow-500 bg-transparent hover:bg-yellow-500/50 hover:text-white active:bg-yellow-500 active:text-white",
         // Text - 텍스트만 있는 버튼 (배경/테두리 없음)
         text: "bg-transparent text-slate-700 hover:text-blue-500 active:text-blue-600 dark:text-slate-300 dark:hover:text-blue-400 dark:active:text-blue-500"
       },
@@ -74,32 +78,32 @@ const N = k(
 function S(a) {
   const e = c.Children.toArray(a);
   if (e.length === 0) return { hasIconLeft: !1, hasIconRight: !1, isIconOnly: !1 };
-  const r = e[0], d = e[e.length - 1], n = (t) => {
-    var i, o;
-    return c.isValidElement(t) ? t.type === "svg" || typeof t.type == "function" && ((i = t.type.displayName) == null ? void 0 : i.includes("Icon")) || typeof t.type == "function" && ((o = t.type.name) == null ? void 0 : o.includes("Icon")) : !1;
-  }, g = e.length === 1 && n(r);
+  const r = e[0], g = e[e.length - 1], n = (t) => {
+    var o, i;
+    return c.isValidElement(t) ? t.type === "svg" || typeof t.type == "function" && ((o = t.type.displayName) == null ? void 0 : o.includes("Icon")) || typeof t.type == "function" && ((i = t.type.name) == null ? void 0 : i.includes("Icon")) : !1;
+  }, b = e.length === 1 && n(r);
   return {
     hasIconLeft: n(r) && e.length > 1,
-    hasIconRight: n(d) && e.length > 1,
-    isIconOnly: g
+    hasIconRight: n(g) && e.length > 1,
+    isIconOnly: b
   };
 }
 const C = c.forwardRef(
-  ({ className: a, variant: e, size: r, asChild: d = !1, loading: n = !1, reserveLabelSpace: g = !1, children: t, disabled: i, ...o }, f) => {
-    const h = d ? w : "button", v = r === "sm" ? "sm" : "default", { hasIconLeft: p, hasIconRight: u, isIconOnly: m } = S(t), y = () => r === "icon" || r === "icon-sm" ? "" : m ? "!px-1.5" : p && u ? "!pl-[7px] !pr-[7px]" : p ? "!pl-[7px] !pr-3" : u ? "!pl-3 !pr-[7px]" : "", x = /* @__PURE__ */ l(
-      h,
+  ({ className: a, variant: e, size: r, asChild: g = !1, loading: n = !1, reserveLabelSpace: b = !1, children: t, disabled: o, ...i }, h) => {
+    const v = g ? y : "button", f = r === "sm" ? "sm" : "default", { hasIconLeft: p, hasIconRight: u, isIconOnly: m } = S(t), w = () => r === "icon" || r === "icon-sm" ? "" : m ? "!px-1.5" : p && u ? "!pl-[7px] !pr-[7px]" : p ? "!pl-[7px] !pr-3" : u ? "!pl-3 !pr-[7px]" : "", x = /* @__PURE__ */ l(
+      v,
       {
-        className: b(N({ variant: e, size: r, className: a }), y(), n && "relative"),
-        ref: f,
-        disabled: i || n,
-        ...o,
+        className: d(N({ variant: e, size: r, className: a }), w(), n && "relative"),
+        ref: h,
+        disabled: o || n,
+        ...i,
         children: [
-          n && /* @__PURE__ */ s("span", { className: "absolute inset-0 flex items-center justify-center", children: /* @__PURE__ */ s(I, { size: v }) }),
-          /* @__PURE__ */ s("span", { className: b("inline-flex items-center gap-0.5", n && "invisible"), children: t })
+          n && /* @__PURE__ */ s("span", { className: "absolute inset-0 flex items-center justify-center", children: /* @__PURE__ */ s(I, { size: f }) }),
+          /* @__PURE__ */ s("span", { className: d("inline-flex items-center gap-0.5", n && "invisible"), children: t })
         ]
       }
     );
-    return g ? /* @__PURE__ */ l("div", { className: "flex flex-col gap-1", children: [
+    return b ? /* @__PURE__ */ l("div", { className: "flex flex-col gap-1", children: [
       /* @__PURE__ */ s("span", { className: "invisible text-xs", children: " " }),
       x
     ] }) : x;
