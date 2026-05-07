@@ -108,17 +108,17 @@ const greenColors = [
 ];
 
 const yellowColors = [
-  { name: "50", color: "#fef9e7", textColor: "#624d06" },
-  { name: "100", color: "#fdf2cf", textColor: "#624d06" },
-  { name: "200", color: "#fbe69f", textColor: "#624d06" },
-  { name: "300", color: "#f9d96f", textColor: "#624d06" },
-  { name: "400", color: "#f7cd3f", textColor: "#624d06" },
-  { name: "500", color: "#f5c00f", textColor: "#624d06" },
-  { name: "600", color: "#c49a0c", textColor: "#fff" },
-  { name: "700", color: "#937309", textColor: "#fff" },
-  { name: "800", color: "#624d06", textColor: "#fff" },
-  { name: "900", color: "#312603", textColor: "#fff" },
-  { name: "950", color: "#181302", textColor: "#fff" },
+  { name: "50", color: "#fffbeb", textColor: "#92400e" },
+  { name: "100", color: "#fef3c7", textColor: "#92400e" },
+  { name: "200", color: "#fde68a", textColor: "#92400e" },
+  { name: "300", color: "#fcd34d", textColor: "#92400e" },
+  { name: "400", color: "#fbbf24", textColor: "#92400e" },
+  { name: "500", color: "#f59e0b", textColor: "#fff" },
+  { name: "600", color: "#d97706", textColor: "#fff" },
+  { name: "700", color: "#b45309", textColor: "#fff" },
+  { name: "800", color: "#92400e", textColor: "#fff" },
+  { name: "900", color: "#78350f", textColor: "#fff" },
+  { name: "950", color: "#451a03", textColor: "#fff" },
 ];
 
 const slateColors = [
