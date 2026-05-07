@@ -2,8 +2,8 @@ import { jsxs as E, Fragment as F, jsx as i } from "react/jsx-runtime";
 import * as o from "react";
 import { createPortal as K } from "react-dom";
 import { cn as u } from "../lib/utils.mjs";
-import { SearchIcon as O } from "../icons/SearchIcon.mjs";
-import { STLArrowIcon as H } from "../icons/STLArrowIcon.mjs";
+import { STLArrowIcon as O } from "../icons/STLArrowIcon.mjs";
+import { SearchIcon as H } from "../icons/SearchIcon.mjs";
 const M = o.forwardRef(
   ({
     placeholder: I = "검색어를 입력하세요",
@@ -60,7 +60,7 @@ const M = o.forwardRef(
             R
           ),
           children: [
-            /* @__PURE__ */ i(O, { size: 20, className: "text-slate-500 dark:text-slate-50 shrink-0" }),
+            /* @__PURE__ */ i(H, { size: 20, className: "text-slate-500 dark:text-slate-50 shrink-0" }),
             /* @__PURE__ */ i(
               "input",
               {
@@ -80,7 +80,7 @@ const M = o.forwardRef(
                 )
               }
             ),
-            /* @__PURE__ */ i(H, { size: 24, className: "text-blue-500 dark:text-slate-50 shrink-0" })
+            /* @__PURE__ */ i(O, { size: 24, className: "text-blue-500 dark:text-slate-50 shrink-0" })
           ]
         }
       ) }),

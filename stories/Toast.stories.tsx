@@ -49,6 +49,18 @@ export const Error: Story = {
   ),
 }
 
+/** 경고 토스트 */
+export const Warning: Story = {
+  render: () => (
+    <Button
+      variant="warning"
+      onClick={() => toast.warning("입력값을 다시 확인해주세요.")}
+    >
+      경고 토스트
+    </Button>
+  ),
+}
+
 /** 로딩 토스트 */
 export const Loading: Story = {
   render: () => (
@@ -90,6 +102,16 @@ export const WithDescription: Story = {
         }
       >
         성공 + 설명
+      </Button>
+      <Button
+        variant="warning"
+        onClick={() =>
+          toast.warning("입력값을 다시 확인해주세요.", {
+            description: "필수 입력 항목 중 누락된 값이 있습니다.",
+          })
+        }
+      >
+        경고 + 설명
       </Button>
       <Button
         onClick={() => {
@@ -139,6 +161,9 @@ export const AllTypes: Story = {
       </Button>
       <Button variant="danger" onClick={() => toast.error("에러 메시지")}>
         에러
+      </Button>
+      <Button variant="warning" onClick={() => toast.warning("경고 메시지")}>
+        경고
       </Button>
       <Button onClick={() => toast.loading("로딩 메시지")}>로딩</Button>
     </div>

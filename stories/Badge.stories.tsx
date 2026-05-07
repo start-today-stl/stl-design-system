@@ -18,6 +18,9 @@ const meta = {
         "success-light",
         "success-solid",
         "success-outline",
+        "warning-light",
+        "warning-solid",
+        "warning-outline",
         "danger-light",
         "danger-solid",
         "danger-outline",
@@ -82,6 +85,30 @@ export const SuccessOutline: Story = {
   },
 }
 
+// Warning Light
+export const WarningLight: Story = {
+  args: {
+    children: "주의",
+    variant: "warning-light",
+  },
+}
+
+// Warning Solid
+export const WarningSolid: Story = {
+  args: {
+    children: "경고",
+    variant: "warning-solid",
+  },
+}
+
+// Warning Outline
+export const WarningOutline: Story = {
+  args: {
+    children: "주의",
+    variant: "warning-outline",
+  },
+}
+
 // Danger Light
 export const DangerLight: Story = {
   args: {
@@ -121,6 +148,12 @@ export const AllVariants: Story = {
         <Badge variant="success-light">양호</Badge>
         <Badge variant="success-solid">완료</Badge>
         <Badge variant="success-outline">양호</Badge>
+      </div>
+      <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+        <span style={{ width: "80px", fontSize: "12px", color: "#666" }}>Warning</span>
+        <Badge variant="warning-light">주의</Badge>
+        <Badge variant="warning-solid">경고</Badge>
+        <Badge variant="warning-outline">주의</Badge>
       </div>
       <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
         <span style={{ width: "80px", fontSize: "12px", color: "#666" }}>Danger</span>

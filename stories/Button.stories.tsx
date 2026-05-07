@@ -15,7 +15,7 @@ const meta = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['ghost', 'ghost-outline', 'primary', 'primary-outline', 'danger', 'danger-outline', 'success', 'success-outline', 'text', 'default', 'destructive', 'outline', 'secondary', 'link'],
+      options: ['ghost', 'ghost-outline', 'primary', 'primary-outline', 'danger', 'danger-outline', 'success', 'success-outline', 'warning', 'warning-outline', 'text', 'default', 'destructive', 'outline', 'secondary', 'link'],
       description: '버튼 스타일 변형',
     },
     size: {
@@ -77,6 +77,14 @@ export const Success: Story = {
   },
 }
 
+// Warning (Yellow) - 주의/경고 버튼
+export const Warning: Story = {
+  args: {
+    variant: 'warning',
+    children: 'Buttons',
+  },
+}
+
 // Disabled 상태
 export const Disabled: Story = {
   args: {
@@ -105,6 +113,7 @@ export const AllVariants: Story = {
         <Button variant="primary">Primary</Button>
         <Button variant="danger">Danger</Button>
         <Button variant="success">Success</Button>
+        <Button variant="warning">Warning</Button>
       </div>
       <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
         <span style={{ width: '100px', fontSize: '12px', color: '#666' }}>Outline</span>
@@ -112,6 +121,7 @@ export const AllVariants: Story = {
         <Button variant="primary-outline">Primary</Button>
         <Button variant="danger-outline">Danger</Button>
         <Button variant="success-outline">Success</Button>
+        <Button variant="warning-outline">Warning</Button>
       </div>
       <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
         <span style={{ width: '100px', fontSize: '12px', color: '#666' }}>Text</span>
@@ -135,12 +145,14 @@ export const WithIconLeft: Story = {
         <Button variant="ghost"><UploadIcon size={24} /> Buttons</Button>
         <Button variant="danger"><DeleteIcon size={24} /> Buttons</Button>
         <Button variant="primary"><SearchIcon size={24} /> Buttons</Button>
+        <Button variant="warning"><UploadIcon size={24} /> Buttons</Button>
       </div>
       <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
         <span style={{ width: '80px', fontSize: '12px', color: '#666' }}>sm</span>
         <Button variant="ghost" size="sm"><UploadIcon size={16} /> Buttons</Button>
         <Button variant="danger" size="sm"><DeleteIcon size={16} /> Buttons</Button>
         <Button variant="primary" size="sm"><SearchIcon size={16} /> Buttons</Button>
+        <Button variant="warning" size="sm"><UploadIcon size={16} /> Buttons</Button>
       </div>
     </div>
   ),
@@ -155,12 +167,14 @@ export const WithIconRight: Story = {
         <Button variant="ghost">Buttons <UploadIcon size={24} /></Button>
         <Button variant="danger">Buttons <DeleteIcon size={24} /></Button>
         <Button variant="primary">Buttons <SearchIcon size={24} /></Button>
+        <Button variant="warning">Buttons <UploadIcon size={24} /></Button>
       </div>
       <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
         <span style={{ width: '80px', fontSize: '12px', color: '#666' }}>sm</span>
         <Button variant="ghost" size="sm">Buttons <UploadIcon size={16} /></Button>
         <Button variant="danger" size="sm">Buttons <DeleteIcon size={16} /></Button>
         <Button variant="primary" size="sm">Buttons <SearchIcon size={16} /></Button>
+        <Button variant="warning" size="sm">Buttons <UploadIcon size={16} /></Button>
       </div>
     </div>
   ),
@@ -175,12 +189,14 @@ export const WithIconBoth: Story = {
         <Button variant="ghost"><UploadIcon size={24} /> Buttons <SearchIcon size={24} /></Button>
         <Button variant="danger"><DeleteIcon size={24} /> Buttons <DeleteIcon size={24} /></Button>
         <Button variant="primary"><SearchIcon size={24} /> Buttons <UploadIcon size={24} /></Button>
+        <Button variant="warning"><UploadIcon size={24} /> Buttons <SearchIcon size={24} /></Button>
       </div>
       <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
         <span style={{ width: '80px', fontSize: '12px', color: '#666' }}>sm</span>
         <Button variant="ghost" size="sm"><UploadIcon size={16} /> Buttons <SearchIcon size={16} /></Button>
         <Button variant="danger" size="sm"><DeleteIcon size={16} /> Buttons <DeleteIcon size={16} /></Button>
         <Button variant="primary" size="sm"><SearchIcon size={16} /> Buttons <UploadIcon size={16} /></Button>
+        <Button variant="warning" size="sm"><UploadIcon size={16} /> Buttons <SearchIcon size={16} /></Button>
       </div>
     </div>
   ),
@@ -195,12 +211,14 @@ export const IconOnly: Story = {
         <Button variant="ghost" size="icon" aria-label="업로드"><UploadIcon size={24} /></Button>
         <Button variant="danger" size="icon" aria-label="삭제"><DeleteIcon size={24} /></Button>
         <Button variant="primary" size="icon" aria-label="검색"><SearchIcon size={24} /></Button>
+        <Button variant="warning" size="icon" aria-label="경고"><UploadIcon size={24} /></Button>
       </div>
       <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
         <span style={{ width: '80px', fontSize: '12px', color: '#666' }}>icon-sm</span>
         <Button variant="ghost" size="icon-sm" aria-label="업로드"><UploadIcon size={24} /></Button>
         <Button variant="danger" size="icon-sm" aria-label="삭제"><DeleteIcon size={24} /></Button>
         <Button variant="primary" size="icon-sm" aria-label="검색"><SearchIcon size={24} /></Button>
+        <Button variant="warning" size="icon-sm" aria-label="경고"><UploadIcon size={24} /></Button>
       </div>
     </div>
   ),
@@ -214,12 +232,14 @@ export const Loading: Story = {
         <span style={{ width: '80px', fontSize: '12px', color: '#666' }}>default</span>
         <Button variant="primary" loading>Primary</Button>
         <Button variant="success" loading>Success</Button>
+        <Button variant="warning" loading>Warning</Button>
         <Button variant="danger" loading>Danger</Button>
       </div>
       <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
         <span style={{ width: '80px', fontSize: '12px', color: '#666' }}>sm</span>
         <Button variant="primary" size="sm" loading>Primary</Button>
         <Button variant="success" size="sm" loading>Success</Button>
+        <Button variant="warning" size="sm" loading>Warning</Button>
         <Button variant="danger" size="sm" loading>Danger</Button>
       </div>
     </div>
@@ -251,6 +271,9 @@ export const LoadingInteractive: Story = {
           <Button variant="success" loading={loadingStates['success']} onClick={() => handleClick('success')}>
             완료
           </Button>
+          <Button variant="warning" loading={loadingStates['warning']} onClick={() => handleClick('warning')}>
+            경고
+          </Button>
           <Button variant="danger" loading={loadingStates['danger']} onClick={() => handleClick('danger')}>
             삭제
           </Button>
@@ -262,6 +285,9 @@ export const LoadingInteractive: Story = {
           </Button>
           <Button variant="success" size="sm" loading={loadingStates['success-sm']} onClick={() => handleClick('success-sm')}>
             완료
+          </Button>
+          <Button variant="warning" size="sm" loading={loadingStates['warning-sm']} onClick={() => handleClick('warning-sm')}>
+            경고
           </Button>
           <Button variant="danger" size="sm" loading={loadingStates['danger-sm']} onClick={() => handleClick('danger-sm')}>
             삭제

@@ -107,6 +107,20 @@ const greenColors = [
   { name: "950", color: "#021300", textColor: "#fff" },
 ];
 
+const yellowColors = [
+  { name: "50", color: "#fef9e7", textColor: "#624d06" },
+  { name: "100", color: "#fdf2cf", textColor: "#624d06" },
+  { name: "200", color: "#fbe69f", textColor: "#624d06" },
+  { name: "300", color: "#f9d96f", textColor: "#624d06" },
+  { name: "400", color: "#f7cd3f", textColor: "#624d06" },
+  { name: "500", color: "#f5c00f", textColor: "#624d06" },
+  { name: "600", color: "#c49a0c", textColor: "#fff" },
+  { name: "700", color: "#937309", textColor: "#fff" },
+  { name: "800", color: "#624d06", textColor: "#fff" },
+  { name: "900", color: "#312603", textColor: "#fff" },
+  { name: "950", color: "#181302", textColor: "#fff" },
+];
+
 const slateColors = [
   { name: "50", color: "#f4f6f8", textColor: "#292e36" },
   { name: "100", color: "#eaedf1", textColor: "#292e36" },
@@ -140,6 +154,7 @@ export const Palette: Story = {
       <ColorRow title="Blue (Primary, Brand, CTA)" colors={blueColors} />
       <ColorRow title="Red (Danger, Destructive)" colors={redColors} />
       <ColorRow title="Green (Success, Positive)" colors={greenColors} />
+      <ColorRow title="Yellow (Warning, Caution)" colors={yellowColors} />
       <ColorRow title="Slate (Neutral, Text, Border)" colors={slateColors} />
     </div>
   ),
@@ -147,8 +162,9 @@ export const Palette: Story = {
 
 const semanticColors = [
   { name: "Primary", color: "#1776ff", variable: "--color-primary" },
-  { name: "Destructive", color: "#eb3e2a", variable: "--color-destructive" },
+  { name: "Danger", color: "#eb3e2a", variable: "--color-danger" },
   { name: "Success", color: "#0fbd00", variable: "--color-success" },
+  { name: "Warning", color: "#f5c00f", variable: "--color-warning" },
   { name: "Background", color: "#ffffff", variable: "--color-background", textColor: "#292e36" },
   { name: "Foreground", color: "#292e36", variable: "--color-foreground" },
   { name: "Card", color: "#ffffff", variable: "--color-card", textColor: "#292e36" },
