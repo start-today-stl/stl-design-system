@@ -153,49 +153,73 @@ export const CustomCell: Story = {
 
 /** 빈 데이터 */
 export const Empty: Story = {
-  render: () => (
-    <DataTable
-      columns={columns}
-      data={[]}
-      emptyMessage="검색 결과가 없습니다."
-    />
-  ),
+  render: () => {
+    const wideColumns: DataTableColumn<User>[] = [
+      { accessorKey: "id", header: "ID", minWidth: 200 },
+      { accessorKey: "name", header: "이름", minWidth: 200 },
+      { accessorKey: "email", header: "이메일", minWidth: 300 },
+      { accessorKey: "role", header: "역할", minWidth: 200 },
+      { accessorKey: "status", header: "상태", minWidth: 200 },
+      { accessorKey: "name", header: "추가1", minWidth: 200 },
+      { accessorKey: "name", header: "추가2", minWidth: 200 },
+      { accessorKey: "name", header: "추가3", minWidth: 200 },
+    ]
+    return (
+      <DataTable
+        columns={wideColumns}
+        data={[]}
+        emptyMessage="검색 결과가 없습니다."
+      />
+    )
+  },
 }
 
 /** 로딩 상태 (기본: SplashScreen) */
 export const Loading: Story = {
-  render: () => (
-    <div className="border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
-      {/* 툴바 */}
-      <TableToolbar totalCount={0} selectedCount={0}>
-        <Button variant="danger" disabled>삭제</Button>
-        <Button variant="ghost">다운로드</Button>
-      </TableToolbar>
+  render: () => {
+    const wideColumns: DataTableColumn<User>[] = [
+      { accessorKey: "id", header: "ID", minWidth: 200 },
+      { accessorKey: "name", header: "이름", minWidth: 200 },
+      { accessorKey: "email", header: "이메일", minWidth: 300 },
+      { accessorKey: "role", header: "역할", minWidth: 200 },
+      { accessorKey: "status", header: "상태", minWidth: 200 },
+      { accessorKey: "name", header: "추가1", minWidth: 200 },
+      { accessorKey: "name", header: "추가2", minWidth: 200 },
+      { accessorKey: "name", header: "추가3", minWidth: 200 },
+    ]
+    return (
+      <div className="border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
+        {/* 툴바 */}
+        <TableToolbar totalCount={0} selectedCount={0}>
+          <Button variant="danger" disabled>삭제</Button>
+          <Button variant="ghost">다운로드</Button>
+        </TableToolbar>
 
-      {/* 데이터 테이블 - 로딩 상태 */}
-      <DataTable
-        columns={columns}
-        data={[]}
-        loading
-        selectable
-      />
+        {/* 데이터 테이블 - 로딩 상태 */}
+        <DataTable
+          columns={wideColumns}
+          data={[]}
+          loading
+          selectable
+        />
 
-      {/* 페이지네이션 */}
-      <div className="flex items-center justify-between p-4 border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900">
-        <Pagination
-          currentPage={1}
-          totalPages={1}
-          onPageChange={() => {}}
-          previousLabel="Previous"
-          nextLabel="Next"
-        />
-        <PageSizeSelector
-          pageSize={10}
-          onPageSizeChange={() => {}}
-        />
+        {/* 페이지네이션 */}
+        <div className="flex items-center justify-between p-4 border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900">
+          <Pagination
+            currentPage={1}
+            totalPages={1}
+            onPageChange={() => {}}
+            previousLabel="Previous"
+            nextLabel="Next"
+          />
+          <PageSizeSelector
+            pageSize={10}
+            onPageSizeChange={() => {}}
+          />
+        </div>
       </div>
-    </div>
-  ),
+    )
+  },
 }
 
 /** 로딩 상태 - 커스텀 (텍스트 포함) */

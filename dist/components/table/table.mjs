@@ -1,7 +1,7 @@
-import { jsx as l, jsxs as n } from "react/jsx-runtime";
+import { jsx as l, jsxs as c } from "react/jsx-runtime";
 import * as s from "react";
 import { cn as r } from "../../lib/utils.mjs";
-const c = ({ direction: a, active: e }) => /* @__PURE__ */ l(
+const i = ({ direction: a, active: e }) => /* @__PURE__ */ l(
   "svg",
   {
     width: "8",
@@ -16,30 +16,31 @@ const c = ({ direction: a, active: e }) => /* @__PURE__ */ l(
     ),
     children: /* @__PURE__ */ l("path", { d: "M4 0L8 5H0L4 0Z", fill: "currentColor" })
   }
-), m = s.forwardRef(
-  ({ className: a, maxHeight: e, ...t }, o) => {
-    const d = e ? { maxHeight: typeof e == "number" ? `${e}px` : e } : {};
+), f = s.forwardRef(
+  ({ className: a, maxHeight: e, wrapperRef: t, ...o }, d) => {
+    const b = e ? { maxHeight: typeof e == "number" ? `${e}px` : e } : {};
     return /* @__PURE__ */ l(
       "div",
       {
+        ref: t,
         className: r("relative w-full overflow-x-auto overflow-y-auto flex-1 bg-white dark:bg-slate-900", a),
-        style: d,
+        style: b,
         children: /* @__PURE__ */ l(
           "table",
           {
-            ref: o,
+            ref: d,
             className: r("caption-bottom text-xs"),
             style: { borderCollapse: "separate", borderSpacing: 0, minWidth: "100%" },
-            ...t
+            ...o
           }
         )
       }
     );
   }
 );
-m.displayName = "Table";
-const f = s.forwardRef(({ className: a, ...e }, t) => /* @__PURE__ */ l("thead", { ref: t, className: r("sticky top-0 z-20 bg-slate-100 dark:bg-slate-800", a), ...e }));
-f.displayName = "TableHeader";
+f.displayName = "Table";
+const m = s.forwardRef(({ className: a, ...e }, t) => /* @__PURE__ */ l("thead", { ref: t, className: r("sticky top-0 z-20 bg-slate-100 dark:bg-slate-800", a), ...e }));
+m.displayName = "TableHeader";
 const w = s.forwardRef(({ className: a, ...e }, t) => /* @__PURE__ */ l(
   "tbody",
   {
@@ -105,14 +106,14 @@ const u = s.forwardRef(({ className: a, ...e }, t) => /* @__PURE__ */ l(
   }
 ));
 u.displayName = "TableCaption";
-const k = s.forwardRef(({ className: a, sortDirection: e, onSort: t, children: o, ...d }, i) => {
-  const p = (b) => {
-    t && (b.key === "Enter" || b.key === " ") && (b.preventDefault(), t());
+const k = s.forwardRef(({ className: a, sortDirection: e, onSort: t, children: o, ...d }, b) => {
+  const p = (n) => {
+    t && (n.key === "Enter" || n.key === " ") && (n.preventDefault(), t());
   };
   return /* @__PURE__ */ l(
     "th",
     {
-      ref: i,
+      ref: b,
       className: r(
         "h-9 pl-3 pr-1.5 py-1.5 text-left align-middle font-medium text-slate-700 dark:text-slate-300",
         "bg-slate-100 dark:bg-slate-800 select-none",
@@ -122,7 +123,7 @@ const k = s.forwardRef(({ className: a, sortDirection: e, onSort: t, children: o
       ),
       "aria-sort": e === "asc" ? "ascending" : e === "desc" ? "descending" : "none",
       ...d,
-      children: /* @__PURE__ */ n(
+      children: /* @__PURE__ */ c(
         "button",
         {
           type: "button",
@@ -131,9 +132,9 @@ const k = s.forwardRef(({ className: a, sortDirection: e, onSort: t, children: o
           onKeyDown: p,
           children: [
             o,
-            /* @__PURE__ */ n("span", { className: "flex flex-col gap-0.5", children: [
-              /* @__PURE__ */ l(c, { direction: "up", active: e === "asc" }),
-              /* @__PURE__ */ l(c, { direction: "down", active: e === "desc" })
+            /* @__PURE__ */ c("span", { className: "flex flex-col gap-0.5", children: [
+              /* @__PURE__ */ l(i, { direction: "up", active: e === "asc" }),
+              /* @__PURE__ */ l(i, { direction: "down", active: e === "desc" })
             ] })
           ]
         }
@@ -143,13 +144,13 @@ const k = s.forwardRef(({ className: a, sortDirection: e, onSort: t, children: o
 });
 k.displayName = "TableSortableHead";
 export {
-  m as Table,
+  f as Table,
   w as TableBody,
   u as TableCaption,
   y as TableCell,
   x as TableFooter,
   h as TableHead,
-  f as TableHeader,
+  m as TableHeader,
   g as TableRow,
   k as TableSortableHead
 };

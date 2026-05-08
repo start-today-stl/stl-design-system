@@ -22,16 +22,19 @@ const SortArrow = ({ direction, active }: { direction: "up" | "down"; active: bo
 export interface TableProps extends React.HTMLAttributes<HTMLTableElement> {
   /** 테이블 최대 높이 (초과 시 세로 스크롤) */
   maxHeight?: number | string
+  /** 스크롤 컨테이너(wrapper) ref */
+  wrapperRef?: React.Ref<HTMLDivElement>
 }
 
 const Table = React.forwardRef<HTMLTableElement, TableProps>(
-  ({ className, maxHeight, ...props }, ref) => {
+  ({ className, maxHeight, wrapperRef, ...props }, ref) => {
     const wrapperStyle: React.CSSProperties = maxHeight
       ? { maxHeight: typeof maxHeight === "number" ? `${maxHeight}px` : maxHeight }
       : {}
 
     return (
       <div
+        ref={wrapperRef}
         className={cn("relative w-full overflow-x-auto overflow-y-auto flex-1 bg-white dark:bg-slate-900", className)}
         style={wrapperStyle}
       >

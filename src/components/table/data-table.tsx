@@ -477,6 +477,18 @@ function DataTable<T extends { id: string | number }>({
   const editValueRef = React.useRef<T[keyof T] | null>(null)
   // 바깥 클릭 감지용 ref
   const editingCellRef = React.useRef<HTMLTableCellElement>(null)
+  // 스크롤 컨테이너 ref + 가시 영역 너비 추적 (empty/loading 셀 중앙 정렬용)
+  const scrollContainerRef = React.useRef<HTMLDivElement>(null)
+  const [visibleWidth, setVisibleWidth] = React.useState<number>(0)
+  React.useEffect(() => {
+    const el = scrollContainerRef.current
+    if (!el) return
+    const update = () => setVisibleWidth(el.clientWidth)
+    update()
+    const observer = new ResizeObserver(update)
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
   const [internalExpandedIds, setInternalExpandedIds] = React.useState<(string | number)[]>(
     expandable?.defaultExpandedRowIds ?? []
   )
@@ -1304,7 +1316,7 @@ function DataTable<T extends { id: string | number }>({
   }, [headerGroups, columnsToRender])
 
   const tableContent = (
-    <Table className={className} maxHeight={maxHeight}>
+    <Table className={className} maxHeight={maxHeight} wrapperRef={scrollContainerRef}>
       <TableHeader>
         {/* 헤더 그룹 행 (headerGroups가 있을 때만 렌더링) */}
         {headerGroups && headerGroups.length > 0 && (
@@ -1627,8 +1639,11 @@ function DataTable<T extends { id: string | number }>({
                     )
                   })()
                 ) : (
-                  // 스플래시 모드 (기본)
-                  <div className="flex items-center justify-center h-full">
+                  // 스플래시 모드 (기본) - 가로 스크롤 시 가시 영역 중앙에 표시
+                  <div
+                    className="sticky left-0 flex items-center justify-center h-full"
+                    style={visibleWidth ? { width: visibleWidth } : undefined}
+                  >
                     <SplashScreen size="lg" />
                   </div>
                 )
@@ -1639,9 +1654,15 @@ function DataTable<T extends { id: string | number }>({
           <TableRow className="hover:bg-white dark:hover:bg-slate-900">
             <TableCell
               colSpan={totalColumns}
-              className="h-24 text-center text-slate-500"
+              className="h-24 p-0 text-slate-500"
             >
-              {emptyMessage}
+              {/* 가로 스크롤 시 가시 영역 중앙에 표시 */}
+              <div
+                className="sticky left-0 flex items-center justify-center h-24 text-center"
+                style={visibleWidth ? { width: visibleWidth } : undefined}
+              >
+                {emptyMessage}
+              </div>
             </TableCell>
           </TableRow>
         ) : rowReorderable ? (
