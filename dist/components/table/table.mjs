@@ -1,15 +1,28 @@
-import { jsx as l, jsxs as c } from "react/jsx-runtime";
+import { jsx as l, jsxs as n } from "react/jsx-runtime";
 import * as s from "react";
 import { cn as r } from "../../lib/utils.mjs";
-import { DownIcon as m } from "../../icons/DownIcon.mjs";
-import { UpIcon as p } from "../../icons/UpIcon.mjs";
-const f = s.forwardRef(
-  ({ className: t, maxHeight: e, ...a }, o) => {
+const c = ({ direction: a, active: e }) => /* @__PURE__ */ l(
+  "svg",
+  {
+    width: "8",
+    height: "5",
+    viewBox: "0 0 8 5",
+    fill: "none",
+    xmlns: "http://www.w3.org/2000/svg",
+    className: r(
+      "transition-colors",
+      e ? "text-blue-600 dark:text-blue-400" : "text-slate-300 dark:text-slate-500",
+      a === "down" && "rotate-180"
+    ),
+    children: /* @__PURE__ */ l("path", { d: "M4 0L8 5H0L4 0Z", fill: "currentColor" })
+  }
+), m = s.forwardRef(
+  ({ className: a, maxHeight: e, ...t }, o) => {
     const d = e ? { maxHeight: typeof e == "number" ? `${e}px` : e } : {};
     return /* @__PURE__ */ l(
       "div",
       {
-        className: r("relative w-full overflow-x-auto overflow-y-auto flex-1 bg-white dark:bg-slate-900", t),
+        className: r("relative w-full overflow-x-auto overflow-y-auto flex-1 bg-white dark:bg-slate-900", a),
         style: d,
         children: /* @__PURE__ */ l(
           "table",
@@ -17,127 +30,110 @@ const f = s.forwardRef(
             ref: o,
             className: r("caption-bottom text-xs"),
             style: { borderCollapse: "separate", borderSpacing: 0, minWidth: "100%" },
-            ...a
+            ...t
           }
         )
       }
     );
   }
 );
-f.displayName = "Table";
-const x = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l("thead", { ref: a, className: r("sticky top-0 z-20 bg-slate-100 dark:bg-slate-800", t), ...e }));
-x.displayName = "TableHeader";
-const y = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
+m.displayName = "Table";
+const f = s.forwardRef(({ className: a, ...e }, t) => /* @__PURE__ */ l("thead", { ref: t, className: r("sticky top-0 z-20 bg-slate-100 dark:bg-slate-800", a), ...e }));
+f.displayName = "TableHeader";
+const w = s.forwardRef(({ className: a, ...e }, t) => /* @__PURE__ */ l(
   "tbody",
   {
-    ref: a,
-    className: r("[&_tr:last-child_td]:border-0", t),
+    ref: t,
+    className: r("[&_tr:last-child_td]:border-0", a),
     ...e
   }
 ));
-y.displayName = "TableBody";
-const u = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
+w.displayName = "TableBody";
+const x = s.forwardRef(({ className: a, ...e }, t) => /* @__PURE__ */ l(
   "tfoot",
   {
-    ref: a,
+    ref: t,
     className: r(
       "border-t bg-muted/50 font-medium [&>tr]:last:border-b-0",
-      t
+      a
     ),
     ...e
   }
 ));
-u.displayName = "TableFooter";
-const N = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
+x.displayName = "TableFooter";
+const g = s.forwardRef(({ className: a, ...e }, t) => /* @__PURE__ */ l(
   "tr",
   {
-    ref: a,
+    ref: t,
     className: r(
       "group transition-colors bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 data-[state=selected]:bg-blue-50 dark:data-[state=selected]:bg-blue-900",
-      t
+      a
     ),
     ...e
   }
 ));
-N.displayName = "TableRow";
-const g = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
+g.displayName = "TableRow";
+const h = s.forwardRef(({ className: a, ...e }, t) => /* @__PURE__ */ l(
   "th",
   {
-    ref: a,
+    ref: t,
     className: r(
       "h-9 pl-3 pr-1.5 py-1.5 text-left align-middle font-medium text-slate-700 dark:text-slate-300 [&:has([role=checkbox])]:pr-0",
       "bg-slate-100 dark:bg-slate-800",
       "border-b border-slate-200 dark:border-slate-700",
-      t
+      a
     ),
     ...e
   }
 ));
-g.displayName = "TableHead";
-const h = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
+h.displayName = "TableHead";
+const y = s.forwardRef(({ className: a, ...e }, t) => /* @__PURE__ */ l(
   "td",
   {
-    ref: a,
-    className: r("h-9 pl-3 pr-1.5 py-1.5 align-middle text-slate-900 dark:text-slate-200 [&:has([role=checkbox])]:pr-0 border-b border-slate-200 dark:border-slate-700", t),
+    ref: t,
+    className: r("h-9 pl-3 pr-1.5 py-1.5 align-middle text-slate-900 dark:text-slate-200 [&:has([role=checkbox])]:pr-0 border-b border-slate-200 dark:border-slate-700", a),
     ...e
   }
 ));
-h.displayName = "TableCell";
-const k = s.forwardRef(({ className: t, ...e }, a) => /* @__PURE__ */ l(
+y.displayName = "TableCell";
+const u = s.forwardRef(({ className: a, ...e }, t) => /* @__PURE__ */ l(
   "caption",
   {
-    ref: a,
-    className: r("mt-4 text-sm text-muted-foreground", t),
+    ref: t,
+    className: r("mt-4 text-sm text-muted-foreground", a),
     ...e
   }
 ));
-k.displayName = "TableCaption";
-const w = s.forwardRef(({ className: t, sortDirection: e, onSort: a, children: o, ...d }, n) => {
-  const i = (b) => {
-    a && (b.key === "Enter" || b.key === " ") && (b.preventDefault(), a());
+u.displayName = "TableCaption";
+const k = s.forwardRef(({ className: a, sortDirection: e, onSort: t, children: o, ...d }, i) => {
+  const p = (b) => {
+    t && (b.key === "Enter" || b.key === " ") && (b.preventDefault(), t());
   };
   return /* @__PURE__ */ l(
     "th",
     {
-      ref: n,
+      ref: i,
       className: r(
-        "h-9 pl-3 pr-1.5 py-1.5 text-left align-middle font-medium text-slate-600 dark:text-slate-300",
+        "h-9 pl-3 pr-1.5 py-1.5 text-left align-middle font-medium text-slate-700 dark:text-slate-300",
         "bg-slate-100 dark:bg-slate-800 select-none",
+        "border-b border-slate-200 dark:border-slate-700",
         "[&:has([role=checkbox])]:pr-0",
-        t
+        a
       ),
       "aria-sort": e === "asc" ? "ascending" : e === "desc" ? "descending" : "none",
       ...d,
-      children: /* @__PURE__ */ c(
+      children: /* @__PURE__ */ n(
         "button",
         {
           type: "button",
           className: "flex w-full items-center gap-1 text-left cursor-pointer",
-          onClick: a,
-          onKeyDown: i,
+          onClick: t,
+          onKeyDown: p,
           children: [
             o,
-            /* @__PURE__ */ c("span", { className: "flex flex-col -space-y-1", children: [
-              /* @__PURE__ */ l(
-                p,
-                {
-                  size: 14,
-                  className: r(
-                    "transition-colors",
-                    e === "asc" ? "text-blue-500" : "text-slate-300 dark:text-slate-500"
-                  )
-                }
-              ),
-              /* @__PURE__ */ l(
-                m,
-                {
-                  size: 14,
-                  className: r(
-                    "transition-colors",
-                    e === "desc" ? "text-blue-500" : "text-slate-300 dark:text-slate-500"
-                  )
-                }
-              )
+            /* @__PURE__ */ n("span", { className: "flex flex-col gap-0.5", children: [
+              /* @__PURE__ */ l(c, { direction: "up", active: e === "asc" }),
+              /* @__PURE__ */ l(c, { direction: "down", active: e === "desc" })
             ] })
           ]
         }
@@ -145,16 +141,16 @@ const w = s.forwardRef(({ className: t, sortDirection: e, onSort: a, children: o
     }
   );
 });
-w.displayName = "TableSortableHead";
+k.displayName = "TableSortableHead";
 export {
-  f as Table,
-  y as TableBody,
-  k as TableCaption,
-  h as TableCell,
-  u as TableFooter,
-  g as TableHead,
-  x as TableHeader,
-  N as TableRow,
-  w as TableSortableHead
+  m as Table,
+  w as TableBody,
+  u as TableCaption,
+  y as TableCell,
+  x as TableFooter,
+  h as TableHead,
+  f as TableHeader,
+  g as TableRow,
+  k as TableSortableHead
 };
 //# sourceMappingURL=table.mjs.map
