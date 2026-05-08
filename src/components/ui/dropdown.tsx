@@ -88,7 +88,7 @@ const DropdownItem = React.forwardRef<
     ref={ref}
     className={cn(
       "relative flex h-[29px] cursor-pointer select-none items-center gap-2 rounded-[2px] px-[5px] py-[5px]",
-      "text-xs text-slate-500 dark:text-slate-300 outline-none transition-colors",
+      "text-xs text-slate-800 dark:text-slate-50 outline-none transition-colors",
       "hover:bg-slate-100 dark:hover:bg-slate-700",
       "focus:bg-slate-100 dark:focus:bg-slate-700",
       "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
@@ -217,7 +217,7 @@ const DropdownAccordionItem = ({
       <CollapsiblePrimitive.Trigger
         className={cn(
           "flex w-full h-[29px] cursor-pointer select-none items-center justify-between gap-2 rounded-[2px] px-[5px]",
-          "text-xs text-slate-500 dark:text-slate-300 outline-none transition-colors",
+          "text-xs text-slate-800 dark:text-slate-50 outline-none transition-colors",
           "hover:bg-slate-100 dark:hover:bg-slate-700",
           "focus:bg-slate-100 dark:focus:bg-slate-700",
           className
