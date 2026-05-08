@@ -1,7 +1,23 @@
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
-import { UpIcon, DownIcon } from "@/icons"
+// 정렬 화살표 (굵은 삼각형)
+const SortArrow = ({ direction, active }: { direction: "up" | "down"; active: boolean }) => (
+  <svg
+    width="8"
+    height="5"
+    viewBox="0 0 8 5"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className={cn(
+      "transition-colors",
+      active ? "text-blue-600 dark:text-blue-400" : "text-slate-300 dark:text-slate-500",
+      direction === "down" && "rotate-180"
+    )}
+  >
+    <path d="M4 0L8 5H0L4 0Z" fill="currentColor" />
+  </svg>
+)
 
 export interface TableProps extends React.HTMLAttributes<HTMLTableElement> {
   /** 테이블 최대 높이 (초과 시 세로 스크롤) */
@@ -148,8 +164,9 @@ const TableSortableHead = React.forwardRef<
     <th
       ref={ref}
       className={cn(
-        "h-9 pl-3 pr-1.5 py-1.5 text-left align-middle font-medium text-slate-600 dark:text-slate-300",
+        "h-9 pl-3 pr-1.5 py-1.5 text-left align-middle font-medium text-slate-700 dark:text-slate-300",
         "bg-slate-100 dark:bg-slate-800 select-none",
+        "border-b border-slate-200 dark:border-slate-700",
         "[&:has([role=checkbox])]:pr-0",
         className
       )}
@@ -169,25 +186,9 @@ const TableSortableHead = React.forwardRef<
         onKeyDown={handleKeyDown}
       >
         {children}
-        <span className="flex flex-col -space-y-1">
-          <UpIcon
-            size={14}
-            className={cn(
-              "transition-colors",
-              sortDirection === "asc"
-                ? "text-blue-500"
-                : "text-slate-300 dark:text-slate-500"
-            )}
-          />
-          <DownIcon
-            size={14}
-            className={cn(
-              "transition-colors",
-              sortDirection === "desc"
-                ? "text-blue-500"
-                : "text-slate-300 dark:text-slate-500"
-            )}
-          />
+        <span className="flex flex-col gap-0.5">
+          <SortArrow direction="up" active={sortDirection === "asc"} />
+          <SortArrow direction="down" active={sortDirection === "desc"} />
         </span>
       </button>
     </th>
