@@ -1914,8 +1914,8 @@ function DataTable<T extends { id: string | number }>({
                           style={{
                             position: "sticky",
                             left: 0,
-                            width: "100%",
-                            maxWidth: "100vw",
+                            width: visibleWidth ? `${visibleWidth}px` : "100%",
+                            maxWidth: "100%",
                           }}
                         >
                           {expandable.expandedRowRender(row)}
