@@ -1430,6 +1430,24 @@ function DataTable<T extends { id: string | number }>({
               } else {
                 // standalone
                 const stickyData = getStickyStyles(item.col, true)
+                if (item.col.sortable) {
+                  return (
+                    <TableSortableHead
+                      key={`standalone-${String(item.col.accessorKey)}`}
+                      rowSpan={2}
+                      sortDirection={getSortDirection(item.col.accessorKey)}
+                      onSort={() => handleSort(item.col.accessorKey)}
+                      className={cn(
+                        getAlignClass(item.col.align),
+                        "bg-slate-100 dark:bg-slate-800",
+                        stickyData.className
+                      )}
+                      style={stickyData.style}
+                    >
+                      {item.col.header}
+                    </TableSortableHead>
+                  )
+                }
                 return (
                   <TableHead
                     key={`standalone-${String(item.col.accessorKey)}`}
