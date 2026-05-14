@@ -1672,7 +1672,15 @@ function DataTable<T extends { id: string | number }>({
                 loadingContent || loadingMode !== "skeleton" ? "h-80" : "p-0 align-top"
               )}
             >
-              {loadingContent ?? (
+              {loadingContent ? (
+                // 커스텀 로딩 - 가로 스크롤 시 가시 영역 중앙에 표시
+                <div
+                  className="sticky left-0 flex items-center justify-center h-full"
+                  style={visibleWidth ? { width: visibleWidth } : undefined}
+                >
+                  {loadingContent}
+                </div>
+              ) : (
                 loadingMode === "skeleton" ? (
                   // 스켈레톤 모드: 컬럼 기반 자동 생성
                   (() => {
