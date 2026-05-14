@@ -1406,6 +1406,7 @@ function DataTable<T extends { id: string | number }>({
                 // colSpan이 0이면 렌더링 대상 컬럼이 없는 그룹이므로 스킵
                 if (colSpan === 0) return null
                 const groupStickyData = getHeaderGroupStickyData(item.group)
+                const isGroupSticky = !!groupStickyData.style.position
                 return (
                   <TableHead
                     key={`group-${String(item.group.columns[0])}`}
@@ -1417,7 +1418,11 @@ function DataTable<T extends { id: string | number }>({
                       needsBorder && "border-r border-slate-200 dark:border-slate-700",
                       groupStickyData.className
                     )}
-                    style={groupStickyData.style}
+                    style={
+                      isGroupSticky
+                        ? groupStickyData.style
+                        : { position: "relative", zIndex: 0 }
+                    }
                   >
                     {item.group.header}
                   </TableHead>
@@ -1431,7 +1436,7 @@ function DataTable<T extends { id: string | number }>({
                     rowSpan={2}
                     className={cn(
                       getAlignClass(item.col.align),
-                      "bg-slate-100 dark:bg-slate-800 border-b-0",
+                      "bg-slate-100 dark:bg-slate-800",
                       stickyData.className
                     )}
                     style={stickyData.style}
