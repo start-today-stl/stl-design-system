@@ -90,24 +90,22 @@ export const Selectable: Story = {
 /** 정렬 가능 */
 export const Sortable: Story = {
   render: () => {
-    const [sortState, setSortState] = useState<SortState<User>>({
-      column: null,
-      direction: null,
-    })
+    const [sortState, setSortState] = useState<SortState<User>[]>([])
+    const current = sortState[0]
 
     // 정렬된 데이터
     const sortedData = [...sampleData].sort((a, b) => {
-      if (!sortState.column || !sortState.direction) return 0
-      const aValue = a[sortState.column]
-      const bValue = b[sortState.column]
+      if (!current?.column || !current.direction) return 0
+      const aValue = a[current.column]
+      const bValue = b[current.column]
       const comparison = String(aValue).localeCompare(String(bValue))
-      return sortState.direction === "asc" ? comparison : -comparison
+      return current.direction === "asc" ? comparison : -comparison
     })
 
     return (
       <div>
         <p className="mb-4 text-sm text-slate-500">
-          정렬: {sortState.column ? `${String(sortState.column)} (${sortState.direction})` : "없음"}
+          정렬: {current?.column ? `${String(current.column)} (${current.direction})` : "없음"}
         </p>
         <DataTable
           columns={columns}

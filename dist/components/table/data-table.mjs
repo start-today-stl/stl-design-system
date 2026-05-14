@@ -19,22 +19,22 @@ function Rt({
   value: v,
   onChange: p,
   onComplete: K,
-  onCancel: L,
+  onCancel: T,
   error: N
 }) {
-  const R = d.useRef(null);
+  const B = d.useRef(null);
   d.useEffect(() => {
     var z, w;
-    (z = R.current) == null || z.focus(), (w = R.current) == null || w.select();
+    (z = B.current) == null || z.focus(), (w = B.current) == null || w.select();
   }, []);
   const J = (z) => {
-    z.key === "Enter" ? (z.preventDefault(), K()) : z.key === "Escape" && (z.preventDefault(), L());
+    z.key === "Enter" ? (z.preventDefault(), K()) : z.key === "Escape" && (z.preventDefault(), T());
   };
   return /* @__PURE__ */ H("div", { className: "flex flex-col gap-0.5", children: [
     /* @__PURE__ */ r(
       ds,
       {
-        ref: R,
+        ref: B,
         value: String(v ?? ""),
         onChange: (z) => p(z.target.value),
         onKeyDown: J,
@@ -51,18 +51,18 @@ function fs({
   id: v,
   children: p,
   className: K,
-  style: L,
+  style: T,
   disabled: N
 }) {
   const {
-    attributes: R,
+    attributes: B,
     listeners: J,
     setNodeRef: z,
     transform: w,
     transition: Q,
     isDragging: h
   } = Lt({ id: v, disabled: N }), ue = {
-    ...L,
+    ...T,
     transform: Pt.Transform.toString(w),
     transition: Q,
     opacity: h ? 0.5 : 1,
@@ -82,7 +82,7 @@ function fs({
         h && "z-50",
         K
       ),
-      ...R,
+      ...B,
       ...J,
       children: /* @__PURE__ */ H("span", { className: "flex items-center gap-0.5", children: [
         /* @__PURE__ */ r(
@@ -101,9 +101,9 @@ function Ct({
   id: v,
   children: p,
   className: K,
-  isSelected: L,
+  isSelected: T,
   onClick: N,
-  onMouseEnter: R,
+  onMouseEnter: B,
   onMouseLeave: J
 }) {
   const {
@@ -124,7 +124,7 @@ function Ct({
     {
       ref: z,
       style: ie,
-      "data-state": L ? "selected" : void 0,
+      "data-state": T ? "selected" : void 0,
       className: x(
         "group border-b border-slate-200 dark:border-slate-700 transition-colors",
         "bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800",
@@ -133,14 +133,14 @@ function Ct({
         K
       ),
       onClick: N,
-      onMouseEnter: R,
+      onMouseEnter: B,
       onMouseLeave: J,
       children: typeof p == "function" ? p({ listeners: Q, attributes: h, setActivatorNodeRef: w }) : p
     }
   );
 }
 function Tt({ isSelected: v, hasLeftStickyColumns: p, dragHandleProps: K }) {
-  const { listeners: N, attributes: R, setActivatorNodeRef: J } = K ?? {};
+  const { listeners: N, attributes: B, setActivatorNodeRef: J } = K ?? {};
   return /* @__PURE__ */ r(
     "td",
     {
@@ -168,7 +168,7 @@ function Tt({ isSelected: v, hasLeftStickyColumns: p, dragHandleProps: K }) {
           onClick: (z) => z.stopPropagation(),
           "aria-label": "행 순서 변경",
           ...N,
-          ...R,
+          ...B,
           children: /* @__PURE__ */ r(_t, { size: 16 })
         }
       )
@@ -179,9 +179,9 @@ function Is({
   columns: v,
   data: p,
   selectable: K = !1,
-  selectedIds: L = [],
+  selectedIds: T = [],
   onSelectionChange: N,
-  sortState: R,
+  sortState: B,
   onSortChange: J,
   multiSort: z = !1,
   onRowClick: w,
@@ -203,15 +203,15 @@ function Is({
   loadingMode: ve = "splash",
   loadingContent: ye,
   headerGroups: W,
-  rowGrouping: P,
+  rowGrouping: L,
   rowActions: m
 }) {
-  const V = P ? !1 : _e, de = typeof process < "u" ? process.env.NODE_ENV !== "production" : !1;
+  const V = L ? !1 : _e, de = typeof process < "u" ? process.env.NODE_ENV !== "production" : !1;
   d.useEffect(() => {
-    de && P && _e && console.warn(
+    de && L && _e && console.warn(
       "[DataTable] rowGrouping과 rowReorderable은 함께 사용할 수 없습니다. rowSpan 셀이 있는 행을 드래그하면 레이아웃이 깨지므로 rowReorderable이 무시됩니다."
     );
-  }, [P, _e, de]), d.useEffect(() => {
+  }, [L, _e, de]), d.useEffect(() => {
     de && ye && ve !== "splash" && console.warn(
       "[DataTable] loadingContent와 loadingMode가 함께 전달되었습니다. loadingContent가 우선 적용됩니다."
     );
@@ -307,11 +307,11 @@ function Is({
       String(t.id).startsWith("row-") ? at(e) : nt(e);
     },
     [nt, at]
-  ), We = (h == null ? void 0 : h.expandedRowIds) ?? Ot, $e = (h == null ? void 0 : h.onExpandedChange) ?? Bt, De = p.length > 0 && L.length === p.length, lt = L.length > 0 && !De, ot = () => {
+  ), We = (h == null ? void 0 : h.expandedRowIds) ?? Ot, $e = (h == null ? void 0 : h.onExpandedChange) ?? Bt, De = p.length > 0 && T.length === p.length, lt = T.length > 0 && !De, ot = () => {
     De ? N == null || N([]) : N == null || N(p.map((e) => e.id));
   }, ct = (e) => {
-    L.includes(e) ? N == null || N(L.filter((t) => t !== e)) : N == null || N([...L, e]);
-  }, le = d.useMemo(() => R ? Array.isArray(R) ? R.filter((e) => e.column && e.direction) : R.column && R.direction ? [R] : [] : [], [R]), dt = (e) => {
+    T.includes(e) ? N == null || N(T.filter((t) => t !== e)) : N == null || N([...T, e]);
+  }, le = d.useMemo(() => B ? B.filter((e) => e.column && e.direction) : [], [B]), dt = (e) => {
     if (!J) return;
     const t = le.find((s) => s.column === e);
     if (z) {
@@ -321,7 +321,7 @@ function Is({
       ) : s = le.filter((a) => a.column !== e) : s = [...le, { column: e, direction: "asc" }], J(s);
     } else {
       let s;
-      t ? t.direction === "asc" ? s = { column: e, direction: "desc" } : t.direction === "desc" ? s = { column: null, direction: null } : s = { column: e, direction: "asc" } : s = { column: e, direction: "asc" }, J(s);
+      t ? t.direction === "asc" ? s = [{ column: e, direction: "desc" }] : t.direction === "desc" ? s = [] : s = [{ column: e, direction: "asc" }] : s = [{ column: e, direction: "asc" }], J(s);
     }
   }, ht = (e) => {
     const t = le.find((s) => s.column === e);
@@ -380,9 +380,9 @@ function Is({
     qe(e) ? $e(We.filter((t) => t !== e)) : $e([...We, e]);
   }, ge = d.useMemo(() => h ? p.filter((e) => Xe(e)).map((e) => e.id) : [], [p, h]), me = ge.length > 0 && ge.every((e) => We.includes(e)), bt = () => {
     $e(me ? [] : ge);
-  }, be = (m == null ? void 0 : m.showDelete) ?? !!(m != null && m.onRowDelete), Qt = (m == null ? void 0 : m.showAdd) ?? !!(m != null && m.onRowAdd), _ = 40, Ee = v.length + (K ? 1 : 0) + (h ? 1 : 0) + (V ? 1 : 0) + (be ? 1 : 0), { rowSpanMap: xt, middleRowSet: Je } = d.useMemo(() => {
-    if (!P) return { rowSpanMap: null, middleRowSet: null };
-    const e = Array.isArray(P.groupBy) ? P.groupBy : [P.groupBy], t = P.mergeColumns ?? e, s = /* @__PURE__ */ new Map(), a = /* @__PURE__ */ new Set();
+  }, be = (m == null ? void 0 : m.showDelete) ?? !!(m != null && m.onRowDelete), Qt = (m == null ? void 0 : m.showAdd) ?? !!(m != null && m.onRowAdd), P = 40, Ee = v.length + (K ? 1 : 0) + (h ? 1 : 0) + (V ? 1 : 0) + (be ? 1 : 0), { rowSpanMap: xt, middleRowSet: Je } = d.useMemo(() => {
+    if (!L) return { rowSpanMap: null, middleRowSet: null };
+    const e = Array.isArray(L.groupBy) ? L.groupBy : [L.groupBy], t = L.mergeColumns ?? e, s = /* @__PURE__ */ new Map(), a = /* @__PURE__ */ new Set();
     for (const l of t) {
       let o = 0;
       for (; o < p.length; ) {
@@ -404,22 +404,22 @@ function Is({
       }
     }
     return { rowSpanMap: s, middleRowSet: a };
-  }, [p, P]), kt = (e, t) => {
+  }, [p, L]), kt = (e, t) => {
     if (!xt) return;
     const s = xt.get(e);
     return s ? s.get(t) : void 0;
   }, vt = (e, t) => Be === null ? !1 : Be >= e && Be < e + t, St = (e, t) => {
     for (let s = e; s < e + t; s++)
-      if (s < p.length && L.includes(p[s].id))
+      if (s < p.length && T.includes(p[s].id))
         return !0;
     return !1;
-  }, k = 40, S = 40, j = 32, fe = d.useMemo(() => {
+  }, k = 40, S = 40, _ = 32, fe = d.useMemo(() => {
     const e = (u) => {
       const c = u.width ?? u.minWidth;
       if (typeof c == "number") return c;
-      const O = parseInt(String(c), 10);
-      return Number.isFinite(O) ? O : 150;
-    }, t = v.filter((u) => u.sticky === "left"), s = v.filter((u) => u.sticky === "right"), a = V ? j : 0, l = K ? k : 0, o = h ? S : 0, g = a + l + o, b = /* @__PURE__ */ new Map();
+      const j = parseInt(String(c), 10);
+      return Number.isFinite(j) ? j : 150;
+    }, t = v.filter((u) => u.sticky === "left"), s = v.filter((u) => u.sticky === "right"), a = V ? _ : 0, l = K ? k : 0, o = h ? S : 0, g = a + l + o, b = /* @__PURE__ */ new Map();
     let i = g;
     for (const u of t)
       b.set(u.accessorKey, i), i += e(u);
@@ -429,42 +429,42 @@ function Is({
       const c = s[u];
       n.set(c.accessorKey, f), f += e(c);
     }
-    return (u, c, O, I) => {
+    return (u, c, j, I) => {
       if (!u.sticky) return { style: {}, className: "" };
-      const F = `${e(u)}px`, T = {
+      const F = `${e(u)}px`, C = {
         position: "sticky",
         zIndex: c ? 20 : 10,
         width: F,
         minWidth: F,
         maxWidth: F
-      }, B = I ?? O;
+      }, O = I ?? j;
       if (u.sticky === "left") {
         const ce = b.get(u.accessorKey) ?? 0;
         return {
           style: {
-            ...T,
+            ...C,
             left: `${ce}px`
           },
           // 헤더: hover 없음, 바디: 행 단위 hover (group-hover), 스티키는 다른 배경색
           className: x(
             "transition-colors",
-            c ? "bg-slate-100 dark:bg-slate-800" : B ? "bg-blue-50 dark:bg-blue-900" : "bg-slate-100 dark:bg-slate-800"
+            c ? "bg-slate-100 dark:bg-slate-800" : O ? "bg-blue-50 dark:bg-blue-900" : "bg-slate-100 dark:bg-slate-800"
           )
         };
       }
       const ee = n.get(u.accessorKey) ?? 0;
       return {
         style: {
-          ...T,
+          ...C,
           right: `${ee}px`
         },
         className: x(
           "transition-colors",
-          c ? "bg-slate-100 dark:bg-slate-800" : B ? "bg-blue-50 dark:bg-blue-900" : "bg-slate-100 dark:bg-slate-800"
+          c ? "bg-slate-100 dark:bg-slate-800" : O ? "bg-blue-50 dark:bg-blue-900" : "bg-slate-100 dark:bg-slate-800"
         )
       };
     };
-  }, [v, K, h]), C = v.some((e) => e.sticky === "left"), oe = d.useCallback(
+  }, [v, K, h]), R = v.some((e) => e.sticky === "left"), oe = d.useCallback(
     (e) => {
       const t = String(e.accessorKey);
       if (xe && t in xe)
@@ -558,9 +558,9 @@ function Is({
       },
       String(e.accessorKey)
     );
-  }, M = G ? Xt : v, Nt = M.filter((e) => !e.sticky).map((e) => String(e.accessorKey)), Yt = p.map((e) => `row-${e.id}`), Zt = () => 0, Ye = () => V ? j : 0, we = () => {
+  }, M = G ? Xt : v, Nt = M.filter((e) => !e.sticky).map((e) => String(e.accessorKey)), Yt = p.map((e) => `row-${e.id}`), Zt = () => 0, Ye = () => V ? _ : 0, we = () => {
     let e = 0;
-    return V && (e += j), K && (e += k), e;
+    return V && (e += _), K && (e += k), e;
   }, Gt = d.useCallback(
     (e) => M.filter(
       (t) => e.columns.includes(t.accessorKey)
@@ -616,9 +616,9 @@ function Is({
             className: "!p-0 bg-slate-100 dark:bg-slate-800",
             rowSpan: 2,
             style: {
-              width: `${j}px`,
-              minWidth: `${j}px`,
-              ...C && { position: "sticky", left: 0, zIndex: 20 }
+              width: `${_}px`,
+              minWidth: `${_}px`,
+              ...R && { position: "sticky", left: 0, zIndex: 20 }
             }
           }
         ),
@@ -630,7 +630,7 @@ function Is({
             style: {
               width: `${k}px`,
               minWidth: `${k}px`,
-              ...C && { position: "sticky", left: V ? j : 0, zIndex: 20 }
+              ...R && { position: "sticky", left: V ? _ : 0, zIndex: 20 }
             },
             children: /* @__PURE__ */ r("div", { className: "flex items-center justify-center h-9", children: /* @__PURE__ */ r(
               ze,
@@ -651,7 +651,7 @@ function Is({
             style: {
               width: `${S}px`,
               minWidth: `${S}px`,
-              ...C && { position: "sticky", left: we(), zIndex: 20 }
+              ...R && { position: "sticky", left: we(), zIndex: 20 }
             },
             children: (h == null ? void 0 : h.showExpandAll) !== !1 && ge.length > 0 && /* @__PURE__ */ r(
               "button",
@@ -671,9 +671,9 @@ function Is({
             className: "!p-0 bg-slate-100 dark:bg-slate-800 border-b-0",
             rowSpan: 2,
             style: {
-              width: `${_}px`,
-              minWidth: `${_}px`,
-              maxWidth: `${_}px`
+              width: `${P}px`,
+              minWidth: `${P}px`,
+              maxWidth: `${P}px`
             },
             "aria-label": "행 삭제",
             children: /* @__PURE__ */ r("span", { className: "sr-only", children: "행 삭제" })
@@ -695,13 +695,13 @@ function Is({
               for (const $ of o)
                 $.sticky === c ? u.push($) : (u.length > 0 && f.push({ cols: u, sticky: c }), u = [$], c = $.sticky);
               u.length > 0 && f.push({ cols: u, sticky: c });
-              const O = f.findIndex(($) => !$.sticky), I = O !== -1 ? O : 0;
+              const j = f.findIndex(($) => !$.sticky), I = j !== -1 ? j : 0;
               return f.map(($, F) => {
-                const T = {
+                const C = {
                   header: e.group.header,
                   columns: $.cols.map((ce) => ce.accessorKey),
                   align: e.group.align
-                }, B = $.sticky ? Wt(T) : { style: {}, className: "" }, ee = !!B.style.position;
+                }, O = $.sticky ? Wt(C) : { style: {}, className: "" }, ee = !!O.style.position;
                 return /* @__PURE__ */ r(
                   q,
                   {
@@ -711,9 +711,9 @@ function Is({
                       e.group.align === "left" && "text-left",
                       e.group.align === "right" && "text-right",
                       a && F === f.length - 1 && "border-r border-slate-200 dark:border-slate-700",
-                      B.className
+                      O.className
                     ),
-                    style: ee ? B.style : { position: "relative", zIndex: 0 },
+                    style: ee ? O.style : { position: "relative", zIndex: 0 },
                     children: F === I ? e.group.header : null
                   },
                   `group-${String(e.group.columns[0])}-seg-${F}`
@@ -777,17 +777,17 @@ function Is({
           q,
           {
             className: "!p-0 bg-slate-100 dark:bg-slate-800",
-            style: C ? {
+            style: R ? {
               position: "sticky",
               left: Zt(),
               zIndex: 20,
-              width: `${j}px`,
-              minWidth: `${j}px`,
-              maxWidth: `${j}px`
+              width: `${_}px`,
+              minWidth: `${_}px`,
+              maxWidth: `${_}px`
             } : {
-              width: `${j}px`,
-              minWidth: `${j}px`,
-              maxWidth: `${j}px`
+              width: `${_}px`,
+              minWidth: `${_}px`,
+              maxWidth: `${_}px`
             },
             "aria-label": "순서 변경",
             children: /* @__PURE__ */ r("span", { className: "sr-only", children: "순서 변경" })
@@ -797,7 +797,7 @@ function Is({
           q,
           {
             className: "!p-0 bg-slate-100 dark:bg-slate-800",
-            style: C ? {
+            style: R ? {
               position: "sticky",
               left: Ye(),
               zIndex: 20,
@@ -824,7 +824,7 @@ function Is({
           q,
           {
             className: "bg-slate-100 dark:bg-slate-800 !p-0",
-            style: C ? {
+            style: R ? {
               position: "sticky",
               left: we(),
               zIndex: 20,
@@ -854,9 +854,9 @@ function Is({
           {
             className: "!p-0 bg-slate-100 dark:bg-slate-800",
             style: {
-              width: `${_}px`,
-              minWidth: `${_}px`,
-              maxWidth: `${_}px`
+              width: `${P}px`,
+              minWidth: `${P}px`,
+              maxWidth: `${P}px`
             },
             "aria-label": "행 삭제",
             children: /* @__PURE__ */ r("span", { className: "sr-only", children: "행 삭제" })
@@ -932,12 +932,12 @@ function Is({
           )
         }
       ) }) : V ? /* @__PURE__ */ r(Ze, { items: Yt, strategy: as, children: p.map((e, t) => {
-        const s = L.includes(e.id), a = Xe(e), l = qe(e.id), o = `row-${e.id}`, g = (b) => /* @__PURE__ */ H(Et, { children: [
+        const s = T.includes(e.id), a = Xe(e), l = qe(e.id), o = `row-${e.id}`, g = (b) => /* @__PURE__ */ H(Et, { children: [
           /* @__PURE__ */ r(
             Tt,
             {
               isSelected: s,
-              hasLeftStickyColumns: C,
+              hasLeftStickyColumns: R,
               dragHandleProps: b
             }
           ),
@@ -947,9 +947,9 @@ function Is({
               onClick: (i) => i.stopPropagation(),
               className: x(
                 "!p-0",
-                C && (s ? "transition-colors bg-blue-50 dark:bg-blue-900" : "transition-colors bg-slate-100 dark:bg-slate-800")
+                R && (s ? "transition-colors bg-blue-50 dark:bg-blue-900" : "transition-colors bg-slate-100 dark:bg-slate-800")
               ),
-              style: C ? {
+              style: R ? {
                 position: "sticky",
                 left: Ye(),
                 zIndex: 10,
@@ -976,9 +976,9 @@ function Is({
             {
               className: x(
                 "p-0",
-                C && (s ? "transition-colors bg-blue-50 dark:bg-blue-900" : "transition-colors bg-slate-100 dark:bg-slate-800")
+                R && (s ? "transition-colors bg-blue-50 dark:bg-blue-900" : "transition-colors bg-slate-100 dark:bg-slate-800")
               ),
-              style: C ? {
+              style: R ? {
                 position: "sticky",
                 left: we(),
                 zIndex: 10,
@@ -1009,9 +1009,9 @@ function Is({
             {
               className: "!p-0",
               style: {
-                width: `${_}px`,
-                minWidth: `${_}px`,
-                maxWidth: `${_}px`
+                width: `${P}px`,
+                minWidth: `${P}px`,
+                maxWidth: `${P}px`
               },
               onClick: (i) => i.stopPropagation(),
               children: /* @__PURE__ */ r(
@@ -1032,12 +1032,12 @@ function Is({
           M.map((i) => {
             const n = kt(t, i.accessorKey);
             if (n === 0) return null;
-            const f = e[i.accessorKey], u = gt(e.id, i.accessorKey), c = n !== void 0 && n > 1, O = c && vt(t, n), I = c && St(t, n), $ = fe(i, !1, s, c ? I : void 0), F = (D) => typeof D == "number" ? `${D}px` : D, T = {};
+            const f = e[i.accessorKey], u = gt(e.id, i.accessorKey), c = n !== void 0 && n > 1, j = c && vt(t, n), I = c && St(t, n), $ = fe(i, !1, s, c ? I : void 0), F = (D) => typeof D == "number" ? `${D}px` : D, C = {};
             if (!i.sticky) {
               const D = Z ? oe(i) : void 0;
-              D !== void 0 ? (T.width = `${D}px`, T.minWidth = `${D}px`) : (i.width && (T.width = F(i.width)), i.minWidth && (T.minWidth = F(i.minWidth)));
+              D !== void 0 ? (C.width = `${D}px`, C.minWidth = `${D}px`) : (i.width && (C.width = F(i.width)), i.minWidth && (C.minWidth = F(i.minWidth)));
             }
-            const B = { ...T, ...$.style };
+            const O = { ...C, ...$.style };
             if (u && i.editable) {
               const D = i.editComponent || Rt;
               return /* @__PURE__ */ r(
@@ -1045,7 +1045,7 @@ function Is({
                 {
                   ref: je,
                   className: x(U(i.align), "p-1 overflow-hidden", $.className),
-                  style: B,
+                  style: O,
                   onClick: (te) => te.stopPropagation(),
                   rowSpan: c ? n : void 0,
                   children: /* @__PURE__ */ r(
@@ -1076,10 +1076,10 @@ function Is({
                     c && "align-middle transition-colors",
                     // 그룹 셀 hover/selected 스타일
                     c && I && "bg-blue-50 dark:bg-blue-900",
-                    c && !I && O && "bg-slate-100 dark:bg-slate-800",
+                    c && !I && j && "bg-slate-100 dark:bg-slate-800",
                     $.className
                   ),
-                  style: B,
+                  style: O,
                   onClick: (D) => {
                     D.stopPropagation(), setTimeout(() => ft(e.id, i.accessorKey, f), 0);
                   },
@@ -1108,10 +1108,10 @@ function Is({
                   c && !ce && "border-b border-slate-200 dark:border-slate-700",
                   // 그룹 셀 hover/selected 스타일
                   c && I && "bg-blue-50 dark:bg-blue-900",
-                  c && !I && O && "bg-slate-100 dark:bg-slate-800",
+                  c && !I && j && "bg-slate-100 dark:bg-slate-800",
                   $.className
                 ),
-                style: B,
+                style: O,
                 rowSpan: c ? n : void 0,
                 children: ee
               },
@@ -1127,8 +1127,8 @@ function Is({
               isSelected: s,
               className: x(w && "cursor-pointer", X == null ? void 0 : X(e)),
               onClick: () => w == null ? void 0 : w(e),
-              onMouseEnter: P ? () => he(t) : void 0,
-              onMouseLeave: P ? () => he(null) : void 0,
+              onMouseEnter: L ? () => he(t) : void 0,
+              onMouseLeave: L ? () => he(null) : void 0,
               children: (b) => g(b)
             }
           ),
@@ -1155,12 +1155,12 @@ function Is({
           ) })
         ] }, e.id);
       }) }) : p.map((e, t) => {
-        const s = L.includes(e.id), a = Xe(e), l = qe(e.id), o = `row-${e.id}`, g = (b) => /* @__PURE__ */ H(Et, { children: [
+        const s = T.includes(e.id), a = Xe(e), l = qe(e.id), o = `row-${e.id}`, g = (b) => /* @__PURE__ */ H(Et, { children: [
           V && /* @__PURE__ */ r(
             Tt,
             {
               isSelected: s,
-              hasLeftStickyColumns: C,
+              hasLeftStickyColumns: R,
               dragHandleProps: b
             }
           ),
@@ -1170,9 +1170,9 @@ function Is({
               onClick: (i) => i.stopPropagation(),
               className: x(
                 "!p-0",
-                C && (s ? "transition-colors bg-blue-50 dark:bg-blue-900" : "transition-colors bg-slate-100 dark:bg-slate-800")
+                R && (s ? "transition-colors bg-blue-50 dark:bg-blue-900" : "transition-colors bg-slate-100 dark:bg-slate-800")
               ),
-              style: C ? {
+              style: R ? {
                 position: "sticky",
                 left: Ye(),
                 zIndex: 10,
@@ -1199,9 +1199,9 @@ function Is({
             {
               className: x(
                 "p-0",
-                C && (s ? "transition-colors bg-blue-50 dark:bg-blue-900" : "transition-colors bg-slate-100 dark:bg-slate-800")
+                R && (s ? "transition-colors bg-blue-50 dark:bg-blue-900" : "transition-colors bg-slate-100 dark:bg-slate-800")
               ),
-              style: C ? {
+              style: R ? {
                 position: "sticky",
                 left: we(),
                 zIndex: 10,
@@ -1232,9 +1232,9 @@ function Is({
             {
               className: "!p-0",
               style: {
-                width: `${_}px`,
-                minWidth: `${_}px`,
-                maxWidth: `${_}px`
+                width: `${P}px`,
+                minWidth: `${P}px`,
+                maxWidth: `${P}px`
               },
               onClick: (i) => i.stopPropagation(),
               children: /* @__PURE__ */ r(
@@ -1255,12 +1255,12 @@ function Is({
           M.map((i) => {
             const n = kt(t, i.accessorKey);
             if (n === 0) return null;
-            const f = e[i.accessorKey], u = gt(e.id, i.accessorKey), c = n !== void 0 && n > 1, O = c && vt(t, n), I = c && St(t, n), $ = fe(i, !1, s, c ? I : void 0), F = (D) => typeof D == "number" ? `${D}px` : D, T = {};
+            const f = e[i.accessorKey], u = gt(e.id, i.accessorKey), c = n !== void 0 && n > 1, j = c && vt(t, n), I = c && St(t, n), $ = fe(i, !1, s, c ? I : void 0), F = (D) => typeof D == "number" ? `${D}px` : D, C = {};
             if (!i.sticky) {
               const D = Z ? oe(i) : void 0;
-              D !== void 0 ? (T.width = `${D}px`, T.minWidth = `${D}px`) : (i.width && (T.width = F(i.width)), i.minWidth && (T.minWidth = F(i.minWidth)));
+              D !== void 0 ? (C.width = `${D}px`, C.minWidth = `${D}px`) : (i.width && (C.width = F(i.width)), i.minWidth && (C.minWidth = F(i.minWidth)));
             }
-            const B = { ...T, ...$.style };
+            const O = { ...C, ...$.style };
             if (u && i.editable) {
               const D = i.editComponent || Rt;
               return /* @__PURE__ */ r(
@@ -1268,7 +1268,7 @@ function Is({
                 {
                   ref: je,
                   className: x(U(i.align), "p-1 overflow-hidden", $.className),
-                  style: B,
+                  style: O,
                   onClick: (te) => te.stopPropagation(),
                   rowSpan: c ? n : void 0,
                   children: /* @__PURE__ */ r(
@@ -1299,10 +1299,10 @@ function Is({
                     c && "align-middle transition-colors",
                     // 그룹 셀 hover/selected 스타일
                     c && I && "bg-blue-50 dark:bg-blue-900",
-                    c && !I && O && "bg-slate-100 dark:bg-slate-800",
+                    c && !I && j && "bg-slate-100 dark:bg-slate-800",
                     $.className
                   ),
-                  style: B,
+                  style: O,
                   onClick: (D) => {
                     D.stopPropagation(), setTimeout(() => {
                       ft(e.id, i.accessorKey, f);
@@ -1333,10 +1333,10 @@ function Is({
                   c && !ce && "border-b border-slate-200 dark:border-slate-700",
                   // 그룹 셀 hover/selected 스타일
                   c && I && "bg-blue-50 dark:bg-blue-900",
-                  c && !I && O && "bg-slate-100 dark:bg-slate-800",
+                  c && !I && j && "bg-slate-100 dark:bg-slate-800",
                   $.className
                 ),
-                style: B,
+                style: O,
                 rowSpan: c ? n : void 0,
                 children: ee
               },
@@ -1352,8 +1352,8 @@ function Is({
               isSelected: s,
               className: x(w && "cursor-pointer", X == null ? void 0 : X(e)),
               onClick: () => w == null ? void 0 : w(e),
-              onMouseEnter: P ? () => he(t) : void 0,
-              onMouseLeave: P ? () => he(null) : void 0,
+              onMouseEnter: L ? () => he(t) : void 0,
+              onMouseLeave: L ? () => he(null) : void 0,
               children: (b) => g(b)
             }
           ) : /* @__PURE__ */ r(
@@ -1366,8 +1366,8 @@ function Is({
                 X == null ? void 0 : X(e)
               ),
               onClick: () => w == null ? void 0 : w(e),
-              onMouseEnter: P ? () => he(t) : void 0,
-              onMouseLeave: P ? () => he(null) : void 0,
+              onMouseEnter: L ? () => he(t) : void 0,
+              onMouseLeave: L ? () => he(null) : void 0,
               children: g()
             }
           ),
@@ -1400,9 +1400,9 @@ function Is({
           {
             className: "!p-0",
             style: {
-              width: `${j}px`,
-              minWidth: `${j}px`,
-              maxWidth: `${j}px`
+              width: `${_}px`,
+              minWidth: `${_}px`,
+              maxWidth: `${_}px`
             }
           }
         ),
@@ -1433,9 +1433,9 @@ function Is({
           {
             className: "!p-0",
             style: {
-              width: `${_}px`,
-              minWidth: `${_}px`,
-              maxWidth: `${_}px`
+              width: `${P}px`,
+              minWidth: `${P}px`,
+              maxWidth: `${P}px`
             },
             children: /* @__PURE__ */ r(
               "button",

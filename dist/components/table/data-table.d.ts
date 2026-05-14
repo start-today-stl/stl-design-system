@@ -89,7 +89,7 @@ export interface RowActionsConfig<T> {
     /** 추가 행 표시 여부 (기본: onRowAdd가 있으면 true) */
     showAdd?: boolean;
 }
-interface DataTableBaseProps<T extends {
+export interface DataTableProps<T extends {
     id: string | number;
 }> {
     /** 컬럼 정의 */
@@ -144,28 +144,13 @@ interface DataTableBaseProps<T extends {
     rowGrouping?: RowGroupConfig<T>;
     /** 행 추가/삭제 액션 설정 */
     rowActions?: RowActionsConfig<T>;
-}
-/** 단일 정렬 props (multiSort 없거나 false) */
-interface SingleSortProps<T> {
-    /** 다중 정렬 비활성화 */
-    multiSort?: false;
-    /** 정렬 상태 */
-    sortState?: SortState<T>;
-    /** 정렬 변경 핸들러 */
-    onSortChange?: (sortState: SortState<T>) => void;
-}
-/** 다중 정렬 props (multiSort=true) */
-interface MultiSortProps<T> {
-    /** 다중 정렬 활성화 (클릭 시 정렬 추가/순환) */
-    multiSort: true;
-    /** 정렬 상태 배열 */
+    /** 정렬 상태 (항상 배열, 단일 정렬도 1-원소 배열로) */
     sortState?: SortState<T>[];
-    /** 정렬 변경 핸들러 (배열) */
+    /** 정렬 변경 핸들러 */
     onSortChange?: (sortState: SortState<T>[]) => void;
+    /** 다중 정렬 활성화 (클릭 시 정렬 추가/순환). 기본 false=단일 정렬 */
+    multiSort?: boolean;
 }
-export type DataTableProps<T extends {
-    id: string | number;
-}> = DataTableBaseProps<T> & (SingleSortProps<T> | MultiSortProps<T>);
 declare function DataTable<T extends {
     id: string | number;
 }>({ columns, data, selectable, selectedIds, onSelectionChange, sortState, onSortChange, multiSort, onRowClick, onCellChange, expandable, emptyMessage, className, rowClassName, maxHeight, resizable, columnWidths, onColumnResize, columnReorderable, columnOrder, onColumnReorder, rowReorderable: rowReorderableProp, onRowReorder, loading, loadingMode, loadingContent, headerGroups, rowGrouping, rowActions, }: DataTableProps<T>): import("react/jsx-runtime").JSX.Element;
