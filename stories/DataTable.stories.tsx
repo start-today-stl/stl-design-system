@@ -154,7 +154,7 @@ export const MultiSortable: Story = {
           data={sortedData}
           multiSort
           sortState={sortState}
-          onSortChange={(s) => setSortState(s as SortState<User>[])}
+          onSortChange={setSortState}
         />
       </div>
     )
