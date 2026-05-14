@@ -1405,6 +1405,74 @@ function DataTable<T extends { id: string | number }>({
                 const colSpan = getHeaderGroupColSpan(item.group)
                 // colSpan이 0이면 렌더링 대상 컬럼이 없는 그룹이므로 스킵
                 if (colSpan === 0) return null
+
+                // 그룹 내 sticky 구성 확인 - 혼합되면 세그먼트로 분할
+                const groupCols = columnsToRender.filter((col) =>
+                  item.group.columns.includes(col.accessorKey)
+                )
+                const stickyDirections = new Set(
+                  groupCols.map((c) => c.sticky ?? "none")
+                )
+                const isMixed = stickyDirections.size > 1
+
+                if (isMixed) {
+                  // 연속된 sticky 방향끼리 세그먼트로 분할
+                  type Segment = { cols: DataTableColumn<T>[]; sticky?: "left" | "right" }
+                  const segments: Segment[] = []
+                  let currentCols: DataTableColumn<T>[] = []
+                  let currentSticky: "left" | "right" | undefined = groupCols[0].sticky
+                  for (const col of groupCols) {
+                    if (col.sticky === currentSticky) {
+                      currentCols.push(col)
+                    } else {
+                      if (currentCols.length > 0) {
+                        segments.push({ cols: currentCols, sticky: currentSticky })
+                      }
+                      currentCols = [col]
+                      currentSticky = col.sticky
+                    }
+                  }
+                  if (currentCols.length > 0) {
+                    segments.push({ cols: currentCols, sticky: currentSticky })
+                  }
+
+                  // 헤더 텍스트는 첫 번째 non-sticky 세그먼트에 표시 (없으면 첫 세그먼트)
+                  const firstNonStickyIdx = segments.findIndex((s) => !s.sticky)
+                  const headerSegIdx = firstNonStickyIdx !== -1 ? firstNonStickyIdx : 0
+
+                  return segments.map((seg, segIdx) => {
+                    const subGroup: HeaderGroup<T> = {
+                      header: item.group.header,
+                      columns: seg.cols.map((c) => c.accessorKey),
+                      align: item.group.align,
+                    }
+                    const subStickyData = seg.sticky
+                      ? getHeaderGroupStickyData(subGroup)
+                      : { style: {}, className: "" }
+                    const isSubSticky = !!subStickyData.style.position
+                    return (
+                      <TableHead
+                        key={`group-${String(item.group.columns[0])}-seg-${segIdx}`}
+                        colSpan={seg.cols.length}
+                        className={cn(
+                          "text-center font-medium bg-slate-100 dark:bg-slate-800",
+                          item.group.align === "left" && "text-left",
+                          item.group.align === "right" && "text-right",
+                          needsBorder && segIdx === segments.length - 1 && "border-r border-slate-200 dark:border-slate-700",
+                          subStickyData.className
+                        )}
+                        style={
+                          isSubSticky
+                            ? subStickyData.style
+                            : { position: "relative", zIndex: 0 }
+                        }
+                      >
+                        {segIdx === headerSegIdx ? item.group.header : null}
+                      </TableHead>
+                    )
+                  })
+                }
+
                 const groupStickyData = getHeaderGroupStickyData(item.group)
                 const isGroupSticky = !!groupStickyData.style.position
                 return (
