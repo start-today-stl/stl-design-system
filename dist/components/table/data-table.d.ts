@@ -102,10 +102,12 @@ export interface DataTableProps<T extends {
     selectedIds?: (string | number)[];
     /** 선택 변경 핸들러 */
     onSelectionChange?: (selectedIds: (string | number)[]) => void;
-    /** 정렬 상태 */
-    sortState?: SortState<T>;
-    /** 정렬 변경 핸들러 */
-    onSortChange?: (sortState: SortState<T>) => void;
+    /** 정렬 상태 (multiSort=true면 배열) */
+    sortState?: SortState<T> | SortState<T>[];
+    /** 정렬 변경 핸들러 (multiSort=true면 배열) */
+    onSortChange?: (sortState: SortState<T> | SortState<T>[]) => void;
+    /** 다중 정렬 활성화 (Shift+클릭으로 정렬 추가) */
+    multiSort?: boolean;
     /** 행 클릭 핸들러 */
     onRowClick?: (row: T) => void;
     /** 셀 값 변경 핸들러 */
@@ -151,5 +153,5 @@ export interface DataTableProps<T extends {
 }
 declare function DataTable<T extends {
     id: string | number;
-}>({ columns, data, selectable, selectedIds, onSelectionChange, sortState, onSortChange, onRowClick, onCellChange, expandable, emptyMessage, className, rowClassName, maxHeight, resizable, columnWidths, onColumnResize, columnReorderable, columnOrder, onColumnReorder, rowReorderable: rowReorderableProp, onRowReorder, loading, loadingMode, loadingContent, headerGroups, rowGrouping, rowActions, }: DataTableProps<T>): import("react/jsx-runtime").JSX.Element;
+}>({ columns, data, selectable, selectedIds, onSelectionChange, sortState, onSortChange, multiSort, onRowClick, onCellChange, expandable, emptyMessage, className, rowClassName, maxHeight, resizable, columnWidths, onColumnResize, columnReorderable, columnOrder, onColumnReorder, rowReorderable: rowReorderableProp, onRowReorder, loading, loadingMode, loadingContent, headerGroups, rowGrouping, rowActions, }: DataTableProps<T>): import("react/jsx-runtime").JSX.Element;
 export { DataTable };

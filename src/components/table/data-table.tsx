@@ -151,10 +151,12 @@ export interface DataTableProps<T extends { id: string | number }> {
   selectedIds?: (string | number)[]
   /** 선택 변경 핸들러 */
   onSelectionChange?: (selectedIds: (string | number)[]) => void
-  /** 정렬 상태 */
-  sortState?: SortState<T>
-  /** 정렬 변경 핸들러 */
-  onSortChange?: (sortState: SortState<T>) => void
+  /** 정렬 상태 (multiSort=true면 배열) */
+  sortState?: SortState<T> | SortState<T>[]
+  /** 정렬 변경 핸들러 (multiSort=true면 배열) */
+  onSortChange?: (sortState: SortState<T> | SortState<T>[]) => void
+  /** 다중 정렬 활성화 (Shift+클릭으로 정렬 추가) */
+  multiSort?: boolean
   /** 행 클릭 핸들러 */
   onRowClick?: (row: T) => void
   /** 셀 값 변경 핸들러 */
@@ -425,6 +427,7 @@ function DataTable<T extends { id: string | number }>({
   onSelectionChange,
   sortState,
   onSortChange,
+  multiSort = false,
   onRowClick,
   onCellChange,
   expandable,
@@ -697,24 +700,62 @@ function DataTable<T extends { id: string | number }>({
     }
   }
 
-  const handleSort = (column: keyof T) => {
+  // sortState를 항상 배열 형태로 정규화 (내부 로직용)
+  const sortStateArray: SortState<T>[] = React.useMemo(() => {
+    if (!sortState) return []
+    if (Array.isArray(sortState)) return sortState.filter((s) => s.column && s.direction)
+    if (sortState.column && sortState.direction) return [sortState]
+    return []
+  }, [sortState])
+
+  const handleSort = (column: keyof T, shiftKey: boolean = false) => {
     if (!onSortChange) return
 
-    if (sortState?.column === column) {
-      if (sortState.direction === "asc") {
-        onSortChange({ column, direction: "desc" })
-      } else if (sortState.direction === "desc") {
-        onSortChange({ column: null, direction: null })
+    const existing = sortStateArray.find((s) => s.column === column)
+    const useMulti = multiSort && shiftKey
+
+    if (useMulti) {
+      // 다중 정렬 모드: shift+클릭 → 정렬 추가/순환
+      let newArr: SortState<T>[]
+      if (!existing) {
+        newArr = [...sortStateArray, { column, direction: "asc" }]
+      } else if (existing.direction === "asc") {
+        newArr = sortStateArray.map((s) =>
+          s.column === column ? { column, direction: "desc" as SortDirection } : s
+        )
       } else {
-        onSortChange({ column, direction: "asc" })
+        // desc → 해당 컬럼만 제거
+        newArr = sortStateArray.filter((s) => s.column !== column)
       }
+      onSortChange(newArr)
     } else {
-      onSortChange({ column, direction: "asc" })
+      // 단일 정렬 모드: 그 컬럼만 정렬 (다른 정렬 모두 해제)
+      let next: SortState<T>
+      if (existing && sortStateArray.length === 1) {
+        if (existing.direction === "asc") {
+          next = { column, direction: "desc" }
+        } else if (existing.direction === "desc") {
+          next = { column: null, direction: null }
+        } else {
+          next = { column, direction: "asc" }
+        }
+      } else {
+        next = { column, direction: "asc" }
+      }
+      onSortChange(multiSort ? (next.column ? [next] : []) : next)
     }
   }
 
   const getSortDirection = (column: keyof T): SortDirection => {
-    return sortState?.column === column ? sortState.direction : null
+    const found = sortStateArray.find((s) => s.column === column)
+    return found?.direction ?? null
+  }
+
+  // 다중 정렬 시 우선순위 번호 (1부터 시작, 단일 정렬이거나 정렬 없으면 undefined)
+  const getSortPriority = (column: keyof T): number | undefined => {
+    if (!multiSort || sortStateArray.length <= 1) return undefined
+    const idx = sortStateArray.findIndex((s) => s.column === column)
+    return idx === -1 ? undefined : idx + 1
   }
 
   const getAlignClass = (align?: "left" | "center" | "right") => {
@@ -1170,7 +1211,8 @@ function DataTable<T extends { id: string | number }>({
         <TableSortableHead
           key={String(column.accessorKey)}
           sortDirection={getSortDirection(column.accessorKey)}
-          onSort={() => handleSort(column.accessorKey)}
+          sortPriority={getSortPriority(column.accessorKey)}
+          onSort={(shiftKey) => handleSort(column.accessorKey, shiftKey)}
           style={style}
           className={cn(getAlignClass(column.align), stickyData.className, resizable && "relative overflow-visible", groupBorderClass)}
         >
@@ -1504,7 +1546,8 @@ function DataTable<T extends { id: string | number }>({
                       key={`standalone-${String(item.col.accessorKey)}`}
                       rowSpan={2}
                       sortDirection={getSortDirection(item.col.accessorKey)}
-                      onSort={() => handleSort(item.col.accessorKey)}
+                      sortPriority={getSortPriority(item.col.accessorKey)}
+                      onSort={(shiftKey) => handleSort(item.col.accessorKey, shiftKey)}
                       className={cn(
                         getAlignClass(item.col.align),
                         "bg-slate-100 dark:bg-slate-800",

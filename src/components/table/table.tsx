@@ -144,22 +144,24 @@ TableCaption.displayName = "TableCaption"
 export type SortDirection = "asc" | "desc" | null
 
 export interface TableSortableHeadProps
-  extends React.ThHTMLAttributes<HTMLTableCellElement> {
+  extends Omit<React.ThHTMLAttributes<HTMLTableCellElement>, "onClick"> {
   /** 현재 정렬 방향 */
   sortDirection?: SortDirection
-  /** 정렬 변경 핸들러 */
-  onSort?: () => void
+  /** 정렬 변경 핸들러 (shiftKey 전달) */
+  onSort?: (shiftKey: boolean) => void
+  /** 다중 정렬 시 우선순위 번호 (1부터) */
+  sortPriority?: number
 }
 
 const TableSortableHead = React.forwardRef<
   HTMLTableCellElement,
   TableSortableHeadProps
->(({ className, sortDirection, onSort, children, ...props }, ref) => {
+>(({ className, sortDirection, onSort, sortPriority, children, ...props }, ref) => {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
     if (!onSort) return
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault()
-      onSort()
+      onSort(e.shiftKey)
     }
   }
 
@@ -185,13 +187,20 @@ const TableSortableHead = React.forwardRef<
       <button
         type="button"
         className="flex w-full items-center gap-1 text-left cursor-pointer"
-        onClick={onSort}
+        onClick={(e) => onSort?.(e.shiftKey)}
         onKeyDown={handleKeyDown}
       >
         {children}
-        <span className="flex flex-col gap-0.5">
-          <SortArrow direction="up" active={sortDirection === "asc"} />
-          <SortArrow direction="down" active={sortDirection === "desc"} />
+        <span className="flex items-center gap-0.5">
+          <span className="flex flex-col gap-0.5">
+            <SortArrow direction="up" active={sortDirection === "asc"} />
+            <SortArrow direction="down" active={sortDirection === "desc"} />
+          </span>
+          {sortPriority !== undefined && (
+            <span className="text-[9px] font-medium text-blue-600 dark:text-blue-400 leading-none">
+              {sortPriority}
+            </span>
+          )}
         </span>
       </button>
     </th>
