@@ -140,7 +140,7 @@ export interface RowActionsConfig<T> {
   showAdd?: boolean
 }
 
-export interface DataTableProps<T extends { id: string | number }> {
+interface DataTableBaseProps<T extends { id: string | number }> {
   /** 컬럼 정의 */
   columns: DataTableColumn<T>[]
   /** 데이터 배열 */
@@ -151,12 +151,6 @@ export interface DataTableProps<T extends { id: string | number }> {
   selectedIds?: (string | number)[]
   /** 선택 변경 핸들러 */
   onSelectionChange?: (selectedIds: (string | number)[]) => void
-  /** 정렬 상태 (multiSort=true면 배열) */
-  sortState?: SortState<T> | SortState<T>[]
-  /** 정렬 변경 핸들러 (multiSort=true면 배열) */
-  onSortChange?: (sortState: SortState<T> | SortState<T>[]) => void
-  /** 다중 정렬 활성화 (Shift+클릭으로 정렬 추가) */
-  multiSort?: boolean
   /** 행 클릭 핸들러 */
   onRowClick?: (row: T) => void
   /** 셀 값 변경 핸들러 */
@@ -200,6 +194,29 @@ export interface DataTableProps<T extends { id: string | number }> {
   /** 행 추가/삭제 액션 설정 */
   rowActions?: RowActionsConfig<T>
 }
+
+/** 단일 정렬 props (multiSort 없거나 false) */
+interface SingleSortProps<T> {
+  /** 다중 정렬 비활성화 */
+  multiSort?: false
+  /** 정렬 상태 */
+  sortState?: SortState<T>
+  /** 정렬 변경 핸들러 */
+  onSortChange?: (sortState: SortState<T>) => void
+}
+
+/** 다중 정렬 props (multiSort=true) */
+interface MultiSortProps<T> {
+  /** 다중 정렬 활성화 (클릭 시 정렬 추가/순환) */
+  multiSort: true
+  /** 정렬 상태 배열 */
+  sortState?: SortState<T>[]
+  /** 정렬 변경 핸들러 (배열) */
+  onSortChange?: (sortState: SortState<T>[]) => void
+}
+
+export type DataTableProps<T extends { id: string | number }> =
+  DataTableBaseProps<T> & (SingleSortProps<T> | MultiSortProps<T>)
 
 /** 기본 편집 컴포넌트 (Input) */
 function DefaultEditComponent<T>({
@@ -726,7 +743,7 @@ function DataTable<T extends { id: string | number }>({
         // desc → 해당 컬럼만 제거
         newArr = sortStateArray.filter((s) => s.column !== column)
       }
-      onSortChange(newArr)
+      ;(onSortChange as (s: SortState<T>[]) => void)(newArr)
     } else {
       // 단일 정렬 모드: 그 컬럼만 정렬 (다른 정렬 모두 해제)
       let next: SortState<T>
@@ -741,7 +758,7 @@ function DataTable<T extends { id: string | number }>({
       } else {
         next = { column, direction: "asc" }
       }
-      onSortChange(next)
+      ;(onSortChange as (s: SortState<T>) => void)(next)
     }
   }
 
