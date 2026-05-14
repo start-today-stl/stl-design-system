@@ -17,8 +17,8 @@ export type SortDirection = "asc" | "desc" | null;
 export interface TableSortableHeadProps extends Omit<React.ThHTMLAttributes<HTMLTableCellElement>, "onClick"> {
     /** 현재 정렬 방향 */
     sortDirection?: SortDirection;
-    /** 정렬 변경 핸들러 (shiftKey 전달) */
-    onSort?: (shiftKey: boolean) => void;
+    /** 정렬 변경 핸들러 */
+    onSort?: () => void;
     /** 다중 정렬 시 우선순위 번호 (1부터) */
     sortPriority?: number;
 }

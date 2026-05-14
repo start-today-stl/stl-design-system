@@ -147,8 +147,8 @@ export interface TableSortableHeadProps
   extends Omit<React.ThHTMLAttributes<HTMLTableCellElement>, "onClick"> {
   /** 현재 정렬 방향 */
   sortDirection?: SortDirection
-  /** 정렬 변경 핸들러 (shiftKey 전달) */
-  onSort?: (shiftKey: boolean) => void
+  /** 정렬 변경 핸들러 */
+  onSort?: () => void
   /** 다중 정렬 시 우선순위 번호 (1부터) */
   sortPriority?: number
 }
@@ -161,7 +161,7 @@ const TableSortableHead = React.forwardRef<
     if (!onSort) return
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault()
-      onSort(e.shiftKey)
+      onSort()
     }
   }
 
@@ -187,7 +187,7 @@ const TableSortableHead = React.forwardRef<
       <button
         type="button"
         className="flex w-full items-center gap-1 text-left cursor-pointer"
-        onClick={(e) => onSort?.(e.shiftKey)}
+        onClick={onSort}
         onKeyDown={handleKeyDown}
       >
         {children}

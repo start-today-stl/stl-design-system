@@ -708,14 +708,13 @@ function DataTable<T extends { id: string | number }>({
     return []
   }, [sortState])
 
-  const handleSort = (column: keyof T, shiftKey: boolean = false) => {
+  const handleSort = (column: keyof T) => {
     if (!onSortChange) return
 
     const existing = sortStateArray.find((s) => s.column === column)
-    const useMulti = multiSort && shiftKey
 
-    if (useMulti) {
-      // 다중 정렬 모드: shift+클릭 → 정렬 추가/순환
+    if (multiSort) {
+      // 다중 정렬 모드: 일반 클릭으로 정렬 추가/순환
       let newArr: SortState<T>[]
       if (!existing) {
         newArr = [...sortStateArray, { column, direction: "asc" }]
@@ -731,7 +730,7 @@ function DataTable<T extends { id: string | number }>({
     } else {
       // 단일 정렬 모드: 그 컬럼만 정렬 (다른 정렬 모두 해제)
       let next: SortState<T>
-      if (existing && sortStateArray.length === 1) {
+      if (existing) {
         if (existing.direction === "asc") {
           next = { column, direction: "desc" }
         } else if (existing.direction === "desc") {
@@ -742,7 +741,7 @@ function DataTable<T extends { id: string | number }>({
       } else {
         next = { column, direction: "asc" }
       }
-      onSortChange(multiSort ? (next.column ? [next] : []) : next)
+      onSortChange(next)
     }
   }
 
@@ -1212,7 +1211,7 @@ function DataTable<T extends { id: string | number }>({
           key={String(column.accessorKey)}
           sortDirection={getSortDirection(column.accessorKey)}
           sortPriority={getSortPriority(column.accessorKey)}
-          onSort={(shiftKey) => handleSort(column.accessorKey, shiftKey)}
+          onSort={() => handleSort(column.accessorKey)}
           style={style}
           className={cn(getAlignClass(column.align), stickyData.className, resizable && "relative overflow-visible", groupBorderClass)}
         >
@@ -1547,7 +1546,7 @@ function DataTable<T extends { id: string | number }>({
                       rowSpan={2}
                       sortDirection={getSortDirection(item.col.accessorKey)}
                       sortPriority={getSortPriority(item.col.accessorKey)}
-                      onSort={(shiftKey) => handleSort(item.col.accessorKey, shiftKey)}
+                      onSort={() => handleSort(item.col.accessorKey)}
                       className={cn(
                         getAlignClass(item.col.align),
                         "bg-slate-100 dark:bg-slate-800",

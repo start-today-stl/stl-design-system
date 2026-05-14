@@ -142,7 +142,7 @@ export const MultiSortable: Story = {
     return (
       <div>
         <p className="mb-2 text-sm text-slate-500">
-          일반 클릭: 단일 정렬 / <strong>Shift+클릭</strong>: 다중 정렬 추가
+          컬럼 헤더 클릭으로 정렬 추가 / 정렬된 컬럼은 asc → desc → 해제 순환
         </p>
         <p className="mb-4 text-xs text-slate-500">
           정렬 상태: {sortState.length === 0
