@@ -14,11 +14,13 @@ declare const TableHead: React.ForwardRefExoticComponent<React.ThHTMLAttributes<
 declare const TableCell: React.ForwardRefExoticComponent<React.TdHTMLAttributes<HTMLTableCellElement> & React.RefAttributes<HTMLTableCellElement>>;
 declare const TableCaption: React.ForwardRefExoticComponent<React.HTMLAttributes<HTMLTableCaptionElement> & React.RefAttributes<HTMLTableCaptionElement>>;
 export type SortDirection = "asc" | "desc" | null;
-export interface TableSortableHeadProps extends React.ThHTMLAttributes<HTMLTableCellElement> {
+export interface TableSortableHeadProps extends Omit<React.ThHTMLAttributes<HTMLTableCellElement>, "onClick"> {
     /** 현재 정렬 방향 */
     sortDirection?: SortDirection;
-    /** 정렬 변경 핸들러 */
-    onSort?: () => void;
+    /** 정렬 변경 핸들러 (shiftKey 전달) */
+    onSort?: (shiftKey: boolean) => void;
+    /** 다중 정렬 시 우선순위 번호 (1부터) */
+    sortPriority?: number;
 }
 declare const TableSortableHead: React.ForwardRefExoticComponent<TableSortableHeadProps & React.RefAttributes<HTMLTableCellElement>>;
 export { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption, TableSortableHead, };

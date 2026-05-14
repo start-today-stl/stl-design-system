@@ -120,6 +120,47 @@ export const Sortable: Story = {
   },
 }
 
+/** 다중 정렬 (Shift+클릭으로 정렬 추가) */
+export const MultiSortable: Story = {
+  render: () => {
+    const [sortState, setSortState] = useState<SortState<User>[]>([])
+
+    // 다중 정렬된 데이터
+    const sortedData = [...sampleData].sort((a, b) => {
+      for (const sort of sortState) {
+        if (!sort.column || !sort.direction) continue
+        const aValue = a[sort.column]
+        const bValue = b[sort.column]
+        const comparison = String(aValue).localeCompare(String(bValue))
+        if (comparison !== 0) {
+          return sort.direction === "asc" ? comparison : -comparison
+        }
+      }
+      return 0
+    })
+
+    return (
+      <div>
+        <p className="mb-2 text-sm text-slate-500">
+          일반 클릭: 단일 정렬 / <strong>Shift+클릭</strong>: 다중 정렬 추가
+        </p>
+        <p className="mb-4 text-xs text-slate-500">
+          정렬 상태: {sortState.length === 0
+            ? "없음"
+            : sortState.map((s, i) => `${i + 1}. ${String(s.column)} (${s.direction})`).join(", ")}
+        </p>
+        <DataTable
+          columns={columns}
+          data={sortedData}
+          multiSort
+          sortState={sortState}
+          onSortChange={(s) => setSortState(s as SortState<User>[])}
+        />
+      </div>
+    )
+  },
+}
+
 /** 커스텀 셀 렌더러 */
 export const CustomCell: Story = {
   render: () => {
