@@ -140,7 +140,7 @@ export interface RowActionsConfig<T> {
   showAdd?: boolean
 }
 
-interface DataTableBaseProps<T extends { id: string | number }> {
+export interface DataTableProps<T extends { id: string | number }> {
   /** 컬럼 정의 */
   columns: DataTableColumn<T>[]
   /** 데이터 배열 */
@@ -193,30 +193,13 @@ interface DataTableBaseProps<T extends { id: string | number }> {
   rowGrouping?: RowGroupConfig<T>
   /** 행 추가/삭제 액션 설정 */
   rowActions?: RowActionsConfig<T>
-}
-
-/** 단일 정렬 props (multiSort 없거나 false) */
-interface SingleSortProps<T> {
-  /** 다중 정렬 비활성화 */
-  multiSort?: false
-  /** 정렬 상태 */
-  sortState?: SortState<T>
-  /** 정렬 변경 핸들러 */
-  onSortChange?: (sortState: SortState<T>) => void
-}
-
-/** 다중 정렬 props (multiSort=true) */
-interface MultiSortProps<T> {
-  /** 다중 정렬 활성화 (클릭 시 정렬 추가/순환) */
-  multiSort: true
-  /** 정렬 상태 배열 */
+  /** 정렬 상태 (항상 배열, 단일 정렬도 1-원소 배열로) */
   sortState?: SortState<T>[]
-  /** 정렬 변경 핸들러 (배열) */
+  /** 정렬 변경 핸들러 */
   onSortChange?: (sortState: SortState<T>[]) => void
+  /** 다중 정렬 활성화 (클릭 시 정렬 추가/순환). 기본 false=단일 정렬 */
+  multiSort?: boolean
 }
-
-export type DataTableProps<T extends { id: string | number }> =
-  DataTableBaseProps<T> & (SingleSortProps<T> | MultiSortProps<T>)
 
 /** 기본 편집 컴포넌트 (Input) */
 function DefaultEditComponent<T>({
@@ -717,12 +700,10 @@ function DataTable<T extends { id: string | number }>({
     }
   }
 
-  // sortState를 항상 배열 형태로 정규화 (내부 로직용)
+  // sortState 정규화 (유효한 항목만)
   const sortStateArray: SortState<T>[] = React.useMemo(() => {
     if (!sortState) return []
-    if (Array.isArray(sortState)) return sortState.filter((s) => s.column && s.direction)
-    if (sortState.column && sortState.direction) return [sortState]
-    return []
+    return sortState.filter((s) => s.column && s.direction)
   }, [sortState])
 
   const handleSort = (column: keyof T) => {
@@ -731,7 +712,7 @@ function DataTable<T extends { id: string | number }>({
     const existing = sortStateArray.find((s) => s.column === column)
 
     if (multiSort) {
-      // 다중 정렬 모드: 일반 클릭으로 정렬 추가/순환
+      // 다중 정렬 모드: 클릭으로 정렬 추가/순환
       let newArr: SortState<T>[]
       if (!existing) {
         newArr = [...sortStateArray, { column, direction: "asc" }]
@@ -743,22 +724,22 @@ function DataTable<T extends { id: string | number }>({
         // desc → 해당 컬럼만 제거
         newArr = sortStateArray.filter((s) => s.column !== column)
       }
-      ;(onSortChange as (s: SortState<T>[]) => void)(newArr)
+      onSortChange(newArr)
     } else {
-      // 단일 정렬 모드: 그 컬럼만 정렬 (다른 정렬 모두 해제)
-      let next: SortState<T>
+      // 단일 정렬 모드: 그 컬럼만 정렬, asc→desc→해제 순환
+      let next: SortState<T>[]
       if (existing) {
         if (existing.direction === "asc") {
-          next = { column, direction: "desc" }
+          next = [{ column, direction: "desc" }]
         } else if (existing.direction === "desc") {
-          next = { column: null, direction: null }
+          next = []
         } else {
-          next = { column, direction: "asc" }
+          next = [{ column, direction: "asc" }]
         }
       } else {
-        next = { column, direction: "asc" }
+        next = [{ column, direction: "asc" }]
       }
-      ;(onSortChange as (s: SortState<T>) => void)(next)
+      onSortChange(next)
     }
   }
 
