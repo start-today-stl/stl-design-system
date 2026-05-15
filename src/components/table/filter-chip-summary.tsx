@@ -90,7 +90,7 @@ const FilterChipSummary = React.forwardRef<HTMLDivElement, FilterChipSummaryProp
           <button
             type="button"
             onClick={onClearAll}
-            className="text-xs text-muted-foreground hover:text-foreground transition-colors ml-2"
+            className="text-xs text-slate-700 dark:text-slate-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors ml-2 cursor-pointer"
           >
             {clearAllText}
           </button>

@@ -1,40 +1,40 @@
-import { jsx as i, jsxs as n } from "react/jsx-runtime";
+import { jsx as i, jsxs as a } from "react/jsx-runtime";
 import * as C from "react";
-import { cn as u } from "../../lib/utils.mjs";
-import { Chip as h } from "../ui/chip.mjs";
-const b = C.forwardRef(
+import { cn as h } from "../../lib/utils.mjs";
+import { Chip as u } from "../ui/chip.mjs";
+const f = C.forwardRef(
   ({
-    className: a,
+    className: s,
     filters: r,
-    maxVisible: s = 3,
+    maxVisible: n = 3,
     onRemove: t,
-    onClearAll: m,
-    onExpand: p,
-    emptyText: x = "적용된 필터가 없습니다",
-    clearAllText: g = "전체 초기화",
-    chipSize: o = "sm",
-    ...c
-  }, d) => {
-    const f = r.slice(0, s), l = Math.max(0, r.length - s);
+    onClearAll: l,
+    onExpand: x,
+    emptyText: p = "적용된 필터가 없습니다",
+    clearAllText: b = "전체 초기화",
+    chipSize: c = "sm",
+    ...m
+  }, o) => {
+    const g = r.slice(0, n), d = Math.max(0, r.length - n);
     return r.length === 0 ? /* @__PURE__ */ i(
       "div",
       {
-        ref: d,
-        className: u("flex items-center gap-2", a),
-        ...c,
-        children: /* @__PURE__ */ i("span", { className: "text-sm text-muted-foreground", children: x })
+        ref: o,
+        className: h("flex items-center gap-2", s),
+        ...m,
+        children: /* @__PURE__ */ i("span", { className: "text-sm text-muted-foreground", children: p })
       }
-    ) : /* @__PURE__ */ n(
+    ) : /* @__PURE__ */ a(
       "div",
       {
-        ref: d,
-        className: u("flex items-center gap-2", a),
-        ...c,
+        ref: o,
+        className: h("flex items-center gap-2", s),
+        ...m,
         children: [
-          f.map((e) => /* @__PURE__ */ n(
-            h,
+          g.map((e) => /* @__PURE__ */ a(
+            u,
             {
-              size: o,
+              size: c,
               removable: !!t,
               onRemove: () => t == null ? void 0 : t(e.id),
               children: [
@@ -45,26 +45,26 @@ const b = C.forwardRef(
             },
             e.id
           )),
-          l > 0 && /* @__PURE__ */ n(
-            h,
+          d > 0 && /* @__PURE__ */ a(
+            u,
             {
-              size: o,
+              size: c,
               variant: "outline",
-              onClick: p,
+              onClick: x,
               children: [
                 "+",
-                l,
+                d,
                 "개"
               ]
             }
           ),
-          m && /* @__PURE__ */ i(
+          l && /* @__PURE__ */ i(
             "button",
             {
               type: "button",
-              onClick: m,
-              className: "text-xs text-muted-foreground hover:text-foreground transition-colors ml-2",
-              children: g
+              onClick: l,
+              className: "text-xs text-slate-700 dark:text-slate-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors ml-2 cursor-pointer",
+              children: b
             }
           )
         ]
@@ -72,8 +72,8 @@ const b = C.forwardRef(
     );
   }
 );
-b.displayName = "FilterChipSummary";
+f.displayName = "FilterChipSummary";
 export {
-  b as FilterChipSummary
+  f as FilterChipSummary
 };
 //# sourceMappingURL=filter-chip-summary.mjs.map
