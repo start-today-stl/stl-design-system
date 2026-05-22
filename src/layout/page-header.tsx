@@ -82,7 +82,11 @@ const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>(
             onBookmark={onBookmark}
             className="flex-shrink-0"
           />
-          {tabs && <div className="flex-1 min-w-0 ml-2">{tabs}</div>}
+          {tabs && (
+            <div className="flex-1 min-w-0 ml-2 overflow-x-auto scrollbar-hide">
+              {tabs}
+            </div>
+          )}
         </div>
       </>
     )
