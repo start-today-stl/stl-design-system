@@ -138,6 +138,46 @@ export const InternalTabs: Story = {
   ),
 }
 
+/** 탭 많음 + 좁은 화면 (가로 스크롤 확인) */
+export const ManyTabsNarrow: Story = {
+  args: {
+    title: "관리 페이지",
+    subtitle: "Management",
+  },
+  render: (args) => (
+    <div className="w-[600px] border border-dashed border-slate-300 p-2 resize-x overflow-auto">
+      <p className="mb-2 text-xs text-slate-500">
+        컨테이너 너비를 줄이면 탭이 가로 스크롤됩니다 (트랙패드 좌우, Shift+휠).
+      </p>
+      <PageHeader
+        {...args}
+        tabs={
+          <Tabs defaultValue="tab1" className="w-full">
+            <TabsList align="end">
+              <TabsTrigger value="tab1">상품 관리</TabsTrigger>
+              <TabsTrigger value="tab2">주문 관리</TabsTrigger>
+              <TabsTrigger value="tab3">배송 관리</TabsTrigger>
+              <TabsTrigger value="tab4">재고 관리</TabsTrigger>
+              <TabsTrigger value="tab5">고객 관리</TabsTrigger>
+              <TabsTrigger value="tab6">정산 관리</TabsTrigger>
+              <TabsTrigger value="tab7">통계 분석</TabsTrigger>
+              <TabsTrigger value="tab8">설정</TabsTrigger>
+            </TabsList>
+            <TabsContent value="tab1" className="hidden" />
+            <TabsContent value="tab2" className="hidden" />
+            <TabsContent value="tab3" className="hidden" />
+            <TabsContent value="tab4" className="hidden" />
+            <TabsContent value="tab5" className="hidden" />
+            <TabsContent value="tab6" className="hidden" />
+            <TabsContent value="tab7" className="hidden" />
+            <TabsContent value="tab8" className="hidden" />
+          </Tabs>
+        }
+      />
+    </div>
+  ),
+}
+
 /** 스크롤 시 상단 고정 (Sticky) */
 export const Sticky: Story = {
   args: {
