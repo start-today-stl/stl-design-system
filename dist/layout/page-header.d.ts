@@ -5,6 +5,7 @@ import { PageTitleProps } from './page-title';
  * @description
  * PageTitle과 Tabs를 조합한 페이지 헤더 컴포넌트입니다.
  * 탭이 없는 경우 PageTitle만 표시됩니다.
+ * 탭이 많아 영역을 넘으면 좌/우 화살표 버튼으로 가로 스크롤 가능합니다.
  *
  * @example
  * // 탭 없이 사용
