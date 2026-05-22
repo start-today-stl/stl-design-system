@@ -187,17 +187,6 @@
   }
 }
 
-@layer utilities {
-  /* 스크롤바 숨기기 */
-  .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
-}
-
 /* ========================================
    Scrollbar Styling
    ======================================== */
@@ -230,6 +219,15 @@
 .dark *,
 .dark {
   scrollbar-color: var(--color-slate-600) transparent;
+}
+
+/* 스크롤바 숨기기 (unlayered, 위의 universal 스타일보다 뒤에 위치하여 cascade 우선) */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }
 
 .dark ::-webkit-scrollbar-thumb {
