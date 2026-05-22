@@ -83,8 +83,8 @@ const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>(
             className="flex-shrink-0"
           />
           {tabs && (
-            <div className="flex-1 min-w-0 ml-2 overflow-x-auto scrollbar-hide">
-              {tabs}
+            <div className="flex flex-1 min-w-0 ml-2 justify-end overflow-x-auto scrollbar-hide">
+              <div className="shrink-0">{tabs}</div>
             </div>
           )}
         </div>
