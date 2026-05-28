@@ -24,7 +24,6 @@ import {
   TableHeader,
   TableRow,
   TableSortableHead,
-  type SortDirection,
 } from "@/components/table/table"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -39,6 +38,8 @@ import { useRowGrouping } from "./data-table/hooks/use-row-grouping"
 import { useColumnReorder } from "./data-table/hooks/use-column-reorder"
 import { useRowReorder } from "./data-table/hooks/use-row-reorder"
 import { useCellEditing } from "./data-table/hooks/use-cell-editing"
+import { useSort } from "./data-table/hooks/use-sort"
+import { getAlignClass as getAlignClassUtil } from "./data-table/utils"
 import {
   DRAG_HANDLE_WIDTH,
   CHECKBOX_WIDTH,
@@ -288,82 +289,16 @@ function DataTable<T extends { id: string | number }>({
     }
   }, [selectedIds, onSelectionChange])
 
-  // sortState 정규화 (유효한 항목만)
-  const sortStateArray: SortState<T>[] = React.useMemo(() => {
-    if (!sortState) return []
-    if (!Array.isArray(sortState)) {
-      // 구 API(단일 객체) 호환: dev 환경에서만 경고
-      if (shouldWarn) {
-        console.warn(
-          "[DataTable] sortState는 배열(SortState<T>[])이어야 합니다. " +
-          "마이그레이션 가이드: docs/MIGRATION-DATATABLE-SORT.md"
-        )
-      }
-      const legacy = sortState as SortState<T>
-      return legacy.column && legacy.direction ? [legacy] : []
-    }
-    return sortState.filter((s) => s.column && s.direction)
-  }, [sortState, shouldWarn])
+  // 정렬 hook (sortStateArray, handleSort, getSortDirection, getSortPriority)
+  const { handleSort, getSortDirection, getSortPriority } = useSort<T>({
+    sortState,
+    onSortChange,
+    multiSort,
+    shouldWarn,
+  })
 
-  const handleSort = (column: keyof T) => {
-    if (!onSortChange) return
-
-    const existing = sortStateArray.find((s) => s.column === column)
-
-    if (multiSort) {
-      // 다중 정렬 모드: 클릭으로 정렬 추가/순환
-      let newArr: SortState<T>[]
-      if (!existing) {
-        newArr = [...sortStateArray, { column, direction: "asc" }]
-      } else if (existing.direction === "asc") {
-        newArr = sortStateArray.map((s) =>
-          s.column === column ? { column, direction: "desc" as SortDirection } : s
-        )
-      } else {
-        // desc → 해당 컬럼만 제거
-        newArr = sortStateArray.filter((s) => s.column !== column)
-      }
-      onSortChange(newArr)
-    } else {
-      // 단일 정렬 모드: 그 컬럼만 정렬, asc→desc→해제 순환
-      let next: SortState<T>[]
-      if (existing) {
-        if (existing.direction === "asc") {
-          next = [{ column, direction: "desc" }]
-        } else if (existing.direction === "desc") {
-          next = []
-        } else {
-          next = [{ column, direction: "asc" }]
-        }
-      } else {
-        next = [{ column, direction: "asc" }]
-      }
-      onSortChange(next)
-    }
-  }
-
-  const getSortDirection = (column: keyof T): SortDirection => {
-    const found = sortStateArray.find((s) => s.column === column)
-    return found?.direction ?? null
-  }
-
-  // 다중 정렬 시 우선순위 번호 (1부터 시작, 단일 정렬이거나 정렬 없으면 undefined)
-  const getSortPriority = (column: keyof T): number | undefined => {
-    if (!multiSort || sortStateArray.length <= 1) return undefined
-    const idx = sortStateArray.findIndex((s) => s.column === column)
-    return idx === -1 ? undefined : idx + 1
-  }
-
-  const getAlignClass = React.useCallback((align?: "left" | "center" | "right") => {
-    switch (align) {
-      case "center":
-        return "text-center"
-      case "right":
-        return "text-right"
-      default:
-        return "text-left"
-    }
-  }, [])
+  // 컬럼 정렬 클래스 (utils의 순수 함수를 직접 참조; useCallback 불필요)
+  const getAlignClass = getAlignClassUtil
 
   const isRowExpandable = React.useCallback((row: T) => {
     if (!expandable) return false
@@ -632,6 +567,79 @@ function DataTable<T extends { id: string | number }>({
     }
     return items
   }, [headerGroups, columnsToRender])
+
+  // DataTableBodyRow에 전달할 테이블 레벨 컨텍스트
+  // useMemo로 안정화: deps가 변경되지 않으면 ref 동일 → React.memo가 모든 행 skip 가능
+  const rowCtx = React.useMemo(
+    () => ({
+      columnsToRender,
+      rowReorderable,
+      selectable,
+      expandable: !!expandable,
+      showRowDelete,
+      hasLeftStickyColumns,
+      resizable,
+      rowActions,
+      rowGrouping,
+      middleRowSet,
+      dataLength: data.length,
+      getCheckboxHeaderLeftOffset,
+      getExpandHeaderLeftOffset,
+      getRowSpan,
+      isGroupCellHovered,
+      isGroupCellSelected,
+      getStickyStyles,
+      getColumnWidth,
+      getAlignClass,
+      handleSelectRow,
+      toggleRowExpanded,
+      startEditing,
+      completeEditing,
+      cancelEditing,
+      setEditValue: setEditValue as (v: T[keyof T] | null) => void,
+      setEditingCell,
+      editValueRef: editValueRef as React.MutableRefObject<unknown>,
+      editingCellRef,
+      onCellChange,
+      onRowClick,
+      rowClassName,
+      setHoveredRowIndex,
+    }),
+    [
+      columnsToRender,
+      rowReorderable,
+      selectable,
+      expandable,
+      showRowDelete,
+      hasLeftStickyColumns,
+      resizable,
+      rowActions,
+      rowGrouping,
+      middleRowSet,
+      data.length,
+      getCheckboxHeaderLeftOffset,
+      getExpandHeaderLeftOffset,
+      getRowSpan,
+      isGroupCellHovered,
+      isGroupCellSelected,
+      getStickyStyles,
+      getColumnWidth,
+      getAlignClass,
+      handleSelectRow,
+      toggleRowExpanded,
+      startEditing,
+      completeEditing,
+      cancelEditing,
+      setEditValue,
+      setEditingCell,
+      editValueRef,
+      editingCellRef,
+      onCellChange,
+      onRowClick,
+      rowClassName,
+      setHoveredRowIndex,
+    ],
+  )
 
   const tableContent = (
     <Table className={className} maxHeight={maxHeight} wrapperRef={scrollContainerRef}>
@@ -1093,43 +1101,12 @@ function DataTable<T extends { id: string | number }>({
                     <DataTableBodyRow<T>
                       row={row}
                       rowIndex={rowIndex}
-                      dataLength={data.length}
                       isSelected={selectedIds.includes(row.id)}
                       canExpand={isRowExpandable(row)}
                       isExpanded={isExpanded}
                       editingCell={editingCell}
                       editValue={editValue}
-                      editValueRef={editValueRef as React.MutableRefObject<unknown>}
-                      editingCellRef={editingCellRef}
-                      columnsToRender={columnsToRender}
-                      rowReorderable={true}
-                      selectable={selectable}
-                      expandable={!!expandable}
-                      showRowDelete={showRowDelete}
-                      hasLeftStickyColumns={hasLeftStickyColumns}
-                      resizable={resizable}
-                      rowActions={rowActions}
-                      rowGrouping={rowGrouping}
-                      middleRowSet={middleRowSet}
-                      getCheckboxHeaderLeftOffset={getCheckboxHeaderLeftOffset}
-                      getExpandHeaderLeftOffset={getExpandHeaderLeftOffset}
-                      getRowSpan={getRowSpan}
-                      isGroupCellHovered={isGroupCellHovered}
-                      isGroupCellSelected={isGroupCellSelected}
-                      getStickyStyles={getStickyStyles}
-                      getColumnWidth={getColumnWidth}
-                      getAlignClass={getAlignClass}
-                      handleSelectRow={handleSelectRow}
-                      toggleRowExpanded={toggleRowExpanded}
-                      startEditing={startEditing}
-                      completeEditing={completeEditing}
-                      cancelEditing={cancelEditing}
-                      setEditValue={setEditValue as (v: T[keyof T] | null) => void}
-                      setEditingCell={setEditingCell}
-                      onCellChange={onCellChange}
-                      onRowClick={onRowClick}
-                      rowClassName={rowClassName}
-                      setHoveredRowIndex={setHoveredRowIndex}
+                      ctx={rowCtx}
                     />
                     {expandable && isExpanded && (
                       <TableRow className="bg-white dark:bg-slate-800/50 hover:bg-white dark:hover:bg-slate-800/50">
@@ -1164,43 +1141,12 @@ function DataTable<T extends { id: string | number }>({
                   <DataTableBodyRow<T>
                     row={row}
                     rowIndex={rowIndex}
-                    dataLength={data.length}
                     isSelected={selectedIds.includes(row.id)}
                     canExpand={isRowExpandable(row)}
                     isExpanded={isExpanded}
                     editingCell={editingCell}
                     editValue={editValue}
-                    editValueRef={editValueRef as React.MutableRefObject<unknown>}
-                    editingCellRef={editingCellRef}
-                    columnsToRender={columnsToRender}
-                    rowReorderable={false}
-                    selectable={selectable}
-                    expandable={!!expandable}
-                    showRowDelete={showRowDelete}
-                    hasLeftStickyColumns={hasLeftStickyColumns}
-                    resizable={resizable}
-                    rowActions={rowActions}
-                    rowGrouping={rowGrouping}
-                    middleRowSet={middleRowSet}
-                    getCheckboxHeaderLeftOffset={getCheckboxHeaderLeftOffset}
-                    getExpandHeaderLeftOffset={getExpandHeaderLeftOffset}
-                    getRowSpan={getRowSpan}
-                    isGroupCellHovered={isGroupCellHovered}
-                    isGroupCellSelected={isGroupCellSelected}
-                    getStickyStyles={getStickyStyles}
-                    getColumnWidth={getColumnWidth}
-                    getAlignClass={getAlignClass}
-                    handleSelectRow={handleSelectRow}
-                    toggleRowExpanded={toggleRowExpanded}
-                    startEditing={startEditing}
-                    completeEditing={completeEditing}
-                    cancelEditing={cancelEditing}
-                    setEditValue={setEditValue as (v: T[keyof T] | null) => void}
-                    setEditingCell={setEditingCell}
-                    onCellChange={onCellChange}
-                    onRowClick={onRowClick}
-                    rowClassName={rowClassName}
-                    setHoveredRowIndex={setHoveredRowIndex}
+                    ctx={rowCtx}
                   />
                   {expandable && isExpanded && (
                     <TableRow className="bg-white dark:bg-slate-800/50 hover:bg-white dark:hover:bg-slate-800/50">

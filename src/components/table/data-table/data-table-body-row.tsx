@@ -20,31 +20,13 @@ import {
   type StickyStyleResult,
 } from "./types"
 
-export interface DataTableBodyRowProps<T extends { id: string | number }> {
-  /** 현재 행 데이터 */
-  row: T
-  /** 행 인덱스 */
-  rowIndex: number
-  /** 데이터 길이 (그룹 셀 마지막 행 판정용) */
-  dataLength: number
-
-  // === 행 상태 ===
-  /** 이 행이 선택되었는지 */
-  isSelected: boolean
-  /** 이 행이 확장 가능한지 */
-  canExpand: boolean
-  /** 이 행이 확장되었는지 */
-  isExpanded: boolean
-  /** 이 행에서 편집 중인 셀 (null이면 편집 안 함) */
-  editingCell: EditingCell<T> | null
-  /** 편집 중인 값 */
-  editValue: unknown
-  /** 편집 값 ref (stale closure 방지) */
-  editValueRef: React.MutableRefObject<unknown>
-  /** 편집 중인 셀 ref (외부 클릭 감지용) */
-  editingCellRef: React.RefObject<HTMLTableCellElement | null>
-
-  // === 테이블 설정 ===
+/**
+ * 행 컴포넌트가 사용하는 테이블 레벨 컨텍스트.
+ * useMemo로 한 번에 안정화하여 React.memo 비교 비용을 줄이고
+ * 행 데이터/상태가 같으면 row가 re-render되지 않도록 함.
+ */
+export interface DataTableBodyRowContext<T extends { id: string | number }> {
+  // 테이블 설정
   columnsToRender: DataTableColumn<T>[]
   rowReorderable: boolean
   selectable: boolean
@@ -55,8 +37,9 @@ export interface DataTableBodyRowProps<T extends { id: string | number }> {
   rowActions: RowActionsConfig<T> | undefined
   rowGrouping: RowGroupConfig<T> | undefined
   middleRowSet: Set<number> | null
+  dataLength: number
 
-  // === 헬퍼 함수 (모두 안정된 ref - useCallback/useMemo) ===
+  // 헬퍼 함수 (모두 useCallback/useMemo로 안정화된 ref)
   getCheckboxHeaderLeftOffset: () => number
   getExpandHeaderLeftOffset: () => number
   getRowSpan: (rowIndex: number, columnKey: keyof T) => number | undefined
@@ -71,7 +54,7 @@ export interface DataTableBodyRowProps<T extends { id: string | number }> {
   getColumnWidth: (column: DataTableColumn<T>) => number | undefined
   getAlignClass: (align?: "left" | "center" | "right") => string
 
-  // === 콜백 ===
+  // 콜백 (모두 useCallback 안정화)
   handleSelectRow: (id: string | number) => void
   toggleRowExpanded: (id: string | number) => void
   startEditing: (rowId: string | number, columnKey: keyof T, value: T[keyof T]) => void
@@ -79,10 +62,31 @@ export interface DataTableBodyRowProps<T extends { id: string | number }> {
   cancelEditing: () => void
   setEditValue: (value: T[keyof T] | null) => void
   setEditingCell: (cell: EditingCell<T> | null) => void
+  editValueRef: React.MutableRefObject<unknown>
+  editingCellRef: React.RefObject<HTMLTableCellElement | null>
   onCellChange: ((rowId: string | number, columnKey: keyof T, value: T[keyof T]) => void) | undefined
   onRowClick: ((row: T) => void) | undefined
   rowClassName: ((row: T) => string) | undefined
   setHoveredRowIndex: (index: number | null) => void
+}
+
+export interface DataTableBodyRowProps<T extends { id: string | number }> {
+  /** 현재 행 데이터 */
+  row: T
+  /** 행 인덱스 */
+  rowIndex: number
+
+  // 행별 상태 (이게 바뀌면 row만 re-render)
+  isSelected: boolean
+  canExpand: boolean
+  isExpanded: boolean
+  /** 이 행에서 편집 중인 셀 (다른 행은 null) */
+  editingCell: EditingCell<T> | null
+  /** 편집 중인 값 (편집 중인 행에서만 의미) */
+  editValue: unknown
+
+  /** 테이블 레벨 컨텍스트 (useMemo로 안정화) */
+  ctx: DataTableBodyRowContext<T>
 }
 
 function DataTableBodyRowImpl<T extends { id: string | number }>(
@@ -91,14 +95,15 @@ function DataTableBodyRowImpl<T extends { id: string | number }>(
   const {
     row,
     rowIndex,
-    dataLength,
     isSelected,
     canExpand,
     isExpanded,
     editingCell,
     editValue,
-    editValueRef,
-    editingCellRef,
+    ctx,
+  } = props
+
+  const {
     columnsToRender,
     rowReorderable,
     selectable,
@@ -109,6 +114,7 @@ function DataTableBodyRowImpl<T extends { id: string | number }>(
     rowActions,
     rowGrouping,
     middleRowSet,
+    dataLength,
     getCheckboxHeaderLeftOffset,
     getExpandHeaderLeftOffset,
     getRowSpan,
@@ -124,11 +130,13 @@ function DataTableBodyRowImpl<T extends { id: string | number }>(
     cancelEditing,
     setEditValue,
     setEditingCell,
+    editValueRef,
+    editingCellRef,
     onCellChange,
     onRowClick,
     rowClassName,
     setHoveredRowIndex,
-  } = props
+  } = ctx
 
   const isEditingCell = (rowId: string | number, columnKey: keyof T) =>
     editingCell?.rowId === rowId && editingCell?.columnKey === columnKey
@@ -328,18 +336,51 @@ function DataTableBodyRowImpl<T extends { id: string | number }>(
 }
 
 /**
- * 데이터 행 컴포넌트 (React.memo로 메모이제이션됨)
+ * Custom equality 함수
  *
- * 행 데이터(row), 선택/확장 상태, 편집 상태 등이 변경되지 않으면
- * 다른 행이나 테이블 전체가 re-render되어도 이 행은 스킵됩니다.
- *
- * 효과적인 메모이제이션을 위해 다음 조건 필요:
- * - row 객체 reference 안정 (불변 업데이트)
- * - 콜백 함수들 안정 (parent useCallback)
- * - 헬퍼 함수들 안정 (useCallback/useMemo)
+ * row 데이터 reference + 행 상태 + ctx reference만 비교.
+ * ctx가 useMemo로 안정되어 있으면 ref 비교만으로 결정 가능 (O(1)).
  */
-export const DataTableBodyRow = React.memo(DataTableBodyRowImpl) as <
-  T extends { id: string | number },
->(
+function arePropsEqual<T extends { id: string | number }>(
+  prev: DataTableBodyRowProps<T>,
+  next: DataTableBodyRowProps<T>,
+): boolean {
+  // 가장 자주 바뀌는 것부터 체크 (조기 종료 최적화)
+  if (prev.row !== next.row) return false
+  if (prev.isSelected !== next.isSelected) return false
+  if (prev.isExpanded !== next.isExpanded) return false
+  if (prev.canExpand !== next.canExpand) return false
+  if (prev.rowIndex !== next.rowIndex) return false
+  // 편집 상태: 이 행이 편집 중일 때만 의미 (다른 행 편집 시작/종료는 영향 없도록)
+  const prevEditingThisRow = prev.editingCell?.rowId === prev.row.id
+  const nextEditingThisRow = next.editingCell?.rowId === next.row.id
+  if (prevEditingThisRow !== nextEditingThisRow) return false
+  if (prevEditingThisRow) {
+    // 이 행이 편집 중이면 editValue도 비교
+    if (prev.editValue !== next.editValue) return false
+    if (prev.editingCell?.columnKey !== next.editingCell?.columnKey) return false
+    if (prev.editingCell?.error !== next.editingCell?.error) return false
+  }
+  // ctx는 useMemo로 안정화되어 있으므로 ref 비교만으로 충분
+  if (prev.ctx !== next.ctx) return false
+  return true
+}
+
+/**
+ * 데이터 행 컴포넌트 (React.memo + custom equality)
+ *
+ * 다음 조건에서 re-render 스킵:
+ * - row reference 동일 (불변 업데이트 시 변경 없는 행)
+ * - isSelected, isExpanded, canExpand 동일
+ * - 이 행이 편집 중이 아니고 다른 행이 편집 중이면 영향 없음
+ * - ctx reference 동일 (useMemo로 안정화 필요)
+ */
+export const DataTableBodyRow = React.memo(
+  DataTableBodyRowImpl,
+  arePropsEqual as unknown as (
+    prev: Readonly<DataTableBodyRowProps<{ id: string | number }>>,
+    next: Readonly<DataTableBodyRowProps<{ id: string | number }>>,
+  ) => boolean,
+) as <T extends { id: string | number }>(
   props: DataTableBodyRowProps<T>,
 ) => React.ReactElement
