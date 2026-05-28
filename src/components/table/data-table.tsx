@@ -30,177 +30,38 @@ import {
 import { Checkbox } from "@/components/ui/checkbox"
 import { Skeleton } from "@/components/ui/skeleton"
 import { SplashScreen } from "@/components/ui/splash-screen"
-import { RightIcon, DownIcon, WriteIcon, RowAddIcon, RowDeleteIcon } from "@/icons"
+import { RightIcon, DownIcon, RowAddIcon } from "@/icons"
 
-import { DefaultEditComponent } from "./data-table/default-edit-component"
 import { SortableHeaderCell } from "./data-table/sortable-header-cell"
-import { SortableRow } from "./data-table/sortable-row"
-import { DragHandleCell } from "./data-table/drag-handle-cell"
-import type { DragHandleProps } from "./data-table/types"
+import { DataTableBodyRow } from "./data-table/data-table-body-row"
+import {
+  DRAG_HANDLE_WIDTH,
+  CHECKBOX_WIDTH,
+  EXPAND_WIDTH,
+  ROW_ACTIONS_WIDTH,
+  type EditComponentProps,
+  type ValidationResult,
+  type DataTableColumn,
+  type HeaderGroup,
+  type RowGroupConfig,
+  type SortState,
+  type ExpandableConfig,
+  type EditingCell,
+  type RowActionsConfig,
+  type DataTableProps,
+} from "./data-table/types"
 
-/** 편집 컴포넌트 Props */
-export interface EditComponentProps<T, K extends keyof T = keyof T> {
-  /** 현재 값 */
-  value: T[K]
-  /** 값 변경 핸들러 */
-  onChange: (value: T[K]) => void
-  /** 편집 완료 핸들러 (Enter 시 호출 - 검증 후 저장) */
-  onComplete: () => void
-  /** 편집 취소 핸들러 (Escape 또는 blur 시 호출 - 원래 값으로 복원) */
-  onCancel: () => void
-  /** 해당 행 데이터 */
-  row: T
-  /** 검증 에러 메시지 */
-  error?: string
-}
-
-/** 검증 결과 타입 */
-export type ValidationResult = true | string
-
-/** 컬럼 정의 */
-export interface DataTableColumn<T> {
-  /** 데이터 접근 키 */
-  accessorKey: keyof T
-  /** 헤더 텍스트 */
-  header: React.ReactNode
-  /** 정렬 가능 여부 */
-  sortable?: boolean
-  /** 컬럼 고정 너비 (sticky 컬럼에 권장) */
-  width?: string | number
-  /** 컬럼 최소 너비 (width 미설정 시 남은 공간을 채움) */
-  minWidth?: string | number
-  /** 셀 정렬 */
-  align?: "left" | "center" | "right"
-  /** 커스텀 셀 렌더러 */
-  cell?: (value: T[keyof T], row: T) => React.ReactNode
-  /** 편집 가능 여부 */
-  editable?: boolean
-  /** 커스텀 편집 컴포넌트 (기본: Input) */
-  editComponent?: (props: EditComponentProps<T>) => React.ReactNode
-  /** 값 검증 함수 (true: 통과, string: 에러 메시지) */
-  validate?: (value: T[keyof T], row: T) => ValidationResult
-  /** 고정 컬럼 (left: 왼쪽 고정, right: 오른쪽 고정) */
-  sticky?: "left" | "right"
-}
-
-/** 헤더 그룹 정의 (다중 레벨 헤더) */
-export interface HeaderGroup<T> {
-  /** 그룹 헤더 텍스트 */
-  header: React.ReactNode
-  /** 이 그룹에 포함되는 컬럼 키 배열 */
-  columns: (keyof T)[]
-  /** 정렬 */
-  align?: "left" | "center" | "right"
-}
-
-/** 로우 그룹핑 설정 */
-export interface RowGroupConfig<T> {
-  /** 그룹핑할 컬럼 키 (해당 컬럼 값이 같은 행들은 셀이 병합됨) */
-  groupBy: keyof T | (keyof T)[]
-  /** 그룹핑 적용 컬럼들 (미지정 시 groupBy 컬럼만 병합) */
-  mergeColumns?: (keyof T)[]
-}
-
-/** 정렬 상태 */
-export interface SortState<T> {
-  column: keyof T | null
-  direction: SortDirection
-}
-
-/** 확장 가능 행 설정 */
-export interface ExpandableConfig<T> {
-  /** 확장 영역 렌더링 함수 */
-  expandedRowRender: (row: T) => React.ReactNode
-  /** 행이 확장 가능한지 여부를 결정하는 함수 (기본: 모든 행 확장 가능) */
-  rowExpandable?: (row: T) => boolean
-  /** 기본 확장된 행 ID 배열 */
-  defaultExpandedRowIds?: (string | number)[]
-  /** 확장된 행 ID 배열 (제어 컴포넌트) */
-  expandedRowIds?: (string | number)[]
-  /** 확장 상태 변경 핸들러 */
-  onExpandedChange?: (expandedRowIds: (string | number)[]) => void
-  /** 헤더에 전체 펼치기/접기 버튼 표시 여부 (기본: true) */
-  showExpandAll?: boolean
-}
-
-/** 편집 중인 셀 상태 */
-interface EditingCell<T> {
-  rowId: string | number
-  columnKey: keyof T
-  error?: string
-}
-
-/** 행 추가/삭제 액션 설정 */
-export interface RowActionsConfig<T> {
-  /** 행 삭제 핸들러 (각 행에 삭제 아이콘 표시) */
-  onRowDelete?: (row: T) => void
-  /** 행 추가 핸들러 (테이블 하단에 추가 행 표시) */
-  onRowAdd?: () => void
-  /** 삭제 아이콘 표시 여부 (기본: onRowDelete가 있으면 true) */
-  showDelete?: boolean
-  /** 추가 행 표시 여부 (기본: onRowAdd가 있으면 true) */
-  showAdd?: boolean
-}
-
-export interface DataTableProps<T extends { id: string | number }> {
-  /** 컬럼 정의 */
-  columns: DataTableColumn<T>[]
-  /** 데이터 배열 */
-  data: T[]
-  /** 선택 기능 활성화 */
-  selectable?: boolean
-  /** 선택된 행 ID 배열 */
-  selectedIds?: (string | number)[]
-  /** 선택 변경 핸들러 */
-  onSelectionChange?: (selectedIds: (string | number)[]) => void
-  /** 행 클릭 핸들러 */
-  onRowClick?: (row: T) => void
-  /** 셀 값 변경 핸들러 */
-  onCellChange?: (rowId: string | number, columnKey: keyof T, value: T[keyof T]) => void
-  /** 확장 가능 행 설정 */
-  expandable?: ExpandableConfig<T>
-  /** 빈 데이터 메시지 */
-  emptyMessage?: React.ReactNode
-  /** 추가 className */
-  className?: string
-  /** 행 className 커스터마이즈 */
-  rowClassName?: (row: T) => string
-  /** 테이블 본문 최대 높이 (초과 시 내부 스크롤) */
-  maxHeight?: number | string
-  /** 컬럼 리사이징 활성화 */
-  resizable?: boolean
-  /** 컬럼 너비 상태 (제어 컴포넌트) */
-  columnWidths?: Record<string, number>
-  /** 컬럼 너비 변경 핸들러 */
-  onColumnResize?: (columnKey: keyof T, width: number) => void
-  /** 컬럼 순서 변경 활성화 */
-  columnReorderable?: boolean
-  /** 컬럼 순서 (accessorKey 배열) */
-  columnOrder?: (keyof T)[]
-  /** 컬럼 순서 변경 핸들러 */
-  onColumnReorder?: (newOrder: (keyof T)[]) => void
-  /** 로우 순서 변경 활성화 */
-  rowReorderable?: boolean
-  /** 로우 순서 변경 핸들러 */
-  onRowReorder?: (newData: T[]) => void
-  /** 로딩 상태 */
-  loading?: boolean
-  /** 로딩 모드 (splash: SplashScreen, skeleton: 컬럼 기반 스켈레톤 자동 생성) */
-  loadingMode?: "splash" | "skeleton"
-  /** 커스텀 로딩 콘텐츠 (loadingMode보다 우선 적용) */
-  loadingContent?: React.ReactNode
-  /** 헤더 그룹 정의 (다중 레벨 헤더) */
-  headerGroups?: HeaderGroup<T>[]
-  /** 로우 그룹핑 설정 (셀 병합) */
-  rowGrouping?: RowGroupConfig<T>
-  /** 행 추가/삭제 액션 설정 */
-  rowActions?: RowActionsConfig<T>
-  /** 정렬 상태 (항상 배열, 단일 정렬도 1-원소 배열로) */
-  sortState?: SortState<T>[]
-  /** 정렬 변경 핸들러 */
-  onSortChange?: (sortState: SortState<T>[]) => void
-  /** 다중 정렬 활성화 (클릭 시 정렬 추가/순환). 기본 false=단일 정렬 */
-  multiSort?: boolean
+// 기존 export 호환성 유지 (외부 사용처에서 import)
+export type {
+  EditComponentProps,
+  ValidationResult,
+  DataTableColumn,
+  HeaderGroup,
+  RowGroupConfig,
+  SortState,
+  ExpandableConfig,
+  RowActionsConfig,
+  DataTableProps,
 }
 
 function DataTable<T extends { id: string | number }>({
@@ -476,13 +337,13 @@ function DataTable<T extends { id: string | number }>({
     }
   }
 
-  const handleSelectRow = (id: string | number) => {
+  const handleSelectRow = React.useCallback((id: string | number) => {
     if (selectedIds.includes(id)) {
       onSelectionChange?.(selectedIds.filter((i) => i !== id))
     } else {
       onSelectionChange?.([...selectedIds, id])
     }
-  }
+  }, [selectedIds, onSelectionChange])
 
   // sortState 정규화 (유효한 항목만)
   const sortStateArray: SortState<T>[] = React.useMemo(() => {
@@ -539,7 +400,7 @@ function DataTable<T extends { id: string | number }>({
     return idx === -1 ? undefined : idx + 1
   }
 
-  const getAlignClass = (align?: "left" | "center" | "right") => {
+  const getAlignClass = React.useCallback((align?: "left" | "center" | "right") => {
     switch (align) {
       case "center":
         return "text-center"
@@ -548,15 +409,15 @@ function DataTable<T extends { id: string | number }>({
       default:
         return "text-left"
     }
-  }
+  }, [])
 
-  const startEditing = (rowId: string | number, columnKey: keyof T, currentValue: T[keyof T]) => {
+  const startEditing = React.useCallback((rowId: string | number, columnKey: keyof T, currentValue: T[keyof T]) => {
     setEditingCell({ rowId, columnKey })
     setEditValue(currentValue)
     editValueRef.current = currentValue
-  }
+  }, [])
 
-  const completeEditing = (column: DataTableColumn<T>, row: T) => {
+  const completeEditing = React.useCallback((column: DataTableColumn<T>, row: T) => {
     // stale closure 방지를 위해 ref에서 읽음
     const currentValue = editValueRef.current
     if (!editingCell || currentValue === null) {
@@ -580,7 +441,7 @@ function DataTable<T extends { id: string | number }>({
     setEditingCell(null)
     setEditValue(null)
     editValueRef.current = null
-  }
+  }, [editingCell, onCellChange])
 
   // editingCell에서 column/row를 찾아서 completeEditing 호출
   const completeEditingFromState = React.useCallback(() => {
@@ -624,27 +485,24 @@ function DataTable<T extends { id: string | number }>({
     return () => document.removeEventListener("mousedown", handleClickOutside)
   }, [editingCell, completeEditingFromState])
 
-  const isEditing = (rowId: string | number, columnKey: keyof T) => {
-    return editingCell?.rowId === rowId && editingCell?.columnKey === columnKey
-  }
 
-  const isRowExpandable = (row: T) => {
+  const isRowExpandable = React.useCallback((row: T) => {
     if (!expandable) return false
     if (expandable.rowExpandable) return expandable.rowExpandable(row)
     return true
-  }
+  }, [expandable])
 
-  const isRowExpanded = (rowId: string | number) => {
+  const isRowExpanded = React.useCallback((rowId: string | number) => {
     return expandedRowIds.includes(rowId)
-  }
+  }, [expandedRowIds])
 
-  const toggleRowExpanded = (rowId: string | number) => {
-    if (isRowExpanded(rowId)) {
+  const toggleRowExpanded = React.useCallback((rowId: string | number) => {
+    if (expandedRowIds.includes(rowId)) {
       setExpandedRowIds(expandedRowIds.filter((id) => id !== rowId))
     } else {
       setExpandedRowIds([...expandedRowIds, rowId])
     }
-  }
+  }, [expandedRowIds, setExpandedRowIds])
 
   // 전체 펼침/접힘 관련
   const expandableRowIds = React.useMemo(() => {
@@ -668,7 +526,6 @@ function DataTable<T extends { id: string | number }>({
   // rowActions 설정
   const showRowDelete = rowActions?.showDelete ?? !!rowActions?.onRowDelete
   const showRowAdd = rowActions?.showAdd ?? !!rowActions?.onRowAdd
-  const ROW_ACTIONS_WIDTH = 40 // w-10 = 40px
 
   const totalColumns = columns.length + (selectable ? 1 : 0) + (expandable ? 1 : 0) + (rowReorderable ? 1 : 0) + (showRowDelete ? 1 : 0)
 
@@ -737,34 +594,28 @@ function DataTable<T extends { id: string | number }>({
   }, [data, rowGrouping])
 
   // 특정 셀의 rowSpan 가져오기
-  const getRowSpan = (rowIndex: number, columnKey: keyof T): number | undefined => {
+  const getRowSpan = React.useCallback((rowIndex: number, columnKey: keyof T): number | undefined => {
     if (!rowSpanMap) return undefined
     const rowMap = rowSpanMap.get(rowIndex)
     if (!rowMap) return undefined
-    const span = rowMap.get(columnKey)
-    return span
-  }
+    return rowMap.get(columnKey)
+  }, [rowSpanMap])
 
   // 그룹 셀이 속한 행 범위 내에 호버된 행이 있는지 확인
-  const isGroupCellHovered = (rowIndex: number, rowSpan: number): boolean => {
+  const isGroupCellHovered = React.useCallback((rowIndex: number, rowSpan: number): boolean => {
     if (hoveredRowIndex === null) return false
     return hoveredRowIndex >= rowIndex && hoveredRowIndex < rowIndex + rowSpan
-  }
+  }, [hoveredRowIndex])
 
   // 그룹 셀이 속한 행 범위 내에 선택된 행이 있는지 확인
-  const isGroupCellSelected = (rowIndex: number, rowSpan: number): boolean => {
+  const isGroupCellSelected = React.useCallback((rowIndex: number, rowSpan: number): boolean => {
     for (let i = rowIndex; i < rowIndex + rowSpan; i++) {
       if (i < data.length && selectedIds.includes(data[i].id)) {
         return true
       }
     }
     return false
-  }
-
-  // 체크박스/확장/드래그 핸들 컬럼 너비 상수
-  const CHECKBOX_WIDTH = 40 // w-10 = 40px
-  const EXPAND_WIDTH = 40 // w-10 = 40px
-  const DRAG_HANDLE_WIDTH = 32 // w-8 = 32px
+  }, [data, selectedIds])
 
   // Sticky 컬럼 위치 계산
   const getStickyStyles = React.useMemo(() => {
@@ -1020,16 +871,19 @@ function DataTable<T extends { id: string | number }>({
   const rowIds = data.map(row => `row-${row.id}`)
 
   // 드래그 핸들 헤더 sticky left 위치 계산
-  const getDragHandleHeaderLeftOffset = () => 0
+  const getDragHandleHeaderLeftOffset = React.useCallback(() => 0, [])
   // 체크박스 헤더 sticky left 위치 계산
-  const getCheckboxHeaderLeftOffset = () => rowReorderable ? DRAG_HANDLE_WIDTH : 0
+  const getCheckboxHeaderLeftOffset = React.useCallback(
+    () => rowReorderable ? DRAG_HANDLE_WIDTH : 0,
+    [rowReorderable]
+  )
   // 확장 버튼 헤더 sticky left 위치 계산
-  const getExpandHeaderLeftOffset = () => {
+  const getExpandHeaderLeftOffset = React.useCallback(() => {
     let offset = 0
     if (rowReorderable) offset += DRAG_HANDLE_WIDTH
     if (selectable) offset += CHECKBOX_WIDTH
     return offset
-  }
+  }, [rowReorderable, selectable])
 
   // 헤더 그룹의 colSpan 계산 (실제 렌더링되는 그룹 컬럼 전체)
   const getHeaderGroupColSpan = React.useCallback(
@@ -1588,243 +1442,125 @@ function DataTable<T extends { id: string | number }>({
               </div>
             </TableCell>
           </TableRow>
-        ) : rowReorderable ? (
-          <SortableContext items={rowIds} strategy={verticalListSortingStrategy}>
-            {data.map((row, rowIndex) => {
-              const isSelected = selectedIds.includes(row.id)
-              const canExpand = isRowExpandable(row)
-              const isExpanded = isRowExpanded(row.id)
-              const rowSortableId = `row-${row.id}`
-              // 로우 내부 셀들 렌더링 함수
-              const renderRowCells = (dragHandleProps?: DragHandleProps) => (
-                <>
-                  <DragHandleCell
-                    isSelected={isSelected}
-                    hasLeftStickyColumns={hasLeftStickyColumns}
-                    dragHandleProps={dragHandleProps}
-                  />
-
-                  {selectable && (
-                    <TableCell
-                      onClick={(e) => e.stopPropagation()}
-                      className={cn(
-                        "!p-0",
-                        hasLeftStickyColumns && (isSelected ? "transition-colors bg-blue-50 dark:bg-blue-900" : "transition-colors bg-slate-100 dark:bg-slate-800")
-                      )}
-                      style={hasLeftStickyColumns ? {
-                        position: "sticky",
-                        left: getCheckboxHeaderLeftOffset(),
-                        zIndex: 10,
-                        width: `${CHECKBOX_WIDTH}px`,
-                        minWidth: `${CHECKBOX_WIDTH}px`,
-                        maxWidth: `${CHECKBOX_WIDTH}px`,
-                      } : {
-                        width: `${CHECKBOX_WIDTH}px`,
-                        minWidth: `${CHECKBOX_WIDTH}px`,
-                        maxWidth: `${CHECKBOX_WIDTH}px`,
-                      }}
-                    >
-                      <div className="flex items-center justify-center h-9">
-                        <Checkbox
-                          checked={isSelected}
-                          onCheckedChange={() => handleSelectRow(row.id)}
-                          aria-label={`행 ${row.id} 선택`}
-                        />
-                      </div>
-                    </TableCell>
-                  )}
-
-                  {expandable && (
-                    <TableCell
-                      className={cn(
-                        "p-0",
-                        hasLeftStickyColumns && (isSelected ? "transition-colors bg-blue-50 dark:bg-blue-900" : "transition-colors bg-slate-100 dark:bg-slate-800")
-                      )}
-                      style={hasLeftStickyColumns ? {
-                        position: "sticky",
-                        left: getExpandHeaderLeftOffset(),
-                        zIndex: 10,
-                        width: `${EXPAND_WIDTH}px`,
-                        minWidth: `${EXPAND_WIDTH}px`,
-                        maxWidth: `${EXPAND_WIDTH}px`,
-                      } : {
-                        width: `${EXPAND_WIDTH}px`,
-                        minWidth: `${EXPAND_WIDTH}px`,
-                        maxWidth: `${EXPAND_WIDTH}px`,
-                      }}
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      {canExpand && (
-                        <button
-                          type="button"
-                          onClick={() => toggleRowExpanded(row.id)}
-                          className="flex h-9 w-10 items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
-                          aria-label={isExpanded ? "행 접기" : "행 펼치기"}
-                          aria-expanded={isExpanded}
-                        >
-                          {isExpanded ? (
-                            <DownIcon size={24} />
-                          ) : (
-                            <RightIcon size={24} />
-                          )}
-                        </button>
-                      )}
-                    </TableCell>
-                  )}
-
-                  {/* 행 삭제 액션 셀 (rowReorderable) */}
-                  {showRowDelete && (
-                    <TableCell
-                      className="!p-0"
-                      style={{
-                        width: `${ROW_ACTIONS_WIDTH}px`,
-                        minWidth: `${ROW_ACTIONS_WIDTH}px`,
-                        maxWidth: `${ROW_ACTIONS_WIDTH}px`,
-                      }}
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <button
-                        type="button"
-                        onClick={() => rowActions?.onRowDelete?.(row)}
-                        className="flex h-9 w-10 items-center justify-center transition-opacity hover:opacity-70"
-                        aria-label="행 삭제"
-                      >
-                        <RowDeleteIcon size={20} />
-                      </button>
-                    </TableCell>
-                  )}
-
-                  {columnsToRender.map((column) => {
-                    // 로우 그룹핑: rowSpan 확인
-                    const rowSpan = getRowSpan(rowIndex, column.accessorKey)
-                    // rowSpan이 0이면 이 셀은 이전 행에서 병합되었으므로 렌더링하지 않음
-                    if (rowSpan === 0) return null
-
-                    const value = row[column.accessorKey]
-                    const cellIsEditing = isEditing(row.id, column.accessorKey)
-                    // rowSpan이 있는 셀은 세로 중앙 정렬
-                    const hasRowSpan = rowSpan !== undefined && rowSpan > 1
-                    // 그룹 셀의 hover/selected 상태 (범위 내 행 중 하나라도 hover/selected면 true)
-                    const groupCellHovered = hasRowSpan && isGroupCellHovered(rowIndex, rowSpan)
-                    const groupCellSelected = hasRowSpan && isGroupCellSelected(rowIndex, rowSpan)
-                    // sticky 스타일 (그룹 셀 선택 상태 전달)
-                    const stickyData = getStickyStyles(column, false, isSelected, hasRowSpan ? groupCellSelected : undefined)
-
-                    const toPx = (v: string | number) => typeof v === "number" ? `${v}px` : v
-                    const bodyCellStyle: React.CSSProperties = {}
-                    if (!column.sticky) {
-                      const resizedWidth = resizable ? getColumnWidth(column) : undefined
-                      if (resizedWidth !== undefined) {
-                        bodyCellStyle.width = `${resizedWidth}px`
-                        bodyCellStyle.minWidth = `${resizedWidth}px`
-                      } else {
-                        if (column.width) bodyCellStyle.width = toPx(column.width)
-                        if (column.minWidth) bodyCellStyle.minWidth = toPx(column.minWidth)
-                      }
-                    }
-                    const cellStyle = { ...bodyCellStyle, ...stickyData.style }
-
-                    if (cellIsEditing && column.editable) {
-                      const EditComponent = column.editComponent || DefaultEditComponent
-                      return (
+        ) : (
+          rowReorderable ? (
+            <SortableContext items={rowIds} strategy={verticalListSortingStrategy}>
+              {data.map((row, rowIndex) => {
+                const isExpanded = isRowExpanded(row.id)
+                return (
+                  <React.Fragment key={row.id}>
+                    <DataTableBodyRow<T>
+                      row={row}
+                      rowIndex={rowIndex}
+                      dataLength={data.length}
+                      isSelected={selectedIds.includes(row.id)}
+                      canExpand={isRowExpandable(row)}
+                      isExpanded={isExpanded}
+                      editingCell={editingCell}
+                      editValue={editValue}
+                      editValueRef={editValueRef as React.MutableRefObject<unknown>}
+                      editingCellRef={editingCellRef}
+                      columnsToRender={columnsToRender}
+                      rowReorderable={true}
+                      selectable={selectable}
+                      expandable={!!expandable}
+                      showRowDelete={showRowDelete}
+                      hasLeftStickyColumns={hasLeftStickyColumns}
+                      resizable={resizable}
+                      rowActions={rowActions}
+                      rowGrouping={rowGrouping}
+                      middleRowSet={middleRowSet}
+                      getCheckboxHeaderLeftOffset={getCheckboxHeaderLeftOffset}
+                      getExpandHeaderLeftOffset={getExpandHeaderLeftOffset}
+                      getRowSpan={getRowSpan}
+                      isGroupCellHovered={isGroupCellHovered}
+                      isGroupCellSelected={isGroupCellSelected}
+                      getStickyStyles={getStickyStyles}
+                      getColumnWidth={getColumnWidth}
+                      getAlignClass={getAlignClass}
+                      handleSelectRow={handleSelectRow}
+                      toggleRowExpanded={toggleRowExpanded}
+                      startEditing={startEditing}
+                      completeEditing={completeEditing}
+                      cancelEditing={cancelEditing}
+                      setEditValue={setEditValue as (v: T[keyof T] | null) => void}
+                      setEditingCell={setEditingCell}
+                      onCellChange={onCellChange}
+                      onRowClick={onRowClick}
+                      rowClassName={rowClassName}
+                      setHoveredRowIndex={setHoveredRowIndex}
+                    />
+                    {expandable && isExpanded && (
+                      <TableRow className="bg-white dark:bg-slate-800/50 hover:bg-white dark:hover:bg-slate-800/50">
                         <TableCell
-                          ref={editingCellRef}
-                          key={String(column.accessorKey)}
-                          className={cn(getAlignClass(column.align), "p-1 overflow-hidden", stickyData.className)}
-                          style={cellStyle}
-                          onClick={(e) => e.stopPropagation()}
-                          rowSpan={hasRowSpan ? rowSpan : undefined}
+                          colSpan={totalColumns}
+                          className="p-0"
+                          style={{ position: "relative" }}
                         >
-                          <EditComponent
-                            value={editValue as T[keyof T]}
-                            onChange={(newValue) => {
-                              setEditValue(newValue)
-                              editValueRef.current = newValue
-                              if (editingCell?.error) {
-                                setEditingCell({ ...editingCell, error: undefined })
-                              }
+                          <div
+                            className="p-4 overflow-x-auto"
+                            style={{
+                              position: "sticky",
+                              left: 0,
+                              width: visibleWidth ? `${visibleWidth}px` : "100%",
+                              maxWidth: "100%",
                             }}
-                            onComplete={() => completeEditing(column, row)}
-                            onCancel={cancelEditing}
-                            row={row}
-                            error={editingCell?.error}
-                          />
+                          >
+                            {expandable.expandedRowRender(row)}
+                          </div>
                         </TableCell>
-                      )
-                    }
-
-                    const content = column.cell ? column.cell(value, row) : String(value ?? "")
-
-                    if (column.editable && onCellChange) {
-                      return (
-                        <TableCell
-                          key={String(column.accessorKey)}
-                          className={cn(
-                            getAlignClass(column.align),
-                            "group/edit cursor-text hover:bg-blue-100 dark:hover:bg-blue-800",
-                            hasRowSpan && "align-middle transition-colors",
-                            // 그룹 셀 hover/selected 스타일
-                            hasRowSpan && groupCellSelected && "bg-blue-50 dark:bg-blue-900",
-                            hasRowSpan && !groupCellSelected && groupCellHovered && "bg-slate-100 dark:bg-slate-800",
-                            stickyData.className
-                          )}
-                          style={cellStyle}
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            setTimeout(() => startEditing(row.id, column.accessorKey, value), 0)
-                          }}
-                          rowSpan={hasRowSpan ? rowSpan : undefined}
-                        >
-                          <span className="flex items-center gap-1">
-                            <span className="flex-1">{content}</span>
-                            <WriteIcon
-                              size={14}
-                              className="flex-shrink-0 opacity-0 group-hover/edit:opacity-100 transition-opacity text-blue-500 dark:text-blue-300"
-                            />
-                          </span>
-                        </TableCell>
-                      )
-                    }
-
-                    // 그룹 셀이 테이블 마지막 행까지 걸쳐있으면 border-b 제외
-                    const isGroupSpanToEnd = hasRowSpan && (rowIndex + rowSpan >= data.length)
-
-                    return (
-                      <TableCell
-                        key={String(column.accessorKey)}
-                        className={cn(
-                          getAlignClass(column.align),
-                          "overflow-hidden break-all [overflow-wrap:break-word]",
-                          hasRowSpan && "align-middle transition-colors",
-                          hasRowSpan && !isGroupSpanToEnd && "border-b border-slate-200 dark:border-slate-700",
-                          // 그룹 셀 hover/selected 스타일
-                          hasRowSpan && groupCellSelected && "bg-blue-50 dark:bg-blue-900",
-                          hasRowSpan && !groupCellSelected && groupCellHovered && "bg-slate-100 dark:bg-slate-800",
-                          stickyData.className
-                        )}
-                        style={cellStyle}
-                        rowSpan={hasRowSpan ? rowSpan : undefined}
-                      >
-                        {content}
-                      </TableCell>
-                    )
-                  })}
-                </>
-              )
-
+                      </TableRow>
+                    )}
+                  </React.Fragment>
+                )
+              })}
+            </SortableContext>
+          ) : (
+            data.map((row, rowIndex) => {
+              const isExpanded = isRowExpanded(row.id)
               return (
                 <React.Fragment key={row.id}>
-                  <SortableRow
-                    id={rowSortableId}
-                    isSelected={isSelected}
-                    className={cn(onRowClick && "cursor-pointer", rowClassName?.(row))}
-                    onClick={() => onRowClick?.(row)}
-                    onMouseEnter={rowGrouping ? () => setHoveredRowIndex(rowIndex) : undefined}
-                    onMouseLeave={rowGrouping ? () => setHoveredRowIndex(null) : undefined}
-                  >
-                    {(dragHandleProps) => renderRowCells(dragHandleProps)}
-                  </SortableRow>
-
+                  <DataTableBodyRow<T>
+                    row={row}
+                    rowIndex={rowIndex}
+                    dataLength={data.length}
+                    isSelected={selectedIds.includes(row.id)}
+                    canExpand={isRowExpandable(row)}
+                    isExpanded={isExpanded}
+                    editingCell={editingCell}
+                    editValue={editValue}
+                    editValueRef={editValueRef as React.MutableRefObject<unknown>}
+                    editingCellRef={editingCellRef}
+                    columnsToRender={columnsToRender}
+                    rowReorderable={false}
+                    selectable={selectable}
+                    expandable={!!expandable}
+                    showRowDelete={showRowDelete}
+                    hasLeftStickyColumns={hasLeftStickyColumns}
+                    resizable={resizable}
+                    rowActions={rowActions}
+                    rowGrouping={rowGrouping}
+                    middleRowSet={middleRowSet}
+                    getCheckboxHeaderLeftOffset={getCheckboxHeaderLeftOffset}
+                    getExpandHeaderLeftOffset={getExpandHeaderLeftOffset}
+                    getRowSpan={getRowSpan}
+                    isGroupCellHovered={isGroupCellHovered}
+                    isGroupCellSelected={isGroupCellSelected}
+                    getStickyStyles={getStickyStyles}
+                    getColumnWidth={getColumnWidth}
+                    getAlignClass={getAlignClass}
+                    handleSelectRow={handleSelectRow}
+                    toggleRowExpanded={toggleRowExpanded}
+                    startEditing={startEditing}
+                    completeEditing={completeEditing}
+                    cancelEditing={cancelEditing}
+                    setEditValue={setEditValue as (v: T[keyof T] | null) => void}
+                    setEditingCell={setEditingCell}
+                    onCellChange={onCellChange}
+                    onRowClick={onRowClick}
+                    rowClassName={rowClassName}
+                    setHoveredRowIndex={setHoveredRowIndex}
+                  />
                   {expandable && isExpanded && (
                     <TableRow className="bg-white dark:bg-slate-800/50 hover:bg-white dark:hover:bg-slate-800/50">
                       <TableCell
@@ -1848,303 +1584,8 @@ function DataTable<T extends { id: string | number }>({
                   )}
                 </React.Fragment>
               )
-            })}
-          </SortableContext>
-        ) : (
-          data.map((row, rowIndex) => {
-            const isSelected = selectedIds.includes(row.id)
-            const canExpand = isRowExpandable(row)
-            const isExpanded = isRowExpanded(row.id)
-            const rowSortableId = `row-${row.id}`
-
-            // 로우 내부 셀들 렌더링 함수
-            const renderRowCells = (dragHandleProps?: DragHandleProps) => (
-              <>
-                {rowReorderable && (
-                  <DragHandleCell
-                    isSelected={isSelected}
-                    hasLeftStickyColumns={hasLeftStickyColumns}
-                    dragHandleProps={dragHandleProps}
-                  />
-                )}
-
-                {selectable && (
-                  <TableCell
-                    onClick={(e) => e.stopPropagation()}
-                    className={cn(
-                      "!p-0",
-                      hasLeftStickyColumns && (
-                        isSelected
-                          ? "transition-colors bg-blue-50 dark:bg-blue-900"
-                          : "transition-colors bg-slate-100 dark:bg-slate-800"
-                      )
-                    )}
-                    style={hasLeftStickyColumns ? {
-                      position: "sticky",
-                      left: getCheckboxHeaderLeftOffset(),
-                      zIndex: 10,
-                      width: `${CHECKBOX_WIDTH}px`,
-                      minWidth: `${CHECKBOX_WIDTH}px`,
-                      maxWidth: `${CHECKBOX_WIDTH}px`,
-                    } : {
-                      width: `${CHECKBOX_WIDTH}px`,
-                      minWidth: `${CHECKBOX_WIDTH}px`,
-                      maxWidth: `${CHECKBOX_WIDTH}px`,
-                    }}
-                  >
-                    <div className="flex items-center justify-center h-9">
-                      <Checkbox
-                        checked={isSelected}
-                        onCheckedChange={() => handleSelectRow(row.id)}
-                        aria-label={`행 ${row.id} 선택`}
-                      />
-                    </div>
-                  </TableCell>
-                )}
-
-                {expandable && (
-                  <TableCell
-                    className={cn(
-                      "p-0",
-                      hasLeftStickyColumns && (
-                        isSelected
-                          ? "transition-colors bg-blue-50 dark:bg-blue-900"
-                          : "transition-colors bg-slate-100 dark:bg-slate-800"
-                      )
-                    )}
-                    style={hasLeftStickyColumns ? {
-                      position: "sticky",
-                      left: getExpandHeaderLeftOffset(),
-                      zIndex: 10,
-                      width: `${EXPAND_WIDTH}px`,
-                      minWidth: `${EXPAND_WIDTH}px`,
-                      maxWidth: `${EXPAND_WIDTH}px`,
-                    } : {
-                      width: `${EXPAND_WIDTH}px`,
-                      minWidth: `${EXPAND_WIDTH}px`,
-                      maxWidth: `${EXPAND_WIDTH}px`,
-                    }}
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    {canExpand && (
-                      <button
-                        type="button"
-                        onClick={() => toggleRowExpanded(row.id)}
-                        className="flex h-9 w-10 items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
-                        aria-label={isExpanded ? "행 접기" : "행 펼치기"}
-                        aria-expanded={isExpanded}
-                      >
-                        {isExpanded ? (
-                          <DownIcon size={24} />
-                        ) : (
-                          <RightIcon size={24} />
-                        )}
-                      </button>
-                    )}
-                  </TableCell>
-                )}
-
-                {/* 행 삭제 액션 셀 */}
-                {showRowDelete && (
-                  <TableCell
-                    className="!p-0"
-                    style={{
-                      width: `${ROW_ACTIONS_WIDTH}px`,
-                      minWidth: `${ROW_ACTIONS_WIDTH}px`,
-                      maxWidth: `${ROW_ACTIONS_WIDTH}px`,
-                    }}
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <button
-                      type="button"
-                      onClick={() => rowActions?.onRowDelete?.(row)}
-                      className="flex h-9 w-10 items-center justify-center transition-opacity hover:opacity-70"
-                      aria-label="행 삭제"
-                    >
-                      <RowDeleteIcon size={20} />
-                    </button>
-                  </TableCell>
-                )}
-
-                {columnsToRender.map((column) => {
-                  // 로우 그룹핑: rowSpan 확인
-                  const rowSpan = getRowSpan(rowIndex, column.accessorKey)
-                  // rowSpan이 0이면 이 셀은 이전 행에서 병합되었으므로 렌더링하지 않음
-                  if (rowSpan === 0) return null
-
-                  const value = row[column.accessorKey]
-                  const cellIsEditing = isEditing(row.id, column.accessorKey)
-                  // rowSpan이 있는 셀은 세로 중앙 정렬
-                  const hasRowSpan = rowSpan !== undefined && rowSpan > 1
-                  // 그룹 셀의 hover/selected 상태 (범위 내 행 중 하나라도 hover/selected면 true)
-                  const groupCellHovered = hasRowSpan && isGroupCellHovered(rowIndex, rowSpan)
-                  const groupCellSelected = hasRowSpan && isGroupCellSelected(rowIndex, rowSpan)
-                  // sticky 스타일 (그룹 셀 선택 상태 전달)
-                  const stickyData = getStickyStyles(column, false, isSelected, hasRowSpan ? groupCellSelected : undefined)
-
-                  // 바디 셀 너비 계산 (헤더와 동일한 로직)
-                  const toPx = (v: string | number) => typeof v === "number" ? `${v}px` : v
-                  const bodyCellStyle: React.CSSProperties = {}
-                  if (!column.sticky) {
-                    const resizedWidth = resizable ? getColumnWidth(column) : undefined
-                    if (resizedWidth !== undefined) {
-                      bodyCellStyle.width = `${resizedWidth}px`
-                      bodyCellStyle.minWidth = `${resizedWidth}px`
-                    } else {
-                      if (column.width) bodyCellStyle.width = toPx(column.width)
-                      if (column.minWidth) bodyCellStyle.minWidth = toPx(column.minWidth)
-                    }
-                  }
-                  const cellStyle = { ...bodyCellStyle, ...stickyData.style }
-
-                  if (cellIsEditing && column.editable) {
-                    const EditComponent = column.editComponent || DefaultEditComponent
-
-                    return (
-                      <TableCell
-                        ref={editingCellRef}
-                        key={String(column.accessorKey)}
-                        className={cn(getAlignClass(column.align), "p-1 overflow-hidden", stickyData.className)}
-                        style={cellStyle}
-                        onClick={(e) => e.stopPropagation()}
-                        rowSpan={hasRowSpan ? rowSpan : undefined}
-                      >
-                        <EditComponent
-                          value={editValue as T[keyof T]}
-                          onChange={(newValue) => {
-                            setEditValue(newValue)
-                            // stale closure 방지
-                            editValueRef.current = newValue
-                            if (editingCell?.error) {
-                              setEditingCell({ ...editingCell, error: undefined })
-                            }
-                          }}
-                          onComplete={() => completeEditing(column, row)}
-                          onCancel={cancelEditing}
-                          row={row}
-                          error={editingCell?.error}
-                        />
-                      </TableCell>
-                    )
-                  }
-
-                  const content = column.cell
-                    ? column.cell(value, row)
-                    : String(value ?? "")
-
-                  if (column.editable && onCellChange) {
-                    return (
-                      <TableCell
-                        key={String(column.accessorKey)}
-                        className={cn(
-                          getAlignClass(column.align),
-                          "group/edit cursor-text hover:bg-blue-100 dark:hover:bg-blue-800",
-                          hasRowSpan && "align-middle transition-colors",
-                          // 그룹 셀 hover/selected 스타일
-                          hasRowSpan && groupCellSelected && "bg-blue-50 dark:bg-blue-900",
-                          hasRowSpan && !groupCellSelected && groupCellHovered && "bg-slate-100 dark:bg-slate-800",
-                          stickyData.className
-                        )}
-                        style={cellStyle}
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          // 이전 셀의 blur 처리가 먼저 완료되어야 함
-                          setTimeout(() => {
-                            startEditing(row.id, column.accessorKey, value)
-                          }, 0)
-                        }}
-                        rowSpan={hasRowSpan ? rowSpan : undefined}
-                      >
-                        <span className="flex items-center gap-1">
-                          <span className="flex-1">{content}</span>
-                          <WriteIcon
-                            size={20}
-                            className="flex-shrink-0 opacity-0 group-hover/edit:opacity-100 transition-opacity text-blue-500 dark:text-blue-300"
-                          />
-                        </span>
-                      </TableCell>
-                    )
-                  }
-
-                  // 그룹 셀이 테이블 마지막 행까지 걸쳐있으면 border-b 제외
-                  const isGroupSpanToEnd = hasRowSpan && (rowIndex + rowSpan >= data.length)
-
-                  return (
-                    <TableCell
-                      key={String(column.accessorKey)}
-                      className={cn(
-                        getAlignClass(column.align),
-                        "overflow-hidden break-all [overflow-wrap:break-word]",
-                        hasRowSpan && "align-middle transition-colors",
-                        hasRowSpan && !isGroupSpanToEnd && "border-b border-slate-200 dark:border-slate-700",
-                        // 그룹 셀 hover/selected 스타일
-                        hasRowSpan && groupCellSelected && "bg-blue-50 dark:bg-blue-900",
-                        hasRowSpan && !groupCellSelected && groupCellHovered && "bg-slate-100 dark:bg-slate-800",
-                        stickyData.className
-                      )}
-                      style={cellStyle}
-                      rowSpan={hasRowSpan ? rowSpan : undefined}
-                    >
-                      {content}
-                    </TableCell>
-                  )
-                })}
-              </>
-            )
-
-            return (
-              <React.Fragment key={row.id}>
-                {rowReorderable ? (
-                  <SortableRow
-                    id={rowSortableId}
-                    isSelected={isSelected}
-                    className={cn(onRowClick && "cursor-pointer", rowClassName?.(row))}
-                    onClick={() => onRowClick?.(row)}
-                    onMouseEnter={rowGrouping ? () => setHoveredRowIndex(rowIndex) : undefined}
-                    onMouseLeave={rowGrouping ? () => setHoveredRowIndex(null) : undefined}
-                  >
-                    {(dragHandleProps) => renderRowCells(dragHandleProps)}
-                  </SortableRow>
-                ) : (
-                  <TableRow
-                    data-state={isSelected ? "selected" : undefined}
-                    className={cn(
-                      onRowClick && "cursor-pointer",
-                      middleRowSet?.has(rowIndex) && "border-b-0",
-                      rowClassName?.(row)
-                    )}
-                    onClick={() => onRowClick?.(row)}
-                    onMouseEnter={rowGrouping ? () => setHoveredRowIndex(rowIndex) : undefined}
-                    onMouseLeave={rowGrouping ? () => setHoveredRowIndex(null) : undefined}
-                  >
-                    {renderRowCells()}
-                  </TableRow>
-                )}
-
-                {expandable && isExpanded && (
-                  <TableRow className="bg-white dark:bg-slate-800/50 hover:bg-white dark:hover:bg-slate-800/50">
-                    <TableCell
-                      colSpan={totalColumns}
-                      className="p-0"
-                      style={{ position: "relative" }}
-                    >
-                      <div
-                        className="p-4 overflow-x-auto"
-                        style={{
-                          position: "sticky",
-                          left: 0,
-                          width: visibleWidth ? `${visibleWidth}px` : "100%",
-                          maxWidth: "100%",
-                        }}
-                      >
-                        {expandable.expandedRowRender(row)}
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                )}
-              </React.Fragment>
-            )
-          })
+            })
+          )
         )}
 
         {/* 행 추가 버튼 행 */}
