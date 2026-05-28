@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});function e(t){switch(t){case"center":return"text-center";case"right":return"text-right";default:return"text-left"}}exports.getAlignClass=e;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});function n(t){switch(t){case"center":return"text-center";case"right":return"text-right";default:return"text-left"}}function i(t){const e=t.width??t.minWidth;if(typeof e=="number")return e;const r=parseInt(String(e??""),10);return Number.isFinite(r)?r:150}exports.getAlignClass=n;exports.getNumericColumnWidth=i;
 //# sourceMappingURL=utils.cjs.map
