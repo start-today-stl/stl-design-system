@@ -291,8 +291,19 @@ function DataTable<T extends { id: string | number }>({
   // sortState 정규화 (유효한 항목만)
   const sortStateArray: SortState<T>[] = React.useMemo(() => {
     if (!sortState) return []
+    if (!Array.isArray(sortState)) {
+      // 구 API(단일 객체) 호환: dev 환경에서만 경고
+      if (shouldWarn) {
+        console.warn(
+          "[DataTable] sortState는 배열(SortState<T>[])이어야 합니다. " +
+          "마이그레이션 가이드: docs/MIGRATION-DATATABLE-SORT.md"
+        )
+      }
+      const legacy = sortState as SortState<T>
+      return legacy.column && legacy.direction ? [legacy] : []
+    }
     return sortState.filter((s) => s.column && s.direction)
-  }, [sortState])
+  }, [sortState, shouldWarn])
 
   const handleSort = (column: keyof T) => {
     if (!onSortChange) return

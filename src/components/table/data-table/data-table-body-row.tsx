@@ -3,9 +3,9 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 import { TableCell, TableRow } from "@/components/table/table"
 import { Checkbox } from "@/components/ui/checkbox"
-import { RightIcon, DownIcon, WriteIcon, RowDeleteIcon } from "@/icons"
+import { RightIcon, DownIcon, RowDeleteIcon } from "@/icons"
 
-import { DefaultEditComponent } from "./default-edit-component"
+import { DataTableCell } from "./data-table-cell"
 import { DragHandleCell } from "./drag-handle-cell"
 import { SortableRow } from "./sortable-row"
 import {
@@ -260,90 +260,36 @@ function DataTableBodyRowImpl<T extends { id: string | number }>(
           }
         }
         const cellStyle = { ...bodyCellStyle, ...stickyData.style }
-
-        if (cellIsEditing && column.editable) {
-          const EditComponent = column.editComponent || DefaultEditComponent
-
-          return (
-            <TableCell
-              ref={editingCellRef as React.RefObject<HTMLTableCellElement>}
-              key={String(column.accessorKey)}
-              className={cn(getAlignClass(column.align), "p-1 overflow-hidden", stickyData.className)}
-              style={cellStyle}
-              onClick={(e) => e.stopPropagation()}
-              rowSpan={hasRowSpan ? rowSpan : undefined}
-            >
-              <EditComponent
-                value={editValue as T[keyof T]}
-                onChange={(newValue) => {
-                  setEditValue(newValue)
-                  editValueRef.current = newValue
-                  if (editingCell?.error) {
-                    setEditingCell({ ...editingCell, error: undefined })
-                  }
-                }}
-                onComplete={() => completeEditing(column, row)}
-                onCancel={cancelEditing}
-                row={row}
-                error={editingCell?.error}
-              />
-            </TableCell>
-          )
-        }
-
-        const content = column.cell ? column.cell(value, row) : String(value ?? "")
-
-        if (column.editable && onCellChange) {
-          return (
-            <TableCell
-              key={String(column.accessorKey)}
-              className={cn(
-                getAlignClass(column.align),
-                "group/edit cursor-text hover:bg-blue-100 dark:hover:bg-blue-800",
-                hasRowSpan && "align-middle transition-colors",
-                hasRowSpan && groupCellSelected && "bg-blue-50 dark:bg-blue-900",
-                hasRowSpan && !groupCellSelected && groupCellHovered && "bg-slate-100 dark:bg-slate-800",
-                stickyData.className,
-              )}
-              style={cellStyle}
-              onClick={(e) => {
-                e.stopPropagation()
-                setTimeout(() => {
-                  startEditing(row.id, column.accessorKey, value)
-                }, 0)
-              }}
-              rowSpan={hasRowSpan ? rowSpan : undefined}
-            >
-              <span className="flex items-center gap-1">
-                <span className="flex-1">{content}</span>
-                <WriteIcon
-                  size={20}
-                  className="flex-shrink-0 opacity-0 group-hover/edit:opacity-100 transition-opacity text-blue-500 dark:text-blue-300"
-                />
-              </span>
-            </TableCell>
-          )
-        }
-
         const isGroupSpanToEnd = hasRowSpan && rowIndex + rowSpan >= dataLength
 
         return (
-          <TableCell
+          <DataTableCell<T>
             key={String(column.accessorKey)}
-            className={cn(
-              getAlignClass(column.align),
-              "overflow-hidden break-all [overflow-wrap:break-word]",
-              hasRowSpan && "align-middle transition-colors",
-              hasRowSpan && !isGroupSpanToEnd && "border-b border-slate-200 dark:border-slate-700",
-              hasRowSpan && groupCellSelected && "bg-blue-50 dark:bg-blue-900",
-              hasRowSpan && !groupCellSelected && groupCellHovered && "bg-slate-100 dark:bg-slate-800",
-              stickyData.className,
-            )}
-            style={cellStyle}
-            rowSpan={hasRowSpan ? rowSpan : undefined}
-          >
-            {content}
-          </TableCell>
+            row={row}
+            rowIndex={rowIndex}
+            column={column}
+            value={value}
+            isSelected={isSelected}
+            rowSpan={rowSpan}
+            hasRowSpan={hasRowSpan}
+            groupCellHovered={groupCellHovered}
+            groupCellSelected={groupCellSelected}
+            isEditing={cellIsEditing}
+            onStartEdit={startEditing}
+            editValue={editValue as T[keyof T] | null}
+            editingCell={editingCell}
+            setEditValue={setEditValue}
+            setEditingCell={setEditingCell}
+            editValueRef={editValueRef}
+            editingCellRef={editingCellRef}
+            completeEditing={completeEditing}
+            cancelEditing={cancelEditing}
+            onCellChange={onCellChange}
+            stickyData={stickyData}
+            cellStyle={cellStyle}
+            alignClass={getAlignClass(column.align)}
+            isGroupSpanToEnd={isGroupSpanToEnd}
+          />
         )
       })}
     </>

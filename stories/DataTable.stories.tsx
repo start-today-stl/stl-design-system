@@ -739,10 +739,8 @@ export const Expandable: Story = {
 export const ListPageBasic: Story = {
   render: () => {
     const [selectedIds, setSelectedIds] = useState<number[]>([])
-    const [sortState, setSortState] = useState<SortState<User>>({
-      column: null,
-      direction: null,
-    })
+    const [sortState, setSortState] = useState<SortState<User>[]>([])
+    const current = sortState[0]
     const [currentPage, setCurrentPage] = useState(1)
     const [pageSize, setPageSize] = useState(10)
 
@@ -759,11 +757,11 @@ export const ListPageBasic: Story = {
 
     // 정렬
     const sortedData = [...allData].sort((a, b) => {
-      if (!sortState.column || !sortState.direction) return 0
-      const aValue = a[sortState.column]
-      const bValue = b[sortState.column]
+      if (!current?.column || !current.direction) return 0
+      const aValue = a[current.column]
+      const bValue = b[current.column]
       const comparison = String(aValue).localeCompare(String(bValue))
-      return sortState.direction === "asc" ? comparison : -comparison
+      return current.direction === "asc" ? comparison : -comparison
     })
 
     // 페이지네이션
@@ -858,10 +856,8 @@ export const AllFeatures: Story = {
 
     const [products, setProducts] = useState(initialProducts)
     const [selectedIds, setSelectedIds] = useState<number[]>([])
-    const [sortState, setSortState] = useState<SortState<Product>>({
-      column: null,
-      direction: null,
-    })
+    const [sortState, setSortState] = useState<SortState<Product>[]>([])
+    const current = sortState[0]
     const [currentPage, setCurrentPage] = useState(1)
     const [pageSize, setPageSize] = useState(10)
 
@@ -869,14 +865,14 @@ export const AllFeatures: Story = {
 
     // 정렬
     const sortedData = [...products].sort((a, b) => {
-      if (!sortState.column || !sortState.direction) return 0
-      const aValue = a[sortState.column]
-      const bValue = b[sortState.column]
+      if (!current?.column || !current.direction) return 0
+      const aValue = a[current.column]
+      const bValue = b[current.column]
       if (typeof aValue === "number" && typeof bValue === "number") {
-        return sortState.direction === "asc" ? aValue - bValue : bValue - aValue
+        return current.direction === "asc" ? aValue - bValue : bValue - aValue
       }
       const comparison = String(aValue).localeCompare(String(bValue))
-      return sortState.direction === "asc" ? comparison : -comparison
+      return current.direction === "asc" ? comparison : -comparison
     })
 
     // 페이지네이션
