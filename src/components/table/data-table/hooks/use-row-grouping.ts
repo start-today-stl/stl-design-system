@@ -100,16 +100,24 @@ export function useRowGrouping<T extends { id: string | number }>({
     [hoveredRowIndex],
   )
 
+  // data 를 ref 로 보관: useCallback deps 에 data 를 직접 넣으면
+  // 매 render 마다 callback 이 새로 만들어지면서 row ctx 가 unstable 해져
+  // rowGrouping 을 쓰지 않는 테이블에서도 모든 행이 re-render 됨.
+  const dataRef = React.useRef(data)
+  dataRef.current = data
+
   const isGroupCellSelected = React.useCallback(
     (rowIndex: number, rowSpan: number): boolean => {
+      if (!rowGrouping) return false
+      const currentData = dataRef.current
       for (let i = rowIndex; i < rowIndex + rowSpan; i++) {
-        if (i < data.length && selectedIds.includes(data[i].id)) {
+        if (i < currentData.length && selectedIds.includes(currentData[i].id)) {
           return true
         }
       }
       return false
     },
-    [data, selectedIds],
+    [selectedIds, rowGrouping],
   )
 
   return { rowSpanMap, middleRowSet, getRowSpan, isGroupCellHovered, isGroupCellSelected }
