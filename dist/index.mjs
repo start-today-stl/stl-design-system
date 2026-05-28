@@ -134,7 +134,7 @@ import { XIcon as Rp } from "./icons/XIcon.mjs";
 import { CardAction as kp, cardActionVariants as Gp } from "./components/dashboard/card-action.mjs";
 import { CardActionGroup as yp } from "./components/dashboard/card-action-group.mjs";
 import { DashboardCard as Op } from "./components/dashboard/dashboard-card.mjs";
-import { DataTable as Up } from "./components/table/data-table.mjs";
+import { DataTable as Up } from "./components/table/data-table/index.mjs";
 import { DisplayField as Ep } from "./components/form/display-field.mjs";
 import { FilterChipSummary as jp } from "./components/table/filter-chip-summary.mjs";
 import { FormCard as Kp, FormColumn as qp, FormContent as Qp, FormFooter as Yp, FormHeader as Zp } from "./components/form/form-card.mjs";

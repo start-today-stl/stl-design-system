@@ -43,7 +43,7 @@ import { Stepper as te, stepCircleVariants as ae, stepLabelVariants as pe, stepL
 import { CardAction as me, cardActionVariants as le } from "./components/dashboard/card-action.mjs";
 import { CardActionGroup as de } from "./components/dashboard/card-action-group.mjs";
 import { DashboardCard as Ce } from "./components/dashboard/dashboard-card.mjs";
-import { DataTable as Se } from "./components/table/data-table.mjs";
+import { DataTable as Se } from "./components/table/data-table/index.mjs";
 import { DisplayField as ue } from "./components/form/display-field.mjs";
 import { FilterChipSummary as ce } from "./components/table/filter-chip-summary.mjs";
 import { FormCard as se, FormColumn as Fe, FormContent as he, FormFooter as we, FormHeader as Ae } from "./components/form/form-card.mjs";

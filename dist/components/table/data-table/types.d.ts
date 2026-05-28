@@ -1,5 +1,6 @@
-import { SortDirection } from './table';
-import * as React from "react";
+import { DraggableAttributes } from '@dnd-kit/core';
+import { SortDirection } from '../table';
+import type * as React from "react";
 /** 편집 컴포넌트 Props */
 export interface EditComponentProps<T, K extends keyof T = keyof T> {
     /** 현재 값 */
@@ -78,6 +79,12 @@ export interface ExpandableConfig<T> {
     /** 헤더에 전체 펼치기/접기 버튼 표시 여부 (기본: true) */
     showExpandAll?: boolean;
 }
+/** 편집 중인 셀 상태 */
+export interface EditingCell<T> {
+    rowId: string | number;
+    columnKey: keyof T;
+    error?: string;
+}
 /** 행 추가/삭제 액션 설정 */
 export interface RowActionsConfig<T> {
     /** 행 삭제 핸들러 (각 행에 삭제 아이콘 표시) */
@@ -151,7 +158,19 @@ export interface DataTableProps<T extends {
     /** 다중 정렬 활성화 (클릭 시 정렬 추가/순환). 기본 false=단일 정렬 */
     multiSort?: boolean;
 }
-declare function DataTable<T extends {
-    id: string | number;
-}>({ columns, data, selectable, selectedIds, onSelectionChange, sortState, onSortChange, multiSort, onRowClick, onCellChange, expandable, emptyMessage, className, rowClassName, maxHeight, resizable, columnWidths, onColumnResize, columnReorderable, columnOrder, onColumnReorder, rowReorderable: rowReorderableProp, onRowReorder, loading, loadingMode, loadingContent, headerGroups, rowGrouping, rowActions, }: DataTableProps<T>): import("react/jsx-runtime").JSX.Element;
-export { DataTable };
+/** 드래그 핸들 props (Sortable 내부 전달용) */
+export interface DragHandleProps {
+    listeners?: Record<string, unknown>;
+    attributes?: DraggableAttributes;
+    setActivatorNodeRef?: (element: HTMLElement | null) => void;
+}
+/** sticky 스타일 결과 */
+export interface StickyStyleResult {
+    style: React.CSSProperties;
+    className: string;
+}
+/** 컬럼 너비 상수 */
+export declare const DRAG_HANDLE_WIDTH = 32;
+export declare const CHECKBOX_WIDTH = 40;
+export declare const EXPAND_WIDTH = 40;
+export declare const ROW_ACTIONS_WIDTH = 40;
