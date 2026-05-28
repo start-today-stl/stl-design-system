@@ -2,6 +2,11 @@ import * as React from "react"
 
 import type { DataTableColumn } from "../types"
 
+// resizable=false 일 때 반환할 stable no-op.
+// 매 render 마다 () => undefined 를 새로 만들면 rowCtx 의 stability 가 깨져
+// 모든 행이 re-render 됨.
+const NOOP_GET_COLUMN_WIDTH = (): undefined => undefined
+
 interface UseColumnResizeOptions<T> {
   resizable: boolean
   columnWidths?: Record<string, number>
@@ -95,7 +100,7 @@ export function useColumnResize<T>({
 
   return {
     resizingColumn,
-    getColumnWidth: resizable ? getColumnWidth : () => undefined,
+    getColumnWidth: resizable ? getColumnWidth : NOOP_GET_COLUMN_WIDTH,
     handleResizeStart,
   }
 }

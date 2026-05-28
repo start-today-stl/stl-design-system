@@ -1,5 +1,7 @@
 import * as n from "react";
-function C({
+const p = () => {
+};
+function S({
   resizable: y,
   columnWidths: s,
   onColumnResize: u
@@ -25,8 +27,8 @@ function C({
   ), a = n.useCallback(
     (e) => {
       if (!r) return;
-      const t = e.clientX - m.current, o = Math.max(50, f.current + t), b = String(r);
-      u ? u(r, o) : h((p) => ({ ...p, [b]: o }));
+      const t = e.clientX - m.current, o = Math.max(50, f.current + t), C = String(r);
+      u ? u(r, o) : h((b) => ({ ...b, [C]: o }));
     },
     [r, u]
   ), d = n.useCallback(() => {
@@ -39,12 +41,11 @@ function C({
       };
   }, [r, a, d]), {
     resizingColumn: r,
-    getColumnWidth: y ? c : () => {
-    },
+    getColumnWidth: y ? c : p,
     handleResizeStart: v
   };
 }
 export {
-  C as useColumnResize
+  S as useColumnResize
 };
 //# sourceMappingURL=use-column-resize.mjs.map
