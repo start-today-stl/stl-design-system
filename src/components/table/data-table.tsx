@@ -9,7 +9,6 @@ import {
   type DragEndEvent,
 } from "@dnd-kit/core"
 import {
-  arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
   horizontalListSortingStrategy,
@@ -34,6 +33,12 @@ import { RightIcon, DownIcon, RowAddIcon } from "@/icons"
 
 import { SortableHeaderCell } from "./data-table/sortable-header-cell"
 import { DataTableBodyRow } from "./data-table/data-table-body-row"
+import { useStickyStyles } from "./data-table/hooks/use-sticky-styles"
+import { useColumnResize } from "./data-table/hooks/use-column-resize"
+import { useRowGrouping } from "./data-table/hooks/use-row-grouping"
+import { useColumnReorder } from "./data-table/hooks/use-column-reorder"
+import { useRowReorder } from "./data-table/hooks/use-row-reorder"
+import { useCellEditing } from "./data-table/hooks/use-cell-editing"
 import {
   DRAG_HANDLE_WIDTH,
   CHECKBOX_WIDTH,
@@ -46,7 +51,6 @@ import {
   type RowGroupConfig,
   type SortState,
   type ExpandableConfig,
-  type EditingCell,
   type RowActionsConfig,
   type DataTableProps,
 } from "./data-table/types"
@@ -119,12 +123,18 @@ function DataTable<T extends { id: string | number }>({
     }
   }, [loadingContent, loadingMode, shouldWarn])
 
-  const [editingCell, setEditingCell] = React.useState<EditingCell<T> | null>(null)
-  const [editValue, setEditValue] = React.useState<T[keyof T] | null>(null)
-  // stale closure 방지용 ref
-  const editValueRef = React.useRef<T[keyof T] | null>(null)
-  // 바깥 클릭 감지용 ref
-  const editingCellRef = React.useRef<HTMLTableCellElement>(null)
+  // 셀 편집 hook
+  const {
+    editingCell,
+    editValue,
+    editValueRef,
+    editingCellRef,
+    setEditingCell,
+    setEditValue,
+    startEditing,
+    completeEditing,
+    cancelEditing,
+  } = useCellEditing<T>({ columns, data, onCellChange })
   // 스크롤 컨테이너 ref + 가시 영역 너비 추적 (empty/loading 셀 중앙 정렬용)
   const scrollContainerRef = React.useRef<HTMLDivElement>(null)
   const [visibleWidth, setVisibleWidth] = React.useState<number>(0)
@@ -140,47 +150,23 @@ function DataTable<T extends { id: string | number }>({
   const [internalExpandedIds, setInternalExpandedIds] = React.useState<(string | number)[]>(
     expandable?.defaultExpandedRowIds ?? []
   )
-  // 내부 컬럼 너비 상태 (비제어 컴포넌트용)
-  const [internalColumnWidths, setInternalColumnWidths] = React.useState<Record<string, number>>({})
-  // 리사이징 상태
-  const [resizingColumn, setResizingColumn] = React.useState<keyof T | null>(null)
-  const resizeStartX = React.useRef<number>(0)
-  const resizeStartWidth = React.useRef<number>(0)
-  // 내부 컬럼 순서 상태 (비제어 컴포넌트용)
-  const [internalColumnOrder, setInternalColumnOrder] = React.useState<(keyof T)[]>(() =>
-    columns.map((col) => col.accessorKey)
-  )
+  // 컬럼 리사이즈 hook
+  const {
+    resizingColumn,
+    getColumnWidth,
+    handleResizeStart,
+  } = useColumnResize<T>({ resizable, columnWidths, onColumnResize })
+  // 컬럼 순서 변경 hook
+  const { orderedColumns, handleColumnDragEnd } = useColumnReorder<T>({
+    columns,
+    columnReorderable,
+    columnOrder,
+    onColumnReorder,
+  })
+  // 로우 순서 변경 hook
+  const { handleRowDragEnd } = useRowReorder<T>({ data, onRowReorder })
   // 로우 그룹핑용 호버 상태 추적
   const [hoveredRowIndex, setHoveredRowIndex] = React.useState<number | null>(null)
-
-  React.useEffect(() => {
-    if (!columnReorderable || columnOrder) return
-
-    setInternalColumnOrder((prev) => {
-      const columnKeys = columns.map((col) => col.accessorKey)
-      const next = prev.filter((key) => columnKeys.includes(key))
-      const missing = columnKeys.filter((key) => !next.includes(key))
-      const updated = [...next, ...missing]
-
-      if (
-        updated.length === prev.length &&
-        updated.every((key, index) => key === prev[index])
-      ) {
-        return prev
-      }
-
-      return updated
-    })
-  }, [columns, columnReorderable, columnOrder])
-
-  // 컬럼 순서 (제어/비제어)
-  const currentColumnOrder = columnOrder ?? internalColumnOrder
-  const orderedColumns = React.useMemo(() => {
-    if (!columnReorderable) return columns
-    return currentColumnOrder
-      .map((key) => columns.find((col) => col.accessorKey === key))
-      .filter((col): col is DataTableColumn<T> => col !== undefined)
-  }, [columns, currentColumnOrder, columnReorderable])
 
   // headerGroups + sticky 제약: 그룹 내 sticky 구성이 혼합되면 1행 그룹 헤더 sticky 불가
   const mixedStickyHeaderGroups = React.useMemo(() => {
@@ -264,49 +250,6 @@ function DataTable<T extends { id: string | number }>({
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     })
-  )
-
-  // 컬럼 드래그 완료 핸들러
-  const handleColumnDragEnd = React.useCallback(
-    (event: DragEndEvent) => {
-      const { active, over } = event
-      if (!over || active.id === over.id) return
-
-      const oldIndex = currentColumnOrder.findIndex((key) => String(key) === active.id)
-      const newIndex = currentColumnOrder.findIndex((key) => String(key) === over.id)
-
-      if (oldIndex === -1 || newIndex === -1) return
-
-      const newOrder = arrayMove(currentColumnOrder, oldIndex, newIndex)
-
-      if (onColumnReorder) {
-        onColumnReorder(newOrder)
-      } else {
-        setInternalColumnOrder(newOrder)
-      }
-    },
-    [currentColumnOrder, onColumnReorder]
-  )
-
-  // 로우 드래그 완료 핸들러
-  const handleRowDragEnd = React.useCallback(
-    (event: DragEndEvent) => {
-      const { active, over } = event
-      if (!over || active.id === over.id) return
-
-      // row- 접두사 제거 후 비교
-      const activeId = String(active.id).replace(/^row-/, "")
-      const overId = String(over.id).replace(/^row-/, "")
-
-      const oldIndex = data.findIndex((row) => String(row.id) === activeId)
-      const newIndex = data.findIndex((row) => String(row.id) === overId)
-
-      if (oldIndex === -1 || newIndex === -1) return
-
-      const newData = arrayMove(data, oldIndex, newIndex)
-      onRowReorder?.(newData)
-    },
-    [data, onRowReorder]
   )
 
   // 통합 드래그 완료 핸들러
@@ -411,81 +354,6 @@ function DataTable<T extends { id: string | number }>({
     }
   }, [])
 
-  const startEditing = React.useCallback((rowId: string | number, columnKey: keyof T, currentValue: T[keyof T]) => {
-    setEditingCell({ rowId, columnKey })
-    setEditValue(currentValue)
-    editValueRef.current = currentValue
-  }, [])
-
-  const completeEditing = React.useCallback((column: DataTableColumn<T>, row: T) => {
-    // stale closure 방지를 위해 ref에서 읽음
-    const currentValue = editValueRef.current
-    if (!editingCell || currentValue === null) {
-      setEditingCell(null)
-      setEditValue(null)
-      editValueRef.current = null
-      return
-    }
-
-    if (column.validate) {
-      const result = column.validate(currentValue, row)
-      if (result !== true) {
-        setEditingCell({ ...editingCell, error: result })
-        return
-      }
-    }
-
-    if (onCellChange) {
-      onCellChange(editingCell.rowId, editingCell.columnKey, currentValue)
-    }
-    setEditingCell(null)
-    setEditValue(null)
-    editValueRef.current = null
-  }, [editingCell, onCellChange])
-
-  // editingCell에서 column/row를 찾아서 completeEditing 호출
-  const completeEditingFromState = React.useCallback(() => {
-    if (!editingCell) return
-    const column = columns.find((col) => col.accessorKey === editingCell.columnKey)
-    const row = data.find((r) => r.id === editingCell.rowId)
-    if (column && row) {
-      completeEditing(column, row)
-    } else {
-      // column/row를 못 찾으면 값만 커밋 (유효성 검증 없이)
-      const currentValue = editValueRef.current
-      if (currentValue !== null && onCellChange) {
-        onCellChange(editingCell.rowId, editingCell.columnKey, currentValue)
-      }
-      setEditingCell(null)
-      setEditValue(null)
-      editValueRef.current = null
-    }
-  }, [editingCell, columns, data, onCellChange])
-
-  const cancelEditing = React.useCallback(() => {
-    setEditingCell(null)
-    setEditValue(null)
-    editValueRef.current = null
-  }, [])
-
-  React.useEffect(() => {
-    if (!editingCell) return
-
-    const handleClickOutside = (e: MouseEvent) => {
-      const target = e.target as Node
-      if (editingCellRef.current?.contains(target)) return
-      // Radix 포털 (Select 드롭다운) 내부 클릭은 무시해야 함
-      const radixPortal = (target as Element).closest?.("[data-radix-popper-content-wrapper]")
-      if (radixPortal) return
-      // blur 시 저장 (Escape만 취소)
-      completeEditingFromState()
-    }
-
-    document.addEventListener("mousedown", handleClickOutside)
-    return () => document.removeEventListener("mousedown", handleClickOutside)
-  }, [editingCell, completeEditingFromState])
-
-
   const isRowExpandable = React.useCallback((row: T) => {
     if (!expandable) return false
     if (expandable.rowExpandable) return expandable.rowExpandable(row)
@@ -529,259 +397,21 @@ function DataTable<T extends { id: string | number }>({
 
   const totalColumns = columns.length + (selectable ? 1 : 0) + (expandable ? 1 : 0) + (rowReorderable ? 1 : 0) + (showRowDelete ? 1 : 0)
 
-  // 로우 그룹핑: rowSpan 계산 + 그룹 중간 행 Set
-  const { rowSpanMap, middleRowSet } = React.useMemo(() => {
-    if (!rowGrouping) return { rowSpanMap: null, middleRowSet: null }
+  // 로우 그룹핑 hook (rowSpanMap, middleRowSet, 헬퍼 함수들)
+  const {
+    middleRowSet,
+    getRowSpan,
+    isGroupCellHovered,
+    isGroupCellSelected,
+  } = useRowGrouping<T>({ data, rowGrouping, hoveredRowIndex, selectedIds })
 
-    const groupByKeys = Array.isArray(rowGrouping.groupBy)
-      ? rowGrouping.groupBy
-      : [rowGrouping.groupBy]
-    const mergeColumns = rowGrouping.mergeColumns ?? groupByKeys
-
-    // Map: rowIndex -> columnKey -> rowSpan (0이면 이 셀은 렌더링하지 않음)
-    const spanMap = new Map<number, Map<keyof T, number>>()
-    // 그룹 중간에 있는 행들 (border-b 숨김)
-    const middleRows = new Set<number>()
-
-    // 각 병합 컬럼에 대해 rowSpan 계산
-    for (const colKey of mergeColumns) {
-      let i = 0
-      while (i < data.length) {
-        // 현재 행의 그룹 키 값들
-        const currentGroupValues = groupByKeys.map((k) => data[i][k])
-        const currentColValue = data[i][colKey]
-        let spanCount = 1
-
-        // 같은 그룹 값을 가진 연속된 행 수 계산
-        for (let j = i + 1; j < data.length; j++) {
-          const nextGroupValues = groupByKeys.map((k) => data[j][k])
-          const nextColValue = data[j][colKey]
-
-          // 그룹 키와 컬럼 값이 모두 같아야 병합
-          const sameGroup = currentGroupValues.every((v, idx) => v === nextGroupValues[idx])
-          const sameValue = currentColValue === nextColValue
-
-          if (sameGroup && sameValue) {
-            spanCount++
-          } else {
-            break
-          }
-        }
-
-        // 첫 번째 행에 rowSpan 설정
-        if (!spanMap.has(i)) {
-          spanMap.set(i, new Map())
-        }
-        spanMap.get(i)!.set(colKey, spanCount)
-
-        // 병합된 후속 행들은 rowSpan 0 (렌더링 안 함)
-        // + 그룹 중간 행 기록 (마지막 행 제외)
-        for (let k = i; k < i + spanCount - 1; k++) {
-          middleRows.add(k)
-        }
-        for (let k = i + 1; k < i + spanCount; k++) {
-          if (!spanMap.has(k)) {
-            spanMap.set(k, new Map())
-          }
-          spanMap.get(k)!.set(colKey, 0)
-        }
-
-        i += spanCount
-      }
-    }
-
-    return { rowSpanMap: spanMap, middleRowSet: middleRows }
-  }, [data, rowGrouping])
-
-  // 특정 셀의 rowSpan 가져오기
-  const getRowSpan = React.useCallback((rowIndex: number, columnKey: keyof T): number | undefined => {
-    if (!rowSpanMap) return undefined
-    const rowMap = rowSpanMap.get(rowIndex)
-    if (!rowMap) return undefined
-    return rowMap.get(columnKey)
-  }, [rowSpanMap])
-
-  // 그룹 셀이 속한 행 범위 내에 호버된 행이 있는지 확인
-  const isGroupCellHovered = React.useCallback((rowIndex: number, rowSpan: number): boolean => {
-    if (hoveredRowIndex === null) return false
-    return hoveredRowIndex >= rowIndex && hoveredRowIndex < rowIndex + rowSpan
-  }, [hoveredRowIndex])
-
-  // 그룹 셀이 속한 행 범위 내에 선택된 행이 있는지 확인
-  const isGroupCellSelected = React.useCallback((rowIndex: number, rowSpan: number): boolean => {
-    for (let i = rowIndex; i < rowIndex + rowSpan; i++) {
-      if (i < data.length && selectedIds.includes(data[i].id)) {
-        return true
-      }
-    }
-    return false
-  }, [data, selectedIds])
-
-  // Sticky 컬럼 위치 계산
-  const getStickyStyles = React.useMemo(() => {
-    // 컬럼 너비 추출 헬퍼 (width 우선, 없으면 minWidth)
-    const getColWidth = (col: DataTableColumn<T>): number => {
-      const w = col.width ?? col.minWidth
-      if (typeof w === "number") return w
-      const parsed = parseInt(String(w), 10)
-      return Number.isFinite(parsed) ? parsed : 150
-    }
-
-    const leftColumns = columns.filter((col) => col.sticky === "left")
-    const rightColumns = columns.filter((col) => col.sticky === "right")
-
-    // 왼쪽 고정 컬럼 위치 계산 (드래그 핸들, 체크박스, 확장 아이콘 컬럼 고려)
-    const dragHandleWidth = rowReorderable ? DRAG_HANDLE_WIDTH : 0
-    const checkboxWidth = selectable ? CHECKBOX_WIDTH : 0
-    const expandWidth = expandable ? EXPAND_WIDTH : 0
-    const baseLeftOffset = dragHandleWidth + checkboxWidth + expandWidth
-
-    const leftPositions = new Map<keyof T, number>()
-    let currentLeft = baseLeftOffset
-    for (const col of leftColumns) {
-      leftPositions.set(col.accessorKey, currentLeft)
-      currentLeft += getColWidth(col)
-    }
-
-    // 오른쪽 고정 컬럼 위치 계산 (역순)
-    const rightPositions = new Map<keyof T, number>()
-    let currentRight = 0
-    for (let i = rightColumns.length - 1; i >= 0; i--) {
-      const col = rightColumns[i]
-      rightPositions.set(col.accessorKey, currentRight)
-      currentRight += getColWidth(col)
-    }
-
-    // 마지막 왼쪽/첫 번째 오른쪽 고정 컬럼 (그림자용)
-    return (column: DataTableColumn<T>, isHeader: boolean, isSelected?: boolean, groupCellSelected?: boolean) => {
-      if (!column.sticky) return { style: {}, className: "" }
-
-      // 컬럼 너비 (px 단위 문자열로 변환) - sticky는 고정 너비 필요
-      const colWidth = getColWidth(column)
-      const widthPx = `${colWidth}px`
-
-      const baseStyles: React.CSSProperties = {
-        position: "sticky",
-        zIndex: isHeader ? 20 : 10,
-        width: widthPx,
-        minWidth: widthPx,
-        maxWidth: widthPx,
-      }
-
-      // 그룹 셀 선택 상태가 있으면 우선 적용
-      const effectiveSelected = groupCellSelected ?? isSelected
-
-      if (column.sticky === "left") {
-        const leftPos = leftPositions.get(column.accessorKey) ?? 0
-        return {
-          style: {
-            ...baseStyles,
-            left: `${leftPos}px`,
-          },
-          // 헤더: hover 없음, 바디: 행 단위 hover (group-hover), 스티키는 다른 배경색
-          className: cn(
-            "transition-colors",
-            isHeader
-              ? "bg-slate-100 dark:bg-slate-800"
-              : effectiveSelected
-                ? "bg-blue-50 dark:bg-blue-900"
-                : "bg-slate-100 dark:bg-slate-800",
-          ),
-        }
-      }
-
-      const rightPos = rightPositions.get(column.accessorKey) ?? 0
-      return {
-        style: {
-          ...baseStyles,
-          right: `${rightPos}px`,
-        },
-        className: cn(
-          "transition-colors",
-          isHeader
-            ? "bg-slate-100 dark:bg-slate-800"
-            : effectiveSelected
-              ? "bg-blue-50 dark:bg-blue-900"
-              : "bg-slate-100 dark:bg-slate-800",
-        ),
-      }
-    }
-  }, [columns, selectable, expandable])
-
-  // 체크박스/확장 컬럼도 sticky로 만들기 (왼쪽 고정 컬럼이 있을 때)
-  const hasLeftStickyColumns = columns.some((col) => col.sticky === "left")
-
-  // 컬럼 너비 가져오기 (제어/비제어 컴포넌트 통합)
-  const getColumnWidth = React.useCallback(
-    (column: DataTableColumn<T>): number | undefined => {
-      const key = String(column.accessorKey)
-      // 제어 컴포넌트
-      if (columnWidths && key in columnWidths) {
-        return columnWidths[key]
-      }
-      // 비제어 컴포넌트
-      if (key in internalColumnWidths) {
-        return internalColumnWidths[key]
-      }
-      // 초기값: column.width 또는 undefined
-      if (column.width) {
-        return typeof column.width === "number" ? column.width : parseInt(column.width, 10)
-      }
-      return undefined
-    },
-    [columnWidths, internalColumnWidths]
-  )
-
-  // 리사이즈 핸들러
-  const handleResizeStart = React.useCallback(
-    (e: React.MouseEvent, column: DataTableColumn<T>) => {
-      e.preventDefault()
-      e.stopPropagation()
-      setResizingColumn(column.accessorKey)
-      resizeStartX.current = e.clientX
-      const currentWidth = getColumnWidth(column) ?? 150
-      resizeStartWidth.current = currentWidth
-    },
-    [getColumnWidth]
-  )
-
-  const handleResizeMove = React.useCallback(
-    (e: MouseEvent) => {
-      if (!resizingColumn) return
-      const delta = e.clientX - resizeStartX.current
-      const newWidth = Math.max(50, resizeStartWidth.current + delta) // 최소 50px
-      const key = String(resizingColumn)
-
-      if (onColumnResize) {
-        onColumnResize(resizingColumn, newWidth)
-      } else {
-        setInternalColumnWidths((prev) => ({ ...prev, [key]: newWidth }))
-      }
-    },
-    [resizingColumn, onColumnResize]
-  )
-
-  const handleResizeEnd = React.useCallback(() => {
-    setResizingColumn(null)
-  }, [])
-
-  // 전역 마우스 이벤트 등록 (리사이징 중)
-  React.useEffect(() => {
-    if (!resizingColumn) return
-
-    document.addEventListener("mousemove", handleResizeMove)
-    document.addEventListener("mouseup", handleResizeEnd)
-    // 드래그 중 텍스트 선택 방지
-    document.body.style.userSelect = "none"
-    document.body.style.cursor = "col-resize"
-
-    return () => {
-      document.removeEventListener("mousemove", handleResizeMove)
-      document.removeEventListener("mouseup", handleResizeEnd)
-      document.body.style.userSelect = ""
-      document.body.style.cursor = ""
-    }
-  }, [resizingColumn, handleResizeMove, handleResizeEnd])
+  // sticky 스타일 hook
+  const { getStickyStyles, hasLeftStickyColumns } = useStickyStyles<T>({
+    columns,
+    selectable,
+    expandable,
+    rowReorderable,
+  })
 
   // 컬럼 헤더 렌더링 함수
   const renderColumnHeader = (column: DataTableColumn<T>) => {
