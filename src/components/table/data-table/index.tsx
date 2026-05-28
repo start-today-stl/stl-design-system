@@ -70,11 +70,15 @@ export type {
   DataTableProps,
 }
 
+// default selectedIds 가 매 render 마다 새 [] 가 되면 row ctx 의 stability 가 깨짐.
+// 모듈 레벨 상수로 reference 안정화.
+const EMPTY_SELECTED_IDS: readonly (string | number)[] = []
+
 function DataTable<T extends { id: string | number }>({
   columns,
   data,
   selectable = false,
-  selectedIds = [],
+  selectedIds = EMPTY_SELECTED_IDS as (string | number)[],
   onSelectionChange,
   sortState,
   onSortChange,
