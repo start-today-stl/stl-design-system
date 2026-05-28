@@ -1,4 +1,4 @@
-function e(t) {
+function n(t) {
   switch (t) {
     case "center":
       return "text-center";
@@ -8,7 +8,14 @@ function e(t) {
       return "text-left";
   }
 }
+function i(t) {
+  const e = t.width ?? t.minWidth;
+  if (typeof e == "number") return e;
+  const r = parseInt(String(e ?? ""), 10);
+  return Number.isFinite(r) ? r : 150;
+}
 export {
-  e as getAlignClass
+  n as getAlignClass,
+  i as getNumericColumnWidth
 };
 //# sourceMappingURL=utils.mjs.map

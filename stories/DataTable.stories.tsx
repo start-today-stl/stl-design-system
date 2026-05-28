@@ -1434,12 +1434,13 @@ export const RowGrouping: Story = {
     ]
 
     const [selectedIds, setSelectedIds] = useState<number[]>([])
-    const [sortState, setSortState] = useState<SortState<SalesData>>({ column: null, direction: null })
+    const [sortState, setSortState] = useState<SortState<SalesData>[]>([])
+    const current = sortState[0]
     const [columnWidths, setColumnWidths] = useState<Record<string, number>>({})
 
     // 정렬 시 그룹 순서 유지: 1차 region, 2차 선택한 컬럼
     const sortedData = useMemo(() => {
-      if (!sortState.column || !sortState.direction) return salesData
+      if (!current?.column || !current?.direction) return salesData
 
       return [...salesData].sort((a, b) => {
         // 1차: region으로 정렬 (그룹 유지)
@@ -1447,14 +1448,14 @@ export const RowGrouping: Story = {
           return a.region.localeCompare(b.region)
         }
         // 2차: 선택한 컬럼으로 정렬
-        const aVal = a[sortState.column!]
-        const bVal = b[sortState.column!]
+        const aVal = a[current.column!]
+        const bVal = b[current.column!]
         const cmp = typeof aVal === "number" && typeof bVal === "number"
           ? aVal - bVal
           : String(aVal).localeCompare(String(bVal))
-        return sortState.direction === "asc" ? cmp : -cmp
+        return current.direction === "asc" ? cmp : -cmp
       })
-    }, [sortState])
+    }, [current, salesData])
 
     const salesColumns: DataTableColumn<SalesData>[] = [
       { accessorKey: "region", header: "지역", width: 100, sticky: "left" },
