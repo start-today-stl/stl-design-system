@@ -30,17 +30,17 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { SplashScreen } from "@/components/ui/splash-screen"
 import { RightIcon, DownIcon, RowAddIcon } from "@/icons"
 
-import { SortableHeaderCell } from "./data-table/sortable-header-cell"
-import { DataTableBodyRow } from "./data-table/data-table-body-row"
-import { useStickyStyles } from "./data-table/hooks/use-sticky-styles"
-import { useColumnResize } from "./data-table/hooks/use-column-resize"
-import { useRowGrouping } from "./data-table/hooks/use-row-grouping"
-import { useColumnReorder } from "./data-table/hooks/use-column-reorder"
-import { useRowReorder } from "./data-table/hooks/use-row-reorder"
-import { useCellEditing } from "./data-table/hooks/use-cell-editing"
-import { useSort } from "./data-table/hooks/use-sort"
-import { useHeaderGroups } from "./data-table/hooks/use-header-groups"
-import { getAlignClass as getAlignClassUtil } from "./data-table/utils"
+import { DataTableBodyRow } from "./data-table-body-row"
+import { DataTableColumnHeader } from "./data-table-column-header"
+import { useStickyStyles } from "./hooks/use-sticky-styles"
+import { useColumnResize } from "./hooks/use-column-resize"
+import { useRowGrouping } from "./hooks/use-row-grouping"
+import { useColumnReorder } from "./hooks/use-column-reorder"
+import { useRowReorder } from "./hooks/use-row-reorder"
+import { useCellEditing } from "./hooks/use-cell-editing"
+import { useSort } from "./hooks/use-sort"
+import { useHeaderGroups } from "./hooks/use-header-groups"
+import { getAlignClass as getAlignClassUtil } from "./utils"
 import {
   DRAG_HANDLE_WIDTH,
   CHECKBOX_WIDTH,
@@ -55,7 +55,7 @@ import {
   type ExpandableConfig,
   type RowActionsConfig,
   type DataTableProps,
-} from "./data-table/types"
+} from "./types"
 
 // 기존 export 호환성 유지 (외부 사용처에서 import)
 export type {
@@ -288,88 +288,24 @@ function DataTable<T extends { id: string | number }>({
     rowReorderable,
   })
 
-  // 컬럼 헤더 렌더링 함수
-  const renderColumnHeader = (column: DataTableColumn<T>) => {
-    const stickyData = getStickyStyles(column, true)
-    const toPx = (v: string | number) => typeof v === "number" ? `${v}px` : v
-    const baseStyle: React.CSSProperties = {}
-    if (!column.sticky) {
-      const resizedWidth = resizable ? getColumnWidth(column) : undefined
-      if (resizedWidth !== undefined) {
-        baseStyle.width = `${resizedWidth}px`
-        baseStyle.minWidth = `${resizedWidth}px`
-      } else {
-        if (column.width) baseStyle.width = toPx(column.width)
-        if (column.minWidth) baseStyle.minWidth = toPx(column.minWidth)
-      }
-    }
-    const style = { ...baseStyle, ...stickyData.style }
-
-    // 그룹 구분선 클래스 (그룹 경계 컬럼에 적용)
-    const needsRightBorder = columnsWithRightBorder.has(column.accessorKey)
-    const groupBorderClass = needsRightBorder && "border-r border-slate-200 dark:border-slate-700"
-
-    // 리사이즈 핸들 컴포넌트
-    const resizeHandle = resizable && (
-      <div
-        className={cn(
-          "absolute top-0 h-full w-[9px] cursor-col-resize opacity-0 hover:opacity-100 transition-opacity z-30",
-          resizingColumn === column.accessorKey && "opacity-100"
-        )}
-        style={{
-          right: "-4px",
-          background: "linear-gradient(to right, transparent, rgba(148,163,184,0.5) 50%, transparent)"
-        }}
-        onMouseDown={(e) => handleResizeStart(e, column)}
-        onPointerDown={(e) => e.stopPropagation()}
-        onClick={(e) => e.stopPropagation()}
-      />
-    )
-
-    // 드래그 가능 여부 (sticky 컬럼은 드래그 불가)
-    const isDraggable = columnReorderable && !column.sticky && !column.sortable
-
-    if (isDraggable) {
-      return (
-        <SortableHeaderCell
-          key={String(column.accessorKey)}
-          id={String(column.accessorKey)}
-          style={style}
-          className={cn(getAlignClass(column.align), stickyData.className, resizable && "relative overflow-visible", groupBorderClass)}
-        >
-          {column.header}
-          {resizeHandle}
-        </SortableHeaderCell>
-      )
-    }
-
-    if (column.sortable) {
-      return (
-        <TableSortableHead
-          key={String(column.accessorKey)}
-          sortDirection={getSortDirection(column.accessorKey)}
-          sortPriority={getSortPriority(column.accessorKey)}
-          onSort={() => handleSort(column.accessorKey)}
-          style={style}
-          className={cn(getAlignClass(column.align), stickyData.className, resizable && "relative overflow-visible", groupBorderClass)}
-        >
-          {column.header}
-          {resizeHandle}
-        </TableSortableHead>
-      )
-    }
-
-    return (
-      <TableHead
-        key={String(column.accessorKey)}
-        style={style}
-        className={cn(getAlignClass(column.align), stickyData.className, resizable && "relative overflow-visible", groupBorderClass)}
-      >
-        {column.header}
-        {resizeHandle}
-      </TableHead>
-    )
-  }
+  // 컬럼 헤더 렌더링 함수 (DataTableColumnHeader 컴포넌트로 래핑)
+  const renderColumnHeader = (column: DataTableColumn<T>) => (
+    <DataTableColumnHeader<T>
+      key={String(column.accessorKey)}
+      column={column}
+      stickyData={getStickyStyles(column, true)}
+      alignClass={getAlignClass(column.align)}
+      needsRightBorder={columnsWithRightBorder.has(column.accessorKey)}
+      resizable={resizable}
+      resizedWidth={resizable ? getColumnWidth(column) : undefined}
+      isResizing={resizingColumn === column.accessorKey}
+      onResizeStart={handleResizeStart}
+      columnReorderable={columnReorderable}
+      sortDirection={getSortDirection(column.accessorKey)}
+      sortPriority={getSortPriority(column.accessorKey)}
+      onSort={() => handleSort(column.accessorKey)}
+    />
+  )
 
   const columnsToRender = columnReorderable ? orderedColumns : columns
   const columnIds = columnsToRender.filter(col => !col.sticky).map(col => String(col.accessorKey))
