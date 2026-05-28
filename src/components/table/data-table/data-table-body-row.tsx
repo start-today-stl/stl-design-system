@@ -92,6 +92,11 @@ export interface DataTableBodyRowProps<T extends { id: string | number }> {
 function DataTableBodyRowImpl<T extends { id: string | number }>(
   props: DataTableBodyRowProps<T>,
 ) {
+  // TEMP DIAG: row render 횟수 추적 (제거 예정)
+  if (typeof process !== "undefined" && process.env.NODE_ENV !== "production") {
+    // eslint-disable-next-line no-console
+    console.log("[DT row render]", props.row.id)
+  }
   const {
     row,
     rowIndex,
