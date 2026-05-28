@@ -352,10 +352,8 @@ function DataTable<T extends { id: string | number }>({
   const rowCtx = React.useMemo(
     () => {
       // TEMP DIAG: ctx 재생성 시점 추적 (제거 예정)
-      if (typeof process !== "undefined" && process.env.NODE_ENV !== "production") {
-        // eslint-disable-next-line no-console
-        console.log("[DT rowCtx recreated]")
-      }
+      // eslint-disable-next-line no-console
+      console.log("[DT rowCtx recreated]")
       return ({
       columnsToRender,
       rowReorderable,
