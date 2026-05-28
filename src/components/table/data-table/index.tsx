@@ -347,51 +347,10 @@ function DataTable<T extends { id: string | number }>({
     shouldWarn,
   })
 
-  // TEMP DIAG: ctx deps 어떤 게 unstable 한지 추적 (제거 예정)
-  const __prevDeps = React.useRef<unknown[] | null>(null)
-  const __currentDeps = [
-    columnsToRender, rowReorderable, selectable, expandable,
-    showRowDelete, hasLeftStickyColumns, resizable, rowActions,
-    rowGrouping, middleRowSet, data.length,
-    getCheckboxHeaderLeftOffset, getExpandHeaderLeftOffset,
-    getRowSpan, isGroupCellHovered, isGroupCellSelected,
-    getStickyStyles, getColumnWidth, getAlignClass,
-    handleSelectRow, toggleRowExpanded,
-    startEditing, completeEditing, cancelEditing,
-    setEditValue, setEditingCell, editValueRef, editingCellRef,
-    onCellChange, onRowClick, rowClassName, setHoveredRowIndex,
-  ]
-  const __depNames = [
-    "columnsToRender", "rowReorderable", "selectable", "expandable",
-    "showRowDelete", "hasLeftStickyColumns", "resizable", "rowActions",
-    "rowGrouping", "middleRowSet", "data.length",
-    "getCheckboxHeaderLeftOffset", "getExpandHeaderLeftOffset",
-    "getRowSpan", "isGroupCellHovered", "isGroupCellSelected",
-    "getStickyStyles", "getColumnWidth", "getAlignClass",
-    "handleSelectRow", "toggleRowExpanded",
-    "startEditing", "completeEditing", "cancelEditing",
-    "setEditValue", "setEditingCell", "editValueRef", "editingCellRef",
-    "onCellChange", "onRowClick", "rowClassName", "setHoveredRowIndex",
-  ]
-  if (__prevDeps.current) {
-    const changed = __currentDeps
-      .map((dep, i) => (dep !== __prevDeps.current![i] ? __depNames[i] : null))
-      .filter(Boolean)
-    if (changed.length > 0) {
-      // eslint-disable-next-line no-console
-      console.log("[DT deps changed]", changed)
-    }
-  }
-  __prevDeps.current = __currentDeps
-
   // DataTableBodyRow에 전달할 테이블 레벨 컨텍스트
   // useMemo로 안정화: deps가 변경되지 않으면 ref 동일 → React.memo가 모든 행 skip 가능
   const rowCtx = React.useMemo(
-    () => {
-      // TEMP DIAG: ctx 재생성 시점 추적 (제거 예정)
-      // eslint-disable-next-line no-console
-      console.log("[DT rowCtx recreated]")
-      return ({
+    () => ({
       columnsToRender,
       rowReorderable,
       selectable,
@@ -424,8 +383,7 @@ function DataTable<T extends { id: string | number }>({
       onRowClick,
       rowClassName,
       setHoveredRowIndex,
-    })
-    },
+    }),
     [
       columnsToRender,
       rowReorderable,
