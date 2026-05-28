@@ -361,7 +361,9 @@ function DataTable<T extends { id: string | number }>({
       rowActions,
       rowGrouping,
       middleRowSet,
-      dataLength: data.length,
+      // dataLength 는 rowGrouping 의 isGroupSpanToEnd 계산에만 사용됨.
+      // rowGrouping 안 쓰면 0 으로 고정해서 행 추가/삭제 시 ctx invalidate 방지.
+      dataLength: rowGrouping ? data.length : 0,
       getCheckboxHeaderLeftOffset,
       getExpandHeaderLeftOffset,
       getRowSpan,
@@ -395,7 +397,7 @@ function DataTable<T extends { id: string | number }>({
       rowActions,
       rowGrouping,
       middleRowSet,
-      data.length,
+      rowGrouping ? data.length : 0,
       getCheckboxHeaderLeftOffset,
       getExpandHeaderLeftOffset,
       getRowSpan,
