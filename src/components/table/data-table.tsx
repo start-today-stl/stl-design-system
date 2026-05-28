@@ -7,7 +7,6 @@ import {
   useSensor,
   useSensors,
   type DragEndEvent,
-  type DraggableAttributes,
 } from "@dnd-kit/core"
 import {
   arrayMove,
@@ -15,9 +14,7 @@ import {
   sortableKeyboardCoordinates,
   horizontalListSortingStrategy,
   verticalListSortingStrategy,
-  useSortable,
 } from "@dnd-kit/sortable"
-import { CSS } from "@dnd-kit/utilities"
 
 import { cn } from "@/lib/utils"
 import {
@@ -31,10 +28,15 @@ import {
   type SortDirection,
 } from "@/components/table/table"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Input } from "@/components/ui/input"
 import { Skeleton } from "@/components/ui/skeleton"
 import { SplashScreen } from "@/components/ui/splash-screen"
-import { RightIcon, DownIcon, DragHandleIcon, WriteIcon, RowAddIcon, RowDeleteIcon } from "@/icons"
+import { RightIcon, DownIcon, WriteIcon, RowAddIcon, RowDeleteIcon } from "@/icons"
+
+import { DefaultEditComponent } from "./data-table/default-edit-component"
+import { SortableHeaderCell } from "./data-table/sortable-header-cell"
+import { SortableRow } from "./data-table/sortable-row"
+import { DragHandleCell } from "./data-table/drag-handle-cell"
+import type { DragHandleProps } from "./data-table/types"
 
 /** 편집 컴포넌트 Props */
 export interface EditComponentProps<T, K extends keyof T = keyof T> {
@@ -199,224 +201,6 @@ export interface DataTableProps<T extends { id: string | number }> {
   onSortChange?: (sortState: SortState<T>[]) => void
   /** 다중 정렬 활성화 (클릭 시 정렬 추가/순환). 기본 false=단일 정렬 */
   multiSort?: boolean
-}
-
-/** 기본 편집 컴포넌트 (Input) */
-function DefaultEditComponent<T>({
-  value,
-  onChange,
-  onComplete,
-  onCancel,
-  error,
-}: EditComponentProps<T>) {
-  const inputRef = React.useRef<HTMLInputElement>(null)
-
-  React.useEffect(() => {
-    inputRef.current?.focus()
-    inputRef.current?.select()
-  }, [])
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
-      e.preventDefault()
-      onComplete()
-    } else if (e.key === "Escape") {
-      e.preventDefault()
-      onCancel()
-    }
-  }
-
-  return (
-    <div className="flex flex-col gap-0.5">
-      <Input
-        ref={inputRef}
-        value={String(value ?? "")}
-        onChange={(e) => onChange(e.target.value as T[keyof T])}
-        onKeyDown={handleKeyDown}
-        onBlur={onComplete}
-        error={!!error}
-        tableMode
-        className="w-full px-2 text-xs"
-      />
-      {error && (
-        <span className="text-[10px] text-destructive dark:text-red-400">
-          {error}
-        </span>
-      )}
-    </div>
-  )
-}
-
-/** 드래그 가능한 헤더 셀 */
-interface SortableHeaderCellProps {
-  id: string
-  children: React.ReactNode
-  className?: string
-  style?: React.CSSProperties
-  disabled?: boolean
-}
-
-function SortableHeaderCell({
-  id,
-  children,
-  className,
-  style,
-  disabled,
-}: SortableHeaderCellProps) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id, disabled })
-
-  const dragStyle: React.CSSProperties = {
-    ...style,
-    transform: CSS.Transform.toString(transform),
-    transition,
-    opacity: isDragging ? 0.5 : 1,
-    cursor: disabled ? undefined : "grab",
-  }
-
-  return (
-    <th
-      ref={setNodeRef}
-      style={dragStyle}
-      className={cn(
-        "group/drag h-9 pl-1.5 pr-1.5 py-1.5 text-left align-middle font-medium text-slate-600 dark:text-slate-300",
-        "bg-slate-100 dark:bg-slate-800",
-        "[&:has([role=checkbox])]:pr-0",
-        "hover:bg-slate-200/70 dark:hover:bg-slate-700/70",
-        "transition-colors",
-        isDragging && "z-50",
-        className
-      )}
-      {...attributes}
-      {...listeners}
-    >
-      <span className="flex items-center gap-0.5">
-        <DragHandleIcon
-          size={16}
-          className="opacity-30 group-hover/drag:opacity-70 transition-opacity flex-shrink-0"
-        />
-        {children}
-      </span>
-    </th>
-  )
-}
-
-/** 드래그 가능한 로우 */
-interface SortableRowProps {
-  id: string
-  children: React.ReactNode | ((dragHandleProps: DragHandleProps) => React.ReactNode)
-  className?: string
-  isSelected?: boolean
-  onClick?: () => void
-  onMouseEnter?: () => void
-  onMouseLeave?: () => void
-}
-
-interface DragHandleProps {
-  listeners?: Record<string, unknown>
-  attributes?: DraggableAttributes
-  setActivatorNodeRef?: (element: HTMLElement | null) => void
-}
-
-function SortableRow({
-  id,
-  children,
-  className,
-  isSelected,
-  onClick,
-  onMouseEnter,
-  onMouseLeave,
-}: SortableRowProps) {
-  const {
-    setNodeRef,
-    setActivatorNodeRef,
-    listeners,
-    attributes,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id })
-
-  const style: React.CSSProperties = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    opacity: isDragging ? 0.5 : 1,
-  }
-
-  return (
-    <tr
-      ref={setNodeRef}
-      style={style}
-      data-state={isSelected ? "selected" : undefined}
-      className={cn(
-        "group border-b border-slate-200 dark:border-slate-700 transition-colors",
-        "bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800",
-        "data-[state=selected]:bg-blue-50 dark:data-[state=selected]:bg-blue-900",
-        isDragging && "z-50 shadow-lg",
-        className
-      )}
-      onClick={onClick}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
-    >
-      {typeof children === "function"
-        ? children({ listeners, attributes, setActivatorNodeRef })
-        : children}
-    </tr>
-  )
-}
-
-/** 드래그 핸들 셀 */
-interface DragHandleCellProps {
-  isSelected?: boolean
-  hasLeftStickyColumns?: boolean
-  dragHandleProps?: DragHandleProps
-}
-
-function DragHandleCell({ isSelected, hasLeftStickyColumns, dragHandleProps }: DragHandleCellProps) {
-  const DRAG_HANDLE_WIDTH = 32
-  const { listeners, attributes, setActivatorNodeRef } = dragHandleProps ?? {}
-
-  return (
-    <td
-      className={cn(
-        "p-0 align-middle",
-        hasLeftStickyColumns && (isSelected
-          ? "transition-colors bg-blue-50 dark:bg-blue-900"
-          : "transition-colors bg-slate-100 dark:bg-slate-800"
-        )
-      )}
-      style={hasLeftStickyColumns ? {
-        position: "sticky",
-        left: 0,
-        zIndex: 10,
-        width: `${DRAG_HANDLE_WIDTH}px`,
-        minWidth: `${DRAG_HANDLE_WIDTH}px`,
-        maxWidth: `${DRAG_HANDLE_WIDTH}px`,
-      } : {
-        width: `${DRAG_HANDLE_WIDTH}px`,
-        minWidth: `${DRAG_HANDLE_WIDTH}px`,
-        maxWidth: `${DRAG_HANDLE_WIDTH}px`,
-      }}
-    >
-      <div
-        ref={setActivatorNodeRef}
-        className="flex h-9 w-8 items-center justify-center cursor-grab text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
-        onClick={(e) => e.stopPropagation()}
-        aria-label="행 순서 변경"
-        {...listeners}
-        {...attributes}
-      >
-        <DragHandleIcon size={16} />
-      </div>
-    </td>
-  )
 }
 
 function DataTable<T extends { id: string | number }>({
