@@ -350,7 +350,13 @@ function DataTable<T extends { id: string | number }>({
   // DataTableBodyRow에 전달할 테이블 레벨 컨텍스트
   // useMemo로 안정화: deps가 변경되지 않으면 ref 동일 → React.memo가 모든 행 skip 가능
   const rowCtx = React.useMemo(
-    () => ({
+    () => {
+      // TEMP DIAG: ctx 재생성 시점 추적 (제거 예정)
+      if (typeof process !== "undefined" && process.env.NODE_ENV !== "production") {
+        // eslint-disable-next-line no-console
+        console.log("[DT rowCtx recreated]")
+      }
+      return ({
       columnsToRender,
       rowReorderable,
       selectable,
@@ -383,7 +389,8 @@ function DataTable<T extends { id: string | number }>({
       onRowClick,
       rowClassName,
       setHoveredRowIndex,
-    }),
+    })
+    },
     [
       columnsToRender,
       rowReorderable,

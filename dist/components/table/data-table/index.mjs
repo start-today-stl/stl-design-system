@@ -6,10 +6,10 @@ import { cn as P } from "../../../lib/utils.mjs";
 import { Table as Ht, TableHeader as Kt, TableRow as v, TableHead as m, TableSortableHead as zt, TableBody as _t, TableCell as S } from "../table.mjs";
 import { Checkbox as Ye } from "../../ui/checkbox.mjs";
 import { Skeleton as U } from "../../ui/skeleton.mjs";
-import { SplashScreen as jt } from "../../ui/splash-screen.mjs";
+import { SplashScreen as Ot } from "../../ui/splash-screen.mjs";
 import { DownIcon as qe } from "../../../icons/DownIcon.mjs";
 import { RightIcon as Je } from "../../../icons/RightIcon.mjs";
-import { RowAddIcon as Ot } from "../../../icons/RowAddIcon.mjs";
+import { RowAddIcon as jt } from "../../../icons/RowAddIcon.mjs";
 import { DataTableBodyRow as Qe } from "./data-table-body-row.mjs";
 import { DataTableColumnHeader as Lt } from "./data-table-column-header.mjs";
 import { useStickyStyles as Bt } from "./hooks/use-sticky-styles.mjs";
@@ -26,7 +26,7 @@ const Jt = [];
 function ks({
   columns: D,
   data: n,
-  selectable: y = !1,
+  selectable: u = !1,
   selectedIds: x = Jt,
   onSelectionChange: d,
   sortState: Ue,
@@ -69,12 +69,12 @@ function ks({
     editValue: pe,
     editValueRef: me,
     editingCellRef: fe,
-    setEditingCell: ye,
-    setEditValue: ge,
-    startEditing: ue,
+    setEditingCell: ue,
+    setEditValue: ye,
+    startEditing: ge,
     completeEditing: xe,
     cancelEditing: ke
-  } = Gt({ columns: D, data: n, onCellChange: Z }), be = i.useRef(null), [g, nt] = i.useState(0);
+  } = Gt({ columns: D, data: n, onCellChange: Z }), be = i.useRef(null), [y, nt] = i.useState(0);
   i.useEffect(() => {
     const e = be.current;
     if (!e) return;
@@ -104,13 +104,13 @@ function ks({
     Ge(vt, {
       coordinateGetter: It
     })
-  ), yt = i.useCallback(
+  ), ut = i.useCallback(
     (e) => {
       const { active: l } = e;
       String(l.id).startsWith("row-") ? Se(e) : Ne(e);
     },
     [Ne, Se]
-  ), R = (s == null ? void 0 : s.expandedRowIds) ?? ot, j = (s == null ? void 0 : s.onExpandedChange) ?? ct, X = n.length > 0 && x.length === n.length, we = x.length > 0 && !X, We = () => {
+  ), R = (s == null ? void 0 : s.expandedRowIds) ?? ot, O = (s == null ? void 0 : s.onExpandedChange) ?? ct, X = n.length > 0 && x.length === n.length, we = x.length > 0 && !X, We = () => {
     X ? d == null || d([]) : d == null || d(n.map((e) => e.id));
   }, Re = i.useCallback((e) => {
     x.includes(e) ? d == null || d(x.filter((l) => l !== e)) : d == null || d([...x, e]);
@@ -119,18 +119,18 @@ function ks({
     onSortChange: Ze,
     multiSort: Ae,
     shouldWarn: H
-  }), O = qt, ee = i.useCallback((e) => s ? s.rowExpandable ? s.rowExpandable(e) : !0 : !1, [s]), Ce = i.useCallback((e) => R.includes(e), [R]), Ie = i.useCallback((e) => {
-    R.includes(e) ? j(R.filter((l) => l !== e)) : j([...R, e]);
-  }, [R, j]), L = i.useMemo(() => s ? n.filter((e) => ee(e)).map((e) => e.id) : [], [n, s]), B = L.length > 0 && L.every((e) => R.includes(e)), Te = () => {
-    j(B ? [] : L);
-  }, M = (r == null ? void 0 : r.showDelete) ?? !!(r != null && r.onRowDelete), gt = (r == null ? void 0 : r.showAdd) ?? !!(r != null && r.onRowAdd), Y = D.length + (y ? 1 : 0) + (s ? 1 : 0) + (a ? 1 : 0) + (M ? 1 : 0), {
+  }), j = qt, ee = i.useCallback((e) => s ? s.rowExpandable ? s.rowExpandable(e) : !0 : !1, [s]), Ce = i.useCallback((e) => R.includes(e), [R]), Ie = i.useCallback((e) => {
+    R.includes(e) ? O(R.filter((l) => l !== e)) : O([...R, e]);
+  }, [R, O]), L = i.useMemo(() => s ? n.filter((e) => ee(e)).map((e) => e.id) : [], [n, s]), B = L.length > 0 && L.every((e) => R.includes(e)), Te = () => {
+    O(B ? [] : L);
+  }, M = (r == null ? void 0 : r.showDelete) ?? !!(r != null && r.onRowDelete), yt = (r == null ? void 0 : r.showAdd) ?? !!(r != null && r.onRowAdd), Y = D.length + (u ? 1 : 0) + (s ? 1 : 0) + (a ? 1 : 0) + (M ? 1 : 0), {
     middleRowSet: He,
     getRowSpan: Ke,
     isGroupCellHovered: ze,
     isGroupCellSelected: _e
   } = Vt({ data: n, rowGrouping: T, hoveredRowIndex: mt, selectedIds: x }), { getStickyStyles: V, hasLeftStickyColumns: W } = Bt({
     columns: D,
-    selectable: y,
+    selectable: u,
     expandable: s,
     rowReorderable: a
   }), q = (e) => /* @__PURE__ */ t(
@@ -138,7 +138,7 @@ function ks({
     {
       column: e,
       stickyData: V(e, !0),
-      alignClass: O(e.align),
+      alignClass: j(e.align),
       needsRightBorder: kt.has(e.accessorKey),
       resizable: C,
       resizedWidth: C ? G(e) : void 0,
@@ -150,14 +150,14 @@ function ks({
       onSort: () => Ee(e.accessorKey)
     },
     String(e.accessorKey)
-  ), p = I ? pt : D, je = p.filter((e) => !e.sticky).map((e) => String(e.accessorKey)), ut = n.map((e) => `row-${e.id}`), xt = i.useCallback(() => 0, []), te = i.useCallback(
+  ), p = I ? pt : D, Oe = p.filter((e) => !e.sticky).map((e) => String(e.accessorKey)), gt = n.map((e) => `row-${e.id}`), xt = i.useCallback(() => 0, []), te = i.useCallback(
     () => a ? c : 0,
     [a]
   ), J = i.useCallback(() => {
     let e = 0;
-    return a && (e += c), y && (e += h), e;
-  }, [a, y]), {
-    groupedColumnsSet: Oe,
+    return a && (e += c), u && (e += h), e;
+  }, [a, u]), {
+    groupedColumnsSet: je,
     columnsWithRightBorder: kt,
     getHeaderGroupColSpan: bt,
     getHeaderGroupStickyData: Le,
@@ -171,10 +171,10 @@ function ks({
     resizable: C,
     shouldWarn: H
   }), Me = i.useMemo(
-    () => ({
+    () => (typeof process < "u" && process.env.NODE_ENV !== "production" && console.log("[DT rowCtx recreated]"), {
       columnsToRender: p,
       rowReorderable: a,
-      selectable: y,
+      selectable: u,
       expandable: !!s,
       showRowDelete: M,
       hasLeftStickyColumns: W,
@@ -190,14 +190,14 @@ function ks({
       isGroupCellSelected: _e,
       getStickyStyles: V,
       getColumnWidth: G,
-      getAlignClass: O,
+      getAlignClass: j,
       handleSelectRow: Re,
       toggleRowExpanded: Ie,
-      startEditing: ue,
+      startEditing: ge,
       completeEditing: xe,
       cancelEditing: ke,
-      setEditValue: ge,
-      setEditingCell: ye,
+      setEditValue: ye,
+      setEditingCell: ue,
       editValueRef: me,
       editingCellRef: fe,
       onCellChange: Z,
@@ -208,7 +208,7 @@ function ks({
     [
       p,
       a,
-      y,
+      u,
       s,
       M,
       W,
@@ -224,14 +224,14 @@ function ks({
       _e,
       V,
       G,
-      O,
+      j,
       Re,
       Ie,
-      ue,
+      ge,
       xe,
       ke,
-      ge,
       ye,
+      ue,
       me,
       fe,
       Z,
@@ -254,7 +254,7 @@ function ks({
             }
           }
         ),
-        y && /* @__PURE__ */ t(
+        u && /* @__PURE__ */ t(
           m,
           {
             className: "!p-0 bg-slate-100 dark:bg-slate-800",
@@ -324,20 +324,20 @@ function ks({
             ).size > 1) {
               const b = [];
               let K = [], Q = E[0].sticky;
-              for (const u of E)
-                u.sticky === Q ? K.push(u) : (K.length > 0 && b.push({ cols: K, sticky: Q }), K = [u], Q = u.sticky);
+              for (const g of E)
+                g.sticky === Q ? K.push(g) : (K.length > 0 && b.push({ cols: K, sticky: Q }), K = [g], Q = g.sticky);
               K.length > 0 && b.push({ cols: K, sticky: Q });
-              const Fe = b.findIndex((u) => !u.sticky), St = Fe !== -1 ? Fe : 0;
-              return b.map((u, le) => {
+              const Fe = b.findIndex((g) => !g.sticky), St = Fe !== -1 ? Fe : 0;
+              return b.map((g, le) => {
                 const $t = {
                   header: e.group.header,
-                  columns: u.cols.map((Wt) => Wt.accessorKey),
+                  columns: g.cols.map((Wt) => Wt.accessorKey),
                   align: e.group.align
-                }, ae = u.sticky ? Le($t) : { style: {}, className: "" }, wt = !!ae.style.position;
+                }, ae = g.sticky ? Le($t) : { style: {}, className: "" }, wt = !!ae.style.position;
                 return /* @__PURE__ */ t(
                   m,
                   {
-                    colSpan: u.cols.length,
+                    colSpan: g.cols.length,
                     className: P(
                       "text-center font-medium bg-slate-100 dark:bg-slate-800",
                       e.group.align === "left" && "text-left",
@@ -379,7 +379,7 @@ function ks({
                 sortPriority: De(e.col.accessorKey),
                 onSort: () => Ee(e.col.accessorKey),
                 className: P(
-                  O(e.col.align),
+                  j(e.col.align),
                   "bg-slate-100 dark:bg-slate-800",
                   k.className
                 ),
@@ -392,7 +392,7 @@ function ks({
               {
                 rowSpan: 2,
                 className: P(
-                  O(e.col.align),
+                  j(e.col.align),
                   "bg-slate-100 dark:bg-slate-800",
                   k.className
                 ),
@@ -425,7 +425,7 @@ function ks({
             children: /* @__PURE__ */ t("span", { className: "sr-only", children: "순서 변경" })
           }
         ),
-        !w && y && /* @__PURE__ */ t(
+        !w && u && /* @__PURE__ */ t(
           m,
           {
             className: "!p-0 bg-slate-100 dark:bg-slate-800",
@@ -494,7 +494,7 @@ function ks({
             children: /* @__PURE__ */ t("span", { className: "sr-only", children: "행 삭제" })
           }
         ),
-        w ? I ? /* @__PURE__ */ t(ne, { items: je, strategy: Xe, children: p.filter((e) => Oe.has(e.accessorKey)).map(q) }) : p.filter((e) => Oe.has(e.accessorKey)).map(q) : I ? /* @__PURE__ */ t(ne, { items: je, strategy: Xe, children: p.map(q) }) : p.map(q)
+        w ? I ? /* @__PURE__ */ t(ne, { items: Oe, strategy: Xe, children: p.filter((e) => je.has(e.accessorKey)).map(q) }) : p.filter((e) => je.has(e.accessorKey)).map(q) : I ? /* @__PURE__ */ t(ne, { items: Oe, strategy: Xe, children: p.map(q) }) : p.map(q)
       ] })
     ] }),
     /* @__PURE__ */ N(_t, { children: [
@@ -512,7 +512,7 @@ function ks({
               "div",
               {
                 className: "sticky left-0 flex items-center justify-center h-full",
-                style: g ? { width: g } : void 0,
+                style: y ? { width: y } : void 0,
                 children: _
               }
             )
@@ -526,7 +526,7 @@ function ks({
                   className: "border-b border-slate-200 dark:border-slate-700 last:border-b-0",
                   children: [
                     a && /* @__PURE__ */ t("td", { className: "w-8 p-2", children: /* @__PURE__ */ t(U, { width: 16, height: 16 }) }),
-                    y && /* @__PURE__ */ t("td", { className: "w-10 p-2", children: /* @__PURE__ */ t(U, { width: 18, height: 18 }) }),
+                    u && /* @__PURE__ */ t("td", { className: "w-10 p-2", children: /* @__PURE__ */ t(U, { width: 18, height: 18 }) }),
                     s && /* @__PURE__ */ t("td", { className: "w-10 p-2", children: /* @__PURE__ */ t(U, { width: 18, height: 18 }) }),
                     p.map((E) => {
                       const re = E.width ?? E.minWidth, Pe = typeof re == "number" ? Math.min(re * 0.6, 150) : 100;
@@ -543,8 +543,8 @@ function ks({
               "div",
               {
                 className: "sticky left-0 flex items-center justify-center h-full",
-                style: g ? { width: g } : void 0,
-                children: /* @__PURE__ */ t(jt, { size: "lg" })
+                style: y ? { width: y } : void 0,
+                children: /* @__PURE__ */ t(Ot, { size: "lg" })
               }
             )
           )
@@ -558,12 +558,12 @@ function ks({
             "div",
             {
               className: "sticky left-0 flex items-center justify-center h-24 text-center",
-              style: g ? { width: g } : void 0,
+              style: y ? { width: y } : void 0,
               children: et
             }
           )
         }
-      ) }) : a ? /* @__PURE__ */ t(ne, { items: ut, strategy: Tt, children: n.map((e, l) => {
+      ) }) : a ? /* @__PURE__ */ t(ne, { items: gt, strategy: Tt, children: n.map((e, l) => {
         const o = Ce(e.id);
         return /* @__PURE__ */ N(i.Fragment, { children: [
           /* @__PURE__ */ t(
@@ -592,7 +592,7 @@ function ks({
                   style: {
                     position: "sticky",
                     left: 0,
-                    width: g ? `${g}px` : "100%",
+                    width: y ? `${y}px` : "100%",
                     maxWidth: "100%"
                   },
                   children: s.expandedRowRender(e)
@@ -630,7 +630,7 @@ function ks({
                   style: {
                     position: "sticky",
                     left: 0,
-                    width: g ? `${g}px` : "100%",
+                    width: y ? `${y}px` : "100%",
                     maxWidth: "100%"
                   },
                   children: s.expandedRowRender(e)
@@ -640,7 +640,7 @@ function ks({
           ) })
         ] }, e.id);
       }),
-      gt && !de && /* @__PURE__ */ N(v, { className: "bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800/50 border-b-0", children: [
+      yt && !de && /* @__PURE__ */ N(v, { className: "bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800/50 border-b-0", children: [
         a && /* @__PURE__ */ t(
           S,
           {
@@ -652,7 +652,7 @@ function ks({
             }
           }
         ),
-        y && /* @__PURE__ */ t(
+        u && /* @__PURE__ */ t(
           S,
           {
             className: "!p-0",
@@ -693,7 +693,7 @@ function ks({
                 },
                 className: "flex h-9 w-10 items-center justify-center transition-opacity hover:opacity-70",
                 "aria-label": "행 추가",
-                children: /* @__PURE__ */ t(Ot, { size: 20 })
+                children: /* @__PURE__ */ t(jt, { size: 20 })
               }
             )
           }
@@ -713,7 +713,7 @@ function ks({
     {
       sensors: ft,
       collisionDetection: Ct,
-      onDragEnd: yt,
+      onDragEnd: ut,
       children: Ve
     }
   ) : Ve;
