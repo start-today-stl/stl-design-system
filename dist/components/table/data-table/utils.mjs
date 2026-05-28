@@ -1,4 +1,4 @@
-function n(t) {
+function r(t) {
   switch (t) {
     case "center":
       return "text-center";
@@ -9,13 +9,17 @@ function n(t) {
   }
 }
 function i(t) {
+  return typeof t == "number" ? `${t}px` : t;
+}
+function u(t) {
   const e = t.width ?? t.minWidth;
   if (typeof e == "number") return e;
-  const r = parseInt(String(e ?? ""), 10);
-  return Number.isFinite(r) ? r : 150;
+  const n = parseInt(String(e ?? ""), 10);
+  return Number.isFinite(n) ? n : 150;
 }
 export {
-  n as getAlignClass,
-  i as getNumericColumnWidth
+  r as getAlignClass,
+  u as getNumericColumnWidth,
+  i as toPxString
 };
 //# sourceMappingURL=utils.mjs.map

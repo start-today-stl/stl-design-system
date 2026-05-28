@@ -1,4 +1,4 @@
-import { EditComponentProps, ValidationResult, DataTableColumn, HeaderGroup, RowGroupConfig, SortState, ExpandableConfig, RowActionsConfig, DataTableProps } from './data-table/types';
+import { EditComponentProps, ValidationResult, DataTableColumn, HeaderGroup, RowGroupConfig, SortState, ExpandableConfig, RowActionsConfig, DataTableProps } from './types';
 export type { EditComponentProps, ValidationResult, DataTableColumn, HeaderGroup, RowGroupConfig, SortState, ExpandableConfig, RowActionsConfig, DataTableProps, };
 declare function DataTable<T extends {
     id: string | number;
