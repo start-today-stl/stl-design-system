@@ -2018,3 +2018,259 @@ export const EditingPatterns: Story = {
     )
   },
 }
+
+// ============================================================
+// 가상화 (Virtualization) 스토리
+// 큰 데이터셋에서 화면에 보이는 행만 렌더링 — DOM 노드 수 큰 폭 감소
+// ============================================================
+
+interface VirtualRow {
+  id: number
+  no: string
+  name: string
+  email: string
+  role: string
+  status: "활성" | "비활성"
+  amount: number
+  date: string
+}
+
+const generateVirtualRows = (count: number): VirtualRow[] =>
+  Array.from({ length: count }, (_, i) => ({
+    id: i + 1,
+    no: `ORD-${String(i + 1).padStart(6, "0")}`,
+    name: `사용자 ${i + 1}`,
+    email: `user${i + 1}@example.com`,
+    role: i % 3 === 0 ? "관리자" : i % 3 === 1 ? "편집자" : "사용자",
+    status: i % 4 === 0 ? "비활성" : "활성",
+    amount: Math.floor(Math.random() * 1000000),
+    date: `2026-${String(((i % 12) + 1)).padStart(2, "0")}-${String(((i % 28) + 1)).padStart(2, "0")}`,
+  }))
+
+const virtualColumns: DataTableColumn<VirtualRow>[] = [
+  { accessorKey: "no", header: "주문번호", width: 140 },
+  { accessorKey: "name", header: "이름", width: 120 },
+  { accessorKey: "email", header: "이메일", minWidth: 200 },
+  { accessorKey: "role", header: "역할", width: 100 },
+  {
+    accessorKey: "status",
+    header: "상태",
+    width: 80,
+    cell: (value) => (
+      <Badge variant={value === "활성" ? "success-light" : "danger-light"}>
+        {value as string}
+      </Badge>
+    ),
+  },
+  {
+    accessorKey: "amount",
+    header: "금액",
+    width: 120,
+    align: "right",
+    cell: (value) => `${(value as number).toLocaleString()}원`,
+  },
+  { accessorKey: "date", header: "날짜", width: 120 },
+]
+
+/** 가상화 기본 — 1000행 */
+export const VirtualizationBasic: Story = {
+  render: () => {
+    const data = useMemo(() => generateVirtualRows(1000), [])
+    return (
+      <div className="space-y-3">
+        <div className="p-4 bg-blue-50 dark:bg-blue-900/30 rounded-md">
+          <h3 className="font-bold text-blue-800 dark:text-blue-200 mb-2">
+            가상화 (Virtualization) 기본
+          </h3>
+          <p className="text-sm text-blue-700 dark:text-blue-300">
+            데이터 1,000행이지만 실제로 DOM 에 렌더링된 행은 화면에 보이는 ~30행 + overscan 만큼.
+            <br />
+            `virtual` prop 만 추가하면 활성화. `maxHeight` 필수 (스크롤 컨테이너 높이 제약).
+          </p>
+        </div>
+        <p className="text-xs text-slate-500">
+          1,000행 데이터, virtual prop 활성, maxHeight 400px
+        </p>
+        <DataTable columns={virtualColumns} data={data} virtual maxHeight={400} />
+      </div>
+    )
+  },
+}
+
+/** 가상화 + sticky 컬럼 */
+export const VirtualizationWithSticky: Story = {
+  render: () => {
+    const data = useMemo(() => generateVirtualRows(1000), [])
+    const cols: DataTableColumn<VirtualRow>[] = [
+      { accessorKey: "no", header: "주문번호", width: 140, sticky: "left" },
+      { accessorKey: "name", header: "이름", width: 120, sticky: "left" },
+      { accessorKey: "email", header: "이메일", minWidth: 200 },
+      { accessorKey: "role", header: "역할", width: 100 },
+      {
+        accessorKey: "status",
+        header: "상태",
+        width: 80,
+        cell: (value) => (
+          <Badge variant={value === "활성" ? "success-light" : "danger-light"}>
+            {value as string}
+          </Badge>
+        ),
+      },
+      {
+        accessorKey: "amount",
+        header: "금액",
+        width: 120,
+        align: "right",
+        cell: (value) => `${(value as number).toLocaleString()}원`,
+      },
+      { accessorKey: "date", header: "날짜", width: 120, sticky: "right" },
+    ]
+    return (
+      <div className="space-y-3">
+        <p className="text-sm text-slate-500">
+          1,000행 + sticky 컬럼 (left: 주문번호/이름, right: 날짜) + 가상화. 가로/세로 스크롤 모두 정상.
+        </p>
+        <DataTable columns={cols} data={data} virtual maxHeight={400} />
+      </div>
+    )
+  },
+}
+
+/** 가상화 + selectable + sortable */
+export const VirtualizationWithSelectAndSort: Story = {
+  render: () => {
+    const [selectedIds, setSelectedIds] = useState<number[]>([])
+    const [sortState, setSortState] = useState<SortState<VirtualRow>[]>([])
+    const allData = useMemo(() => generateVirtualRows(1000), [])
+    const current = sortState[0]
+    const sortedData = useMemo(() => {
+      if (!current?.column || !current?.direction) return allData
+      return [...allData].sort((a, b) => {
+        const aVal = a[current.column!]
+        const bVal = b[current.column!]
+        const cmp =
+          typeof aVal === "number" && typeof bVal === "number"
+            ? aVal - bVal
+            : String(aVal).localeCompare(String(bVal))
+        return current.direction === "asc" ? cmp : -cmp
+      })
+    }, [allData, current])
+    const cols: DataTableColumn<VirtualRow>[] = virtualColumns.map((c) => ({
+      ...c,
+      sortable: c.accessorKey === "name" || c.accessorKey === "amount" || c.accessorKey === "date",
+    }))
+    return (
+      <div className="space-y-3">
+        <p className="text-sm text-slate-500">
+          1,000행 + 행 선택 + 정렬 (이름/금액/날짜) + 가상화. 선택과 정렬은 가상화와 직교 동작.
+        </p>
+        <p className="text-xs text-slate-500">
+          선택됨: {selectedIds.length}건 / 정렬: {current?.column ? `${String(current.column)} (${current.direction})` : "없음"}
+        </p>
+        <DataTable
+          columns={cols}
+          data={sortedData}
+          virtual
+          maxHeight={400}
+          selectable
+          selectedIds={selectedIds}
+          onSelectionChange={(ids) => setSelectedIds(ids as number[])}
+          sortState={sortState}
+          onSortChange={setSortState}
+        />
+      </div>
+    )
+  },
+}
+
+/** 가상화 + 확장행 */
+export const VirtualizationWithExpandable: Story = {
+  render: () => {
+    const data = useMemo(() => generateVirtualRows(1000), [])
+    return (
+      <div className="space-y-3">
+        <div className="p-3 bg-amber-50 dark:bg-amber-900/30 rounded-md text-xs text-amber-800 dark:text-amber-200">
+          <strong>알려진 한계:</strong> 확장행의 펼침 영역 자체는 virtualizer 가 측정하지 않습니다.
+          한 번에 여러 행을 펼친 채 빠르게 스크롤하면 위치 계산이 약간 부정확할 수 있습니다.
+          단일 펼침 / 일반 사용에선 체감 차이 없음.
+        </div>
+        <DataTable
+          columns={virtualColumns}
+          data={data}
+          virtual
+          maxHeight={400}
+          expandable={{
+            expandedRowRender: (row) => (
+              <div className="p-2 text-sm text-slate-700 dark:text-slate-300">
+                <strong>상세:</strong> {row.name} ({row.email}) — {row.no} / {row.date} / {row.amount.toLocaleString()}원
+              </div>
+            ),
+          }}
+        />
+      </div>
+    )
+  },
+}
+
+/** 가상화 옵션 커스터마이징 */
+export const VirtualizationCustomOptions: Story = {
+  render: () => {
+    const data = useMemo(() => generateVirtualRows(1000), [])
+    return (
+      <div className="space-y-3">
+        <div className="p-3 bg-slate-50 dark:bg-slate-800 rounded-md text-xs text-slate-700 dark:text-slate-300">
+          <code>virtual={`{{ overscan: 10, estimateSize: 50 }}`}</code>
+          <br />
+          overscan 늘리면 (화면 밖 추가 렌더 행) 스크롤 시 빈 공간이 덜 보이지만 메모리/렌더 부담 ↑.
+          estimateSize 는 실제 평균 행 높이에 맞춰주면 초기 스크롤 위치 계산 더 정확.
+        </div>
+        <DataTable
+          columns={virtualColumns}
+          data={data}
+          virtual={{ overscan: 10, estimateSize: 50 }}
+          maxHeight={400}
+        />
+      </div>
+    )
+  },
+}
+
+/** 가상화 - 스트레스 테스트 (10,000행) */
+export const VirtualizationStress10k: Story = {
+  render: () => {
+    const data = useMemo(() => generateVirtualRows(10000), [])
+    return (
+      <div className="space-y-3">
+        <div className="p-3 bg-red-50 dark:bg-red-900/30 rounded-md text-xs text-red-800 dark:text-red-200">
+          <strong>10,000행 스트레스 테스트.</strong> 가상화 미적용 시 DOM 노드 70만+ 개 (브라우저 멈춤).
+          가상화 ON 으로 화면에 보이는 ~30행만 렌더 → 부드러운 스크롤.
+        </div>
+        <DataTable columns={virtualColumns} data={data} virtual maxHeight={400} />
+      </div>
+    )
+  },
+}
+
+/** 비호환 케이스 — rowReorderable + virtual (자동 OFF + 콘솔 경고) */
+export const VirtualizationWithRowReorderableConflict: Story = {
+  render: () => {
+    const [items, setItems] = useState(generateVirtualRows(20))
+    return (
+      <div className="space-y-3">
+        <div className="p-3 bg-amber-50 dark:bg-amber-900/30 rounded-md text-xs text-amber-800 dark:text-amber-200">
+          <strong>비호환 시나리오:</strong> rowReorderable (행 DnD) 와 virtual 은 같이 못 씁니다.
+          이 스토리는 둘 다 켜놨는데 가상화가 자동 OFF 되고 dev 콘솔에 경고가 출력됩니다.
+          F12 → Console 확인.
+        </div>
+        <DataTable
+          columns={virtualColumns}
+          data={items}
+          virtual
+          maxHeight={400}
+          rowReorderable
+          onRowReorder={(newData) => setItems(newData as VirtualRow[])}
+        />
+      </div>
+    )
+  },
+}
