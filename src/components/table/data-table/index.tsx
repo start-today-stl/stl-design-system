@@ -959,6 +959,8 @@ function DataTable<T extends { id: string | number }>({
                           editingCell={editingCell}
                           editValue={editValue}
                           ctx={rowCtx}
+                          rowRef={virtualizer.measureElement}
+                          dataIndex={virtualItem.index}
                         />
                         {expandable && isExpanded && (
                           <TableRow className="bg-white dark:bg-slate-800/50 hover:bg-white dark:hover:bg-slate-800/50">
