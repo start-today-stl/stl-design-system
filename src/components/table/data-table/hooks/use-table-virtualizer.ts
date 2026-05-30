@@ -74,6 +74,39 @@ export function useTableVirtualizer({
     overscan,
   })
 
+  // 스크롤 컨테이너에 명시적 높이가 없으면 가상화 효과 없음 → dev 경고
+  // (wrapper 가 scrollable 영역을 가져야 useVirtualizer 가 정상 작동)
+  const scrollWarnedRef = React.useRef(false)
+  React.useEffect(() => {
+    if (!shouldWarn || !isVirtual) {
+      scrollWarnedRef.current = false
+      return
+    }
+    if (scrollWarnedRef.current) return
+    const el = scrollContainerRef.current
+    if (!el) return
+    // 마운트 직후 1 tick 늦게 측정 (레이아웃 완료 후)
+    const id = window.requestAnimationFrame(() => {
+      if (scrollWarnedRef.current) return
+      const isScrollable = el.scrollHeight > el.clientHeight + 1
+      const hasHeight = el.clientHeight > 0
+      if (!hasHeight) {
+        scrollWarnedRef.current = true
+        console.warn(
+          "[DataTable] virtual 활성화되었으나 스크롤 컨테이너의 높이가 0입니다. " +
+          "maxHeight prop 또는 부모 flex 레이아웃으로 높이 제약을 지정해주세요.",
+        )
+      } else if (!isScrollable && count > 30) {
+        scrollWarnedRef.current = true
+        console.warn(
+          "[DataTable] virtual 활성화되었으나 스크롤이 발생하지 않습니다. " +
+          "데이터 행 수에 비해 컨테이너 높이가 충분히 작은지 확인해주세요 (maxHeight 등).",
+        )
+      }
+    })
+    return () => window.cancelAnimationFrame(id)
+  }, [isVirtual, count, scrollContainerRef, shouldWarn])
+
   return {
     isVirtual,
     virtualizer: isVirtual ? virtualizer : null,
