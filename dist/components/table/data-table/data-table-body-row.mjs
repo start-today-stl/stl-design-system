@@ -1,16 +1,16 @@
-import { jsx as i, jsxs as de, Fragment as ce } from "react/jsx-runtime";
-import * as pe from "react";
+import { jsx as i, jsxs as pe, Fragment as fe } from "react/jsx-runtime";
+import * as he from "react";
 import { cn as k } from "../../../lib/utils.mjs";
-import { TableRow as fe, TableCell as R } from "../table.mjs";
-import { Checkbox as he } from "../../ui/checkbox.mjs";
-import { DownIcon as me } from "../../../icons/DownIcon.mjs";
-import { RightIcon as ue } from "../../../icons/RightIcon.mjs";
-import { RowDeleteIcon as ge } from "../../../icons/RowDeleteIcon.mjs";
-import { DataTableCell as xe } from "./data-table-cell.mjs";
-import { DragHandleCell as be } from "./drag-handle-cell.mjs";
-import { SortableRow as we } from "./sortable-row.mjs";
+import { TableRow as xe, TableCell as R } from "../table.mjs";
+import { Checkbox as me } from "../../ui/checkbox.mjs";
+import { DownIcon as ue } from "../../../icons/DownIcon.mjs";
+import { RightIcon as ge } from "../../../icons/RightIcon.mjs";
+import { RowDeleteIcon as be } from "../../../icons/RowDeleteIcon.mjs";
+import { DataTableCell as we } from "./data-table-cell.mjs";
+import { DragHandleCell as ye } from "./drag-handle-cell.mjs";
+import { SortableRow as Ce } from "./sortable-row.mjs";
 import { CHECKBOX_WIDTH as f, EXPAND_WIDTH as h, ROW_ACTIONS_WIDTH as S } from "./types.mjs";
-function ye(o) {
+function Ee(o) {
   const {
     row: e,
     rowIndex: r,
@@ -19,60 +19,62 @@ function ye(o) {
     isExpanded: c,
     editingCell: a,
     editValue: y,
-    ctx: C
+    ctx: C,
+    rowRef: E,
+    dataIndex: z
   } = o, {
-    columnsToRender: E,
+    columnsToRender: N,
     rowReorderable: D,
-    selectable: z,
-    expandable: N,
-    showRowDelete: L,
-    hasLeftStickyColumns: m,
-    resizable: P,
-    rowActions: u,
+    selectable: L,
+    expandable: P,
+    showRowDelete: j,
+    hasLeftStickyColumns: x,
+    resizable: O,
+    rowActions: m,
     rowGrouping: W,
     middleRowSet: I,
-    dataLength: j,
-    getCheckboxHeaderLeftOffset: O,
-    getExpandHeaderLeftOffset: V,
-    getRowSpan: G,
-    isGroupCellHovered: M,
-    isGroupCellSelected: _,
-    getStickyStyles: B,
-    getColumnWidth: X,
-    getAlignClass: q,
-    handleSelectRow: F,
-    toggleRowExpanded: A,
-    startEditing: J,
-    completeEditing: Q,
-    cancelEditing: U,
-    setEditValue: Y,
-    setEditingCell: Z,
-    editValueRef: ee,
-    editingCellRef: te,
-    onCellChange: ie,
+    dataLength: V,
+    getCheckboxHeaderLeftOffset: G,
+    getExpandHeaderLeftOffset: M,
+    getRowSpan: _,
+    isGroupCellHovered: B,
+    isGroupCellSelected: X,
+    getStickyStyles: q,
+    getColumnWidth: F,
+    getAlignClass: A,
+    handleSelectRow: J,
+    toggleRowExpanded: Q,
+    startEditing: U,
+    completeEditing: Y,
+    cancelEditing: Z,
+    setEditValue: ee,
+    setEditingCell: te,
+    editValueRef: ie,
+    editingCellRef: oe,
+    onCellChange: re,
     onRowClick: l,
     rowClassName: p,
     setHoveredRowIndex: $
-  } = C, oe = (g, t) => (a == null ? void 0 : a.rowId) === g && (a == null ? void 0 : a.columnKey) === t, T = (g) => /* @__PURE__ */ de(ce, { children: [
+  } = C, ne = (u, t) => (a == null ? void 0 : a.rowId) === u && (a == null ? void 0 : a.columnKey) === t, T = (u) => /* @__PURE__ */ pe(fe, { children: [
     D && /* @__PURE__ */ i(
-      be,
+      ye,
       {
         isSelected: n,
-        hasLeftStickyColumns: m,
-        dragHandleProps: g
+        hasLeftStickyColumns: x,
+        dragHandleProps: u
       }
     ),
-    z && /* @__PURE__ */ i(
+    L && /* @__PURE__ */ i(
       R,
       {
         onClick: (t) => t.stopPropagation(),
         className: k(
           "!p-0",
-          m && (n ? "transition-colors bg-blue-50 dark:bg-blue-900" : "transition-colors bg-slate-100 dark:bg-slate-800")
+          x && (n ? "transition-colors bg-blue-50 dark:bg-blue-900" : "transition-colors bg-slate-100 dark:bg-slate-800")
         ),
-        style: m ? {
+        style: x ? {
           position: "sticky",
-          left: O(),
+          left: G(),
           zIndex: 10,
           width: `${f}px`,
           minWidth: `${f}px`,
@@ -83,25 +85,25 @@ function ye(o) {
           maxWidth: `${f}px`
         },
         children: /* @__PURE__ */ i("div", { className: "flex items-center justify-center h-9", children: /* @__PURE__ */ i(
-          he,
+          me,
           {
             checked: n,
-            onCheckedChange: () => F(e.id),
+            onCheckedChange: () => J(e.id),
             "aria-label": `행 ${e.id} 선택`
           }
         ) })
       }
     ),
-    N && /* @__PURE__ */ i(
+    P && /* @__PURE__ */ i(
       R,
       {
         className: k(
           "p-0",
-          m && (n ? "transition-colors bg-blue-50 dark:bg-blue-900" : "transition-colors bg-slate-100 dark:bg-slate-800")
+          x && (n ? "transition-colors bg-blue-50 dark:bg-blue-900" : "transition-colors bg-slate-100 dark:bg-slate-800")
         ),
-        style: m ? {
+        style: x ? {
           position: "sticky",
-          left: V(),
+          left: M(),
           zIndex: 10,
           width: `${h}px`,
           minWidth: `${h}px`,
@@ -116,16 +118,16 @@ function ye(o) {
           "button",
           {
             type: "button",
-            onClick: () => A(e.id),
+            onClick: () => Q(e.id),
             className: "flex h-9 w-10 items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors",
             "aria-label": c ? "행 접기" : "행 펼치기",
             "aria-expanded": c,
-            children: c ? /* @__PURE__ */ i(me, { size: 24 }) : /* @__PURE__ */ i(ue, { size: 24 })
+            children: c ? /* @__PURE__ */ i(ue, { size: 24 }) : /* @__PURE__ */ i(ge, { size: 24 })
           }
         )
       }
     ),
-    L && /* @__PURE__ */ i(
+    j && /* @__PURE__ */ i(
       R,
       {
         className: "!p-0",
@@ -141,58 +143,58 @@ function ye(o) {
             type: "button",
             onClick: () => {
               var t;
-              return (t = u == null ? void 0 : u.onRowDelete) == null ? void 0 : t.call(u, e);
+              return (t = m == null ? void 0 : m.onRowDelete) == null ? void 0 : t.call(m, e);
             },
             className: "flex h-9 w-10 items-center justify-center transition-opacity hover:opacity-70",
             "aria-label": "행 삭제",
-            children: /* @__PURE__ */ i(ge, { size: 20 })
+            children: /* @__PURE__ */ i(be, { size: 20 })
           }
         )
       }
     ),
-    E.map((t) => {
-      const s = G(r, t.accessorKey);
+    N.map((t) => {
+      const s = _(r, t.accessorKey);
       if (s === 0) return null;
-      const re = e[t.accessorKey], ne = oe(e.id, t.accessorKey), x = s !== void 0 && s > 1, ae = x && M(r, s), H = x && _(r, s), v = B(t, !1, n, x ? H : void 0), K = (d) => typeof d == "number" ? `${d}px` : d, b = {};
+      const ae = e[t.accessorKey], le = ne(e.id, t.accessorKey), g = s !== void 0 && s > 1, se = g && B(r, s), H = g && X(r, s), v = q(t, !1, n, g ? H : void 0), K = (d) => typeof d == "number" ? `${d}px` : d, b = {};
       if (!t.sticky) {
-        const d = P ? X(t) : void 0;
+        const d = O ? F(t) : void 0;
         d !== void 0 ? (b.width = `${d}px`, b.minWidth = `${d}px`) : (t.width && (b.width = K(t.width)), t.minWidth && (b.minWidth = K(t.minWidth)));
       }
-      const le = { ...b, ...v.style }, se = x && r + s >= j;
+      const de = { ...b, ...v.style }, ce = g && r + s >= V;
       return /* @__PURE__ */ i(
-        xe,
+        we,
         {
           row: e,
           rowIndex: r,
           column: t,
-          value: re,
+          value: ae,
           isSelected: n,
           rowSpan: s,
-          hasRowSpan: x,
-          groupCellHovered: ae,
+          hasRowSpan: g,
+          groupCellHovered: se,
           groupCellSelected: H,
-          isEditing: ne,
-          onStartEdit: J,
+          isEditing: le,
+          onStartEdit: U,
           editValue: y,
           editingCell: a,
-          setEditValue: Y,
-          setEditingCell: Z,
-          editValueRef: ee,
-          editingCellRef: te,
-          completeEditing: Q,
-          cancelEditing: U,
-          onCellChange: ie,
+          setEditValue: ee,
+          setEditingCell: te,
+          editValueRef: ie,
+          editingCellRef: oe,
+          completeEditing: Y,
+          cancelEditing: Z,
+          onCellChange: re,
           stickyData: v,
-          cellStyle: le,
-          alignClass: q(t.align),
-          isGroupSpanToEnd: se
+          cellStyle: de,
+          alignClass: A(t.align),
+          isGroupSpanToEnd: ce
         },
         String(t.accessorKey)
       );
     })
   ] });
   return D ? /* @__PURE__ */ i(
-    we,
+    Ce,
     {
       id: `row-${e.id}`,
       isSelected: n,
@@ -200,11 +202,13 @@ function ye(o) {
       onClick: () => l == null ? void 0 : l(e),
       onMouseEnter: W ? () => $(r) : void 0,
       onMouseLeave: W ? () => $(null) : void 0,
-      children: (g) => T(g)
+      children: (u) => T(u)
     }
   ) : /* @__PURE__ */ i(
-    fe,
+    xe,
     {
+      ref: E,
+      "data-index": z,
       "data-state": n ? "selected" : void 0,
       className: k(
         l && "cursor-pointer",
@@ -218,17 +222,17 @@ function ye(o) {
     }
   );
 }
-function Ce(o, e) {
+function We(o, e) {
   var w, c, a, y, C, E;
   if (o.row !== e.row || o.isSelected !== e.isSelected || o.isExpanded !== e.isExpanded || o.canExpand !== e.canExpand || o.rowIndex !== e.rowIndex) return !1;
   const r = ((w = o.editingCell) == null ? void 0 : w.rowId) === o.row.id, n = ((c = e.editingCell) == null ? void 0 : c.rowId) === e.row.id;
   return !(r !== n || r && (o.editValue !== e.editValue || ((a = o.editingCell) == null ? void 0 : a.columnKey) !== ((y = e.editingCell) == null ? void 0 : y.columnKey) || ((C = o.editingCell) == null ? void 0 : C.error) !== ((E = e.editingCell) == null ? void 0 : E.error)) || o.ctx !== e.ctx);
 }
-const Ke = pe.memo(
-  ye,
-  Ce
+const Ne = he.memo(
+  Ee,
+  We
 );
 export {
-  Ke as DataTableBodyRow
+  Ne as DataTableBodyRow
 };
 //# sourceMappingURL=data-table-body-row.mjs.map

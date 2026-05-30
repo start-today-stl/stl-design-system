@@ -5,7 +5,7 @@ import { sortableKeyboardCoordinates as _t, SortableContext as fe, horizontalLis
 import { cn as G } from "../../../lib/utils.mjs";
 import { Table as Ot, TableHeader as Lt, TableRow as w, TableHead as y, TableSortableHead as Vt, TableBody as Bt, TableCell as m } from "../table.mjs";
 import { Checkbox as Je } from "../../ui/checkbox.mjs";
-import { Skeleton as se } from "../../ui/skeleton.mjs";
+import { Skeleton as re } from "../../ui/skeleton.mjs";
 import { SplashScreen as Mt } from "../../ui/splash-screen.mjs";
 import { DownIcon as Qe } from "../../../icons/DownIcon.mjs";
 import { RightIcon as Ue } from "../../../icons/RightIcon.mjs";
@@ -24,8 +24,8 @@ import { useTableVirtualizer as At } from "./hooks/use-table-virtualizer.mjs";
 import { getAlignClass as es } from "./utils.mjs";
 import { DRAG_HANDLE_WIDTH as c, CHECKBOX_WIDTH as f, EXPAND_WIDTH as x, ROW_ACTIONS_WIDTH as W } from "./types.mjs";
 const ts = [];
-function Rs({
-  columns: z,
+function vs({
+  columns: H,
   data: n,
   selectable: k = !1,
   selectedIds: b = ts,
@@ -34,51 +34,51 @@ function Rs({
   onSortChange: Ae,
   multiSort: et = !1,
   onRowClick: ue,
-  onCellChange: re,
+  onCellChange: ie,
   expandable: s,
   emptyMessage: tt = "데이터가 없습니다.",
   className: st,
   rowClassName: ye,
   maxHeight: V,
-  resizable: H = !1,
+  resizable: K = !1,
   columnWidths: rt,
   onColumnResize: it,
-  columnReorderable: K = !1,
+  columnReorderable: _ = !1,
   columnOrder: lt,
   onColumnReorder: at,
-  rowReorderable: ie = !1,
+  rowReorderable: le = !1,
   onRowReorder: nt,
   loading: xe = !1,
   loadingMode: J = "splash",
   loadingContent: B,
   headerGroups: E,
-  rowGrouping: $,
+  rowGrouping: R,
   rowActions: i,
   virtual: ot
 }) {
-  const o = $ ? !1 : ie, C = typeof process < "u" ? process.env.NODE_ENV !== "production" : !1;
+  const o = R ? !1 : le, C = typeof process < "u" ? process.env.NODE_ENV !== "production" : !1;
   r.useEffect(() => {
-    C && $ && ie && console.warn(
+    C && R && le && console.warn(
       "[DataTable] rowGrouping과 rowReorderable은 함께 사용할 수 없습니다. rowSpan 셀이 있는 행을 드래그하면 레이아웃이 깨지므로 rowReorderable이 무시됩니다."
     );
-  }, [$, ie, C]), r.useEffect(() => {
+  }, [R, le, C]), r.useEffect(() => {
     C && B && J !== "splash" && console.warn(
       "[DataTable] loadingContent와 loadingMode가 함께 전달되었습니다. loadingContent가 우선 적용됩니다."
     );
   }, [B, J, C]);
   const {
-    editingCell: le,
-    editValue: ae,
+    editingCell: ae,
+    editValue: ne,
     editValueRef: ke,
     editingCellRef: be,
     setEditingCell: Ne,
     setEditValue: Se,
     startEditing: we,
-    completeEditing: $e,
-    cancelEditing: ve
-  } = Qt({ columns: z, data: n, onCellChange: re }), ne = r.useRef(null), [h, ct] = r.useState(0);
+    completeEditing: Re,
+    cancelEditing: $e
+  } = Qt({ columns: H, data: n, onCellChange: ie }), oe = r.useRef(null), [h, ct] = r.useState(0);
   r.useEffect(() => {
-    const e = ne.current;
+    const e = oe.current;
     if (!e) return;
     const l = () => ct(e.clientWidth);
     l();
@@ -91,9 +91,9 @@ function Rs({
     resizingColumn: pt,
     getColumnWidth: Q,
     handleResizeStart: mt
-  } = Yt({ resizable: H, columnWidths: rt, onColumnResize: it }), { orderedColumns: ft, handleColumnDragEnd: Re } = Gt({
-    columns: z,
-    columnReorderable: K,
+  } = Yt({ resizable: K, columnWidths: rt, onColumnResize: it }), { orderedColumns: ft, handleColumnDragEnd: ve } = Gt({
+    columns: H,
+    columnReorderable: _,
     columnOrder: lt,
     onColumnReorder: at
   }), { handleRowDragEnd: We } = Jt({ data: n, onRowReorder: nt }), [gt, Ee] = r.useState(null), ut = It(
@@ -109,9 +109,9 @@ function Rs({
   ), yt = r.useCallback(
     (e) => {
       const { active: l } = e;
-      String(l.id).startsWith("row-") ? We(e) : Re(e);
+      String(l.id).startsWith("row-") ? We(e) : ve(e);
     },
-    [Re, We]
+    [ve, We]
   ), I = (s == null ? void 0 : s.expandedRowIds) ?? dt, M = (s == null ? void 0 : s.onExpandedChange) ?? ht, U = n.length > 0 && b.length === n.length, De = b.length > 0 && !U, Ce = () => {
     U ? d == null || d([]) : d == null || d(n.map((e) => e.id));
   }, Ie = r.useCallback((e) => {
@@ -121,62 +121,62 @@ function Rs({
     onSortChange: Ae,
     multiSort: et,
     shouldWarn: C
-  }), F = es, Z = r.useCallback((e) => s ? s.rowExpandable ? s.rowExpandable(e) : !0 : !1, [s]), oe = r.useCallback((e) => I.includes(e), [I]), Ke = r.useCallback((e) => {
+  }), F = es, Z = r.useCallback((e) => s ? s.rowExpandable ? s.rowExpandable(e) : !0 : !1, [s]), ce = r.useCallback((e) => I.includes(e), [I]), Ke = r.useCallback((e) => {
     I.includes(e) ? M(I.filter((l) => l !== e)) : M([...I, e]);
   }, [I, M]), P = r.useMemo(() => s ? n.filter((e) => Z(e)).map((e) => e.id) : [], [n, s]), X = P.length > 0 && P.every((e) => I.includes(e)), _e = () => {
     M(X ? [] : P);
-  }, Y = (i == null ? void 0 : i.showDelete) ?? !!(i != null && i.onRowDelete), xt = (i == null ? void 0 : i.showAdd) ?? !!(i != null && i.onRowAdd), T = z.length + (k ? 1 : 0) + (s ? 1 : 0) + (o ? 1 : 0) + (Y ? 1 : 0), {
+  }, Y = (i == null ? void 0 : i.showDelete) ?? !!(i != null && i.onRowDelete), xt = (i == null ? void 0 : i.showAdd) ?? !!(i != null && i.onRowAdd), T = H.length + (k ? 1 : 0) + (s ? 1 : 0) + (o ? 1 : 0) + (Y ? 1 : 0), {
     middleRowSet: je,
     getRowSpan: Oe,
     isGroupCellHovered: Le,
     isGroupCellSelected: Ve
-  } = qt({ data: n, rowGrouping: $, hoveredRowIndex: gt, selectedIds: b }), { getStickyStyles: q, hasLeftStickyColumns: D } = Xt({
-    columns: z,
+  } = qt({ data: n, rowGrouping: R, hoveredRowIndex: gt, selectedIds: b }), { getStickyStyles: q, hasLeftStickyColumns: D } = Xt({
+    columns: H,
     selectable: k,
     expandable: s,
     rowReorderable: o
-  }), kt = o ? "rowReorderable (행 드래그앤드롭)" : $ ? "rowGrouping (rowSpan 그룹핑)" : null, { isVirtual: bt, virtualizer: ce } = At({
+  }), kt = o ? "rowReorderable (행 드래그앤드롭)" : R ? "rowGrouping (rowSpan 그룹핑)" : null, { isVirtual: bt, virtualizer: A } = At({
     virtual: ot,
     disabledReason: kt,
     count: n.length,
-    scrollContainerRef: ne,
+    scrollContainerRef: oe,
     shouldWarn: C
-  }), A = (e) => /* @__PURE__ */ t(
+  }), ee = (e) => /* @__PURE__ */ t(
     Pt,
     {
       column: e,
       stickyData: q(e, !0),
       alignClass: F(e.align),
       needsRightBorder: wt.has(e.accessorKey),
-      resizable: H,
-      resizedWidth: H ? Q(e) : void 0,
+      resizable: K,
+      resizedWidth: K ? Q(e) : void 0,
       isResizing: pt === e.accessorKey,
       onResizeStart: mt,
-      columnReorderable: K,
+      columnReorderable: _,
       sortDirection: ze(e.accessorKey),
       sortPriority: He(e.accessorKey),
       onSort: () => Te(e.accessorKey)
     },
     String(e.accessorKey)
-  ), g = K ? ft : z, Be = g.filter((e) => !e.sticky).map((e) => String(e.accessorKey)), Nt = n.map((e) => `row-${e.id}`), St = r.useCallback(() => 0, []), de = r.useCallback(
+  ), g = _ ? ft : H, Be = g.filter((e) => !e.sticky).map((e) => String(e.accessorKey)), Nt = n.map((e) => `row-${e.id}`), St = r.useCallback(() => 0, []), de = r.useCallback(
     () => o ? c : 0,
     [o]
-  ), ee = r.useCallback(() => {
+  ), te = r.useCallback(() => {
     let e = 0;
     return o && (e += c), k && (e += f), e;
   }, [o, k]), {
     groupedColumnsSet: Me,
     columnsWithRightBorder: wt,
-    getHeaderGroupColSpan: $t,
+    getHeaderGroupColSpan: Rt,
     getHeaderGroupStickyData: Fe,
     headerGroupItems: Pe
   } = Zt({
-    columns: z,
+    columns: H,
     columnsToRender: g,
     headerGroups: E,
     getStickyStyles: q,
     getColumnWidth: Q,
-    resizable: H,
+    resizable: K,
     shouldWarn: C
   }), he = r.useMemo(
     () => ({
@@ -186,15 +186,15 @@ function Rs({
       expandable: !!s,
       showRowDelete: Y,
       hasLeftStickyColumns: D,
-      resizable: H,
+      resizable: K,
       rowActions: i,
-      rowGrouping: $,
+      rowGrouping: R,
       middleRowSet: je,
       // dataLength 는 rowGrouping 의 isGroupSpanToEnd 계산에만 사용됨.
       // rowGrouping 안 쓰면 0 으로 고정해서 행 추가/삭제 시 ctx invalidate 방지.
-      dataLength: $ ? n.length : 0,
+      dataLength: R ? n.length : 0,
       getCheckboxHeaderLeftOffset: de,
-      getExpandHeaderLeftOffset: ee,
+      getExpandHeaderLeftOffset: te,
       getRowSpan: Oe,
       isGroupCellHovered: Le,
       isGroupCellSelected: Ve,
@@ -204,13 +204,13 @@ function Rs({
       handleSelectRow: Ie,
       toggleRowExpanded: Ke,
       startEditing: we,
-      completeEditing: $e,
-      cancelEditing: ve,
+      completeEditing: Re,
+      cancelEditing: $e,
       setEditValue: Se,
       setEditingCell: Ne,
       editValueRef: ke,
       editingCellRef: be,
-      onCellChange: re,
+      onCellChange: ie,
       onRowClick: ue,
       rowClassName: ye,
       setHoveredRowIndex: Ee
@@ -222,13 +222,13 @@ function Rs({
       s,
       Y,
       D,
-      H,
+      K,
       i,
-      $,
+      R,
       je,
-      $ ? n.length : 0,
+      R ? n.length : 0,
       de,
-      ee,
+      te,
       Oe,
       Le,
       Ve,
@@ -238,18 +238,18 @@ function Rs({
       Ie,
       Ke,
       we,
+      Re,
       $e,
-      ve,
       Se,
       Ne,
       ke,
       be,
-      re,
+      ie,
       ue,
       ye,
       Ee
     ]
-  ), Xe = /* @__PURE__ */ u(Ot, { className: st, maxHeight: V, wrapperRef: ne, children: [
+  ), Xe = /* @__PURE__ */ u(Ot, { className: st, maxHeight: V, wrapperRef: oe, children: [
     /* @__PURE__ */ u(Lt, { children: [
       E && E.length > 0 && /* @__PURE__ */ u(w, { children: [
         o && /* @__PURE__ */ t(
@@ -293,7 +293,7 @@ function Rs({
             style: {
               width: `${x}px`,
               minWidth: `${x}px`,
-              ...D && { position: "sticky", left: ee(), zIndex: 20 }
+              ...D && { position: "sticky", left: te(), zIndex: 20 }
             },
             children: (s == null ? void 0 : s.showExpandAll) !== !1 && P.length > 0 && /* @__PURE__ */ t(
               "button",
@@ -322,23 +322,23 @@ function Rs({
           }
         ),
         Pe.map((e, l) => {
-          const a = Pe[l + 1], _ = e.type === "group" && (a == null ? void 0 : a.type) === "group";
+          const a = Pe[l + 1], j = e.type === "group" && (a == null ? void 0 : a.type) === "group";
           if (e.type === "group") {
-            const p = $t(e.group);
+            const p = Rt(e.group);
             if (p === 0) return null;
             const N = g.filter(
-              (R) => e.group.columns.includes(R.accessorKey)
+              (v) => e.group.columns.includes(v.accessorKey)
             );
             if (new Set(
-              N.map((R) => R.sticky ?? "none")
+              N.map((v) => v.sticky ?? "none")
             ).size > 1) {
-              const R = [];
-              let L = [], te = N[0].sticky;
+              const v = [];
+              let L = [], se = N[0].sticky;
               for (const S of N)
-                S.sticky === te ? L.push(S) : (L.length > 0 && R.push({ cols: L, sticky: te }), L = [S], te = S.sticky);
-              L.length > 0 && R.push({ cols: L, sticky: te });
-              const Ye = R.findIndex((S) => !S.sticky), Rt = Ye !== -1 ? Ye : 0;
-              return R.map((S, pe) => {
+                S.sticky === se ? L.push(S) : (L.length > 0 && v.push({ cols: L, sticky: se }), L = [S], se = S.sticky);
+              L.length > 0 && v.push({ cols: L, sticky: se });
+              const Ye = v.findIndex((S) => !S.sticky), vt = Ye !== -1 ? Ye : 0;
+              return v.map((S, pe) => {
                 const Wt = {
                   header: e.group.header,
                   columns: S.cols.map((Dt) => Dt.accessorKey),
@@ -352,17 +352,17 @@ function Rs({
                       "text-center font-medium bg-slate-100 dark:bg-slate-800",
                       e.group.align === "left" && "text-left",
                       e.group.align === "right" && "text-right",
-                      _ && pe === R.length - 1 && "border-r border-slate-200 dark:border-slate-700",
+                      j && pe === v.length - 1 && "border-r border-slate-200 dark:border-slate-700",
                       me.className
                     ),
                     style: Et ? me.style : { position: "relative", zIndex: 0 },
-                    children: pe === Rt ? e.group.header : null
+                    children: pe === vt ? e.group.header : null
                   },
                   `group-${String(e.group.columns[0])}-seg-${pe}`
                 );
               });
             }
-            const O = Fe(e.group), vt = !!O.style.position;
+            const O = Fe(e.group), $t = !!O.style.position;
             return /* @__PURE__ */ t(
               y,
               {
@@ -371,10 +371,10 @@ function Rs({
                   "text-center font-medium bg-slate-100 dark:bg-slate-800",
                   e.group.align === "left" && "text-left",
                   e.group.align === "right" && "text-right",
-                  _ && "border-r border-slate-200 dark:border-slate-700",
+                  j && "border-r border-slate-200 dark:border-slate-700",
                   O.className
                 ),
-                style: vt ? O.style : { position: "relative", zIndex: 0 },
+                style: $t ? O.style : { position: "relative", zIndex: 0 },
                 children: e.group.header
               },
               `group-${String(e.group.columns[0])}`
@@ -468,7 +468,7 @@ function Rs({
             className: "bg-slate-100 dark:bg-slate-800 !p-0",
             style: D ? {
               position: "sticky",
-              left: ee(),
+              left: te(),
               zIndex: 20,
               width: `${x}px`,
               minWidth: `${x}px`,
@@ -504,7 +504,7 @@ function Rs({
             children: /* @__PURE__ */ t("span", { className: "sr-only", children: "행 삭제" })
           }
         ),
-        E ? K ? /* @__PURE__ */ t(fe, { items: Be, strategy: Ge, children: g.filter((e) => Me.has(e.accessorKey)).map(A) }) : g.filter((e) => Me.has(e.accessorKey)).map(A) : K ? /* @__PURE__ */ t(fe, { items: Be, strategy: Ge, children: g.map(A) }) : g.map(A)
+        E ? _ ? /* @__PURE__ */ t(fe, { items: Be, strategy: Ge, children: g.filter((e) => Me.has(e.accessorKey)).map(ee) }) : g.filter((e) => Me.has(e.accessorKey)).map(ee) : _ ? /* @__PURE__ */ t(fe, { items: Be, strategy: Ge, children: g.map(ee) }) : g.map(ee)
       ] })
     ] }),
     /* @__PURE__ */ u(Bt, { children: [
@@ -530,17 +530,17 @@ function Rs({
             // 스켈레톤 모드: 컬럼 기반 자동 생성
             (() => {
               const l = typeof V == "number" ? V : typeof V == "string" && parseInt(V, 10) || 320, a = Math.max(1, Math.floor(l / 41));
-              return /* @__PURE__ */ t("table", { className: "w-full", children: /* @__PURE__ */ t("tbody", { children: Array.from({ length: a }).map((_, p) => /* @__PURE__ */ u(
+              return /* @__PURE__ */ t("table", { className: "w-full", children: /* @__PURE__ */ t("tbody", { children: Array.from({ length: a }).map((j, p) => /* @__PURE__ */ u(
                 "tr",
                 {
                   className: "border-b border-slate-200 dark:border-slate-700 last:border-b-0",
                   children: [
-                    o && /* @__PURE__ */ t("td", { className: "w-8 p-2", children: /* @__PURE__ */ t(se, { width: 16, height: 16 }) }),
-                    k && /* @__PURE__ */ t("td", { className: "w-10 p-2", children: /* @__PURE__ */ t(se, { width: 18, height: 18 }) }),
-                    s && /* @__PURE__ */ t("td", { className: "w-10 p-2", children: /* @__PURE__ */ t(se, { width: 18, height: 18 }) }),
+                    o && /* @__PURE__ */ t("td", { className: "w-8 p-2", children: /* @__PURE__ */ t(re, { width: 16, height: 16 }) }),
+                    k && /* @__PURE__ */ t("td", { className: "w-10 p-2", children: /* @__PURE__ */ t(re, { width: 18, height: 18 }) }),
+                    s && /* @__PURE__ */ t("td", { className: "w-10 p-2", children: /* @__PURE__ */ t(re, { width: 18, height: 18 }) }),
                     g.map((N) => {
-                      const j = N.width ?? N.minWidth, v = typeof j == "number" ? Math.min(j * 0.6, 150) : 100;
-                      return /* @__PURE__ */ t("td", { className: "p-2", children: /* @__PURE__ */ t(se, { height: 16, width: v }) }, String(N.accessorKey));
+                      const z = N.width ?? N.minWidth, $ = typeof z == "number" ? Math.min(z * 0.6, 150) : 100;
+                      return /* @__PURE__ */ t("td", { className: "p-2", children: /* @__PURE__ */ t(re, { height: 16, width: $ }) }, String(N.accessorKey));
                     })
                   ]
                 },
@@ -574,7 +574,7 @@ function Rs({
           )
         }
       ) }) : o ? /* @__PURE__ */ t(fe, { items: Nt, strategy: jt, children: n.map((e, l) => {
-        const a = oe(e.id);
+        const a = ce(e.id);
         return /* @__PURE__ */ u(r.Fragment, { children: [
           /* @__PURE__ */ t(
             ge,
@@ -584,8 +584,8 @@ function Rs({
               isSelected: b.includes(e.id),
               canExpand: Z(e),
               isExpanded: a,
-              editingCell: le,
-              editValue: ae,
+              editingCell: ae,
+              editValue: ne,
               ctx: he
             }
           ),
@@ -611,28 +611,30 @@ function Rs({
             }
           ) })
         ] }, e.id);
-      }) }) : bt && ce ? (
+      }) }) : bt && A ? (
         // 가상화 활성: 보이는 행만 렌더 + 상하 spacer 행으로 스크롤 영역 유지
         // TableBody (= tbody) 안에서 spacer-row 패턴 사용 (semantic HTML 유지)
         (() => {
           var p, N;
-          const e = ce.getVirtualItems(), l = ce.getTotalSize(), a = ((p = e[0]) == null ? void 0 : p.start) ?? 0, _ = l - (((N = e[e.length - 1]) == null ? void 0 : N.end) ?? 0);
+          const e = A.getVirtualItems(), l = A.getTotalSize(), a = ((p = e[0]) == null ? void 0 : p.start) ?? 0, j = l - (((N = e[e.length - 1]) == null ? void 0 : N.end) ?? 0);
           return /* @__PURE__ */ u(Ct, { children: [
             a > 0 && /* @__PURE__ */ t(w, { className: "hover:bg-transparent", style: { height: a }, children: /* @__PURE__ */ t(m, { colSpan: T, className: "p-0 border-0" }) }),
-            e.map((j) => {
-              const v = n[j.index], O = oe(v.id);
+            e.map((z) => {
+              const $ = n[z.index], O = ce($.id);
               return /* @__PURE__ */ u(r.Fragment, { children: [
                 /* @__PURE__ */ t(
                   ge,
                   {
-                    row: v,
-                    rowIndex: j.index,
-                    isSelected: b.includes(v.id),
-                    canExpand: Z(v),
+                    row: $,
+                    rowIndex: z.index,
+                    isSelected: b.includes($.id),
+                    canExpand: Z($),
                     isExpanded: O,
-                    editingCell: le,
-                    editValue: ae,
-                    ctx: he
+                    editingCell: ae,
+                    editValue: ne,
+                    ctx: he,
+                    rowRef: A.measureElement,
+                    dataIndex: z.index
                   }
                 ),
                 s && O && /* @__PURE__ */ t(w, { className: "bg-white dark:bg-slate-800/50 hover:bg-white dark:hover:bg-slate-800/50", children: /* @__PURE__ */ t(
@@ -651,18 +653,18 @@ function Rs({
                           width: h ? `${h}px` : "100%",
                           maxWidth: "100%"
                         },
-                        children: s.expandedRowRender(v)
+                        children: s.expandedRowRender($)
                       }
                     )
                   }
                 ) })
-              ] }, v.id);
+              ] }, $.id);
             }),
-            _ > 0 && /* @__PURE__ */ t(w, { className: "hover:bg-transparent", style: { height: _ }, children: /* @__PURE__ */ t(m, { colSpan: T, className: "p-0 border-0" }) })
+            j > 0 && /* @__PURE__ */ t(w, { className: "hover:bg-transparent", style: { height: j }, children: /* @__PURE__ */ t(m, { colSpan: T, className: "p-0 border-0" }) })
           ] });
         })()
       ) : n.map((e, l) => {
-        const a = oe(e.id);
+        const a = ce(e.id);
         return /* @__PURE__ */ u(r.Fragment, { children: [
           /* @__PURE__ */ t(
             ge,
@@ -672,8 +674,8 @@ function Rs({
               isSelected: b.includes(e.id),
               canExpand: Z(e),
               isExpanded: a,
-              editingCell: le,
-              editValue: ae,
+              editingCell: ae,
+              editValue: ne,
               ctx: he
             }
           ),
@@ -768,7 +770,7 @@ function Rs({
       ] })
     ] })
   ] });
-  return K || o ? /* @__PURE__ */ t(
+  return _ || o ? /* @__PURE__ */ t(
     Ht,
     {
       sensors: ut,
@@ -779,6 +781,6 @@ function Rs({
   ) : Xe;
 }
 export {
-  Rs as DataTable
+  vs as DataTable
 };
 //# sourceMappingURL=index.mjs.map

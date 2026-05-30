@@ -87,6 +87,17 @@ export interface DataTableBodyRowProps<T extends { id: string | number }> {
 
   /** 테이블 레벨 컨텍스트 (useMemo로 안정화) */
   ctx: DataTableBodyRowContext<T>
+
+  /**
+   * 가상화: TableRow DOM 요소에 부착할 ref (보통 virtualizer.measureElement).
+   * 가상화 비활성 시엔 생략.
+   */
+  rowRef?: (el: HTMLTableRowElement | null) => void
+  /**
+   * 가상화: virtualizer.measureElement 가 ResizeObserver 로 측정 시 사용하는 인덱스 식별자.
+   * 가상화 활성 시 virtualItem.index 를 넘김.
+   */
+  dataIndex?: number
 }
 
 function DataTableBodyRowImpl<T extends { id: string | number }>(
@@ -101,6 +112,8 @@ function DataTableBodyRowImpl<T extends { id: string | number }>(
     editingCell,
     editValue,
     ctx,
+    rowRef,
+    dataIndex,
   } = props
 
   const {
@@ -320,6 +333,8 @@ function DataTableBodyRowImpl<T extends { id: string | number }>(
 
   return (
     <TableRow
+      ref={rowRef}
+      data-index={dataIndex}
       data-state={isSelected ? "selected" : undefined}
       className={cn(
         onRowClick && "cursor-pointer",
