@@ -165,6 +165,24 @@ export interface DataTableProps<T extends { id: string | number }> {
   onSortChange?: (sortState: SortState<T>[]) => void
   /** 다중 정렬 활성화 (클릭 시 정렬 추가/순환). 기본 false=단일 정렬 */
   multiSort?: boolean
+  /**
+   * 가상화 (windowing) — 큰 데이터셋에서 화면에 보이는 행만 렌더링.
+   * - true: 기본 옵션으로 활성화
+   * - { overscan, estimateSize }: 옵션 커스터마이징
+   * - false / 생략: 비활성화 (기본)
+   *
+   * 비호환 기능: rowGrouping (rowSpan), rowReorderable (드래그앤드롭).
+   * 위 기능이 활성 상태면 가상화가 자동으로 OFF 되며 dev 경고 출력.
+   */
+  virtual?: boolean | VirtualConfig
+}
+
+/** 가상화 옵션 */
+export interface VirtualConfig {
+  /** 화면 밖 추가 렌더 행 수 (default 5) */
+  overscan?: number
+  /** 행 추정 높이 px — 초기 스크롤 영역 계산용 (default 40) */
+  estimateSize?: number
 }
 
 /** 드래그 핸들 props (Sortable 내부 전달용) */

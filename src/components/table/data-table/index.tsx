@@ -40,6 +40,7 @@ import { useRowReorder } from "./hooks/use-row-reorder"
 import { useCellEditing } from "./hooks/use-cell-editing"
 import { useSort } from "./hooks/use-sort"
 import { useHeaderGroups } from "./hooks/use-header-groups"
+import { useTableVirtualizer } from "./hooks/use-table-virtualizer"
 import { getAlignClass as getAlignClassUtil } from "./utils"
 import {
   DRAG_HANDLE_WIDTH,
@@ -104,6 +105,7 @@ function DataTable<T extends { id: string | number }>({
   headerGroups,
   rowGrouping,
   rowActions,
+  virtual,
 }: DataTableProps<T>) {
   // rowGrouping과 rowReorderable은 함께 사용할 수 없음 (rowSpan 셀 드래그 시 레이아웃 깨짐)
   const rowReorderable = rowGrouping ? false : rowReorderableProp
@@ -290,6 +292,20 @@ function DataTable<T extends { id: string | number }>({
     selectable,
     expandable,
     rowReorderable,
+  })
+
+  // 가상화 hook — virtual prop 정규화 + 비호환 기능 (rowReorderable / rowGrouping) 활성 시 자동 OFF
+  const virtualDisabledReason = rowReorderable
+    ? "rowReorderable (행 드래그앤드롭)"
+    : rowGrouping
+      ? "rowGrouping (rowSpan 그룹핑)"
+      : null
+  const { isVirtual, virtualizer } = useTableVirtualizer({
+    virtual,
+    disabledReason: virtualDisabledReason,
+    count: data.length,
+    scrollContainerRef,
+    shouldWarn,
   })
 
   // 컬럼 헤더 렌더링 함수 (DataTableColumnHeader 컴포넌트로 래핑)
@@ -914,6 +930,68 @@ function DataTable<T extends { id: string | number }>({
                 )
               })}
             </SortableContext>
+          ) : isVirtual && virtualizer ? (
+            // 가상화 활성: 보이는 행만 렌더 + 상하 spacer 행으로 스크롤 영역 유지
+            // TableBody (= tbody) 안에서 spacer-row 패턴 사용 (semantic HTML 유지)
+            (() => {
+              const virtualItems = virtualizer.getVirtualItems()
+              const totalSize = virtualizer.getTotalSize()
+              const paddingTop = virtualItems[0]?.start ?? 0
+              const paddingBottom = totalSize - (virtualItems[virtualItems.length - 1]?.end ?? 0)
+              return (
+                <>
+                  {paddingTop > 0 && (
+                    <TableRow className="hover:bg-transparent" style={{ height: paddingTop }}>
+                      <TableCell colSpan={totalColumns} className="p-0 border-0" />
+                    </TableRow>
+                  )}
+                  {virtualItems.map((virtualItem) => {
+                    const row = data[virtualItem.index]
+                    const isExpanded = isRowExpanded(row.id)
+                    return (
+                      <React.Fragment key={row.id}>
+                        <DataTableBodyRow<T>
+                          row={row}
+                          rowIndex={virtualItem.index}
+                          isSelected={selectedIds.includes(row.id)}
+                          canExpand={isRowExpandable(row)}
+                          isExpanded={isExpanded}
+                          editingCell={editingCell}
+                          editValue={editValue}
+                          ctx={rowCtx}
+                        />
+                        {expandable && isExpanded && (
+                          <TableRow className="bg-white dark:bg-slate-800/50 hover:bg-white dark:hover:bg-slate-800/50">
+                            <TableCell
+                              colSpan={totalColumns}
+                              className="p-0"
+                              style={{ position: "relative" }}
+                            >
+                              <div
+                                className="p-4 overflow-x-auto"
+                                style={{
+                                  position: "sticky",
+                                  left: 0,
+                                  width: visibleWidth ? `${visibleWidth}px` : "100%",
+                                  maxWidth: "100%",
+                                }}
+                              >
+                                {expandable.expandedRowRender(row)}
+                              </div>
+                            </TableCell>
+                          </TableRow>
+                        )}
+                      </React.Fragment>
+                    )
+                  })}
+                  {paddingBottom > 0 && (
+                    <TableRow className="hover:bg-transparent" style={{ height: paddingBottom }}>
+                      <TableCell colSpan={totalColumns} className="p-0 border-0" />
+                    </TableRow>
+                  )}
+                </>
+              )
+            })()
           ) : (
             data.map((row, rowIndex) => {
               const isExpanded = isRowExpanded(row.id)

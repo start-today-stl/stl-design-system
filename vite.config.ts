@@ -43,6 +43,8 @@ export default defineConfig({
         /^@radix-ui\/.*/,
         // DnD Kit
         /^@dnd-kit\/.*/,
+        // TanStack (가상화)
+        /^@tanstack\/.*/,
         // Utilities
         'clsx',
         'tailwind-merge',
