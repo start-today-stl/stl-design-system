@@ -55,57 +55,6 @@ const meta: Meta = {
   title: "Table/DataTable",
   component: DataTable,
   tags: ["autodocs"],
-  parameters: {
-    // 스토리북 사이드바 정렬 (export 순서가 아닌 의도된 그룹 순서로 노출)
-    options: {
-      storySort: {
-        order: [
-          "Docs",
-          // Basic
-          "Default",
-          "Selectable",
-          "Sortable",
-          "MultiSortable",
-          "CustomCell",
-          "RowClick",
-          "Empty",
-          // Loading
-          "Loading",
-          "LoadingCustom",
-          "LoadingWithSkeleton",
-          // Editing
-          "Editable",
-          "EditableWithCustomEditor",
-          "EditableWithValidation",
-          "EditableWithAddDelete",
-          "EditingPatterns",
-          // Layout / Columns
-          "StickyColumn",
-          "HeaderGrouping",
-          "Resizable",
-          "ColumnReorderable",
-          // Rows
-          "RowReorderable",
-          "RowGrouping",
-          "RowGroupingNoSticky",
-          "Expandable",
-          // Row Actions
-          "RowActionsEditable",
-          "RowActionsEditableExternal",
-          // Composition
-          "ListPageBasic",
-          "AllFeatures",
-          // Virtualization
-          "VirtualizationBasic",
-          "VirtualizationCustomOptions",
-          "VirtualizationWithSelectAndSort",
-          "VirtualizationWithExpandable",
-          "VirtualizationStress10k",
-          "VirtualizationIncompatibility",
-        ],
-      },
-    },
-  },
 }
 
 export default meta
