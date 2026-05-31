@@ -34,13 +34,15 @@ import { DataTableBodyRow } from "./data-table-body-row"
 import { DataTableColumnHeader } from "./data-table-column-header"
 import { useStickyStyles } from "./hooks/use-sticky-styles"
 import { useColumnResize } from "./hooks/use-column-resize"
-import { useRowGrouping } from "./hooks/use-row-grouping"
+import { useRowGrouping, type GroupCellFlags } from "./hooks/use-row-grouping"
 import { useColumnReorder } from "./hooks/use-column-reorder"
 import { useRowReorder } from "./hooks/use-row-reorder"
 import { useCellEditing } from "./hooks/use-cell-editing"
 import { useSort } from "./hooks/use-sort"
 import { useHeaderGroups } from "./hooks/use-header-groups"
 import { useTableVirtualizer } from "./hooks/use-table-virtualizer"
+import { useStableCallback } from "./hooks/use-stable-callback"
+import { useStableObject } from "./hooks/use-stable-object"
 import { getAlignClass as getAlignClassUtil } from "./utils"
 import {
   DRAG_HANDLE_WIDTH,
@@ -75,6 +77,30 @@ export type {
 // 모듈 레벨 상수로 reference 안정화.
 const EMPTY_SELECTED_IDS: readonly (string | number)[] = []
 
+/**
+ * 정렬 / 필터 / 선택 / 편집 / 펼침 / 그룹핑 / 가상화 등을 지원하는 데이터 테이블.
+ *
+ * ## prop 안정성 가이드
+ *
+ * 큰 데이터셋 (수백~수만 행) 에서 부드러운 인터랙션을 보장하려면 일부 prop 을 안정된
+ * reference 로 전달해야 합니다.
+ *
+ * - **columns**: 컴포넌트 외부 const 로 정의하거나 `useMemo` 로 감싸세요.
+ *   매 render 마다 새 배열을 넘기면 모든 행이 리렌더되어 성능이 저하됩니다.
+ * - **data**: `useState` 또는 `useMemo` 로 안정 ref 를 유지하세요.
+ *   (정렬/필터링으로 의미 있게 변경되는 건 정상)
+ * - **rowGrouping / expandable / 콜백 props**: 내부에서 흡수하므로 inline 으로 넘겨도 안전합니다.
+ *
+ * ```tsx
+ * // ✅ 권장
+ * const columns = useMemo(() => [...], [])
+ * const [data, setData] = useState([...])
+ * <DataTable columns={columns} data={data} onRowClick={(row) => doSomething(row)} />
+ *
+ * // ❌ 비권장 (모든 행 리렌더)
+ * <DataTable columns={[...]} data={[...]} />
+ * ```
+ */
 function DataTable<T extends { id: string | number }>({
   columns,
   data,
@@ -86,7 +112,7 @@ function DataTable<T extends { id: string | number }>({
   multiSort = false,
   onRowClick,
   onCellChange,
-  expandable,
+  expandable: expandableProp,
   emptyMessage = "데이터가 없습니다.",
   className,
   rowClassName,
@@ -103,10 +129,15 @@ function DataTable<T extends { id: string | number }>({
   loadingMode = "splash",
   loadingContent,
   headerGroups,
-  rowGrouping,
+  rowGrouping: rowGroupingProp,
   rowActions,
   virtual,
 }: DataTableProps<T>) {
+  // 사용자 prop 중 작은 객체는 deep compare 로 흡수해 inline 사용 시에도 ctx 안정 유지.
+  // (큰 배열인 columns/data 는 deep compare 비용이 커서 사용처 책임 — dev 경고로 알림)
+  const rowGrouping = useStableObject(rowGroupingProp)
+  const expandable = useStableObject(expandableProp)
+
   // rowGrouping과 rowReorderable은 함께 사용할 수 없음 (rowSpan 셀 드래그 시 레이아웃 깨짐)
   const rowReorderable = rowGrouping ? false : rowReorderableProp
   const shouldWarn =
@@ -122,6 +153,8 @@ function DataTable<T extends { id: string | number }>({
       )
     }
   }, [rowGrouping, rowReorderableProp, shouldWarn])
+
+
 
   React.useEffect(() => {
     if (shouldWarn && loadingContent && loadingMode !== "splash") {
@@ -205,6 +238,10 @@ function DataTable<T extends { id: string | number }>({
   const expandedRowIds = expandable?.expandedRowIds ?? internalExpandedIds
   const setExpandedRowIds = expandable?.onExpandedChange ?? setInternalExpandedIds
 
+  // 행별 includes 조회를 O(1) 로 만들기 위해 Set 변환.
+  // (N행 × includes O(N) = O(N²) → N행 × Set.has O(1) = O(N))
+  const selectedIdsSet = React.useMemo(() => new Set(selectedIds), [selectedIds])
+
   const isAllSelected = data.length > 0 && selectedIds.length === data.length
   const isIndeterminate = selectedIds.length > 0 && !isAllSelected
 
@@ -216,13 +253,21 @@ function DataTable<T extends { id: string | number }>({
     }
   }
 
+  // selectedIds 를 ref 로 보관: handleSelectRow 의 deps 에서 selectedIds 를 빼야
+  // 체크박스 클릭 시 ctx 가 재생성되지 않아 모든 행이 리렌더되는 것을 방지.
+  const selectedIdsRef = React.useRef(selectedIds)
+  selectedIdsRef.current = selectedIds
+  // 외부 콜백은 사용처에서 useCallback 안 해도 안전하도록 ref 흡수
+  const stableOnSelectionChange = useStableCallback(onSelectionChange)
+
   const handleSelectRow = React.useCallback((id: string | number) => {
-    if (selectedIds.includes(id)) {
-      onSelectionChange?.(selectedIds.filter((i) => i !== id))
+    const current = selectedIdsRef.current
+    if (current.includes(id)) {
+      stableOnSelectionChange?.(current.filter((i) => i !== id))
     } else {
-      onSelectionChange?.([...selectedIds, id])
+      stableOnSelectionChange?.([...current, id])
     }
-  }, [selectedIds, onSelectionChange])
+  }, [stableOnSelectionChange])
 
   // 정렬 hook (sortStateArray, handleSort, getSortDirection, getSortPriority)
   const { handleSort, getSortDirection, getSortPriority } = useSort<T>({
@@ -241,17 +286,31 @@ function DataTable<T extends { id: string | number }>({
     return true
   }, [expandable])
 
-  const isRowExpanded = React.useCallback((rowId: string | number) => {
-    return expandedRowIds.includes(rowId)
-  }, [expandedRowIds])
+  // 행별 isExpanded 조회를 O(1) 로 만들기 위해 Set 변환.
+  const expandedRowIdsSet = React.useMemo(
+    () => new Set(expandedRowIds),
+    [expandedRowIds],
+  )
+
+  const isRowExpanded = React.useCallback(
+    (rowId: string | number) => expandedRowIdsSet.has(rowId),
+    [expandedRowIdsSet],
+  )
+
+  // expandedRowIds / setExpandedRowIds 를 ref 로 보관 (handleSelectRow 와 동일 이유).
+  const expandedRowIdsRef = React.useRef(expandedRowIds)
+  expandedRowIdsRef.current = expandedRowIds
+  const setExpandedRowIdsRef = React.useRef(setExpandedRowIds)
+  setExpandedRowIdsRef.current = setExpandedRowIds
 
   const toggleRowExpanded = React.useCallback((rowId: string | number) => {
-    if (expandedRowIds.includes(rowId)) {
-      setExpandedRowIds(expandedRowIds.filter((id) => id !== rowId))
+    const current = expandedRowIdsRef.current
+    if (current.includes(rowId)) {
+      setExpandedRowIdsRef.current(current.filter((id) => id !== rowId))
     } else {
-      setExpandedRowIds([...expandedRowIds, rowId])
+      setExpandedRowIdsRef.current([...current, rowId])
     }
-  }, [expandedRowIds, setExpandedRowIds])
+  }, [])
 
   // 전체 펼침/접힘 관련
   const expandableRowIds = React.useMemo(() => {
@@ -272,19 +331,54 @@ function DataTable<T extends { id: string | number }>({
     }
   }
 
+  // 외부 콜백 ref 흡수 — 사용처가 inline 으로 넘겨도 ctx ref 안정 유지
+  const stableOnCellChange = useStableCallback(onCellChange)
+  const stableOnRowClick = useStableCallback(onRowClick)
+  const stableRowClassName = useStableCallback(rowClassName)
+  const stableOnRowDelete = useStableCallback(rowActions?.onRowDelete)
+  const stableOnRowAdd = useStableCallback(rowActions?.onRowAdd)
+
   // rowActions 설정
   const showRowDelete = rowActions?.showDelete ?? !!rowActions?.onRowDelete
   const showRowAdd = rowActions?.showAdd ?? !!rowActions?.onRowAdd
 
   const totalColumns = columns.length + (selectable ? 1 : 0) + (expandable ? 1 : 0) + (rowReorderable ? 1 : 0) + (showRowDelete ? 1 : 0)
 
-  // 로우 그룹핑 hook (rowSpanMap, middleRowSet, 헬퍼 함수들)
-  const {
-    middleRowSet,
-    getRowSpan,
-    isGroupCellHovered,
-    isGroupCellSelected,
-  } = useRowGrouping<T>({ data, rowGrouping, hoveredRowIndex, selectedIds })
+  // 로우 그룹핑 hook (rowSpanMap, middleRowSet, getRowSpan)
+  const { rowSpanMap, middleRowSet, getRowSpan } = useRowGrouping<T>({ data, rowGrouping })
+
+  // rowGrouping 활성 시 그룹 head 행의 머지 셀별 selected/hovered flag 미리 계산.
+  // selectedIds / hoveredRowIndex 변경 시 재계산 → 변경된 행만 row prop ref 변경 → 부분 리렌더.
+  // (이 패턴이 없으면 ctx 에 isGroupCellSelected/Hovered 를 dep 추적 callback 으로 둬야 하는데
+  //  그러면 selectedIds/hover 변경 시 모든 행 ctx 무효화 → 전체 리렌더.)
+  const rowGroupFlagsMap = React.useMemo<Map<number, GroupCellFlags> | null>(() => {
+    if (!rowGrouping || !rowSpanMap) return null
+    const map = new Map<number, GroupCellFlags>()
+    for (const [headIdx, colMap] of rowSpanMap.entries()) {
+      const selected: Record<string, boolean> = {}
+      const hovered: Record<string, boolean> = {}
+      let any = false
+      for (const [colKey, span] of colMap.entries()) {
+        if (span > 1) {
+          any = true
+          let sel = false
+          for (let i = headIdx; i < headIdx + span && i < data.length; i++) {
+            if (selectedIdsSet.has(data[i].id)) {
+              sel = true
+              break
+            }
+          }
+          selected[String(colKey)] = sel
+          hovered[String(colKey)] =
+            hoveredRowIndex !== null &&
+            hoveredRowIndex >= headIdx &&
+            hoveredRowIndex < headIdx + span
+        }
+      }
+      if (any) map.set(headIdx, { selected, hovered })
+    }
+    return map
+  }, [rowGrouping, rowSpanMap, data, selectedIdsSet, hoveredRowIndex])
 
   // sticky 스타일 hook
   const { getStickyStyles, hasLeftStickyColumns } = useStickyStyles<T>({
@@ -379,7 +473,7 @@ function DataTable<T extends { id: string | number }>({
       showRowDelete,
       hasLeftStickyColumns,
       resizable,
-      rowActions,
+      onRowDelete: stableOnRowDelete,
       rowGrouping,
       middleRowSet,
       // dataLength 는 rowGrouping 의 isGroupSpanToEnd 계산에만 사용됨.
@@ -388,8 +482,6 @@ function DataTable<T extends { id: string | number }>({
       getCheckboxHeaderLeftOffset,
       getExpandHeaderLeftOffset,
       getRowSpan,
-      isGroupCellHovered,
-      isGroupCellSelected,
       getStickyStyles,
       getColumnWidth,
       getAlignClass,
@@ -402,9 +494,9 @@ function DataTable<T extends { id: string | number }>({
       setEditingCell,
       editValueRef: editValueRef as React.MutableRefObject<unknown>,
       editingCellRef,
-      onCellChange,
-      onRowClick,
-      rowClassName,
+      onCellChange: stableOnCellChange,
+      onRowClick: stableOnRowClick,
+      rowClassName: stableRowClassName,
       setHoveredRowIndex,
     }),
     [
@@ -415,15 +507,13 @@ function DataTable<T extends { id: string | number }>({
       showRowDelete,
       hasLeftStickyColumns,
       resizable,
-      rowActions,
+      stableOnRowDelete,
       rowGrouping,
       middleRowSet,
       rowGrouping ? data.length : 0,
       getCheckboxHeaderLeftOffset,
       getExpandHeaderLeftOffset,
       getRowSpan,
-      isGroupCellHovered,
-      isGroupCellSelected,
       getStickyStyles,
       getColumnWidth,
       getAlignClass,
@@ -436,9 +526,9 @@ function DataTable<T extends { id: string | number }>({
       setEditingCell,
       editValueRef,
       editingCellRef,
-      onCellChange,
-      onRowClick,
-      rowClassName,
+      stableOnCellChange,
+      stableOnRowClick,
+      stableRowClassName,
       setHoveredRowIndex,
     ],
   )
@@ -903,12 +993,13 @@ function DataTable<T extends { id: string | number }>({
                     <DataTableBodyRow<T>
                       row={row}
                       rowIndex={rowIndex}
-                      isSelected={selectedIds.includes(row.id)}
+                      isSelected={selectedIdsSet.has(row.id)}
                       canExpand={isRowExpandable(row)}
                       isExpanded={isExpanded}
                       editingCell={editingCell}
                       editValue={editValue}
                       ctx={rowCtx}
+                      groupCellFlags={rowGroupFlagsMap?.get(rowIndex)}
                     />
                     {expandable && isExpanded && (
                       <TableRow className="bg-white dark:bg-slate-800/50 hover:bg-white dark:hover:bg-slate-800/50">
@@ -961,12 +1052,13 @@ function DataTable<T extends { id: string | number }>({
                         <DataTableBodyRow<T>
                           row={row}
                           rowIndex={virtualItem.index}
-                          isSelected={selectedIds.includes(row.id)}
+                          isSelected={selectedIdsSet.has(row.id)}
                           canExpand={isRowExpandable(row)}
                           isExpanded={isExpanded}
                           editingCell={editingCell}
                           editValue={editValue}
                           ctx={rowCtx}
+                          groupCellFlags={rowGroupFlagsMap?.get(virtualItem.index)}
                           rowRef={virtualizer.measureElement}
                           dataIndex={virtualItem.index}
                         />
@@ -1010,12 +1102,13 @@ function DataTable<T extends { id: string | number }>({
                   <DataTableBodyRow<T>
                     row={row}
                     rowIndex={rowIndex}
-                    isSelected={selectedIds.includes(row.id)}
+                    isSelected={selectedIdsSet.has(row.id)}
                     canExpand={isRowExpandable(row)}
                     isExpanded={isExpanded}
                     editingCell={editingCell}
                     editValue={editValue}
                     ctx={rowCtx}
+                    groupCellFlags={rowGroupFlagsMap?.get(rowIndex)}
                   />
                   {expandable && isExpanded && (
                     <TableRow className="bg-white dark:bg-slate-800/50 hover:bg-white dark:hover:bg-slate-800/50">
@@ -1091,7 +1184,7 @@ function DataTable<T extends { id: string | number }>({
             >
               <button
                 type="button"
-                onClick={() => rowActions?.onRowAdd?.()}
+                onClick={() => stableOnRowAdd?.()}
                 className="flex h-9 w-10 items-center justify-center transition-opacity hover:opacity-70"
                 aria-label="행 추가"
               >

@@ -193,15 +193,13 @@ export const CustomCell: Story = {
 /** 빈 데이터 */
 export const Empty: Story = {
   render: () => {
+    // 가로 스크롤 유도용 wide 컬럼 (minWidth 합계 > 컨테이너 너비)
     const wideColumns: DataTableColumn<User>[] = [
-      { accessorKey: "id", header: "ID", minWidth: 200 },
-      { accessorKey: "name", header: "이름", minWidth: 200 },
-      { accessorKey: "email", header: "이메일", minWidth: 300 },
-      { accessorKey: "role", header: "역할", minWidth: 200 },
-      { accessorKey: "status", header: "상태", minWidth: 200 },
-      { accessorKey: "name", header: "추가1", minWidth: 200 },
-      { accessorKey: "name", header: "추가2", minWidth: 200 },
-      { accessorKey: "name", header: "추가3", minWidth: 200 },
+      { accessorKey: "id", header: "ID", minWidth: 300 },
+      { accessorKey: "name", header: "이름", minWidth: 400 },
+      { accessorKey: "email", header: "이메일", minWidth: 500 },
+      { accessorKey: "role", header: "역할", minWidth: 400 },
+      { accessorKey: "status", header: "상태", minWidth: 400 },
     ]
     return (
       <DataTable
@@ -216,15 +214,13 @@ export const Empty: Story = {
 /** 로딩 상태 (기본: SplashScreen) */
 export const Loading: Story = {
   render: () => {
+    // 가로 스크롤 유도용 wide 컬럼 (minWidth 합계 > 컨테이너 너비)
     const wideColumns: DataTableColumn<User>[] = [
-      { accessorKey: "id", header: "ID", minWidth: 200 },
-      { accessorKey: "name", header: "이름", minWidth: 200 },
-      { accessorKey: "email", header: "이메일", minWidth: 300 },
-      { accessorKey: "role", header: "역할", minWidth: 200 },
-      { accessorKey: "status", header: "상태", minWidth: 200 },
-      { accessorKey: "name", header: "추가1", minWidth: 200 },
-      { accessorKey: "name", header: "추가2", minWidth: 200 },
-      { accessorKey: "name", header: "추가3", minWidth: 200 },
+      { accessorKey: "id", header: "ID", minWidth: 300 },
+      { accessorKey: "name", header: "이름", minWidth: 400 },
+      { accessorKey: "email", header: "이메일", minWidth: 500 },
+      { accessorKey: "role", header: "역할", minWidth: 400 },
+      { accessorKey: "status", header: "상태", minWidth: 400 },
     ]
     return (
       <div className="border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
@@ -2203,10 +2199,17 @@ export const VirtualizationWithSelectAndSort: Story = {
         return current.direction === "asc" ? cmp : -cmp
       })
     }, [allData, current])
-    const cols: DataTableColumn<VirtualRow>[] = virtualColumns.map((c) => ({
-      ...c,
-      sortable: c.accessorKey === "name" || c.accessorKey === "amount" || c.accessorKey === "date",
-    }))
+    const cols = useMemo<DataTableColumn<VirtualRow>[]>(
+      () =>
+        virtualColumns.map((c) => ({
+          ...c,
+          sortable:
+            c.accessorKey === "name" ||
+            c.accessorKey === "amount" ||
+            c.accessorKey === "date",
+        })),
+      [],
+    )
     return (
       <div className="space-y-3">
         <p className="text-sm text-slate-500">
@@ -2283,21 +2286,34 @@ export const VirtualizationCustomOptions: Story = {
   },
 }
 
-/** 가상화 - 스트레스 테스트 (10,000행) */
+/** 가상화 - 스트레스 테스트 (10,000행 + 체크박스: ctx 안정성 / Set 변환 효과 측정) */
 export const VirtualizationStress10k: Story = {
   render: () => {
     const data = useMemo(() => generateVirtualRows(10000), [])
+    const [selectedIds, setSelectedIds] = useState<number[]>([])
     return (
       <div className="space-y-3">
         <div className="p-3 bg-red-50 dark:bg-red-900/30 rounded-md text-xs text-red-800 dark:text-red-200">
           <strong>10,000행 스트레스 테스트.</strong> 가상화 미적용 시 DOM 노드 70만+ 개 (브라우저 멈춤).
           가상화 ON 으로 화면에 보이는 ~30행만 렌더 → 부드러운 스크롤.
+          <br />
+          체크박스 클릭 시 선택한 행만 리렌더되는지 / 클릭 응답 시간을 React DevTools Profiler 로 확인.
         </div>
-        <DataTable columns={virtualColumns} data={data} virtual maxHeight={400} />
+        <p className="text-xs text-slate-500">선택됨: {selectedIds.length}건</p>
+        <DataTable
+          columns={virtualColumns}
+          data={data}
+          virtual
+          maxHeight={400}
+          selectable
+          selectedIds={selectedIds}
+          onSelectionChange={(ids) => setSelectedIds(ids as number[])}
+        />
       </div>
     )
   },
 }
+
 
 /** 비호환 케이스 — rowReorderable + virtual (자동 OFF + 콘솔 경고) */
 export const VirtualizationWithRowReorderableConflict: Story = {

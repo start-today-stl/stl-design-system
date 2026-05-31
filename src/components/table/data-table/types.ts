@@ -107,9 +107,19 @@ export interface RowActionsConfig<T> {
 }
 
 export interface DataTableProps<T extends { id: string | number }> {
-  /** 컬럼 정의 */
+  /**
+   * 컬럼 정의.
+   *
+   * 안정성 권장: 컴포넌트 외부에 정의하거나 `useMemo` 로 감싸세요. 매 render 마다 새 배열을
+   * 넘기면 모든 행이 리렌더됩니다.
+   */
   columns: DataTableColumn<T>[]
-  /** 데이터 배열 */
+  /**
+   * 데이터 배열.
+   *
+   * 안정성 권장: `useState` 또는 `useMemo` 로 안정 ref 유지. 매 render 마다 새 배열을 넘기면
+   * 모든 행이 리렌더됩니다. (정렬/필터링으로 의미 있게 변경되는 건 정상)
+   */
   data: T[]
   /** 선택 기능 활성화 */
   selectable?: boolean

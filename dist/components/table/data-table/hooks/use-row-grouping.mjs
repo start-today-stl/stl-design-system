@@ -1,61 +1,44 @@
-import * as c from "react";
-function K({
-  data: l,
-  rowGrouping: r,
-  hoveredRowIndex: f,
-  selectedIds: C
+import * as f from "react";
+function V({
+  data: n,
+  rowGrouping: s
 }) {
-  const { rowSpanMap: p, middleRowSet: M } = c.useMemo(() => {
-    if (!r) return { rowSpanMap: null, middleRowSet: null };
-    const n = Array.isArray(r.groupBy) ? r.groupBy : [r.groupBy], u = r.mergeColumns ?? n, t = /* @__PURE__ */ new Map(), o = /* @__PURE__ */ new Set();
-    for (const i of u) {
-      let s = 0;
-      for (; s < l.length; ) {
-        const R = n.map((e) => l[s][e]), V = l[s][i];
-        let a = 1;
-        for (let e = s + 1; e < l.length; e++) {
-          const b = n.map((m) => l[e][m]), B = l[e][i];
-          if (R.every((m, h) => m === b[h]) && V === B)
-            a++;
+  const { rowSpanMap: u, middleRowSet: i } = f.useMemo(() => {
+    if (!s) return { rowSpanMap: null, middleRowSet: null };
+    const r = Array.isArray(s.groupBy) ? s.groupBy : [s.groupBy], p = s.mergeColumns ?? r, o = /* @__PURE__ */ new Map(), m = /* @__PURE__ */ new Set();
+    for (const a of p) {
+      let t = 0;
+      for (; t < n.length; ) {
+        const g = r.map((e) => n[t][e]), y = n[t][a];
+        let l = 1;
+        for (let e = t + 1; e < n.length; e++) {
+          const M = r.map((c) => n[e][c]), S = n[e][a];
+          if (g.every((c, R) => c === M[R]) && y === S)
+            l++;
           else
             break;
         }
-        t.has(s) || t.set(s, /* @__PURE__ */ new Map()), t.get(s).set(i, a);
-        for (let e = s; e < s + a - 1; e++)
-          o.add(e);
-        for (let e = s + 1; e < s + a; e++)
-          t.has(e) || t.set(e, /* @__PURE__ */ new Map()), t.get(e).set(i, 0);
-        s += a;
+        o.has(t) || o.set(t, /* @__PURE__ */ new Map()), o.get(t).set(a, l);
+        for (let e = t; e < t + l - 1; e++)
+          m.add(e);
+        for (let e = t + 1; e < t + l; e++)
+          o.has(e) || o.set(e, /* @__PURE__ */ new Map()), o.get(e).set(a, 0);
+        t += l;
       }
     }
-    return { rowSpanMap: t, middleRowSet: o };
-  }, [l, r]), S = c.useCallback(
-    (n, u) => {
-      if (!p) return;
-      const t = p.get(n);
-      if (t)
-        return t.get(u);
+    return { rowSpanMap: o, middleRowSet: m };
+  }, [n, s]), w = f.useCallback(
+    (r, p) => {
+      if (!u) return;
+      const o = u.get(r);
+      if (o)
+        return o.get(p);
     },
-    [p]
-  ), g = c.useCallback(
-    (n, u) => f === null ? !1 : f >= n && f < n + u,
-    [f]
-  ), y = c.useRef(l);
-  y.current = l;
-  const k = c.useCallback(
-    (n, u) => {
-      if (!r) return !1;
-      const t = y.current;
-      for (let o = n; o < n + u; o++)
-        if (o < t.length && C.includes(t[o].id))
-          return !0;
-      return !1;
-    },
-    [C, r]
+    [u]
   );
-  return { rowSpanMap: p, middleRowSet: M, getRowSpan: S, isGroupCellHovered: g, isGroupCellSelected: k };
+  return { rowSpanMap: u, middleRowSet: i, getRowSpan: w };
 }
 export {
-  K as useRowGrouping
+  V as useRowGrouping
 };
 //# sourceMappingURL=use-row-grouping.mjs.map
