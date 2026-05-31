@@ -87,17 +87,12 @@ export function useStickyStyles<T>({
 
       const effectiveSelected = groupCellSelected ?? isSelected
 
-      // sticky 셀 행 구분선 — 대비 부족한 default border-slate-200 → 진한 색.
-      // (sticky + 가상화 동시 사용 시 sub-pixel 깜빡임 이슈는 가상화 측에서 비호환 처리됨)
-      const stickyBorderClass = "!border-b !border-slate-300 dark:!border-slate-600"
-
       if (column.sticky === "left") {
         const leftPos = leftPositions.get(column.accessorKey) ?? 0
         return {
           style: { ...baseStyles, left: `${leftPos}px` },
           className: cn(
             "transition-colors",
-            stickyBorderClass,
             isHeader
               ? "bg-slate-100 dark:bg-slate-800"
               : effectiveSelected
@@ -112,7 +107,6 @@ export function useStickyStyles<T>({
         style: { ...baseStyles, right: `${rightPos}px` },
         className: cn(
           "transition-colors",
-          stickyBorderClass,
           isHeader
             ? "bg-slate-100 dark:bg-slate-800"
             : effectiveSelected
