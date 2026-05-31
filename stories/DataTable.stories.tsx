@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite"
-import { useState, useMemo } from "react"
+import { useState, useMemo, useCallback } from "react"
 import {
   DataTable,
   TableToolbar,
@@ -1859,24 +1859,30 @@ export const EditingPatterns: Story = {
       { id: 3, sku: "SKU-003", name: "상품 C", stock: 0, memo: "품절 예정" },
     ])
 
-    const inventoryColumns: DataTableColumn<InventoryItem>[] = [
-      { accessorKey: "sku", header: "SKU", width: 100 },
-      { accessorKey: "name", header: "상품명", width: 120 },
-      { accessorKey: "stock", header: "재고", width: 80, align: "center", editable: true },
-      { accessorKey: "memo", header: "메모", minWidth: 150, editable: true },
-    ]
+    const inventoryColumns = useMemo<DataTableColumn<InventoryItem>[]>(
+      () => [
+        { accessorKey: "sku", header: "SKU", width: 100 },
+        { accessorKey: "name", header: "상품명", width: 120 },
+        { accessorKey: "stock", header: "재고", width: 80, align: "center", editable: true },
+        { accessorKey: "memo", header: "메모", minWidth: 150, editable: true },
+      ],
+      [],
+    )
 
-    const handleInventoryCellChange = (
-      rowId: string | number,
-      columnKey: keyof InventoryItem,
-      value: InventoryItem[keyof InventoryItem]
-    ) => {
-      setInventoryData((prev) =>
-        prev.map((row) =>
-          row.id === rowId ? { ...row, [columnKey]: value } : row
+    const handleInventoryCellChange = useCallback(
+      (
+        rowId: string | number,
+        columnKey: keyof InventoryItem,
+        value: InventoryItem[keyof InventoryItem],
+      ) => {
+        setInventoryData((prev) =>
+          prev.map((row) =>
+            row.id === rowId ? { ...row, [columnKey]: value } : row,
+          ),
         )
-      )
-    }
+      },
+      [],
+    )
 
     // 2. 커스텀 렌더러 사용 예시 (새 데이터 입력)
     interface OrderItem {
@@ -1891,78 +1897,86 @@ export const EditingPatterns: Story = {
       { id: 2, productName: "", quantity: 0, unitPrice: 0 },
     ])
 
-    const handleOrderChange = (id: number, field: keyof OrderItem, value: string | number) => {
-      setOrderItems((prev) =>
-        prev.map((item) =>
-          item.id === id ? { ...item, [field]: value } : item
+    const handleOrderChange = useCallback(
+      (id: number, field: keyof OrderItem, value: string | number) => {
+        setOrderItems((prev) =>
+          prev.map((item) =>
+            item.id === id ? { ...item, [field]: value } : item,
+          ),
         )
-      )
-    }
+      },
+      [],
+    )
 
-    const addOrderRow = () => {
-      const newId = Math.max(0, ...orderItems.map((i) => i.id)) + 1
-      setOrderItems([...orderItems, { id: newId, productName: "", quantity: 0, unitPrice: 0 }])
-    }
+    const addOrderRow = useCallback(() => {
+      setOrderItems((prev) => {
+        const newId = Math.max(0, ...prev.map((i) => i.id)) + 1
+        return [...prev, { id: newId, productName: "", quantity: 0, unitPrice: 0 }]
+      })
+    }, [])
 
-    const orderColumns: DataTableColumn<OrderItem>[] = [
-      {
-        accessorKey: "productName",
-        header: "상품명",
-        minWidth: 150,
-        cell: (_, row) => (
-          <Input
-            value={row.productName}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handleOrderChange(row.id, "productName", e.target.value)
-            }
-            placeholder="상품명 입력"
-            className="h-7 text-xs"
-          />
-        ),
-      },
-      {
-        accessorKey: "quantity",
-        header: "수량",
-        width: 100,
-        cell: (_, row) => (
-          <Input
-            type="number"
-            value={row.quantity || ""}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handleOrderChange(row.id, "quantity", Number(e.target.value))
-            }
-            placeholder="0"
-            className="h-7 text-xs text-right"
-          />
-        ),
-      },
-      {
-        accessorKey: "unitPrice",
-        header: "단가",
-        width: 120,
-        cell: (_, row) => (
-          <Input
-            type="number"
-            value={row.unitPrice || ""}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handleOrderChange(row.id, "unitPrice", Number(e.target.value))
-            }
-            placeholder="0"
-            className="h-7 text-xs text-right"
-          />
-        ),
-      },
-      {
-        accessorKey: "id",
-        header: "합계",
-        width: 100,
-        align: "right",
-        cell: (_, row) => {
-          const total = row.quantity * row.unitPrice
-          return <span className="text-slate-600 dark:text-slate-300">{total.toLocaleString()}원</span>
+    const orderColumns = useMemo<DataTableColumn<OrderItem>[]>(
+      () => [
+        {
+          accessorKey: "productName",
+          header: "상품명",
+          minWidth: 150,
+          cell: (_, row) => (
+            <Input
+              value={row.productName}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                handleOrderChange(row.id, "productName", e.target.value)
+              }
+              placeholder="상품명 입력"
+              className="h-7 text-xs"
+            />
+          ),
         },
-      },
-    ]
+        {
+          accessorKey: "quantity",
+          header: "수량",
+          width: 100,
+          cell: (_, row) => (
+            <Input
+              type="number"
+              value={row.quantity || ""}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                handleOrderChange(row.id, "quantity", Number(e.target.value))
+              }
+              placeholder="0"
+              className="h-7 text-xs text-right"
+            />
+          ),
+        },
+        {
+          accessorKey: "unitPrice",
+          header: "단가",
+          width: 120,
+          cell: (_, row) => (
+            <Input
+              type="number"
+              value={row.unitPrice || ""}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                handleOrderChange(row.id, "unitPrice", Number(e.target.value))
+              }
+              placeholder="0"
+              className="h-7 text-xs text-right"
+            />
+          ),
+        },
+        {
+          accessorKey: "id",
+          header: "합계",
+          width: 100,
+          align: "right",
+          cell: (_, row) => {
+            const total = row.quantity * row.unitPrice
+            return <span className="text-slate-600 dark:text-slate-300">{total.toLocaleString()}원</span>
+          },
+        },
+      ],
+      [handleOrderChange],
+    )
 
     return (
       <div className="space-y-8">

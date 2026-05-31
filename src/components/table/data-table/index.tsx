@@ -140,29 +140,6 @@ function DataTable<T extends { id: string | number }>({
 
   // rowGrouping과 rowReorderable은 함께 사용할 수 없음 (rowSpan 셀 드래그 시 레이아웃 깨짐)
   const rowReorderable = rowGrouping ? false : rowReorderableProp
-  const shouldWarn =
-    typeof process !== "undefined"
-      ? process.env.NODE_ENV !== "production"
-      : false
-
-  React.useEffect(() => {
-    if (shouldWarn && rowGrouping && rowReorderableProp) {
-      console.warn(
-        "[DataTable] rowGrouping과 rowReorderable은 함께 사용할 수 없습니다. " +
-        "rowSpan 셀이 있는 행을 드래그하면 레이아웃이 깨지므로 rowReorderable이 무시됩니다."
-      )
-    }
-  }, [rowGrouping, rowReorderableProp, shouldWarn])
-
-
-
-  React.useEffect(() => {
-    if (shouldWarn && loadingContent && loadingMode !== "splash") {
-      console.warn(
-        "[DataTable] loadingContent와 loadingMode가 함께 전달되었습니다. loadingContent가 우선 적용됩니다."
-      )
-    }
-  }, [loadingContent, loadingMode, shouldWarn])
 
   // 셀 편집 hook
   const {
@@ -274,7 +251,6 @@ function DataTable<T extends { id: string | number }>({
     sortState,
     onSortChange,
     multiSort,
-    shouldWarn,
   })
 
   // 컬럼 정렬 클래스 (utils의 순수 함수를 직접 참조; useCallback 불필요)
@@ -404,7 +380,6 @@ function DataTable<T extends { id: string | number }>({
     disabledReason: virtualDisabledReason,
     count: data.length,
     scrollContainerRef,
-    shouldWarn,
   })
 
   // 컬럼 헤더 렌더링 함수 (DataTableColumnHeader 컴포넌트로 래핑)
@@ -453,13 +428,11 @@ function DataTable<T extends { id: string | number }>({
     getHeaderGroupStickyData,
     headerGroupItems,
   } = useHeaderGroups<T>({
-    columns,
     columnsToRender,
     headerGroups,
     getStickyStyles,
     getColumnWidth,
     resizable,
-    shouldWarn,
   })
 
   // DataTableBodyRow에 전달할 테이블 레벨 컨텍스트
