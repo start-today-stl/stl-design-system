@@ -231,21 +231,48 @@ function DataTable<T extends { id: string | number }>({
     }
   }
 
-  // selectedIds 를 ref 로 보관: handleSelectRow 의 deps 에서 selectedIds 를 빼야
+  // selectedIds / data 를 ref 로 보관: handleSelectRow 의 deps 에서 빼서
   // 체크박스 클릭 시 ctx 가 재생성되지 않아 모든 행이 리렌더되는 것을 방지.
   const selectedIdsRef = React.useRef(selectedIds)
   selectedIdsRef.current = selectedIds
+  const dataForSelectionRef = React.useRef(data)
+  dataForSelectionRef.current = data
   // 외부 콜백은 사용처에서 useCallback 안 해도 안전하도록 ref 흡수
   const stableOnSelectionChange = useStableCallback(onSelectionChange)
+  // Shift+클릭 범위 선택의 anchor (마지막 단일 클릭된 행 인덱스)
+  const lastClickedRowIndexRef = React.useRef<number | null>(null)
 
-  const handleSelectRow = React.useCallback((id: string | number) => {
-    const current = selectedIdsRef.current
-    if (current.includes(id)) {
-      stableOnSelectionChange?.(current.filter((i) => i !== id))
-    } else {
-      stableOnSelectionChange?.([...current, id])
-    }
-  }, [stableOnSelectionChange])
+  const handleSelectRow = React.useCallback(
+    (id: string | number, rowIndex: number, shiftKey: boolean) => {
+      const current = selectedIdsRef.current
+      const lastIndex = lastClickedRowIndexRef.current
+
+      if (shiftKey && lastIndex !== null && lastIndex !== rowIndex) {
+        // 범위 선택 — anchor 행 ~ 현재 행 사이 모든 행을 selected 에 추가
+        // (Gmail / 파일 탐색기 표준 패턴: shift 범위는 추가만, 해제는 단일 클릭으로)
+        const start = Math.min(lastIndex, rowIndex)
+        const end = Math.max(lastIndex, rowIndex)
+        const dataArr = dataForSelectionRef.current
+        const set = new Set(current)
+        for (let i = start; i <= end; i++) {
+          if (i < dataArr.length) set.add(dataArr[i].id)
+        }
+        stableOnSelectionChange?.(Array.from(set))
+        // shift 범위 선택 후에도 anchor 갱신 (다음 shift 클릭의 기준)
+        lastClickedRowIndexRef.current = rowIndex
+        return
+      }
+
+      // 단일 토글
+      if (current.includes(id)) {
+        stableOnSelectionChange?.(current.filter((i) => i !== id))
+      } else {
+        stableOnSelectionChange?.([...current, id])
+      }
+      lastClickedRowIndexRef.current = rowIndex
+    },
+    [stableOnSelectionChange],
+  )
 
   // 정렬 hook (sortStateArray, handleSort, getSortDirection, getSortPriority)
   const { handleSort, getSortDirection, getSortPriority } = useSort<T>({

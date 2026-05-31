@@ -54,7 +54,8 @@ export interface DataTableBodyRowContext<T extends { id: string | number }> {
   getAlignClass: (align?: "left" | "center" | "right") => string
 
   // 콜백 (모두 useCallback 안정화)
-  handleSelectRow: (id: string | number) => void
+  /** id: row.id, rowIndex: 0-based data index, shiftKey: Shift+클릭 시 true (범위 선택) */
+  handleSelectRow: (id: string | number, rowIndex: number, shiftKey: boolean) => void
   toggleRowExpanded: (id: string | number) => void
   startEditing: (rowId: string | number, columnKey: keyof T, value: T[keyof T]) => void
   completeEditing: (column: DataTableColumn<T>, row: T) => void
@@ -157,6 +158,11 @@ function DataTableBodyRowImpl<T extends { id: string | number }>(
   const isEditingCell = (rowId: string | number, columnKey: keyof T) =>
     editingCell?.rowId === rowId && editingCell?.columnKey === columnKey
 
+  // Shift+클릭 범위 선택: Checkbox 의 onClick 에서 shiftKey 잡고
+  // 곧바로 발동되는 onCheckedChange 에서 그 값을 읽어 handleSelectRow 에 전달.
+  // (Radix Checkbox 는 onCheckedChange 에 event 를 안 넘기므로 ref 우회)
+  const pendingShiftKeyRef = React.useRef(false)
+
   const renderRowCells = (dragHandleProps?: DragHandleProps) => (
     <>
       {rowReorderable && (
@@ -194,7 +200,14 @@ function DataTableBodyRowImpl<T extends { id: string | number }>(
           <div className="flex items-center justify-center h-9">
             <Checkbox
               checked={isSelected}
-              onCheckedChange={() => handleSelectRow(row.id)}
+              onClick={(e) => {
+                pendingShiftKeyRef.current = e.shiftKey
+              }}
+              onCheckedChange={() => {
+                const shiftKey = pendingShiftKeyRef.current
+                pendingShiftKeyRef.current = false
+                handleSelectRow(row.id, rowIndex, shiftKey)
+              }}
               aria-label={`행 ${row.id} 선택`}
             />
           </div>

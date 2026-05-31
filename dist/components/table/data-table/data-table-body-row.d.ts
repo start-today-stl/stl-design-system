@@ -27,7 +27,8 @@ export interface DataTableBodyRowContext<T extends {
     getStickyStyles: (column: DataTableColumn<T>, isHeader: boolean, isSelected?: boolean, groupCellSelected?: boolean) => StickyStyleResult;
     getColumnWidth: (column: DataTableColumn<T>) => number | undefined;
     getAlignClass: (align?: "left" | "center" | "right") => string;
-    handleSelectRow: (id: string | number) => void;
+    /** id: row.id, rowIndex: 0-based data index, shiftKey: Shift+클릭 시 true (범위 선택) */
+    handleSelectRow: (id: string | number, rowIndex: number, shiftKey: boolean) => void;
     toggleRowExpanded: (id: string | number) => void;
     startEditing: (rowId: string | number, columnKey: keyof T, value: T[keyof T]) => void;
     completeEditing: (column: DataTableColumn<T>, row: T) => void;
