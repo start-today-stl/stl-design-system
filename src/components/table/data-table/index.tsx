@@ -32,6 +32,7 @@ import { RightIcon, DownIcon, RowAddIcon } from "@/icons"
 
 import { DataTableBodyRow } from "./data-table-body-row"
 import { DataTableColumnHeader } from "./data-table-column-header"
+import { DataTableExpandedRow } from "./data-table-expanded-row"
 import { useStickyStyles } from "./hooks/use-sticky-styles"
 import { useColumnResize } from "./hooks/use-column-resize"
 import { useRowGrouping, type GroupCellFlags } from "./hooks/use-row-grouping"
@@ -311,6 +312,8 @@ function DataTable<T extends { id: string | number }>({
   const stableOnCellChange = useStableCallback(onCellChange)
   const stableOnRowClick = useStableCallback(onRowClick)
   const stableRowClassName = useStableCallback(rowClassName)
+  // 펼침 영역 렌더러도 사용처에서 inline 으로 넘기는 경우가 많아 ref 흡수
+  const stableExpandedRowRender = useStableCallback(expandable?.expandedRowRender)
   const stableOnRowDelete = useStableCallback(rowActions?.onRowDelete)
   const stableOnRowAdd = useStableCallback(rowActions?.onRowAdd)
 
@@ -974,26 +977,13 @@ function DataTable<T extends { id: string | number }>({
                       ctx={rowCtx}
                       groupCellFlags={rowGroupFlagsMap?.get(rowIndex)}
                     />
-                    {expandable && isExpanded && (
-                      <TableRow className="bg-white dark:bg-slate-800/50 hover:bg-white dark:hover:bg-slate-800/50">
-                        <TableCell
-                          colSpan={totalColumns}
-                          className="p-0"
-                          style={{ position: "relative" }}
-                        >
-                          <div
-                            className="p-4 overflow-x-auto"
-                            style={{
-                              position: "sticky",
-                              left: 0,
-                              width: visibleWidth ? `${visibleWidth}px` : "100%",
-                              maxWidth: "100%",
-                            }}
-                          >
-                            {expandable.expandedRowRender(row)}
-                          </div>
-                        </TableCell>
-                      </TableRow>
+                    {expandable && isExpanded && stableExpandedRowRender && (
+                      <DataTableExpandedRow<T>
+                        row={row}
+                        expandedRowRender={stableExpandedRowRender}
+                        totalColumns={totalColumns}
+                        visibleWidth={visibleWidth}
+                      />
                     )}
                   </React.Fragment>
                 )
@@ -1035,26 +1025,13 @@ function DataTable<T extends { id: string | number }>({
                           rowRef={virtualizer.measureElement}
                           dataIndex={virtualItem.index}
                         />
-                        {expandable && isExpanded && (
-                          <TableRow className="bg-white dark:bg-slate-800/50 hover:bg-white dark:hover:bg-slate-800/50">
-                            <TableCell
-                              colSpan={totalColumns}
-                              className="p-0"
-                              style={{ position: "relative" }}
-                            >
-                              <div
-                                className="p-4 overflow-x-auto"
-                                style={{
-                                  position: "sticky",
-                                  left: 0,
-                                  width: visibleWidth ? `${visibleWidth}px` : "100%",
-                                  maxWidth: "100%",
-                                }}
-                              >
-                                {expandable.expandedRowRender(row)}
-                              </div>
-                            </TableCell>
-                          </TableRow>
+                        {expandable && isExpanded && stableExpandedRowRender && (
+                          <DataTableExpandedRow<T>
+                            row={row}
+                            expandedRowRender={stableExpandedRowRender}
+                            totalColumns={totalColumns}
+                            visibleWidth={visibleWidth}
+                          />
                         )}
                       </React.Fragment>
                     )
@@ -1083,26 +1060,13 @@ function DataTable<T extends { id: string | number }>({
                     ctx={rowCtx}
                     groupCellFlags={rowGroupFlagsMap?.get(rowIndex)}
                   />
-                  {expandable && isExpanded && (
-                    <TableRow className="bg-white dark:bg-slate-800/50 hover:bg-white dark:hover:bg-slate-800/50">
-                      <TableCell
-                        colSpan={totalColumns}
-                        className="p-0"
-                        style={{ position: "relative" }}
-                      >
-                        <div
-                          className="p-4 overflow-x-auto"
-                          style={{
-                            position: "sticky",
-                            left: 0,
-                            width: visibleWidth ? `${visibleWidth}px` : "100%",
-                            maxWidth: "100%",
-                          }}
-                        >
-                          {expandable.expandedRowRender(row)}
-                        </div>
-                      </TableCell>
-                    </TableRow>
+                  {expandable && isExpanded && stableExpandedRowRender && (
+                    <DataTableExpandedRow<T>
+                      row={row}
+                      expandedRowRender={stableExpandedRowRender}
+                      totalColumns={totalColumns}
+                      visibleWidth={visibleWidth}
+                    />
                   )}
                 </React.Fragment>
               )
