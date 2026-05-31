@@ -7,7 +7,6 @@ interface UseSortOptions<T> {
   sortState: SortState<T>[] | SortState<T> | undefined
   onSortChange: ((sortState: SortState<T>[]) => void) | undefined
   multiSort: boolean
-  shouldWarn: boolean
 }
 
 /**
@@ -20,23 +19,15 @@ export function useSort<T>({
   sortState,
   onSortChange,
   multiSort,
-  shouldWarn,
 }: UseSortOptions<T>) {
   const sortStateArray: SortState<T>[] = React.useMemo(() => {
     if (!sortState) return []
     if (!Array.isArray(sortState)) {
-      // 구 API(단일 객체) 호환: dev 환경에서만 경고
-      if (shouldWarn) {
-        console.warn(
-          "[DataTable] sortState는 배열(SortState<T>[])이어야 합니다. " +
-          "마이그레이션 가이드: docs/MIGRATION-DATATABLE-SORT.md",
-        )
-      }
       const legacy = sortState as SortState<T>
       return legacy.column && legacy.direction ? [legacy] : []
     }
     return sortState.filter((s) => s.column && s.direction)
-  }, [sortState, shouldWarn])
+  }, [sortState])
 
   const handleSort = React.useCallback(
     (column: keyof T) => {

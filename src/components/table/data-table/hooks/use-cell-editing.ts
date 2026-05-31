@@ -8,6 +8,11 @@ interface UseCellEditingOptions<T extends { id: string | number }> {
   onCellChange?: (rowId: string | number, columnKey: keyof T, value: T[keyof T]) => void
 }
 
+// editingCell / onCellChange / columns / data 가 dep 인 useCallback 은
+// 어느 하나라도 매 render 마다 새 ref 가 되면 callback 자체도 매번 새 ref 가 되어
+// row ctx 안정성을 깬다 (= 모든 행 리렌더).
+// 모두 ref 로 흡수해 useCallback deps 를 비운다.
+
 /**
  * 셀 편집 hook
  * - 편집 시작/완료/취소 처리
@@ -26,6 +31,16 @@ export function useCellEditing<T extends { id: string | number }>({
   // 바깥 클릭 감지용 ref
   const editingCellRef = React.useRef<HTMLTableCellElement>(null)
 
+  // ref 로 흡수 — render 중 동기 업데이트 (useEffect 면 stale 위험)
+  const editingCellStateRef = React.useRef(editingCell)
+  editingCellStateRef.current = editingCell
+  const columnsRef = React.useRef(columns)
+  columnsRef.current = columns
+  const dataRef = React.useRef(data)
+  dataRef.current = data
+  const onCellChangeRef = React.useRef(onCellChange)
+  onCellChangeRef.current = onCellChange
+
   const startEditing = React.useCallback(
     (rowId: string | number, columnKey: keyof T, currentValue: T[keyof T]) => {
       setEditingCell({ rowId, columnKey })
@@ -37,8 +52,9 @@ export function useCellEditing<T extends { id: string | number }>({
 
   const completeEditing = React.useCallback(
     (column: DataTableColumn<T>, row: T) => {
+      const currentEditing = editingCellStateRef.current
       const currentValue = editValueRef.current
-      if (!editingCell || currentValue === null) {
+      if (!currentEditing || currentValue === null) {
         setEditingCell(null)
         setEditValue(null)
         editValueRef.current = null
@@ -48,37 +64,36 @@ export function useCellEditing<T extends { id: string | number }>({
       if (column.validate) {
         const result = column.validate(currentValue, row)
         if (result !== true) {
-          setEditingCell({ ...editingCell, error: result })
+          setEditingCell({ ...currentEditing, error: result })
           return
         }
       }
 
-      if (onCellChange) {
-        onCellChange(editingCell.rowId, editingCell.columnKey, currentValue)
-      }
+      onCellChangeRef.current?.(currentEditing.rowId, currentEditing.columnKey, currentValue)
       setEditingCell(null)
       setEditValue(null)
       editValueRef.current = null
     },
-    [editingCell, onCellChange],
+    [],
   )
 
   const completeEditingFromState = React.useCallback(() => {
-    if (!editingCell) return
-    const column = columns.find((col) => col.accessorKey === editingCell.columnKey)
-    const row = data.find((r) => r.id === editingCell.rowId)
+    const currentEditing = editingCellStateRef.current
+    if (!currentEditing) return
+    const column = columnsRef.current.find((col) => col.accessorKey === currentEditing.columnKey)
+    const row = dataRef.current.find((r) => r.id === currentEditing.rowId)
     if (column && row) {
       completeEditing(column, row)
     } else {
       const currentValue = editValueRef.current
-      if (currentValue !== null && onCellChange) {
-        onCellChange(editingCell.rowId, editingCell.columnKey, currentValue)
+      if (currentValue !== null) {
+        onCellChangeRef.current?.(currentEditing.rowId, currentEditing.columnKey, currentValue)
       }
       setEditingCell(null)
       setEditValue(null)
       editValueRef.current = null
     }
-  }, [editingCell, columns, data, onCellChange, completeEditing])
+  }, [completeEditing])
 
   const cancelEditing = React.useCallback(() => {
     setEditingCell(null)
@@ -86,7 +101,7 @@ export function useCellEditing<T extends { id: string | number }>({
     editValueRef.current = null
   }, [])
 
-  // 외부 클릭 시 저장
+  // 외부 클릭 시 저장 — editingCell 이 있을 때만 리스너 부착
   React.useEffect(() => {
     if (!editingCell) return
 
