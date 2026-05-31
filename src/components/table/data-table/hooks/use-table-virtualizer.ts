@@ -72,6 +72,13 @@ export function useTableVirtualizer({
     getScrollElement: () => scrollContainerRef.current,
     estimateSize: () => estimateSize,
     overscan,
+    // 행 높이를 정수 픽셀로 라운딩 — sub-pixel 누적 오차 감소
+    // (sticky 셀 border 깜빡임은 별개의 브라우저 한계로 완전 해결 불가하나
+    //  Table wrapper bg 매칭으로 시각적으로 안 보이게 처리됨)
+    measureElement: (element) => {
+      const rect = element.getBoundingClientRect()
+      return Math.round(rect.height)
+    },
   })
 
   // 스크롤 컨테이너에 명시적 높이가 없으면 가상화 효과 없음 → dev 경고

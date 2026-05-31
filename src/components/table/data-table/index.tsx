@@ -294,12 +294,17 @@ function DataTable<T extends { id: string | number }>({
     rowReorderable,
   })
 
-  // 가상화 hook — virtual prop 정규화 + 비호환 기능 (rowReorderable / rowGrouping) 활성 시 자동 OFF
+  // 가상화 hook — virtual prop 정규화 + 비호환 기능 활성 시 자동 OFF
+  // sticky 컬럼: CSS sticky + 가상화 스크롤 = sub-pixel rendering 으로 border 깜빡임 (브라우저 한계).
+  //   `<div>` 기반 grid 로 재설계해야 깔끔히 해결 (v2 epic, PLAN-datatable-virtualization.md 참고).
+  const hasStickyColumn = columns.some((col) => col.sticky)
   const virtualDisabledReason = rowReorderable
     ? "rowReorderable (행 드래그앤드롭)"
     : rowGrouping
       ? "rowGrouping (rowSpan 그룹핑)"
-      : null
+      : hasStickyColumn
+        ? "sticky 컬럼 (가상화 스크롤 중 sub-pixel 깜빡임 발생, v2 div-based grid 에서 지원 예정)"
+        : null
   const { isVirtual, virtualizer } = useTableVirtualizer({
     virtual,
     disabledReason: virtualDisabledReason,
@@ -936,8 +941,11 @@ function DataTable<T extends { id: string | number }>({
             (() => {
               const virtualItems = virtualizer.getVirtualItems()
               const totalSize = virtualizer.getTotalSize()
-              const paddingTop = virtualItems[0]?.start ?? 0
-              const paddingBottom = totalSize - (virtualItems[virtualItems.length - 1]?.end ?? 0)
+              // 정수 픽셀로 라운딩 — sub-pixel 위치로 인한 행 사이 갭 / border 깜빡임 방지
+              const paddingTop = Math.round(virtualItems[0]?.start ?? 0)
+              const paddingBottom = Math.round(
+                totalSize - (virtualItems[virtualItems.length - 1]?.end ?? 0),
+              )
               return (
                 <>
                   {paddingTop > 0 && (
