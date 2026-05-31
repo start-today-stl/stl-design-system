@@ -55,6 +55,57 @@ const meta: Meta = {
   title: "Table/DataTable",
   component: DataTable,
   tags: ["autodocs"],
+  parameters: {
+    // 스토리북 사이드바 정렬 (export 순서가 아닌 의도된 그룹 순서로 노출)
+    options: {
+      storySort: {
+        order: [
+          "Docs",
+          // Basic
+          "Default",
+          "Selectable",
+          "Sortable",
+          "MultiSortable",
+          "CustomCell",
+          "RowClick",
+          "Empty",
+          // Loading
+          "Loading",
+          "LoadingCustom",
+          "LoadingWithSkeleton",
+          // Editing
+          "Editable",
+          "EditableWithCustomEditor",
+          "EditableWithValidation",
+          "EditableWithAddDelete",
+          "EditingPatterns",
+          // Layout / Columns
+          "StickyColumn",
+          "HeaderGrouping",
+          "Resizable",
+          "ColumnReorderable",
+          // Rows
+          "RowReorderable",
+          "RowGrouping",
+          "RowGroupingNoSticky",
+          "Expandable",
+          // Row Actions
+          "RowActionsEditable",
+          "RowActionsEditableExternal",
+          // Composition
+          "ListPageBasic",
+          "AllFeatures",
+          // Virtualization
+          "VirtualizationBasic",
+          "VirtualizationCustomOptions",
+          "VirtualizationWithSelectAndSort",
+          "VirtualizationWithExpandable",
+          "VirtualizationStress10k",
+          "VirtualizationIncompatibility",
+        ],
+      },
+    },
+  },
 }
 
 export default meta
@@ -2123,77 +2174,6 @@ export const VirtualizationBasic: Story = {
   },
 }
 
-/** 가상화 + sticky 컬럼 (현재 비호환 — 자동 OFF 검증) */
-export const VirtualizationWithSticky: Story = {
-  render: () => {
-    // sticky 컬럼 있으면 가상화 자동 OFF — 데이터 양 줄여 비-가상화로도 부드럽게 렌더
-    const data = useMemo(() => generateVirtualRows(100), [])
-    // 다수 컬럼 + minWidth → viewport 보다 합이 커서 가로 스크롤 강제 발생
-    const cols: DataTableColumn<VirtualRow>[] = [
-      { accessorKey: "no", header: "주문번호", minWidth: 180, sticky: "left" },
-      { accessorKey: "name", header: "이름", minWidth: 140, sticky: "left" },
-      { accessorKey: "email", header: "이메일", minWidth: 240 },
-      { accessorKey: "role", header: "역할", minWidth: 120 },
-      {
-        accessorKey: "status",
-        header: "상태",
-        minWidth: 120,
-        cell: (value) => (
-          <Badge variant={value === "활성" ? "success-light" : "danger-light"}>
-            {value as string}
-          </Badge>
-        ),
-      },
-      {
-        accessorKey: "amount",
-        header: "금액",
-        minWidth: 160,
-        align: "right",
-        cell: (value) => `${(value as number).toLocaleString()}원`,
-      },
-      {
-        accessorKey: "balance",
-        header: "잔액",
-        minWidth: 160,
-        align: "right",
-        cell: (value) => `${(value as number).toLocaleString()}원`,
-      },
-      {
-        accessorKey: "cumulative",
-        header: "누적 금액",
-        minWidth: 160,
-        align: "right",
-        cell: (value) => `${(value as number).toLocaleString()}원`,
-      },
-      {
-        accessorKey: "monthlyAvg",
-        header: "월 평균",
-        minWidth: 160,
-        align: "right",
-        cell: (value) => `${(value as number).toLocaleString()}원`,
-      },
-      { accessorKey: "companyEmail", header: "회사 이메일", minWidth: 240 },
-      { accessorKey: "manager", header: "담당자", minWidth: 140 },
-      { accessorKey: "department", header: "부서", minWidth: 120 },
-      { accessorKey: "joinedAt", header: "가입일", minWidth: 140 },
-      { accessorKey: "lastActive", header: "최근 활동", minWidth: 140 },
-      { accessorKey: "date", header: "날짜", minWidth: 140, sticky: "right" },
-    ]
-    return (
-      <div className="space-y-3">
-        <div className="p-3 bg-amber-50 dark:bg-amber-900/30 rounded-md text-xs text-amber-800 dark:text-amber-200">
-          <strong>비호환 시나리오:</strong> sticky 컬럼 + 가상화 동시 활성 시 CSS sticky 의 sub-pixel rendering 한계로 행 사이 border 가 스크롤 중 깜빡이는 문제 발생 (Mozilla Bug #1585378 등 다수 보고된 브라우저 한계).
-          <br />
-          현재 DataTable 은 sticky 컬럼이 있으면 가상화를 자동 OFF + dev 콘솔 경고. F12 → Console 확인.
-          <br />
-          완전 호환은 div 기반 grid 재설계 필요 (별도 v2 epic 예정).
-        </div>
-        <DataTable columns={cols} data={data} virtual maxHeight={400} />
-      </div>
-    )
-  },
-}
-
 /** 가상화 + selectable + sortable */
 export const VirtualizationWithSelectAndSort: Story = {
   render: () => {
@@ -2329,81 +2309,138 @@ export const VirtualizationStress10k: Story = {
 }
 
 
-/** 비호환 케이스 — rowReorderable + virtual (자동 OFF + 콘솔 경고) */
-export const VirtualizationWithRowReorderableConflict: Story = {
+/**
+ * 가상화 비호환 케이스 통합 — 한 페이지에서 3가지 비호환 시나리오를 모두 확인.
+ *
+ * 공통 동작: `virtual` 옵션이 활성화되어 있어도 아래 기능 중 하나라도 같이 켜져 있으면
+ * 가상화가 자동 OFF 되고 모든 행이 DOM 에 렌더된다. (작은 데이터셋만 사용 권장)
+ *
+ * 1. sticky 컬럼: CSS sticky + 가상화 스크롤 시 sub-pixel border 깜빡임 (브라우저 한계)
+ * 2. rowReorderable: 행 DnD 시 가상화로 인해 보이지 않는 행의 위치 계산 불가
+ * 3. rowGrouping: rowSpan 셀 병합. 그룹 시작 행이 viewport 밖이면 렌더링 깨짐
+ *
+ * 모두 v2 div-based grid 재설계 시 호환 가능 (별도 epic 예정).
+ */
+export const VirtualizationIncompatibility: Story = {
   render: () => {
-    const [items, setItems] = useState(generateVirtualRows(20))
-    return (
-      <div className="space-y-3">
-        <div className="p-3 bg-amber-50 dark:bg-amber-900/30 rounded-md text-xs text-amber-800 dark:text-amber-200">
-          <strong>비호환 시나리오:</strong> rowReorderable (행 DnD) 와 virtual 은 같이 못 씁니다.
-          이 스토리는 둘 다 켜놨는데 가상화가 자동 OFF 되고 dev 콘솔에 경고가 출력됩니다.
-          F12 → Console 확인.
-        </div>
-        <DataTable
-          columns={virtualColumns}
-          data={items}
-          virtual
-          maxHeight={400}
-          rowReorderable
-          onRowReorder={(newData) => setItems(newData as VirtualRow[])}
-        />
-      </div>
+    // 1. sticky 컬럼 + virtual
+    const stickyData = useMemo(() => generateVirtualRows(50), [])
+    const stickyCols = useMemo<DataTableColumn<VirtualRow>[]>(
+      () => [
+        { accessorKey: "no", header: "주문번호", minWidth: 160, sticky: "left" },
+        { accessorKey: "name", header: "이름", minWidth: 120, sticky: "left" },
+        { accessorKey: "email", header: "이메일", minWidth: 240 },
+        { accessorKey: "role", header: "역할", minWidth: 120 },
+        { accessorKey: "department", header: "부서", minWidth: 140 },
+        { accessorKey: "manager", header: "담당자", minWidth: 140 },
+        {
+          accessorKey: "amount",
+          header: "금액",
+          minWidth: 160,
+          align: "right",
+          cell: (v) => `${(v as number).toLocaleString()}원`,
+        },
+        { accessorKey: "date", header: "날짜", minWidth: 140, sticky: "right" },
+      ],
+      [],
     )
-  },
-}
 
-/** 비호환 케이스 — rowGrouping (rowSpan) + virtual (자동 OFF + 콘솔 경고) */
-export const VirtualizationWithRowGroupingConflict: Story = {
-  render: () => {
+    // 2. rowReorderable + virtual
+    const [reorderItems, setReorderItems] = useState(generateVirtualRows(20))
+    const reorderCols = useMemo<DataTableColumn<VirtualRow>[]>(() => virtualColumns, [])
+
+    // 3. rowGrouping + virtual
     interface GroupRow {
       id: number
       region: string
       name: string
       amount: number
     }
-    const data = useMemo<GroupRow[]>(() => {
+    const groupData = useMemo<GroupRow[]>(() => {
       const regions = ["서울", "경기", "부산", "대구", "광주"]
-      return Array.from({ length: 50 }, (_, i) => ({
+      return Array.from({ length: 30 }, (_, i) => ({
         id: i + 1,
-        region: regions[Math.floor(i / 10)],
+        region: regions[Math.floor(i / 6)],
         name: `담당자${i + 1}`,
         amount: Math.floor(Math.random() * 10000) * 100,
       }))
     }, [])
-
-    const columns: DataTableColumn<GroupRow>[] = [
-      { accessorKey: "region", header: "지역", minWidth: 100 },
-      { accessorKey: "name", header: "담당자", minWidth: 120 },
-      {
-        accessorKey: "amount",
-        header: "금액",
-        minWidth: 120,
-        align: "right",
-        cell: (v) => `${(v as number).toLocaleString()}원`,
-      },
-    ]
-
-    const rowGrouping: RowGroupConfig<GroupRow> = {
-      groupBy: "region",
-      mergeColumns: ["region"],
-    }
+    const groupCols = useMemo<DataTableColumn<GroupRow>[]>(
+      () => [
+        { accessorKey: "region", header: "지역", minWidth: 100 },
+        { accessorKey: "name", header: "담당자", minWidth: 120 },
+        {
+          accessorKey: "amount",
+          header: "금액",
+          minWidth: 120,
+          align: "right",
+          cell: (v) => `${(v as number).toLocaleString()}원`,
+        },
+      ],
+      [],
+    )
+    const rowGrouping = useMemo<RowGroupConfig<GroupRow>>(
+      () => ({ groupBy: "region", mergeColumns: ["region"] }),
+      [],
+    )
 
     return (
-      <div className="space-y-3">
+      <div className="space-y-8">
         <div className="p-3 bg-amber-50 dark:bg-amber-900/30 rounded-md text-xs text-amber-800 dark:text-amber-200">
-          <strong>비호환 시나리오:</strong> rowGrouping (rowSpan 셀 병합) 과 virtual 은 같이 못 씁니다.
-          가상화는 보이는 행만 렌더링하므로 그룹의 시작 행이 viewport 밖에 있으면 rowSpan 이 깨집니다.
-          이 스토리는 둘 다 켜놨는데 가상화가 자동 OFF 되고 dev 콘솔에 경고가 출력됩니다.
-          F12 → Console 확인.
+          <strong>가상화 비호환 케이스 모음.</strong>
+          <br />
+          아래 3가지 기능 중 하나라도 활성화되면 가상화가 자동 OFF 되고 모든 행이 DOM 에 렌더됩니다.
+          작은 데이터셋에서만 사용하세요. v2 div-based grid 재설계 시 호환 예정.
         </div>
-        <DataTable
-          columns={columns}
-          data={data}
-          virtual
-          maxHeight={400}
-          rowGrouping={rowGrouping}
-        />
+
+        {/* 1. sticky */}
+        <section className="space-y-2">
+          <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200">
+            1. sticky 컬럼 + virtual
+          </h3>
+          <p className="text-xs text-slate-500 dark:text-slate-400">
+            CSS sticky + 가상화 스크롤 시 sub-pixel border 깜빡임 (브라우저 한계, Mozilla Bug
+            #1585378 등). 좌/우 sticky 컬럼이 있는 50행 테이블. 가상화 자동 OFF.
+          </p>
+          <DataTable columns={stickyCols} data={stickyData} virtual maxHeight={300} />
+        </section>
+
+        {/* 2. rowReorderable */}
+        <section className="space-y-2">
+          <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200">
+            2. rowReorderable + virtual
+          </h3>
+          <p className="text-xs text-slate-500 dark:text-slate-400">
+            행 DnD 가 가상화로 보이지 않는 행의 위치를 알 수 없음. 20행 테이블. 가상화 자동 OFF +
+            드래그 핸들 정상 동작.
+          </p>
+          <DataTable
+            columns={reorderCols}
+            data={reorderItems}
+            virtual
+            maxHeight={300}
+            rowReorderable
+            onRowReorder={(newData) => setReorderItems(newData as VirtualRow[])}
+          />
+        </section>
+
+        {/* 3. rowGrouping */}
+        <section className="space-y-2">
+          <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200">
+            3. rowGrouping + virtual
+          </h3>
+          <p className="text-xs text-slate-500 dark:text-slate-400">
+            rowSpan 셀 병합. 그룹 시작 행이 viewport 밖이면 렌더링 깨짐. region 별 5행씩 그룹된 30행
+            테이블. 가상화 자동 OFF + rowSpan 정상 동작.
+          </p>
+          <DataTable
+            columns={groupCols}
+            data={groupData}
+            virtual
+            maxHeight={300}
+            rowGrouping={rowGrouping}
+          />
+        </section>
       </div>
     )
   },
