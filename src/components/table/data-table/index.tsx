@@ -506,7 +506,9 @@ function DataTable<T extends { id: string | number }>({
       columnsToRender,
       rowReorderable,
       selectable,
-      expandable,
+      // expandable 객체 자체를 deps 에 넣으면 expandedRowIds 변경 시마다 ctx 가 무력화되어
+      // 모든 행이 리렌더된다. ctx 에는 boolean (활성 여부) 만 들어가므로 boolean 변경 시만 추적.
+      !!expandable,
       showRowDelete,
       hasLeftStickyColumns,
       resizable,
