@@ -115,7 +115,10 @@ export function useStickyStyles<T>({
         ),
       }
     }
-  }, [columns, selectable, expandable, rowReorderable])
+    // expandable 은 sticky 계산에서 활성 여부만 사용하므로 boolean 으로 추적 (객체 ref 변경 무시).
+    // (사용처가 expandable 객체를 inline 으로 줄 때 expandedRowIds 변경 시마다 deps 변경되어
+    //  getStickyStyles 가 매번 새 ref 가 되는 footgun 방지)
+  }, [columns, selectable, !!expandable, rowReorderable])
 
   return { getStickyStyles, hasLeftStickyColumns }
 }

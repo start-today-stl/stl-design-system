@@ -55,7 +55,7 @@ function A({
         )
       };
     };
-  }, [s, c, n, l]), hasLeftStickyColumns: p };
+  }, [s, c, !!n, l]), hasLeftStickyColumns: p };
 }
 export {
   A as useStickyStyles
