@@ -9,6 +9,7 @@ import { DataTableCell } from "./data-table-cell"
 import { DragHandleCell } from "./drag-handle-cell"
 import { SortableRow } from "./sortable-row"
 import type { GroupCellFlags } from "./hooks/use-row-grouping"
+import { getColumnKey } from "./utils"
 import {
   CHECKBOX_WIDTH,
   EXPAND_WIDTH,
@@ -304,7 +305,7 @@ function DataTableBodyRowImpl<T extends { id: string | number }>(
 
         return (
           <DataTableCell<T>
-            key={String(column.accessorKey)}
+            key={getColumnKey(column)}
             row={row}
             rowIndex={rowIndex}
             column={column}

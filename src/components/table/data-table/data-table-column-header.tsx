@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils"
 import { TableHead, TableSortableHead, type SortDirection } from "@/components/table/table"
 
 import { SortableHeaderCell } from "./sortable-header-cell"
-import { toPxString } from "./utils"
+import { getColumnKey, toPxString } from "./utils"
 import type { DataTableColumn, StickyStyleResult } from "./types"
 
 export interface DataTableColumnHeaderProps<T> {
@@ -83,7 +83,7 @@ function DataTableColumnHeaderImpl<T>({
 
   if (isDraggable) {
     return (
-      <SortableHeaderCell id={String(column.accessorKey)} style={style} className={className}>
+      <SortableHeaderCell id={getColumnKey(column)} style={style} className={className}>
         {column.header}
         {resizeHandle}
       </SortableHeaderCell>

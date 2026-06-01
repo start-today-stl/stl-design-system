@@ -44,7 +44,7 @@ import { useHeaderGroups } from "./hooks/use-header-groups"
 import { useTableVirtualizer } from "./hooks/use-table-virtualizer"
 import { useStableCallback } from "./hooks/use-stable-callback"
 import { useStableObject } from "./hooks/use-stable-object"
-import { getAlignClass as getAlignClassUtil } from "./utils"
+import { getAlignClass as getAlignClassUtil, getColumnKey } from "./utils"
 import {
   DRAG_HANDLE_WIDTH,
   CHECKBOX_WIDTH,
@@ -415,7 +415,7 @@ function DataTable<T extends { id: string | number }>({
   // 컬럼 헤더 렌더링 함수 (DataTableColumnHeader 컴포넌트로 래핑)
   const renderColumnHeader = (column: DataTableColumn<T>) => (
     <DataTableColumnHeader<T>
-      key={String(column.accessorKey)}
+      key={getColumnKey(column)}
       column={column}
       stickyData={getStickyStyles(column, true)}
       alignClass={getAlignClass(column.align)}
@@ -948,7 +948,7 @@ function DataTable<T extends { id: string | number }>({
                                   ? Math.min(colWidth * 0.6, 150)
                                   : 100
                                 return (
-                                  <td key={String(col.accessorKey)} className="p-2">
+                                  <td key={getColumnKey(col)} className="p-2">
                                     <Skeleton height={16} width={skeletonWidth} />
                                   </td>
                                 )
@@ -1158,7 +1158,7 @@ function DataTable<T extends { id: string | number }>({
             {/* 나머지 컬럼 빈 셀 */}
             {columnsToRender.map((column) => (
               <TableCell
-                key={String(column.accessorKey)}
+                key={getColumnKey(column)}
                 className="!p-0"
               />
             ))}

@@ -20,8 +20,14 @@ export interface EditComponentProps<T, K extends keyof T = keyof T> {
 export type ValidationResult = true | string;
 /** 컬럼 정의 */
 export interface DataTableColumn<T> {
-    /** 데이터 접근 키 */
+    /** 데이터 접근 키. cell 함수의 첫 번째 인자 (value) 의 출처. */
     accessorKey: keyof T;
+    /**
+     * 컬럼 식별 key. 같은 `accessorKey` 를 가진 컬럼이 둘 이상 있을 때 (예: 같은 데이터를 다른
+     * 형식으로 두 컬럼에 표시) 반드시 지정해야 React key 중복 경고를 피할 수 있습니다.
+     * 지정하지 않으면 `String(accessorKey)` 가 key 로 사용됩니다.
+     */
+    id?: string;
     /** 헤더 텍스트 */
     header: React.ReactNode;
     /** 정렬 가능 여부 */

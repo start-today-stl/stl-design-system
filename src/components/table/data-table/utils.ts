@@ -30,3 +30,11 @@ export function getNumericColumnWidth(col: {
   const parsed = parseInt(String(w ?? ""), 10)
   return Number.isFinite(parsed) ? parsed : 150
 }
+
+/**
+ * 컬럼의 React key.
+ * 같은 accessorKey 를 가진 컬럼이 여럿일 수 있어, 사용처가 `id` 를 지정했으면 그것을 우선.
+ */
+export function getColumnKey<T>(column: { id?: string; accessorKey: keyof T }): string {
+  return column.id ?? String(column.accessorKey)
+}
