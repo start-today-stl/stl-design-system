@@ -8,6 +8,8 @@ import { RightIcon, DownIcon, RowDeleteIcon } from "@/icons"
 import { DataTableCell } from "./data-table-cell"
 import { DragHandleCell } from "./drag-handle-cell"
 import { SortableRow } from "./sortable-row"
+import type { GroupCellFlags } from "./hooks/use-row-grouping"
+import { getColumnKey } from "./utils"
 import {
   CHECKBOX_WIDTH,
   EXPAND_WIDTH,
@@ -15,7 +17,6 @@ import {
   type DataTableColumn,
   type DragHandleProps,
   type EditingCell,
-  type RowActionsConfig,
   type RowGroupConfig,
   type StickyStyleResult,
 } from "./types"
@@ -34,7 +35,8 @@ export interface DataTableBodyRowContext<T extends { id: string | number }> {
   showRowDelete: boolean
   hasLeftStickyColumns: boolean
   resizable: boolean
-  rowActions: RowActionsConfig<T> | undefined
+  /** rowActions.onRowDelete 를 ref 흡수한 stable callback (사용처 inline 도 안전) */
+  onRowDelete: ((row: T) => void) | undefined
   rowGrouping: RowGroupConfig<T> | undefined
   middleRowSet: Set<number> | null
   dataLength: number
@@ -43,8 +45,6 @@ export interface DataTableBodyRowContext<T extends { id: string | number }> {
   getCheckboxHeaderLeftOffset: () => number
   getExpandHeaderLeftOffset: () => number
   getRowSpan: (rowIndex: number, columnKey: keyof T) => number | undefined
-  isGroupCellHovered: (rowIndex: number, rowSpan: number) => boolean
-  isGroupCellSelected: (rowIndex: number, rowSpan: number) => boolean
   getStickyStyles: (
     column: DataTableColumn<T>,
     isHeader: boolean,
@@ -55,7 +55,8 @@ export interface DataTableBodyRowContext<T extends { id: string | number }> {
   getAlignClass: (align?: "left" | "center" | "right") => string
 
   // 콜백 (모두 useCallback 안정화)
-  handleSelectRow: (id: string | number) => void
+  /** id: row.id, rowIndex: 0-based data index, shiftKey: Shift+클릭 시 true (범위 선택) */
+  handleSelectRow: (id: string | number, rowIndex: number, shiftKey: boolean) => void
   toggleRowExpanded: (id: string | number) => void
   startEditing: (rowId: string | number, columnKey: keyof T, value: T[keyof T]) => void
   completeEditing: (column: DataTableColumn<T>, row: T) => void
@@ -87,6 +88,22 @@ export interface DataTableBodyRowProps<T extends { id: string | number }> {
 
   /** 테이블 레벨 컨텍스트 (useMemo로 안정화) */
   ctx: DataTableBodyRowContext<T>
+
+  /**
+   * 가상화: TableRow DOM 요소에 부착할 ref (보통 virtualizer.measureElement).
+   * 가상화 비활성 시엔 생략.
+   */
+  rowRef?: (el: HTMLTableRowElement | null) => void
+  /**
+   * 가상화: virtualizer.measureElement 가 ResizeObserver 로 측정 시 사용하는 인덱스 식별자.
+   * 가상화 활성 시 virtualItem.index 를 넘김.
+   */
+  dataIndex?: number
+  /**
+   * rowGrouping 그룹 head 행의 머지 셀별 selected/hovered flag.
+   * parent 에서 미리 계산해 전달 — 그룹 내 selected/hover 변경 시 해당 head 행만 부분 리렌더.
+   */
+  groupCellFlags?: GroupCellFlags
 }
 
 function DataTableBodyRowImpl<T extends { id: string | number }>(
@@ -101,6 +118,9 @@ function DataTableBodyRowImpl<T extends { id: string | number }>(
     editingCell,
     editValue,
     ctx,
+    rowRef,
+    dataIndex,
+    groupCellFlags,
   } = props
 
   const {
@@ -111,15 +131,13 @@ function DataTableBodyRowImpl<T extends { id: string | number }>(
     showRowDelete,
     hasLeftStickyColumns,
     resizable,
-    rowActions,
+    onRowDelete,
     rowGrouping,
     middleRowSet,
     dataLength,
     getCheckboxHeaderLeftOffset,
     getExpandHeaderLeftOffset,
     getRowSpan,
-    isGroupCellHovered,
-    isGroupCellSelected,
     getStickyStyles,
     getColumnWidth,
     getAlignClass,
@@ -140,6 +158,11 @@ function DataTableBodyRowImpl<T extends { id: string | number }>(
 
   const isEditingCell = (rowId: string | number, columnKey: keyof T) =>
     editingCell?.rowId === rowId && editingCell?.columnKey === columnKey
+
+  // Shift+클릭 범위 선택: Checkbox 의 onClick 에서 shiftKey 잡고
+  // 곧바로 발동되는 onCheckedChange 에서 그 값을 읽어 handleSelectRow 에 전달.
+  // (Radix Checkbox 는 onCheckedChange 에 event 를 안 넘기므로 ref 우회)
+  const pendingShiftKeyRef = React.useRef(false)
 
   const renderRowCells = (dragHandleProps?: DragHandleProps) => (
     <>
@@ -178,7 +201,14 @@ function DataTableBodyRowImpl<T extends { id: string | number }>(
           <div className="flex items-center justify-center h-9">
             <Checkbox
               checked={isSelected}
-              onCheckedChange={() => handleSelectRow(row.id)}
+              onClick={(e) => {
+                pendingShiftKeyRef.current = e.shiftKey
+              }}
+              onCheckedChange={() => {
+                const shiftKey = pendingShiftKeyRef.current
+                pendingShiftKeyRef.current = false
+                handleSelectRow(row.id, rowIndex, shiftKey)
+              }}
               aria-label={`행 ${row.id} 선택`}
             />
           </div>
@@ -235,7 +265,7 @@ function DataTableBodyRowImpl<T extends { id: string | number }>(
         >
           <button
             type="button"
-            onClick={() => rowActions?.onRowDelete?.(row)}
+            onClick={() => onRowDelete?.(row)}
             className="flex h-9 w-10 items-center justify-center transition-opacity hover:opacity-70"
             aria-label="행 삭제"
           >
@@ -251,8 +281,11 @@ function DataTableBodyRowImpl<T extends { id: string | number }>(
         const value = row[column.accessorKey]
         const cellIsEditing = isEditingCell(row.id, column.accessorKey)
         const hasRowSpan = rowSpan !== undefined && rowSpan > 1
-        const groupCellHovered = hasRowSpan && isGroupCellHovered(rowIndex, rowSpan)
-        const groupCellSelected = hasRowSpan && isGroupCellSelected(rowIndex, rowSpan)
+        // groupCellFlags 는 parent 에서 미리 계산된 그룹 head 행의 column 별 selected/hovered.
+        // hasRowSpan 인 셀에만 의미 (head 가 그리는 머지 셀).
+        const colKeyStr = String(column.accessorKey)
+        const groupCellHovered = hasRowSpan && (groupCellFlags?.hovered[colKeyStr] ?? false)
+        const groupCellSelected = hasRowSpan && (groupCellFlags?.selected[colKeyStr] ?? false)
         const stickyData = getStickyStyles(column, false, isSelected, hasRowSpan ? groupCellSelected : undefined)
 
         const toPx = (v: string | number) => (typeof v === "number" ? `${v}px` : v)
@@ -272,7 +305,7 @@ function DataTableBodyRowImpl<T extends { id: string | number }>(
 
         return (
           <DataTableCell<T>
-            key={String(column.accessorKey)}
+            key={getColumnKey(column)}
             row={row}
             rowIndex={rowIndex}
             column={column}
@@ -320,6 +353,8 @@ function DataTableBodyRowImpl<T extends { id: string | number }>(
 
   return (
     <TableRow
+      ref={rowRef}
+      data-index={dataIndex}
       data-state={isSelected ? "selected" : undefined}
       className={cn(
         onRowClick && "cursor-pointer",
@@ -363,6 +398,22 @@ function arePropsEqual<T extends { id: string | number }>(
   }
   // ctx는 useMemo로 안정화되어 있으므로 ref 비교만으로 충분
   if (prev.ctx !== next.ctx) return false
+  // groupCellFlags: 그룹 head 행의 머지 셀 flag. 변경된 head 행만 리렌더되도록 내용 비교.
+  // (parent useMemo 가 매번 새 Map 만들지만 행 단위 ref 는 안정되지 않으므로 deep compare 필요)
+  const pf = prev.groupCellFlags
+  const nf = next.groupCellFlags
+  if (pf !== nf) {
+    if (!pf || !nf) return false
+    const ps = pf.selected
+    const ns = nf.selected
+    const ph = pf.hovered
+    const nh = nf.hovered
+    const psKeys = Object.keys(ps)
+    if (psKeys.length !== Object.keys(ns).length) return false
+    for (const k of psKeys) {
+      if (ps[k] !== ns[k] || ph[k] !== nh[k]) return false
+    }
+  }
   return true
 }
 

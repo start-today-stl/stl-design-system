@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite"
-import { useState, useMemo } from "react"
+import { useState, useMemo, useCallback } from "react"
 import {
   DataTable,
   TableToolbar,
@@ -193,15 +193,13 @@ export const CustomCell: Story = {
 /** 빈 데이터 */
 export const Empty: Story = {
   render: () => {
+    // 가로 스크롤 유도용 wide 컬럼 (minWidth 합계 > 컨테이너 너비)
     const wideColumns: DataTableColumn<User>[] = [
-      { accessorKey: "id", header: "ID", minWidth: 200 },
-      { accessorKey: "name", header: "이름", minWidth: 200 },
-      { accessorKey: "email", header: "이메일", minWidth: 300 },
-      { accessorKey: "role", header: "역할", minWidth: 200 },
-      { accessorKey: "status", header: "상태", minWidth: 200 },
-      { accessorKey: "name", header: "추가1", minWidth: 200 },
-      { accessorKey: "name", header: "추가2", minWidth: 200 },
-      { accessorKey: "name", header: "추가3", minWidth: 200 },
+      { accessorKey: "id", header: "ID", minWidth: 300 },
+      { accessorKey: "name", header: "이름", minWidth: 400 },
+      { accessorKey: "email", header: "이메일", minWidth: 500 },
+      { accessorKey: "role", header: "역할", minWidth: 400 },
+      { accessorKey: "status", header: "상태", minWidth: 400 },
     ]
     return (
       <DataTable
@@ -216,15 +214,13 @@ export const Empty: Story = {
 /** 로딩 상태 (기본: SplashScreen) */
 export const Loading: Story = {
   render: () => {
+    // 가로 스크롤 유도용 wide 컬럼 (minWidth 합계 > 컨테이너 너비)
     const wideColumns: DataTableColumn<User>[] = [
-      { accessorKey: "id", header: "ID", minWidth: 200 },
-      { accessorKey: "name", header: "이름", minWidth: 200 },
-      { accessorKey: "email", header: "이메일", minWidth: 300 },
-      { accessorKey: "role", header: "역할", minWidth: 200 },
-      { accessorKey: "status", header: "상태", minWidth: 200 },
-      { accessorKey: "name", header: "추가1", minWidth: 200 },
-      { accessorKey: "name", header: "추가2", minWidth: 200 },
-      { accessorKey: "name", header: "추가3", minWidth: 200 },
+      { accessorKey: "id", header: "ID", minWidth: 300 },
+      { accessorKey: "name", header: "이름", minWidth: 400 },
+      { accessorKey: "email", header: "이메일", minWidth: 500 },
+      { accessorKey: "role", header: "역할", minWidth: 400 },
+      { accessorKey: "status", header: "상태", minWidth: 400 },
     ]
     return (
       <div className="border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
@@ -1863,24 +1859,30 @@ export const EditingPatterns: Story = {
       { id: 3, sku: "SKU-003", name: "상품 C", stock: 0, memo: "품절 예정" },
     ])
 
-    const inventoryColumns: DataTableColumn<InventoryItem>[] = [
-      { accessorKey: "sku", header: "SKU", width: 100 },
-      { accessorKey: "name", header: "상품명", width: 120 },
-      { accessorKey: "stock", header: "재고", width: 80, align: "center", editable: true },
-      { accessorKey: "memo", header: "메모", minWidth: 150, editable: true },
-    ]
+    const inventoryColumns = useMemo<DataTableColumn<InventoryItem>[]>(
+      () => [
+        { accessorKey: "sku", header: "SKU", width: 100 },
+        { accessorKey: "name", header: "상품명", width: 120 },
+        { accessorKey: "stock", header: "재고", width: 80, align: "center", editable: true },
+        { accessorKey: "memo", header: "메모", minWidth: 150, editable: true },
+      ],
+      [],
+    )
 
-    const handleInventoryCellChange = (
-      rowId: string | number,
-      columnKey: keyof InventoryItem,
-      value: InventoryItem[keyof InventoryItem]
-    ) => {
-      setInventoryData((prev) =>
-        prev.map((row) =>
-          row.id === rowId ? { ...row, [columnKey]: value } : row
+    const handleInventoryCellChange = useCallback(
+      (
+        rowId: string | number,
+        columnKey: keyof InventoryItem,
+        value: InventoryItem[keyof InventoryItem],
+      ) => {
+        setInventoryData((prev) =>
+          prev.map((row) =>
+            row.id === rowId ? { ...row, [columnKey]: value } : row,
+          ),
         )
-      )
-    }
+      },
+      [],
+    )
 
     // 2. 커스텀 렌더러 사용 예시 (새 데이터 입력)
     interface OrderItem {
@@ -1895,78 +1897,86 @@ export const EditingPatterns: Story = {
       { id: 2, productName: "", quantity: 0, unitPrice: 0 },
     ])
 
-    const handleOrderChange = (id: number, field: keyof OrderItem, value: string | number) => {
-      setOrderItems((prev) =>
-        prev.map((item) =>
-          item.id === id ? { ...item, [field]: value } : item
+    const handleOrderChange = useCallback(
+      (id: number, field: keyof OrderItem, value: string | number) => {
+        setOrderItems((prev) =>
+          prev.map((item) =>
+            item.id === id ? { ...item, [field]: value } : item,
+          ),
         )
-      )
-    }
+      },
+      [],
+    )
 
-    const addOrderRow = () => {
-      const newId = Math.max(0, ...orderItems.map((i) => i.id)) + 1
-      setOrderItems([...orderItems, { id: newId, productName: "", quantity: 0, unitPrice: 0 }])
-    }
+    const addOrderRow = useCallback(() => {
+      setOrderItems((prev) => {
+        const newId = Math.max(0, ...prev.map((i) => i.id)) + 1
+        return [...prev, { id: newId, productName: "", quantity: 0, unitPrice: 0 }]
+      })
+    }, [])
 
-    const orderColumns: DataTableColumn<OrderItem>[] = [
-      {
-        accessorKey: "productName",
-        header: "상품명",
-        minWidth: 150,
-        cell: (_, row) => (
-          <Input
-            value={row.productName}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handleOrderChange(row.id, "productName", e.target.value)
-            }
-            placeholder="상품명 입력"
-            className="h-7 text-xs"
-          />
-        ),
-      },
-      {
-        accessorKey: "quantity",
-        header: "수량",
-        width: 100,
-        cell: (_, row) => (
-          <Input
-            type="number"
-            value={row.quantity || ""}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handleOrderChange(row.id, "quantity", Number(e.target.value))
-            }
-            placeholder="0"
-            className="h-7 text-xs text-right"
-          />
-        ),
-      },
-      {
-        accessorKey: "unitPrice",
-        header: "단가",
-        width: 120,
-        cell: (_, row) => (
-          <Input
-            type="number"
-            value={row.unitPrice || ""}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handleOrderChange(row.id, "unitPrice", Number(e.target.value))
-            }
-            placeholder="0"
-            className="h-7 text-xs text-right"
-          />
-        ),
-      },
-      {
-        accessorKey: "id",
-        header: "합계",
-        width: 100,
-        align: "right",
-        cell: (_, row) => {
-          const total = row.quantity * row.unitPrice
-          return <span className="text-slate-600 dark:text-slate-300">{total.toLocaleString()}원</span>
+    const orderColumns = useMemo<DataTableColumn<OrderItem>[]>(
+      () => [
+        {
+          accessorKey: "productName",
+          header: "상품명",
+          minWidth: 150,
+          cell: (_, row) => (
+            <Input
+              value={row.productName}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                handleOrderChange(row.id, "productName", e.target.value)
+              }
+              placeholder="상품명 입력"
+              className="h-7 text-xs"
+            />
+          ),
         },
-      },
-    ]
+        {
+          accessorKey: "quantity",
+          header: "수량",
+          width: 100,
+          cell: (_, row) => (
+            <Input
+              type="number"
+              value={row.quantity || ""}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                handleOrderChange(row.id, "quantity", Number(e.target.value))
+              }
+              placeholder="0"
+              className="h-7 text-xs text-right"
+            />
+          ),
+        },
+        {
+          accessorKey: "unitPrice",
+          header: "단가",
+          width: 120,
+          cell: (_, row) => (
+            <Input
+              type="number"
+              value={row.unitPrice || ""}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                handleOrderChange(row.id, "unitPrice", Number(e.target.value))
+              }
+              placeholder="0"
+              className="h-7 text-xs text-right"
+            />
+          ),
+        },
+        {
+          accessorKey: "id",
+          header: "합계",
+          width: 100,
+          align: "right",
+          cell: (_, row) => {
+            const total = row.quantity * row.unitPrice
+            return <span className="text-slate-600 dark:text-slate-300">{total.toLocaleString()}원</span>
+          },
+        },
+      ],
+      [handleOrderChange],
+    )
 
     return (
       <div className="space-y-8">
@@ -2014,6 +2024,372 @@ export const EditingPatterns: Story = {
           </div>
           <DataTable columns={orderColumns} data={orderItems} />
         </div>
+      </div>
+    )
+  },
+}
+
+// ============================================================
+// 가상화 (Virtualization) 스토리
+// 큰 데이터셋에서 화면에 보이는 행만 렌더링 — DOM 노드 수 큰 폭 감소
+// ============================================================
+
+interface VirtualRow {
+  id: number
+  no: string
+  name: string
+  email: string
+  role: string
+  status: "활성" | "비활성"
+  amount: number
+  balance: number
+  cumulative: number
+  monthlyAvg: number
+  companyEmail: string
+  manager: string
+  department: string
+  date: string
+  joinedAt: string
+  lastActive: string
+}
+
+const generateVirtualRows = (count: number): VirtualRow[] =>
+  Array.from({ length: count }, (_, i) => ({
+    id: i + 1,
+    no: `ORD-${String(i + 1).padStart(6, "0")}`,
+    name: `사용자 ${i + 1}`,
+    email: `user${i + 1}@example.com`,
+    role: i % 3 === 0 ? "관리자" : i % 3 === 1 ? "편집자" : "사용자",
+    status: i % 4 === 0 ? "비활성" : "활성",
+    amount: Math.floor(Math.random() * 1000000),
+    balance: Math.floor(Math.random() * 1000000),
+    cumulative: Math.floor(Math.random() * 10000000),
+    monthlyAvg: Math.floor(Math.random() * 500000),
+    companyEmail: `company${i + 1}@corp.com`,
+    manager: `담당자 ${i + 1}`,
+    department: i % 4 === 0 ? "영업" : i % 4 === 1 ? "개발" : i % 4 === 2 ? "디자인" : "기획",
+    date: `2026-${String(((i % 12) + 1)).padStart(2, "0")}-${String(((i % 28) + 1)).padStart(2, "0")}`,
+    joinedAt: `2024-${String(((i % 12) + 1)).padStart(2, "0")}-${String(((i % 28) + 1)).padStart(2, "0")}`,
+    lastActive: `2026-${String(((i % 12) + 1)).padStart(2, "0")}-${String(((i % 28) + 1)).padStart(2, "0")}`,
+  }))
+
+const virtualColumns: DataTableColumn<VirtualRow>[] = [
+  { accessorKey: "no", header: "주문번호", width: 140 },
+  { accessorKey: "name", header: "이름", width: 120 },
+  { accessorKey: "email", header: "이메일", minWidth: 200 },
+  { accessorKey: "role", header: "역할", width: 100 },
+  {
+    accessorKey: "status",
+    header: "상태",
+    width: 80,
+    cell: (value) => (
+      <Badge variant={value === "활성" ? "success-light" : "danger-light"}>
+        {value as string}
+      </Badge>
+    ),
+  },
+  {
+    accessorKey: "amount",
+    header: "금액",
+    width: 120,
+    align: "right",
+    cell: (value) => `${(value as number).toLocaleString()}원`,
+  },
+  { accessorKey: "date", header: "날짜", width: 120 },
+]
+
+/** 가상화 기본 — 1000행 */
+export const VirtualizationBasic: Story = {
+  render: () => {
+    const data = useMemo(() => generateVirtualRows(1000), [])
+    return (
+      <div className="space-y-3">
+        <div className="p-4 bg-blue-50 dark:bg-blue-900/30 rounded-md">
+          <h3 className="font-bold text-blue-800 dark:text-blue-200 mb-2">
+            가상화 (Virtualization) 기본
+          </h3>
+          <p className="text-sm text-blue-700 dark:text-blue-300">
+            데이터 1,000행이지만 실제로 DOM 에 렌더링된 행은 화면에 보이는 ~30행 + overscan 만큼.
+            <br />
+            `virtual` prop 만 추가하면 활성화. `maxHeight` 필수 (스크롤 컨테이너 높이 제약).
+          </p>
+        </div>
+        <p className="text-xs text-slate-500">
+          1,000행 데이터, virtual prop 활성, maxHeight 400px
+        </p>
+        <DataTable columns={virtualColumns} data={data} virtual maxHeight={400} />
+      </div>
+    )
+  },
+}
+
+/** 가상화 + selectable + sortable */
+export const VirtualizationWithSelectAndSort: Story = {
+  render: () => {
+    const [selectedIds, setSelectedIds] = useState<number[]>([])
+    const [sortState, setSortState] = useState<SortState<VirtualRow>[]>([])
+    const allData = useMemo(() => generateVirtualRows(1000), [])
+    const current = sortState[0]
+    const sortedData = useMemo(() => {
+      if (!current?.column || !current?.direction) return allData
+      return [...allData].sort((a, b) => {
+        const aVal = a[current.column!]
+        const bVal = b[current.column!]
+        const cmp =
+          typeof aVal === "number" && typeof bVal === "number"
+            ? aVal - bVal
+            : String(aVal).localeCompare(String(bVal))
+        return current.direction === "asc" ? cmp : -cmp
+      })
+    }, [allData, current])
+    const cols = useMemo<DataTableColumn<VirtualRow>[]>(
+      () =>
+        virtualColumns.map((c) => ({
+          ...c,
+          sortable:
+            c.accessorKey === "name" ||
+            c.accessorKey === "amount" ||
+            c.accessorKey === "date",
+        })),
+      [],
+    )
+    return (
+      <div className="space-y-3">
+        <p className="text-sm text-slate-500">
+          1,000행 + 행 선택 + 정렬 (이름/금액/날짜) + 가상화. 선택과 정렬은 가상화와 직교 동작.
+        </p>
+        <p className="text-xs text-slate-500">
+          선택됨: {selectedIds.length}건 / 정렬: {current?.column ? `${String(current.column)} (${current.direction})` : "없음"}
+        </p>
+        <DataTable
+          columns={cols}
+          data={sortedData}
+          virtual
+          maxHeight={400}
+          selectable
+          selectedIds={selectedIds}
+          onSelectionChange={(ids) => setSelectedIds(ids as number[])}
+          sortState={sortState}
+          onSortChange={setSortState}
+        />
+      </div>
+    )
+  },
+}
+
+/** 가상화 + 확장행 */
+export const VirtualizationWithExpandable: Story = {
+  render: () => {
+    const data = useMemo(() => generateVirtualRows(1000), [])
+    return (
+      <div className="space-y-3">
+        <div className="p-3 bg-amber-50 dark:bg-amber-900/30 rounded-md text-xs text-amber-800 dark:text-amber-200">
+          <strong>알려진 한계:</strong> 확장행의 펼침 영역 자체는 virtualizer 가 측정하지 않습니다.
+          한 번에 여러 행을 펼친 채 빠르게 스크롤하면 위치 계산이 약간 부정확할 수 있습니다.
+          단일 펼침 / 일반 사용에선 체감 차이 없음.
+        </div>
+        <DataTable
+          columns={virtualColumns}
+          data={data}
+          virtual
+          maxHeight={400}
+          expandable={{
+            expandedRowRender: (row) => (
+              <div className="p-2 text-sm text-slate-700 dark:text-slate-300">
+                <strong>상세:</strong> {row.name} ({row.email}) — {row.no} / {row.date} / {row.amount.toLocaleString()}원
+              </div>
+            ),
+          }}
+        />
+      </div>
+    )
+  },
+}
+
+/** 가상화 옵션 커스터마이징 */
+export const VirtualizationCustomOptions: Story = {
+  render: () => {
+    const data = useMemo(() => generateVirtualRows(1000), [])
+    return (
+      <div className="space-y-3">
+        <div className="p-3 bg-slate-50 dark:bg-slate-800 rounded-md text-xs text-slate-700 dark:text-slate-300">
+          <code>virtual={`{{ overscan: 10, estimateSize: 50 }}`}</code>
+          <br />
+          overscan 늘리면 (화면 밖 추가 렌더 행) 스크롤 시 빈 공간이 덜 보이지만 메모리/렌더 부담 ↑.
+          estimateSize 는 실제 평균 행 높이에 맞춰주면 초기 스크롤 위치 계산 더 정확.
+        </div>
+        <DataTable
+          columns={virtualColumns}
+          data={data}
+          virtual={{ overscan: 10, estimateSize: 50 }}
+          maxHeight={400}
+        />
+      </div>
+    )
+  },
+}
+
+/** 가상화 - 스트레스 테스트 (10,000행 + 체크박스: ctx 안정성 / Set 변환 효과 측정) */
+export const VirtualizationStress10k: Story = {
+  render: () => {
+    const data = useMemo(() => generateVirtualRows(10000), [])
+    const [selectedIds, setSelectedIds] = useState<number[]>([])
+    return (
+      <div className="space-y-3">
+        <div className="p-3 bg-red-50 dark:bg-red-900/30 rounded-md text-xs text-red-800 dark:text-red-200">
+          <strong>10,000행 스트레스 테스트.</strong> 가상화 미적용 시 DOM 노드 70만+ 개 (브라우저 멈춤).
+          가상화 ON 으로 화면에 보이는 ~30행만 렌더 → 부드러운 스크롤.
+          <br />
+          체크박스 클릭 시 선택한 행만 리렌더되는지 / 클릭 응답 시간을 React DevTools Profiler 로 확인.
+        </div>
+        <p className="text-xs text-slate-500">선택됨: {selectedIds.length}건</p>
+        <DataTable
+          columns={virtualColumns}
+          data={data}
+          virtual
+          maxHeight={400}
+          selectable
+          selectedIds={selectedIds}
+          onSelectionChange={(ids) => setSelectedIds(ids as number[])}
+        />
+      </div>
+    )
+  },
+}
+
+
+/**
+ * 가상화 비호환 케이스 통합 — 한 페이지에서 3가지 비호환 시나리오를 모두 확인.
+ *
+ * 공통 동작: `virtual` 옵션이 활성화되어 있어도 아래 기능 중 하나라도 같이 켜져 있으면
+ * 가상화가 자동 OFF 되고 모든 행이 DOM 에 렌더된다. (작은 데이터셋만 사용 권장)
+ *
+ * 1. sticky 컬럼: CSS sticky + 가상화 스크롤 시 sub-pixel border 깜빡임 (브라우저 한계)
+ * 2. rowReorderable: 행 DnD 시 가상화로 인해 보이지 않는 행의 위치 계산 불가
+ * 3. rowGrouping: rowSpan 셀 병합. 그룹 시작 행이 viewport 밖이면 렌더링 깨짐
+ *
+ * 모두 v2 div-based grid 재설계 시 호환 가능 (별도 epic 예정).
+ */
+export const VirtualizationIncompatibility: Story = {
+  render: () => {
+    // 1. sticky 컬럼 + virtual
+    const stickyData = useMemo(() => generateVirtualRows(50), [])
+    const stickyCols = useMemo<DataTableColumn<VirtualRow>[]>(
+      () => [
+        { accessorKey: "no", header: "주문번호", minWidth: 160, sticky: "left" },
+        { accessorKey: "name", header: "이름", minWidth: 120, sticky: "left" },
+        { accessorKey: "email", header: "이메일", minWidth: 240 },
+        { accessorKey: "role", header: "역할", minWidth: 120 },
+        { accessorKey: "department", header: "부서", minWidth: 140 },
+        { accessorKey: "manager", header: "담당자", minWidth: 140 },
+        {
+          accessorKey: "amount",
+          header: "금액",
+          minWidth: 160,
+          align: "right",
+          cell: (v) => `${(v as number).toLocaleString()}원`,
+        },
+        { accessorKey: "date", header: "날짜", minWidth: 140, sticky: "right" },
+      ],
+      [],
+    )
+
+    // 2. rowReorderable + virtual
+    const [reorderItems, setReorderItems] = useState(generateVirtualRows(20))
+    const reorderCols = useMemo<DataTableColumn<VirtualRow>[]>(() => virtualColumns, [])
+
+    // 3. rowGrouping + virtual
+    interface GroupRow {
+      id: number
+      region: string
+      name: string
+      amount: number
+    }
+    const groupData = useMemo<GroupRow[]>(() => {
+      const regions = ["서울", "경기", "부산", "대구", "광주"]
+      return Array.from({ length: 30 }, (_, i) => ({
+        id: i + 1,
+        region: regions[Math.floor(i / 6)],
+        name: `담당자${i + 1}`,
+        amount: Math.floor(Math.random() * 10000) * 100,
+      }))
+    }, [])
+    const groupCols = useMemo<DataTableColumn<GroupRow>[]>(
+      () => [
+        { accessorKey: "region", header: "지역", minWidth: 100 },
+        { accessorKey: "name", header: "담당자", minWidth: 120 },
+        {
+          accessorKey: "amount",
+          header: "금액",
+          minWidth: 120,
+          align: "right",
+          cell: (v) => `${(v as number).toLocaleString()}원`,
+        },
+      ],
+      [],
+    )
+    const rowGrouping = useMemo<RowGroupConfig<GroupRow>>(
+      () => ({ groupBy: "region", mergeColumns: ["region"] }),
+      [],
+    )
+
+    return (
+      <div className="space-y-8">
+        <div className="p-3 bg-amber-50 dark:bg-amber-900/30 rounded-md text-xs text-amber-800 dark:text-amber-200">
+          <strong>가상화 비호환 케이스 모음.</strong>
+          <br />
+          아래 3가지 기능 중 하나라도 활성화되면 가상화가 자동 OFF 되고 모든 행이 DOM 에 렌더됩니다.
+          작은 데이터셋에서만 사용하세요. v2 div-based grid 재설계 시 호환 예정.
+        </div>
+
+        {/* 1. sticky */}
+        <section className="space-y-2">
+          <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200">
+            1. sticky 컬럼 + virtual
+          </h3>
+          <p className="text-xs text-slate-500 dark:text-slate-400">
+            CSS sticky + 가상화 스크롤 시 sub-pixel border 깜빡임 (브라우저 한계, Mozilla Bug
+            #1585378 등). 좌/우 sticky 컬럼이 있는 50행 테이블. 가상화 자동 OFF.
+          </p>
+          <DataTable columns={stickyCols} data={stickyData} virtual maxHeight={300} />
+        </section>
+
+        {/* 2. rowReorderable */}
+        <section className="space-y-2">
+          <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200">
+            2. rowReorderable + virtual
+          </h3>
+          <p className="text-xs text-slate-500 dark:text-slate-400">
+            행 DnD 가 가상화로 보이지 않는 행의 위치를 알 수 없음. 20행 테이블. 가상화 자동 OFF +
+            드래그 핸들 정상 동작.
+          </p>
+          <DataTable
+            columns={reorderCols}
+            data={reorderItems}
+            virtual
+            maxHeight={300}
+            rowReorderable
+            onRowReorder={(newData) => setReorderItems(newData as VirtualRow[])}
+          />
+        </section>
+
+        {/* 3. rowGrouping */}
+        <section className="space-y-2">
+          <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200">
+            3. rowGrouping + virtual
+          </h3>
+          <p className="text-xs text-slate-500 dark:text-slate-400">
+            rowSpan 셀 병합. 그룹 시작 행이 viewport 밖이면 렌더링 깨짐. region 별 5행씩 그룹된 30행
+            테이블. 가상화 자동 OFF + rowSpan 정상 동작.
+          </p>
+          <DataTable
+            columns={groupCols}
+            data={groupData}
+            virtual
+            maxHeight={300}
+            rowGrouping={rowGrouping}
+          />
+        </section>
       </div>
     )
   },

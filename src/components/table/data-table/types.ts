@@ -23,8 +23,14 @@ export type ValidationResult = true | string
 
 /** 컬럼 정의 */
 export interface DataTableColumn<T> {
-  /** 데이터 접근 키 */
+  /** 데이터 접근 키. cell 함수의 첫 번째 인자 (value) 의 출처. */
   accessorKey: keyof T
+  /**
+   * 컬럼 식별 key. 같은 `accessorKey` 를 가진 컬럼이 둘 이상 있을 때 (예: 같은 데이터를 다른
+   * 형식으로 두 컬럼에 표시) 반드시 지정해야 React key 중복 경고를 피할 수 있습니다.
+   * 지정하지 않으면 `String(accessorKey)` 가 key 로 사용됩니다.
+   */
+  id?: string
   /** 헤더 텍스트 */
   header: React.ReactNode
   /** 정렬 가능 여부 */
@@ -107,9 +113,19 @@ export interface RowActionsConfig<T> {
 }
 
 export interface DataTableProps<T extends { id: string | number }> {
-  /** 컬럼 정의 */
+  /**
+   * 컬럼 정의.
+   *
+   * 안정성 권장: 컴포넌트 외부에 정의하거나 `useMemo` 로 감싸세요. 매 render 마다 새 배열을
+   * 넘기면 모든 행이 리렌더됩니다.
+   */
   columns: DataTableColumn<T>[]
-  /** 데이터 배열 */
+  /**
+   * 데이터 배열.
+   *
+   * 안정성 권장: `useState` 또는 `useMemo` 로 안정 ref 유지. 매 render 마다 새 배열을 넘기면
+   * 모든 행이 리렌더됩니다. (정렬/필터링으로 의미 있게 변경되는 건 정상)
+   */
   data: T[]
   /** 선택 기능 활성화 */
   selectable?: boolean
@@ -165,6 +181,24 @@ export interface DataTableProps<T extends { id: string | number }> {
   onSortChange?: (sortState: SortState<T>[]) => void
   /** 다중 정렬 활성화 (클릭 시 정렬 추가/순환). 기본 false=단일 정렬 */
   multiSort?: boolean
+  /**
+   * 가상화 (windowing) — 큰 데이터셋에서 화면에 보이는 행만 렌더링.
+   * - true: 기본 옵션으로 활성화
+   * - { overscan, estimateSize }: 옵션 커스터마이징
+   * - false / 생략: 비활성화 (기본)
+   *
+   * 비호환 기능: rowGrouping (rowSpan), rowReorderable (드래그앤드롭).
+   * 위 기능이 활성 상태면 가상화가 자동으로 OFF 되며 dev 경고 출력.
+   */
+  virtual?: boolean | VirtualConfig
+}
+
+/** 가상화 옵션 */
+export interface VirtualConfig {
+  /** 화면 밖 추가 렌더 행 수 (default 5) */
+  overscan?: number
+  /** 행 추정 높이 px — 초기 스크롤 영역 계산용 (default 40) */
+  estimateSize?: number
 }
 
 /** 드래그 핸들 props (Sortable 내부 전달용) */

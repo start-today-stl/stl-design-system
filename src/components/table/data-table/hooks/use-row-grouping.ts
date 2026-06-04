@@ -5,16 +5,12 @@ import type { RowGroupConfig } from "../types"
 interface UseRowGroupingOptions<T> {
   data: T[]
   rowGrouping: RowGroupConfig<T> | undefined
-  hoveredRowIndex: number | null
-  selectedIds: (string | number)[]
 }
 
 interface RowGroupingResult<T> {
   rowSpanMap: Map<number, Map<keyof T, number>> | null
   middleRowSet: Set<number> | null
   getRowSpan: (rowIndex: number, columnKey: keyof T) => number | undefined
-  isGroupCellHovered: (rowIndex: number, rowSpan: number) => boolean
-  isGroupCellSelected: (rowIndex: number, rowSpan: number) => boolean
 }
 
 /**
@@ -25,8 +21,6 @@ interface RowGroupingResult<T> {
 export function useRowGrouping<T extends { id: string | number }>({
   data,
   rowGrouping,
-  hoveredRowIndex,
-  selectedIds,
 }: UseRowGroupingOptions<T>): RowGroupingResult<T> {
   const { rowSpanMap, middleRowSet } = React.useMemo(() => {
     if (!rowGrouping) return { rowSpanMap: null, middleRowSet: null }
@@ -92,33 +86,11 @@ export function useRowGrouping<T extends { id: string | number }>({
     [rowSpanMap],
   )
 
-  const isGroupCellHovered = React.useCallback(
-    (rowIndex: number, rowSpan: number): boolean => {
-      if (hoveredRowIndex === null) return false
-      return hoveredRowIndex >= rowIndex && hoveredRowIndex < rowIndex + rowSpan
-    },
-    [hoveredRowIndex],
-  )
+  return { rowSpanMap, middleRowSet, getRowSpan }
+}
 
-  // data 를 ref 로 보관: useCallback deps 에 data 를 직접 넣으면
-  // 매 render 마다 callback 이 새로 만들어지면서 row ctx 가 unstable 해져
-  // rowGrouping 을 쓰지 않는 테이블에서도 모든 행이 re-render 됨.
-  const dataRef = React.useRef(data)
-  dataRef.current = data
-
-  const isGroupCellSelected = React.useCallback(
-    (rowIndex: number, rowSpan: number): boolean => {
-      if (!rowGrouping) return false
-      const currentData = dataRef.current
-      for (let i = rowIndex; i < rowIndex + rowSpan; i++) {
-        if (i < currentData.length && selectedIds.includes(currentData[i].id)) {
-          return true
-        }
-      }
-      return false
-    },
-    [selectedIds, rowGrouping],
-  )
-
-  return { rowSpanMap, middleRowSet, getRowSpan, isGroupCellHovered, isGroupCellSelected }
+/** rowGrouping 그룹 head 행의 머지 셀별 selected/hovered flag. column key 별로 lookup. */
+export interface GroupCellFlags {
+  selected: Record<string, boolean>
+  hovered: Record<string, boolean>
 }

@@ -1,64 +1,75 @@
-import * as l from "react";
-function b({
-  columns: a,
-  data: f,
-  onCellChange: i
+import * as n from "react";
+function K({
+  columns: E,
+  data: p,
+  onCellChange: R
 }) {
-  const [e, c] = l.useState(null), [k, s] = l.useState(null), r = l.useRef(null), m = l.useRef(null), v = l.useCallback(
-    (n, u, t) => {
-      c({ rowId: n, columnKey: u }), s(t), r.current = t;
+  const [d, l] = n.useState(null), [b, o] = n.useState(null), u = n.useRef(null), g = n.useRef(null), f = n.useRef(d);
+  f.current = d;
+  const w = n.useRef(E);
+  w.current = E;
+  const k = n.useRef(p);
+  k.current = p;
+  const s = n.useRef(R);
+  s.current = R;
+  const x = n.useCallback(
+    (e, c, t) => {
+      l({ rowId: e, columnKey: c }), o(t), u.current = t;
     },
     []
-  ), o = l.useCallback(
-    (n, u) => {
-      const t = r.current;
-      if (!e || t === null) {
-        c(null), s(null), r.current = null;
+  ), m = n.useCallback(
+    (e, c) => {
+      var r;
+      const t = f.current, i = u.current;
+      if (!t || i === null) {
+        l(null), o(null), u.current = null;
         return;
       }
-      if (n.validate) {
-        const d = n.validate(t, u);
-        if (d !== !0) {
-          c({ ...e, error: d });
+      if (e.validate) {
+        const a = e.validate(i, c);
+        if (a !== !0) {
+          l({ ...t, error: a });
           return;
         }
       }
-      i && i(e.rowId, e.columnKey, t), c(null), s(null), r.current = null;
+      (r = s.current) == null || r.call(s, t.rowId, t.columnKey, i), l(null), o(null), u.current = null;
     },
-    [e, i]
-  ), E = l.useCallback(() => {
+    []
+  ), v = n.useCallback(() => {
+    var i;
+    const e = f.current;
     if (!e) return;
-    const n = a.find((t) => t.accessorKey === e.columnKey), u = f.find((t) => t.id === e.rowId);
-    if (n && u)
-      o(n, u);
+    const c = w.current.find((r) => r.accessorKey === e.columnKey), t = k.current.find((r) => r.id === e.rowId);
+    if (c && t)
+      m(c, t);
     else {
-      const t = r.current;
-      t !== null && i && i(e.rowId, e.columnKey, t), c(null), s(null), r.current = null;
+      const r = u.current;
+      r !== null && ((i = s.current) == null || i.call(s, e.rowId, e.columnKey, r)), l(null), o(null), u.current = null;
     }
-  }, [e, a, f, i, o]), R = l.useCallback(() => {
-    c(null), s(null), r.current = null;
+  }, [m]), y = n.useCallback(() => {
+    l(null), o(null), u.current = null;
   }, []);
-  return l.useEffect(() => {
-    if (!e) return;
-    const n = (u) => {
-      var p, w;
-      const t = u.target;
-      (p = m.current) != null && p.contains(t) || (w = t.closest) != null && w.call(t, "[data-radix-popper-content-wrapper]") || E();
+  return n.useEffect(() => {
+    if (!d) return;
+    const e = (c) => {
+      var r, a;
+      const t = c.target;
+      (r = g.current) != null && r.contains(t) || (a = t.closest) != null && a.call(t, "[data-radix-popper-content-wrapper]") || v();
     };
-    return document.addEventListener("mousedown", n), () => document.removeEventListener("mousedown", n);
-  }, [e, E]), {
-    editingCell: e,
-    editValue: k,
-    editValueRef: r,
-    editingCellRef: m,
-    setEditingCell: c,
-    setEditValue: s,
-    startEditing: v,
-    completeEditing: o,
-    cancelEditing: R
+    return document.addEventListener("mousedown", e), () => document.removeEventListener("mousedown", e);
+  }, [d, v]), {
+    editingCell: d,
+    editValue: b,
+    editValueRef: u,
+    editingCellRef: g,
+    setEditingCell: l,
+    setEditValue: o,
+    startEditing: x,
+    completeEditing: m,
+    cancelEditing: y
   };
 }
 export {
-  b as useCellEditing
+  K as useCellEditing
 };
 //# sourceMappingURL=use-cell-editing.mjs.map

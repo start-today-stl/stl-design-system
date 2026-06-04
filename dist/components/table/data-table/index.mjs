@@ -1,404 +1,440 @@
-import { jsxs as N, jsx as t } from "react/jsx-runtime";
-import * as i from "react";
-import { useSensors as wt, useSensor as Xe, PointerSensor as Et, KeyboardSensor as vt, DndContext as Dt, closestCenter as Ct } from "@dnd-kit/core";
-import { sortableKeyboardCoordinates as It, SortableContext as ne, horizontalListSortingStrategy as Ye, verticalListSortingStrategy as Tt } from "@dnd-kit/sortable";
-import { cn as P } from "../../../lib/utils.mjs";
-import { Table as Ht, TableHeader as Kt, TableRow as D, TableHead as m, TableSortableHead as zt, TableBody as _t, TableCell as S } from "../table.mjs";
-import { Checkbox as qe } from "../../ui/checkbox.mjs";
-import { Skeleton as U } from "../../ui/skeleton.mjs";
-import { SplashScreen as jt } from "../../ui/splash-screen.mjs";
-import { DownIcon as Ge } from "../../../icons/DownIcon.mjs";
-import { RightIcon as Je } from "../../../icons/RightIcon.mjs";
-import { RowAddIcon as Ot } from "../../../icons/RowAddIcon.mjs";
-import { DataTableBodyRow as Qe } from "./data-table-body-row.mjs";
-import { DataTableColumnHeader as Lt } from "./data-table-column-header.mjs";
-import { useStickyStyles as Bt } from "./hooks/use-sticky-styles.mjs";
-import { useColumnResize as Mt } from "./hooks/use-column-resize.mjs";
-import { useRowGrouping as Vt } from "./hooks/use-row-grouping.mjs";
-import { useColumnReorder as Pt } from "./hooks/use-column-reorder.mjs";
-import { useRowReorder as Ft } from "./hooks/use-row-reorder.mjs";
-import { useCellEditing as Xt } from "./hooks/use-cell-editing.mjs";
-import { useSort as Yt } from "./hooks/use-sort.mjs";
-import { useHeaderGroups as qt } from "./hooks/use-header-groups.mjs";
-import { getAlignClass as Gt } from "./utils.mjs";
-import { DRAG_HANDLE_WIDTH as c, CHECKBOX_WIDTH as h, EXPAND_WIDTH as f, ROW_ACTIONS_WIDTH as $ } from "./types.mjs";
-const Jt = [];
-function ks({
-  columns: C,
-  data: n,
-  selectable: y = !1,
-  selectedIds: x = Jt,
-  onSelectionChange: d,
-  sortState: Ue,
-  onSortChange: Ze,
-  multiSort: Ae = !1,
-  onRowClick: oe,
-  onCellChange: Z,
-  expandable: s,
-  emptyMessage: et = "데이터가 없습니다.",
-  className: tt,
-  rowClassName: ce,
-  maxHeight: z,
-  resizable: I = !1,
-  columnWidths: st,
-  onColumnResize: rt,
-  columnReorderable: T = !1,
-  columnOrder: it,
-  onColumnReorder: lt,
-  rowReorderable: A = !1,
-  onRowReorder: at,
-  loading: de = !1,
-  loadingMode: F = "splash",
-  loadingContent: _,
-  headerGroups: W,
-  rowGrouping: R,
-  rowActions: r
+import { jsxs as b, jsx as t, Fragment as Qt } from "react/jsx-runtime";
+import * as n from "react";
+import { useSensors as Ut, useSensor as ot, PointerSensor as Zt, KeyboardSensor as At, DndContext as es, closestCenter as ts } from "@dnd-kit/core";
+import { sortableKeyboardCoordinates as ss, SortableContext as Re, horizontalListSortingStrategy as ct, verticalListSortingStrategy as rs } from "@dnd-kit/sortable";
+import { cn as U } from "../../../lib/utils.mjs";
+import { Table as ns, TableHeader as ls, TableRow as K, TableHead as k, TableSortableHead as as, TableBody as is, TableCell as D } from "../table.mjs";
+import { Checkbox as dt } from "../../ui/checkbox.mjs";
+import { Skeleton as ie } from "../../ui/skeleton.mjs";
+import { SplashScreen as os } from "../../ui/splash-screen.mjs";
+import { DownIcon as pt } from "../../../icons/DownIcon.mjs";
+import { RightIcon as ht } from "../../../icons/RightIcon.mjs";
+import { RowAddIcon as cs } from "../../../icons/RowAddIcon.mjs";
+import { DataTableBodyRow as Se } from "./data-table-body-row.mjs";
+import { DataTableColumnHeader as ds } from "./data-table-column-header.mjs";
+import { DataTableExpandedRow as we } from "./data-table-expanded-row.mjs";
+import { useStickyStyles as ps } from "./hooks/use-sticky-styles.mjs";
+import { useColumnResize as hs } from "./hooks/use-column-resize.mjs";
+import { useRowGrouping as ms } from "./hooks/use-row-grouping.mjs";
+import { useColumnReorder as us } from "./hooks/use-column-reorder.mjs";
+import { useRowReorder as fs } from "./hooks/use-row-reorder.mjs";
+import { useCellEditing as gs } from "./hooks/use-cell-editing.mjs";
+import { useSort as xs } from "./hooks/use-sort.mjs";
+import { useHeaderGroups as ys } from "./hooks/use-header-groups.mjs";
+import { useTableVirtualizer as bs } from "./hooks/use-table-virtualizer.mjs";
+import { useStableCallback as M } from "./hooks/use-stable-callback.mjs";
+import { useStableObject as mt } from "./hooks/use-stable-object.mjs";
+import { getAlignClass as ks, getColumnKey as Ne } from "./utils.mjs";
+import { DRAG_HANDLE_WIDTH as m, CHECKBOX_WIDTH as g, EXPAND_WIDTH as R, ROW_ACTIONS_WIDTH as v } from "./types.mjs";
+const Rs = [];
+function Js({
+  columns: j,
+  data: a,
+  selectable: S = !1,
+  selectedIds: _ = Rs,
+  onSelectionChange: z,
+  sortState: ut,
+  onSortChange: ft,
+  multiSort: gt = !1,
+  onRowClick: xt,
+  onCellChange: Ce,
+  expandable: yt,
+  emptyMessage: bt = "데이터가 없습니다.",
+  className: kt,
+  rowClassName: Rt,
+  maxHeight: P,
+  resizable: L = !1,
+  columnWidths: St,
+  onColumnResize: wt,
+  columnReorderable: B = !1,
+  columnOrder: Nt,
+  onColumnReorder: Ct,
+  rowReorderable: $t = !1,
+  onRowReorder: Et,
+  loading: $e = !1,
+  loadingMode: Ee = "splash",
+  loadingContent: oe,
+  headerGroups: I,
+  rowGrouping: Wt,
+  rowActions: o,
+  virtual: Dt
 }) {
-  const a = R ? !1 : A, H = typeof process < "u" ? process.env.NODE_ENV !== "production" : !1;
-  i.useEffect(() => {
-    H && R && A && console.warn(
-      "[DataTable] rowGrouping과 rowReorderable은 함께 사용할 수 없습니다. rowSpan 셀이 있는 행을 드래그하면 레이아웃이 깨지므로 rowReorderable이 무시됩니다."
-    );
-  }, [R, A, H]), i.useEffect(() => {
-    H && _ && F !== "splash" && console.warn(
-      "[DataTable] loadingContent와 loadingMode가 함께 전달되었습니다. loadingContent가 우선 적용됩니다."
-    );
-  }, [_, F, H]);
-  const {
-    editingCell: he,
-    editValue: pe,
-    editValueRef: me,
-    editingCellRef: fe,
-    setEditingCell: ye,
-    setEditValue: ge,
-    startEditing: ue,
-    completeEditing: xe,
-    cancelEditing: ke
-  } = Xt({ columns: C, data: n, onCellChange: Z }), be = i.useRef(null), [g, nt] = i.useState(0);
-  i.useEffect(() => {
-    const e = be.current;
+  const C = mt(Wt), s = mt(yt), d = C ? !1 : $t, {
+    editingCell: ce,
+    editValue: de,
+    editValueRef: We,
+    editingCellRef: De,
+    setEditingCell: ve,
+    setEditValue: Ie,
+    startEditing: Te,
+    completeEditing: ze,
+    cancelEditing: He
+  } = gs({ columns: j, data: a, onCellChange: Ce }), pe = n.useRef(null), [$, vt] = n.useState(0);
+  n.useEffect(() => {
+    const e = pe.current;
     if (!e) return;
-    const l = () => nt(e.clientWidth);
-    l();
-    const o = new ResizeObserver(l);
-    return o.observe(e), () => o.disconnect();
+    const r = () => vt(e.clientWidth);
+    r();
+    const l = new ResizeObserver(r);
+    return l.observe(e), () => l.disconnect();
   }, []);
-  const [ot, ct] = i.useState(
+  const [It, Tt] = n.useState(
     (s == null ? void 0 : s.defaultExpandedRowIds) ?? []
   ), {
-    resizingColumn: dt,
-    getColumnWidth: X,
-    handleResizeStart: ht
-  } = Mt({ resizable: I, columnWidths: st, onColumnResize: rt }), { orderedColumns: pt, handleColumnDragEnd: Ne } = Pt({
-    columns: C,
-    columnReorderable: T,
-    columnOrder: it,
-    onColumnReorder: lt
-  }), { handleRowDragEnd: Se } = Ft({ data: n, onRowReorder: at }), [mt, $e] = i.useState(null), ft = wt(
-    Xe(Et, {
+    resizingColumn: zt,
+    getColumnWidth: Z,
+    handleResizeStart: Ht
+  } = hs({ resizable: L, columnWidths: St, onColumnResize: wt }), { orderedColumns: Kt, handleColumnDragEnd: Ke } = us({
+    columns: j,
+    columnReorderable: B,
+    columnOrder: Nt,
+    onColumnReorder: Ct
+  }), { handleRowDragEnd: Me } = fs({ data: a, onRowReorder: Et }), [A, je] = n.useState(null), Mt = Ut(
+    ot(Zt, {
       activationConstraint: {
         distance: 5
         // 5px 이상 드래그해야 활성화
       }
     }),
-    Xe(vt, {
-      coordinateGetter: It
+    ot(At, {
+      coordinateGetter: ss
     })
-  ), yt = i.useCallback(
+  ), jt = n.useCallback(
     (e) => {
-      const { active: l } = e;
-      String(l.id).startsWith("row-") ? Se(e) : Ne(e);
+      const { active: r } = e;
+      String(r.id).startsWith("row-") ? Me(e) : Ke(e);
     },
-    [Ne, Se]
-  ), E = (s == null ? void 0 : s.expandedRowIds) ?? ot, j = (s == null ? void 0 : s.onExpandedChange) ?? ct, Y = n.length > 0 && x.length === n.length, We = x.length > 0 && !Y, Re = () => {
-    Y ? d == null || d([]) : d == null || d(n.map((e) => e.id));
-  }, we = i.useCallback((e) => {
-    x.includes(e) ? d == null || d(x.filter((l) => l !== e)) : d == null || d([...x, e]);
-  }, [x, d]), { handleSort: Ee, getSortDirection: ve, getSortPriority: De } = Yt({
-    sortState: Ue,
-    onSortChange: Ze,
-    multiSort: Ae,
-    shouldWarn: H
-  }), O = Gt, ee = i.useCallback((e) => s ? s.rowExpandable ? s.rowExpandable(e) : !0 : !1, [s]), Ce = i.useCallback((e) => E.includes(e), [E]), Ie = i.useCallback((e) => {
-    E.includes(e) ? j(E.filter((l) => l !== e)) : j([...E, e]);
-  }, [E, j]), L = i.useMemo(() => s ? n.filter((e) => ee(e)).map((e) => e.id) : [], [n, s]), B = L.length > 0 && L.every((e) => E.includes(e)), Te = () => {
-    j(B ? [] : L);
-  }, M = (r == null ? void 0 : r.showDelete) ?? !!(r != null && r.onRowDelete), gt = (r == null ? void 0 : r.showAdd) ?? !!(r != null && r.onRowAdd), q = C.length + (y ? 1 : 0) + (s ? 1 : 0) + (a ? 1 : 0) + (M ? 1 : 0), {
-    middleRowSet: He,
-    getRowSpan: Ke,
-    isGroupCellHovered: ze,
-    isGroupCellSelected: _e
-  } = Vt({ data: n, rowGrouping: R, hoveredRowIndex: mt, selectedIds: x }), { getStickyStyles: V, hasLeftStickyColumns: w } = Bt({
-    columns: C,
-    selectable: y,
+    [Ke, Me]
+  ), F = (s == null ? void 0 : s.expandedRowIds) ?? It, ee = (s == null ? void 0 : s.onExpandedChange) ?? Tt, G = n.useMemo(() => new Set(_), [_]), te = a.length > 0 && _.length === a.length, _e = _.length > 0 && !te, Le = () => {
+    te ? z == null || z([]) : z == null || z(a.map((e) => e.id));
+  }, Be = n.useRef(_);
+  Be.current = _;
+  const Oe = n.useRef(a);
+  Oe.current = a;
+  const w = M(z), he = n.useRef(null), Ve = n.useCallback(
+    (e, r, l) => {
+      const h = Be.current, i = he.current;
+      if (l && i !== null && i !== r) {
+        const c = Math.min(i, r), u = Math.max(i, r), p = Oe.current, f = new Set(h);
+        for (let y = c; y <= u; y++)
+          y < p.length && f.add(p[y].id);
+        w == null || w(Array.from(f)), he.current = r;
+        return;
+      }
+      h.includes(e) ? w == null || w(h.filter((c) => c !== e)) : w == null || w([...h, e]), he.current = r;
+    },
+    [w]
+  ), { handleSort: Pe, getSortDirection: Fe, getSortPriority: Ge } = xs({
+    sortState: ut,
+    onSortChange: ft,
+    multiSort: gt
+  }), X = ks, se = n.useCallback((e) => s ? s.rowExpandable ? s.rowExpandable(e) : !0 : !1, [s]), Xe = n.useMemo(
+    () => new Set(F),
+    [F]
+  ), me = n.useCallback(
+    (e) => Xe.has(e),
+    [Xe]
+  ), Ye = n.useRef(F);
+  Ye.current = F;
+  const ue = n.useRef(ee);
+  ue.current = ee;
+  const qe = n.useCallback((e) => {
+    const r = Ye.current;
+    r.includes(e) ? ue.current(r.filter((l) => l !== e)) : ue.current([...r, e]);
+  }, []), Y = n.useMemo(() => s ? a.filter((e) => se(e)).map((e) => e.id) : [], [a, s]), q = Y.length > 0 && Y.every((e) => F.includes(e)), Je = () => {
+    ee(q ? [] : Y);
+  }, Qe = M(Ce), Ue = M(xt), Ze = M(Rt), O = M(s == null ? void 0 : s.expandedRowRender), Ae = M(o == null ? void 0 : o.onRowDelete), fe = M(o == null ? void 0 : o.onRowAdd), J = (o == null ? void 0 : o.showDelete) ?? !!(o != null && o.onRowDelete), _t = (o == null ? void 0 : o.showAdd) ?? !!(o != null && o.onRowAdd), H = j.length + (S ? 1 : 0) + (s ? 1 : 0) + (d ? 1 : 0) + (J ? 1 : 0), { rowSpanMap: ge, middleRowSet: et, getRowSpan: tt } = ms({ data: a, rowGrouping: C }), E = n.useMemo(() => {
+    if (!C || !ge) return null;
+    const e = /* @__PURE__ */ new Map();
+    for (const [r, l] of ge.entries()) {
+      const h = {}, i = {};
+      let c = !1;
+      for (const [u, p] of l.entries())
+        if (p > 1) {
+          c = !0;
+          let f = !1;
+          for (let y = r; y < r + p && y < a.length; y++)
+            if (G.has(a[y].id)) {
+              f = !0;
+              break;
+            }
+          h[String(u)] = f, i[String(u)] = A !== null && A >= r && A < r + p;
+        }
+      c && e.set(r, { selected: h, hovered: i });
+    }
+    return e;
+  }, [C, ge, a, G, A]), { getStickyStyles: Q, hasLeftStickyColumns: T } = ps({
+    columns: j,
+    selectable: S,
     expandable: s,
-    rowReorderable: a
-  }), G = (e) => /* @__PURE__ */ t(
-    Lt,
+    rowReorderable: d
+  }), Lt = j.some((e) => e.sticky), Bt = d ? "rowReorderable (행 드래그앤드롭)" : C ? "rowGrouping (rowSpan 그룹핑)" : Lt ? "sticky 컬럼 (가상화 스크롤 중 sub-pixel 깜빡임 발생, v2 div-based grid 에서 지원 예정)" : null, { isVirtual: Ot, virtualizer: re } = bs({
+    virtual: Dt,
+    disabledReason: Bt,
+    count: a.length,
+    scrollContainerRef: pe
+  }), ne = (e) => /* @__PURE__ */ t(
+    ds,
     {
       column: e,
-      stickyData: V(e, !0),
-      alignClass: O(e.align),
-      needsRightBorder: kt.has(e.accessorKey),
-      resizable: I,
-      resizedWidth: I ? X(e) : void 0,
-      isResizing: dt === e.accessorKey,
-      onResizeStart: ht,
-      columnReorderable: T,
-      sortDirection: ve(e.accessorKey),
-      sortPriority: De(e.accessorKey),
-      onSort: () => Ee(e.accessorKey)
+      stickyData: Q(e, !0),
+      alignClass: X(e.align),
+      needsRightBorder: Ft.has(e.accessorKey),
+      resizable: L,
+      resizedWidth: L ? Z(e) : void 0,
+      isResizing: zt === e.accessorKey,
+      onResizeStart: Ht,
+      columnReorderable: B,
+      sortDirection: Fe(e.accessorKey),
+      sortPriority: Ge(e.accessorKey),
+      onSort: () => Pe(e.accessorKey)
     },
-    String(e.accessorKey)
-  ), p = T ? pt : C, je = p.filter((e) => !e.sticky).map((e) => String(e.accessorKey)), ut = n.map((e) => `row-${e.id}`), xt = i.useCallback(() => 0, []), te = i.useCallback(
-    () => a ? c : 0,
-    [a]
-  ), J = i.useCallback(() => {
+    Ne(e)
+  ), x = B ? Kt : j, st = x.filter((e) => !e.sticky).map((e) => String(e.accessorKey)), Vt = a.map((e) => `row-${e.id}`), Pt = n.useCallback(() => 0, []), xe = n.useCallback(
+    () => d ? m : 0,
+    [d]
+  ), le = n.useCallback(() => {
     let e = 0;
-    return a && (e += c), y && (e += h), e;
-  }, [a, y]), {
-    groupedColumnsSet: Oe,
-    columnsWithRightBorder: kt,
-    getHeaderGroupColSpan: bt,
-    getHeaderGroupStickyData: Le,
-    headerGroupItems: Be
-  } = qt({
-    columns: C,
-    columnsToRender: p,
-    headerGroups: W,
-    getStickyStyles: V,
-    getColumnWidth: X,
-    resizable: I,
-    shouldWarn: H
-  }), Me = i.useMemo(
+    return d && (e += m), S && (e += g), e;
+  }, [d, S]), {
+    groupedColumnsSet: rt,
+    columnsWithRightBorder: Ft,
+    getHeaderGroupColSpan: Gt,
+    getHeaderGroupStickyData: nt,
+    headerGroupItems: lt
+  } = ys({
+    columnsToRender: x,
+    headerGroups: I,
+    getStickyStyles: Q,
+    getColumnWidth: Z,
+    resizable: L
+  }), ye = n.useMemo(
     () => ({
-      columnsToRender: p,
-      rowReorderable: a,
-      selectable: y,
+      columnsToRender: x,
+      rowReorderable: d,
+      selectable: S,
       expandable: !!s,
-      showRowDelete: M,
-      hasLeftStickyColumns: w,
-      resizable: I,
-      rowActions: r,
-      rowGrouping: R,
-      middleRowSet: He,
+      showRowDelete: J,
+      hasLeftStickyColumns: T,
+      resizable: L,
+      onRowDelete: Ae,
+      rowGrouping: C,
+      middleRowSet: et,
       // dataLength 는 rowGrouping 의 isGroupSpanToEnd 계산에만 사용됨.
       // rowGrouping 안 쓰면 0 으로 고정해서 행 추가/삭제 시 ctx invalidate 방지.
-      dataLength: R ? n.length : 0,
-      getCheckboxHeaderLeftOffset: te,
-      getExpandHeaderLeftOffset: J,
-      getRowSpan: Ke,
-      isGroupCellHovered: ze,
-      isGroupCellSelected: _e,
-      getStickyStyles: V,
-      getColumnWidth: X,
-      getAlignClass: O,
-      handleSelectRow: we,
-      toggleRowExpanded: Ie,
-      startEditing: ue,
-      completeEditing: xe,
-      cancelEditing: ke,
-      setEditValue: ge,
-      setEditingCell: ye,
-      editValueRef: me,
-      editingCellRef: fe,
-      onCellChange: Z,
-      onRowClick: oe,
-      rowClassName: ce,
-      setHoveredRowIndex: $e
+      dataLength: C ? a.length : 0,
+      getCheckboxHeaderLeftOffset: xe,
+      getExpandHeaderLeftOffset: le,
+      getRowSpan: tt,
+      getStickyStyles: Q,
+      getColumnWidth: Z,
+      getAlignClass: X,
+      handleSelectRow: Ve,
+      toggleRowExpanded: qe,
+      startEditing: Te,
+      completeEditing: ze,
+      cancelEditing: He,
+      setEditValue: Ie,
+      setEditingCell: ve,
+      editValueRef: We,
+      editingCellRef: De,
+      onCellChange: Qe,
+      onRowClick: Ue,
+      rowClassName: Ze,
+      setHoveredRowIndex: je
     }),
     [
-      p,
-      a,
-      y,
-      s,
-      M,
-      w,
-      I,
-      r,
-      R,
-      He,
-      R ? n.length : 0,
-      te,
+      x,
+      d,
+      S,
+      // expandable 객체 자체를 deps 에 넣으면 expandedRowIds 변경 시마다 ctx 가 무력화되어
+      // 모든 행이 리렌더된다. ctx 에는 boolean (활성 여부) 만 들어가므로 boolean 변경 시만 추적.
+      !!s,
       J,
-      Ke,
-      ze,
-      _e,
-      V,
-      X,
-      O,
-      we,
-      Ie,
-      ue,
+      T,
+      L,
+      Ae,
+      C,
+      et,
+      C ? a.length : 0,
       xe,
-      ke,
-      ge,
-      ye,
-      me,
-      fe,
+      le,
+      tt,
+      Q,
       Z,
-      oe,
-      ce,
-      $e
+      X,
+      Ve,
+      qe,
+      Te,
+      ze,
+      He,
+      Ie,
+      ve,
+      We,
+      De,
+      Qe,
+      Ue,
+      Ze,
+      je
     ]
-  ), Ve = /* @__PURE__ */ N(Ht, { className: tt, maxHeight: z, wrapperRef: be, children: [
-    /* @__PURE__ */ N(Kt, { children: [
-      W && W.length > 0 && /* @__PURE__ */ N(D, { children: [
-        a && /* @__PURE__ */ t(
-          m,
+  ), at = /* @__PURE__ */ b(ns, { className: kt, maxHeight: P, wrapperRef: pe, children: [
+    /* @__PURE__ */ b(ls, { children: [
+      I && I.length > 0 && /* @__PURE__ */ b(K, { children: [
+        d && /* @__PURE__ */ t(
+          k,
           {
             className: "!p-0 bg-slate-100 dark:bg-slate-800",
             rowSpan: 2,
             style: {
-              width: `${c}px`,
-              minWidth: `${c}px`,
-              ...w && { position: "sticky", left: 0, zIndex: 20 }
+              width: `${m}px`,
+              minWidth: `${m}px`,
+              ...T && { position: "sticky", left: 0, zIndex: 20 }
             }
           }
         ),
-        y && /* @__PURE__ */ t(
-          m,
+        S && /* @__PURE__ */ t(
+          k,
           {
             className: "!p-0 bg-slate-100 dark:bg-slate-800",
             rowSpan: 2,
             style: {
-              width: `${h}px`,
-              minWidth: `${h}px`,
-              ...w && { position: "sticky", left: a ? c : 0, zIndex: 20 }
+              width: `${g}px`,
+              minWidth: `${g}px`,
+              ...T && { position: "sticky", left: d ? m : 0, zIndex: 20 }
             },
             children: /* @__PURE__ */ t("div", { className: "flex items-center justify-center h-9", children: /* @__PURE__ */ t(
-              qe,
+              dt,
               {
-                checked: Y,
-                indeterminate: We,
-                onCheckedChange: Re,
+                checked: te,
+                indeterminate: _e,
+                onCheckedChange: Le,
                 "aria-label": "전체 선택"
               }
             ) })
           }
         ),
         s && /* @__PURE__ */ t(
-          m,
+          k,
           {
             className: "bg-slate-100 dark:bg-slate-800 !p-0",
             rowSpan: 2,
             style: {
-              width: `${f}px`,
-              minWidth: `${f}px`,
-              ...w && { position: "sticky", left: J(), zIndex: 20 }
+              width: `${R}px`,
+              minWidth: `${R}px`,
+              ...T && { position: "sticky", left: le(), zIndex: 20 }
             },
-            children: (s == null ? void 0 : s.showExpandAll) !== !1 && L.length > 0 && /* @__PURE__ */ t(
+            children: (s == null ? void 0 : s.showExpandAll) !== !1 && Y.length > 0 && /* @__PURE__ */ t(
               "button",
               {
                 type: "button",
-                onClick: Te,
+                onClick: Je,
                 className: "flex h-9 w-10 items-center justify-center text-slate-500 hover:text-slate-700 dark:hover:text-slate-200 transition-colors",
-                "aria-label": B ? "모두 접기" : "모두 펼치기",
-                children: B ? /* @__PURE__ */ t(Ge, { size: 24 }) : /* @__PURE__ */ t(Je, { size: 24 })
+                "aria-label": q ? "모두 접기" : "모두 펼치기",
+                children: q ? /* @__PURE__ */ t(pt, { size: 24 }) : /* @__PURE__ */ t(ht, { size: 24 })
               }
             )
           }
         ),
-        M && /* @__PURE__ */ t(
-          m,
+        J && /* @__PURE__ */ t(
+          k,
           {
             className: "!p-0 bg-slate-100 dark:bg-slate-800 border-b-0",
             rowSpan: 2,
             style: {
-              width: `${$}px`,
-              minWidth: `${$}px`,
-              maxWidth: `${$}px`
+              width: `${v}px`,
+              minWidth: `${v}px`,
+              maxWidth: `${v}px`
             },
             "aria-label": "행 삭제",
             children: /* @__PURE__ */ t("span", { className: "sr-only", children: "행 삭제" })
           }
         ),
-        Be.map((e, l) => {
-          const o = Be[l + 1], se = e.type === "group" && (o == null ? void 0 : o.type) === "group";
+        lt.map((e, r) => {
+          const l = lt[r + 1], h = e.type === "group" && (l == null ? void 0 : l.type) === "group";
           if (e.type === "group") {
-            const k = bt(e.group);
-            if (k === 0) return null;
-            const v = p.filter(
-              (b) => e.group.columns.includes(b.accessorKey)
+            const i = Gt(e.group);
+            if (i === 0) return null;
+            const c = x.filter(
+              (W) => e.group.columns.includes(W.accessorKey)
             );
             if (new Set(
-              v.map((b) => b.sticky ?? "none")
+              c.map((W) => W.sticky ?? "none")
             ).size > 1) {
-              const b = [];
-              let K = [], Q = v[0].sticky;
-              for (const u of v)
-                u.sticky === Q ? K.push(u) : (K.length > 0 && b.push({ cols: K, sticky: Q }), K = [u], Q = u.sticky);
-              K.length > 0 && b.push({ cols: K, sticky: Q });
-              const Fe = b.findIndex((u) => !u.sticky), St = Fe !== -1 ? Fe : 0;
-              return b.map((u, le) => {
-                const $t = {
+              const W = [];
+              let V = [], ae = c[0].sticky;
+              for (const N of c)
+                N.sticky === ae ? V.push(N) : (V.length > 0 && W.push({ cols: V, sticky: ae }), V = [N], ae = N.sticky);
+              V.length > 0 && W.push({ cols: V, sticky: ae });
+              const it = W.findIndex((N) => !N.sticky), Xt = it !== -1 ? it : 0;
+              return W.map((N, be) => {
+                const Yt = {
                   header: e.group.header,
-                  columns: u.cols.map((Rt) => Rt.accessorKey),
+                  columns: N.cols.map((Jt) => Jt.accessorKey),
                   align: e.group.align
-                }, ae = u.sticky ? Le($t) : { style: {}, className: "" }, Wt = !!ae.style.position;
+                }, ke = N.sticky ? nt(Yt) : { style: {}, className: "" }, qt = !!ke.style.position;
                 return /* @__PURE__ */ t(
-                  m,
+                  k,
                   {
-                    colSpan: u.cols.length,
-                    className: P(
+                    colSpan: N.cols.length,
+                    className: U(
                       "text-center font-medium bg-slate-100 dark:bg-slate-800",
                       e.group.align === "left" && "text-left",
                       e.group.align === "right" && "text-right",
-                      se && le === b.length - 1 && "border-r border-slate-200 dark:border-slate-700",
-                      ae.className
+                      h && be === W.length - 1 && "border-r border-slate-200 dark:border-slate-700",
+                      ke.className
                     ),
-                    style: Wt ? ae.style : { position: "relative", zIndex: 0 },
-                    children: le === St ? e.group.header : null
+                    style: qt ? ke.style : { position: "relative", zIndex: 0 },
+                    children: be === Xt ? e.group.header : null
                   },
-                  `group-${String(e.group.columns[0])}-seg-${le}`
+                  `group-${String(e.group.columns[0])}-seg-${be}`
                 );
               });
             }
-            const ie = Le(e.group), Nt = !!ie.style.position;
+            const f = nt(e.group), y = !!f.style.position;
             return /* @__PURE__ */ t(
-              m,
+              k,
               {
-                colSpan: k,
-                className: P(
+                colSpan: i,
+                className: U(
                   "text-center font-medium bg-slate-100 dark:bg-slate-800",
                   e.group.align === "left" && "text-left",
                   e.group.align === "right" && "text-right",
-                  se && "border-r border-slate-200 dark:border-slate-700",
-                  ie.className
+                  h && "border-r border-slate-200 dark:border-slate-700",
+                  f.className
                 ),
-                style: Nt ? ie.style : { position: "relative", zIndex: 0 },
+                style: y ? f.style : { position: "relative", zIndex: 0 },
                 children: e.group.header
               },
               `group-${String(e.group.columns[0])}`
             );
           } else {
-            const k = V(e.col, !0);
+            const i = Q(e.col, !0);
             return e.col.sortable ? /* @__PURE__ */ t(
-              zt,
+              as,
               {
                 rowSpan: 2,
-                sortDirection: ve(e.col.accessorKey),
-                sortPriority: De(e.col.accessorKey),
-                onSort: () => Ee(e.col.accessorKey),
-                className: P(
-                  O(e.col.align),
+                sortDirection: Fe(e.col.accessorKey),
+                sortPriority: Ge(e.col.accessorKey),
+                onSort: () => Pe(e.col.accessorKey),
+                className: U(
+                  X(e.col.align),
                   "bg-slate-100 dark:bg-slate-800",
-                  k.className
+                  i.className
                 ),
-                style: k.style,
+                style: i.style,
                 children: e.col.header
               },
               `standalone-${String(e.col.accessorKey)}`
             ) : /* @__PURE__ */ t(
-              m,
+              k,
               {
                 rowSpan: 2,
-                className: P(
-                  O(e.col.align),
+                className: U(
+                  X(e.col.align),
                   "bg-slate-100 dark:bg-slate-800",
-                  k.className
+                  i.className
                 ),
-                style: k.style,
+                style: i.style,
                 children: e.col.header
               },
               `standalone-${String(e.col.accessorKey)}`
@@ -406,137 +442,137 @@ function ks({
           }
         })
       ] }),
-      /* @__PURE__ */ N(D, { children: [
-        !W && a && /* @__PURE__ */ t(
-          m,
+      /* @__PURE__ */ b(K, { children: [
+        !I && d && /* @__PURE__ */ t(
+          k,
           {
             className: "!p-0 bg-slate-100 dark:bg-slate-800",
-            style: w ? {
+            style: T ? {
               position: "sticky",
-              left: xt(),
+              left: Pt(),
               zIndex: 20,
-              width: `${c}px`,
-              minWidth: `${c}px`,
-              maxWidth: `${c}px`
+              width: `${m}px`,
+              minWidth: `${m}px`,
+              maxWidth: `${m}px`
             } : {
-              width: `${c}px`,
-              minWidth: `${c}px`,
-              maxWidth: `${c}px`
+              width: `${m}px`,
+              minWidth: `${m}px`,
+              maxWidth: `${m}px`
             },
             "aria-label": "순서 변경",
             children: /* @__PURE__ */ t("span", { className: "sr-only", children: "순서 변경" })
           }
         ),
-        !W && y && /* @__PURE__ */ t(
-          m,
+        !I && S && /* @__PURE__ */ t(
+          k,
           {
             className: "!p-0 bg-slate-100 dark:bg-slate-800",
-            style: w ? {
+            style: T ? {
               position: "sticky",
-              left: te(),
+              left: xe(),
               zIndex: 20,
-              width: `${h}px`,
-              minWidth: `${h}px`,
-              maxWidth: `${h}px`
+              width: `${g}px`,
+              minWidth: `${g}px`,
+              maxWidth: `${g}px`
             } : {
-              width: `${h}px`,
-              minWidth: `${h}px`,
-              maxWidth: `${h}px`
+              width: `${g}px`,
+              minWidth: `${g}px`,
+              maxWidth: `${g}px`
             },
             children: /* @__PURE__ */ t("div", { className: "flex items-center justify-center h-9", children: /* @__PURE__ */ t(
-              qe,
+              dt,
               {
-                checked: Y,
-                indeterminate: We,
-                onCheckedChange: Re,
+                checked: te,
+                indeterminate: _e,
+                onCheckedChange: Le,
                 "aria-label": "전체 선택"
               }
             ) })
           }
         ),
-        !W && s && /* @__PURE__ */ t(
-          m,
+        !I && s && /* @__PURE__ */ t(
+          k,
           {
             className: "bg-slate-100 dark:bg-slate-800 !p-0",
-            style: w ? {
+            style: T ? {
               position: "sticky",
-              left: J(),
+              left: le(),
               zIndex: 20,
-              width: `${f}px`,
-              minWidth: `${f}px`,
-              maxWidth: `${f}px`
+              width: `${R}px`,
+              minWidth: `${R}px`,
+              maxWidth: `${R}px`
             } : {
-              width: `${f}px`,
-              minWidth: `${f}px`,
-              maxWidth: `${f}px`
+              width: `${R}px`,
+              minWidth: `${R}px`,
+              maxWidth: `${R}px`
             },
             "aria-label": "확장",
-            children: (s == null ? void 0 : s.showExpandAll) !== !1 && L.length > 0 ? /* @__PURE__ */ t(
+            children: (s == null ? void 0 : s.showExpandAll) !== !1 && Y.length > 0 ? /* @__PURE__ */ t(
               "button",
               {
                 type: "button",
-                onClick: Te,
+                onClick: Je,
                 className: "flex h-9 w-10 items-center justify-center text-slate-500 hover:text-slate-700 dark:hover:text-slate-200 transition-colors",
-                "aria-label": B ? "모두 접기" : "모두 펼치기",
-                children: B ? /* @__PURE__ */ t(Ge, { size: 24 }) : /* @__PURE__ */ t(Je, { size: 24 })
+                "aria-label": q ? "모두 접기" : "모두 펼치기",
+                children: q ? /* @__PURE__ */ t(pt, { size: 24 }) : /* @__PURE__ */ t(ht, { size: 24 })
               }
             ) : /* @__PURE__ */ t("span", { className: "sr-only", children: "확장" })
           }
         ),
-        !W && M && /* @__PURE__ */ t(
-          m,
+        !I && J && /* @__PURE__ */ t(
+          k,
           {
             className: "!p-0 bg-slate-100 dark:bg-slate-800",
             style: {
-              width: `${$}px`,
-              minWidth: `${$}px`,
-              maxWidth: `${$}px`
+              width: `${v}px`,
+              minWidth: `${v}px`,
+              maxWidth: `${v}px`
             },
             "aria-label": "행 삭제",
             children: /* @__PURE__ */ t("span", { className: "sr-only", children: "행 삭제" })
           }
         ),
-        W ? T ? /* @__PURE__ */ t(ne, { items: je, strategy: Ye, children: p.filter((e) => Oe.has(e.accessorKey)).map(G) }) : p.filter((e) => Oe.has(e.accessorKey)).map(G) : T ? /* @__PURE__ */ t(ne, { items: je, strategy: Ye, children: p.map(G) }) : p.map(G)
+        I ? B ? /* @__PURE__ */ t(Re, { items: st, strategy: ct, children: x.filter((e) => rt.has(e.accessorKey)).map(ne) }) : x.filter((e) => rt.has(e.accessorKey)).map(ne) : B ? /* @__PURE__ */ t(Re, { items: st, strategy: ct, children: x.map(ne) }) : x.map(ne)
       ] })
     ] }),
-    /* @__PURE__ */ N(_t, { children: [
-      de ? /* @__PURE__ */ t(D, { className: "hover:bg-white dark:hover:bg-slate-900", children: /* @__PURE__ */ t(
-        S,
+    /* @__PURE__ */ b(is, { children: [
+      $e ? /* @__PURE__ */ t(K, { className: "hover:bg-white dark:hover:bg-slate-900", children: /* @__PURE__ */ t(
+        D,
         {
-          colSpan: q,
-          className: P(
+          colSpan: H,
+          className: U(
             "text-center",
-            _ || F !== "skeleton" ? "h-80" : "p-0 align-top"
+            oe || Ee !== "skeleton" ? "h-80" : "p-0 align-top"
           ),
-          children: _ ? (
+          children: oe ? (
             // 커스텀 로딩 - 가로 스크롤 시 가시 영역 중앙에 표시
             /* @__PURE__ */ t(
               "div",
               {
                 className: "sticky left-0 flex items-center justify-center h-full",
-                style: g ? { width: g } : void 0,
-                children: _
+                style: $ ? { width: $ } : void 0,
+                children: oe
               }
             )
-          ) : F === "skeleton" ? (
+          ) : Ee === "skeleton" ? (
             // 스켈레톤 모드: 컬럼 기반 자동 생성
             (() => {
-              const l = typeof z == "number" ? z : typeof z == "string" && parseInt(z, 10) || 320, o = Math.max(1, Math.floor(l / 41));
-              return /* @__PURE__ */ t("table", { className: "w-full", children: /* @__PURE__ */ t("tbody", { children: Array.from({ length: o }).map((se, k) => /* @__PURE__ */ N(
+              const r = typeof P == "number" ? P : typeof P == "string" && parseInt(P, 10) || 320, l = Math.max(1, Math.floor(r / 41));
+              return /* @__PURE__ */ t("table", { className: "w-full", children: /* @__PURE__ */ t("tbody", { children: Array.from({ length: l }).map((h, i) => /* @__PURE__ */ b(
                 "tr",
                 {
                   className: "border-b border-slate-200 dark:border-slate-700 last:border-b-0",
                   children: [
-                    a && /* @__PURE__ */ t("td", { className: "w-8 p-2", children: /* @__PURE__ */ t(U, { width: 16, height: 16 }) }),
-                    y && /* @__PURE__ */ t("td", { className: "w-10 p-2", children: /* @__PURE__ */ t(U, { width: 18, height: 18 }) }),
-                    s && /* @__PURE__ */ t("td", { className: "w-10 p-2", children: /* @__PURE__ */ t(U, { width: 18, height: 18 }) }),
-                    p.map((v) => {
-                      const re = v.width ?? v.minWidth, Pe = typeof re == "number" ? Math.min(re * 0.6, 150) : 100;
-                      return /* @__PURE__ */ t("td", { className: "p-2", children: /* @__PURE__ */ t(U, { height: 16, width: Pe }) }, String(v.accessorKey));
+                    d && /* @__PURE__ */ t("td", { className: "w-8 p-2", children: /* @__PURE__ */ t(ie, { width: 16, height: 16 }) }),
+                    S && /* @__PURE__ */ t("td", { className: "w-10 p-2", children: /* @__PURE__ */ t(ie, { width: 18, height: 18 }) }),
+                    s && /* @__PURE__ */ t("td", { className: "w-10 p-2", children: /* @__PURE__ */ t(ie, { width: 18, height: 18 }) }),
+                    x.map((c) => {
+                      const u = c.width ?? c.minWidth, p = typeof u == "number" ? Math.min(u * 0.6, 150) : 100;
+                      return /* @__PURE__ */ t("td", { className: "p-2", children: /* @__PURE__ */ t(ie, { height: 16, width: p }) }, Ne(c));
                     })
                   ]
                 },
-                k
+                i
               )) }) });
             })()
           ) : (
@@ -545,182 +581,200 @@ function ks({
               "div",
               {
                 className: "sticky left-0 flex items-center justify-center h-full",
-                style: g ? { width: g } : void 0,
-                children: /* @__PURE__ */ t(jt, { size: "lg" })
+                style: $ ? { width: $ } : void 0,
+                children: /* @__PURE__ */ t(os, { size: "lg" })
               }
             )
           )
         }
-      ) }) : n.length === 0 ? /* @__PURE__ */ t(D, { className: "hover:bg-white dark:hover:bg-slate-900", children: /* @__PURE__ */ t(
-        S,
+      ) }) : a.length === 0 ? /* @__PURE__ */ t(K, { className: "hover:bg-white dark:hover:bg-slate-900", children: /* @__PURE__ */ t(
+        D,
         {
-          colSpan: q,
+          colSpan: H,
           className: "h-24 p-0 text-slate-500",
           children: /* @__PURE__ */ t(
             "div",
             {
               className: "sticky left-0 flex items-center justify-center h-24 text-center",
-              style: g ? { width: g } : void 0,
-              children: et
+              style: $ ? { width: $ } : void 0,
+              children: bt
             }
           )
         }
-      ) }) : a ? /* @__PURE__ */ t(ne, { items: ut, strategy: Tt, children: n.map((e, l) => {
-        const o = Ce(e.id);
-        return /* @__PURE__ */ N(i.Fragment, { children: [
+      ) }) : d ? /* @__PURE__ */ t(Re, { items: Vt, strategy: rs, children: a.map((e, r) => {
+        const l = me(e.id);
+        return /* @__PURE__ */ b(n.Fragment, { children: [
           /* @__PURE__ */ t(
-            Qe,
+            Se,
             {
               row: e,
-              rowIndex: l,
-              isSelected: x.includes(e.id),
-              canExpand: ee(e),
-              isExpanded: o,
-              editingCell: he,
-              editValue: pe,
-              ctx: Me
+              rowIndex: r,
+              isSelected: G.has(e.id),
+              canExpand: se(e),
+              isExpanded: l,
+              editingCell: ce,
+              editValue: de,
+              ctx: ye,
+              groupCellFlags: E == null ? void 0 : E.get(r)
             }
           ),
-          s && o && /* @__PURE__ */ t(D, { className: "bg-white dark:bg-slate-800/50 hover:bg-white dark:hover:bg-slate-800/50", children: /* @__PURE__ */ t(
-            S,
+          s && l && O && /* @__PURE__ */ t(
+            we,
             {
-              colSpan: q,
-              className: "p-0",
-              style: { position: "relative" },
-              children: /* @__PURE__ */ t(
-                "div",
-                {
-                  className: "p-4 overflow-x-auto",
-                  style: {
-                    position: "sticky",
-                    left: 0,
-                    width: g ? `${g}px` : "100%",
-                    maxWidth: "100%"
-                  },
-                  children: s.expandedRowRender(e)
-                }
-              )
+              row: e,
+              expandedRowRender: O,
+              totalColumns: H,
+              visibleWidth: $
             }
-          ) })
+          )
         ] }, e.id);
-      }) }) : n.map((e, l) => {
-        const o = Ce(e.id);
-        return /* @__PURE__ */ N(i.Fragment, { children: [
+      }) }) : Ot && re ? (
+        // 가상화 활성: 보이는 행만 렌더 + 상하 spacer 행으로 스크롤 영역 유지
+        // TableBody (= tbody) 안에서 spacer-row 패턴 사용 (semantic HTML 유지)
+        (() => {
+          var i, c;
+          const e = re.getVirtualItems(), r = re.getTotalSize(), l = Math.round(((i = e[0]) == null ? void 0 : i.start) ?? 0), h = Math.round(
+            r - (((c = e[e.length - 1]) == null ? void 0 : c.end) ?? 0)
+          );
+          return /* @__PURE__ */ b(Qt, { children: [
+            l > 0 && /* @__PURE__ */ t(K, { className: "hover:bg-transparent", style: { height: l }, children: /* @__PURE__ */ t(D, { colSpan: H, className: "p-0 border-0" }) }),
+            e.map((u) => {
+              const p = a[u.index], f = me(p.id);
+              return /* @__PURE__ */ b(n.Fragment, { children: [
+                /* @__PURE__ */ t(
+                  Se,
+                  {
+                    row: p,
+                    rowIndex: u.index,
+                    isSelected: G.has(p.id),
+                    canExpand: se(p),
+                    isExpanded: f,
+                    editingCell: ce,
+                    editValue: de,
+                    ctx: ye,
+                    groupCellFlags: E == null ? void 0 : E.get(u.index),
+                    rowRef: re.measureElement,
+                    dataIndex: u.index
+                  }
+                ),
+                s && f && O && /* @__PURE__ */ t(
+                  we,
+                  {
+                    row: p,
+                    expandedRowRender: O,
+                    totalColumns: H,
+                    visibleWidth: $
+                  }
+                )
+              ] }, p.id);
+            }),
+            h > 0 && /* @__PURE__ */ t(K, { className: "hover:bg-transparent", style: { height: h }, children: /* @__PURE__ */ t(D, { colSpan: H, className: "p-0 border-0" }) })
+          ] });
+        })()
+      ) : a.map((e, r) => {
+        const l = me(e.id);
+        return /* @__PURE__ */ b(n.Fragment, { children: [
           /* @__PURE__ */ t(
-            Qe,
+            Se,
             {
               row: e,
-              rowIndex: l,
-              isSelected: x.includes(e.id),
-              canExpand: ee(e),
-              isExpanded: o,
-              editingCell: he,
-              editValue: pe,
-              ctx: Me
+              rowIndex: r,
+              isSelected: G.has(e.id),
+              canExpand: se(e),
+              isExpanded: l,
+              editingCell: ce,
+              editValue: de,
+              ctx: ye,
+              groupCellFlags: E == null ? void 0 : E.get(r)
             }
           ),
-          s && o && /* @__PURE__ */ t(D, { className: "bg-white dark:bg-slate-800/50 hover:bg-white dark:hover:bg-slate-800/50", children: /* @__PURE__ */ t(
-            S,
+          s && l && O && /* @__PURE__ */ t(
+            we,
             {
-              colSpan: q,
-              className: "p-0",
-              style: { position: "relative" },
-              children: /* @__PURE__ */ t(
-                "div",
-                {
-                  className: "p-4 overflow-x-auto",
-                  style: {
-                    position: "sticky",
-                    left: 0,
-                    width: g ? `${g}px` : "100%",
-                    maxWidth: "100%"
-                  },
-                  children: s.expandedRowRender(e)
-                }
-              )
+              row: e,
+              expandedRowRender: O,
+              totalColumns: H,
+              visibleWidth: $
             }
-          ) })
+          )
         ] }, e.id);
       }),
-      gt && !de && /* @__PURE__ */ N(D, { className: "bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800/50 border-b-0", children: [
-        a && /* @__PURE__ */ t(
-          S,
+      _t && !$e && /* @__PURE__ */ b(K, { className: "bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800/50 border-b-0", children: [
+        d && /* @__PURE__ */ t(
+          D,
           {
             className: "!p-0",
             style: {
-              width: `${c}px`,
-              minWidth: `${c}px`,
-              maxWidth: `${c}px`
+              width: `${m}px`,
+              minWidth: `${m}px`,
+              maxWidth: `${m}px`
             }
           }
         ),
-        y && /* @__PURE__ */ t(
-          S,
+        S && /* @__PURE__ */ t(
+          D,
           {
             className: "!p-0",
             style: {
-              width: `${h}px`,
-              minWidth: `${h}px`,
-              maxWidth: `${h}px`
+              width: `${g}px`,
+              minWidth: `${g}px`,
+              maxWidth: `${g}px`
             }
           }
         ),
         s && /* @__PURE__ */ t(
-          S,
+          D,
           {
             className: "!p-0",
             style: {
-              width: `${f}px`,
-              minWidth: `${f}px`,
-              maxWidth: `${f}px`
+              width: `${R}px`,
+              minWidth: `${R}px`,
+              maxWidth: `${R}px`
             }
           }
         ),
         /* @__PURE__ */ t(
-          S,
+          D,
           {
             className: "!p-0",
             style: {
-              width: `${$}px`,
-              minWidth: `${$}px`,
-              maxWidth: `${$}px`
+              width: `${v}px`,
+              minWidth: `${v}px`,
+              maxWidth: `${v}px`
             },
             children: /* @__PURE__ */ t(
               "button",
               {
                 type: "button",
-                onClick: () => {
-                  var e;
-                  return (e = r == null ? void 0 : r.onRowAdd) == null ? void 0 : e.call(r);
-                },
+                onClick: () => fe == null ? void 0 : fe(),
                 className: "flex h-9 w-10 items-center justify-center transition-opacity hover:opacity-70",
                 "aria-label": "행 추가",
-                children: /* @__PURE__ */ t(Ot, { size: 20 })
+                children: /* @__PURE__ */ t(cs, { size: 20 })
               }
             )
           }
         ),
-        p.map((e) => /* @__PURE__ */ t(
-          S,
+        x.map((e) => /* @__PURE__ */ t(
+          D,
           {
             className: "!p-0"
           },
-          String(e.accessorKey)
+          Ne(e)
         ))
       ] })
     ] })
   ] });
-  return T || a ? /* @__PURE__ */ t(
-    Dt,
+  return B || d ? /* @__PURE__ */ t(
+    es,
     {
-      sensors: ft,
-      collisionDetection: Ct,
-      onDragEnd: yt,
-      children: Ve
+      sensors: Mt,
+      collisionDetection: ts,
+      onDragEnd: jt,
+      children: at
     }
-  ) : Ve;
+  ) : at;
 }
 export {
-  ks as DataTable
+  Js as DataTable
 };
 //# sourceMappingURL=index.mjs.map

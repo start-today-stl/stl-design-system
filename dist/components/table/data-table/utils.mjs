@@ -17,8 +17,12 @@ function u(t) {
   const n = parseInt(String(e ?? ""), 10);
   return Number.isFinite(n) ? n : 150;
 }
+function c(t) {
+  return t.id ?? String(t.accessorKey);
+}
 export {
   r as getAlignClass,
+  c as getColumnKey,
   u as getNumericColumnWidth,
   i as toPxString
 };

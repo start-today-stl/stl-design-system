@@ -1,42 +1,38 @@
-import * as d from "react";
-function A({
-  sortState: t,
-  onSortChange: n,
-  multiSort: s,
-  shouldWarn: l
+import * as o from "react";
+function u({
+  sortState: n,
+  onSortChange: t,
+  multiSort: s
 }) {
-  const c = d.useMemo(() => {
-    if (!t) return [];
-    if (!Array.isArray(t)) {
-      l && console.warn(
-        "[DataTable] sortState는 배열(SortState<T>[])이어야 합니다. 마이그레이션 가이드: docs/MIGRATION-DATATABLE-SORT.md"
-      );
-      const e = t;
+  const c = o.useMemo(() => {
+    if (!n) return [];
+    if (!Array.isArray(n)) {
+      const e = n;
       return e.column && e.direction ? [e] : [];
     }
-    return t.filter((e) => e.column && e.direction);
-  }, [t, l]), a = d.useCallback(
+    return n.filter((e) => e.column && e.direction);
+  }, [n]), l = o.useCallback(
     (e) => {
-      if (!n) return;
+      if (!t) return;
       const r = c.find((i) => i.column === e);
       if (s) {
         let i;
         r ? r.direction === "asc" ? i = c.map(
-          (o) => o.column === e ? { column: e, direction: "desc" } : o
-        ) : i = c.filter((o) => o.column !== e) : i = [...c, { column: e, direction: "asc" }], n(i);
+          (d) => d.column === e ? { column: e, direction: "desc" } : d
+        ) : i = c.filter((d) => d.column !== e) : i = [...c, { column: e, direction: "asc" }], t(i);
       } else {
         let i;
-        r ? r.direction === "asc" ? i = [{ column: e, direction: "desc" }] : r.direction === "desc" ? i = [] : i = [{ column: e, direction: "asc" }] : i = [{ column: e, direction: "asc" }], n(i);
+        r ? r.direction === "asc" ? i = [{ column: e, direction: "desc" }] : r.direction === "desc" ? i = [] : i = [{ column: e, direction: "asc" }] : i = [{ column: e, direction: "asc" }], t(i);
       }
     },
-    [c, s, n]
-  ), f = d.useCallback(
+    [c, s, t]
+  ), f = o.useCallback(
     (e) => {
       const r = c.find((i) => i.column === e);
       return (r == null ? void 0 : r.direction) ?? null;
     },
     [c]
-  ), u = d.useCallback(
+  ), a = o.useCallback(
     (e) => {
       if (!s || c.length <= 1) return;
       const r = c.findIndex((i) => i.column === e);
@@ -44,9 +40,9 @@ function A({
     },
     [c, s]
   );
-  return { sortStateArray: c, handleSort: a, getSortDirection: f, getSortPriority: u };
+  return { sortStateArray: c, handleSort: l, getSortDirection: f, getSortPriority: a };
 }
 export {
-  A as useSort
+  u as useSort
 };
 //# sourceMappingURL=use-sort.mjs.map

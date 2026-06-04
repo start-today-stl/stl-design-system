@@ -1,234 +1,250 @@
-import { jsx as i, jsxs as de, Fragment as ce } from "react/jsx-runtime";
-import * as pe from "react";
-import { cn as k } from "../../../lib/utils.mjs";
-import { TableRow as fe, TableCell as R } from "../table.mjs";
-import { Checkbox as he } from "../../ui/checkbox.mjs";
-import { DownIcon as me } from "../../../icons/DownIcon.mjs";
-import { RightIcon as ue } from "../../../icons/RightIcon.mjs";
-import { RowDeleteIcon as ge } from "../../../icons/RowDeleteIcon.mjs";
-import { DataTableCell as xe } from "./data-table-cell.mjs";
-import { DragHandleCell as be } from "./drag-handle-cell.mjs";
-import { SortableRow as we } from "./sortable-row.mjs";
-import { CHECKBOX_WIDTH as f, EXPAND_WIDTH as h, ROW_ACTIONS_WIDTH as S } from "./types.mjs";
-function ye(o) {
+import { jsx as o, jsxs as he, Fragment as ue } from "react/jsx-runtime";
+import * as _ from "react";
+import { cn as K } from "../../../lib/utils.mjs";
+import { TableRow as me, TableCell as z } from "../table.mjs";
+import { Checkbox as ge } from "../../ui/checkbox.mjs";
+import { DownIcon as xe } from "../../../icons/DownIcon.mjs";
+import { RightIcon as ye } from "../../../icons/RightIcon.mjs";
+import { RowDeleteIcon as be } from "../../../icons/RowDeleteIcon.mjs";
+import { DataTableCell as we } from "./data-table-cell.mjs";
+import { DragHandleCell as Ce } from "./drag-handle-cell.mjs";
+import { SortableRow as Ee } from "./sortable-row.mjs";
+import { getColumnKey as ke } from "./utils.mjs";
+import { CHECKBOX_WIDTH as u, EXPAND_WIDTH as m, ROW_ACTIONS_WIDTH as N } from "./types.mjs";
+function We(i) {
   const {
-    row: e,
-    rowIndex: r,
-    isSelected: n,
-    canExpand: w,
-    isExpanded: c,
-    editingCell: a,
-    editValue: y,
-    ctx: C
-  } = o, {
-    columnsToRender: E,
-    rowReorderable: D,
-    selectable: z,
-    expandable: N,
-    showRowDelete: L,
-    hasLeftStickyColumns: m,
-    resizable: P,
-    rowActions: u,
-    rowGrouping: W,
-    middleRowSet: I,
-    dataLength: j,
-    getCheckboxHeaderLeftOffset: O,
-    getExpandHeaderLeftOffset: V,
-    getRowSpan: G,
-    isGroupCellHovered: M,
-    isGroupCellSelected: _,
-    getStickyStyles: B,
-    getColumnWidth: X,
-    getAlignClass: q,
-    handleSelectRow: F,
-    toggleRowExpanded: A,
-    startEditing: J,
-    completeEditing: Q,
-    cancelEditing: U,
-    setEditValue: Y,
-    setEditingCell: Z,
-    editValueRef: ee,
-    editingCellRef: te,
-    onCellChange: ie,
-    onRowClick: l,
-    rowClassName: p,
-    setHoveredRowIndex: $
-  } = C, oe = (g, t) => (a == null ? void 0 : a.rowId) === g && (a == null ? void 0 : a.columnKey) === t, T = (g) => /* @__PURE__ */ de(ce, { children: [
-    D && /* @__PURE__ */ i(
-      be,
+    row: t,
+    rowIndex: n,
+    isSelected: s,
+    canExpand: p,
+    isExpanded: d,
+    editingCell: r,
+    editValue: C,
+    ctx: E,
+    rowRef: k,
+    dataIndex: W,
+    groupCellFlags: l
+  } = i, {
+    columnsToRender: $,
+    rowReorderable: g,
+    selectable: T,
+    expandable: D,
+    showRowDelete: I,
+    hasLeftStickyColumns: a,
+    resizable: A,
+    onRowDelete: v,
+    rowGrouping: R,
+    middleRowSet: H,
+    dataLength: B,
+    getCheckboxHeaderLeftOffset: G,
+    getExpandHeaderLeftOffset: X,
+    getRowSpan: q,
+    getStickyStyles: F,
+    getColumnWidth: J,
+    getAlignClass: Q,
+    handleSelectRow: U,
+    toggleRowExpanded: Y,
+    startEditing: Z,
+    completeEditing: ee,
+    cancelEditing: te,
+    setEditValue: ie,
+    setEditingCell: oe,
+    editValueRef: ne,
+    editingCellRef: se,
+    onCellChange: re,
+    onRowClick: c,
+    rowClassName: h,
+    setHoveredRowIndex: S
+  } = E, ae = (x, e) => (r == null ? void 0 : r.rowId) === x && (r == null ? void 0 : r.columnKey) === e, j = _.useRef(!1), O = (x) => /* @__PURE__ */ he(ue, { children: [
+    g && /* @__PURE__ */ o(
+      Ce,
       {
-        isSelected: n,
-        hasLeftStickyColumns: m,
-        dragHandleProps: g
+        isSelected: s,
+        hasLeftStickyColumns: a,
+        dragHandleProps: x
       }
     ),
-    z && /* @__PURE__ */ i(
-      R,
+    T && /* @__PURE__ */ o(
+      z,
       {
-        onClick: (t) => t.stopPropagation(),
-        className: k(
+        onClick: (e) => e.stopPropagation(),
+        className: K(
           "!p-0",
-          m && (n ? "transition-colors bg-blue-50 dark:bg-blue-900" : "transition-colors bg-slate-100 dark:bg-slate-800")
+          a && (s ? "transition-colors bg-blue-50 dark:bg-blue-900" : "transition-colors bg-slate-100 dark:bg-slate-800")
         ),
-        style: m ? {
+        style: a ? {
           position: "sticky",
-          left: O(),
+          left: G(),
           zIndex: 10,
-          width: `${f}px`,
-          minWidth: `${f}px`,
-          maxWidth: `${f}px`
+          width: `${u}px`,
+          minWidth: `${u}px`,
+          maxWidth: `${u}px`
         } : {
-          width: `${f}px`,
-          minWidth: `${f}px`,
-          maxWidth: `${f}px`
+          width: `${u}px`,
+          minWidth: `${u}px`,
+          maxWidth: `${u}px`
         },
-        children: /* @__PURE__ */ i("div", { className: "flex items-center justify-center h-9", children: /* @__PURE__ */ i(
-          he,
+        children: /* @__PURE__ */ o("div", { className: "flex items-center justify-center h-9", children: /* @__PURE__ */ o(
+          ge,
           {
-            checked: n,
-            onCheckedChange: () => F(e.id),
-            "aria-label": `행 ${e.id} 선택`
+            checked: s,
+            onClick: (e) => {
+              j.current = e.shiftKey;
+            },
+            onCheckedChange: () => {
+              const e = j.current;
+              j.current = !1, U(t.id, n, e);
+            },
+            "aria-label": `행 ${t.id} 선택`
           }
         ) })
       }
     ),
-    N && /* @__PURE__ */ i(
-      R,
+    D && /* @__PURE__ */ o(
+      z,
       {
-        className: k(
+        className: K(
           "p-0",
-          m && (n ? "transition-colors bg-blue-50 dark:bg-blue-900" : "transition-colors bg-slate-100 dark:bg-slate-800")
+          a && (s ? "transition-colors bg-blue-50 dark:bg-blue-900" : "transition-colors bg-slate-100 dark:bg-slate-800")
         ),
-        style: m ? {
+        style: a ? {
           position: "sticky",
-          left: V(),
+          left: X(),
           zIndex: 10,
-          width: `${h}px`,
-          minWidth: `${h}px`,
-          maxWidth: `${h}px`
+          width: `${m}px`,
+          minWidth: `${m}px`,
+          maxWidth: `${m}px`
         } : {
-          width: `${h}px`,
-          minWidth: `${h}px`,
-          maxWidth: `${h}px`
+          width: `${m}px`,
+          minWidth: `${m}px`,
+          maxWidth: `${m}px`
         },
-        onClick: (t) => t.stopPropagation(),
-        children: w && /* @__PURE__ */ i(
+        onClick: (e) => e.stopPropagation(),
+        children: p && /* @__PURE__ */ o(
           "button",
           {
             type: "button",
-            onClick: () => A(e.id),
+            onClick: () => Y(t.id),
             className: "flex h-9 w-10 items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors",
-            "aria-label": c ? "행 접기" : "행 펼치기",
-            "aria-expanded": c,
-            children: c ? /* @__PURE__ */ i(me, { size: 24 }) : /* @__PURE__ */ i(ue, { size: 24 })
+            "aria-label": d ? "행 접기" : "행 펼치기",
+            "aria-expanded": d,
+            children: d ? /* @__PURE__ */ o(xe, { size: 24 }) : /* @__PURE__ */ o(ye, { size: 24 })
           }
         )
       }
     ),
-    L && /* @__PURE__ */ i(
-      R,
+    I && /* @__PURE__ */ o(
+      z,
       {
         className: "!p-0",
         style: {
-          width: `${S}px`,
-          minWidth: `${S}px`,
-          maxWidth: `${S}px`
+          width: `${N}px`,
+          minWidth: `${N}px`,
+          maxWidth: `${N}px`
         },
-        onClick: (t) => t.stopPropagation(),
-        children: /* @__PURE__ */ i(
+        onClick: (e) => e.stopPropagation(),
+        children: /* @__PURE__ */ o(
           "button",
           {
             type: "button",
-            onClick: () => {
-              var t;
-              return (t = u == null ? void 0 : u.onRowDelete) == null ? void 0 : t.call(u, e);
-            },
+            onClick: () => v == null ? void 0 : v(t),
             className: "flex h-9 w-10 items-center justify-center transition-opacity hover:opacity-70",
             "aria-label": "행 삭제",
-            children: /* @__PURE__ */ i(ge, { size: 20 })
+            children: /* @__PURE__ */ o(be, { size: 20 })
           }
         )
       }
     ),
-    E.map((t) => {
-      const s = G(r, t.accessorKey);
-      if (s === 0) return null;
-      const re = e[t.accessorKey], ne = oe(e.id, t.accessorKey), x = s !== void 0 && s > 1, ae = x && M(r, s), H = x && _(r, s), v = B(t, !1, n, x ? H : void 0), K = (d) => typeof d == "number" ? `${d}px` : d, b = {};
-      if (!t.sticky) {
-        const d = P ? X(t) : void 0;
-        d !== void 0 ? (b.width = `${d}px`, b.minWidth = `${d}px`) : (t.width && (b.width = K(t.width)), t.minWidth && (b.minWidth = K(t.minWidth)));
+    $.map((e) => {
+      const y = q(n, e.accessorKey);
+      if (y === 0) return null;
+      const le = t[e.accessorKey], de = ae(t.id, e.accessorKey), b = y !== void 0 && y > 1, L = String(e.accessorKey), ce = b && ((l == null ? void 0 : l.hovered[L]) ?? !1), P = b && ((l == null ? void 0 : l.selected[L]) ?? !1), V = F(e, !1, s, b ? P : void 0), M = (f) => typeof f == "number" ? `${f}px` : f, w = {};
+      if (!e.sticky) {
+        const f = A ? J(e) : void 0;
+        f !== void 0 ? (w.width = `${f}px`, w.minWidth = `${f}px`) : (e.width && (w.width = M(e.width)), e.minWidth && (w.minWidth = M(e.minWidth)));
       }
-      const le = { ...b, ...v.style }, se = x && r + s >= j;
-      return /* @__PURE__ */ i(
-        xe,
+      const fe = { ...w, ...V.style }, pe = b && n + y >= B;
+      return /* @__PURE__ */ o(
+        we,
         {
-          row: e,
-          rowIndex: r,
-          column: t,
-          value: re,
-          isSelected: n,
-          rowSpan: s,
-          hasRowSpan: x,
-          groupCellHovered: ae,
-          groupCellSelected: H,
-          isEditing: ne,
-          onStartEdit: J,
-          editValue: y,
-          editingCell: a,
-          setEditValue: Y,
-          setEditingCell: Z,
-          editValueRef: ee,
-          editingCellRef: te,
-          completeEditing: Q,
-          cancelEditing: U,
-          onCellChange: ie,
-          stickyData: v,
-          cellStyle: le,
-          alignClass: q(t.align),
-          isGroupSpanToEnd: se
+          row: t,
+          rowIndex: n,
+          column: e,
+          value: le,
+          isSelected: s,
+          rowSpan: y,
+          hasRowSpan: b,
+          groupCellHovered: ce,
+          groupCellSelected: P,
+          isEditing: de,
+          onStartEdit: Z,
+          editValue: C,
+          editingCell: r,
+          setEditValue: ie,
+          setEditingCell: oe,
+          editValueRef: ne,
+          editingCellRef: se,
+          completeEditing: ee,
+          cancelEditing: te,
+          onCellChange: re,
+          stickyData: V,
+          cellStyle: fe,
+          alignClass: Q(e.align),
+          isGroupSpanToEnd: pe
         },
-        String(t.accessorKey)
+        ke(e)
       );
     })
   ] });
-  return D ? /* @__PURE__ */ i(
-    we,
+  return g ? /* @__PURE__ */ o(
+    Ee,
     {
-      id: `row-${e.id}`,
-      isSelected: n,
-      className: k(l && "cursor-pointer", p == null ? void 0 : p(e)),
-      onClick: () => l == null ? void 0 : l(e),
-      onMouseEnter: W ? () => $(r) : void 0,
-      onMouseLeave: W ? () => $(null) : void 0,
-      children: (g) => T(g)
+      id: `row-${t.id}`,
+      isSelected: s,
+      className: K(c && "cursor-pointer", h == null ? void 0 : h(t)),
+      onClick: () => c == null ? void 0 : c(t),
+      onMouseEnter: R ? () => S(n) : void 0,
+      onMouseLeave: R ? () => S(null) : void 0,
+      children: (x) => O(x)
     }
-  ) : /* @__PURE__ */ i(
-    fe,
+  ) : /* @__PURE__ */ o(
+    me,
     {
-      "data-state": n ? "selected" : void 0,
-      className: k(
-        l && "cursor-pointer",
-        (I == null ? void 0 : I.has(r)) && "border-b-0",
-        p == null ? void 0 : p(e)
+      ref: k,
+      "data-index": W,
+      "data-state": s ? "selected" : void 0,
+      className: K(
+        c && "cursor-pointer",
+        (H == null ? void 0 : H.has(n)) && "border-b-0",
+        h == null ? void 0 : h(t)
       ),
-      onClick: () => l == null ? void 0 : l(e),
-      onMouseEnter: W ? () => $(r) : void 0,
-      onMouseLeave: W ? () => $(null) : void 0,
-      children: T()
+      onClick: () => c == null ? void 0 : c(t),
+      onMouseEnter: R ? () => S(n) : void 0,
+      onMouseLeave: R ? () => S(null) : void 0,
+      children: O()
     }
   );
 }
-function Ce(o, e) {
-  var w, c, a, y, C, E;
-  if (o.row !== e.row || o.isSelected !== e.isSelected || o.isExpanded !== e.isExpanded || o.canExpand !== e.canExpand || o.rowIndex !== e.rowIndex) return !1;
-  const r = ((w = o.editingCell) == null ? void 0 : w.rowId) === o.row.id, n = ((c = e.editingCell) == null ? void 0 : c.rowId) === e.row.id;
-  return !(r !== n || r && (o.editValue !== e.editValue || ((a = o.editingCell) == null ? void 0 : a.columnKey) !== ((y = e.editingCell) == null ? void 0 : y.columnKey) || ((C = o.editingCell) == null ? void 0 : C.error) !== ((E = e.editingCell) == null ? void 0 : E.error)) || o.ctx !== e.ctx);
+function $e(i, t) {
+  var r, C, E, k, W, l;
+  if (i.row !== t.row || i.isSelected !== t.isSelected || i.isExpanded !== t.isExpanded || i.canExpand !== t.canExpand || i.rowIndex !== t.rowIndex) return !1;
+  const n = ((r = i.editingCell) == null ? void 0 : r.rowId) === i.row.id, s = ((C = t.editingCell) == null ? void 0 : C.rowId) === t.row.id;
+  if (n !== s || n && (i.editValue !== t.editValue || ((E = i.editingCell) == null ? void 0 : E.columnKey) !== ((k = t.editingCell) == null ? void 0 : k.columnKey) || ((W = i.editingCell) == null ? void 0 : W.error) !== ((l = t.editingCell) == null ? void 0 : l.error)) || i.ctx !== t.ctx) return !1;
+  const p = i.groupCellFlags, d = t.groupCellFlags;
+  if (p !== d) {
+    if (!p || !d) return !1;
+    const $ = p.selected, g = d.selected, T = p.hovered, D = d.hovered, I = Object.keys($);
+    if (I.length !== Object.keys(g).length) return !1;
+    for (const a of I)
+      if ($[a] !== g[a] || T[a] !== D[a]) return !1;
+  }
+  return !0;
 }
-const Ke = pe.memo(
-  ye,
-  Ce
+const Le = _.memo(
+  We,
+  $e
 );
 export {
-  Ke as DataTableBodyRow
+  Le as DataTableBodyRow
 };
 //# sourceMappingURL=data-table-body-row.mjs.map

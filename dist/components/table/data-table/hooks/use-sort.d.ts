@@ -4,7 +4,6 @@ interface UseSortOptions<T> {
     sortState: SortState<T>[] | SortState<T> | undefined;
     onSortChange: ((sortState: SortState<T>[]) => void) | undefined;
     multiSort: boolean;
-    shouldWarn: boolean;
 }
 /**
  * 정렬 hook
@@ -12,7 +11,7 @@ interface UseSortOptions<T> {
  * - 단일/다중 정렬 모드 핸들링
  * - 정렬 방향 및 다중 정렬 우선순위 조회 헬퍼
  */
-export declare function useSort<T>({ sortState, onSortChange, multiSort, shouldWarn, }: UseSortOptions<T>): {
+export declare function useSort<T>({ sortState, onSortChange, multiSort, }: UseSortOptions<T>): {
     sortStateArray: SortState<T>[];
     handleSort: (column: keyof T) => void;
     getSortDirection: (column: keyof T) => SortDirection;
