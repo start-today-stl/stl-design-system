@@ -226,11 +226,11 @@ const IconGrid = ({
 export const Gallery: Story = {
   render: () => (
     <div>
-      <IconGrid icons={basicIcons} title="기본 아이콘 (Figma Frame 1)" />
-      <IconGrid icons={languageIcons} title="언어 아이콘 (Figma Frame 2)" />
-      <IconGrid icons={navigationIcons} title="네비게이션 아이콘 (Figma Frame 3)" />
-      <IconGrid icons={homeVariantIcons} title="Home 변형 아이콘 (Figma Frame 4)" />
-      <IconGrid icons={otherIcons} title="기타 아이콘 (커스텀/복원)" />
+      <IconGrid icons={basicIcons} title="기본 아이콘" />
+      <IconGrid icons={languageIcons} title="언어 아이콘" />
+      <IconGrid icons={navigationIcons} title="네비게이션 아이콘" />
+      <IconGrid icons={homeVariantIcons} title="Home 변형 아이콘" />
+      <IconGrid icons={otherIcons} title="기타 아이콘" />
     </div>
   ),
 };
