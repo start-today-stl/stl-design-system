@@ -2,16 +2,16 @@ import { jsxs as i, Fragment as E, jsx as t } from "react/jsx-runtime";
 import * as s from "react";
 import { cn as I } from "../lib/utils.mjs";
 import { LeftIcon as m } from "../icons/LeftIcon.mjs";
-import { Button as u } from "../components/ui/button.mjs";
+import { Button as h } from "../components/ui/button.mjs";
 import { PageTitle as P } from "./page-title.mjs";
 const W = s.forwardRef(
-  ({ className: h, title: v, subtitle: x, bookmarked: p, onBookmark: b, tabs: o, sticky: l, ...g }, S) => {
-    const [N, R] = s.useState(!1), c = s.useRef(null), a = s.useRef(null), [w, k] = s.useState(!1), [z, L] = s.useState(!1);
+  ({ className: u, title: v, subtitle: x, bookmarked: p, onBookmark: b, tabs: o, sticky: l, ...g }, S) => {
+    const [N, _] = s.useState(!1), c = s.useRef(null), a = s.useRef(null), [w, R] = s.useState(!1), [k, z] = s.useState(!1);
     s.useEffect(() => {
       if (!l || !c.current) return;
       const e = new IntersectionObserver(
         ([r]) => {
-          R(!r.isIntersecting);
+          _(!r.isIntersecting);
         },
         { threshold: 0 }
       );
@@ -20,8 +20,8 @@ const W = s.forwardRef(
       const e = a.current;
       if (!e || !o) return;
       const r = () => {
-        const { scrollLeft: d, scrollWidth: _, clientWidth: C } = e;
-        k(d > 0), L(d + C < _ - 1);
+        const { scrollLeft: d, scrollWidth: L, clientWidth: C } = e;
+        R(d > 0), z(d + C < L - 1);
       };
       r(), e.addEventListener("scroll", r);
       const n = new ResizeObserver(r);
@@ -45,7 +45,7 @@ const W = s.forwardRef(
             "flex items-end w-full",
             l && "sticky top-0 z-30 bg-slate-50 dark:bg-slate-950",
             l && N && "[box-shadow:0_4px_4px_-4px_rgb(0_0_0/0.15)]",
-            h
+            u
           ),
           ...g,
           children: [
@@ -59,9 +59,9 @@ const W = s.forwardRef(
                 className: "flex-shrink-0"
               }
             ),
-            o && /* @__PURE__ */ i("div", { className: "flex flex-1 min-w-0 ml-2 items-end", children: [
+            o && /* @__PURE__ */ i("div", { className: "flex flex-1 min-w-0 ml-2 items-end shadow-[inset_0_-1px_0_var(--color-border)]", children: [
               w && /* @__PURE__ */ t(
-                u,
+                h,
                 {
                   variant: "text",
                   size: "icon",
@@ -79,8 +79,8 @@ const W = s.forwardRef(
                   children: /* @__PURE__ */ t("div", { className: "shrink-0 ml-auto", children: o })
                 }
               ),
-              z && /* @__PURE__ */ t(
-                u,
+              k && /* @__PURE__ */ t(
+                h,
                 {
                   variant: "text",
                   size: "icon",

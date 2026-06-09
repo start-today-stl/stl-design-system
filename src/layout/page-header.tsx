@@ -119,7 +119,7 @@ const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>(
             className="flex-shrink-0"
           />
           {tabs && (
-            <div className="flex flex-1 min-w-0 ml-2 items-end">
+            <div className="flex flex-1 min-w-0 ml-2 items-end shadow-[inset_0_-1px_0_var(--color-border)]">
               {/* 좌측 스크롤 버튼 (탭 영역 바깥) */}
               {canScrollLeft && (
                 <Button
