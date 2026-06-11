@@ -41,6 +41,19 @@ export const SearchForm = React.forwardRef<HTMLDivElement, SearchFormProps>(
       onCollapseChange?.(newValue);
     };
 
+    const collapseButton = collapsible && (
+      <button
+        type="button"
+        onClick={toggleCollapse}
+        aria-label={isCollapsed ? "펼치기" : "접기"}
+        className="flex items-center justify-center size-8 text-muted-foreground hover:text-foreground transition-colors cursor-pointer shrink-0"
+      >
+        {isCollapsed ? <DownIcon size={24} /> : <UpIcon size={24} />}
+      </button>
+    );
+
+    const showCollapsedRow = collapsedContent || (!title && collapsible);
+
     return (
       <div
         ref={ref}
@@ -58,33 +71,11 @@ export const SearchForm = React.forwardRef<HTMLDivElement, SearchFormProps>(
             )}
           >
             <h3 className="text-lg font-semibold">{title}</h3>
-            {collapsible && (
-              <button
-                type="button"
-                onClick={toggleCollapse}
-                aria-label={isCollapsed ? "펼치기" : "접기"}
-                className="flex items-center justify-center size-8 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
-              >
-                {isCollapsed ? <DownIcon size={24} /> : <UpIcon size={24} />}
-              </button>
-            )}
+            {collapseButton}
           </div>
         )}
-        {/* 제목이 없을 때 collapsible 토글 버튼 */}
-        {!title && collapsible && (
-          <div className={cn("px-4 py-1 flex justify-end", !isCollapsed && "border-b border-border")}>
-            <button
-              type="button"
-              onClick={toggleCollapse}
-              aria-label={isCollapsed ? "펼치기" : "접기"}
-              className="flex items-center justify-center size-8 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
-            >
-              {isCollapsed ? <DownIcon size={24} /> : <UpIcon size={24} />}
-            </button>
-          </div>
-        )}
-        {/* 접힌 상태에서 표시할 콘텐츠 */}
-        {collapsedContent && (
+        {/* 접힌 상태에서 표시할 콘텐츠 (타이틀 없으면 화살표도 같은 row 끝에 배치) */}
+        {showCollapsedRow && (
           <div
             className={cn(
               "grid transition-[grid-template-rows,opacity] duration-200 ease-in-out",
@@ -92,7 +83,10 @@ export const SearchForm = React.forwardRef<HTMLDivElement, SearchFormProps>(
             )}
           >
             <div className="overflow-hidden">
-              <div className="px-4 py-3">{collapsedContent}</div>
+              <div className="px-4 py-3 flex items-center justify-between gap-2">
+                <div className="flex-1 min-w-0">{collapsedContent}</div>
+                {!title && collapseButton}
+              </div>
             </div>
           </div>
         )}
@@ -118,8 +112,11 @@ export const SearchForm = React.forwardRef<HTMLDivElement, SearchFormProps>(
                     {children}
                   </div>
                 )}
-                {actions && (
-                  <div className="flex items-center gap-2 pl-4 shrink-0">{actions}</div>
+                {(actions || (!title && collapsible)) && (
+                  <div className="flex items-center gap-2 pl-4 shrink-0">
+                    {actions}
+                    {!title && collapseButton}
+                  </div>
                 )}
               </div>
             </div>
