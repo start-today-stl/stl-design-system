@@ -21,7 +21,7 @@ const S = [
   "placeholder:text-destructive dark:placeholder:text-red-400",
   "focus:border-destructive focus:shadow-[0px_0px_6px_0px_rgba(239,68,68,0.5)] dark:focus:border-red-500"
 ].join(" "), _ = {
-  sm: "w-[160px]",
+  sm: "w-[180px]",
   md: "w-[260px]",
   lg: "w-[360px]",
   full: "w-full"
