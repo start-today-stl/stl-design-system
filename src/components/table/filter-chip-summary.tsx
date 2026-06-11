@@ -1,6 +1,7 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Chip } from "@/components/ui/chip";
+import { useSearchFormContext } from "./search-form";
 
 export interface FilterItem {
   /** 필터 고유 ID */
@@ -49,6 +50,13 @@ const FilterChipSummary = React.forwardRef<HTMLDivElement, FilterChipSummaryProp
     const visibleFilters = filters.slice(0, maxVisible);
     const hiddenCount = Math.max(0, filters.length - maxVisible);
 
+    // 상위 SearchForm 이 접힘 상태일 때 칩 클릭으로 펼치도록 onClick 자동 주입
+    const searchFormCtx = useSearchFormContext();
+    const expandOnChipClick =
+      searchFormCtx?.collapsible && searchFormCtx.isCollapsed
+        ? searchFormCtx.toggleCollapse
+        : undefined;
+
     if (filters.length === 0) {
       return (
         <div
@@ -73,6 +81,7 @@ const FilterChipSummary = React.forwardRef<HTMLDivElement, FilterChipSummaryProp
             size={chipSize}
             removable={!!onRemove}
             onRemove={() => onRemove?.(filter.id)}
+            onClick={expandOnChipClick}
           >
             {filter.label}: {filter.value}
           </Chip>
@@ -81,7 +90,7 @@ const FilterChipSummary = React.forwardRef<HTMLDivElement, FilterChipSummaryProp
           <Chip
             size={chipSize}
             variant="outline"
-            onClick={onExpand}
+            onClick={onExpand ?? expandOnChipClick}
           >
             +{hiddenCount}개
           </Chip>
@@ -89,7 +98,10 @@ const FilterChipSummary = React.forwardRef<HTMLDivElement, FilterChipSummaryProp
         {onClearAll && (
           <button
             type="button"
-            onClick={onClearAll}
+            onClick={(e) => {
+              e.stopPropagation();
+              onClearAll();
+            }}
             className="text-xs text-slate-700 dark:text-slate-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors ml-2 cursor-pointer"
           >
             {clearAllText}

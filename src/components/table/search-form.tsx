@@ -1,8 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, createContext, useContext, useMemo } from "react";
 import { cn } from "@/lib/utils";
 import { UpIcon, DownIcon } from "@/icons";
 
 export type SearchFormLayout = "grid" | "flex";
+
+/**
+ * SearchForm 의 접힘 상태/토글을 자식 컴포넌트가 소비하도록 제공.
+ * FilterChipSummary 등이 사용해 접힘 상태일 때 칩 클릭으로 펼치기.
+ */
+interface SearchFormContextValue {
+  isCollapsed: boolean;
+  collapsible: boolean;
+  toggleCollapse: () => void;
+}
+
+const SearchFormContext = createContext<SearchFormContextValue | null>(null);
+
+export const useSearchFormContext = () => useContext(SearchFormContext);
 
 export interface SearchFormProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
   /** 폼 제목 */
@@ -44,7 +58,10 @@ export const SearchForm = React.forwardRef<HTMLDivElement, SearchFormProps>(
     const collapseButton = collapsible && (
       <button
         type="button"
-        onClick={toggleCollapse}
+        onClick={(e) => {
+          e.stopPropagation();
+          toggleCollapse();
+        }}
         aria-label={isCollapsed ? "펼치기" : "접기"}
         className="flex items-center justify-center size-8 text-muted-foreground hover:text-foreground transition-colors cursor-pointer shrink-0"
       >
@@ -54,7 +71,14 @@ export const SearchForm = React.forwardRef<HTMLDivElement, SearchFormProps>(
 
     const showCollapsedRow = collapsedContent || (!title && collapsible);
 
+    const contextValue = useMemo<SearchFormContextValue>(
+      () => ({ isCollapsed, collapsible, toggleCollapse }),
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [isCollapsed, collapsible]
+    );
+
     return (
+      <SearchFormContext.Provider value={contextValue}>
       <div
         ref={ref}
         className={cn(
@@ -123,6 +147,7 @@ export const SearchForm = React.forwardRef<HTMLDivElement, SearchFormProps>(
           </div>
         </div>
       </div>
+      </SearchFormContext.Provider>
     );
   }
 );

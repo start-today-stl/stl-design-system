@@ -34,42 +34,44 @@ const k = v(
     variant: d,
     size: b,
     children: u,
-    removable: c,
+    removable: p,
     onRemove: s,
     onClick: t,
-    disabled: e,
+    disabled: r,
     leftElement: n,
     ...h
-  }, p) => {
-    const a = !!t, g = (r) => {
-      r.stopPropagation(), s == null || s();
+  }, c) => {
+    const a = !!t, g = (e) => {
+      e.stopPropagation(), s == null || s();
     };
     return /* @__PURE__ */ m(
       "div",
       {
-        ref: p,
+        ref: c,
         role: a ? "button" : void 0,
-        tabIndex: a && !e ? 0 : void 0,
-        onClick: e ? void 0 : t,
-        onKeyDown: a && !e ? (r) => {
-          (r.key === "Enter" || r.key === " ") && (r.preventDefault(), t == null || t());
+        tabIndex: a && !r ? 0 : void 0,
+        onClick: a && !r ? (e) => {
+          e.stopPropagation(), t == null || t();
+        } : void 0,
+        onKeyDown: a && !r ? (e) => {
+          (e.key === "Enter" || e.key === " ") && (e.preventDefault(), e.stopPropagation(), t == null || t());
         } : void 0,
         className: l(
           k({ variant: d, size: b }),
-          a && !e && "cursor-pointer",
-          e && "opacity-50 cursor-not-allowed pointer-events-none",
+          a && !r && "cursor-pointer",
+          r && "opacity-50 cursor-not-allowed pointer-events-none",
           i
         ),
         ...h,
         children: [
           n && /* @__PURE__ */ o("span", { className: "flex items-center justify-center shrink-0", children: n }),
           /* @__PURE__ */ o("span", { className: "truncate", children: u }),
-          c && /* @__PURE__ */ o(
+          p && /* @__PURE__ */ o(
             "button",
             {
               type: "button",
               onClick: g,
-              disabled: e,
+              disabled: r,
               className: l(
                 "flex items-center justify-center shrink-0 rounded-full transition-colors",
                 "hover:bg-black/10 dark:hover:bg-white/10",
