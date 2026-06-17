@@ -74,44 +74,50 @@ const Chip = React.forwardRef<HTMLDivElement, ChipProps>(
       onRemove?.();
     };
 
-    const handleChipClick = isInteractive && !disabled
-      ? (e: React.MouseEvent) => {
-          e.stopPropagation();
-          onClick?.();
-        }
-      : undefined;
+    const handleBodyClick =
+      isInteractive && !disabled
+        ? (e: React.MouseEvent) => {
+            e.stopPropagation();
+            onClick?.();
+          }
+        : undefined;
 
-    return (
-      <div
-        ref={ref}
-        role={isInteractive ? "button" : undefined}
-        tabIndex={isInteractive && !disabled ? 0 : undefined}
-        onClick={handleChipClick}
-        onKeyDown={
-          isInteractive && !disabled
-            ? (e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  onClick?.();
-                }
-              }
-            : undefined
-        }
-        className={cn(
-          chipVariants({ variant, size }),
-          isInteractive && !disabled && "cursor-pointer",
-          disabled && "opacity-50 cursor-not-allowed pointer-events-none",
-          className
-        )}
-        {...props}
-      >
+    const bodyContent = (
+      <>
         {leftElement && (
           <span className="flex items-center justify-center shrink-0">
             {leftElement}
           </span>
         )}
         <span className="truncate">{children}</span>
+      </>
+    );
+
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          chipVariants({ variant, size }),
+          disabled && "opacity-50 cursor-not-allowed pointer-events-none",
+          className
+        )}
+        {...props}
+      >
+        {isInteractive ? (
+          <button
+            type="button"
+            onClick={handleBodyClick}
+            disabled={disabled}
+            className={cn(
+              "inline-flex items-center gap-1.5 min-w-0 cursor-pointer outline-none",
+              "focus-visible:ring-2 focus-visible:ring-blue-500 rounded"
+            )}
+          >
+            {bodyContent}
+          </button>
+        ) : (
+          bodyContent
+        )}
         {removable && (
           <button
             type="button"

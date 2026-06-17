@@ -1,9 +1,9 @@
-import { jsxs as m, jsx as o } from "react/jsx-runtime";
-import * as x from "react";
-import { cva as v } from "class-variance-authority";
-import { cn as l } from "../../lib/utils.mjs";
-import { XIcon as f } from "../../icons/XIcon.mjs";
-const k = v(
+import { jsxs as d, jsx as e, Fragment as v } from "react/jsx-runtime";
+import * as k from "react";
+import { cva as y } from "class-variance-authority";
+import { cn as n } from "../../lib/utils.mjs";
+import { XIcon as N } from "../../icons/XIcon.mjs";
+const w = y(
   "inline-flex items-center gap-1.5 font-medium transition-all duration-150 select-none",
   {
     variants: {
@@ -28,57 +28,64 @@ const k = v(
       size: "md"
     }
   }
-), y = x.forwardRef(
+), j = k.forwardRef(
   ({
-    className: i,
-    variant: d,
-    size: b,
-    children: u,
-    removable: p,
-    onRemove: s,
+    className: b,
+    variant: u,
+    size: c,
+    children: g,
+    removable: h,
+    onRemove: a,
     onClick: t,
     disabled: r,
-    leftElement: n,
-    ...h
-  }, c) => {
-    const a = !!t, g = (e) => {
-      e.stopPropagation(), s == null || s();
-    };
-    return /* @__PURE__ */ m(
+    leftElement: o,
+    ...p
+  }, m) => {
+    const l = !!t, x = (s) => {
+      s.stopPropagation(), a == null || a();
+    }, f = l && !r ? (s) => {
+      s.stopPropagation(), t == null || t();
+    } : void 0, i = /* @__PURE__ */ d(v, { children: [
+      o && /* @__PURE__ */ e("span", { className: "flex items-center justify-center shrink-0", children: o }),
+      /* @__PURE__ */ e("span", { className: "truncate", children: g })
+    ] });
+    return /* @__PURE__ */ d(
       "div",
       {
-        ref: c,
-        role: a ? "button" : void 0,
-        tabIndex: a && !r ? 0 : void 0,
-        onClick: a && !r ? (e) => {
-          e.stopPropagation(), t == null || t();
-        } : void 0,
-        onKeyDown: a && !r ? (e) => {
-          (e.key === "Enter" || e.key === " ") && (e.preventDefault(), e.stopPropagation(), t == null || t());
-        } : void 0,
-        className: l(
-          k({ variant: d, size: b }),
-          a && !r && "cursor-pointer",
+        ref: m,
+        className: n(
+          w({ variant: u, size: c }),
           r && "opacity-50 cursor-not-allowed pointer-events-none",
-          i
+          b
         ),
-        ...h,
+        ...p,
         children: [
-          n && /* @__PURE__ */ o("span", { className: "flex items-center justify-center shrink-0", children: n }),
-          /* @__PURE__ */ o("span", { className: "truncate", children: u }),
-          p && /* @__PURE__ */ o(
+          l ? /* @__PURE__ */ e(
             "button",
             {
               type: "button",
-              onClick: g,
+              onClick: f,
               disabled: r,
-              className: l(
+              className: n(
+                "inline-flex items-center gap-1.5 min-w-0 cursor-pointer outline-none",
+                "focus-visible:ring-2 focus-visible:ring-blue-500 rounded"
+              ),
+              children: i
+            }
+          ) : i,
+          h && /* @__PURE__ */ e(
+            "button",
+            {
+              type: "button",
+              onClick: x,
+              disabled: r,
+              className: n(
                 "flex items-center justify-center shrink-0 rounded-full transition-colors",
                 "hover:bg-black/10 dark:hover:bg-white/10",
                 "-mr-0.5 size-5"
               ),
               "aria-label": "삭제",
-              children: /* @__PURE__ */ o(f, { size: 16 })
+              children: /* @__PURE__ */ e(N, { size: 16 })
             }
           )
         ]
@@ -86,9 +93,9 @@ const k = v(
     );
   }
 );
-y.displayName = "Chip";
+j.displayName = "Chip";
 export {
-  y as Chip,
-  k as chipVariants
+  j as Chip,
+  w as chipVariants
 };
 //# sourceMappingURL=chip.mjs.map
