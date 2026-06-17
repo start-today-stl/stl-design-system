@@ -74,17 +74,25 @@ const Chip = React.forwardRef<HTMLDivElement, ChipProps>(
       onRemove?.();
     };
 
+    const handleChipClick = isInteractive && !disabled
+      ? (e: React.MouseEvent) => {
+          e.stopPropagation();
+          onClick?.();
+        }
+      : undefined;
+
     return (
       <div
         ref={ref}
         role={isInteractive ? "button" : undefined}
         tabIndex={isInteractive && !disabled ? 0 : undefined}
-        onClick={!disabled ? onClick : undefined}
+        onClick={handleChipClick}
         onKeyDown={
           isInteractive && !disabled
             ? (e) => {
                 if (e.key === "Enter" || e.key === " ") {
                   e.preventDefault();
+                  e.stopPropagation();
                   onClick?.();
                 }
               }

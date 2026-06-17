@@ -1,8 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, createContext, useContext, useMemo } from "react";
 import { cn } from "@/lib/utils";
 import { UpIcon, DownIcon } from "@/icons";
 
 export type SearchFormLayout = "grid" | "flex";
+
+/**
+ * SearchForm 의 접힘 상태/토글을 자식 컴포넌트가 소비하도록 제공.
+ * FilterChipSummary 등이 사용해 접힘 상태일 때 칩 클릭으로 펼치기.
+ */
+interface SearchFormContextValue {
+  isCollapsed: boolean;
+  collapsible: boolean;
+  toggleCollapse: () => void;
+}
+
+const SearchFormContext = createContext<SearchFormContextValue | null>(null);
+
+export const useSearchFormContext = () => useContext(SearchFormContext);
 
 export interface SearchFormProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
   /** 폼 제목 */
@@ -41,7 +55,30 @@ export const SearchForm = React.forwardRef<HTMLDivElement, SearchFormProps>(
       onCollapseChange?.(newValue);
     };
 
+    const collapseButton = collapsible && (
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          toggleCollapse();
+        }}
+        aria-label={isCollapsed ? "펼치기" : "접기"}
+        className="flex items-center justify-center size-8 text-muted-foreground hover:text-foreground transition-colors cursor-pointer shrink-0"
+      >
+        {isCollapsed ? <DownIcon size={24} /> : <UpIcon size={24} />}
+      </button>
+    );
+
+    const showCollapsedRow = collapsedContent || (!title && collapsible);
+
+    const contextValue = useMemo<SearchFormContextValue>(
+      () => ({ isCollapsed, collapsible, toggleCollapse }),
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [isCollapsed, collapsible]
+    );
+
     return (
+      <SearchFormContext.Provider value={contextValue}>
       <div
         ref={ref}
         className={cn(
@@ -58,33 +95,11 @@ export const SearchForm = React.forwardRef<HTMLDivElement, SearchFormProps>(
             )}
           >
             <h3 className="text-lg font-semibold">{title}</h3>
-            {collapsible && (
-              <button
-                type="button"
-                onClick={toggleCollapse}
-                aria-label={isCollapsed ? "펼치기" : "접기"}
-                className="flex items-center justify-center size-8 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
-              >
-                {isCollapsed ? <DownIcon size={24} /> : <UpIcon size={24} />}
-              </button>
-            )}
+            {collapseButton}
           </div>
         )}
-        {/* 제목이 없을 때 collapsible 토글 버튼 */}
-        {!title && collapsible && (
-          <div className={cn("px-4 py-1 flex justify-end", !isCollapsed && "border-b border-border")}>
-            <button
-              type="button"
-              onClick={toggleCollapse}
-              aria-label={isCollapsed ? "펼치기" : "접기"}
-              className="flex items-center justify-center size-8 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
-            >
-              {isCollapsed ? <DownIcon size={24} /> : <UpIcon size={24} />}
-            </button>
-          </div>
-        )}
-        {/* 접힌 상태에서 표시할 콘텐츠 */}
-        {collapsedContent && (
+        {/* 접힌 상태에서 표시할 콘텐츠 (타이틀 없으면 화살표도 같은 row 끝에 배치) */}
+        {showCollapsedRow && (
           <div
             className={cn(
               "grid transition-[grid-template-rows,opacity] duration-200 ease-in-out",
@@ -92,7 +107,10 @@ export const SearchForm = React.forwardRef<HTMLDivElement, SearchFormProps>(
             )}
           >
             <div className="overflow-hidden">
-              <div className="px-4 py-3">{collapsedContent}</div>
+              <div className="px-4 py-3 flex items-center justify-between gap-2">
+                <div className="flex-1 min-w-0">{collapsedContent}</div>
+                {!title && collapseButton}
+              </div>
             </div>
           </div>
         )}
@@ -118,14 +136,18 @@ export const SearchForm = React.forwardRef<HTMLDivElement, SearchFormProps>(
                     {children}
                   </div>
                 )}
-                {actions && (
-                  <div className="flex items-center gap-2 pl-4 shrink-0">{actions}</div>
+                {(actions || (!title && collapsible)) && (
+                  <div className="flex items-center gap-2 pl-4 shrink-0">
+                    {actions}
+                    {!title && collapseButton}
+                  </div>
                 )}
               </div>
             </div>
           </div>
         </div>
       </div>
+      </SearchFormContext.Provider>
     );
   }
 );

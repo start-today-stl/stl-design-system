@@ -1,68 +1,72 @@
-import { jsx as i, jsxs as a } from "react/jsx-runtime";
-import * as C from "react";
-import { cn as h } from "../../lib/utils.mjs";
-import { Chip as u } from "../ui/chip.mjs";
-const f = C.forwardRef(
+import { jsx as a, jsxs as l } from "react/jsx-runtime";
+import * as f from "react";
+import { cn as u } from "../../lib/utils.mjs";
+import { Chip as x } from "../ui/chip.mjs";
+import { useSearchFormContext as v } from "./search-form.mjs";
+const y = f.forwardRef(
   ({
-    className: s,
+    className: o,
     filters: r,
-    maxVisible: n = 3,
-    onRemove: t,
-    onClearAll: l,
-    onExpand: x,
-    emptyText: p = "적용된 필터가 없습니다",
+    maxVisible: s = 3,
+    onRemove: i,
+    onClearAll: n,
+    onExpand: C,
+    emptyText: g = "적용된 필터가 없습니다",
     clearAllText: b = "전체 초기화",
     chipSize: c = "sm",
     ...m
-  }, o) => {
-    const g = r.slice(0, n), d = Math.max(0, r.length - n);
-    return r.length === 0 ? /* @__PURE__ */ i(
+  }, d) => {
+    const k = r.slice(0, s), p = Math.max(0, r.length - s), e = v(), h = e != null && e.collapsible && e.isCollapsed ? e.toggleCollapse : void 0;
+    return r.length === 0 ? /* @__PURE__ */ a(
       "div",
       {
-        ref: o,
-        className: h("flex items-center gap-2", s),
+        ref: d,
+        className: u("flex items-center gap-2", o),
         ...m,
-        children: /* @__PURE__ */ i("span", { className: "text-sm text-muted-foreground", children: p })
+        children: /* @__PURE__ */ a("span", { className: "text-sm text-muted-foreground", children: g })
       }
-    ) : /* @__PURE__ */ a(
+    ) : /* @__PURE__ */ l(
       "div",
       {
-        ref: o,
-        className: h("flex items-center gap-2", s),
+        ref: d,
+        className: u("flex items-center gap-2", o),
         ...m,
         children: [
-          g.map((e) => /* @__PURE__ */ a(
-            u,
+          k.map((t) => /* @__PURE__ */ l(
+            x,
             {
               size: c,
-              removable: !!t,
-              onRemove: () => t == null ? void 0 : t(e.id),
+              removable: !!i,
+              onRemove: () => i == null ? void 0 : i(t.id),
+              onClick: h,
               children: [
-                e.label,
+                t.label,
                 ": ",
-                e.value
+                t.value
               ]
             },
-            e.id
+            t.id
           )),
-          d > 0 && /* @__PURE__ */ a(
-            u,
+          p > 0 && /* @__PURE__ */ l(
+            x,
             {
               size: c,
               variant: "outline",
-              onClick: x,
+              onClick: C ?? h,
               children: [
                 "+",
-                d,
+                p,
                 "개"
               ]
             }
           ),
-          l && /* @__PURE__ */ i(
+          n && /* @__PURE__ */ a(
             "button",
             {
               type: "button",
-              onClick: l,
+              onClick: (t) => {
+                t.stopPropagation(), n();
+              },
               className: "text-xs text-slate-700 dark:text-slate-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors ml-2 cursor-pointer",
               children: b
             }
@@ -72,8 +76,8 @@ const f = C.forwardRef(
     );
   }
 );
-f.displayName = "FilterChipSummary";
+y.displayName = "FilterChipSummary";
 export {
-  f as FilterChipSummary
+  y as FilterChipSummary
 };
 //# sourceMappingURL=filter-chip-summary.mjs.map

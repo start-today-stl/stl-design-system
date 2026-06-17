@@ -1,5 +1,15 @@
 import { default as React } from 'react';
 export type SearchFormLayout = "grid" | "flex";
+/**
+ * SearchForm 의 접힘 상태/토글을 자식 컴포넌트가 소비하도록 제공.
+ * FilterChipSummary 등이 사용해 접힘 상태일 때 칩 클릭으로 펼치기.
+ */
+interface SearchFormContextValue {
+    isCollapsed: boolean;
+    collapsible: boolean;
+    toggleCollapse: () => void;
+}
+export declare const useSearchFormContext: () => SearchFormContextValue | null;
 export interface SearchFormProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
     /** 폼 제목 */
     title?: React.ReactNode;
@@ -21,3 +31,4 @@ export interface SearchFormProps extends Omit<React.HTMLAttributes<HTMLDivElemen
     onCollapseChange?: (collapsed: boolean) => void;
 }
 export declare const SearchForm: React.ForwardRefExoticComponent<SearchFormProps & React.RefAttributes<HTMLDivElement>>;
+export {};
