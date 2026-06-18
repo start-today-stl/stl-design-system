@@ -29,6 +29,7 @@ export default defineConfig({
         layout: resolve(__dirname, 'src/layout/index.ts'),
         icons: resolve(__dirname, 'src/icons/index.ts'),
         assets: resolve(__dirname, 'src/assets/index.ts'),
+        charts: resolve(__dirname, 'src/charts/index.ts'),
       },
       name: 'STLDesignSystem',
       formats: ['es', 'cjs'],
@@ -45,6 +46,8 @@ export default defineConfig({
         /^@dnd-kit\/.*/,
         // TanStack (가상화)
         /^@tanstack\/.*/,
+        // Recharts (charts subpath)
+        'recharts',
         // Utilities
         'clsx',
         'tailwind-merge',
