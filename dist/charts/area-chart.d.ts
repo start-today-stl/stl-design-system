@@ -27,5 +27,7 @@ export interface AreaChartProps<T extends Record<string, unknown>> extends Omit<
     showDots?: boolean;
     /** 선 보간 방식 (기본 linear — 점과 점을 직선 연결) */
     curveType?: "linear" | "monotone" | "step" | "natural";
+    /** 선 / 도트 / 영역 색상 (기본 var(--color-primary), 토큰 사용 권장) */
+    color?: string;
 }
-export declare function AreaChart<T extends Record<string, unknown>>({ data, xKey, yKey, height, tooltipLabel, tooltipFormatter, showXAxis, showYAxis, showGrid, showDots, curveType, className, ...props }: AreaChartProps<T>): import("react/jsx-runtime").JSX.Element;
+export declare function AreaChart<T extends Record<string, unknown>>({ data, xKey, yKey, height, tooltipLabel, tooltipFormatter, showXAxis, showYAxis, showGrid, showDots, curveType, color, className, ...props }: AreaChartProps<T>): import("react/jsx-runtime").JSX.Element;

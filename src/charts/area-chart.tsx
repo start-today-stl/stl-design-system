@@ -41,11 +41,12 @@ export interface AreaChartProps<T extends Record<string, unknown>>
   showDots?: boolean
   /** 선 보간 방식 (기본 linear — 점과 점을 직선 연결) */
   curveType?: "linear" | "monotone" | "step" | "natural"
+  /** 선 / 도트 / 영역 색상 (기본 var(--color-primary), 토큰 사용 권장) */
+  color?: string
 }
 
 // semantic 토큰 사용 — 라이트/다크 자동 전환
-const PRIMARY_STROKE = "var(--color-primary)"
-const PRIMARY_FILL = "var(--color-primary)"
+const DEFAULT_COLOR = "var(--color-primary)"
 const GRID_STROKE = "var(--color-border)"
 const AXIS_STROKE = "var(--color-muted-foreground)"
 const TEXT_COLOR = "var(--color-muted-foreground)"
@@ -62,6 +63,7 @@ export function AreaChart<T extends Record<string, unknown>>({
   showGrid = true,
   showDots = true,
   curveType = "linear",
+  color = DEFAULT_COLOR,
   className,
   ...props
 }: AreaChartProps<T>) {
@@ -81,8 +83,8 @@ export function AreaChart<T extends Record<string, unknown>>({
         <RechartsAreaChart data={data} margin={{ top: 12, right: 12, left: -8, bottom: 0 }}>
           <defs>
             <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor={PRIMARY_FILL} stopOpacity={0.4} />
-              <stop offset="100%" stopColor={PRIMARY_FILL} stopOpacity={0.04} />
+              <stop offset="0%" stopColor={color} stopOpacity={0.4} />
+              <stop offset="100%" stopColor={color} stopOpacity={0.04} />
             </linearGradient>
           </defs>
           {showGrid && (
@@ -112,7 +114,7 @@ export function AreaChart<T extends Record<string, unknown>>({
             />
           )}
           <Tooltip
-            cursor={{ stroke: PRIMARY_STROKE, strokeWidth: 1 }}
+            cursor={{ stroke: color, strokeWidth: 1 }}
             content={({ active, payload }) => {
               if (!active || !payload?.length) return null
               const datum = payload[0]
@@ -133,21 +135,21 @@ export function AreaChart<T extends Record<string, unknown>>({
           <Area
             type={curveType}
             dataKey={yKey as never}
-            stroke={PRIMARY_STROKE}
+            stroke={color}
             strokeWidth={2}
             fill={`url(#${gradientId})`}
             dot={
               showDots
                 ? {
                     r: 3,
-                    fill: PRIMARY_STROKE,
+                    fill: color,
                     stroke: "none",
                     strokeWidth: 0,
                     fillOpacity: 1,
                   }
                 : false
             }
-            activeDot={{ r: 5, fill: PRIMARY_STROKE, stroke: "none", strokeWidth: 0, fillOpacity: 1 }}
+            activeDot={{ r: 5, fill: color, stroke: "none", strokeWidth: 0, fillOpacity: 1 }}
           />
         </RechartsAreaChart>
       </ResponsiveContainer>

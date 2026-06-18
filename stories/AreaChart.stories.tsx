@@ -111,3 +111,19 @@ export const Minimal: Story = {
     </div>
   ),
 }
+
+export const CustomColor: Story = {
+  args: {
+    data: salesData,
+    xKey: "day",
+    yKey: "sales",
+    color: "var(--color-green-500)",
+    tooltipLabel: "성공률",
+    tooltipFormatter: (value) => `${value}%`,
+  },
+  render: (args) => (
+    <div style={{ width: 480 }}>
+      <AreaChart {...args} />
+    </div>
+  ),
+}
