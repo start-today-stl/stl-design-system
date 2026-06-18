@@ -1,2 +1,2 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const e=require("./charts/area-chart.cjs"),r=require("./charts/line-chart.cjs");exports.AreaChart=e.AreaChart;exports.LineChart=r.LineChart;
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const r=require("./charts/area-chart.cjs"),a=require("./charts/line-chart.cjs"),e=require("./charts/bar-chart.cjs"),t=require("./charts/stack-bar-chart.cjs"),h=require("./charts/chart-legend.cjs");exports.AreaChart=r.AreaChart;exports.LineChart=a.LineChart;exports.BarChart=e.BarChart;exports.StackBarChart=t.StackBarChart;exports.ChartLegend=h.ChartLegend;
 //# sourceMappingURL=charts.cjs.map
