@@ -142,10 +142,12 @@ export function AreaChart<T extends Record<string, unknown>>({
                     r: 3,
                     fill: PRIMARY_STROKE,
                     stroke: "none",
+                    strokeWidth: 0,
+                    fillOpacity: 1,
                   }
                 : false
             }
-            activeDot={{ r: 5, fill: PRIMARY_STROKE, stroke: "none" }}
+            activeDot={{ r: 5, fill: PRIMARY_STROKE, stroke: "none", strokeWidth: 0, fillOpacity: 1 }}
           />
         </RechartsAreaChart>
       </ResponsiveContainer>

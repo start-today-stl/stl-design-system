@@ -1,5 +1,7 @@
-import { AreaChart as e } from "./charts/area-chart.mjs";
+import { AreaChart as o } from "./charts/area-chart.mjs";
+import { LineChart as a } from "./charts/line-chart.mjs";
 export {
-  e as AreaChart
+  o as AreaChart,
+  a as LineChart
 };
 //# sourceMappingURL=charts.mjs.map
