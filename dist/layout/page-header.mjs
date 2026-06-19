@@ -42,7 +42,7 @@ const j = s.forwardRef(
         {
           ref: _,
           className: m(
-            "flex items-end w-full",
+            "flex items-end w-full min-h-9",
             l && "sticky top-0 z-30 bg-slate-50 dark:bg-slate-950",
             l && w && "[box-shadow:0_4px_4px_-4px_rgb(0_0_0/0.15)]",
             v
