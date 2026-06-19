@@ -105,13 +105,17 @@ export function RadialChart({
     [resolvedItems]
   )
 
-  // activeIndex 변경 시 콜백 호출
+  // onActiveChange 의 stale closure 방지 — ref 로 최신 콜백 참조
+  const onActiveChangeRef = React.useRef(onActiveChange)
   React.useEffect(() => {
-    if (!onActiveChange) return
+    onActiveChangeRef.current = onActiveChange
+  })
+
+  // activeIndex 변경 시 최신 콜백 호출 (deps 안정)
+  React.useEffect(() => {
     const active = activeIndex !== null ? resolvedItems[activeIndex] : null
-    onActiveChange(active)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeIndex])
+    onActiveChangeRef.current?.(active)
+  }, [activeIndex, resolvedItems])
 
   // 자동 범례: color 미지정 시 series 색 순서 매칭
   const resolvedLegend = React.useMemo<ChartLegendItem[] | undefined>(() => {
@@ -127,6 +131,19 @@ export function RadialChart({
   const totalBarSpace = barSize + barGap
   const innerRadius = Math.max(outerRadius - resolvedItems.length * totalBarSpace, 8)
 
+  // 이벤트 핸들러 안정화 (Recharts 내부 re-render 영향 최소화)
+  const handleMouseEnter = React.useCallback(
+    (_: unknown, index: number) => setHoveredIndex(index),
+    []
+  )
+  const handleMouseLeaveBar = React.useCallback(() => setHoveredIndex(null), [])
+  const handleClick = React.useCallback(
+    (_: unknown, index: number) =>
+      setPinnedIndex((prev) => (prev === index ? null : index)),
+    []
+  )
+  const handleWrapperLeave = React.useCallback(() => setHoveredIndex(null), [])
+
   return (
     <div
       className={cn(
@@ -141,7 +158,7 @@ export function RadialChart({
       <div
         className="relative flex items-center justify-center"
         style={{ width: "100%", height: size }}
-        onMouseLeave={() => setHoveredIndex(null)}
+        onMouseLeave={handleWrapperLeave}
       >
         <ResponsiveContainer width={size} height={size}>
           <RadialBarChart
@@ -187,11 +204,9 @@ export function RadialChart({
               background={showTrack ? { fill: TRACK_COLOR } : false}
               cornerRadius={0}
               isAnimationActive={animated}
-              onMouseEnter={(_, index) => setHoveredIndex(index)}
-              onMouseLeave={() => setHoveredIndex(null)}
-              onClick={(_, index) =>
-                setPinnedIndex((prev) => (prev === index ? null : index))
-              }
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeaveBar}
+              onClick={handleClick}
               style={{ cursor: "pointer" }}
             >
               {resolvedItems.map((item) => (
