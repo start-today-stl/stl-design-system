@@ -1,16 +1,16 @@
 import { jsxs as a, jsx as r } from "react/jsx-runtime";
 import * as s from "react";
-import { ResponsiveContainer as D, RadialBarChart as K, PolarAngleAxis as O, Tooltip as G, RadialBar as H, Cell as U } from "recharts";
-import { cn as $ } from "../lib/utils.mjs";
-import { ChartLegend as q } from "./chart-legend.mjs";
+import { ResponsiveContainer as K, RadialBarChart as O, PolarAngleAxis as G, Tooltip as H, RadialBar as U, Cell as $ } from "recharts";
+import { cn as q } from "../lib/utils.mjs";
+import { ChartLegend as J } from "./chart-legend.mjs";
 const R = [
   "var(--color-primary)",
   "var(--color-blue-300)",
   "var(--color-green-500)",
   "var(--color-red-500)",
   "var(--color-muted-foreground)"
-], J = "var(--color-slate-100)";
-function Y({
+], Q = "var(--color-slate-100)";
+function Z({
   data: m,
   max: C = 100,
   size: i = 240,
@@ -25,16 +25,17 @@ function Y({
   tooltipLabel: f,
   tooltipFormatter: p,
   onActiveChange: k,
-  className: w,
-  ...E
+  animated: w = !0,
+  className: E,
+  ...T
 }) {
-  const [T, u] = s.useState(null), [L, j] = s.useState(null), c = T ?? L, l = s.useMemo(
+  const [L, u] = s.useState(null), [j, S] = s.useState(null), c = L ?? j, l = s.useMemo(
     () => m.map((e, t) => ({
       ...e,
       color: e.color ?? R[t % R.length]
     })),
     [m]
-  ), S = s.useMemo(
+  ), _ = s.useMemo(
     () => l.map((e) => ({
       name: e.name,
       value: e.value
@@ -55,19 +56,19 @@ function Y({
           color: e.color ?? ((n = l[t]) == null ? void 0 : n.color)
         };
       });
-  }, [o, l]), g = i / 2 - 8, _ = v + y, B = Math.max(g - l.length * _, 8);
+  }, [o, l]), g = i / 2 - 8, B = v + y, P = Math.max(g - l.length * B, 8);
   return /* @__PURE__ */ a(
     "div",
     {
-      className: $(
+      className: q(
         "bg-white dark:bg-slate-900",
         "rounded-2xl border border-slate-100 dark:border-slate-700",
         "p-4",
-        w
+        E
       ),
-      ...E,
+      ...T,
       children: [
-        b && /* @__PURE__ */ r(q, { items: b }),
+        b && /* @__PURE__ */ r(J, { items: b }),
         /* @__PURE__ */ a(
           "div",
           {
@@ -75,25 +76,25 @@ function Y({
             style: { width: "100%", height: i },
             onMouseLeave: () => u(null),
             children: [
-              /* @__PURE__ */ r(D, { width: i, height: i, children: /* @__PURE__ */ a(
-                K,
+              /* @__PURE__ */ r(K, { width: i, height: i, children: /* @__PURE__ */ a(
+                O,
                 {
-                  data: S,
-                  innerRadius: B,
+                  data: _,
+                  innerRadius: P,
                   outerRadius: g,
                   barSize: v,
                   startAngle: -90,
                   endAngle: 270,
                   children: [
-                    /* @__PURE__ */ r(O, { type: "number", domain: [0, C], tick: !1 }),
+                    /* @__PURE__ */ r(G, { type: "number", domain: [0, C], tick: !1 }),
                     /* @__PURE__ */ r(
-                      G,
+                      H,
                       {
                         cursor: { fill: "transparent", stroke: "transparent" },
                         wrapperStyle: { zIndex: 50, pointerEvents: "none" },
                         content: ({ active: e, payload: t }) => {
                           if (!e || !(t != null && t.length)) return null;
-                          const n = t[0], N = n.value, d = l.find((P) => P.name === n.payload.name);
+                          const n = t[0], N = n.value, d = l.find((D) => D.name === n.payload.name);
                           return d ? /* @__PURE__ */ a("div", { className: "rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 shadow-md", children: [
                             f && /* @__PURE__ */ r("div", { className: "text-xs text-slate-500 dark:text-slate-400", children: f }),
                             /* @__PURE__ */ a("div", { className: "flex items-center gap-2 text-sm text-slate-700 dark:text-slate-100", children: [
@@ -113,17 +114,17 @@ function Y({
                       }
                     ),
                     /* @__PURE__ */ r(
-                      H,
+                      U,
                       {
                         dataKey: "value",
-                        background: A ? { fill: J } : !1,
+                        background: A ? { fill: Q } : !1,
                         cornerRadius: 0,
-                        isAnimationActive: !1,
+                        isAnimationActive: w,
                         onMouseEnter: (e, t) => u(t),
                         onMouseLeave: () => u(null),
-                        onClick: (e, t) => j((n) => n === t ? null : t),
+                        onClick: (e, t) => S((n) => n === t ? null : t),
                         style: { cursor: "pointer" },
-                        children: l.map((e) => /* @__PURE__ */ r(U, { fill: e.color }, e.name))
+                        children: l.map((e) => /* @__PURE__ */ r($, { fill: e.color }, e.name))
                       }
                     )
                   ]
@@ -151,6 +152,6 @@ function Y({
   );
 }
 export {
-  Y as RadialChart
+  Z as RadialChart
 };
 //# sourceMappingURL=radial-chart.mjs.map

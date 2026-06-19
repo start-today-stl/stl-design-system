@@ -49,6 +49,8 @@ export interface RadialChartProps extends Omit<React.HTMLAttributes<HTMLDivEleme
   tooltipFormatter?: (value: number, item: RadialChartItem) => React.ReactNode
   /** 활성 항목 변경 시 호출 (호버 / 클릭 pin) — 사용처가 centerLabel 등을 동기화하는 용도 */
   onActiveChange?: (item: RadialChartItem | null) => void
+  /** 호 그려지는 enter 애니메이션 (기본 true) */
+  animated?: boolean
 }
 
 const DEFAULT_PALETTE = [
@@ -76,6 +78,7 @@ export function RadialChart({
   tooltipLabel,
   tooltipFormatter,
   onActiveChange,
+  animated = true,
   className,
   ...props
 }: RadialChartProps) {
@@ -183,7 +186,7 @@ export function RadialChart({
               dataKey="value"
               background={showTrack ? { fill: TRACK_COLOR } : false}
               cornerRadius={0}
-              isAnimationActive={false}
+              isAnimationActive={animated}
               onMouseEnter={(_, index) => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
               onClick={(_, index) =>

@@ -37,5 +37,7 @@ export interface RadialChartProps extends Omit<React.HTMLAttributes<HTMLDivEleme
     tooltipFormatter?: (value: number, item: RadialChartItem) => React.ReactNode;
     /** 활성 항목 변경 시 호출 (호버 / 클릭 pin) — 사용처가 centerLabel 등을 동기화하는 용도 */
     onActiveChange?: (item: RadialChartItem | null) => void;
+    /** 호 그려지는 enter 애니메이션 (기본 true) */
+    animated?: boolean;
 }
-export declare function RadialChart({ data, max, size, barSize, barGap, showTrack, centerLabel, centerSubLabel, centerLabelFormatter, centerSubLabelFormatter, legend, tooltipLabel, tooltipFormatter, onActiveChange, className, ...props }: RadialChartProps): import("react/jsx-runtime").JSX.Element;
+export declare function RadialChart({ data, max, size, barSize, barGap, showTrack, centerLabel, centerSubLabel, centerLabelFormatter, centerSubLabelFormatter, legend, tooltipLabel, tooltipFormatter, onActiveChange, animated, className, ...props }: RadialChartProps): import("react/jsx-runtime").JSX.Element;
