@@ -32,6 +32,8 @@ import * as React from "react";
 export interface PageHeaderProps extends Omit<PageTitleProps, "className">, Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
     /** 탭 영역 (Tabs 컴포넌트) */
     tabs?: React.ReactNode;
+    /** 탭 정렬 (기본: end). PageTitle 바로 옆에 붙이려면 'start' */
+    tabsAlign?: "start" | "end";
     /** 스크롤 시 상단에 고정 */
     sticky?: boolean;
 }
