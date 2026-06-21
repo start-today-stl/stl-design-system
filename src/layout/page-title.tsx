@@ -63,7 +63,7 @@ const PageTitle = React.forwardRef<HTMLDivElement, PageTitleProps>(
     return (
       <div
         ref={ref}
-        className={cn("flex items-center gap-1.5", className)}
+        className={cn("flex items-center gap-1.5 min-h-9", className)}
         {...props}
       >
         <div className="flex items-baseline gap-2">

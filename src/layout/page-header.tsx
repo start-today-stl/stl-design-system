@@ -39,13 +39,15 @@ export interface PageHeaderProps
     Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
   /** 탭 영역 (Tabs 컴포넌트) */
   tabs?: React.ReactNode
+  /** 탭 정렬 위치 (기본 "end" — 우측 정렬) */
+  tabsAlign?: "start" | "end"
   /** 스크롤 시 상단에 고정 */
   sticky?: boolean
 }
 
 const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>(
   (
-    { className, title, subtitle, bookmarked, onBookmark, tabs, sticky, ...props },
+    { className, title, subtitle, bookmarked, onBookmark, tabs, tabsAlign = "end", sticky, ...props },
     ref
   ) => {
     const [isStuck, setIsStuck] = React.useState(false)
@@ -104,7 +106,7 @@ const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>(
         <div
           ref={ref}
           className={cn(
-            "flex items-end w-full",
+            "flex items-end w-full min-h-9",
             sticky && "sticky top-0 z-30 bg-slate-50 dark:bg-slate-950",
             sticky && isStuck && "[box-shadow:0_4px_4px_-4px_rgb(0_0_0/0.15)]",
             className
@@ -136,7 +138,7 @@ const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>(
                 ref={scrollRef}
                 className="flex flex-1 min-w-0 overflow-x-auto scrollbar-hide"
               >
-                <div className="shrink-0 ml-auto">{tabs}</div>
+                <div className={cn("shrink-0", tabsAlign === "end" && "ml-auto")}>{tabs}</div>
               </div>
               {/* 우측 스크롤 버튼 (탭 영역 바깥) */}
               {canScrollRight && (

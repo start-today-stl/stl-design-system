@@ -119,3 +119,43 @@ export const TwoOptions: Story = {
     )
   },
 }
+
+/** Pill variant (회색 컨테이너 + 떠오르는 셀, 보조 컨트롤용) */
+export const Pill: Story = {
+  render: () => {
+    const [value, setValue] = useState("week")
+
+    return (
+      <ToggleGroup
+        variant="pill"
+        value={value}
+        onValueChange={setValue}
+        options={[
+          { label: "오늘", value: "today" },
+          { label: "이번주", value: "week" },
+          { label: "이번달", value: "month" },
+        ]}
+      />
+    )
+  },
+}
+
+/** Pill variant + 라벨 */
+export const PillWithLabel: Story = {
+  render: () => {
+    const [value, setValue] = useState("grid")
+
+    return (
+      <ToggleGroup
+        label="보기 방식"
+        variant="pill"
+        value={value}
+        onValueChange={setValue}
+        options={[
+          { label: "그리드", value: "grid" },
+          { label: "리스트", value: "list" },
+        ]}
+      />
+    )
+  },
+}

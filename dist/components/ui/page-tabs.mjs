@@ -1,0 +1,363 @@
+import { jsx as c, jsxs as k, Fragment as L } from "react/jsx-runtime";
+import * as r from "react";
+import * as v from "@radix-ui/react-tabs";
+import { createPortal as R } from "react-dom";
+import { useSensors as C, useSensor as M, PointerSensor as G, KeyboardSensor as J, DndContext as Q, closestCenter as U } from "@dnd-kit/core";
+import { SortableContext as V, horizontalListSortingStrategy as Z, useSortable as $, arrayMove as K } from "@dnd-kit/sortable";
+import { arrayMove as ve } from "@dnd-kit/sortable";
+import { CSS as ee } from "@dnd-kit/utilities";
+import { cn as m } from "../../lib/utils.mjs";
+import { XIcon as T } from "../../icons/XIcon.mjs";
+const D = {
+  60: "max-w-[60px]",
+  80: "max-w-[80px]",
+  100: "max-w-[100px]",
+  120: "max-w-[120px]",
+  140: "max-w-[140px]",
+  160: "max-w-[160px]"
+}, I = {
+  40: "min-w-[40px]",
+  60: "min-w-[60px]",
+  80: "min-w-[80px]"
+}, xe = v.Root, te = r.forwardRef(({ className: d, align: a = "start", children: e, ...n }, l) => /* @__PURE__ */ c(
+  v.List,
+  {
+    ref: l,
+    className: m(
+      "flex h-9 items-end shadow-[inset_0_-1px_0_var(--color-border)]",
+      a === "end" ? "justify-end" : "justify-start",
+      d
+    ),
+    ...n,
+    children: e
+  }
+));
+te.displayName = "PageTabsList";
+const re = r.forwardRef(({ className: d, align: a = "start", items: e, onReorder: n, children: l, ...u }, x) => {
+  const f = C(
+    M(G, {
+      activationConstraint: {
+        distance: 8
+      }
+    }),
+    M(J)
+  );
+  return /* @__PURE__ */ c(
+    Q,
+    {
+      sensors: f,
+      collisionDetection: U,
+      onDragEnd: (i) => {
+        const { active: b, over: s } = i;
+        if (s && b.id !== s.id) {
+          const g = e.indexOf(b.id), h = e.indexOf(s.id);
+          n(K(e, g, h));
+        }
+      },
+      children: /* @__PURE__ */ c(V, { items: e, strategy: Z, children: /* @__PURE__ */ c(
+        v.List,
+        {
+          ref: x,
+          className: m(
+            "flex h-9 items-end shadow-[inset_0_-1px_0_var(--color-border)]",
+            a === "end" ? "justify-end" : "justify-start",
+            d
+          ),
+          ...u,
+          children: l
+        }
+      ) })
+    }
+  );
+});
+re.displayName = "PageTabsSortableList";
+const ne = ({
+  position: d,
+  onClose: a,
+  onCloseTab: e,
+  onCloseTabsToRight: n,
+  onCloseOtherTabs: l
+}) => {
+  const u = r.useRef(null), [x, f] = r.useState(!1);
+  if (r.useEffect(() => {
+    f(!0);
+  }, []), r.useEffect(() => {
+    const i = (g) => {
+      u.current && !u.current.contains(g.target) && a();
+    }, b = () => a(), s = (g) => {
+      g.key === "Escape" && a();
+    };
+    return document.addEventListener("mousedown", i), document.addEventListener("scroll", b, !0), document.addEventListener("keydown", s), () => {
+      document.removeEventListener("mousedown", i), document.removeEventListener("scroll", b, !0), document.removeEventListener("keydown", s);
+    };
+  }, [a]), !x) return null;
+  const p = [
+    { label: "닫기", onClick: e, show: !!e },
+    { label: "오른쪽 탭 닫기", onClick: n, show: !!n },
+    { label: "다른 탭 닫기", onClick: l, show: !!l }
+  ].filter((i) => i.show);
+  return R(
+    /* @__PURE__ */ c(
+      "div",
+      {
+        ref: u,
+        style: {
+          position: "fixed",
+          top: d.y,
+          left: d.x,
+          zIndex: 50
+        },
+        className: m(
+          "min-w-[140px] rounded-[5px] border border-slate-100 dark:border-slate-600",
+          "bg-white/90 dark:bg-slate-800/90 backdrop-blur-[12px]",
+          "p-[5px] shadow-[10px_10px_10px_0px_rgba(0,0,0,0.1)]",
+          "animate-in fade-in-0 zoom-in-95"
+        ),
+        children: p.map((i, b) => /* @__PURE__ */ c(
+          "button",
+          {
+            type: "button",
+            onClick: () => {
+              var s;
+              (s = i.onClick) == null || s.call(i), a();
+            },
+            className: m(
+              "flex w-full h-[29px] cursor-pointer select-none items-center rounded-[2px] px-[8px]",
+              "text-xs text-slate-600 dark:text-slate-300 outline-none transition-colors",
+              "hover:bg-slate-100 dark:hover:bg-slate-700"
+            ),
+            children: i.label
+          },
+          b
+        ))
+      }
+    ),
+    document.body
+  );
+}, j = ({
+  children: d,
+  targetRef: a,
+  show: e
+}) => {
+  const [n, l] = r.useState({ top: 0, left: 0 }), [u, x] = r.useState(!1);
+  return r.useEffect(() => {
+    x(!0);
+  }, []), r.useEffect(() => {
+    if (e && a.current) {
+      const f = a.current.getBoundingClientRect();
+      l({
+        top: f.bottom + window.scrollY + 8,
+        left: f.left + f.width / 2 + window.scrollX
+      });
+    }
+  }, [e, a]), !u || !e ? null : R(
+    /* @__PURE__ */ c(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          top: n.top,
+          left: n.left,
+          transform: "translateX(-50%)",
+          zIndex: 50,
+          pointerEvents: "none"
+        },
+        className: m(
+          "rounded-md border bg-popover px-4 py-2.5 text-sm text-popover-foreground max-w-[300px] whitespace-pre-wrap break-all",
+          "shadow-[10px_10px_10px_0px_#0000001A]",
+          "animate-in fade-in-0 zoom-in-95",
+          "relative",
+          "before:absolute before:bottom-full before:left-1/2 before:-ml-[11px] before:border-[11px] before:border-transparent before:border-b-border before:content-['']",
+          "after:absolute after:bottom-full after:left-1/2 after:-ml-[10px] after:border-[10px] after:border-transparent after:border-b-white dark:after:border-b-[var(--color-slate-900)] after:content-['']"
+        ),
+        children: d
+      }
+    ),
+    document.body
+  );
+}, ae = r.forwardRef(({ className: d, closable: a, onClose: e, children: n, onKeyDown: l, maxWidth: u = 120, minWidth: x = 60, ...f }, p) => {
+  const i = r.useRef(null), [b, s] = r.useState(!1), g = r.useCallback(
+    (o) => {
+      i.current = o, typeof p == "function" ? p(o) : p && typeof p == "object" && (p.current = o);
+    },
+    [p]
+  );
+  r.useEffect(() => {
+    const o = i.current;
+    if (o) {
+      const y = o.getAttribute("aria-controls");
+      y && !document.getElementById(y) && o.removeAttribute("aria-controls");
+    }
+  }, []);
+  const h = (o) => {
+    a && (o.key === "Delete" || o.key === "Backspace") && (o.preventDefault(), e == null || e()), l == null || l(o);
+  };
+  return /* @__PURE__ */ k(L, { children: [
+    /* @__PURE__ */ k(
+      v.Trigger,
+      {
+        ref: g,
+        className: m(
+          "inline-flex h-9 items-center justify-center gap-0.5 px-3 py-2 text-xs font-bold cursor-pointer",
+          "flex-grow-0",
+          "rounded-t bg-transparent",
+          "text-text-secondary",
+          "border border-b-0 border-border",
+          "data-[state=inactive]:flex-shrink",
+          I[x],
+          D[u],
+          "data-[state=active]:flex-shrink-0",
+          "data-[state=active]:text-slate-900 dark:data-[state=active]:text-slate-50",
+          "data-[state=active]:bg-[linear-gradient(0deg,#f4f6f8_0%,white_100%)]",
+          "dark:data-[state=active]:bg-[linear-gradient(180deg,#444b57_0%,#1b2026_30%)]",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+          "disabled:pointer-events-none disabled:opacity-50",
+          d
+        ),
+        onKeyDown: h,
+        onMouseEnter: () => s(!0),
+        onMouseLeave: () => s(!1),
+        ...f,
+        children: [
+          /* @__PURE__ */ c("span", { className: "truncate min-w-0", children: n }),
+          a && /* @__PURE__ */ c(
+            "span",
+            {
+              onPointerDown: (o) => {
+                o.stopPropagation(), o.preventDefault();
+              },
+              onClick: (o) => {
+                o.stopPropagation(), e == null || e();
+              },
+              className: "ml-0.5 flex-shrink-0 text-text-secondary hover:text-text-primary transition-colors cursor-pointer",
+              "aria-hidden": "true",
+              children: /* @__PURE__ */ c(T, { size: 20 })
+            }
+          )
+        ]
+      }
+    ),
+    /* @__PURE__ */ c(j, { targetRef: i, show: b, children: n })
+  ] });
+});
+ae.displayName = "PageTabsTrigger";
+const oe = r.forwardRef(({ id: d, className: a, closable: e, onClose: n, onCloseTabsToRight: l, onCloseOtherTabs: u, children: x, onKeyDown: f, maxWidth: p = 120, minWidth: i = 60, ...b }, s) => {
+  const {
+    attributes: g,
+    listeners: h,
+    setNodeRef: o,
+    transform: y,
+    transition: z,
+    isDragging: w
+  } = $({ id: d }), { role: ie, ...A } = g, P = r.useRef(null), [B, _] = r.useState(!1), H = r.useCallback(
+    (t) => {
+      P.current = t, o(t), typeof s == "function" ? s(t) : s && typeof s == "object" && (s.current = t);
+    },
+    [s, o]
+  );
+  r.useEffect(() => {
+    const t = P.current;
+    if (t) {
+      const N = t.getAttribute("aria-controls");
+      N && !document.getElementById(N) && t.removeAttribute("aria-controls");
+    }
+  }, []);
+  const X = (t) => {
+    e && (t.key === "Delete" || t.key === "Backspace") && (t.preventDefault(), n == null || n()), f == null || f(t);
+  }, O = {
+    transform: ee.Transform.toString(y),
+    transition: z,
+    opacity: w ? 0.5 : 1,
+    zIndex: w ? 10 : void 0
+  }, S = e && (n || l || u), [W, E] = r.useState(!1), [Y, F] = r.useState({ x: 0, y: 0 }), q = (t) => {
+    S && (t.preventDefault(), F({ x: t.clientX, y: t.clientY }), E(!0));
+  };
+  return /* @__PURE__ */ k(L, { children: [
+    /* @__PURE__ */ k(
+      v.Trigger,
+      {
+        ref: H,
+        style: O,
+        className: m(
+          "inline-flex h-9 items-center justify-center gap-0.5 px-3 py-2 text-xs font-bold cursor-grab",
+          "flex-grow-0",
+          "rounded-t bg-transparent",
+          "text-text-secondary",
+          "border border-b-0 border-border",
+          "data-[state=inactive]:flex-shrink",
+          I[i],
+          D[p],
+          "data-[state=active]:flex-shrink-0",
+          "data-[state=active]:text-slate-900 dark:data-[state=active]:text-slate-50",
+          "data-[state=active]:bg-[linear-gradient(0deg,#f4f6f8_0%,white_100%)]",
+          "dark:data-[state=active]:bg-[linear-gradient(180deg,#444b57_0%,#1b2026_30%)]",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+          "disabled:pointer-events-none disabled:opacity-50",
+          w && "cursor-grabbing",
+          a
+        ),
+        onKeyDown: X,
+        onMouseEnter: () => _(!0),
+        onMouseLeave: () => _(!1),
+        onContextMenu: q,
+        ...A,
+        ...h,
+        ...b,
+        children: [
+          /* @__PURE__ */ c("span", { className: "truncate min-w-0", children: x }),
+          e && /* @__PURE__ */ c(
+            "span",
+            {
+              onPointerDown: (t) => {
+                t.stopPropagation(), t.preventDefault();
+              },
+              onMouseDown: (t) => {
+                t.stopPropagation(), t.preventDefault();
+              },
+              onClick: (t) => {
+                t.stopPropagation(), n == null || n();
+              },
+              className: "ml-0.5 flex-shrink-0 text-text-secondary hover:text-text-primary transition-colors cursor-pointer",
+              "aria-hidden": "true",
+              children: /* @__PURE__ */ c(T, { size: 20 })
+            }
+          )
+        ]
+      }
+    ),
+    /* @__PURE__ */ c(j, { targetRef: P, show: B && !w, children: x }),
+    S && W && /* @__PURE__ */ c(
+      ne,
+      {
+        position: Y,
+        onClose: () => E(!1),
+        onCloseTab: n,
+        onCloseTabsToRight: l,
+        onCloseOtherTabs: u
+      }
+    )
+  ] });
+});
+oe.displayName = "PageTabsSortableTrigger";
+const se = r.forwardRef(({ className: d, ...a }, e) => /* @__PURE__ */ c(
+  v.Content,
+  {
+    ref: e,
+    className: m(
+      "mt-4 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+      d
+    ),
+    ...a
+  }
+));
+se.displayName = "PageTabsContent";
+export {
+  xe as PageTabs,
+  se as PageTabsContent,
+  te as PageTabsList,
+  re as PageTabsSortableList,
+  oe as PageTabsSortableTrigger,
+  ae as PageTabsTrigger,
+  ve as arrayMove
+};
+//# sourceMappingURL=page-tabs.mjs.map

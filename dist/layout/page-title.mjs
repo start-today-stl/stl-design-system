@@ -7,7 +7,7 @@ const x = o.forwardRef(
     "div",
     {
       ref: c,
-      className: i("flex items-center gap-1.5", l),
+      className: i("flex items-center gap-1.5 min-h-9", l),
       ...m,
       children: [
         /* @__PURE__ */ r("div", { className: "flex items-baseline gap-2", children: [
