@@ -1,6 +1,6 @@
 import { jsxs as w, jsx as r } from "react/jsx-runtime";
 import * as x from "react";
-import { format as L, parse as j, isValid as I, setHours as mt, setMinutes as it, setSeconds as ft } from "date-fns";
+import { format as L, parse as C, isValid as I, setHours as mt, setMinutes as it, setSeconds as ft } from "date-fns";
 import { cn as pt } from "../../lib/utils.mjs";
 import { Input as ht, inputSizeStyles as xt } from "./input.mjs";
 import { Calendar as Q } from "./calendar.mjs";
@@ -27,7 +27,7 @@ const D = " ~ ", U = (t) => {
   if (!t) return "";
   const i = t.from ? L(t.from, s) : "", S = t.to ? L(t.to, s) : "";
   return i && S ? `${i}${D}${S}` : i ? `${i}${D}` : "";
-}, Ct = ({
+}, jt = ({
   value: t,
   onChange: s,
   label: i,
@@ -43,7 +43,7 @@ const D = " ~ ", U = (t) => {
   disabledDates: h
 }) => {
   var B, Y, K, q, G, J;
-  const [u, $] = x.useState(!1), [P, N] = x.useState(R(t, m)), d = x.useRef(!1), [v, _] = x.useState((t == null ? void 0 : t.from) ?? /* @__PURE__ */ new Date()), [tt, z] = x.useState((t == null ? void 0 : t.to) ?? /* @__PURE__ */ new Date()), H = ((B = t == null ? void 0 : t.from) == null ? void 0 : B.getHours()) ?? 0, T = ((Y = t == null ? void 0 : t.from) == null ? void 0 : Y.getMinutes()) ?? 0, k = ((K = t == null ? void 0 : t.from) == null ? void 0 : K.getSeconds()) ?? 0, b = ((q = t == null ? void 0 : t.to) == null ? void 0 : q.getHours()) ?? 0, O = ((G = t == null ? void 0 : t.to) == null ? void 0 : G.getMinutes()) ?? 0, C = ((J = t == null ? void 0 : t.to) == null ? void 0 : J.getSeconds()) ?? 0;
+  const [u, $] = x.useState(!1), [P, N] = x.useState(R(t, m)), d = x.useRef(!1), [v, _] = x.useState((t == null ? void 0 : t.from) ?? /* @__PURE__ */ new Date()), [tt, z] = x.useState((t == null ? void 0 : t.to) ?? /* @__PURE__ */ new Date()), H = ((B = t == null ? void 0 : t.from) == null ? void 0 : B.getHours()) ?? 0, T = ((Y = t == null ? void 0 : t.from) == null ? void 0 : Y.getMinutes()) ?? 0, k = ((K = t == null ? void 0 : t.from) == null ? void 0 : K.getSeconds()) ?? 0, b = ((q = t == null ? void 0 : t.to) == null ? void 0 : q.getHours()) ?? 0, O = ((G = t == null ? void 0 : t.to) == null ? void 0 : G.getMinutes()) ?? 0, j = ((J = t == null ? void 0 : t.to) == null ? void 0 : J.getSeconds()) ?? 0;
   x.useEffect(() => {
     N(R(t, m));
   }, [t, m]);
@@ -62,7 +62,7 @@ const D = " ~ ", U = (t) => {
     N(n);
     const e = n.split(D);
     if (e.length === 2) {
-      const p = j(e[0].trim(), m, /* @__PURE__ */ new Date()), c = j(e[1].trim(), m, /* @__PURE__ */ new Date());
+      const p = C(e[0].trim(), m, /* @__PURE__ */ new Date()), c = C(e[1].trim(), m, /* @__PURE__ */ new Date());
       I(p) && I(c) && y({ from: p, to: c });
     }
   }, st = () => {
@@ -72,7 +72,7 @@ const D = " ~ ", U = (t) => {
     }
     const o = P.split(D);
     if (o.length === 2) {
-      const n = j(o[0].trim(), m, /* @__PURE__ */ new Date()), e = j(o[1].trim(), m, /* @__PURE__ */ new Date());
+      const n = C(o[0].trim(), m, /* @__PURE__ */ new Date()), e = C(o[1].trim(), m, /* @__PURE__ */ new Date());
       if (I(n) && I(e) && n.getTime() <= e.getTime()) {
         const p = { from: n, to: e };
         N(R(p, m)), s == null || s(p);
@@ -91,7 +91,7 @@ const D = " ~ ", U = (t) => {
   }, ct = (o) => {
     if (!o) return;
     d.current = !0;
-    const n = g(o, b, O, C);
+    const n = g(o, b, O, j);
     y({ from: t == null ? void 0 : t.from, to: n });
   }, A = (o, n) => {
     if (!(t != null && t.from)) {
@@ -117,7 +117,7 @@ const D = " ~ ", U = (t) => {
         /* @__PURE__ */ new Date(),
         o === "h" ? n : b,
         o === "m" ? n : O,
-        o === "s" ? n : C
+        o === "s" ? n : j
       );
       y({ from: t == null ? void 0 : t.from, to: c });
       return;
@@ -126,7 +126,7 @@ const D = " ~ ", U = (t) => {
       t.to,
       o === "h" ? n : b,
       o === "m" ? n : O,
-      o === "s" ? n : C
+      o === "s" ? n : j
     );
     y({ from: t.from, to: e });
   };
@@ -142,7 +142,7 @@ const D = " ~ ", U = (t) => {
       {
         role: "combobox",
         "aria-haspopup": "dialog",
-        className: pt("block", xt[Z], F),
+        className: pt("block self-start", xt[Z], F),
         children: /* @__PURE__ */ r(
           ht,
           {
@@ -169,8 +169,6 @@ const D = " ~ ", U = (t) => {
       {
         className: "w-auto border-0 bg-transparent p-0 shadow-none",
         align: "start",
-        sideOffset: 4,
-        avoidCollisions: !1,
         onPointerDownOutside: (o) => {
           d.current && (!(t != null && t.from) || !(t != null && t.to)) && o.preventDefault();
         },
@@ -265,7 +263,7 @@ const D = " ~ ", U = (t) => {
               /* @__PURE__ */ r(
                 M,
                 {
-                  value: C,
+                  value: j,
                   onChange: (o) => V("s", o),
                   max: 59,
                   disabled: f
@@ -279,6 +277,6 @@ const D = " ~ ", U = (t) => {
   ] });
 };
 export {
-  Ct as DateTimeRangePicker
+  jt as DateTimeRangePicker
 };
 //# sourceMappingURL=date-time-range-picker.mjs.map
