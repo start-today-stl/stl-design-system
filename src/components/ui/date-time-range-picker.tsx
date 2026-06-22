@@ -88,6 +88,9 @@ const DateTimeRangePicker = ({
 }: DateTimeRangePickerProps) => {
   const [open, setOpen] = React.useState(false);
   const [inputValue, setInputValue] = React.useState(formatRange(value, dateFormat));
+  // 팝오버 열린 후 사용자가 캘린더에서 선택을 시작했는지 추적
+  // (시작했는데 from/to 중 하나만 차있으면 외부 클릭으로 닫히지 않게 방지)
+  const selectionStartedRef = React.useRef(false);
 
   // 좌/우 캘린더가 독립적으로 보여줄 달
   const [fromMonth, setFromMonth] = React.useState<Date>(value?.from ?? new Date());
@@ -179,6 +182,7 @@ const DateTimeRangePicker = ({
   // from 캘린더에서 날짜 선택
   const handleFromSelect = (date: Date | undefined) => {
     if (!date) return;
+    selectionStartedRef.current = true;
     const next = applyTime(date, fromHours, fromMins, fromSecs);
     handleChange({ from: next, to: value?.to });
   };
@@ -186,6 +190,7 @@ const DateTimeRangePicker = ({
   // to 캘린더에서 날짜 선택
   const handleToSelect = (date: Date | undefined) => {
     if (!date) return;
+    selectionStartedRef.current = true;
     const next = applyTime(date, toHours, toMins, toSecs);
     handleChange({ from: value?.from, to: next });
   };
@@ -234,13 +239,20 @@ const DateTimeRangePicker = ({
     handleChange({ from: value.from, to: next });
   };
 
-  // 팝오버 열림 시 캘린더 월 동기화
+  // 팝오버 열림 시 캘린더 월 동기화 + 선택 추적 ref 리셋
   const handleOpenChange = (isOpen: boolean) => {
-    setOpen(isOpen);
     if (isOpen) {
+      selectionStartedRef.current = false;
       setFromMonth(value?.from ?? new Date());
       setToMonth(value?.to ?? new Date());
+      setOpen(true);
+      return;
     }
+    // 선택 시작했는데 한쪽이라도 비어있으면 닫지 않음
+    if (selectionStartedRef.current && (!value?.from || !value?.to)) {
+      return;
+    }
+    setOpen(false);
   };
 
   return (
@@ -275,6 +287,21 @@ const DateTimeRangePicker = ({
       <PopoverContent
         className="w-auto border-0 bg-transparent p-0 shadow-none"
         align="start"
+        onPointerDownOutside={(e) => {
+          if (selectionStartedRef.current && (!value?.from || !value?.to)) {
+            e.preventDefault();
+          }
+        }}
+        onInteractOutside={(e) => {
+          if (selectionStartedRef.current && (!value?.from || !value?.to)) {
+            e.preventDefault();
+          }
+        }}
+        onEscapeKeyDown={(e) => {
+          if (selectionStartedRef.current && (!value?.from || !value?.to)) {
+            e.preventDefault();
+          }
+        }}
       >
         <div className="overflow-hidden rounded-[5px] border border-slate-100 bg-white/95 shadow-[10px_10px_10px_0px_rgba(0,0,0,0.05)] backdrop-blur-[12px] dark:border-slate-600 dark:bg-slate-800/95">
           <div className="flex divide-x divide-slate-100 dark:divide-slate-600">
