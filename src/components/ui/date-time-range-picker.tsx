@@ -42,6 +42,26 @@ export interface DateTimeRangePickerProps {
 
 const SEPARATOR = " ~ ";
 
+// dateFormat 토큰을 placeholder 표시용으로 변환
+// 예: "yy-MM-dd HH:mm:ss" → "yy-mm-dd 00:00:00"
+const formatToPlaceholder = (fmt: string): string => {
+  const tokens: Record<string, string> = {
+    yyyy: "yyyy",
+    yy: "yy",
+    MM: "mm",
+    M: "m",
+    dd: "dd",
+    d: "d",
+    HH: "00",
+    H: "0",
+    mm: "00",
+    m: "0",
+    ss: "00",
+    s: "0",
+  };
+  return fmt.replace(/yyyy|yy|MM|dd|HH|mm|ss|[MdHms]/g, (m) => tokens[m] ?? m);
+};
+
 const formatRange = (range: DateRange | undefined, dateFormat: string): string => {
   if (!range) return "";
   const from = range.from ? format(range.from, dateFormat) : "";
@@ -55,7 +75,7 @@ const DateTimeRangePicker = ({
   value,
   onChange,
   label,
-  placeholder = "yyyy-mm-dd 00:00:00 ~ yyyy-mm-dd 00:00:00",
+  placeholder,
   dateFormat = "yyyy-MM-dd HH:mm:ss",
   error,
   errorMessage,
@@ -236,7 +256,10 @@ const DateTimeRangePicker = ({
             value={inputValue}
             onChange={handleInputChange}
             onBlur={handleInputBlur}
-            placeholder={placeholder}
+            placeholder={
+              placeholder ??
+              `${formatToPlaceholder(dateFormat)}${SEPARATOR}${formatToPlaceholder(dateFormat)}`
+            }
             error={error}
             errorMessage={errorMessage}
             size="full"
