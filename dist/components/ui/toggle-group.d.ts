@@ -4,6 +4,7 @@ export interface ToggleGroupOption {
     value: string;
     disabled?: boolean;
 }
+export type ToggleGroupVariant = "box" | "pill";
 export interface ToggleGroupProps {
     /** 라벨 텍스트 */
     label?: string;
@@ -19,6 +20,8 @@ export interface ToggleGroupProps {
     disabled?: boolean;
     /** 크기 (full: 부모 너비 100%) */
     size?: "full";
+    /** 시각 스타일 (box: 기본 박스, pill: 회색 컨테이너 + 떠오르는 셀) */
+    variant?: ToggleGroupVariant;
     /** 추가 className */
     className?: string;
 }

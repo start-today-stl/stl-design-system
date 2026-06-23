@@ -1,9 +1,28 @@
-import { jsxs as d, jsx as e, Fragment as v } from "react/jsx-runtime";
+import { jsxs as i, jsx as e, Fragment as v } from "react/jsx-runtime";
 import * as k from "react";
 import { cva as y } from "class-variance-authority";
-import { cn as n } from "../../lib/utils.mjs";
-import { XIcon as N } from "../../icons/XIcon.mjs";
-const w = y(
+import { cn as s } from "../../lib/utils.mjs";
+function w({ size: t = 14 }) {
+  return /* @__PURE__ */ i(
+    "svg",
+    {
+      width: t,
+      height: t,
+      viewBox: "0 0 24 24",
+      fill: "none",
+      stroke: "currentColor",
+      strokeWidth: 2.5,
+      strokeLinecap: "round",
+      strokeLinejoin: "round",
+      "aria-hidden": "true",
+      children: [
+        /* @__PURE__ */ e("line", { x1: "6", y1: "6", x2: "18", y2: "18" }),
+        /* @__PURE__ */ e("line", { x1: "18", y1: "6", x2: "6", y2: "18" })
+      ]
+    }
+  );
+}
+const N = y(
   "inline-flex items-center gap-1.5 font-medium transition-all duration-150 select-none",
   {
     variants: {
@@ -30,62 +49,62 @@ const w = y(
   }
 ), j = k.forwardRef(
   ({
-    className: b,
-    variant: u,
+    className: t,
+    variant: b,
     size: c,
-    children: g,
-    removable: h,
+    children: h,
+    removable: g,
     onRemove: a,
-    onClick: t,
-    disabled: r,
-    leftElement: o,
+    onClick: r,
+    disabled: n,
+    leftElement: l,
     ...p
-  }, m) => {
-    const l = !!t, x = (s) => {
-      s.stopPropagation(), a == null || a();
-    }, f = l && !r ? (s) => {
-      s.stopPropagation(), t == null || t();
-    } : void 0, i = /* @__PURE__ */ d(v, { children: [
-      o && /* @__PURE__ */ e("span", { className: "flex items-center justify-center shrink-0", children: o }),
-      /* @__PURE__ */ e("span", { className: "truncate", children: g })
+  }, x) => {
+    const d = !!r, m = (o) => {
+      o.stopPropagation(), a == null || a();
+    }, f = d && !n ? (o) => {
+      o.stopPropagation(), r == null || r();
+    } : void 0, u = /* @__PURE__ */ i(v, { children: [
+      l && /* @__PURE__ */ e("span", { className: "flex items-center justify-center shrink-0", children: l }),
+      /* @__PURE__ */ e("span", { className: "truncate", children: h })
     ] });
-    return /* @__PURE__ */ d(
+    return /* @__PURE__ */ i(
       "div",
       {
-        ref: m,
-        className: n(
-          w({ variant: u, size: c }),
-          r && "opacity-50 cursor-not-allowed pointer-events-none",
-          b
+        ref: x,
+        className: s(
+          N({ variant: b, size: c }),
+          n && "opacity-50 cursor-not-allowed pointer-events-none",
+          t
         ),
         ...p,
         children: [
-          l ? /* @__PURE__ */ e(
+          d ? /* @__PURE__ */ e(
             "button",
             {
               type: "button",
               onClick: f,
-              disabled: r,
-              className: n(
+              disabled: n,
+              className: s(
                 "inline-flex items-center gap-1.5 min-w-0 cursor-pointer outline-none",
                 "focus-visible:ring-2 focus-visible:ring-blue-500 rounded"
               ),
-              children: i
+              children: u
             }
-          ) : i,
-          h && /* @__PURE__ */ e(
+          ) : u,
+          g && /* @__PURE__ */ e(
             "button",
             {
               type: "button",
-              onClick: x,
-              disabled: r,
-              className: n(
+              onClick: m,
+              disabled: n,
+              className: s(
                 "flex items-center justify-center shrink-0 rounded-full transition-colors",
                 "hover:bg-black/10 dark:hover:bg-white/10",
                 "-mr-0.5 size-5"
               ),
               "aria-label": "삭제",
-              children: /* @__PURE__ */ e(N, { size: 16 })
+              children: /* @__PURE__ */ e(w, { size: 14 })
             }
           )
         ]
@@ -96,6 +115,6 @@ const w = y(
 j.displayName = "Chip";
 export {
   j as Chip,
-  w as chipVariants
+  N as chipVariants
 };
 //# sourceMappingURL=chip.mjs.map

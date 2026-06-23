@@ -39,7 +39,7 @@ export interface PageHeaderProps
     Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
   /** 탭 영역 (Tabs 컴포넌트) */
   tabs?: React.ReactNode
-  /** 탭 정렬 (기본: end). PageTitle 바로 옆에 붙이려면 'start' */
+  /** 탭 정렬 위치 (기본 "end" — 우측 정렬) */
   tabsAlign?: "start" | "end"
   /** 스크롤 시 상단에 고정 */
   sticky?: boolean
@@ -47,17 +47,7 @@ export interface PageHeaderProps
 
 const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>(
   (
-    {
-      className,
-      title,
-      subtitle,
-      bookmarked,
-      onBookmark,
-      tabs,
-      tabsAlign = "end",
-      sticky,
-      ...props
-    },
+    { className, title, subtitle, bookmarked, onBookmark, tabs, tabsAlign = "end", sticky, ...props },
     ref
   ) => {
     const [isStuck, setIsStuck] = React.useState(false)
@@ -116,7 +106,7 @@ const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>(
         <div
           ref={ref}
           className={cn(
-            "flex items-end w-full",
+            "flex items-end w-full min-h-9",
             sticky && "sticky top-0 z-30 bg-slate-50 dark:bg-slate-950",
             sticky && isStuck && "[box-shadow:0_4px_4px_-4px_rgb(0_0_0/0.15)]",
             className

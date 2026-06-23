@@ -1,13 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite"
-import { useState } from "react"
-import {
-  Tabs,
-  TabsList,
-  TabsTrigger,
-  TabsContent,
-  SortableTabsList,
-  SortableTabsTrigger,
-} from "../src/components/ui/tabs"
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "../src/components/ui/tabs"
 
 const meta = {
   title: "Components/Tabs",
@@ -18,13 +10,13 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-/** 기본 탭 */
+/** 기본 탭 (2개) */
 export const Default: Story = {
   render: () => (
-    <Tabs defaultValue="tab1" className="w-[400px]">
+    <Tabs defaultValue="tab1" className="w-[500px]">
       <TabsList>
-        <TabsTrigger value="tab1">B2C 출고</TabsTrigger>
-        <TabsTrigger value="tab2">B2B 출고</TabsTrigger>
+        <TabsTrigger value="tab1" className="flex-1">B2C 출고</TabsTrigger>
+        <TabsTrigger value="tab2" className="flex-1">B2B 출고</TabsTrigger>
       </TabsList>
       <TabsContent value="tab1">
         <div className="p-4 rounded-lg border">B2C 출고 콘텐츠입니다.</div>
@@ -39,11 +31,11 @@ export const Default: Story = {
 /** 탭 3개 */
 export const ThreeTabs: Story = {
   render: () => (
-    <Tabs defaultValue="tab1" className="w-[500px]">
+    <Tabs defaultValue="tab1" className="w-[600px]">
       <TabsList>
-        <TabsTrigger value="tab1">전체</TabsTrigger>
-        <TabsTrigger value="tab2">진행중</TabsTrigger>
-        <TabsTrigger value="tab3">완료</TabsTrigger>
+        <TabsTrigger value="tab1" className="flex-1">전체</TabsTrigger>
+        <TabsTrigger value="tab2" className="flex-1">진행중</TabsTrigger>
+        <TabsTrigger value="tab3" className="flex-1">완료</TabsTrigger>
       </TabsList>
       <TabsContent value="tab1">
         <div className="p-4 rounded-lg border">전체 목록입니다.</div>
@@ -58,62 +50,42 @@ export const ThreeTabs: Story = {
   ),
 }
 
-/** 닫기 버튼 있는 탭 */
-export const Closable: Story = {
-  render: function ClosableTabs() {
-    const [tabs, setTabs] = useState([
-      { id: "tab1", label: "상품 관리" },
-      { id: "tab2", label: "주문 관리" },
-      { id: "tab3", label: "고객 관리" },
-    ])
-    const [activeTab, setActiveTab] = useState("tab1")
-
-    const handleClose = (tabId: string) => {
-      const newTabs = tabs.filter((t) => t.id !== tabId)
-      setTabs(newTabs)
-      if (activeTab === tabId && newTabs.length > 0) {
-        setActiveTab(newTabs[0].id)
-      }
-    }
-
-    return (
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-[500px]">
-        <TabsList>
-          {tabs.map((tab) => (
-            <TabsTrigger
-              key={tab.id}
-              value={tab.id}
-              closable
-              onClose={() => handleClose(tab.id)}
-            >
-              {tab.label}
-            </TabsTrigger>
-          ))}
-        </TabsList>
-        {tabs.map((tab) => (
-          <TabsContent key={tab.id} value={tab.id}>
-            <div className="p-4 rounded-lg border">{tab.label} 콘텐츠입니다.</div>
-          </TabsContent>
-        ))}
-      </Tabs>
-    )
-  },
+/** 좌측 정렬 (flex-1 없음) */
+export const AlignStart: Story = {
+  render: () => (
+    <Tabs defaultValue="tab1" className="w-[500px]">
+      <TabsList>
+        <TabsTrigger value="tab1">개요</TabsTrigger>
+        <TabsTrigger value="tab2">분석</TabsTrigger>
+        <TabsTrigger value="tab3">리포트</TabsTrigger>
+      </TabsList>
+      <TabsContent value="tab1">
+        <div className="p-4 rounded-lg border">개요 콘텐츠</div>
+      </TabsContent>
+      <TabsContent value="tab2">
+        <div className="p-4 rounded-lg border">분석 콘텐츠</div>
+      </TabsContent>
+      <TabsContent value="tab3">
+        <div className="p-4 rounded-lg border">리포트 콘텐츠</div>
+      </TabsContent>
+    </Tabs>
+  ),
 }
 
 /** 비활성화된 탭 */
 export const WithDisabled: Story = {
   render: () => (
-    <Tabs defaultValue="tab1" className="w-[400px]">
+    <Tabs defaultValue="tab1" className="w-[500px]">
       <TabsList>
-        <TabsTrigger value="tab1">활성 탭</TabsTrigger>
-        <TabsTrigger value="tab2" disabled>비활성 탭</TabsTrigger>
-        <TabsTrigger value="tab3">다른 탭</TabsTrigger>
+        <TabsTrigger value="tab1" className="flex-1">활성 탭</TabsTrigger>
+        <TabsTrigger value="tab2" className="flex-1" disabled>비활성 탭</TabsTrigger>
+        <TabsTrigger value="tab3" className="flex-1">다른 탭</TabsTrigger>
       </TabsList>
       <TabsContent value="tab1">
-        <div className="p-4 rounded-lg border">활성 탭 콘텐츠입니다.</div>
+        <div className="p-4 rounded-lg border">활성 탭 콘텐츠</div>
       </TabsContent>
       <TabsContent value="tab3">
-        <div className="p-4 rounded-lg border">다른 탭 콘텐츠입니다.</div>
+        <div className="p-4 rounded-lg border">다른 탭 콘텐츠</div>
       </TabsContent>
     </Tabs>
   ),
@@ -125,9 +97,9 @@ export const InCard: Story = {
     <div className="w-[500px] p-6 rounded-2xl border bg-card">
       <Tabs defaultValue="overview">
         <TabsList>
-          <TabsTrigger value="overview">개요</TabsTrigger>
-          <TabsTrigger value="analytics">분석</TabsTrigger>
-          <TabsTrigger value="reports">리포트</TabsTrigger>
+          <TabsTrigger value="overview" className="flex-1">개요</TabsTrigger>
+          <TabsTrigger value="analytics" className="flex-1">분석</TabsTrigger>
+          <TabsTrigger value="reports" className="flex-1">리포트</TabsTrigger>
         </TabsList>
         <TabsContent value="overview">
           <div className="space-y-2">
@@ -156,358 +128,4 @@ export const InCard: Story = {
       </Tabs>
     </div>
   ),
-}
-
-/** 많은 탭 */
-export const ManyTabs: Story = {
-  render: () => (
-    <Tabs defaultValue="tab1" className="w-[700px]">
-      <TabsList>
-        <TabsTrigger value="tab1">탭 1</TabsTrigger>
-        <TabsTrigger value="tab2">탭 2</TabsTrigger>
-        <TabsTrigger value="tab3">탭 3</TabsTrigger>
-        <TabsTrigger value="tab4">탭 4</TabsTrigger>
-        <TabsTrigger value="tab5">탭 5</TabsTrigger>
-      </TabsList>
-      <TabsContent value="tab1">
-        <div className="p-4 rounded-lg border">탭 1 콘텐츠</div>
-      </TabsContent>
-      <TabsContent value="tab2">
-        <div className="p-4 rounded-lg border">탭 2 콘텐츠</div>
-      </TabsContent>
-      <TabsContent value="tab3">
-        <div className="p-4 rounded-lg border">탭 3 콘텐츠</div>
-      </TabsContent>
-      <TabsContent value="tab4">
-        <div className="p-4 rounded-lg border">탭 4 콘텐츠</div>
-      </TabsContent>
-      <TabsContent value="tab5">
-        <div className="p-4 rounded-lg border">탭 5 콘텐츠</div>
-      </TabsContent>
-    </Tabs>
-  ),
-}
-
-/** 우측 정렬 */
-export const AlignEnd: Story = {
-  render: () => (
-    <Tabs defaultValue="tab1" className="w-[500px]">
-      <TabsList align="end">
-        <TabsTrigger value="tab1">B2C 출고</TabsTrigger>
-        <TabsTrigger value="tab2">B2B 출고</TabsTrigger>
-      </TabsList>
-      <TabsContent value="tab1">
-        <div className="p-4 rounded-lg border">B2C 출고 콘텐츠</div>
-      </TabsContent>
-      <TabsContent value="tab2">
-        <div className="p-4 rounded-lg border">B2B 출고 콘텐츠</div>
-      </TabsContent>
-    </Tabs>
-  ),
-}
-
-/** 긴 텍스트 말줄임 + 툴팁 */
-export const Truncated: Story = {
-  render: () => (
-    <Tabs defaultValue="tab1" className="w-[500px]">
-      <TabsList>
-        <TabsTrigger value="tab1">짧은 탭</TabsTrigger>
-        <TabsTrigger value="tab2">이것은 매우 긴 탭 이름입니다</TabsTrigger>
-        <TabsTrigger value="tab3">B2C 출고 관리 페이지</TabsTrigger>
-      </TabsList>
-      <TabsContent value="tab1">
-        <div className="p-4 rounded-lg border">짧은 탭 콘텐츠</div>
-      </TabsContent>
-      <TabsContent value="tab2">
-        <div className="p-4 rounded-lg border">긴 탭 콘텐츠 - 마우스를 탭에 올리면 전체 이름이 툴팁으로 표시됩니다.</div>
-      </TabsContent>
-      <TabsContent value="tab3">
-        <div className="p-4 rounded-lg border">B2C 출고 관리 페이지 콘텐츠</div>
-      </TabsContent>
-    </Tabs>
-  ),
-}
-
-/** 닫기 버튼 + 긴 텍스트 */
-export const ClosableWithLongText: Story = {
-  render: function ClosableLongTabs() {
-    const [tabs, setTabs] = useState([
-      { id: "tab1", label: "대시보드" },
-      { id: "tab2", label: "상품 관리 - 전체 목록 보기" },
-      { id: "tab3", label: "주문 수집 현황 및 처리 페이지" },
-      { id: "tab4", label: "B2C 배송 추적 관리" },
-    ])
-    const [activeTab, setActiveTab] = useState("tab1")
-
-    const handleClose = (tabId: string) => {
-      const newTabs = tabs.filter((t) => t.id !== tabId)
-      setTabs(newTabs)
-      if (activeTab === tabId && newTabs.length > 0) {
-        setActiveTab(newTabs[0].id)
-      }
-    }
-
-    return (
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-[600px]">
-        <TabsList>
-          {tabs.map((tab) => (
-            <TabsTrigger
-              key={tab.id}
-              value={tab.id}
-              closable
-              onClose={() => handleClose(tab.id)}
-            >
-              {tab.label}
-            </TabsTrigger>
-          ))}
-        </TabsList>
-        {tabs.map((tab) => (
-          <TabsContent key={tab.id} value={tab.id}>
-            <div className="p-4 rounded-lg border">{tab.label} 콘텐츠입니다.</div>
-          </TabsContent>
-        ))}
-      </Tabs>
-    )
-  },
-}
-
-/** maxWidth 커스텀 (preset: 60 | 80 | 100 | 120 | 140 | 160) */
-export const CustomMaxWidth: Story = {
-  render: () => (
-    <div className="space-y-4">
-      <p className="text-sm text-muted-foreground">
-        활성/비활성 탭 모두 maxWidth가 적용되어 긴 텍스트는 말줄임 처리됩니다.
-      </p>
-      <Tabs defaultValue="tab1" className="w-[600px]">
-        <TabsList>
-          <TabsTrigger value="tab1" maxWidth={80}>
-            좁은탭 maxWidth=80 이건긴이름입니다
-          </TabsTrigger>
-          <TabsTrigger value="tab2" maxWidth={160}>
-            넓은탭 maxWidth=160 이것도긴이름입니다
-          </TabsTrigger>
-          <TabsTrigger value="tab3">
-            기본값 maxWidth=120 역시긴이름
-          </TabsTrigger>
-        </TabsList>
-        <TabsContent value="tab1">
-          <div className="p-4 rounded-lg border">maxWidth: 80px - 비활성 시 80px로 제한</div>
-        </TabsContent>
-        <TabsContent value="tab2">
-          <div className="p-4 rounded-lg border">maxWidth: 160px - 비활성 시 160px로 제한</div>
-        </TabsContent>
-        <TabsContent value="tab3">
-          <div className="p-4 rounded-lg border">maxWidth: 120px (기본값) - 비활성 시 120px로 제한</div>
-        </TabsContent>
-      </Tabs>
-    </div>
-  ),
-}
-
-/** 드래그 앤 드롭으로 순서 변경 */
-export const Sortable: Story = {
-  render: function SortableTabs() {
-    const [tabs, setTabs] = useState([
-      { id: "tab1", label: "대시보드" },
-      { id: "tab2", label: "상품 관리" },
-      { id: "tab3", label: "주문 관리" },
-      { id: "tab4", label: "고객 관리" },
-    ])
-    const [activeTab, setActiveTab] = useState("tab1")
-
-    const handleReorder = (newOrder: string[]) => {
-      const reorderedTabs = newOrder.map((id) => tabs.find((t) => t.id === id)!)
-      setTabs(reorderedTabs)
-    }
-
-    return (
-      <div className="space-y-4">
-        <p className="text-sm text-muted-foreground">
-          탭을 드래그하여 순서를 변경할 수 있습니다.
-        </p>
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-[600px]">
-          <SortableTabsList
-            items={tabs.map((t) => t.id)}
-            onReorder={handleReorder}
-          >
-            {tabs.map((tab) => (
-              <SortableTabsTrigger key={tab.id} id={tab.id} value={tab.id}>
-                {tab.label}
-              </SortableTabsTrigger>
-            ))}
-          </SortableTabsList>
-          {tabs.map((tab) => (
-            <TabsContent key={tab.id} value={tab.id}>
-              <div className="p-4 rounded-lg border">{tab.label} 콘텐츠입니다.</div>
-            </TabsContent>
-          ))}
-        </Tabs>
-        <p className="text-xs text-muted-foreground">
-          현재 순서: {tabs.map((t) => t.label).join(" → ")}
-        </p>
-      </div>
-    )
-  },
-}
-
-/** 드래그 + 닫기 버튼 + 컨텍스트 메뉴 (우클릭) */
-export const SortableWithClose: Story = {
-  render: function SortableClosableTabs() {
-    const [tabs, setTabs] = useState([
-      { id: "tab1", label: "대시보드" },
-      { id: "tab2", label: "상품 관리" },
-      { id: "tab3", label: "주문 관리" },
-      { id: "tab4", label: "고객 관리" },
-    ])
-    const [activeTab, setActiveTab] = useState("tab1")
-
-    const handleReorder = (newOrder: string[]) => {
-      const reorderedTabs = newOrder.map((id) => tabs.find((t) => t.id === id)!)
-      setTabs(reorderedTabs)
-    }
-
-    const handleClose = (tabId: string) => {
-      const newTabs = tabs.filter((t) => t.id !== tabId)
-      setTabs(newTabs)
-      if (activeTab === tabId && newTabs.length > 0) {
-        setActiveTab(newTabs[0].id)
-      }
-    }
-
-    // 오른쪽 탭 닫기
-    const handleCloseTabsToRight = (tabId: string) => {
-      const tabIndex = tabs.findIndex((t) => t.id === tabId)
-      const tabsToClose = tabs.slice(tabIndex + 1)
-      const newTabs = tabs.slice(0, tabIndex + 1)
-      setTabs(newTabs)
-      // 활성 탭이 닫히는 탭 중에 있으면 현재 탭으로 이동
-      if (tabsToClose.some((t) => t.id === activeTab)) {
-        setActiveTab(tabId)
-      }
-    }
-
-    // 다른 탭 닫기
-    const handleCloseOtherTabs = (tabId: string) => {
-      const newTabs = tabs.filter((t) => t.id === tabId)
-      setTabs(newTabs)
-      setActiveTab(tabId)
-    }
-
-    return (
-      <div className="space-y-4">
-        <p className="text-sm text-muted-foreground">
-          탭을 드래그하여 순서 변경, X 버튼으로 닫기, 우클릭하여 컨텍스트 메뉴
-        </p>
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-[600px]">
-          <SortableTabsList
-            items={tabs.map((t) => t.id)}
-            onReorder={handleReorder}
-          >
-            {tabs.map((tab, index) => (
-              <SortableTabsTrigger
-                key={tab.id}
-                id={tab.id}
-                value={tab.id}
-                closable
-                onClose={() => handleClose(tab.id)}
-                onCloseTabsToRight={index < tabs.length - 1 ? () => handleCloseTabsToRight(tab.id) : undefined}
-                onCloseOtherTabs={tabs.length > 1 ? () => handleCloseOtherTabs(tab.id) : undefined}
-              >
-                {tab.label}
-              </SortableTabsTrigger>
-            ))}
-          </SortableTabsList>
-          {tabs.map((tab) => (
-            <TabsContent key={tab.id} value={tab.id}>
-              <div className="p-4 rounded-lg border">{tab.label} 콘텐츠입니다.</div>
-            </TabsContent>
-          ))}
-        </Tabs>
-      </div>
-    )
-  },
-}
-
-/** 반응형 탭 (많은 탭 - 자동 축소) */
-export const ResponsiveManyTabs: Story = {
-  render: function ResponsiveTabs() {
-    const [tabs, setTabs] = useState([
-      { id: "tab1", label: "대시보드" },
-      { id: "tab2", label: "상품 관리" },
-      { id: "tab3", label: "주문 관리" },
-      { id: "tab4", label: "고객 관리" },
-      { id: "tab5", label: "재고 현황" },
-      { id: "tab6", label: "배송 추적" },
-      { id: "tab7", label: "정산 관리" },
-      { id: "tab8", label: "통계 분석" },
-    ])
-    const [activeTab, setActiveTab] = useState("tab1")
-
-    const handleReorder = (newOrder: string[]) => {
-      const reorderedTabs = newOrder.map((id) => tabs.find((t) => t.id === id)!)
-      setTabs(reorderedTabs)
-    }
-
-    const handleClose = (tabId: string) => {
-      const newTabs = tabs.filter((t) => t.id !== tabId)
-      setTabs(newTabs)
-      if (activeTab === tabId && newTabs.length > 0) {
-        setActiveTab(newTabs[0].id)
-      }
-    }
-
-    // 오른쪽 탭 닫기
-    const handleCloseTabsToRight = (tabId: string) => {
-      const tabIndex = tabs.findIndex((t) => t.id === tabId)
-      const tabsToClose = tabs.slice(tabIndex + 1)
-      const newTabs = tabs.slice(0, tabIndex + 1)
-      setTabs(newTabs)
-      if (tabsToClose.some((t) => t.id === activeTab)) {
-        setActiveTab(tabId)
-      }
-    }
-
-    // 다른 탭 닫기
-    const handleCloseOtherTabs = (tabId: string) => {
-      const newTabs = tabs.filter((t) => t.id === tabId)
-      setTabs(newTabs)
-      setActiveTab(tabId)
-    }
-
-    return (
-      <div className="space-y-4">
-        <p className="text-sm text-muted-foreground">
-          탭이 많으면 자동으로 너비가 줄어들고 말줄임 표시됩니다. (마우스 올리면 툴팁, 우클릭하여 컨텍스트 메뉴)
-        </p>
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-[700px]">
-          <SortableTabsList
-            items={tabs.map((t) => t.id)}
-            onReorder={handleReorder}
-          >
-            {tabs.map((tab, index) => (
-              <SortableTabsTrigger
-                key={tab.id}
-                id={tab.id}
-                value={tab.id}
-                closable
-                onClose={() => handleClose(tab.id)}
-                onCloseTabsToRight={index < tabs.length - 1 ? () => handleCloseTabsToRight(tab.id) : undefined}
-                onCloseOtherTabs={tabs.length > 1 ? () => handleCloseOtherTabs(tab.id) : undefined}
-              >
-                {tab.label}
-              </SortableTabsTrigger>
-            ))}
-          </SortableTabsList>
-          {tabs.map((tab) => (
-            <TabsContent key={tab.id} value={tab.id}>
-              <div className="p-4 rounded-lg border">{tab.label} 콘텐츠입니다.</div>
-            </TabsContent>
-          ))}
-        </Tabs>
-        <p className="text-xs text-muted-foreground">
-          탭 개수: {tabs.length}개
-        </p>
-      </div>
-    )
-  },
 }

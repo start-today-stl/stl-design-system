@@ -1,7 +1,26 @@
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
-import { XIcon } from "@/icons";
+
+/** Chip 삭제용 X (얇은 XIcon 대신 stroke 기반으로 가독성 보강) */
+function ChipCloseIcon({ size = 14 }: { size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2.5}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <line x1="6" y1="6" x2="18" y2="18" />
+      <line x1="18" y1="6" x2="6" y2="18" />
+    </svg>
+  );
+}
 
 const chipVariants = cva(
   "inline-flex items-center gap-1.5 font-medium transition-all duration-150 select-none",
@@ -130,7 +149,7 @@ const Chip = React.forwardRef<HTMLDivElement, ChipProps>(
             )}
             aria-label="삭제"
           >
-            <XIcon size={16} />
+            <ChipCloseIcon size={14} />
           </button>
         )}
       </div>

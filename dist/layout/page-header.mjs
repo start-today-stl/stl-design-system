@@ -5,17 +5,7 @@ import { LeftIcon as h } from "../icons/LeftIcon.mjs";
 import { Button as u } from "../components/ui/button.mjs";
 import { PageTitle as W } from "./page-title.mjs";
 const j = s.forwardRef(
-  ({
-    className: v,
-    title: x,
-    subtitle: p,
-    bookmarked: b,
-    onBookmark: g,
-    tabs: o,
-    tabsAlign: S = "end",
-    sticky: l,
-    ...N
-  }, _) => {
+  ({ className: v, title: x, subtitle: p, bookmarked: b, onBookmark: g, tabs: o, tabsAlign: S = "end", sticky: l, ...N }, _) => {
     const [w, R] = s.useState(!1), c = s.useRef(null), a = s.useRef(null), [k, z] = s.useState(!1), [L, C] = s.useState(!1);
     s.useEffect(() => {
       if (!l || !c.current) return;
@@ -52,7 +42,7 @@ const j = s.forwardRef(
         {
           ref: _,
           className: m(
-            "flex items-end w-full",
+            "flex items-end w-full min-h-9",
             l && "sticky top-0 z-30 bg-slate-50 dark:bg-slate-950",
             l && w && "[box-shadow:0_4px_4px_-4px_rgb(0_0_0/0.15)]",
             v
