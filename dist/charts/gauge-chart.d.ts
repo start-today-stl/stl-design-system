@@ -1,5 +1,7 @@
 import * as React from "react";
-export interface GaugeChartProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
+export interface GaugeChartProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "children" | "title"> {
+    /** 차트 타이틀 (좌상단) */
+    title?: React.ReactNode;
     /** 게이지 값 (0 ~ max) */
     value: number;
     /** 최댓값 (기본 100) */
@@ -19,4 +21,4 @@ export interface GaugeChartProps extends Omit<React.HTMLAttributes<HTMLDivElemen
     /** 호 그려지는 enter 애니메이션 (기본 true) */
     animated?: boolean;
 }
-export declare function GaugeChart({ value, max, color, caption, badge, size, innerRadiusRatio, showTrack, animated, className, ...props }: GaugeChartProps): import("react/jsx-runtime").JSX.Element;
+export declare function GaugeChart({ title, value, max, color, caption, badge, size, innerRadiusRatio, showTrack, animated, className, ...props }: GaugeChartProps): import("react/jsx-runtime").JSX.Element;

@@ -4,7 +4,9 @@ export interface AreaChartTooltipPayload {
     name?: string;
     payload: Record<string, unknown>;
 }
-export interface AreaChartProps<T extends Record<string, unknown>> extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
+export interface AreaChartProps<T extends Record<string, unknown>> extends Omit<React.HTMLAttributes<HTMLDivElement>, "children" | "title"> {
+    /** 차트 타이틀 (좌상단) */
+    title?: React.ReactNode;
     /** 차트 데이터 */
     data: T[];
     /** X 축 key (data 의 필드명) */
@@ -30,4 +32,4 @@ export interface AreaChartProps<T extends Record<string, unknown>> extends Omit<
     /** 선 / 도트 / 영역 색상 (기본 var(--color-primary), 토큰 사용 권장) */
     color?: string;
 }
-export declare function AreaChart<T extends Record<string, unknown>>({ data, xKey, yKey, height, tooltipLabel, tooltipFormatter, showXAxis, showYAxis, showGrid, showDots, curveType, color, className, ...props }: AreaChartProps<T>): import("react/jsx-runtime").JSX.Element;
+export declare function AreaChart<T extends Record<string, unknown>>({ title, data, xKey, yKey, height, tooltipLabel, tooltipFormatter, showXAxis, showYAxis, showGrid, showDots, curveType, color, className, ...props }: AreaChartProps<T>): import("react/jsx-runtime").JSX.Element;

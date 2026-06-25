@@ -8,7 +8,9 @@ export interface StackBarSeries {
     /** 툴팁 / 범례에 표시할 이름 (지정 안 하면 dataKey 사용) */
     name?: string;
 }
-export interface StackBarChartProps<T extends Record<string, unknown>> extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
+export interface StackBarChartProps<T extends Record<string, unknown>> extends Omit<React.HTMLAttributes<HTMLDivElement>, "children" | "title"> {
+    /** 차트 타이틀 (좌상단) */
+    title?: React.ReactNode;
     /** 차트 데이터 */
     data: T[];
     /** 카테고리 축 key (세로: X, 가로: Y) */
@@ -36,4 +38,4 @@ export interface StackBarChartProps<T extends Record<string, unknown>> extends O
     /** 범례 (entry 배열, color 생략 시 시리즈 색 자동 매칭) */
     legend?: ChartLegendItem[];
 }
-export declare function StackBarChart<T extends Record<string, unknown>>({ data, xKey, bars, orientation, height, gradient, barRadius, tooltipLabel, tooltipFormatter, showXAxis, showYAxis, showGrid, legend, className, ...props }: StackBarChartProps<T>): import("react/jsx-runtime").JSX.Element;
+export declare function StackBarChart<T extends Record<string, unknown>>({ title, data, xKey, bars, orientation, height, gradient, barRadius, tooltipLabel, tooltipFormatter, showXAxis, showYAxis, showGrid, legend, className, ...props }: StackBarChartProps<T>): import("react/jsx-runtime").JSX.Element;

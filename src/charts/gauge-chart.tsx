@@ -8,7 +8,9 @@ import {
 
 import { cn } from "@/lib/utils"
 
-export interface GaugeChartProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
+export interface GaugeChartProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "children" | "title"> {
+  /** 차트 타이틀 (좌상단) */
+  title?: React.ReactNode
   /** 게이지 값 (0 ~ max) */
   value: number
   /** 최댓값 (기본 100) */
@@ -33,6 +35,7 @@ const DEFAULT_COLOR = "var(--color-primary)"
 const TRACK_COLOR = "var(--color-slate-200)"
 
 export function GaugeChart({
+  title,
   value,
   max = 100,
   color = DEFAULT_COLOR,
@@ -63,6 +66,11 @@ export function GaugeChart({
       )}
       {...props}
     >
+      {title && (
+        <div className="text-sm font-medium text-slate-700 dark:text-slate-100">
+          {title}
+        </div>
+      )}
       <div className="relative" style={{ width: size, height: chartHeight }}>
         <ResponsiveContainer width={size} height={chartHeight}>
           <RadialBarChart

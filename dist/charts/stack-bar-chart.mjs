@@ -1,127 +1,129 @@
-import { jsxs as f, jsx as e } from "react/jsx-runtime";
+import { jsxs as u, jsx as t } from "react/jsx-runtime";
 import * as K from "react";
-import { ResponsiveContainer as _, BarChart as B, CartesianGrid as D, XAxis as G, YAxis as X, Tooltip as $, Bar as j, Rectangle as F } from "recharts";
-import { cn as M } from "../lib/utils.mjs";
-import { ChartLegend as H } from "./chart-legend.mjs";
-const N = [
+import { ResponsiveContainer as B, BarChart as D, CartesianGrid as G, XAxis as X, YAxis as $, Tooltip as j, Bar as F, Rectangle as M } from "recharts";
+import { cn as H } from "../lib/utils.mjs";
+import { ChartLegend as P } from "./chart-legend.mjs";
+const L = [
   "var(--color-primary)",
   "var(--color-blue-300)",
   "var(--color-green-500)",
   "var(--color-red-500)"
-], P = "var(--color-border)", T = "var(--color-muted-foreground)", R = "var(--color-muted-foreground)", U = "stack", Y = (u, h, o, x) => (p) => {
-  const n = p.payload, c = h.filter((y) => Number((n == null ? void 0 : n[y]) ?? 0) > 0), s = c[0] === u, l = c[c.length - 1] === u;
-  return /* @__PURE__ */ e(F, { ...p, radius: x ? [
-    s ? o : 0,
+], U = "var(--color-border)", T = "var(--color-muted-foreground)", R = "var(--color-muted-foreground)", Y = "stack", q = (i, v, a, h) => (p) => {
+  const d = p.payload, n = v.filter((y) => Number((d == null ? void 0 : d[y]) ?? 0) > 0), s = n[0] === i, l = n[n.length - 1] === i;
+  return /* @__PURE__ */ t(M, { ...p, radius: h ? [
+    s ? a : 0,
     // top-left
-    l ? o : 0,
+    l ? a : 0,
     // top-right
-    l ? o : 0,
+    l ? a : 0,
     // bottom-right
-    s ? o : 0
+    s ? a : 0
     // bottom-left
   ] : [
-    l ? o : 0,
+    l ? a : 0,
     // top-left
-    l ? o : 0,
+    l ? a : 0,
     // top-right
-    s ? o : 0,
+    s ? a : 0,
     // bottom-right
-    s ? o : 0
+    s ? a : 0
     // bottom-left
   ] });
 };
-function W({
-  data: u,
-  xKey: h,
-  bars: o,
-  orientation: x = "vertical",
-  height: p = 240,
+function Z({
+  title: i,
+  data: v,
+  xKey: a,
+  bars: h,
+  orientation: p = "vertical",
+  height: d = 240,
   gradient: n = !0,
-  barRadius: c = 0,
-  tooltipLabel: s,
-  tooltipFormatter: l,
-  showXAxis: g = !0,
-  showYAxis: y = !0,
-  showGrid: z = !0,
-  legend: d,
-  className: I,
-  ...w
+  barRadius: s = 0,
+  tooltipLabel: l,
+  tooltipFormatter: k,
+  showXAxis: y = !0,
+  showYAxis: z = !0,
+  showGrid: I = !0,
+  legend: m,
+  className: w,
+  ...A
 }) {
-  const A = K.useId(), r = x === "horizontal", i = K.useMemo(
-    () => o.map((t, a) => ({
-      ...t,
-      color: t.color ?? N[a % N.length]
+  const E = K.useId(), r = p === "horizontal", c = K.useMemo(
+    () => h.map((e, o) => ({
+      ...e,
+      color: e.color ?? L[o % L.length]
     })),
-    [o]
-  ), b = (t) => `${A}-${t}`, C = K.useMemo(() => {
-    if (d != null && d.length)
-      return d.map((t, a) => {
-        var v;
+    [h]
+  ), b = (e) => `${E}-${e}`, C = K.useMemo(() => {
+    if (m != null && m.length)
+      return m.map((e, o) => {
+        var x;
         return {
-          label: t.label,
-          color: t.color ?? ((v = i[a]) == null ? void 0 : v.color)
+          label: e.label,
+          color: e.color ?? ((x = c[o]) == null ? void 0 : x.color)
         };
       });
-  }, [d, i]), E = i.map((t) => t.dataKey);
-  return /* @__PURE__ */ f(
+  }, [m, c]), O = c.map((e) => e.dataKey);
+  return /* @__PURE__ */ u(
     "div",
     {
-      className: M(
+      className: H(
         "bg-white dark:bg-slate-900",
         "rounded-2xl border border-slate-100 dark:border-slate-700",
-        "p-4",
-        I
+        "p-4 flex flex-col gap-3",
+        w
       ),
-      ...w,
+      ...A,
       children: [
-        C && /* @__PURE__ */ e(H, { items: C }),
-        /* @__PURE__ */ e(_, { width: "100%", height: p, children: /* @__PURE__ */ f(
-          B,
+        i && /* @__PURE__ */ t("div", { className: "text-sm font-medium text-slate-700 dark:text-slate-100", children: i }),
+        C && /* @__PURE__ */ t(P, { items: C }),
+        /* @__PURE__ */ t(B, { width: "100%", height: d, children: /* @__PURE__ */ u(
+          D,
           {
-            data: u,
+            data: v,
             layout: r ? "vertical" : "horizontal",
             margin: { top: 12, right: 12, left: -8, bottom: 0 },
             children: [
-              n && /* @__PURE__ */ e("defs", { children: i.map((t) => /* @__PURE__ */ f(
+              n && /* @__PURE__ */ t("defs", { children: c.map((e) => /* @__PURE__ */ u(
                 "linearGradient",
                 {
-                  id: b(t.dataKey),
+                  id: b(e.dataKey),
                   x1: "0",
                   y1: "0",
                   x2: r ? "1" : "0",
                   y2: r ? "0" : "1",
                   children: [
-                    /* @__PURE__ */ e("stop", { offset: "0%", stopColor: t.color, stopOpacity: r ? 0.2 : 0.9 }),
-                    /* @__PURE__ */ e("stop", { offset: "100%", stopColor: t.color, stopOpacity: r ? 0.9 : 0.2 })
+                    /* @__PURE__ */ t("stop", { offset: "0%", stopColor: e.color, stopOpacity: r ? 0.2 : 0.9 }),
+                    /* @__PURE__ */ t("stop", { offset: "100%", stopColor: e.color, stopOpacity: r ? 0.9 : 0.2 })
                   ]
                 },
-                t.dataKey
+                e.dataKey
               )) }),
-              z && /* @__PURE__ */ e(
-                D,
+              I && /* @__PURE__ */ t(
+                G,
                 {
-                  stroke: P,
+                  stroke: U,
                   strokeDasharray: "0",
                   horizontal: !r,
                   vertical: r
                 }
               ),
-              g && /* @__PURE__ */ e(
-                G,
+              y && /* @__PURE__ */ t(
+                X,
                 {
                   type: r ? "number" : "category",
-                  dataKey: r ? void 0 : h,
+                  dataKey: r ? void 0 : a,
                   stroke: T,
                   tickLine: !1,
                   axisLine: !1,
                   tick: { fontSize: 12, fill: R }
                 }
               ),
-              y && /* @__PURE__ */ e(
-                X,
+              z && /* @__PURE__ */ t(
+                $,
                 {
                   type: r ? "category" : "number",
-                  dataKey: r ? h : void 0,
+                  dataKey: r ? a : void 0,
                   stroke: T,
                   tickLine: !1,
                   axisLine: !1,
@@ -129,54 +131,54 @@ function W({
                   width: r ? 64 : 32
                 }
               ),
-              /* @__PURE__ */ e(
-                $,
+              /* @__PURE__ */ t(
+                j,
                 {
                   cursor: { fill: "var(--color-muted)", opacity: 0.5 },
-                  content: ({ active: t, payload: a }) => {
-                    var S;
-                    if (!t || !(a != null && a.length)) return null;
-                    const v = ((S = a[0]) == null ? void 0 : S.payload) ?? {};
-                    return /* @__PURE__ */ f("div", { className: "rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 shadow-md", children: [
-                      s && /* @__PURE__ */ e("div", { className: "text-xs text-slate-500 dark:text-slate-400", children: s }),
-                      /* @__PURE__ */ e("div", { className: "flex flex-col gap-1", children: a.map((k) => {
-                        const m = i.find((O) => O.dataKey === k.dataKey);
-                        if (!m) return null;
-                        const L = k.value;
-                        return /* @__PURE__ */ f(
+                  content: ({ active: e, payload: o }) => {
+                    var N;
+                    if (!e || !(o != null && o.length)) return null;
+                    const x = ((N = o[0]) == null ? void 0 : N.payload) ?? {};
+                    return /* @__PURE__ */ u("div", { className: "rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 shadow-md", children: [
+                      l && /* @__PURE__ */ t("div", { className: "text-xs text-slate-500 dark:text-slate-400", children: l }),
+                      /* @__PURE__ */ t("div", { className: "flex flex-col gap-1", children: o.map((g) => {
+                        const f = c.find((_) => _.dataKey === g.dataKey);
+                        if (!f) return null;
+                        const S = g.value;
+                        return /* @__PURE__ */ u(
                           "div",
                           {
                             className: "flex items-center gap-2 text-sm text-slate-700 dark:text-slate-100",
                             children: [
-                              /* @__PURE__ */ e(
+                              /* @__PURE__ */ t(
                                 "span",
                                 {
                                   "aria-hidden": !0,
                                   className: "size-2 rounded-full shrink-0",
-                                  style: { backgroundColor: m.color }
+                                  style: { backgroundColor: f.color }
                                 }
                               ),
-                              m.name && /* @__PURE__ */ e("span", { className: "text-xs text-slate-500 dark:text-slate-400", children: m.name }),
-                              /* @__PURE__ */ e("span", { className: "font-medium", children: l ? l(L, m, v) : L })
+                              f.name && /* @__PURE__ */ t("span", { className: "text-xs text-slate-500 dark:text-slate-400", children: f.name }),
+                              /* @__PURE__ */ t("span", { className: "font-medium", children: k ? k(S, f, x) : S })
                             ]
                           },
-                          String(k.dataKey)
+                          String(g.dataKey)
                         );
                       }) })
                     ] });
                   }
                 }
               ),
-              i.map((t) => /* @__PURE__ */ e(
-                j,
+              c.map((e) => /* @__PURE__ */ t(
+                F,
                 {
-                  dataKey: t.dataKey,
-                  stackId: U,
-                  fill: n ? `url(#${b(t.dataKey)})` : t.color,
-                  name: t.name ?? t.dataKey,
-                  shape: c > 0 ? Y(t.dataKey, E, c, r) : void 0
+                  dataKey: e.dataKey,
+                  stackId: Y,
+                  fill: n ? `url(#${b(e.dataKey)})` : e.color,
+                  name: e.name ?? e.dataKey,
+                  shape: s > 0 ? q(e.dataKey, O, s, r) : void 0
                 },
-                t.dataKey
+                e.dataKey
               ))
             ]
           }
@@ -186,6 +188,6 @@ function W({
   );
 }
 export {
-  W as StackBarChart
+  Z as StackBarChart
 };
 //# sourceMappingURL=stack-bar-chart.mjs.map

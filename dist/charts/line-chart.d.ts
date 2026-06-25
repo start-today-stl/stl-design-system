@@ -7,7 +7,9 @@ export interface LineSeries {
     /** 툴팁에 표시할 이름 (지정 안 하면 dataKey 사용) */
     name?: string;
 }
-export interface LineChartProps<T extends Record<string, unknown>> extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
+export interface LineChartProps<T extends Record<string, unknown>> extends Omit<React.HTMLAttributes<HTMLDivElement>, "children" | "title"> {
+    /** 차트 타이틀 (좌상단) */
+    title?: React.ReactNode;
     /** 차트 데이터 */
     data: T[];
     /** X 축 key (data 의 필드명) */
@@ -31,4 +33,4 @@ export interface LineChartProps<T extends Record<string, unknown>> extends Omit<
     /** 선 보간 방식 (기본 linear) */
     curveType?: "linear" | "monotone" | "step" | "natural";
 }
-export declare function LineChart<T extends Record<string, unknown>>({ data, xKey, lines, height, tooltipLabel, tooltipFormatter, showXAxis, showYAxis, showGrid, showDots, curveType, className, ...props }: LineChartProps<T>): import("react/jsx-runtime").JSX.Element;
+export declare function LineChart<T extends Record<string, unknown>>({ title, data, xKey, lines, height, tooltipLabel, tooltipFormatter, showXAxis, showYAxis, showGrid, showDots, curveType, className, ...props }: LineChartProps<T>): import("react/jsx-runtime").JSX.Element;

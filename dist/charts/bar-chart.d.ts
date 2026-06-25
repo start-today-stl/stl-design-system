@@ -1,6 +1,8 @@
 import { ChartLegendItem } from './chart-legend';
 import * as React from "react";
-export interface BarChartProps<T extends Record<string, unknown>> extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
+export interface BarChartProps<T extends Record<string, unknown>> extends Omit<React.HTMLAttributes<HTMLDivElement>, "children" | "title"> {
+    /** 차트 타이틀 (좌상단) */
+    title?: React.ReactNode;
     /** 차트 데이터 */
     data: T[];
     /** 카테고리 축 key (세로 바: X, 가로 바: Y) */
@@ -34,4 +36,4 @@ export interface BarChartProps<T extends Record<string, unknown>> extends Omit<R
     /** 차트 우측 상단 범례 (entry 배열) */
     legend?: ChartLegendItem[];
 }
-export declare function BarChart<T extends Record<string, unknown>>({ data, xKey, yKey, orientation, height, color, colorBy, gradient, highlightMax, tooltipLabel, tooltipFormatter, showXAxis, showYAxis, showGrid, barRadius, legend, className, ...props }: BarChartProps<T>): import("react/jsx-runtime").JSX.Element;
+export declare function BarChart<T extends Record<string, unknown>>({ title, data, xKey, yKey, orientation, height, color, colorBy, gradient, highlightMax, tooltipLabel, tooltipFormatter, showXAxis, showYAxis, showGrid, barRadius, legend, className, ...props }: BarChartProps<T>): import("react/jsx-runtime").JSX.Element;

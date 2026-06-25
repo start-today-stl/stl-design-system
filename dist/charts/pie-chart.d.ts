@@ -8,7 +8,9 @@ export interface PieChartItem {
     /** 색상 (지정 안 하면 기본 팔레트) */
     color?: string;
 }
-export interface PieChartProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
+export interface PieChartProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "children" | "title"> {
+    /** 차트 타이틀 (좌상단) */
+    title?: React.ReactNode;
     /** segment 데이터 */
     data: PieChartItem[];
     /** 차트 크기 (정사각형, px) */
@@ -38,5 +40,5 @@ export interface PieChartProps extends Omit<React.HTMLAttributes<HTMLDivElement>
     /** segment 그려지는 enter 애니메이션 (기본 true) */
     animated?: boolean;
 }
-export declare function PieChart({ data, size, innerRadiusRatio, centerLabel, centerSubLabel, centerLabelFormatter, centerSubLabelFormatter, legend, legendPosition, badge, tooltipLabel, tooltipFormatter, onActiveChange, animated, className, ...props }: PieChartProps): import("react/jsx-runtime").JSX.Element;
+export declare function PieChart({ title, data, size, innerRadiusRatio, centerLabel, centerSubLabel, centerLabelFormatter, centerSubLabelFormatter, legend, legendPosition, badge, tooltipLabel, tooltipFormatter, onActiveChange, animated, className, ...props }: PieChartProps): import("react/jsx-runtime").JSX.Element;
 export { ChartLegend };

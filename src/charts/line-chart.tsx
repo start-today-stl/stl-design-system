@@ -21,7 +21,9 @@ export interface LineSeries {
 }
 
 export interface LineChartProps<T extends Record<string, unknown>>
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "children" | "title"> {
+  /** 차트 타이틀 (좌상단) */
+  title?: React.ReactNode
   /** 차트 데이터 */
   data: T[]
   /** X 축 key (data 의 필드명) */
@@ -60,6 +62,7 @@ const TEXT_COLOR = "var(--color-muted-foreground)"
 const CURSOR_STROKE = "var(--color-primary)"
 
 export function LineChart<T extends Record<string, unknown>>({
+  title,
   data,
   xKey,
   lines,
@@ -88,11 +91,16 @@ export function LineChart<T extends Record<string, unknown>>({
       className={cn(
         "bg-white dark:bg-slate-900",
         "rounded-2xl border border-slate-100 dark:border-slate-700",
-        "p-4",
+        "p-4 flex flex-col gap-3",
         className
       )}
       {...props}
     >
+      {title && (
+        <div className="text-sm font-medium text-slate-700 dark:text-slate-100">
+          {title}
+        </div>
+      )}
       <ResponsiveContainer width="100%" height={height}>
         <RechartsLineChart data={data} margin={{ top: 12, right: 12, left: -8, bottom: 0 }}>
           {showGrid && (
