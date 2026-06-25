@@ -24,7 +24,9 @@ export interface StackBarSeries {
 }
 
 export interface StackBarChartProps<T extends Record<string, unknown>>
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "children" | "title"> {
+  /** 차트 타이틀 (좌상단) */
+  title?: React.ReactNode
   /** 차트 데이터 */
   data: T[]
   /** 카테고리 축 key (세로: X, 가로: Y) */
@@ -99,6 +101,7 @@ const makeStackShape =
   }
 
 export function StackBarChart<T extends Record<string, unknown>>({
+  title,
   data,
   xKey,
   bars,
@@ -146,11 +149,16 @@ export function StackBarChart<T extends Record<string, unknown>>({
       className={cn(
         "bg-white dark:bg-slate-900",
         "rounded-2xl border border-slate-100 dark:border-slate-700",
-        "p-4",
+        "p-4 flex flex-col gap-3",
         className
       )}
       {...props}
     >
+      {title && (
+        <div className="text-sm font-medium text-slate-700 dark:text-slate-100">
+          {title}
+        </div>
+      )}
       {resolvedLegend && <ChartLegend items={resolvedLegend} />}
       <ResponsiveContainer width="100%" height={height}>
         <RechartsBarChart

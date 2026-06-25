@@ -6,4 +6,5 @@ export { RadialChart, type RadialChartProps, type RadialChartItem } from './radi
 export { GaugeChart, type GaugeChartProps } from './gauge-chart';
 export { PieChart, type PieChartProps, type PieChartItem } from './pie-chart';
 export { RadarChart, type RadarChartProps, type RadarChartSeries } from './radar-chart';
+export { ScatterChart, type ScatterChartProps, type ScatterChartSeries, type ScatterChartPoint, } from './scatter-chart';
 export { ChartLegend, type ChartLegendItem, type ChartLegendProps } from './chart-legend';

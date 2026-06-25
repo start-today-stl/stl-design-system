@@ -20,7 +20,9 @@ export interface RadialChartItem {
   color?: string
 }
 
-export interface RadialChartProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
+export interface RadialChartProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "children" | "title"> {
+  /** 차트 타이틀 (좌상단) */
+  title?: React.ReactNode
   /** 데이터 (각 항목이 동심원 1개) */
   data: RadialChartItem[]
   /** 값의 최댓값 (기본 100 — 퍼센트) */
@@ -64,6 +66,7 @@ const DEFAULT_PALETTE = [
 const TRACK_COLOR = "var(--color-slate-100)"
 
 export function RadialChart({
+  title,
   data,
   max = 100,
   size = 240,
@@ -149,11 +152,16 @@ export function RadialChart({
       className={cn(
         "bg-white dark:bg-slate-900",
         "rounded-2xl border border-slate-100 dark:border-slate-700",
-        "p-4",
+        "p-4 flex flex-col gap-3",
         className
       )}
       {...props}
     >
+      {title && (
+        <div className="text-sm font-medium text-slate-700 dark:text-slate-100">
+          {title}
+        </div>
+      )}
       {resolvedLegend && <ChartLegend items={resolvedLegend} />}
       <div
         className="relative flex items-center justify-center"

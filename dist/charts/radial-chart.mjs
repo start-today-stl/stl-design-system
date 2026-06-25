@@ -1,111 +1,113 @@
-import { jsxs as s, jsx as r } from "react/jsx-runtime";
+import { jsxs as n, jsx as r } from "react/jsx-runtime";
 import * as l from "react";
-import { ResponsiveContainer as W, RadialBarChart as $, PolarAngleAxis as q, Tooltip as J, RadialBar as Q, Cell as V } from "recharts";
-import { cn as X } from "../lib/utils.mjs";
-import { ChartLegend as Y } from "./chart-legend.mjs";
-const R = [
+import { ResponsiveContainer as $, RadialBarChart as q, PolarAngleAxis as J, Tooltip as Q, RadialBar as V, Cell as X } from "recharts";
+import { cn as Y } from "../lib/utils.mjs";
+import { ChartLegend as Z } from "./chart-legend.mjs";
+const M = [
   "var(--color-primary)",
   "var(--color-blue-300)",
   "var(--color-green-500)",
   "var(--color-red-500)",
   "var(--color-muted-foreground)"
-], Z = "var(--color-slate-100)";
-function re({
+], z = "var(--color-slate-100)";
+function le({
+  title: x,
   data: h,
-  max: M = 100,
+  max: y = 100,
   size: d = 240,
   barSize: v = 6,
-  barGap: y = 2,
-  showTrack: E = !1,
-  centerLabel: I,
-  centerSubLabel: A,
-  centerLabelFormatter: x,
-  centerSubLabelFormatter: f,
+  barGap: E = 2,
+  showTrack: I = !1,
+  centerLabel: A,
+  centerSubLabel: L,
+  centerLabelFormatter: f,
+  centerSubLabelFormatter: p,
   legend: o,
-  tooltipLabel: p,
-  tooltipFormatter: k,
-  onActiveChange: b,
-  animated: L = !0,
-  className: w,
-  ...T
+  tooltipLabel: k,
+  tooltipFormatter: b,
+  onActiveChange: g,
+  animated: w = !0,
+  className: T,
+  ...j
 }) {
-  const [j, m] = l.useState(null), [B, S] = l.useState(null), c = j ?? B, n = l.useMemo(
+  const [B, m] = l.useState(null), [S, _] = l.useState(null), c = B ?? S, s = l.useMemo(
     () => h.map((e, t) => ({
       ...e,
-      color: e.color ?? R[t % R.length]
+      color: e.color ?? M[t % M.length]
     })),
     [h]
-  ), _ = l.useMemo(
-    () => n.map((e) => ({
+  ), P = l.useMemo(
+    () => s.map((e) => ({
       name: e.name,
       value: e.value
     })),
-    [n]
-  ), i = l.useRef(b);
+    [s]
+  ), i = l.useRef(g);
   l.useEffect(() => {
-    i.current = b;
+    i.current = g;
   }), l.useEffect(() => {
     var t;
-    const e = c !== null ? n[c] : null;
+    const e = c !== null ? s[c] : null;
     (t = i.current) == null || t.call(i, e);
-  }, [c, n]);
+  }, [c, s]);
   const C = l.useMemo(() => {
     if (o != null && o.length)
       return o.map((e, t) => {
         var a;
         return {
           label: e.label,
-          color: e.color ?? ((a = n[t]) == null ? void 0 : a.color)
+          color: e.color ?? ((a = s[t]) == null ? void 0 : a.color)
         };
       });
-  }, [o, n]), g = d / 2 - 8, P = v + y, D = Math.max(g - n.length * P, 8), K = l.useCallback(
+  }, [o, s]), N = d / 2 - 8, D = v + E, K = Math.max(N - s.length * D, 8), O = l.useCallback(
     (e, t) => m(t),
     []
-  ), O = l.useCallback(() => m(null), []), G = l.useCallback(
-    (e, t) => S((a) => a === t ? null : t),
+  ), G = l.useCallback(() => m(null), []), H = l.useCallback(
+    (e, t) => _((a) => a === t ? null : t),
     []
-  ), H = l.useCallback(() => m(null), []);
-  return /* @__PURE__ */ s(
+  ), U = l.useCallback(() => m(null), []);
+  return /* @__PURE__ */ n(
     "div",
     {
-      className: X(
+      className: Y(
         "bg-white dark:bg-slate-900",
         "rounded-2xl border border-slate-100 dark:border-slate-700",
-        "p-4",
-        w
+        "p-4 flex flex-col gap-3",
+        T
       ),
-      ...T,
+      ...j,
       children: [
-        C && /* @__PURE__ */ r(Y, { items: C }),
-        /* @__PURE__ */ s(
+        x && /* @__PURE__ */ r("div", { className: "text-sm font-medium text-slate-700 dark:text-slate-100", children: x }),
+        C && /* @__PURE__ */ r(Z, { items: C }),
+        /* @__PURE__ */ n(
           "div",
           {
             className: "relative flex items-center justify-center",
             style: { width: "100%", height: d },
-            onMouseLeave: H,
+            onMouseLeave: U,
             children: [
-              /* @__PURE__ */ r(W, { width: d, height: d, children: /* @__PURE__ */ s(
-                $,
+              /* @__PURE__ */ r($, { width: d, height: d, children: /* @__PURE__ */ n(
+                q,
                 {
-                  data: _,
-                  innerRadius: D,
-                  outerRadius: g,
+                  data: P,
+                  innerRadius: K,
+                  outerRadius: N,
                   barSize: v,
                   startAngle: -90,
                   endAngle: 270,
                   children: [
-                    /* @__PURE__ */ r(q, { type: "number", domain: [0, M], tick: !1 }),
+                    /* @__PURE__ */ r(J, { type: "number", domain: [0, y], tick: !1 }),
                     /* @__PURE__ */ r(
-                      J,
+                      Q,
                       {
                         cursor: { fill: "transparent", stroke: "transparent" },
                         wrapperStyle: { zIndex: 50, pointerEvents: "none" },
                         content: ({ active: e, payload: t }) => {
                           if (!e || !(t != null && t.length)) return null;
-                          const a = t[0], N = a.value, u = n.find((U) => U.name === a.payload.name);
-                          return u ? /* @__PURE__ */ s("div", { className: "rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 shadow-md", children: [
-                            p && /* @__PURE__ */ r("div", { className: "text-xs text-slate-500 dark:text-slate-400", children: p }),
-                            /* @__PURE__ */ s("div", { className: "flex items-center gap-2 text-sm text-slate-700 dark:text-slate-100", children: [
+                          const a = t[0], R = a.value, u = s.find((W) => W.name === a.payload.name);
+                          return u ? /* @__PURE__ */ n("div", { className: "rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 shadow-md", children: [
+                            k && /* @__PURE__ */ r("div", { className: "text-xs text-slate-500 dark:text-slate-400", children: k }),
+                            /* @__PURE__ */ n("div", { className: "flex items-center gap-2 text-sm text-slate-700 dark:text-slate-100", children: [
                               /* @__PURE__ */ r(
                                 "span",
                                 {
@@ -115,32 +117,32 @@ function re({
                                 }
                               ),
                               /* @__PURE__ */ r("span", { className: "text-xs text-slate-500 dark:text-slate-400", children: u.name }),
-                              /* @__PURE__ */ r("span", { className: "font-medium", children: k ? k(N, u) : N })
+                              /* @__PURE__ */ r("span", { className: "font-medium", children: b ? b(R, u) : R })
                             ] })
                           ] }) : null;
                         }
                       }
                     ),
                     /* @__PURE__ */ r(
-                      Q,
+                      V,
                       {
                         dataKey: "value",
-                        background: E ? { fill: Z } : !1,
+                        background: I ? { fill: z } : !1,
                         cornerRadius: 0,
-                        isAnimationActive: L,
-                        onMouseEnter: K,
-                        onMouseLeave: O,
-                        onClick: G,
+                        isAnimationActive: w,
+                        onMouseEnter: O,
+                        onMouseLeave: G,
+                        onClick: H,
                         style: { cursor: "pointer" },
-                        children: n.map((e) => /* @__PURE__ */ r(V, { fill: e.color }, e.name))
+                        children: s.map((e) => /* @__PURE__ */ r(X, { fill: e.color }, e.name))
                       }
                     )
                   ]
                 }
               ) }),
               (() => {
-                const e = c !== null ? n[c] : null, t = x ? x(e) : e ? `${e.value}` : I, a = f ? f(e) : e ? e.name : A;
-                return !t && !a ? null : /* @__PURE__ */ s("div", { className: "pointer-events-none absolute inset-0 flex flex-col items-center justify-center z-0", children: [
+                const e = c !== null ? s[c] : null, t = f ? f(e) : e ? `${e.value}` : A, a = p ? p(e) : e ? e.name : L;
+                return !t && !a ? null : /* @__PURE__ */ n("div", { className: "pointer-events-none absolute inset-0 flex flex-col items-center justify-center z-0", children: [
                   t && /* @__PURE__ */ r(
                     "div",
                     {
@@ -160,6 +162,6 @@ function re({
   );
 }
 export {
-  re as RadialChart
+  le as RadialChart
 };
 //# sourceMappingURL=radial-chart.mjs.map

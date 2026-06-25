@@ -14,7 +14,9 @@ import { cn } from "@/lib/utils"
 import { ChartLegend, type ChartLegendItem } from "./chart-legend"
 
 export interface BarChartProps<T extends Record<string, unknown>>
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "children" | "title"> {
+  /** 차트 타이틀 (좌상단) */
+  title?: React.ReactNode
   /** 차트 데이터 */
   data: T[]
   /** 카테고리 축 key (세로 바: X, 가로 바: Y) */
@@ -55,6 +57,7 @@ const AXIS_STROKE = "var(--color-muted-foreground)"
 const TEXT_COLOR = "var(--color-muted-foreground)"
 
 export function BarChart<T extends Record<string, unknown>>({
+  title,
   data,
   xKey,
   yKey,
@@ -129,11 +132,16 @@ export function BarChart<T extends Record<string, unknown>>({
       className={cn(
         "bg-white dark:bg-slate-900",
         "rounded-2xl border border-slate-100 dark:border-slate-700",
-        "p-4",
+        "p-4 flex flex-col gap-3",
         className
       )}
       {...props}
     >
+      {title && (
+        <div className="text-sm font-medium text-slate-700 dark:text-slate-100">
+          {title}
+        </div>
+      )}
       {resolvedLegend && <ChartLegend items={resolvedLegend} />}
       <ResponsiveContainer width="100%" height={height}>
         <RechartsBarChart

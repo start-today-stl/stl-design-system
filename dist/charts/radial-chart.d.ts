@@ -8,7 +8,9 @@ export interface RadialChartItem {
     /** 색상 (지정 안 하면 기본 팔레트) */
     color?: string;
 }
-export interface RadialChartProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
+export interface RadialChartProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "children" | "title"> {
+    /** 차트 타이틀 (좌상단) */
+    title?: React.ReactNode;
     /** 데이터 (각 항목이 동심원 1개) */
     data: RadialChartItem[];
     /** 값의 최댓값 (기본 100 — 퍼센트) */
@@ -40,4 +42,4 @@ export interface RadialChartProps extends Omit<React.HTMLAttributes<HTMLDivEleme
     /** 호 그려지는 enter 애니메이션 (기본 true) */
     animated?: boolean;
 }
-export declare function RadialChart({ data, max, size, barSize, barGap, showTrack, centerLabel, centerSubLabel, centerLabelFormatter, centerSubLabelFormatter, legend, tooltipLabel, tooltipFormatter, onActiveChange, animated, className, ...props }: RadialChartProps): import("react/jsx-runtime").JSX.Element;
+export declare function RadialChart({ title, data, max, size, barSize, barGap, showTrack, centerLabel, centerSubLabel, centerLabelFormatter, centerSubLabelFormatter, legend, tooltipLabel, tooltipFormatter, onActiveChange, animated, className, ...props }: RadialChartProps): import("react/jsx-runtime").JSX.Element;

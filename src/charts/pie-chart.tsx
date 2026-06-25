@@ -13,7 +13,9 @@ export interface PieChartItem {
   color?: string
 }
 
-export interface PieChartProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
+export interface PieChartProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "children" | "title"> {
+  /** 차트 타이틀 (좌상단) */
+  title?: React.ReactNode
   /** segment 데이터 */
   data: PieChartItem[]
   /** 차트 크기 (정사각형, px) */
@@ -53,6 +55,7 @@ const DEFAULT_PALETTE = [
 ]
 
 export function PieChart({
+  title,
   data,
   size = 220,
   innerRadiusRatio = 0.75,
@@ -140,12 +143,22 @@ export function PieChart({
       className={cn(
         "bg-white dark:bg-slate-900",
         "rounded-2xl border border-slate-100 dark:border-slate-700",
-        "p-4 flex",
-        isLegendBottom ? "flex-col items-center gap-3" : "flex-row items-center gap-4",
+        "p-4 flex flex-col gap-3",
         className
       )}
       {...props}
     >
+      {title && (
+        <div className="text-sm font-medium text-slate-700 dark:text-slate-100">
+          {title}
+        </div>
+      )}
+      <div
+        className={cn(
+          "flex",
+          isLegendBottom ? "flex-col items-center gap-3" : "flex-row items-center gap-4"
+        )}
+      >
       <div
         className="relative shrink-0"
         style={{ width: size, height: size }}
@@ -263,6 +276,7 @@ export function PieChart({
           ))}
         </div>
       )}
+      </div>
     </div>
   )
 }
