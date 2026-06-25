@@ -12,4 +12,5 @@ export {
   type ScatterChartSeries,
   type ScatterChartPoint,
 } from "./scatter-chart"
+export { Heatmap, type HeatmapProps } from "./heatmap"
 export { ChartLegend, type ChartLegendItem, type ChartLegendProps } from "./chart-legend"
