@@ -13,4 +13,5 @@ export {
   type ScatterChartPoint,
 } from "./scatter-chart"
 export { Heatmap, type HeatmapProps } from "./heatmap"
+export { BoxPlot, type BoxPlotProps, type BoxPlotItem } from "./box-plot"
 export { ChartLegend, type ChartLegendItem, type ChartLegendProps } from "./chart-legend"
