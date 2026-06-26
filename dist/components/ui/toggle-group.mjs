@@ -16,7 +16,7 @@ const w = v.forwardRef(
   }, p) => {
     const t = f === "full", i = m === "pill";
     return /* @__PURE__ */ k("div", { className: l("flex flex-col gap-1", t ? "w-full" : "w-fit", g), children: [
-      d && /* @__PURE__ */ a("label", { className: "text-xs text-slate-700 dark:text-slate-400", children: d }),
+      d && /* @__PURE__ */ a("label", { className: "text-xs text-slate-800 dark:text-slate-400", children: d }),
       /* @__PURE__ */ a(
         r.Root,
         {
