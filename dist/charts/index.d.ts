@@ -8,4 +8,5 @@ export { PieChart, type PieChartProps, type PieChartItem } from './pie-chart';
 export { RadarChart, type RadarChartProps, type RadarChartSeries } from './radar-chart';
 export { ScatterChart, type ScatterChartProps, type ScatterChartSeries, type ScatterChartPoint, } from './scatter-chart';
 export { Heatmap, type HeatmapProps } from './heatmap';
+export { BoxPlot, type BoxPlotProps, type BoxPlotItem } from './box-plot';
 export { ChartLegend, type ChartLegendItem, type ChartLegendProps } from './chart-legend';
