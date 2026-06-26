@@ -123,26 +123,34 @@ export const SearchForm = React.forwardRef<HTMLDivElement, SearchFormProps>(
         >
           <div className="overflow-hidden">
             <div className="p-4">
-              <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-                {children && (
-                  <div
-                    className={cn(
-                      "flex-1 gap-4",
-                      layout === "grid"
-                        ? "grid grid-cols-1 md:grid-cols-4"
-                        : "flex flex-wrap items-end"
-                    )}
-                  >
-                    {children}
-                  </div>
-                )}
-                {(actions || (!title && collapsible)) && (
-                  <div className="flex items-center gap-2 pl-4 shrink-0">
-                    {actions}
-                    {!title && collapseButton}
-                  </div>
-                )}
-              </div>
+              {layout === "flex" ? (
+                // flex 레이아웃: actions를 children flex 컨테이너 내부 마지막 아이템으로 두고
+                // ml-auto로 자기 줄 우측 끝에 배치. 다른 행들은 actions 자리 없이 전체 폭 활용.
+                <div className="flex flex-wrap items-end gap-4">
+                  {children}
+                  {(actions || (!title && collapsible)) && (
+                    <div className="ml-auto flex items-center gap-2 shrink-0">
+                      {actions}
+                      {!title && collapseButton}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                // grid 레이아웃 (4컬럼 고정): 기존 동작 유지 — actions 우측 별도 컬럼
+                <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+                  {children && (
+                    <div className="flex-1 gap-4 grid grid-cols-1 md:grid-cols-4">
+                      {children}
+                    </div>
+                  )}
+                  {(actions || (!title && collapsible)) && (
+                    <div className="flex items-center gap-2 pl-4 shrink-0">
+                      {actions}
+                      {!title && collapseButton}
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>
