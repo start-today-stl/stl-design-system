@@ -1,5 +1,6 @@
 import * as React from "react";
 declare const inputSizeStyles: {
+    readonly xs: "w-[120px]";
     readonly sm: "w-[180px]";
     readonly md: "w-[260px]";
     readonly lg: "w-[360px]";
