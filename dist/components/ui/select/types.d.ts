@@ -35,7 +35,7 @@ export interface SelectBaseProps {
     searchable?: boolean;
     /** 검색 플레이스홀더 */
     searchPlaceholder?: string;
-    /** 전체 삭제 버튼 표시 (기본: true) */
+    /** 전체 삭제 버튼 표시 (기본: single=false, multi=true — multi 는 일괄 초기화 효용이 커서 기본 활성) */
     clearable?: boolean;
     /** 로딩 상태 (스피너 표시) */
     loading?: boolean;

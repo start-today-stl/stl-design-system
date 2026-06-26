@@ -17,7 +17,7 @@ const te = r.forwardRef(
     disabled: L,
     ariaLabel: B,
     tableMode: H,
-    clearable: O = !0,
+    clearable: O = !1,
     loading: I
   }, m) => {
     const [l, c] = r.useState(!1), [o, p] = r.useState(""), [U, z] = r.useState(!1), [K, V] = r.useState(j || ""), [a, v] = r.useState(-1), S = r.useRef(null), _ = r.useRef(null), w = r.useRef(!1), N = r.useRef(!1), d = D !== void 0 ? D : K, f = h.find((e) => e.value === d), [g, u] = r.useState(!1), X = g ? o : (f == null ? void 0 : f.label) || d || "", i = h.filter(

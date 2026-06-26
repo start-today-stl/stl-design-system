@@ -17,7 +17,7 @@ const L = s.forwardRef(
     disabled: w,
     ariaLabel: z,
     tableMode: O,
-    clearable: R = !0,
+    clearable: R = !1,
     loading: v
   }, H) => {
     const [o, h] = s.useState(!1), [P, _] = s.useState(!1), [j, I] = s.useState(S || ""), [a, c] = s.useState(-1), m = s.useRef(null), i = x !== void 0 ? x : j, f = l.find((e) => e.value === i);
