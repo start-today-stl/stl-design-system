@@ -517,7 +517,20 @@ export const AllSizes: Story = {
   render: () => (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-2">
-        <span className="text-sm text-slate-500">sm (160px)</span>
+        <span className="text-sm text-slate-500">xs (120px)</span>
+        <Select
+          placeholder="선택"
+          options={[
+            { label: "전체", value: "all" },
+            { label: "성공", value: "success" },
+            { label: "실패", value: "fail" },
+          ]}
+          size="xs"
+          aria-label="선택 (xs)"
+        />
+      </div>
+      <div className="flex flex-col gap-2">
+        <span className="text-sm text-slate-500">sm (180px)</span>
         <Select placeholder="선택하세요" options={defaultOptions} size="sm" aria-label="선택 (sm)" />
       </div>
       <div className="flex flex-col gap-2">

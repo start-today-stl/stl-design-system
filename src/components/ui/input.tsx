@@ -32,6 +32,7 @@ const inputErrorStyles = [
 ].join(" ");
 
 const inputSizeStyles = {
+  xs: "w-[120px]",
   sm: "w-[180px]",
   md: "w-[260px]",
   lg: "w-[360px]",

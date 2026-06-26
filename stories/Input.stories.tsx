@@ -142,7 +142,11 @@ export const AllSizes: Story = {
   render: () => (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-2">
-        <span className="text-sm text-slate-500">sm (160px)</span>
+        <span className="text-sm text-slate-500">xs (120px)</span>
+        <Input placeholder="짧은 옵션" size="xs" />
+      </div>
+      <div className="flex flex-col gap-2">
+        <span className="text-sm text-slate-500">sm (180px)</span>
         <Input placeholder="내용을 입력하세요." size="sm" />
       </div>
       <div className="flex flex-col gap-2">

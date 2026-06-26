@@ -294,6 +294,44 @@ export const FlexLayoutManyFields: Story = {
   ),
 };
 
+/**
+ * Flex 레이아웃 - 여러 줄 자동 wrap 시 actions 위치 확인.
+ * actions 는 자기 줄의 우측 끝(ml-auto) 으로 밀려, 다른 줄은 actions 자리 없이 전체 폭을 활용.
+ */
+export const FlexLayoutMultiRow: Story = {
+  render: () => {
+    const selectSm = {
+      size: "sm" as const,
+      options: [
+        { label: "전체", value: "all" },
+        { label: "옵션1", value: "1" },
+      ],
+    }
+    return (
+      <SearchForm
+        title="대량 필터 검색 (sm 사이즈 다수)"
+        layout="flex"
+        actions={
+          <>
+            <Button variant="ghost-outline">초기화</Button>
+            <Button>검색</Button>
+          </>
+        }
+      >
+        <Select label="센터" {...selectSm} />
+        <Select label="구역" {...selectSm} />
+        <Select label="상태" {...selectSm} />
+        <Select label="유형" {...selectSm} />
+        <Select label="등급" {...selectSm} />
+        <Select label="결과" {...selectSm} />
+        <Select label="처리율" {...selectSm} />
+        <Select label="진행도" {...selectSm} />
+        <InputField label="검색어" size="md" placeholder="검색어 입력" />
+      </SearchForm>
+    )
+  },
+};
+
 /** 접기/펴기 가능한 검색폼 */
 export const Collapsible: Story = {
   render: () => (

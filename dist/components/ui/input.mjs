@@ -21,19 +21,20 @@ const S = [
   "placeholder:text-destructive dark:placeholder:text-red-400",
   "focus:border-destructive focus:shadow-[0px_0px_6px_0px_rgba(239,68,68,0.5)] dark:focus:border-red-500"
 ].join(" "), _ = {
+  xs: "w-[120px]",
   sm: "w-[180px]",
   md: "w-[260px]",
   lg: "w-[360px]",
   full: "w-full"
 }, j = u.forwardRef(
-  ({ className: c, label: s, error: a, errorMessage: l, size: x = "full", id: I, rightIcon: o, onRightIconClick: C, rightIconLabel: P = "아이콘 버튼", reserveLabelSpace: p, loading: h, showPasswordToggle: R, required: d, type: b, tableMode: f, ...m }, k) => {
-    const n = I || u.useId(), [r, T] = u.useState(!1), w = b === "password", y = w && R !== !1, v = o || h || y, g = w && r ? "text" : b, N = () => a ? D : f ? B : M;
+  ({ className: c, label: s, error: a, errorMessage: l, size: x = "full", id: I, rightIcon: o, onRightIconClick: C, rightIconLabel: P = "아이콘 버튼", reserveLabelSpace: p, loading: h, showPasswordToggle: R, required: d, type: b, tableMode: f, ...m }, w) => {
+    const n = I || u.useId(), [r, T] = u.useState(!1), k = b === "password", y = k && R !== !1, v = o || h || y, g = k && r ? "text" : b, N = () => a ? D : f ? B : M;
     if (f && !s && !p && !l && !v)
       return /* @__PURE__ */ t(
         "input",
         {
           id: n,
-          ref: k,
+          ref: w,
           type: g,
           required: d,
           className: e(S, N(), _[x], c),
@@ -85,7 +86,7 @@ const S = [
           "input",
           {
             id: n,
-            ref: k,
+            ref: w,
             type: g,
             required: d,
             className: e(S, N(), "w-full", v && "pr-9", c),
