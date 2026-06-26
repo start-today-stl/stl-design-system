@@ -24,9 +24,7 @@ const w = v.forwardRef(
           type: "single",
           value: b,
           defaultValue: c,
-          onValueChange: (e) => {
-            e && (s == null || s(e));
-          },
+          onValueChange: (e) => s == null ? void 0 : s(e),
           disabled: u,
           className: l(
             "inline-flex",

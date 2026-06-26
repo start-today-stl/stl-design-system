@@ -64,9 +64,7 @@ const ToggleGroup = React.forwardRef<HTMLDivElement, ToggleGroupProps>(
           type="single"
           value={value}
           defaultValue={defaultValue}
-          onValueChange={(val) => {
-            if (val) onValueChange?.(val)
-          }}
+          onValueChange={(val) => onValueChange?.(val)}
           disabled={disabled}
           className={cn(
             "inline-flex",
