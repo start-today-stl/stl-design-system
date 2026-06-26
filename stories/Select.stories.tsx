@@ -33,7 +33,7 @@ const meta: Meta<typeof Select> = {
     },
     clearable: {
       control: "boolean",
-      description: "전체 삭제 버튼 표시 (기본: true)",
+      description: "전체 삭제 버튼 표시 (기본: single=false, multi=true)",
     },
     loading: {
       control: "boolean",
@@ -309,7 +309,7 @@ export const Clearable: Story = {
     return (
       <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-2">
-          <span className="text-sm text-slate-500">Basic Select (clearable=true, 기본값)</span>
+          <span className="text-sm text-slate-500">Basic Select (기본값 — clearable=false)</span>
           <Select
             placeholder="선택하세요"
             options={defaultOptions}
@@ -319,18 +319,30 @@ export const Clearable: Story = {
           />
         </div>
         <div className="flex flex-col gap-2">
-          <span className="text-sm text-slate-500">Searchable Select (clearable)</span>
+          <span className="text-sm text-slate-500">Basic Select (clearable=true)</span>
+          <Select
+            placeholder="선택하세요"
+            options={defaultOptions}
+            value={basicValue}
+            onValueChange={setBasicValue}
+            clearable
+            size="md"
+          />
+        </div>
+        <div className="flex flex-col gap-2">
+          <span className="text-sm text-slate-500">Searchable Select (clearable=true)</span>
           <Select
             placeholder="지역을 선택하세요"
             options={manyOptions}
             searchable
             value={searchValue}
             onValueChange={setSearchValue}
+            clearable
             size="md"
           />
         </div>
         <div className="flex flex-col gap-2">
-          <span className="text-sm text-slate-500">Multiple Select (clearable - 전체 삭제)</span>
+          <span className="text-sm text-slate-500">Multiple Select (기본값 — clearable=true, 전체 삭제)</span>
           <Select
             placeholder="지역을 선택하세요"
             options={manyOptions}
@@ -340,19 +352,8 @@ export const Clearable: Story = {
             size="md"
           />
         </div>
-        <div className="flex flex-col gap-2">
-          <span className="text-sm text-slate-500">clearable=false (X 버튼 없음)</span>
-          <Select
-            placeholder="선택하세요"
-            options={defaultOptions}
-            value={basicValue}
-            onValueChange={setBasicValue}
-            clearable={false}
-            size="md"
-          />
-        </div>
         <div className="text-xs text-slate-500 mt-2">
-          각 Select에 hover하면 오른쪽에 X 버튼이 표시됩니다
+          single 셀렉트는 기본 clearable=false, multi 셀렉트는 기본 true. clearable=true 인 Select에 hover 시 X 버튼이 표시됩니다.
         </div>
       </div>
     )

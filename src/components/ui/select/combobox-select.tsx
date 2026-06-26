@@ -24,7 +24,7 @@ const ComboboxSelect = React.forwardRef<
       disabled,
       ariaLabel,
       tableMode,
-      clearable = true,
+      clearable = false,
       loading,
     },
     ref,

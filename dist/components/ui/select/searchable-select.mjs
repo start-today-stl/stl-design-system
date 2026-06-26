@@ -20,7 +20,7 @@ const G = s.forwardRef(
     disabled: k,
     ariaLabel: O,
     tableMode: P,
-    clearable: j = !0,
+    clearable: j = !1,
     loading: h
   }, A) => {
     const [b, _] = s.useState(!1), [y, N] = s.useState(""), [C, S] = s.useState(!1), [K, I] = s.useState(H || ""), [L, o] = s.useState(""), v = s.useRef(null), x = p !== void 0 ? p : K, f = g.find((e) => e.value === x), d = g.filter(
