@@ -64,7 +64,10 @@ const ToggleGroup = React.forwardRef<HTMLDivElement, ToggleGroupProps>(
           type="single"
           value={value}
           defaultValue={defaultValue}
-          onValueChange={(val) => onValueChange?.(val)}
+          onValueChange={(val) => {
+            // single-select 의미 유지: 활성 옵션 재클릭으로 인한 deselect(빈 값) 차단
+            if (val) onValueChange?.(val)
+          }}
           disabled={disabled}
           className={cn(
             "inline-flex",
