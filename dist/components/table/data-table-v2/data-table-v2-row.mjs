@@ -1,16 +1,16 @@
 import { jsx as o } from "react/jsx-runtime";
 import * as n from "react";
 import { cn as u } from "../../../lib/utils.mjs";
-const m = {
+const b = {
   left: "text-left justify-start",
   center: "text-center justify-center",
   right: "text-right justify-end"
 };
-function x({
+function m({
   row: r,
   columns: l,
-  gridTemplateColumns: c,
-  translateY: i,
+  gridTemplateColumns: i,
+  translateY: c,
   onHeightChange: d
 }) {
   const a = n.useRef(null);
@@ -26,10 +26,10 @@ function x({
     {
       ref: a,
       role: "row",
-      className: "absolute left-0 right-0 top-0 grid border-b border-slate-100 dark:border-slate-700",
+      className: "absolute left-0 right-0 top-0 grid bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors",
       style: {
-        gridTemplateColumns: c,
-        transform: `translate3d(0, ${Math.round(i)}px, 0)`
+        gridTemplateColumns: i,
+        transform: `translate3d(0, ${Math.round(c)}px, 0)`
       },
       children: l.map((e) => {
         const s = e.id ?? String(e.accessorKey), t = r[e.accessorKey], f = e.cell ? e.cell(t, r) : t;
@@ -38,8 +38,8 @@ function x({
           {
             role: "gridcell",
             className: u(
-              "flex items-center px-3 py-2 text-sm text-slate-700 dark:text-slate-200",
-              m[e.align ?? "left"]
+              "flex min-h-9 items-center pl-3 pr-1.5 py-1.5 text-xs text-slate-900 dark:text-slate-200 border-b border-slate-200 dark:border-slate-700",
+              b[e.align ?? "left"]
             ),
             children: f
           },
@@ -49,8 +49,8 @@ function x({
     }
   );
 }
-const g = n.memo(x);
+const p = n.memo(m);
 export {
-  g as DataTableV2Row
+  p as DataTableV2Row
 };
 //# sourceMappingURL=data-table-v2-row.mjs.map

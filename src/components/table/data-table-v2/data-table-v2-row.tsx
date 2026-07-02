@@ -43,7 +43,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
     <div
       ref={rowRef}
       role="row"
-      className="absolute left-0 right-0 top-0 grid border-b border-slate-100 dark:border-slate-700"
+      className="absolute left-0 right-0 top-0 grid bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
       style={{
         gridTemplateColumns,
         transform: `translate3d(0, ${Math.round(translateY)}px, 0)`,
@@ -58,7 +58,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             key={colId}
             role="gridcell"
             className={cn(
-              "flex items-center px-3 py-2 text-sm text-slate-700 dark:text-slate-200",
+              "flex min-h-9 items-center pl-3 pr-1.5 py-1.5 text-xs text-slate-900 dark:text-slate-200 border-b border-slate-200 dark:border-slate-700",
               alignClass[col.align ?? "left"]
             )}
           >
