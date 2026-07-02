@@ -98,7 +98,7 @@ export const VariableRowHeight: Story = {
 const sortableColumns: DataTableV2Column<Row>[] = [
   { accessorKey: "id", header: "ID", width: 60, align: "center", sortable: true },
   { accessorKey: "name", header: "이름", minWidth: 120, sortable: true },
-  { accessorKey: "role", header: "역할", minWidth: 120 },
+  { accessorKey: "role", header: "역할", minWidth: 120, sortable: true },
   {
     accessorKey: "score",
     header: "점수",
