@@ -1,11 +1,6 @@
 import type * as React from "react"
 
-/**
- * DataTable v2 컬럼 정의 (최소 셋)
- *
- * SDS-29 단계에서는 렌더링에 필요한 최소 필드만 포함합니다.
- * 정렬/편집/sticky 등 확장 필드는 후속 서브 티켓에서 추가됩니다.
- */
+/** DataTable v2 컬럼 정의 */
 export interface DataTableV2Column<T> {
   /** 데이터 접근 키 */
   accessorKey: keyof T
@@ -26,9 +21,7 @@ export interface DataTableV2Column<T> {
   cell?: (value: T[keyof T], row: T) => React.ReactNode
 }
 
-/**
- * DataTable v2 Props (최소 셋)
- */
+/** DataTable v2 Props */
 export interface DataTableV2Props<T extends { id: string | number }> {
   /** 행 데이터 */
   data: T[]
