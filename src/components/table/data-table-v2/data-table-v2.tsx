@@ -196,7 +196,11 @@ export function DataTableV2<T extends { id: string | number }>({
       <div className="border-b border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800">
         {/* 그룹 행 (headerGroups 지정 시) */}
         {hasGroups && (
-          <div role="row" className="grid" style={{ gridTemplateColumns }}>
+          <div
+            role="row"
+            className="grid border-b border-slate-200 dark:border-slate-700"
+            style={{ gridTemplateColumns }}
+          >
             {headerGroupPositions.map((pos, idx) => (
               <div
                 key={idx}

@@ -1,5 +1,5 @@
 import { jsxs as m, jsx as a } from "react/jsx-runtime";
-import * as c from "react";
+import * as d from "react";
 import { cn as h } from "../../../lib/utils.mjs";
 import { DataTableV2Row as D } from "./data-table-v2-row.mjs";
 const E = 40;
@@ -56,36 +56,36 @@ function V({
   estimateRowHeight: x = E,
   className: C
 }) {
-  const g = c.useMemo(
+  const g = d.useMemo(
     () => t.map(H).join(" "),
     [t]
-  ), f = c.useMemo(
+  ), f = d.useMemo(
     () => l ?? [],
     [l]
-  ), M = c.useCallback(
+  ), M = d.useCallback(
     (e) => {
-      const n = f.findIndex((d) => d.column === e);
+      const n = f.findIndex((c) => c.column === e);
       return n < 0 ? { direction: null, priority: void 0 } : {
         direction: f[n].direction,
         priority: u && f.length > 1 ? n + 1 : void 0
       };
     },
     [f, u]
-  ), T = c.useCallback(
+  ), T = d.useCallback(
     (e) => {
       s && s(K(f, e, u));
     },
     [f, u, s]
-  ), b = c.useMemo(
+  ), b = d.useMemo(
     () => i && i.length > 0 ? S(t, i) : [],
     [t, i]
-  ), w = b.length > 0, [y, j] = c.useState(/* @__PURE__ */ new Map()), I = c.useCallback((e, n) => {
+  ), w = b.length > 0, [y, j] = d.useState(/* @__PURE__ */ new Map()), I = d.useCallback((e, n) => {
     j((o) => {
       if (o.get(e) === n) return o;
-      const d = new Map(o);
-      return d.set(e, n), d;
+      const c = new Map(o);
+      return c.set(e, n), c;
     });
-  }, []), v = c.useMemo(() => {
+  }, []), v = d.useMemo(() => {
     const e = new Array(r.length + 1);
     e[0] = 0;
     for (let n = 0; n < r.length; n++) {
@@ -107,24 +107,32 @@ function V({
       ),
       children: [
         /* @__PURE__ */ m("div", { className: "border-b border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800", children: [
-          w && /* @__PURE__ */ a("div", { role: "row", className: "grid", style: { gridTemplateColumns: g }, children: b.map((e, n) => /* @__PURE__ */ a(
+          w && /* @__PURE__ */ a(
             "div",
             {
-              role: "columnheader",
-              className: h(
-                "flex min-h-9 items-center pl-3 pr-1.5 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-300 border-r border-slate-200 dark:border-slate-700 last:border-r-0",
-                k[e.group.align ?? "center"]
-              ),
-              style: {
-                gridColumnStart: e.startCol,
-                gridColumnEnd: `span ${e.span}`
-              },
-              children: e.group.header
-            },
-            n
-          )) }),
+              role: "row",
+              className: "grid border-b border-slate-200 dark:border-slate-700",
+              style: { gridTemplateColumns: g },
+              children: b.map((e, n) => /* @__PURE__ */ a(
+                "div",
+                {
+                  role: "columnheader",
+                  className: h(
+                    "flex min-h-9 items-center pl-3 pr-1.5 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-300 border-r border-slate-200 dark:border-slate-700 last:border-r-0",
+                    k[e.group.align ?? "center"]
+                  ),
+                  style: {
+                    gridColumnStart: e.startCol,
+                    gridColumnEnd: `span ${e.span}`
+                  },
+                  children: e.group.header
+                },
+                n
+              ))
+            }
+          ),
           /* @__PURE__ */ a("div", { role: "row", className: "grid", style: { gridTemplateColumns: g }, children: t.map((e) => {
-            const n = e.id ?? String(e.accessorKey), o = M(e.accessorKey), d = h(
+            const n = e.id ?? String(e.accessorKey), o = M(e.accessorKey), c = h(
               "flex min-h-9 items-center pl-3 pr-1.5 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-300",
               k[e.align ?? "left"]
             );
@@ -132,7 +140,7 @@ function V({
               "div",
               {
                 role: "columnheader",
-                className: h(d, "select-none"),
+                className: h(c, "select-none"),
                 "aria-sort": o.direction === "asc" ? "ascending" : o.direction === "desc" ? "descending" : "none",
                 children: /* @__PURE__ */ m(
                   "button",
@@ -154,7 +162,7 @@ function V({
                 )
               },
               n
-            ) : /* @__PURE__ */ a("div", { role: "columnheader", className: d, children: e.header }, n);
+            ) : /* @__PURE__ */ a("div", { role: "columnheader", className: c, children: e.header }, n);
           }) })
         ] }),
         /* @__PURE__ */ a(
