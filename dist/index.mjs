@@ -8,7 +8,7 @@ import { Breadcrumb as v } from "./components/ui/breadcrumb.mjs";
 import { Button as A, buttonVariants as H } from "./components/ui/button.mjs";
 import { ToggleGroup as L } from "./components/ui/toggle-group.mjs";
 import { Calendar as k, CalendarDayButton as N } from "./components/ui/calendar.mjs";
-import { Card as G, CardContent as V, CardDescription as B, CardFooter as O, CardHeader as z, CardTitle as U } from "./components/ui/card.mjs";
+import { Card as y, CardContent as G, CardDescription as B, CardFooter as O, CardHeader as z, CardTitle as U } from "./components/ui/card.mjs";
 import { DatePicker as E } from "./components/ui/date-picker.mjs";
 import { DateTimePicker as j } from "./components/ui/date-time-picker.mjs";
 import { DateRangePicker as K } from "./components/ui/date-range-picker.mjs";
@@ -17,7 +17,7 @@ import { TimePicker as Z } from "./components/ui/time-picker.mjs";
 import { Checkbox as $ } from "./components/ui/checkbox.mjs";
 import { Dialog as ro, DialogClose as eo, DialogContent as to, DialogDescription as no, DialogFooter as po, DialogHeader as ao, DialogOverlay as mo, DialogPortal as xo, DialogTitle as fo, DialogTrigger as io } from "./components/ui/dialog.mjs";
 import { Dropdown as lo, DropdownAccordionItem as Io, DropdownCheckboxItem as go, DropdownContent as so, DropdownGroup as uo, DropdownItem as To, DropdownLabel as So, DropdownPortal as Co, DropdownRadioGroup as Do, DropdownRadioItem as bo, DropdownSeparator as ho, DropdownShortcut as Po, DropdownSub as wo, DropdownSubContent as vo, DropdownSubTrigger as Fo, DropdownTrigger as Ao } from "./components/ui/dropdown.mjs";
-import { ContextMenu as Mo, ContextMenuContent as Lo, ContextMenuGroup as Ro, ContextMenuItem as ko, ContextMenuPortal as No, ContextMenuRadioGroup as yo, ContextMenuSeparator as Go, ContextMenuShortcut as Vo, ContextMenuSub as Bo, ContextMenuSubContent as Oo, ContextMenuSubTrigger as zo, ContextMenuTrigger as Uo } from "./components/ui/context-menu.mjs";
+import { ContextMenu as Mo, ContextMenuContent as Lo, ContextMenuGroup as Ro, ContextMenuItem as ko, ContextMenuPortal as No, ContextMenuRadioGroup as Vo, ContextMenuSeparator as yo, ContextMenuShortcut as Go, ContextMenuSub as Bo, ContextMenuSubContent as Oo, ContextMenuSubTrigger as zo, ContextMenuTrigger as Uo } from "./components/ui/context-menu.mjs";
 import { ErrorContent as Eo } from "./components/ui/error-content.mjs";
 import { FileUpload as jo } from "./components/ui/file-upload.mjs";
 import { Input as Ko, InputField as qo, inputSizeStyles as Qo } from "./components/ui/input.mjs";
@@ -32,7 +32,7 @@ import { Sheet as sr, SheetClose as ur, SheetContent as Tr, SheetDescription as 
 import { Slider as Fr } from "./components/ui/slider.mjs";
 import { Toaster as Hr, toast as Mr } from "./components/ui/sonner.mjs";
 import { Spinner as Rr, spinnerVariants as kr } from "./components/ui/spinner.mjs";
-import { Switch as yr, switchVariants as Gr } from "./components/ui/switch.mjs";
+import { Switch as Vr, switchVariants as yr } from "./components/ui/switch.mjs";
 import { Tabs as Br, TabsContent as Or, TabsList as zr, TabsTrigger as Ur } from "./components/ui/tabs.mjs";
 import { PageTabs as Er, PageTabsContent as Xr, PageTabsList as jr, PageTabsSortableList as Jr, PageTabsSortableTrigger as Kr, PageTabsTrigger as qr } from "./components/ui/page-tabs.mjs";
 import { TagsInput as Yr, tagsInputSizeStyles as Zr } from "./components/ui/tags-input.mjs";
@@ -50,7 +50,7 @@ import { Header as Fe } from "./layout/header.mjs";
 import { Content as He } from "./layout/content.mjs";
 import { NavMenu as Le } from "./layout/nav-menu.mjs";
 import { NavItem as ke, navItemVariants as Ne } from "./layout/nav-item.mjs";
-import { NavGroup as Ge } from "./layout/nav-group.mjs";
+import { NavGroup as ye } from "./layout/nav-group.mjs";
 import { NavInfo as Be, NavInfoItem as Oe } from "./layout/nav-info.mjs";
 import { NavRenderer as Ue } from "./layout/nav-renderer.mjs";
 import { Notice as Ee } from "./layout/notice.mjs";
@@ -76,8 +76,8 @@ import { EyeIcon as Ft } from "./icons/EyeIcon.mjs";
 import { FilterIcon as Ht } from "./icons/FilterIcon.mjs";
 import { GraphIcon as Lt } from "./icons/GraphIcon.mjs";
 import { HomeAllIcon as kt } from "./icons/HomeAllIcon.mjs";
-import { HomeArchivingIcon as yt } from "./icons/HomeArchivingIcon.mjs";
-import { HomeChatIcon as Vt } from "./icons/HomeChatIcon.mjs";
+import { HomeArchivingIcon as Vt } from "./icons/HomeArchivingIcon.mjs";
+import { HomeChatIcon as Gt } from "./icons/HomeChatIcon.mjs";
 import { HomeFinishedIcon as Ot } from "./icons/HomeFinishedIcon.mjs";
 import { HomeIcon as Ut } from "./icons/HomeIcon.mjs";
 import { HomeReturnIcon as Et } from "./icons/HomeReturnIcon.mjs";
@@ -103,7 +103,7 @@ import { OptionHorizontalIcon as An } from "./icons/OptionHorizontalIcon.mjs";
 import { OptionVerticalIcon as Mn } from "./icons/OptionVerticalIcon.mjs";
 import { PageIcon as Rn } from "./icons/PageIcon.mjs";
 import { PenIcon as Nn } from "./icons/PenIcon.mjs";
-import { PhoneIcon as Gn } from "./icons/PhoneIcon.mjs";
+import { PhoneIcon as yn } from "./icons/PhoneIcon.mjs";
 import { PhotoIcon as Bn } from "./icons/PhotoIcon.mjs";
 import { PlusIcon as zn } from "./icons/PlusIcon.mjs";
 import { PostingIcon as Wn } from "./icons/PostingIcon.mjs";
@@ -130,7 +130,7 @@ import { ToastOIcon as Ap } from "./icons/ToastOIcon.mjs";
 import { ToastWarningIcon as Mp } from "./icons/ToastWarningIcon.mjs";
 import { ToastXIcon as Rp } from "./icons/ToastXIcon.mjs";
 import { TriangleIcon as Np } from "./icons/TriangleIcon.mjs";
-import { UpIcon as Gp } from "./icons/UpIcon.mjs";
+import { UpIcon as yp } from "./icons/UpIcon.mjs";
 import { UploadIcon as Bp } from "./icons/UploadIcon.mjs";
 import { WriteIcon as zp } from "./icons/WriteIcon.mjs";
 import { XIcon as Wp } from "./icons/XIcon.mjs";
@@ -138,22 +138,23 @@ import { CardAction as Xp, cardActionVariants as jp } from "./components/dashboa
 import { CardActionGroup as Kp } from "./components/dashboard/card-action-group.mjs";
 import { DashboardCard as Qp } from "./components/dashboard/dashboard-card.mjs";
 import { DataTable as Zp } from "./components/table/data-table/index.mjs";
-import { DisplayField as $p } from "./components/form/display-field.mjs";
-import { FilterChipSummary as ra } from "./components/table/filter-chip-summary.mjs";
-import { FormCard as ta, FormColumn as na, FormContent as pa, FormFooter as aa, FormHeader as ma } from "./components/form/form-card.mjs";
-import { FormField as fa } from "./components/form/form-field.mjs";
-import { FormLabel as ca } from "./components/form/form-label.mjs";
-import { FormRow as Ia, FormSection as da } from "./components/form/form-section.mjs";
-import { PageSizeSelector as sa, Pagination as ua } from "./components/table/pagination.mjs";
-import { PaginationFooter as Sa } from "./components/table/pagination-footer.mjs";
-import { SearchForm as Da, useSearchFormContext as ba } from "./components/table/search-form.mjs";
-import { StatCard as Pa, statCardVariants as wa } from "./components/dashboard/stat-card.mjs";
-import { Table as Fa, TableBody as Aa, TableCaption as Ha, TableCell as Ma, TableFooter as La, TableHead as Ra, TableHeader as ka, TableRow as Na, TableSortableHead as ya } from "./components/table/table.mjs";
-import { TableContainer as Va } from "./components/table/table-container.mjs";
-import { TableToolbar as Oa } from "./components/table/table-toolbar.mjs";
-import { arrayMove as Ua } from "@dnd-kit/sortable";
-import { default as Ea } from "./assets/images/stl_logo_dark.png.mjs";
-import { default as ja } from "./assets/images/stl_logo_light.png.mjs";
+import { DataTableV2 as $p } from "./components/table/data-table-v2/data-table-v2.mjs";
+import { DisplayField as ra } from "./components/form/display-field.mjs";
+import { FilterChipSummary as ta } from "./components/table/filter-chip-summary.mjs";
+import { FormCard as pa, FormColumn as aa, FormContent as ma, FormFooter as xa, FormHeader as fa } from "./components/form/form-card.mjs";
+import { FormField as ca } from "./components/form/form-field.mjs";
+import { FormLabel as Ia } from "./components/form/form-label.mjs";
+import { FormRow as ga, FormSection as sa } from "./components/form/form-section.mjs";
+import { PageSizeSelector as Ta, Pagination as Sa } from "./components/table/pagination.mjs";
+import { PaginationFooter as Da } from "./components/table/pagination-footer.mjs";
+import { SearchForm as ha, useSearchFormContext as Pa } from "./components/table/search-form.mjs";
+import { StatCard as va, statCardVariants as Fa } from "./components/dashboard/stat-card.mjs";
+import { Table as Ha, TableBody as Ma, TableCaption as La, TableCell as Ra, TableFooter as ka, TableHead as Na, TableHeader as Va, TableRow as ya, TableSortableHead as Ga } from "./components/table/table.mjs";
+import { TableContainer as Oa } from "./components/table/table-container.mjs";
+import { TableToolbar as Ua } from "./components/table/table-toolbar.mjs";
+import { arrayMove as Ea } from "@dnd-kit/sortable";
+import { default as ja } from "./assets/images/stl_logo_dark.png.mjs";
+import { default as Ka } from "./assets/images/stl_logo_light.png.mjs";
 export {
   m as Accordion,
   x as AccordionContent,
@@ -176,10 +177,10 @@ export {
   k as Calendar,
   N as CalendarDayButton,
   ft as CalendarIcon,
-  G as Card,
+  y as Card,
   Xp as CardAction,
   Kp as CardActionGroup,
-  V as CardContent,
+  G as CardContent,
   B as CardDescription,
   O as CardFooter,
   z as CardHeader,
@@ -194,15 +195,16 @@ export {
   Ro as ContextMenuGroup,
   ko as ContextMenuItem,
   No as ContextMenuPortal,
-  yo as ContextMenuRadioGroup,
-  Go as ContextMenuSeparator,
-  Vo as ContextMenuShortcut,
+  Vo as ContextMenuRadioGroup,
+  yo as ContextMenuSeparator,
+  Go as ContextMenuShortcut,
   Bo as ContextMenuSub,
   Oo as ContextMenuSubContent,
   zo as ContextMenuSubTrigger,
   Uo as ContextMenuTrigger,
   Qp as DashboardCard,
   Zp as DataTable,
+  $p as DataTableV2,
   E as DatePicker,
   K as DateRangePicker,
   j as DateTimePicker,
@@ -218,7 +220,7 @@ export {
   xo as DialogPortal,
   fo as DialogTitle,
   io as DialogTrigger,
-  $p as DisplayField,
+  ra as DisplayField,
   ut as DownIcon,
   St as DownloadIcon,
   Dt as DragHandleIcon,
@@ -243,22 +245,22 @@ export {
   Eo as ErrorContent,
   Ft as EyeIcon,
   jo as FileUpload,
-  ra as FilterChipSummary,
+  ta as FilterChipSummary,
   Ht as FilterIcon,
-  ta as FormCard,
-  na as FormColumn,
-  pa as FormContent,
-  fa as FormField,
-  aa as FormFooter,
-  ma as FormHeader,
-  ca as FormLabel,
-  Ia as FormRow,
-  da as FormSection,
+  pa as FormCard,
+  aa as FormColumn,
+  ma as FormContent,
+  ca as FormField,
+  xa as FormFooter,
+  fa as FormHeader,
+  Ia as FormLabel,
+  ga as FormRow,
+  sa as FormSection,
   Lt as GraphIcon,
   Fe as Header,
   kt as HomeAllIcon,
-  yt as HomeArchivingIcon,
-  Vt as HomeChatIcon,
+  Vt as HomeArchivingIcon,
+  Gt as HomeChatIcon,
   Ot as HomeFinishedIcon,
   Ut as HomeIcon,
   Et as HomeReturnIcon,
@@ -278,7 +280,7 @@ export {
   fn as MenuVerticalIcon,
   ln as MinusIcon,
   fe as Modal,
-  Ge as NavGroup,
+  ye as NavGroup,
   Be as NavInfo,
   Oe as NavInfoItem,
   ke as NavItem,
@@ -296,7 +298,7 @@ export {
   Mn as OptionVerticalIcon,
   Ze as PageHeader,
   Rn as PageIcon,
-  sa as PageSizeSelector,
+  Ta as PageSizeSelector,
   Er as PageTabs,
   Xr as PageTabsContent,
   jr as PageTabsList,
@@ -304,11 +306,11 @@ export {
   Kr as PageTabsSortableTrigger,
   qr as PageTabsTrigger,
   Qe as PageTitle,
-  ua as Pagination,
-  Sa as PaginationFooter,
+  Sa as Pagination,
+  Da as PaginationFooter,
   $e as PanelLayout,
   Nn as PenIcon,
-  Gn as PhoneIcon,
+  yn as PhoneIcon,
   Bn as PhotoIcon,
   zn as PlusIcon,
   rr as Popover,
@@ -336,7 +338,7 @@ export {
   fr as ScrollArea,
   ir as ScrollBar,
   Ke as SearchBar,
-  Da as SearchForm,
+  ha as SearchForm,
   Cp as SearchIcon,
   lr as Select,
   dr as Separator,
@@ -357,21 +359,21 @@ export {
   Fr as Slider,
   Rr as Spinner,
   de as SplashScreen,
-  Pa as StatCard,
+  va as StatCard,
   Te as Stepper,
-  yr as Switch,
+  Vr as Switch,
   vp as SwitchIcon,
-  Fa as Table,
-  Aa as TableBody,
-  Ha as TableCaption,
-  Ma as TableCell,
-  Va as TableContainer,
-  La as TableFooter,
-  Ra as TableHead,
-  ka as TableHeader,
-  Na as TableRow,
-  ya as TableSortableHead,
-  Oa as TableToolbar,
+  Ha as Table,
+  Ma as TableBody,
+  La as TableCaption,
+  Ra as TableCell,
+  Oa as TableContainer,
+  ka as TableFooter,
+  Na as TableHead,
+  Va as TableHeader,
+  ya as TableRow,
+  Ga as TableSortableHead,
+  Ua as TableToolbar,
   Br as Tabs,
   Or as TabsContent,
   zr as TabsList,
@@ -393,11 +395,11 @@ export {
   ce as Tree,
   le as TreeItem,
   Np as TriangleIcon,
-  Gp as UpIcon,
+  yp as UpIcon,
   Bp as UploadIcon,
   zp as WriteIcon,
   Wp as XIcon,
-  Ua as arrayMove,
+  Ea as arrayMove,
   D as badgeVariants,
   H as buttonVariants,
   jp as cardActionVariants,
@@ -408,17 +410,17 @@ export {
   Ne as navItemVariants,
   t as radius,
   kr as spinnerVariants,
-  wa as statCardVariants,
+  Fa as statCardVariants,
   Se as stepCircleVariants,
   Ce as stepLabelVariants,
   De as stepLineVariants,
-  Ea as stlLogoDark,
-  ja as stlLogoLight,
-  Gr as switchVariants,
+  ja as stlLogoDark,
+  Ka as stlLogoLight,
+  yr as switchVariants,
   Zr as tagsInputSizeStyles,
   Mr as toast,
   n as tokens,
   p as typography,
-  ba as useSearchFormContext
+  Pa as useSearchFormContext
 };
 //# sourceMappingURL=index.mjs.map
