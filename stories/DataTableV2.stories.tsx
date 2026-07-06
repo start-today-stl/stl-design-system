@@ -208,3 +208,64 @@ export const HeaderGroups: Story = {
     headerGroups: orderHeaderGroups,
   },
 }
+
+interface WideRow {
+  id: number
+  code: string
+  name: string
+  category: string
+  q1: number
+  q2: number
+  q3: number
+  q4: number
+  total: number
+  price: number
+  status: string
+}
+
+const wideColumns: DataTableV2Column<WideRow>[] = [
+  { accessorKey: "code", header: "코드", width: 100, pinned: "left" },
+  { accessorKey: "name", header: "이름", width: 160, pinned: "left" },
+  { accessorKey: "category", header: "카테고리", width: 140 },
+  { accessorKey: "q1", header: "1분기", width: 100, align: "right" },
+  { accessorKey: "q2", header: "2분기", width: 100, align: "right" },
+  { accessorKey: "q3", header: "3분기", width: 100, align: "right" },
+  { accessorKey: "q4", header: "4분기", width: 100, align: "right" },
+  {
+    accessorKey: "total",
+    header: "합계",
+    width: 120,
+    align: "right",
+    cell: (v) => (v as number).toLocaleString(),
+  },
+  {
+    accessorKey: "price",
+    header: "단가",
+    width: 120,
+    align: "right",
+    cell: (v) => (v as number).toLocaleString(),
+  },
+  { accessorKey: "status", header: "상태", width: 100, pinned: "right", align: "center" },
+]
+
+const wideData: WideRow[] = Array.from({ length: 30 }, (_, i) => ({
+  id: i + 1,
+  code: `PRD-${String(i + 1).padStart(3, "0")}`,
+  name: `제품 ${i + 1}`,
+  category: ["의류", "가전", "식품", "생활"][i % 4],
+  q1: Math.floor(Math.random() * 500),
+  q2: Math.floor(Math.random() * 500),
+  q3: Math.floor(Math.random() * 500),
+  q4: Math.floor(Math.random() * 500),
+  total: Math.floor(Math.random() * 2000),
+  price: Math.floor(Math.random() * 100000),
+  status: ["활성", "품절", "대기"][i % 3],
+}))
+
+export const PinnedColumns: Story = {
+  render: () => (
+    <div style={{ width: 720 }}>
+      <DataTableV2 data={wideData} columns={wideColumns} maxHeight={400} />
+    </div>
+  ),
+}
