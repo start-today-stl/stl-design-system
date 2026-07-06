@@ -41,6 +41,8 @@ export interface DataTableV2Column<T> {
   align?: "left" | "center" | "right"
   /** 커스텀 셀 렌더러 */
   cell?: (value: T[keyof T], row: T) => React.ReactNode
+  /** 고정 컬럼 위치 (좌/우 pinned) */
+  pinned?: "left" | "right"
 }
 
 /** DataTable v2 Props */

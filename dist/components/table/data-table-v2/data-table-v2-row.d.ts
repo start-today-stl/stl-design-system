@@ -4,17 +4,20 @@ interface DataTableV2RowProps<T extends {
 }> {
     row: T;
     columns: DataTableV2Column<T>[];
-    gridTemplateColumns: string;
+    leftOffsets: number[];
+    rightOffsets: number[];
+    lastLeftPinnedIdx: number;
+    firstRightPinnedIdx: number;
+    showLeftShadow: boolean;
+    showRightShadow: boolean;
+    totalWidth: number;
     translateY: number;
+    isHovered: boolean;
+    onHover: (id: T["id"] | null) => void;
     onHeightChange: (id: T["id"], height: number) => void;
 }
 declare function DataTableV2RowInner<T extends {
     id: string | number;
-}>({ row, columns, gridTemplateColumns, translateY, onHeightChange, }: DataTableV2RowProps<T>): import("react/jsx-runtime").JSX.Element;
-/**
- * 행 컴포넌트.
- * - position absolute + translate3d(0, Math.round(y), 0) 로 sub-pixel 제거
- * - ResizeObserver 로 실제 높이 부모에 보고 → 부모가 다음 행 위치 재계산
- */
+}>({ row, columns, leftOffsets, rightOffsets, lastLeftPinnedIdx, firstRightPinnedIdx, showLeftShadow, showRightShadow, totalWidth, translateY, isHovered, onHover, onHeightChange, }: DataTableV2RowProps<T>): import("react/jsx-runtime").JSX.Element;
 export declare const DataTableV2Row: typeof DataTableV2RowInner;
 export {};
