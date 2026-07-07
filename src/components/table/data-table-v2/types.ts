@@ -59,6 +59,18 @@ export interface DataTableV2Props<T extends { id: string | number }> {
   onSortChange?: (sortState: SortState<T>[]) => void
   /** 다중 정렬 활성화 (Shift + 헤더 클릭 시 추가) */
   multiSort?: boolean
+  /** 컬럼 리사이즈 활성화 (헤더 우측 드래그로 폭 조절) */
+  resizable?: boolean
+  /** 컬럼 폭 (controlled). key = String(accessorKey) */
+  columnWidths?: Record<string, number>
+  /** 컬럼 폭 변경 콜백 */
+  onColumnResize?: (columnKey: keyof T, width: number) => void
+  /** 컬럼 순서 변경 활성화 (헤더 드래그로 재정렬. pinned/sortable 컬럼은 대상 제외) */
+  columnReorderable?: boolean
+  /** 컬럼 순서 (controlled). accessorKey 배열 */
+  columnOrder?: (keyof T)[]
+  /** 컬럼 순서 변경 콜백 */
+  onColumnReorder?: (newOrder: (keyof T)[]) => void
   /** 스크롤 컨테이너 최대 높이 */
   maxHeight?: number | string
   /**

@@ -269,3 +269,44 @@ export const PinnedColumns: Story = {
     </div>
   ),
 }
+
+export const Resizable: Story = {
+  render: () => (
+    <div style={{ width: 720 }}>
+      <DataTableV2 data={wideData} columns={wideColumns} maxHeight={400} resizable />
+    </div>
+  ),
+}
+
+const reorderableColumns: DataTableV2Column<Row>[] = [
+  { accessorKey: "id", header: "ID", width: 60, align: "center" },
+  { accessorKey: "name", header: "이름", width: 160 },
+  { accessorKey: "role", header: "역할", width: 160 },
+  {
+    accessorKey: "score",
+    header: "점수",
+    width: 100,
+    align: "right",
+    cell: (v) => `${v}점`,
+  },
+]
+
+export const Reorderable: Story = {
+  render: () => (
+    <DataTableV2 data={smallData} columns={reorderableColumns} columnReorderable />
+  ),
+}
+
+export const ResizableAndReorderable: Story = {
+  render: () => (
+    <div style={{ width: 720 }}>
+      <DataTableV2
+        data={wideData}
+        columns={wideColumns}
+        maxHeight={400}
+        resizable
+        columnReorderable
+      />
+    </div>
+  ),
+}
