@@ -80,19 +80,27 @@ function DataTableV2RowInner<T extends { id: string | number }>({
         const isPinned = isLeft || isRight
         const isLeftBoundary = i === lastLeftPinnedIdx && showLeftShadow
         const isRightBoundary = i === firstRightPinnedIdx && showRightShadow
+        const isFirstRightPinned = i === firstRightPinnedIdx
+        // Outer cell: 순수 레이아웃/포지셔닝. 텍스트/패딩은 content container.
+        const outerCls = cn(
+          "flex min-h-9 border-b border-slate-200 dark:border-slate-700",
+          width !== undefined && "shrink-0",
+          isPinned && "sticky z-10 transition-colors",
+          isPinned && bgClass,
+          isFirstRightPinned && "ml-auto",
+          isLeftBoundary && "shadow-[2px_0_5px_-2px_rgba(0,0,0,0.15)]",
+          isRightBoundary && "shadow-[-2px_0_5px_-2px_rgba(0,0,0,0.15)]"
+        )
+        // Content container: 확장 슬롯. 미래에 checkbox / edit UI / 액션 아이콘 등 여기 추가.
+        const contentCls = cn(
+          "flex-1 flex items-center px-3 py-1.5 text-xs text-slate-900 dark:text-slate-200",
+          alignClass[col.align ?? "left"]
+        )
         return (
           <div
             key={colId}
             role="gridcell"
-            className={cn(
-              "flex min-h-9 items-center pl-3 pr-1.5 py-1.5 text-xs text-slate-900 dark:text-slate-200 border-b border-slate-200 dark:border-slate-700",
-              width !== undefined && "shrink-0",
-              alignClass[col.align ?? "left"],
-              isPinned && "sticky z-10 transition-colors",
-              isPinned && bgClass,
-              isLeftBoundary && "shadow-[2px_0_5px_-2px_rgba(0,0,0,0.15)]",
-              isRightBoundary && "shadow-[-2px_0_5px_-2px_rgba(0,0,0,0.15)]"
-            )}
+            className={outerCls}
             style={{
               width,
               minWidth,
@@ -101,7 +109,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
               right: isRight ? rightOffsets[i] : undefined,
             }}
           >
-            {rendered}
+            <div className={contentCls}>{rendered}</div>
           </div>
         )
       })}

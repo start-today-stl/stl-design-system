@@ -1,7 +1,22 @@
 import * as React from "react"
+import {
+  DndContext,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from "@dnd-kit/core"
+import {
+  SortableContext,
+  horizontalListSortingStrategy,
+} from "@dnd-kit/sortable"
 
 import { cn } from "@/lib/utils"
+import { DataTableV2ColumnSeparator } from "./data-table-v2-column-separator"
 import { DataTableV2Row } from "./data-table-v2-row"
+import { DataTableV2SortableHeaderCell } from "./data-table-v2-sortable-header-cell"
+import { useColumnResize } from "./hooks/use-column-resize"
+import { useColumnReorder } from "./hooks/use-column-reorder"
 import type {
   DataTableV2Column,
   DataTableV2Props,
@@ -104,15 +119,42 @@ function sumColumnWidths<T>(columns: DataTableV2Column<T>[]): number {
 /** DataTable v2 — div role=grid 기반 그리드 컨테이너 */
 export function DataTableV2<T extends { id: string | number }>({
   data,
-  columns,
+  columns: rawColumns,
   headerGroups,
   sortState,
   onSortChange,
   multiSort = false,
+  resizable = false,
+  columnWidths,
+  onColumnResize,
+  columnReorderable = false,
+  columnOrder,
+  onColumnReorder,
   maxHeight,
   estimateRowHeight = DEFAULT_ESTIMATE,
   className,
 }: DataTableV2Props<T>) {
+  const { orderedColumns, handleColumnDragEnd } = useColumnReorder({
+    columns: rawColumns,
+    columnReorderable,
+    columnOrder,
+    onColumnReorder,
+  })
+  const { getColumnWidth, handleResizeStart, resizingKey } = useColumnResize({
+    resizable,
+    columnWidths,
+    onColumnResize,
+  })
+
+  // resize 적용된 컬럼 배열 (getColumnWidth 결과를 col.width 로 override)
+  const columns = React.useMemo(() => {
+    if (!resizable) return orderedColumns
+    return orderedColumns.map((col) => {
+      const w = getColumnWidth(col)
+      return w !== undefined ? { ...col, width: w } : col
+    })
+  }, [orderedColumns, resizable, getColumnWidth])
+
   const { left: leftOffsets, right: rightOffsets } = React.useMemo(
     () => computePinnedOffsets(columns),
     [columns]
@@ -143,6 +185,33 @@ export function DataTableV2<T extends { id: string | number }>({
       onSortChange(computeNextSort(normalizedSortState, column, multiSort))
     },
     [normalizedSortState, multiSort, onSortChange]
+  )
+
+  // 어떤 컬럼도 flex-1 이 아니라면 (전부 fixed width) row 오른쪽에 spacer 필요.
+  // flex-1 컬럼이 하나라도 있으면 그것이 자연스럽게 남은 공간을 채워서 spacer 필요 없음.
+  const hasFlexColumn = React.useMemo(
+    () => columns.some((c) => typeof c.width !== "number"),
+    [columns]
+  )
+
+  // 재정렬 대상 컬럼 ID (pinned/sortable 제외)
+  const reorderableIds = React.useMemo(
+    () =>
+      columnReorderable
+        ? columns
+            .filter((c) => !c.pinned && !c.sortable)
+            .map((c) => String(c.accessorKey))
+        : [],
+    [columns, columnReorderable]
+  )
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
+  )
+
+  const handleDragEnd = React.useCallback(
+    (e: DragEndEvent) => handleColumnDragEnd(e),
+    [handleColumnDragEnd]
   )
 
   const [heights, setHeights] = React.useState<Map<T["id"], number>>(new Map())
@@ -244,14 +313,21 @@ export function DataTableV2<T extends { id: string | number }>({
     const isPinned = isLeft || isRight
     const isLeftBoundary = i === lastLeftPinnedIdx && scrolledLeft
     const isRightBoundary = i === firstRightPinnedIdx && scrolledRight
-    const cellCls = cn(
-      "flex min-h-9 items-center pl-3 pr-1.5 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-300",
+    const isFirstRightPinned = i === firstRightPinnedIdx
+    const isDraggable = columnReorderable && !isPinned && !col.sortable
+    const isResizingThis = resizingKey === col.accessorKey
+    const isLastColumn = i === columns.length - 1
+
+    // Outer: 순수 레이아웃/포지셔닝. text 스타일은 content container 에.
+    const outerCls = cn(
+      "relative flex min-h-9",
       width !== undefined && "shrink-0",
-      alignClass[col.align ?? "left"],
       isPinned && "sticky z-20",
       isPinned && headerBg,
       isLeftBoundary && "shadow-[2px_0_5px_-2px_rgba(0,0,0,0.15)]",
-      isRightBoundary && "shadow-[-2px_0_5px_-2px_rgba(0,0,0,0.15)]"
+      isRightBoundary && "shadow-[-2px_0_5px_-2px_rgba(0,0,0,0.15)]",
+      col.sortable && "select-none",
+      isFirstRightPinned && "ml-auto"
     )
     const style: React.CSSProperties = {
       width,
@@ -260,45 +336,81 @@ export function DataTableV2<T extends { id: string | number }>({
       left: isLeft ? leftOffsets[i] : undefined,
       right: isRight ? rightOffsets[i] : undefined,
     }
-    if (col.sortable) {
-      return (
-        <div
-          key={colId}
-          role="columnheader"
-          className={cn(cellCls, "select-none")}
-          style={style}
-          aria-sort={
-            info.direction === "asc"
-              ? "ascending"
-              : info.direction === "desc"
-                ? "descending"
-                : "none"
-          }
-        >
-          <button
-            type="button"
-            className="flex w-full items-center gap-1 text-left cursor-pointer"
-            onClick={() => handleSort(col.accessorKey)}
-          >
-            {col.header}
-            <span className="flex items-center gap-0.5">
-              <span className="flex flex-col gap-0.5">
-                <SortArrow direction="up" active={info.direction === "asc"} />
-                <SortArrow direction="down" active={info.direction === "desc"} />
-              </span>
-              {info.priority !== undefined && (
-                <span className="text-[9px] font-medium text-blue-600 dark:text-blue-400 leading-none">
-                  {info.priority}
-                </span>
-              )}
+
+    // Content container: 확장 슬롯. 미래에 checkbox / filter / menu 등 여기 내부에 형제로 추가.
+    const contentCls = cn(
+      "flex-1 flex items-center px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-300",
+      alignClass[col.align ?? "left"]
+    )
+    const contentBody = col.sortable ? (
+      <button
+        type="button"
+        className={cn(
+          "flex w-full items-center gap-1 cursor-pointer",
+          // 우측 정렬 컬럼은 sort 인디케이터를 헤더명 좌측에 두는 게 관행. flex-row-reverse 로 순서 반전.
+          col.align === "right"
+            ? "flex-row-reverse justify-start"
+            : alignClass[col.align ?? "left"]
+        )}
+        onClick={() => handleSort(col.accessorKey)}
+      >
+        {col.header}
+        <span className="flex items-center gap-0.5">
+          <span className="flex flex-col gap-0.5">
+            <SortArrow direction="up" active={info.direction === "asc"} />
+            <SortArrow direction="down" active={info.direction === "desc"} />
+          </span>
+          {info.priority !== undefined && (
+            <span className="text-[9px] font-medium text-blue-600 dark:text-blue-400 leading-none">
+              {info.priority}
             </span>
-          </button>
-        </div>
+          )}
+        </span>
+      </button>
+    ) : (
+      col.header
+    )
+
+    const separator = !isLastColumn && (
+      <DataTableV2ColumnSeparator
+        resizable={resizable}
+        isResizing={isResizingThis}
+        onResizeStart={(e) => handleResizeStart(e, col)}
+      />
+    )
+
+    const ariaSort: "ascending" | "descending" | "none" | undefined = col.sortable
+      ? info.direction === "asc"
+        ? "ascending"
+        : info.direction === "desc"
+          ? "descending"
+          : "none"
+      : undefined
+
+    if (isDraggable) {
+      return (
+        <DataTableV2SortableHeaderCell
+          key={colId}
+          id={String(col.accessorKey)}
+          className={outerCls}
+          style={style}
+        >
+          <div className={contentCls}>{contentBody}</div>
+          {separator}
+        </DataTableV2SortableHeaderCell>
       )
     }
+
     return (
-      <div key={colId} role="columnheader" className={cellCls} style={style}>
-        {col.header}
+      <div
+        key={colId}
+        role="columnheader"
+        className={outerCls}
+        style={style}
+        aria-sort={ariaSort}
+      >
+        <div className={contentCls}>{contentBody}</div>
+        {separator}
       </div>
     )
   }
@@ -309,12 +421,14 @@ export function DataTableV2<T extends { id: string | number }>({
     const isLeft = col.pinned === "left"
     const isLeftBoundary = i === lastLeftPinnedIdx && scrolledLeft
     const isRightBoundary = i === firstRightPinnedIdx && scrolledRight
+    const isFirstRightPinned = i === firstRightPinnedIdx
     return (
       <div
         key={`pinned-placeholder-${col.id ?? String(col.accessorKey)}`}
         className={cn(
           "shrink-0 sticky z-20",
           headerBg,
+          isFirstRightPinned && "ml-auto",
           isLeftBoundary && "shadow-[2px_0_5px_-2px_rgba(0,0,0,0.15)]",
           isRightBoundary && "shadow-[-2px_0_5px_-2px_rgba(0,0,0,0.15)]"
         )}
@@ -340,13 +454,15 @@ export function DataTableV2<T extends { id: string | number }>({
     : -1
   const firstRightPinnedIdx = rightPinnedCols.length ? rightPinnedCols[0].i : -1
 
-  return (
+  const gridContent = (
     <div
       role="grid"
       aria-rowcount={data.length + headerRowCount}
       aria-colcount={columns.length}
       className={cn(
-        "w-full overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-700",
+        // flex-1 컬럼 있으면 컨테이너 폭 채워서 그 컬럼이 자라게. 없으면 콘텐츠 폭 (빈 공간 없음).
+        hasFlexColumn ? "w-full" : "w-fit max-w-full",
+        "overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-700",
         "bg-white dark:bg-slate-900",
         className
       )}
@@ -370,19 +486,33 @@ export function DataTableV2<T extends { id: string | number }>({
                 className="flex border-b border-slate-200 dark:border-slate-700"
               >
                 {leftPinnedCols.map(({ c, i }) => renderPinnedPlaceholder(c, i))}
-                {headerGroupCells.map((cell) => {
+                {headerGroupCells.map((cell, idx) => {
                   if (cell.kind === "group") {
+                    // 마지막 그룹 셀에는 우측 구분선 생략
+                    let lastGroupIdx = -1
+                    for (let k = headerGroupCells.length - 1; k >= 0; k--) {
+                      if (headerGroupCells[k].kind === "group") {
+                        lastGroupIdx = k
+                        break
+                      }
+                    }
+                    const isLastGroupCell = idx === lastGroupIdx
                     return (
                       <div
                         key={cell.key}
                         role="columnheader"
-                        className={cn(
-                          "shrink-0 flex min-h-9 items-center pl-3 pr-1.5 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-300 border-r border-slate-200 dark:border-slate-700 last:border-r-0",
-                          alignClass[cell.group.align ?? "center"]
-                        )}
+                        className="relative flex min-h-9 shrink-0"
                         style={{ width: cell.width }}
                       >
-                        {cell.group.header}
+                        <div
+                          className={cn(
+                            "flex-1 flex items-center px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-300",
+                            alignClass[cell.group.align ?? "center"]
+                          )}
+                        >
+                          {cell.group.header}
+                        </div>
+                        {!isLastGroupCell && <DataTableV2ColumnSeparator />}
                       </div>
                     )
                   }
@@ -404,9 +534,23 @@ export function DataTableV2<T extends { id: string | number }>({
                 {rightPinnedCols.map(({ c, i }) => renderPinnedPlaceholder(c, i))}
               </div>
             )}
-            <div role="row" className="flex">
-              {columns.map((col, i) => renderHeaderCell(col, i))}
-            </div>
+            {columnReorderable ? (
+              <SortableContext
+                items={reorderableIds}
+                strategy={horizontalListSortingStrategy}
+              >
+                <div role="row" className="flex">
+                  {columns.map((col, i) => renderHeaderCell(col, i))}
+                  {firstRightPinnedIdx === -1 && !hasFlexColumn && (
+                    <div aria-hidden className="flex-1 min-h-9" />
+                  )}
+                </div>
+              </SortableContext>
+            ) : (
+              <div role="row" className="flex">
+                {columns.map((col, i) => renderHeaderCell(col, i))}
+              </div>
+            )}
           </div>
 
           {/* Body */}
@@ -434,4 +578,13 @@ export function DataTableV2<T extends { id: string | number }>({
       </div>
     </div>
   )
+
+  if (columnReorderable) {
+    return (
+      <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
+        {gridContent}
+      </DndContext>
+    )
+  }
+  return gridContent
 }
