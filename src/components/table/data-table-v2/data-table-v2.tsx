@@ -12,11 +12,15 @@ import {
 } from "@dnd-kit/sortable"
 
 import { cn } from "@/lib/utils"
+import { Checkbox } from "@/components/ui/checkbox"
+import { DownIcon, RightIcon } from "@/icons"
 import { DataTableV2ColumnSeparator } from "./data-table-v2-column-separator"
 import { DataTableV2Row } from "./data-table-v2-row"
 import { DataTableV2SortableHeaderCell } from "./data-table-v2-sortable-header-cell"
 import { useColumnResize } from "./hooks/use-column-resize"
 import { useColumnReorder } from "./hooks/use-column-reorder"
+import { useRowExpansion } from "./hooks/use-row-expansion"
+import { useRowSelection } from "./hooks/use-row-selection"
 import type {
   DataTableV2Column,
   DataTableV2Props,
@@ -27,6 +31,8 @@ import type {
 
 const DEFAULT_ESTIMATE = 40
 const DEFAULT_COL_WIDTH = 120
+const CHECKBOX_COL_WIDTH = 40
+const EXPAND_COL_WIDTH = 40
 
 const alignClass = {
   left: "text-left justify-start",
@@ -85,10 +91,13 @@ function computeNextSort<T>(
  * 좌 pinned 는 앞쪽부터 누적, 우 pinned 는 뒤쪽부터 누적.
  * pinned 아닌 컬럼은 -1 (offset 미사용).
  */
-function computePinnedOffsets<T>(columns: DataTableV2Column<T>[]) {
+function computePinnedOffsets<T>(
+  columns: DataTableV2Column<T>[],
+  leftBaseOffset: number = 0
+) {
   const left = new Array(columns.length).fill(-1)
   const right = new Array(columns.length).fill(-1)
-  let leftAcc = 0
+  let leftAcc = leftBaseOffset
   for (let i = 0; i < columns.length; i++) {
     if (columns[i].pinned === "left") {
       left[i] = leftAcc
@@ -130,6 +139,13 @@ export function DataTableV2<T extends { id: string | number }>({
   columnReorderable = false,
   columnOrder,
   onColumnReorder,
+  selectable = false,
+  selectedIds,
+  defaultSelectedIds,
+  onSelectionChange,
+  onRowClick,
+  rowClassName,
+  expandable,
   maxHeight,
   estimateRowHeight = DEFAULT_ESTIMATE,
   className,
@@ -155,11 +171,30 @@ export function DataTableV2<T extends { id: string | number }>({
     })
   }, [orderedColumns, resizable, getColumnWidth])
 
+  // 제어 컬럼 (체크박스 + 확장) 폭. sticky 헤더/셀 offset 계산에 반영.
+  const controlColsWidth =
+    (selectable ? CHECKBOX_COL_WIDTH : 0) + (expandable ? EXPAND_COL_WIDTH : 0)
+
   const { left: leftOffsets, right: rightOffsets } = React.useMemo(
-    () => computePinnedOffsets(columns),
-    [columns]
+    () => computePinnedOffsets(columns, controlColsWidth),
+    [columns, controlColsWidth]
   )
-  const totalWidth = React.useMemo(() => sumColumnWidths(columns), [columns])
+  const totalWidth = React.useMemo(
+    () => sumColumnWidths(columns) + controlColsWidth,
+    [columns, controlColsWidth]
+  )
+
+  // 행 선택
+  const selection = useRowSelection({
+    data,
+    selectable,
+    selectedIds,
+    defaultSelectedIds,
+    onSelectionChange,
+  })
+
+  // 행 확장
+  const expansion = useRowExpansion({ data, expandable })
 
   const normalizedSortState = React.useMemo<SortState<T>[]>(
     () => sortState ?? [],
@@ -441,6 +476,81 @@ export function DataTableV2<T extends { id: string | number }>({
     )
   }
 
+  // Control 헤더 셀 (체크박스 / 확장) — sticky left, 항상 좌측 pinned 컬럼 앞에 위치
+  const showExpandAll = expandable?.showExpandAll ?? true
+  const renderControlHeaderCells = () => {
+    const cells: React.ReactNode[] = []
+    if (selectable) {
+      cells.push(
+        <div
+          key="ctrl-header-select"
+          role="columnheader"
+          className={cn("shrink-0 sticky z-20 flex items-center justify-center min-h-9", headerBg)}
+          style={{ width: CHECKBOX_COL_WIDTH, left: 0 }}
+        >
+          <Checkbox
+            checked={selection.allSelected}
+            indeterminate={selection.someSelected}
+            onCheckedChange={() => selection.toggleAll()}
+            aria-label="전체 선택"
+          />
+        </div>
+      )
+    }
+    if (expandable) {
+      cells.push(
+        <div
+          key="ctrl-header-expand"
+          role="columnheader"
+          className={cn("shrink-0 sticky z-20 flex items-center justify-center min-h-9", headerBg)}
+          style={{
+            width: EXPAND_COL_WIDTH,
+            left: selectable ? CHECKBOX_COL_WIDTH : 0,
+          }}
+        >
+          {showExpandAll && (
+            <button
+              type="button"
+              onClick={expansion.toggleAll}
+              className="flex h-9 w-10 items-center justify-center text-slate-500 hover:text-slate-700 dark:hover:text-slate-200 transition-colors"
+              aria-label={expansion.allExpanded ? "모두 접기" : "모두 펼치기"}
+            >
+              {expansion.allExpanded ? <DownIcon size={24} /> : <RightIcon size={24} />}
+            </button>
+          )}
+        </div>
+      )
+    }
+    return cells
+  }
+
+  // Control 헤더 placeholder (그룹 행에서 자리 확보용, 내용 비어있음)
+  const renderControlHeaderPlaceholders = () => {
+    const cells: React.ReactNode[] = []
+    if (selectable) {
+      cells.push(
+        <div
+          key="ctrl-ph-select"
+          className={cn("shrink-0 sticky z-20 min-h-9", headerBg)}
+          style={{ width: CHECKBOX_COL_WIDTH, left: 0 }}
+        />
+      )
+    }
+    if (expandable) {
+      cells.push(
+        <div
+          key="ctrl-ph-expand"
+          className={cn("shrink-0 sticky z-20 min-h-9", headerBg)}
+          style={{
+            width: EXPAND_COL_WIDTH,
+            left: selectable ? CHECKBOX_COL_WIDTH : 0,
+          }}
+        />
+      )
+    }
+    return cells
+  }
+
   const leftPinnedCols = columns
     .map((c, i) => ({ c, i }))
     .filter(({ c }) => c.pinned === "left")
@@ -485,6 +595,7 @@ export function DataTableV2<T extends { id: string | number }>({
                 role="row"
                 className="flex border-b border-slate-200 dark:border-slate-700"
               >
+                {renderControlHeaderPlaceholders()}
                 {leftPinnedCols.map(({ c, i }) => renderPinnedPlaceholder(c, i))}
                 {headerGroupCells.map((cell, idx) => {
                   if (cell.kind === "group") {
@@ -540,6 +651,7 @@ export function DataTableV2<T extends { id: string | number }>({
                 strategy={horizontalListSortingStrategy}
               >
                 <div role="row" className="flex">
+                  {renderControlHeaderCells()}
                   {columns.map((col, i) => renderHeaderCell(col, i))}
                   {firstRightPinnedIdx === -1 && !hasFlexColumn && (
                     <div aria-hidden className="flex-1 min-h-9" />
@@ -548,6 +660,7 @@ export function DataTableV2<T extends { id: string | number }>({
               </SortableContext>
             ) : (
               <div role="row" className="flex">
+                {renderControlHeaderCells()}
                 {columns.map((col, i) => renderHeaderCell(col, i))}
               </div>
             )}
@@ -559,6 +672,7 @@ export function DataTableV2<T extends { id: string | number }>({
               <DataTableV2Row
                 key={row.id}
                 row={row}
+                rowIndex={i}
                 columns={columns}
                 leftOffsets={leftOffsets}
                 rightOffsets={rightOffsets}
@@ -571,6 +685,22 @@ export function DataTableV2<T extends { id: string | number }>({
                 isHovered={hoveredId === row.id}
                 onHover={setHoveredId}
                 onHeightChange={setHeight}
+                selectable={selectable}
+                isSelected={selection.isSelected(row.id)}
+                onToggleSelect={selection.toggleRow}
+                checkboxColWidth={CHECKBOX_COL_WIDTH}
+                expandable={!!expandable}
+                isExpanded={expansion.isExpanded(row.id)}
+                canExpand={expansion.canExpand(row)}
+                onToggleExpand={expansion.toggleRow}
+                expandedContent={
+                  expandable && expansion.isExpanded(row.id)
+                    ? expandable.expandedRowRender(row)
+                    : null
+                }
+                expandColWidth={EXPAND_COL_WIDTH}
+                onRowClick={onRowClick}
+                extraClassName={rowClassName?.(row)}
               />
             ))}
           </div>

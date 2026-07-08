@@ -1,20 +1,25 @@
-import { jsx as s, jsxs as g } from "react/jsx-runtime";
+import { jsx as i, jsxs as u } from "react/jsx-runtime";
 import * as o from "react";
-import { useSensors as Ke, useSensor as Pe, PointerSensor as Ie, DndContext as Ee } from "@dnd-kit/core";
-import { SortableContext as Te, horizontalListSortingStrategy as ze } from "@dnd-kit/sortable";
-import { cn as p } from "../../../lib/utils.mjs";
-import { DataTableV2ColumnSeparator as ne } from "./data-table-v2-column-separator.mjs";
-import { DataTableV2Row as Ae } from "./data-table-v2-row.mjs";
-import { DataTableV2SortableHeaderCell as Be } from "./data-table-v2-sortable-header-cell.mjs";
-import { useColumnResize as He } from "./hooks/use-column-resize.mjs";
-import { useColumnReorder as je } from "./hooks/use-column-reorder.mjs";
-const Fe = 40, A = 120, z = {
+import { useSensors as Xe, useSensor as Ge, PointerSensor as Ye, DndContext as Ze } from "@dnd-kit/core";
+import { SortableContext as qe, horizontalListSortingStrategy as Je } from "@dnd-kit/sortable";
+import { cn as h } from "../../../lib/utils.mjs";
+import { Checkbox as Qe } from "../../ui/checkbox.mjs";
+import { DownIcon as et } from "../../../icons/DownIcon.mjs";
+import { RightIcon as tt } from "../../../icons/RightIcon.mjs";
+import { DataTableV2ColumnSeparator as he } from "./data-table-v2-column-separator.mjs";
+import { DataTableV2Row as nt } from "./data-table-v2-row.mjs";
+import { DataTableV2SortableHeaderCell as it } from "./data-table-v2-sortable-header-cell.mjs";
+import { useColumnResize as st } from "./hooks/use-column-resize.mjs";
+import { useColumnReorder as rt } from "./hooks/use-column-reorder.mjs";
+import { useRowExpansion as ot } from "./hooks/use-row-expansion.mjs";
+import { useRowSelection as lt } from "./hooks/use-row-selection.mjs";
+const dt = 40, U = 120, L = 40, A = 40, $ = {
   left: "text-left justify-start",
   center: "text-center justify-center",
   right: "text-right justify-end"
 };
-function re({ direction: n, active: l }) {
-  return /* @__PURE__ */ s(
+function fe({ direction: n, active: c }) {
+  return /* @__PURE__ */ i(
     "svg",
     {
       width: "8",
@@ -22,360 +27,463 @@ function re({ direction: n, active: l }) {
       viewBox: "0 0 8 5",
       fill: "none",
       xmlns: "http://www.w3.org/2000/svg",
-      className: p(
+      className: h(
         "transition-colors",
-        l ? "text-blue-600 dark:text-blue-400" : "text-slate-300 dark:text-slate-500",
+        c ? "text-blue-600 dark:text-blue-400" : "text-slate-300 dark:text-slate-500",
         n === "down" && "rotate-180"
       ),
-      children: /* @__PURE__ */ s("path", { d: "M4 0L8 5H0L4 0Z", fill: "currentColor" })
+      children: /* @__PURE__ */ i("path", { d: "M4 0L8 5H0L4 0Z", fill: "currentColor" })
     }
   );
 }
-function Oe(n, l, h) {
-  const f = n.find((c) => c.column === l);
-  return h ? f ? f.direction === "asc" ? n.map(
-    (c) => c.column === l ? { column: l, direction: "desc" } : c
-  ) : n.filter((c) => c.column !== l) : [...n, { column: l, direction: "asc" }] : f ? f.direction === "asc" ? [{ column: l, direction: "desc" }] : [] : [{ column: l, direction: "asc" }];
+function ct(n, c, f) {
+  const m = n.find((a) => a.column === c);
+  return f ? m ? m.direction === "asc" ? n.map(
+    (a) => a.column === c ? { column: c, direction: "desc" } : a
+  ) : n.filter((a) => a.column !== c) : [...n, { column: c, direction: "asc" }] : m ? m.direction === "asc" ? [{ column: c, direction: "desc" }] : [] : [{ column: c, direction: "asc" }];
 }
-function Ve(n) {
-  const l = new Array(n.length).fill(-1), h = new Array(n.length).fill(-1);
-  let f = 0;
-  for (let a = 0; a < n.length; a++)
-    n[a].pinned === "left" && (l[a] = f, f += _(n[a]));
-  let c = 0;
-  for (let a = n.length - 1; a >= 0; a--)
-    n[a].pinned === "right" && (h[a] = c, c += _(n[a]));
-  return { left: l, right: h };
+function at(n, c = 0) {
+  const f = new Array(n.length).fill(-1), m = new Array(n.length).fill(-1);
+  let a = c;
+  for (let d = 0; d < n.length; d++)
+    n[d].pinned === "left" && (f[d] = a, a += H(n[d]));
+  let y = 0;
+  for (let d = n.length - 1; d >= 0; d--)
+    n[d].pinned === "right" && (m[d] = y, y += H(n[d]));
+  return { left: f, right: m };
 }
-function _(n) {
-  return typeof n.width == "number" ? n.width : typeof n.minWidth == "number" ? n.minWidth : A;
+function H(n) {
+  return typeof n.width == "number" ? n.width : typeof n.minWidth == "number" ? n.minWidth : U;
 }
-function $e(n) {
-  return n.reduce((l, h) => l + _(h), 0);
+function ht(n) {
+  return n.reduce((c, f) => c + H(f), 0);
 }
-function tt({
+function Rt({
   data: n,
-  columns: l,
-  headerGroups: h,
-  sortState: f,
-  onSortChange: c,
-  multiSort: a = !1,
-  resizable: S = !1,
-  columnWidths: ie,
-  onColumnResize: se,
-  columnReorderable: v = !1,
-  columnOrder: oe,
-  onColumnReorder: de,
-  maxHeight: R,
-  estimateRowHeight: B = Fe,
-  className: le
+  columns: c,
+  headerGroups: f,
+  sortState: m,
+  onSortChange: a,
+  multiSort: y = !1,
+  resizable: d = !1,
+  columnWidths: ue,
+  onColumnResize: me,
+  columnReorderable: S = !1,
+  columnOrder: ge,
+  onColumnReorder: pe,
+  selectable: v = !1,
+  selectedIds: xe,
+  defaultSelectedIds: ye,
+  onSelectionChange: ve,
+  onRowClick: we,
+  rowClassName: M,
+  expandable: g,
+  maxHeight: P,
+  estimateRowHeight: X = dt,
+  className: ke
 }) {
-  const { orderedColumns: W, handleColumnDragEnd: H } = je({
-    columns: l,
-    columnReorderable: v,
-    columnOrder: oe,
-    onColumnReorder: de
-  }), { getColumnWidth: j, handleResizeStart: ae, resizingKey: ce } = He({
-    resizable: S,
-    columnWidths: ie,
-    onColumnResize: se
-  }), d = o.useMemo(() => S ? W.map((e) => {
-    const t = j(e);
+  const { orderedColumns: T, handleColumnDragEnd: G } = rt({
+    columns: c,
+    columnReorderable: S,
+    columnOrder: ge,
+    onColumnReorder: pe
+  }), { getColumnWidth: Y, handleResizeStart: Ce, resizingKey: be } = st({
+    resizable: d,
+    columnWidths: ue,
+    onColumnResize: me
+  }), l = o.useMemo(() => d ? T.map((e) => {
+    const t = Y(e);
     return t !== void 0 ? { ...e, width: t } : e;
-  }) : W, [W, S, j]), { left: M, right: D } = o.useMemo(
-    () => Ve(d),
-    [d]
-  ), F = o.useMemo(() => $e(d), [d]), w = o.useMemo(
-    () => f ?? [],
-    [f]
-  ), he = o.useCallback(
+  }) : T, [T, d, Y]), D = (v ? L : 0) + (g ? A : 0), { left: K, right: B } = o.useMemo(
+    () => at(l, D),
+    [l, D]
+  ), Z = o.useMemo(
+    () => ht(l) + D,
+    [l, D]
+  ), _ = lt({
+    data: n,
+    selectable: v,
+    selectedIds: xe,
+    defaultSelectedIds: ye,
+    onSelectionChange: ve
+  }), w = ot({ data: n, expandable: g }), N = o.useMemo(
+    () => m ?? [],
+    [m]
+  ), Se = o.useCallback(
     (e) => {
-      const t = w.findIndex((i) => i.column === e);
+      const t = N.findIndex((r) => r.column === e);
       return t < 0 ? { direction: null, priority: void 0 } : {
-        direction: w[t].direction,
-        priority: a && w.length > 1 ? t + 1 : void 0
+        direction: N[t].direction,
+        priority: y && N.length > 1 ? t + 1 : void 0
       };
     },
-    [w, a]
-  ), fe = o.useCallback(
+    [N, y]
+  ), Ne = o.useCallback(
     (e) => {
-      c && c(Oe(w, e, a));
+      a && a(ct(N, e, y));
     },
-    [w, a, c]
-  ), O = o.useMemo(
-    () => d.some((e) => typeof e.width != "number"),
-    [d]
-  ), ue = o.useMemo(
-    () => v ? d.filter((e) => !e.pinned && !e.sortable).map((e) => String(e.accessorKey)) : [],
-    [d, v]
-  ), me = Ke(
-    Pe(Ie, { activationConstraint: { distance: 5 } })
-  ), ge = o.useCallback(
-    (e) => H(e),
-    [H]
-  ), [V, pe] = o.useState(/* @__PURE__ */ new Map()), xe = o.useCallback((e, t) => {
-    pe((r) => {
-      if (r.get(e) === t) return r;
-      const i = new Map(r);
-      return i.set(e, t), i;
+    [N, y, a]
+  ), q = o.useMemo(
+    () => l.some((e) => typeof e.width != "number"),
+    [l]
+  ), Re = o.useMemo(
+    () => S ? l.filter((e) => !e.pinned && !e.sortable).map((e) => String(e.accessorKey)) : [],
+    [l, S]
+  ), Ee = Xe(
+    Ge(Ye, { activationConstraint: { distance: 5 } })
+  ), Le = o.useCallback(
+    (e) => G(e),
+    [G]
+  ), [J, _e] = o.useState(/* @__PURE__ */ new Map()), We = o.useCallback((e, t) => {
+    _e((s) => {
+      if (s.get(e) === t) return s;
+      const r = new Map(s);
+      return r.set(e, t), r;
     });
-  }, []), $ = o.useMemo(() => {
+  }, []), Q = o.useMemo(() => {
     const e = new Array(n.length + 1);
     e[0] = 0;
     for (let t = 0; t < n.length; t++) {
-      const r = V.get(n[t].id) ?? B;
-      e[t + 1] = e[t] + r;
+      const s = J.get(n[t].id) ?? X;
+      e[t + 1] = e[t] + s;
     }
     return e;
-  }, [n, V, B]), ye = $[n.length], [ve, we] = o.useState(null), U = o.useRef(null), [K, be] = o.useState(!1), [P, ke] = o.useState(!1);
+  }, [n, J, X]), De = Q[n.length], [Ie, ze] = o.useState(null), ee = o.useRef(null), [j, Ae] = o.useState(!1), [O, He] = o.useState(!1);
   o.useEffect(() => {
-    const e = U.current;
+    const e = ee.current;
     if (!e) return;
     const t = () => {
-      be(e.scrollLeft > 0), ke(e.scrollLeft + e.clientWidth < e.scrollWidth - 1);
+      Ae(e.scrollLeft > 0), He(e.scrollLeft + e.clientWidth < e.scrollWidth - 1);
     };
     t(), e.addEventListener("scroll", t, { passive: !0 });
-    const r = new ResizeObserver(t);
-    return r.observe(e), () => {
-      e.removeEventListener("scroll", t), r.disconnect();
+    const s = new ResizeObserver(t);
+    return s.observe(e), () => {
+      e.removeEventListener("scroll", t), s.disconnect();
     };
   }, []);
-  const N = o.useMemo(
-    () => d.filter((e) => !e.pinned),
-    [d]
-  ), b = o.useMemo(() => {
-    if (!h || h.length === 0) return null;
+  const I = o.useMemo(
+    () => l.filter((e) => !e.pinned),
+    [l]
+  ), R = o.useMemo(() => {
+    if (!f || f.length === 0) return null;
     const e = [];
     let t = 0;
-    for (; t < N.length; ) {
-      const r = N[t], i = h.find((u) => u.columns[0] === r.accessorKey);
-      if (i) {
-        const u = i.columns.reduce((x, y) => {
-          const m = N.find((C) => C.accessorKey === y);
-          return x + (m ? _(m) : A);
+    for (; t < I.length; ) {
+      const s = I[t], r = f.find((p) => p.columns[0] === s.accessorKey);
+      if (r) {
+        const p = r.columns.reduce((C, b) => {
+          const x = I.find((W) => W.accessorKey === b);
+          return C + (x ? H(x) : U);
         }, 0);
         e.push({
           kind: "group",
-          key: `group-${String(r.accessorKey)}`,
-          width: u,
-          group: i
-        }), t += i.columns.length;
+          key: `group-${String(s.accessorKey)}`,
+          width: p,
+          group: r
+        }), t += r.columns.length;
       } else
         e.push({
           kind: "placeholder",
-          key: `middle-empty-${String(r.accessorKey)}`,
-          col: r
+          key: `middle-empty-${String(s.accessorKey)}`,
+          col: s
         }), t += 1;
     }
     return e;
-  }, [N, h]), G = b !== null && b.length > 0, Ce = G ? 2 : 1, I = "bg-slate-100 dark:bg-slate-800", Y = (e, t) => {
-    const r = e.id ?? String(e.accessorKey), i = he(e.accessorKey), u = typeof e.width == "number" ? e.width : void 0, x = typeof e.minWidth == "number" ? e.minWidth : void 0, y = e.pinned === "left", m = e.pinned === "right", C = y || m, Se = t === T && K, Ne = t === k && P, Le = t === k, _e = v && !C && !e.sortable, Re = ce === e.accessorKey, We = t === d.length - 1, J = p(
+  }, [I, f]), te = R !== null && R.length > 0, Me = te ? 2 : 1, k = "bg-slate-100 dark:bg-slate-800", ne = (e, t) => {
+    const s = e.id ?? String(e.accessorKey), r = Se(e.accessorKey), p = typeof e.width == "number" ? e.width : void 0, C = typeof e.minWidth == "number" ? e.minWidth : void 0, b = e.pinned === "left", x = e.pinned === "right", W = b || x, Ke = t === V && j, Be = t === E && O, je = t === E, Oe = S && !W && !e.sortable, Fe = be === e.accessorKey, Ve = t === l.length - 1, oe = h(
       "relative flex min-h-9",
-      u !== void 0 && "shrink-0",
-      C && "sticky z-20",
-      C && I,
-      Se && "shadow-[2px_0_5px_-2px_rgba(0,0,0,0.15)]",
-      Ne && "shadow-[-2px_0_5px_-2px_rgba(0,0,0,0.15)]",
+      p !== void 0 && "shrink-0",
+      W && "sticky z-20",
+      W && k,
+      Ke && "shadow-[2px_0_5px_-2px_rgba(0,0,0,0.15)]",
+      Be && "shadow-[-2px_0_5px_-2px_rgba(0,0,0,0.15)]",
       e.sortable && "select-none",
-      Le && "ml-auto"
-    ), Q = {
-      width: u,
-      minWidth: x,
-      flex: u === void 0 ? "1 1 0" : void 0,
-      left: y ? M[t] : void 0,
-      right: m ? D[t] : void 0
-    }, X = p(
+      je && "ml-auto"
+    ), le = {
+      width: p,
+      minWidth: C,
+      flex: p === void 0 ? "1 1 0" : void 0,
+      left: b ? K[t] : void 0,
+      right: x ? B[t] : void 0
+    }, de = h(
       "flex-1 flex items-center px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-300",
-      z[e.align ?? "left"]
-    ), ee = e.sortable ? /* @__PURE__ */ g(
+      $[e.align ?? "left"]
+    ), ce = e.sortable ? /* @__PURE__ */ u(
       "button",
       {
         type: "button",
-        className: p(
+        className: h(
           "flex w-full items-center gap-1 cursor-pointer",
           // 우측 정렬 컬럼은 sort 인디케이터를 헤더명 좌측에 두는 게 관행. flex-row-reverse 로 순서 반전.
-          e.align === "right" ? "flex-row-reverse justify-start" : z[e.align ?? "left"]
+          e.align === "right" ? "flex-row-reverse justify-start" : $[e.align ?? "left"]
         ),
-        onClick: () => fe(e.accessorKey),
+        onClick: () => Ne(e.accessorKey),
         children: [
           e.header,
-          /* @__PURE__ */ g("span", { className: "flex items-center gap-0.5", children: [
-            /* @__PURE__ */ g("span", { className: "flex flex-col gap-0.5", children: [
-              /* @__PURE__ */ s(re, { direction: "up", active: i.direction === "asc" }),
-              /* @__PURE__ */ s(re, { direction: "down", active: i.direction === "desc" })
+          /* @__PURE__ */ u("span", { className: "flex items-center gap-0.5", children: [
+            /* @__PURE__ */ u("span", { className: "flex flex-col gap-0.5", children: [
+              /* @__PURE__ */ i(fe, { direction: "up", active: r.direction === "asc" }),
+              /* @__PURE__ */ i(fe, { direction: "down", active: r.direction === "desc" })
             ] }),
-            i.priority !== void 0 && /* @__PURE__ */ s("span", { className: "text-[9px] font-medium text-blue-600 dark:text-blue-400 leading-none", children: i.priority })
+            r.priority !== void 0 && /* @__PURE__ */ i("span", { className: "text-[9px] font-medium text-blue-600 dark:text-blue-400 leading-none", children: r.priority })
           ] })
         ]
       }
-    ) : e.header, te = !We && /* @__PURE__ */ s(
-      ne,
+    ) : e.header, ae = !Ve && /* @__PURE__ */ i(
+      he,
       {
-        resizable: S,
-        isResizing: Re,
-        onResizeStart: (De) => ae(De, e)
+        resizable: d,
+        isResizing: Fe,
+        onResizeStart: (Ue) => Ce(Ue, e)
       }
-    ), Me = e.sortable ? i.direction === "asc" ? "ascending" : i.direction === "desc" ? "descending" : "none" : void 0;
-    return _e ? /* @__PURE__ */ g(
-      Be,
+    ), $e = e.sortable ? r.direction === "asc" ? "ascending" : r.direction === "desc" ? "descending" : "none" : void 0;
+    return Oe ? /* @__PURE__ */ u(
+      it,
       {
         id: String(e.accessorKey),
-        className: J,
-        style: Q,
+        className: oe,
+        style: le,
         children: [
-          /* @__PURE__ */ s("div", { className: X, children: ee }),
-          te
+          /* @__PURE__ */ i("div", { className: de, children: ce }),
+          ae
         ]
       },
-      r
-    ) : /* @__PURE__ */ g(
+      s
+    ) : /* @__PURE__ */ u(
       "div",
       {
         role: "columnheader",
-        className: J,
-        style: Q,
-        "aria-sort": Me,
+        className: oe,
+        style: le,
+        "aria-sort": $e,
         children: [
-          /* @__PURE__ */ s("div", { className: X, children: ee }),
-          te
+          /* @__PURE__ */ i("div", { className: de, children: ce }),
+          ae
         ]
       },
-      r
+      s
     );
-  }, Z = (e, t) => {
-    const r = typeof e.width == "number" ? e.width : A, i = e.pinned === "left";
-    return /* @__PURE__ */ s(
+  }, ie = (e, t) => {
+    const s = typeof e.width == "number" ? e.width : U, r = e.pinned === "left";
+    return /* @__PURE__ */ i(
       "div",
       {
-        className: p(
+        className: h(
           "shrink-0 sticky z-20",
-          I,
-          t === k && "ml-auto",
-          t === T && K && "shadow-[2px_0_5px_-2px_rgba(0,0,0,0.15)]",
-          t === k && P && "shadow-[-2px_0_5px_-2px_rgba(0,0,0,0.15)]"
+          k,
+          t === E && "ml-auto",
+          t === V && j && "shadow-[2px_0_5px_-2px_rgba(0,0,0,0.15)]",
+          t === E && O && "shadow-[-2px_0_5px_-2px_rgba(0,0,0,0.15)]"
         ),
         style: {
-          width: r,
-          left: i ? M[t] : void 0,
-          right: i ? void 0 : D[t]
+          width: s,
+          left: r ? K[t] : void 0,
+          right: r ? void 0 : B[t]
         }
       },
       `pinned-placeholder-${e.id ?? String(e.accessorKey)}`
     );
-  }, L = d.map((e, t) => ({ c: e, i: t })).filter(({ c: e }) => e.pinned === "left"), E = d.map((e, t) => ({ c: e, i: t })).filter(({ c: e }) => e.pinned === "right"), T = L.length ? L[L.length - 1].i : -1, k = E.length ? E[0].i : -1, q = /* @__PURE__ */ s(
+  }, Pe = (g == null ? void 0 : g.showExpandAll) ?? !0, se = () => {
+    const e = [];
+    return v && e.push(
+      /* @__PURE__ */ i(
+        "div",
+        {
+          role: "columnheader",
+          className: h("shrink-0 sticky z-20 flex items-center justify-center min-h-9", k),
+          style: { width: L, left: 0 },
+          children: /* @__PURE__ */ i(
+            Qe,
+            {
+              checked: _.allSelected,
+              indeterminate: _.someSelected,
+              onCheckedChange: () => _.toggleAll(),
+              "aria-label": "전체 선택"
+            }
+          )
+        },
+        "ctrl-header-select"
+      )
+    ), g && e.push(
+      /* @__PURE__ */ i(
+        "div",
+        {
+          role: "columnheader",
+          className: h("shrink-0 sticky z-20 flex items-center justify-center min-h-9", k),
+          style: {
+            width: A,
+            left: v ? L : 0
+          },
+          children: Pe && /* @__PURE__ */ i(
+            "button",
+            {
+              type: "button",
+              onClick: w.toggleAll,
+              className: "flex h-9 w-10 items-center justify-center text-slate-500 hover:text-slate-700 dark:hover:text-slate-200 transition-colors",
+              "aria-label": w.allExpanded ? "모두 접기" : "모두 펼치기",
+              children: w.allExpanded ? /* @__PURE__ */ i(et, { size: 24 }) : /* @__PURE__ */ i(tt, { size: 24 })
+            }
+          )
+        },
+        "ctrl-header-expand"
+      )
+    ), e;
+  }, Te = () => {
+    const e = [];
+    return v && e.push(
+      /* @__PURE__ */ i(
+        "div",
+        {
+          className: h("shrink-0 sticky z-20 min-h-9", k),
+          style: { width: L, left: 0 }
+        },
+        "ctrl-ph-select"
+      )
+    ), g && e.push(
+      /* @__PURE__ */ i(
+        "div",
+        {
+          className: h("shrink-0 sticky z-20 min-h-9", k),
+          style: {
+            width: A,
+            left: v ? L : 0
+          }
+        },
+        "ctrl-ph-expand"
+      )
+    ), e;
+  }, z = l.map((e, t) => ({ c: e, i: t })).filter(({ c: e }) => e.pinned === "left"), F = l.map((e, t) => ({ c: e, i: t })).filter(({ c: e }) => e.pinned === "right"), V = z.length ? z[z.length - 1].i : -1, E = F.length ? F[0].i : -1, re = /* @__PURE__ */ i(
     "div",
     {
       role: "grid",
-      "aria-rowcount": n.length + Ce,
-      "aria-colcount": d.length,
-      className: p(
+      "aria-rowcount": n.length + Me,
+      "aria-colcount": l.length,
+      className: h(
         // flex-1 컬럼 있으면 컨테이너 폭 채워서 그 컬럼이 자라게. 없으면 콘텐츠 폭 (빈 공간 없음).
-        O ? "w-full" : "w-fit max-w-full",
+        q ? "w-full" : "w-fit max-w-full",
         "overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-700",
         "bg-white dark:bg-slate-900",
-        le
+        ke
       ),
-      children: /* @__PURE__ */ s(
+      children: /* @__PURE__ */ i(
         "div",
         {
-          ref: U,
+          ref: ee,
           className: "overflow-auto",
-          style: { maxHeight: typeof R == "number" ? `${R}px` : R },
-          children: /* @__PURE__ */ g("div", { style: { minWidth: F }, children: [
-            /* @__PURE__ */ g(
+          style: { maxHeight: typeof P == "number" ? `${P}px` : P },
+          children: /* @__PURE__ */ u("div", { style: { minWidth: Z }, children: [
+            /* @__PURE__ */ u(
               "div",
               {
-                className: p(
+                className: h(
                   "sticky top-0 z-30 border-b border-slate-200 dark:border-slate-700",
-                  I
+                  k
                 ),
                 children: [
-                  G && b && /* @__PURE__ */ g(
+                  te && R && /* @__PURE__ */ u(
                     "div",
                     {
                       role: "row",
                       className: "flex border-b border-slate-200 dark:border-slate-700",
                       children: [
-                        L.map(({ c: e, i: t }) => Z(e, t)),
-                        b.map((e, t) => {
+                        Te(),
+                        z.map(({ c: e, i: t }) => ie(e, t)),
+                        R.map((e, t) => {
                           if (e.kind === "group") {
-                            let x = -1;
-                            for (let m = b.length - 1; m >= 0; m--)
-                              if (b[m].kind === "group") {
-                                x = m;
+                            let C = -1;
+                            for (let x = R.length - 1; x >= 0; x--)
+                              if (R[x].kind === "group") {
+                                C = x;
                                 break;
                               }
-                            const y = t === x;
-                            return /* @__PURE__ */ g(
+                            const b = t === C;
+                            return /* @__PURE__ */ u(
                               "div",
                               {
                                 role: "columnheader",
                                 className: "relative flex min-h-9 shrink-0",
                                 style: { width: e.width },
                                 children: [
-                                  /* @__PURE__ */ s(
+                                  /* @__PURE__ */ i(
                                     "div",
                                     {
-                                      className: p(
+                                      className: h(
                                         "flex-1 flex items-center px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-300",
-                                        z[e.group.align ?? "center"]
+                                        $[e.group.align ?? "center"]
                                       ),
                                       children: e.group.header
                                     }
                                   ),
-                                  !y && /* @__PURE__ */ s(ne, {})
+                                  !b && /* @__PURE__ */ i(he, {})
                                 ]
                               },
                               e.key
                             );
                           }
-                          const r = e.col, i = typeof r.width == "number" ? r.width : void 0, u = typeof r.minWidth == "number" ? r.minWidth : void 0;
-                          return /* @__PURE__ */ s(
+                          const s = e.col, r = typeof s.width == "number" ? s.width : void 0, p = typeof s.minWidth == "number" ? s.minWidth : void 0;
+                          return /* @__PURE__ */ i(
                             "div",
                             {
-                              className: p(
+                              className: h(
                                 "min-h-9",
-                                i === void 0 ? "flex-1" : "shrink-0"
+                                r === void 0 ? "flex-1" : "shrink-0"
                               ),
-                              style: { width: i, minWidth: u }
+                              style: { width: r, minWidth: p }
                             },
                             e.key
                           );
                         }),
-                        E.map(({ c: e, i: t }) => Z(e, t))
+                        F.map(({ c: e, i: t }) => ie(e, t))
                       ]
                     }
                   ),
-                  v ? /* @__PURE__ */ s(
-                    Te,
+                  S ? /* @__PURE__ */ i(
+                    qe,
                     {
-                      items: ue,
-                      strategy: ze,
-                      children: /* @__PURE__ */ g("div", { role: "row", className: "flex", children: [
-                        d.map((e, t) => Y(e, t)),
-                        k === -1 && !O && /* @__PURE__ */ s("div", { "aria-hidden": !0, className: "flex-1 min-h-9" })
+                      items: Re,
+                      strategy: Je,
+                      children: /* @__PURE__ */ u("div", { role: "row", className: "flex", children: [
+                        se(),
+                        l.map((e, t) => ne(e, t)),
+                        E === -1 && !q && /* @__PURE__ */ i("div", { "aria-hidden": !0, className: "flex-1 min-h-9" })
                       ] })
                     }
-                  ) : /* @__PURE__ */ s("div", { role: "row", className: "flex", children: d.map((e, t) => Y(e, t)) })
+                  ) : /* @__PURE__ */ u("div", { role: "row", className: "flex", children: [
+                    se(),
+                    l.map((e, t) => ne(e, t))
+                  ] })
                 ]
               }
             ),
-            /* @__PURE__ */ s("div", { className: "relative", style: { height: ye }, children: n.map((e, t) => /* @__PURE__ */ s(
-              Ae,
+            /* @__PURE__ */ i("div", { className: "relative", style: { height: De }, children: n.map((e, t) => /* @__PURE__ */ i(
+              nt,
               {
                 row: e,
-                columns: d,
-                leftOffsets: M,
-                rightOffsets: D,
-                lastLeftPinnedIdx: T,
-                firstRightPinnedIdx: k,
-                showLeftShadow: K,
-                showRightShadow: P,
-                totalWidth: F,
-                translateY: $[t],
-                isHovered: ve === e.id,
-                onHover: we,
-                onHeightChange: xe
+                rowIndex: t,
+                columns: l,
+                leftOffsets: K,
+                rightOffsets: B,
+                lastLeftPinnedIdx: V,
+                firstRightPinnedIdx: E,
+                showLeftShadow: j,
+                showRightShadow: O,
+                totalWidth: Z,
+                translateY: Q[t],
+                isHovered: Ie === e.id,
+                onHover: ze,
+                onHeightChange: We,
+                selectable: v,
+                isSelected: _.isSelected(e.id),
+                onToggleSelect: _.toggleRow,
+                checkboxColWidth: L,
+                expandable: !!g,
+                isExpanded: w.isExpanded(e.id),
+                canExpand: w.canExpand(e),
+                onToggleExpand: w.toggleRow,
+                expandedContent: g && w.isExpanded(e.id) ? g.expandedRowRender(e) : null,
+                expandColWidth: A,
+                onRowClick: we,
+                extraClassName: M == null ? void 0 : M(e)
               },
               e.id
             )) })
@@ -384,9 +492,9 @@ function tt({
       )
     }
   );
-  return v ? /* @__PURE__ */ s(Ee, { sensors: me, onDragEnd: ge, children: q }) : q;
+  return S ? /* @__PURE__ */ i(Ze, { sensors: Ee, onDragEnd: Le, children: re }) : re;
 }
 export {
-  tt as DataTableV2
+  Rt as DataTableV2
 };
 //# sourceMappingURL=data-table-v2.mjs.map

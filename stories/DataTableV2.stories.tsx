@@ -310,3 +310,81 @@ export const ResizableAndReorderable: Story = {
     </div>
   ),
 }
+
+export const Selectable: Story = {
+  render: function Render() {
+    const [selectedIds, setSelectedIds] = useState<(string | number)[]>([2])
+    return (
+      <div className="flex flex-col gap-3">
+        <span className="text-xs text-slate-500">
+          선택된 ID: {selectedIds.join(", ") || "(없음)"}
+        </span>
+        <DataTableV2
+          data={smallData}
+          columns={columns}
+          selectable
+          selectedIds={selectedIds}
+          onSelectionChange={setSelectedIds}
+        />
+      </div>
+    )
+  },
+}
+
+export const OnRowClick: Story = {
+  render: function Render() {
+    const [clicked, setClicked] = useState<string | null>(null)
+    return (
+      <div className="flex flex-col gap-3">
+        <span className="text-xs text-slate-500">
+          클릭된 행: {clicked ?? "(없음)"}
+        </span>
+        <DataTableV2
+          data={smallData}
+          columns={columns}
+          onRowClick={(row) => setClicked(`${row.name} (${row.role})`)}
+        />
+      </div>
+    )
+  },
+}
+
+export const RowClassName: Story = {
+  args: {
+    data: smallData,
+    columns,
+    rowClassName: (row) =>
+      (row as Row).score >= 90 ? "!bg-green-50 dark:!bg-green-900/30" : "",
+  },
+}
+
+export const Expandable: Story = {
+  render: function Render() {
+    const [selectedIds, setSelectedIds] = useState<(string | number)[]>([])
+    return (
+      <div className="flex flex-col gap-3">
+        <span className="text-xs text-slate-500">
+          선택된 ID: {selectedIds.join(", ") || "(없음)"}
+        </span>
+        <DataTableV2
+          data={smallData}
+          columns={columns}
+          selectable
+          selectedIds={selectedIds}
+          onSelectionChange={setSelectedIds}
+          expandable={{
+            defaultExpandedRowIds: [1],
+            expandedRowRender: (row) => (
+              <div className="p-4 text-xs text-slate-700 dark:text-slate-200">
+                <div className="font-medium mb-1">확장 상세</div>
+                <div>이름: {(row as Row).name}</div>
+                <div>역할: {(row as Row).role}</div>
+                <div>점수: {(row as Row).score}</div>
+              </div>
+            ),
+          }}
+        />
+      </div>
+    )
+  },
+}
