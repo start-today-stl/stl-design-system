@@ -6,6 +6,21 @@ export interface SortState<T> {
     column: keyof T;
     direction: SortDirection;
 }
+/** 확장 가능 행 설정 */
+export interface ExpandableConfig<T> {
+    /** 확장 영역 렌더링 함수 */
+    expandedRowRender: (row: T) => React.ReactNode;
+    /** 행이 확장 가능한지 여부 (기본: 모든 행) */
+    rowExpandable?: (row: T) => boolean;
+    /** 초기 확장된 행 ID (uncontrolled) */
+    defaultExpandedRowIds?: (string | number)[];
+    /** 확장된 행 ID (controlled) */
+    expandedRowIds?: (string | number)[];
+    /** 확장 상태 변경 콜백 */
+    onExpandedChange?: (expandedRowIds: (string | number)[]) => void;
+    /** 헤더에 전체 펼치기/접기 버튼 표시 (기본: true) */
+    showExpandAll?: boolean;
+}
 /** 다중 레벨 헤더의 그룹 정의 */
 export interface HeaderGroup<T> {
     /** 그룹 헤더 텍스트/노드 */
@@ -67,6 +82,20 @@ export interface DataTableV2Props<T extends {
     columnOrder?: (keyof T)[];
     /** 컬럼 순서 변경 콜백 */
     onColumnReorder?: (newOrder: (keyof T)[]) => void;
+    /** 행 선택 활성화 (체크박스 컬럼 좌측에 자동 추가) */
+    selectable?: boolean;
+    /** 선택된 행 ID (controlled) */
+    selectedIds?: (string | number)[];
+    /** 초기 선택된 행 ID (uncontrolled) */
+    defaultSelectedIds?: (string | number)[];
+    /** 선택 상태 변경 콜백 */
+    onSelectionChange?: (selectedIds: (string | number)[]) => void;
+    /** 행 클릭 콜백 (셀 편집/버튼 클릭과 분리됨) */
+    onRowClick?: (row: T) => void;
+    /** 행별 추가 className 반환 함수 */
+    rowClassName?: (row: T) => string;
+    /** 확장 가능 행 설정 (지정 시 확장 컬럼 좌측에 자동 추가) */
+    expandable?: ExpandableConfig<T>;
     /** 스크롤 컨테이너 최대 높이 */
     maxHeight?: number | string;
     /**
