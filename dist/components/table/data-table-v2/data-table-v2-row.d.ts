@@ -29,9 +29,18 @@ interface DataTableV2RowProps<T extends {
     expandColWidth: number;
     onRowClick?: (row: T) => void;
     extraClassName?: string;
+    editingColumnKey: keyof T | null;
+    editingState: {
+        editValue: T[keyof T];
+        error?: string;
+    } | null;
+    onStartEdit: (row: T, col: DataTableV2Column<T>) => void;
+    onChangeEditValue: (value: T[keyof T]) => void;
+    onCompleteEdit: (col: DataTableV2Column<T>, row: T) => void;
+    onCancelEdit: () => void;
 }
 declare function DataTableV2RowInner<T extends {
     id: string | number;
-}>({ row, rowIndex, columns, leftOffsets, rightOffsets, lastLeftPinnedIdx, firstRightPinnedIdx, showLeftShadow, showRightShadow, totalWidth, translateY, isHovered, onHover, onHeightChange, selectable, isSelected, onToggleSelect, checkboxColWidth, expandable, isExpanded, canExpand, onToggleExpand, expandedContent, expandColWidth, onRowClick, extraClassName, }: DataTableV2RowProps<T>): import("react/jsx-runtime").JSX.Element;
+}>({ row, rowIndex, columns, leftOffsets, rightOffsets, lastLeftPinnedIdx, firstRightPinnedIdx, showLeftShadow, showRightShadow, totalWidth, translateY, isHovered, onHover, onHeightChange, selectable, isSelected, onToggleSelect, checkboxColWidth, expandable, isExpanded, canExpand, onToggleExpand, expandedContent, expandColWidth, onRowClick, extraClassName, editingColumnKey, editingState, onStartEdit, onChangeEditValue, onCompleteEdit, onCancelEdit, }: DataTableV2RowProps<T>): import("react/jsx-runtime").JSX.Element;
 export declare const DataTableV2Row: typeof DataTableV2RowInner;
 export {};

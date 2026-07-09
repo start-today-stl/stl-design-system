@@ -1,7 +1,8 @@
 export * from './table';
 export * from './pagination';
 export * from './data-table';
-export * from './data-table-v2';
+export { DataTableV2 } from './data-table-v2';
+export type { DataTableV2Column, DataTableV2Props } from './data-table-v2';
 export * from './table-container';
 export * from './table-toolbar';
 export * from './pagination-footer';

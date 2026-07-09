@@ -17,6 +17,7 @@ import { DownIcon, RightIcon } from "@/icons"
 import { DataTableV2ColumnSeparator } from "./data-table-v2-column-separator"
 import { DataTableV2Row } from "./data-table-v2-row"
 import { DataTableV2SortableHeaderCell } from "./data-table-v2-sortable-header-cell"
+import { useCellEdit } from "./hooks/use-cell-edit"
 import { useColumnResize } from "./hooks/use-column-resize"
 import { useColumnReorder } from "./hooks/use-column-reorder"
 import { useRowExpansion } from "./hooks/use-row-expansion"
@@ -146,6 +147,7 @@ export function DataTableV2<T extends { id: string | number }>({
   onRowClick,
   rowClassName,
   expandable,
+  onCellChange,
   maxHeight,
   estimateRowHeight = DEFAULT_ESTIMATE,
   className,
@@ -195,6 +197,9 @@ export function DataTableV2<T extends { id: string | number }>({
 
   // 행 확장
   const expansion = useRowExpansion({ data, expandable })
+
+  // 셀 편집
+  const cellEdit = useCellEdit<T>({ onCellChange })
 
   const normalizedSortState = React.useMemo<SortState<T>[]>(
     () => sortState ?? [],
@@ -701,6 +706,18 @@ export function DataTableV2<T extends { id: string | number }>({
                 expandColWidth={EXPAND_COL_WIDTH}
                 onRowClick={onRowClick}
                 extraClassName={rowClassName?.(row)}
+                editingColumnKey={
+                  cellEdit.editing?.rowId === row.id ? cellEdit.editing.columnKey : null
+                }
+                editingState={
+                  cellEdit.editing?.rowId === row.id
+                    ? { editValue: cellEdit.editing.editValue, error: cellEdit.editing.error }
+                    : null
+                }
+                onStartEdit={cellEdit.startEdit}
+                onChangeEditValue={cellEdit.changeEditValue}
+                onCompleteEdit={cellEdit.completeEdit}
+                onCancelEdit={cellEdit.cancelEdit}
               />
             ))}
           </div>

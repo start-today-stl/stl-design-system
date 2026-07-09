@@ -4,9 +4,11 @@ import type { Meta, StoryObj } from "@storybook/react-vite"
 import {
   DataTableV2,
   type DataTableV2Column,
+  type EditComponentProps,
   type HeaderGroup,
   type SortState,
 } from "../src/components/table/data-table-v2"
+import { Select } from "../src/components/ui/select"
 
 const meta = {
   title: "Table/DataTableV2",
@@ -355,6 +357,75 @@ export const RowClassName: Story = {
     columns,
     rowClassName: (row) =>
       (row as Row).score >= 90 ? "!bg-green-50 dark:!bg-green-900/30" : "",
+  },
+}
+
+const roleOptions = [
+  { label: "매니저", value: "매니저" },
+  { label: "엔지니어", value: "엔지니어" },
+  { label: "디자이너", value: "디자이너" },
+  { label: "PM", value: "PM" },
+]
+
+export const EditableCells: Story = {
+  render: function Render() {
+    const [rows, setRows] = useState<Row[]>(smallData)
+    const editableColumns: DataTableV2Column<Row>[] = [
+      { accessorKey: "id", header: "ID", width: 60, align: "center" },
+      {
+        accessorKey: "name",
+        header: "이름 (Input 편집)",
+        minWidth: 160,
+        editable: true,
+      },
+      {
+        accessorKey: "role",
+        header: "역할 (Select 편집)",
+        minWidth: 160,
+        editable: true,
+        editComponent: ({ value, onChange, onComplete }: EditComponentProps<Row>) => (
+          <Select
+            options={roleOptions}
+            value={String(value)}
+            onValueChange={(v) => {
+              onChange(v as Row["role"])
+              onComplete()
+            }}
+            size="full"
+            aria-label="역할 선택"
+          />
+        ),
+      },
+      {
+        accessorKey: "score",
+        header: "점수 (0~100 검증)",
+        width: 140,
+        align: "right",
+        editable: true,
+        cell: (v) => `${v}점`,
+        validate: (value) => {
+          const num = Number(value)
+          if (Number.isNaN(num)) return "숫자만 입력 가능합니다"
+          if (num < 0 || num > 100) return "0 ~ 100 사이 값이어야 합니다"
+          return true
+        },
+      },
+    ]
+    return (
+      <DataTableV2
+        data={rows}
+        columns={editableColumns}
+        onCellChange={(rowId, columnKey, value) => {
+          setRows((prev) =>
+            prev.map((r) =>
+              r.id === rowId
+                ? { ...r, [columnKey]: columnKey === "score" ? Number(value) : value }
+                : r
+            )
+          )
+        }}
+      />
+    )
   },
 }
 
