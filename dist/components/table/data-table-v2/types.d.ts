@@ -6,6 +6,23 @@ export interface SortState<T> {
     column: keyof T;
     direction: SortDirection;
 }
+/** 편집 컴포넌트 Props */
+export interface EditComponentProps<T, K extends keyof T = keyof T> {
+    /** 현재 값 */
+    value: T[K];
+    /** 값 변경 핸들러 */
+    onChange: (value: T[K]) => void;
+    /** 편집 완료 핸들러 (Enter/blur — 검증 후 저장) */
+    onComplete: () => void;
+    /** 편집 취소 핸들러 (Escape — 원래 값 복원) */
+    onCancel: () => void;
+    /** 해당 행 데이터 */
+    row: T;
+    /** 검증 에러 메시지 (있으면 표시) */
+    error?: string;
+}
+/** 검증 결과. true 면 통과, string 이면 에러 메시지. */
+export type ValidationResult = true | string;
 /** 확장 가능 행 설정 */
 export interface ExpandableConfig<T> {
     /** 확장 영역 렌더링 함수 */
@@ -51,6 +68,12 @@ export interface DataTableV2Column<T> {
     align?: "left" | "center" | "right";
     /** 커스텀 셀 렌더러 */
     cell?: (value: T[keyof T], row: T) => React.ReactNode;
+    /** 편집 가능 여부 (셀 클릭 시 편집 모드 진입) */
+    editable?: boolean;
+    /** 커스텀 편집 컴포넌트 (기본: Input) */
+    editComponent?: (props: EditComponentProps<T>) => React.ReactNode;
+    /** 값 검증 함수 — true 통과, string 에러 메시지 */
+    validate?: (value: T[keyof T], row: T) => ValidationResult;
     /** 고정 컬럼 위치 (좌/우 pinned) */
     pinned?: "left" | "right";
 }
@@ -96,6 +119,8 @@ export interface DataTableV2Props<T extends {
     rowClassName?: (row: T) => string;
     /** 확장 가능 행 설정 (지정 시 확장 컬럼 좌측에 자동 추가) */
     expandable?: ExpandableConfig<T>;
+    /** 셀 값 변경 콜백 (편집 완료 + validate 통과 시 호출) */
+    onCellChange?: (rowId: string | number, columnKey: keyof T, value: T[keyof T]) => void;
     /** 스크롤 컨테이너 최대 높이 */
     maxHeight?: number | string;
     /**

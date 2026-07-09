@@ -3,6 +3,7 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 import { Checkbox } from "@/components/ui/checkbox"
 import { DownIcon, RightIcon } from "@/icons"
+import { DataTableV2DefaultEdit } from "./data-table-v2-default-edit"
 import type { DataTableV2Column } from "./types"
 
 interface DataTableV2RowProps<T extends { id: string | number }> {
@@ -35,6 +36,13 @@ interface DataTableV2RowProps<T extends { id: string | number }> {
   // 행 클릭 / className
   onRowClick?: (row: T) => void
   extraClassName?: string
+  // 셀 편집
+  editingColumnKey: keyof T | null
+  editingState: { editValue: T[keyof T]; error?: string } | null
+  onStartEdit: (row: T, col: DataTableV2Column<T>) => void
+  onChangeEditValue: (value: T[keyof T]) => void
+  onCompleteEdit: (col: DataTableV2Column<T>, row: T) => void
+  onCancelEdit: () => void
 }
 
 const alignClass = {
@@ -70,6 +78,12 @@ function DataTableV2RowInner<T extends { id: string | number }>({
   expandColWidth,
   onRowClick,
   extraClassName,
+  editingColumnKey,
+  editingState,
+  onStartEdit,
+  onChangeEditValue,
+  onCompleteEdit,
+  onCancelEdit,
 }: DataTableV2RowProps<T>) {
   const rowRef = React.useRef<HTMLDivElement>(null)
 
@@ -182,6 +196,8 @@ function DataTableV2RowInner<T extends { id: string | number }>({
           const isLeftBoundary = i === lastLeftPinnedIdx && showLeftShadow
           const isRightBoundary = i === firstRightPinnedIdx && showRightShadow
           const isFirstRightPinned = i === firstRightPinnedIdx
+          const isCellEditing =
+            !!editingState && editingColumnKey === col.accessorKey
           const outerCls = cn(
             "flex min-h-9 border-b border-slate-200 dark:border-slate-700",
             width !== undefined && "shrink-0",
@@ -193,8 +209,16 @@ function DataTableV2RowInner<T extends { id: string | number }>({
           )
           const contentCls = cn(
             "flex-1 flex items-center px-3 py-1.5 text-xs text-slate-900 dark:text-slate-200",
-            alignClass[col.align ?? "left"]
+            alignClass[col.align ?? "left"],
+            col.editable && !isCellEditing && "cursor-text hover:bg-blue-50 dark:hover:bg-blue-900/30"
           )
+          const EditComp = col.editComponent ?? DataTableV2DefaultEdit
+          const handleEditableClick = col.editable
+            ? (e: React.MouseEvent) => {
+                e.stopPropagation()
+                if (!isCellEditing) onStartEdit(row, col)
+              }
+            : undefined
           return (
             <div
               key={colId}
@@ -207,8 +231,24 @@ function DataTableV2RowInner<T extends { id: string | number }>({
                 left: isLeft ? leftOffsets[i] : undefined,
                 right: isRight ? rightOffsets[i] : undefined,
               }}
+              {...(col.editable ? { "data-no-row-click": true } : {})}
             >
-              <div className={contentCls}>{rendered}</div>
+              {isCellEditing && editingState ? (
+                <div className="flex-1 flex items-center px-1 py-1">
+                  <EditComp
+                    value={editingState.editValue}
+                    onChange={onChangeEditValue}
+                    onComplete={() => onCompleteEdit(col, row)}
+                    onCancel={onCancelEdit}
+                    row={row}
+                    error={editingState.error}
+                  />
+                </div>
+              ) : (
+                <div className={contentCls} onClick={handleEditableClick}>
+                  {rendered}
+                </div>
+              )}
             </div>
           )
         })}
