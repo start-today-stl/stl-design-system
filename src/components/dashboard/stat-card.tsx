@@ -19,7 +19,8 @@ const borderedStyles = {
 }
 
 const statCardVariants = cva(
-  "relative cursor-pointer transition-colors group flex flex-col",
+  // overflow-hidden: 긴 count/label 이 카드 경계 밖으로 튀어나오지 않도록 (rounded 와 함께 clip)
+  "relative overflow-hidden cursor-pointer transition-colors group flex flex-col",
   {
     variants: {
       variant: {
@@ -146,9 +147,9 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
                   {count}
                 </span>
               </div>
-              {/* 우측: 뱃지 (하단 정렬) */}
+              {/* 우측: 뱃지 (하단 정렬, 뱃지 폭에 맞춰 자동 사이즈) */}
               {badge && (
-                <div className="w-[28px] flex flex-col justify-end items-center">
+                <div className="flex flex-col justify-end flex-shrink-0">
                   {badge}
                 </div>
               )}
