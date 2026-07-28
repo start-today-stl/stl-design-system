@@ -12,7 +12,8 @@ const N = {
   sub: "bg-white border border-slate-100 hover:bg-slate-100 active:bg-blue-200 dark:bg-slate-700 dark:border-slate-600 dark:hover:bg-slate-600 dark:active:bg-blue-800",
   small: "bg-white border border-slate-100 hover:bg-slate-100 active:bg-blue-200 dark:bg-slate-700 dark:border-slate-600 dark:hover:bg-slate-600 dark:active:bg-blue-800"
 }, x = k(
-  "relative cursor-pointer transition-colors group flex flex-col",
+  // overflow-hidden: 긴 count/label 이 카드 경계 밖으로 튀어나오지 않도록 (rounded 와 함께 clip)
+  "relative overflow-hidden cursor-pointer transition-colors group flex flex-col",
   {
     variants: {
       variant: {
@@ -34,15 +35,15 @@ const N = {
     }
   }
 ), y = u.forwardRef(
-  ({ className: d, variant: r = "main", icon: s, label: n, count: c, badge: g, bordered: v = !1, headerAction: p, stretch: o = !1, loading: m = !1, ...h }, b) => {
-    const l = "text-slate-700 dark:text-slate-100", f = v ? w[r || "main"] : N[r || "main"];
+  ({ className: d, variant: r = "main", icon: s, label: n, count: c, badge: v, bordered: p = !1, headerAction: g, stretch: o = !1, loading: h = !1, ...m }, b) => {
+    const l = "text-slate-700 dark:text-slate-100", f = p ? w[r || "main"] : N[r || "main"];
     return r === "main" ? /* @__PURE__ */ e(
       "div",
       {
         ref: b,
         className: a(x({ variant: r, stretch: o }), f, d),
-        ...h,
-        children: m ? /* @__PURE__ */ t("div", { className: "flex flex-col flex-1 justify-between", children: [
+        ...m,
+        children: h ? /* @__PURE__ */ t("div", { className: "flex flex-col flex-1 justify-between", children: [
           /* @__PURE__ */ e(i, { width: 60, height: 14 }),
           /* @__PURE__ */ e(i, { width: "70%", height: 64 })
         ] }) : /* @__PURE__ */ t("div", { className: "flex flex-col flex-1 justify-between", children: [
@@ -51,7 +52,7 @@ const N = {
               s && /* @__PURE__ */ e("span", { className: a("flex-shrink-0", l), children: s }),
               /* @__PURE__ */ e("span", { className: a("text-sm tracking-[-0.14px]", l), children: n })
             ] }),
-            p && /* @__PURE__ */ e("div", { className: "flex items-center", children: p })
+            g && /* @__PURE__ */ e("div", { className: "flex items-center", children: g })
           ] }),
           /* @__PURE__ */ e("span", { className: a("font-heading text-[86px] font-normal tracking-[-2.58px] leading-none", l), children: c })
         ] })
@@ -61,8 +62,8 @@ const N = {
       {
         ref: b,
         className: a(x({ variant: r, stretch: o }), f, d),
-        ...h,
-        children: m ? /* @__PURE__ */ t("div", { className: "flex flex-col flex-1 justify-between", children: [
+        ...m,
+        children: h ? /* @__PURE__ */ t("div", { className: "flex flex-col flex-1 justify-between", children: [
           /* @__PURE__ */ e(i, { width: 50, height: 14 }),
           /* @__PURE__ */ e(i, { width: "50%", height: 36 })
         ] }) : /* @__PURE__ */ t("div", { className: "flex gap-0.5 flex-1", children: [
@@ -73,7 +74,7 @@ const N = {
             ] }),
             /* @__PURE__ */ e("span", { className: a("text-[48px] font-normal tracking-[-1.44px] leading-none", l), children: c })
           ] }),
-          g && /* @__PURE__ */ e("div", { className: "w-[28px] flex flex-col justify-end items-center", children: g })
+          v && /* @__PURE__ */ e("div", { className: "flex flex-col justify-end flex-shrink-0", children: v })
         ] })
       }
     ) : /* @__PURE__ */ e(
@@ -81,8 +82,8 @@ const N = {
       {
         ref: b,
         className: a(x({ variant: r, stretch: o }), f, d),
-        ...h,
-        children: m ? /* @__PURE__ */ t("div", { className: "flex items-center justify-between", children: [
+        ...m,
+        children: h ? /* @__PURE__ */ t("div", { className: "flex items-center justify-between", children: [
           /* @__PURE__ */ e(i, { width: 60, height: 14 }),
           /* @__PURE__ */ e(i, { width: 30, height: 14 })
         ] }) : /* @__PURE__ */ t("div", { className: "flex items-center justify-between", children: [
