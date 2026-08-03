@@ -38,6 +38,17 @@ export interface ExpandableConfig<T> {
     /** 헤더에 전체 펼치기/접기 버튼 표시 (기본: true) */
     showExpandAll?: boolean;
 }
+/** 행 추가/삭제 액션 설정 */
+export interface RowActionsConfig<T> {
+    /** 행 삭제 핸들러 (각 행에 삭제 아이콘 표시) */
+    onRowDelete?: (row: T) => void;
+    /** 행 추가 핸들러 (테이블 하단에 추가 행 표시) */
+    onRowAdd?: () => void;
+    /** 삭제 아이콘 표시 여부 (기본: onRowDelete 있으면 true) */
+    showDelete?: boolean;
+    /** 추가 행 표시 여부 (기본: onRowAdd 있으면 true) */
+    showAdd?: boolean;
+}
 /** 다중 레벨 헤더의 그룹 정의 */
 export interface HeaderGroup<T> {
     /** 그룹 헤더 텍스트/노드 */
@@ -121,6 +132,16 @@ export interface DataTableV2Props<T extends {
     expandable?: ExpandableConfig<T>;
     /** 셀 값 변경 콜백 (편집 완료 + validate 통과 시 호출) */
     onCellChange?: (rowId: string | number, columnKey: keyof T, value: T[keyof T]) => void;
+    /** 행 추가/삭제 액션 (지정 시 삭제 컬럼 우측 pinned + 하단 추가 행) */
+    rowActions?: RowActionsConfig<T>;
+    /** 로딩 상태 */
+    loading?: boolean;
+    /** 로딩 표시 방식 (기본: splash) */
+    loadingMode?: "splash" | "skeleton";
+    /** 커스텀 로딩 콘텐츠 (지정 시 loadingMode 무시) */
+    loadingContent?: React.ReactNode;
+    /** 빈 데이터 메시지 (기본: "데이터가 없습니다.") */
+    emptyMessage?: React.ReactNode;
     /** 스크롤 컨테이너 최대 높이 */
     maxHeight?: number | string;
     /**

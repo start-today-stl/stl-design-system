@@ -2,7 +2,7 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 import { Checkbox } from "@/components/ui/checkbox"
-import { DownIcon, RightIcon } from "@/icons"
+import { DownIcon, RightIcon, RowDeleteIcon } from "@/icons"
 import { DataTableV2DefaultEdit } from "./data-table-v2-default-edit"
 import type { DataTableV2Column } from "./types"
 
@@ -43,6 +43,10 @@ interface DataTableV2RowProps<T extends { id: string | number }> {
   onChangeEditValue: (value: T[keyof T]) => void
   onCompleteEdit: (col: DataTableV2Column<T>, row: T) => void
   onCancelEdit: () => void
+  // 행 삭제 (rowActions)
+  showRowDelete: boolean
+  onRowDelete?: (row: T) => void
+  rowActionsColWidth: number
 }
 
 const alignClass = {
@@ -84,6 +88,9 @@ function DataTableV2RowInner<T extends { id: string | number }>({
   onChangeEditValue,
   onCompleteEdit,
   onCancelEdit,
+  showRowDelete,
+  onRowDelete,
+  rowActionsColWidth,
 }: DataTableV2RowProps<T>) {
   const rowRef = React.useRef<HTMLDivElement>(null)
 
@@ -252,6 +259,29 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             </div>
           )
         })}
+        {showRowDelete && (
+          <div
+            role="gridcell"
+            data-no-row-click
+            className={cn(
+              "shrink-0 sticky right-0 z-10 flex items-center justify-center border-b border-slate-200 dark:border-slate-700 min-h-9 transition-colors",
+              // 우측 pinned 컬럼이 없으면 delete 셀이 자동으로 우측 밀림 (전체 fixed-width 케이스 대응)
+              firstRightPinnedIdx === -1 && "ml-auto",
+              bgClass
+            )}
+            style={{ width: rowActionsColWidth }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={() => onRowDelete?.(row)}
+              className="flex h-9 w-10 items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
+              aria-label="행 삭제"
+            >
+              <RowDeleteIcon size={20} />
+            </button>
+          </div>
+        )}
       </div>
       {isExpanded && expandedContent && (
         <div
@@ -265,4 +295,8 @@ function DataTableV2RowInner<T extends { id: string | number }>({
   )
 }
 
-export const DataTableV2Row = React.memo(DataTableV2RowInner) as typeof DataTableV2RowInner
+type DataTableV2RowComponent = <T extends { id: string | number }>(
+  props: DataTableV2RowProps<T>
+) => React.ReactElement | null
+
+export const DataTableV2Row = React.memo(DataTableV2RowInner) as DataTableV2RowComponent

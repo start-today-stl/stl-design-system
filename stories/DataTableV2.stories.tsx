@@ -5,9 +5,11 @@ import {
   DataTableV2,
   type DataTableV2Column,
   type EditComponentProps,
-  type HeaderGroup,
-  type SortState,
 } from "../src/components/table/data-table-v2"
+import type {
+  HeaderGroup,
+  SortState,
+} from "../src/components/table/data-table-v2/types"
 import { Select } from "../src/components/ui/select"
 
 const meta = {
@@ -453,6 +455,107 @@ export const Expandable: Story = {
                 <div>점수: {(row as Row).score}</div>
               </div>
             ),
+          }}
+        />
+      </div>
+    )
+  },
+}
+
+export const Loading: Story = {
+  render: () => {
+    return (
+      <div className="flex flex-col gap-6">
+        <div>
+          <div className="mb-2 text-sm font-medium text-slate-700 dark:text-slate-200">
+            splash 모드 (기본)
+          </div>
+          <DataTableV2 data={[]} columns={columns} loading />
+        </div>
+        <div>
+          <div className="mb-2 text-sm font-medium text-slate-700 dark:text-slate-200">
+            skeleton 모드
+          </div>
+          <DataTableV2 data={[]} columns={columns} loading loadingMode="skeleton" />
+        </div>
+        <div>
+          <div className="mb-2 text-sm font-medium text-slate-700 dark:text-slate-200">
+            커스텀 loadingContent
+          </div>
+          <DataTableV2
+            data={[]}
+            columns={columns}
+            loading
+            loadingContent={
+              <div className="text-sm text-blue-600 dark:text-blue-400">
+                주문 데이터 조회 중...
+              </div>
+            }
+          />
+        </div>
+      </div>
+    )
+  },
+}
+
+export const EmptyData: Story = {
+  render: () => {
+    return (
+      <div className="flex flex-col gap-6">
+        <div>
+          <div className="mb-2 text-sm font-medium text-slate-700 dark:text-slate-200">
+            기본 빈 데이터 메시지
+          </div>
+          <DataTableV2 data={[]} columns={columns} />
+        </div>
+        <div>
+          <div className="mb-2 text-sm font-medium text-slate-700 dark:text-slate-200">
+            커스텀 emptyMessage
+          </div>
+          <DataTableV2
+            data={[]}
+            columns={columns}
+            emptyMessage={
+              <div className="flex flex-col items-center gap-2">
+                <div className="text-slate-500 dark:text-slate-400">
+                  검색 결과가 없습니다.
+                </div>
+                <div className="text-xs text-slate-400 dark:text-slate-500">
+                  다른 검색 조건을 시도해보세요.
+                </div>
+              </div>
+            }
+          />
+        </div>
+      </div>
+    )
+  },
+}
+
+export const RowActions: Story = {
+  render: () => {
+    const [rows, setRows] = useState<Row[]>(smallData)
+    const handleAdd = () => {
+      const nextId = rows.length ? Math.max(...rows.map((r) => r.id)) + 1 : 1
+      setRows((prev) => [
+        ...prev,
+        { id: nextId, name: `신규 ${nextId}`, role: "매니저", score: 80 },
+      ])
+    }
+    const handleDelete = (row: Row) => {
+      setRows((prev) => prev.filter((r) => r.id !== row.id))
+    }
+    return (
+      <div className="flex flex-col gap-2">
+        <span className="text-xs text-slate-500 dark:text-slate-400">
+          우측 삭제 아이콘 클릭 시 행 제거. 하단 추가 버튼 클릭 시 행 추가.
+        </span>
+        <DataTableV2
+          data={rows}
+          columns={columns}
+          rowActions={{
+            onRowAdd: handleAdd,
+            onRowDelete: handleDelete,
           }}
         />
       </div>
