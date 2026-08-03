@@ -38,9 +38,13 @@ interface DataTableV2RowProps<T extends {
     onChangeEditValue: (value: T[keyof T]) => void;
     onCompleteEdit: (col: DataTableV2Column<T>, row: T) => void;
     onCancelEdit: () => void;
+    showRowDelete: boolean;
+    onRowDelete?: (row: T) => void;
+    rowActionsColWidth: number;
+    rowActionsColLeftOffset: number;
 }
-declare function DataTableV2RowInner<T extends {
+type DataTableV2RowComponent = <T extends {
     id: string | number;
-}>({ row, rowIndex, columns, leftOffsets, rightOffsets, lastLeftPinnedIdx, firstRightPinnedIdx, showLeftShadow, showRightShadow, totalWidth, translateY, isHovered, onHover, onHeightChange, selectable, isSelected, onToggleSelect, checkboxColWidth, expandable, isExpanded, canExpand, onToggleExpand, expandedContent, expandColWidth, onRowClick, extraClassName, editingColumnKey, editingState, onStartEdit, onChangeEditValue, onCompleteEdit, onCancelEdit, }: DataTableV2RowProps<T>): import("react/jsx-runtime").JSX.Element;
-export declare const DataTableV2Row: typeof DataTableV2RowInner;
+}>(props: DataTableV2RowProps<T>) => React.ReactElement | null;
+export declare const DataTableV2Row: DataTableV2RowComponent;
 export {};

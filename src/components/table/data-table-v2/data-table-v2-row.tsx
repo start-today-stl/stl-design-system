@@ -2,7 +2,7 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 import { Checkbox } from "@/components/ui/checkbox"
-import { DownIcon, RightIcon } from "@/icons"
+import { DownIcon, RightIcon, RowDeleteIcon } from "@/icons"
 import { DataTableV2DefaultEdit } from "./data-table-v2-default-edit"
 import type { DataTableV2Column } from "./types"
 
@@ -43,6 +43,11 @@ interface DataTableV2RowProps<T extends { id: string | number }> {
   onChangeEditValue: (value: T[keyof T]) => void
   onCompleteEdit: (col: DataTableV2Column<T>, row: T) => void
   onCancelEdit: () => void
+  // 행 삭제 (rowActions) — checkbox/expand 뒤, 데이터 컬럼 앞에 sticky left 로 배치
+  showRowDelete: boolean
+  onRowDelete?: (row: T) => void
+  rowActionsColWidth: number
+  rowActionsColLeftOffset: number
 }
 
 const alignClass = {
@@ -84,6 +89,10 @@ function DataTableV2RowInner<T extends { id: string | number }>({
   onChangeEditValue,
   onCompleteEdit,
   onCancelEdit,
+  showRowDelete,
+  onRowDelete,
+  rowActionsColWidth,
+  rowActionsColLeftOffset,
 }: DataTableV2RowProps<T>) {
   const rowRef = React.useRef<HTMLDivElement>(null)
 
@@ -184,6 +193,27 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             )}
           </div>
         )}
+        {showRowDelete && (
+          <div
+            role="gridcell"
+            data-no-row-click
+            className={cn(
+              "shrink-0 sticky z-10 flex items-center justify-center border-b border-slate-200 dark:border-slate-700 min-h-9 transition-colors",
+              bgClass
+            )}
+            style={{ width: rowActionsColWidth, left: rowActionsColLeftOffset }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={() => onRowDelete?.(row)}
+              className="flex h-9 w-10 items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
+              aria-label="행 삭제"
+            >
+              <RowDeleteIcon size={20} />
+            </button>
+          </div>
+        )}
         {columns.map((col, i) => {
           const colId = col.id ?? String(col.accessorKey)
           const value = row[col.accessorKey]
@@ -265,4 +295,8 @@ function DataTableV2RowInner<T extends { id: string | number }>({
   )
 }
 
-export const DataTableV2Row = React.memo(DataTableV2RowInner) as typeof DataTableV2RowInner
+type DataTableV2RowComponent = <T extends { id: string | number }>(
+  props: DataTableV2RowProps<T>
+) => React.ReactElement | null
+
+export const DataTableV2Row = React.memo(DataTableV2RowInner) as DataTableV2RowComponent

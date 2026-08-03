@@ -13,7 +13,9 @@ import {
 
 import { cn } from "@/lib/utils"
 import { Checkbox } from "@/components/ui/checkbox"
-import { DownIcon, RightIcon } from "@/icons"
+import { Skeleton } from "@/components/ui/skeleton"
+import { SplashScreen } from "@/components/ui/splash-screen"
+import { DownIcon, RightIcon, RowAddIcon } from "@/icons"
 import { DataTableV2ColumnSeparator } from "./data-table-v2-column-separator"
 import { DataTableV2Row } from "./data-table-v2-row"
 import { DataTableV2SortableHeaderCell } from "./data-table-v2-sortable-header-cell"
@@ -34,6 +36,8 @@ const DEFAULT_ESTIMATE = 40
 const DEFAULT_COL_WIDTH = 120
 const CHECKBOX_COL_WIDTH = 40
 const EXPAND_COL_WIDTH = 40
+const ROW_ACTIONS_WIDTH = 40
+const SKELETON_ROW_COUNT = 5
 
 const alignClass = {
   left: "text-left justify-start",
@@ -94,7 +98,8 @@ function computeNextSort<T>(
  */
 function computePinnedOffsets<T>(
   columns: DataTableV2Column<T>[],
-  leftBaseOffset: number = 0
+  leftBaseOffset: number = 0,
+  rightBaseOffset: number = 0
 ) {
   const left = new Array(columns.length).fill(-1)
   const right = new Array(columns.length).fill(-1)
@@ -105,7 +110,7 @@ function computePinnedOffsets<T>(
       leftAcc += colMinNeeded(columns[i])
     }
   }
-  let rightAcc = 0
+  let rightAcc = rightBaseOffset
   for (let i = columns.length - 1; i >= 0; i--) {
     if (columns[i].pinned === "right") {
       right[i] = rightAcc
@@ -148,10 +153,20 @@ export function DataTableV2<T extends { id: string | number }>({
   rowClassName,
   expandable,
   onCellChange,
+  rowActions,
+  loading = false,
+  loadingMode = "splash",
+  loadingContent,
+  emptyMessage = "데이터가 없습니다.",
   maxHeight,
   estimateRowHeight = DEFAULT_ESTIMATE,
   className,
 }: DataTableV2Props<T>) {
+  // rowActions 파생 값
+  const showRowDelete = rowActions?.showDelete ?? !!rowActions?.onRowDelete
+  const showRowAdd = rowActions?.showAdd ?? !!rowActions?.onRowAdd
+  const onRowDelete = rowActions?.onRowDelete
+  const onRowAdd = rowActions?.onRowAdd
   const { orderedColumns, handleColumnDragEnd } = useColumnReorder({
     columns: rawColumns,
     columnReorderable,
@@ -173,9 +188,11 @@ export function DataTableV2<T extends { id: string | number }>({
     })
   }, [orderedColumns, resizable, getColumnWidth])
 
-  // 제어 컬럼 (체크박스 + 확장) 폭. sticky 헤더/셀 offset 계산에 반영.
-  const controlColsWidth =
+  // 제어 컬럼 (체크박스 + 확장 + 행 삭제) 폭. sticky 헤더/셀 offset 계산에 반영.
+  const rowActionsColLeftOffset =
     (selectable ? CHECKBOX_COL_WIDTH : 0) + (expandable ? EXPAND_COL_WIDTH : 0)
+  const controlColsWidth =
+    rowActionsColLeftOffset + (showRowDelete ? ROW_ACTIONS_WIDTH : 0)
 
   const { left: leftOffsets, right: rightOffsets } = React.useMemo(
     () => computePinnedOffsets(columns, controlColsWidth),
@@ -280,15 +297,18 @@ export function DataTableV2<T extends { id: string | number }>({
   const [hoveredId, setHoveredId] = React.useState<T["id"] | null>(null)
 
   // pinned 경계 shadow — 스크롤 시에만 표시 (MUI DataGrid 스타일)
+  // visibleWidth — loading/empty 콘텐츠 가로 중앙 정렬용 (가로 스크롤 시 가시 영역 기준)
   const scrollRef = React.useRef<HTMLDivElement>(null)
   const [scrolledLeft, setScrolledLeft] = React.useState(false)
   const [scrolledRight, setScrolledRight] = React.useState(false)
+  const [visibleWidth, setVisibleWidth] = React.useState(0)
   React.useEffect(() => {
     const el = scrollRef.current
     if (!el) return
     const update = () => {
       setScrolledLeft(el.scrollLeft > 0)
       setScrolledRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 1)
+      setVisibleWidth(el.clientWidth)
     }
     update()
     el.addEventListener("scroll", update, { passive: true })
@@ -529,6 +549,36 @@ export function DataTableV2<T extends { id: string | number }>({
     return cells
   }
 
+  // 행 삭제 컬럼 헤더 셀 — sticky left (checkbox/expand 뒤에 배치)
+  const renderDeleteControlHeaderCell = () => {
+    if (!showRowDelete) return null
+    return (
+      <div
+        key="ctrl-header-delete"
+        role="columnheader"
+        className={cn(
+          "shrink-0 sticky z-20 flex items-center justify-center min-h-9",
+          headerBg
+        )}
+        style={{ width: ROW_ACTIONS_WIDTH, left: rowActionsColLeftOffset }}
+        aria-label="행 삭제"
+      >
+        <span className="sr-only">행 삭제</span>
+      </div>
+    )
+  }
+
+  const renderDeleteControlHeaderPlaceholder = () => {
+    if (!showRowDelete) return null
+    return (
+      <div
+        key="ctrl-ph-delete"
+        className={cn("shrink-0 sticky z-20 min-h-9", headerBg)}
+        style={{ width: ROW_ACTIONS_WIDTH, left: rowActionsColLeftOffset }}
+      />
+    )
+  }
+
   // Control 헤더 placeholder (그룹 행에서 자리 확보용, 내용 비어있음)
   const renderControlHeaderPlaceholders = () => {
     const cells: React.ReactNode[] = []
@@ -601,6 +651,7 @@ export function DataTableV2<T extends { id: string | number }>({
                 className="flex border-b border-slate-200 dark:border-slate-700"
               >
                 {renderControlHeaderPlaceholders()}
+                {renderDeleteControlHeaderPlaceholder()}
                 {leftPinnedCols.map(({ c, i }) => renderPinnedPlaceholder(c, i))}
                 {headerGroupCells.map((cell, idx) => {
                   if (cell.kind === "group") {
@@ -657,6 +708,7 @@ export function DataTableV2<T extends { id: string | number }>({
               >
                 <div role="row" className="flex">
                   {renderControlHeaderCells()}
+                  {renderDeleteControlHeaderCell()}
                   {columns.map((col, i) => renderHeaderCell(col, i))}
                   {firstRightPinnedIdx === -1 && !hasFlexColumn && (
                     <div aria-hidden className="flex-1 min-h-9" />
@@ -666,61 +718,192 @@ export function DataTableV2<T extends { id: string | number }>({
             ) : (
               <div role="row" className="flex">
                 {renderControlHeaderCells()}
+                {renderDeleteControlHeaderCell()}
                 {columns.map((col, i) => renderHeaderCell(col, i))}
               </div>
             )}
           </div>
 
           {/* Body */}
-          <div className="relative" style={{ height: totalHeight }}>
-            {data.map((row, i) => (
-              <DataTableV2Row
-                key={row.id}
-                row={row}
-                rowIndex={i}
-                columns={columns}
-                leftOffsets={leftOffsets}
-                rightOffsets={rightOffsets}
-                lastLeftPinnedIdx={lastLeftPinnedIdx}
-                firstRightPinnedIdx={firstRightPinnedIdx}
-                showLeftShadow={scrolledLeft}
-                showRightShadow={scrolledRight}
-                totalWidth={totalWidth}
-                translateY={positions[i]}
-                isHovered={hoveredId === row.id}
-                onHover={setHoveredId}
-                onHeightChange={setHeight}
-                selectable={selectable}
-                isSelected={selection.isSelected(row.id)}
-                onToggleSelect={selection.toggleRow}
-                checkboxColWidth={CHECKBOX_COL_WIDTH}
-                expandable={!!expandable}
-                isExpanded={expansion.isExpanded(row.id)}
-                canExpand={expansion.canExpand(row)}
-                onToggleExpand={expansion.toggleRow}
-                expandedContent={
-                  expandable && expansion.isExpanded(row.id)
-                    ? expandable.expandedRowRender(row)
-                    : null
-                }
-                expandColWidth={EXPAND_COL_WIDTH}
-                onRowClick={onRowClick}
-                extraClassName={rowClassName?.(row)}
-                editingColumnKey={
-                  cellEdit.editing?.rowId === row.id ? cellEdit.editing.columnKey : null
-                }
-                editingState={
-                  cellEdit.editing?.rowId === row.id
-                    ? { editValue: cellEdit.editing.editValue, error: cellEdit.editing.error }
-                    : null
-                }
-                onStartEdit={cellEdit.startEdit}
-                onChangeEditValue={cellEdit.changeEditValue}
-                onCompleteEdit={cellEdit.completeEdit}
-                onCancelEdit={cellEdit.cancelEdit}
-              />
-            ))}
-          </div>
+          {loading ? (
+            loadingContent ? (
+              // 커스텀 로딩 — 가로 스크롤 시 가시 영역 중앙에 표시
+              <div
+                className="sticky left-0 flex items-center justify-center min-h-64 py-8"
+                style={visibleWidth ? { width: visibleWidth } : undefined}
+              >
+                {loadingContent}
+              </div>
+            ) : loadingMode === "skeleton" ? (
+              // 스켈레톤 — 각 컬럼 폭에 맞춰 셀 구조로 렌더
+              <div>
+                {Array.from({ length: SKELETON_ROW_COUNT }).map((_, rowIdx) => (
+                  <div
+                    key={rowIdx}
+                    role="row"
+                    className="flex border-b border-slate-200 dark:border-slate-700 min-h-9"
+                  >
+                    {selectable && (
+                      <div
+                        role="gridcell"
+                        className="shrink-0 flex items-center justify-center"
+                        style={{ width: CHECKBOX_COL_WIDTH }}
+                      >
+                        <Skeleton width={16} height={16} />
+                      </div>
+                    )}
+                    {expandable && (
+                      <div
+                        role="gridcell"
+                        className="shrink-0 flex items-center justify-center"
+                        style={{ width: EXPAND_COL_WIDTH }}
+                      >
+                        <Skeleton width={16} height={16} />
+                      </div>
+                    )}
+                    {showRowDelete && (
+                      <div
+                        role="gridcell"
+                        className="shrink-0"
+                        style={{ width: ROW_ACTIONS_WIDTH }}
+                      />
+                    )}
+                    {columns.map((col) => {
+                      const width =
+                        typeof col.width === "number" ? col.width : undefined
+                      const minWidth =
+                        typeof col.minWidth === "number" ? col.minWidth : undefined
+                      return (
+                        <div
+                          key={col.id ?? String(col.accessorKey)}
+                          role="gridcell"
+                          className={cn(
+                            "flex items-center px-3 py-1.5",
+                            width === undefined ? "flex-1" : "shrink-0"
+                          )}
+                          style={{ width, minWidth }}
+                        >
+                          <Skeleton height={16} width="70%" />
+                        </div>
+                      )
+                    })}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              // 기본 splash — 가로 스크롤 시 가시 영역 중앙에 표시
+              <div
+                className="sticky left-0 flex items-center justify-center min-h-64 py-8"
+                style={visibleWidth ? { width: visibleWidth } : undefined}
+              >
+                <SplashScreen size="lg" />
+              </div>
+            )
+          ) : data.length === 0 ? (
+            <div
+              className="sticky left-0 flex items-center justify-center min-h-32 py-8 text-sm text-slate-500 dark:text-slate-400"
+              style={visibleWidth ? { width: visibleWidth } : undefined}
+            >
+              {emptyMessage}
+            </div>
+          ) : (
+            <div className="relative" style={{ height: totalHeight }}>
+              {data.map((row, i) => (
+                <DataTableV2Row
+                  key={row.id}
+                  row={row}
+                  rowIndex={i}
+                  columns={columns}
+                  leftOffsets={leftOffsets}
+                  rightOffsets={rightOffsets}
+                  lastLeftPinnedIdx={lastLeftPinnedIdx}
+                  firstRightPinnedIdx={firstRightPinnedIdx}
+                  showLeftShadow={scrolledLeft}
+                  showRightShadow={scrolledRight}
+                  totalWidth={totalWidth}
+                  translateY={positions[i]}
+                  isHovered={hoveredId === row.id}
+                  onHover={setHoveredId}
+                  onHeightChange={setHeight}
+                  selectable={selectable}
+                  isSelected={selection.isSelected(row.id)}
+                  onToggleSelect={selection.toggleRow}
+                  checkboxColWidth={CHECKBOX_COL_WIDTH}
+                  expandable={!!expandable}
+                  isExpanded={expansion.isExpanded(row.id)}
+                  canExpand={expansion.canExpand(row)}
+                  onToggleExpand={expansion.toggleRow}
+                  expandedContent={
+                    expandable && expansion.isExpanded(row.id)
+                      ? expandable.expandedRowRender(row)
+                      : null
+                  }
+                  expandColWidth={EXPAND_COL_WIDTH}
+                  onRowClick={onRowClick}
+                  extraClassName={rowClassName?.(row)}
+                  editingColumnKey={
+                    cellEdit.editing?.rowId === row.id ? cellEdit.editing.columnKey : null
+                  }
+                  editingState={
+                    cellEdit.editing?.rowId === row.id
+                      ? { editValue: cellEdit.editing.editValue, error: cellEdit.editing.error }
+                      : null
+                  }
+                  onStartEdit={cellEdit.startEdit}
+                  onChangeEditValue={cellEdit.changeEditValue}
+                  onCompleteEdit={cellEdit.completeEdit}
+                  onCancelEdit={cellEdit.cancelEdit}
+                  showRowDelete={showRowDelete}
+                  onRowDelete={onRowDelete}
+                  rowActionsColWidth={ROW_ACTIONS_WIDTH}
+                  rowActionsColLeftOffset={rowActionsColLeftOffset}
+                />
+              ))}
+            </div>
+          )}
+
+          {/* 행 추가 버튼 (하단 새 행, 삭제 컬럼과 동일 위치) */}
+          {showRowAdd && !loading && (
+            <div
+              role="row"
+              className="flex bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800/50"
+            >
+              {selectable && (
+                <div
+                  aria-hidden
+                  className="shrink-0 sticky z-10 min-h-9 bg-white dark:bg-slate-900"
+                  style={{ width: CHECKBOX_COL_WIDTH, left: 0 }}
+                />
+              )}
+              {expandable && (
+                <div
+                  aria-hidden
+                  className="shrink-0 sticky z-10 min-h-9 bg-white dark:bg-slate-900"
+                  style={{
+                    width: EXPAND_COL_WIDTH,
+                    left: selectable ? CHECKBOX_COL_WIDTH : 0,
+                  }}
+                />
+              )}
+              <div
+                role="gridcell"
+                className={cn(
+                  "shrink-0 sticky z-10 flex items-center justify-center bg-white dark:bg-slate-900 min-h-9"
+                )}
+                style={{ width: ROW_ACTIONS_WIDTH, left: rowActionsColLeftOffset }}
+              >
+                <button
+                  type="button"
+                  onClick={() => onRowAdd?.()}
+                  className="flex h-9 w-10 items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
+                  aria-label="행 추가"
+                >
+                  <RowAddIcon size={20} />
+                </button>
+              </div>
+              <div role="gridcell" aria-hidden className="flex-1 min-h-9" />
+            </div>
+          )}
         </div>
       </div>
     </div>
