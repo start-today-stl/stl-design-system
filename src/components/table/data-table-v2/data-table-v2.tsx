@@ -188,18 +188,19 @@ export function DataTableV2<T extends { id: string | number }>({
     })
   }, [orderedColumns, resizable, getColumnWidth])
 
-  // 제어 컬럼 (체크박스 + 확장) 폭. sticky 헤더/셀 offset 계산에 반영.
-  const controlColsWidth =
+  // 제어 컬럼 (체크박스 + 확장 + 행 삭제) 폭. sticky 헤더/셀 offset 계산에 반영.
+  const rowActionsColLeftOffset =
     (selectable ? CHECKBOX_COL_WIDTH : 0) + (expandable ? EXPAND_COL_WIDTH : 0)
-  const rightControlColsWidth = showRowDelete ? ROW_ACTIONS_WIDTH : 0
+  const controlColsWidth =
+    rowActionsColLeftOffset + (showRowDelete ? ROW_ACTIONS_WIDTH : 0)
 
   const { left: leftOffsets, right: rightOffsets } = React.useMemo(
-    () => computePinnedOffsets(columns, controlColsWidth, rightControlColsWidth),
-    [columns, controlColsWidth, rightControlColsWidth]
+    () => computePinnedOffsets(columns, controlColsWidth),
+    [columns, controlColsWidth]
   )
   const totalWidth = React.useMemo(
-    () => sumColumnWidths(columns) + controlColsWidth + rightControlColsWidth,
-    [columns, controlColsWidth, rightControlColsWidth]
+    () => sumColumnWidths(columns) + controlColsWidth,
+    [columns, controlColsWidth]
   )
 
   // 행 선택
@@ -296,15 +297,18 @@ export function DataTableV2<T extends { id: string | number }>({
   const [hoveredId, setHoveredId] = React.useState<T["id"] | null>(null)
 
   // pinned 경계 shadow — 스크롤 시에만 표시 (MUI DataGrid 스타일)
+  // visibleWidth — loading/empty 콘텐츠 가로 중앙 정렬용 (가로 스크롤 시 가시 영역 기준)
   const scrollRef = React.useRef<HTMLDivElement>(null)
   const [scrolledLeft, setScrolledLeft] = React.useState(false)
   const [scrolledRight, setScrolledRight] = React.useState(false)
+  const [visibleWidth, setVisibleWidth] = React.useState(0)
   React.useEffect(() => {
     const el = scrollRef.current
     if (!el) return
     const update = () => {
       setScrolledLeft(el.scrollLeft > 0)
       setScrolledRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 1)
+      setVisibleWidth(el.clientWidth)
     }
     update()
     el.addEventListener("scroll", update, { passive: true })
@@ -545,19 +549,18 @@ export function DataTableV2<T extends { id: string | number }>({
     return cells
   }
 
-  // 우측 컨트롤 헤더 셀 (행 삭제 컬럼) — sticky right: 0
-  const renderRightControlHeaderCell = () => {
+  // 행 삭제 컬럼 헤더 셀 — sticky left (checkbox/expand 뒤에 배치)
+  const renderDeleteControlHeaderCell = () => {
     if (!showRowDelete) return null
     return (
       <div
         key="ctrl-header-delete"
         role="columnheader"
         className={cn(
-          "shrink-0 sticky right-0 z-20 flex items-center justify-center min-h-9",
-          firstRightPinnedIdx === -1 && "ml-auto",
+          "shrink-0 sticky z-20 flex items-center justify-center min-h-9",
           headerBg
         )}
-        style={{ width: ROW_ACTIONS_WIDTH }}
+        style={{ width: ROW_ACTIONS_WIDTH, left: rowActionsColLeftOffset }}
         aria-label="행 삭제"
       >
         <span className="sr-only">행 삭제</span>
@@ -565,17 +568,13 @@ export function DataTableV2<T extends { id: string | number }>({
     )
   }
 
-  const renderRightControlHeaderPlaceholder = () => {
+  const renderDeleteControlHeaderPlaceholder = () => {
     if (!showRowDelete) return null
     return (
       <div
         key="ctrl-ph-delete"
-        className={cn(
-          "shrink-0 sticky right-0 z-20 min-h-9",
-          firstRightPinnedIdx === -1 && "ml-auto",
-          headerBg
-        )}
-        style={{ width: ROW_ACTIONS_WIDTH }}
+        className={cn("shrink-0 sticky z-20 min-h-9", headerBg)}
+        style={{ width: ROW_ACTIONS_WIDTH, left: rowActionsColLeftOffset }}
       />
     )
   }
@@ -652,6 +651,7 @@ export function DataTableV2<T extends { id: string | number }>({
                 className="flex border-b border-slate-200 dark:border-slate-700"
               >
                 {renderControlHeaderPlaceholders()}
+                {renderDeleteControlHeaderPlaceholder()}
                 {leftPinnedCols.map(({ c, i }) => renderPinnedPlaceholder(c, i))}
                 {headerGroupCells.map((cell, idx) => {
                   if (cell.kind === "group") {
@@ -699,7 +699,6 @@ export function DataTableV2<T extends { id: string | number }>({
                   )
                 })}
                 {rightPinnedCols.map(({ c, i }) => renderPinnedPlaceholder(c, i))}
-                {renderRightControlHeaderPlaceholder()}
               </div>
             )}
             {columnReorderable ? (
@@ -709,46 +708,102 @@ export function DataTableV2<T extends { id: string | number }>({
               >
                 <div role="row" className="flex">
                   {renderControlHeaderCells()}
+                  {renderDeleteControlHeaderCell()}
                   {columns.map((col, i) => renderHeaderCell(col, i))}
-                  {firstRightPinnedIdx === -1 && !hasFlexColumn && !showRowDelete && (
+                  {firstRightPinnedIdx === -1 && !hasFlexColumn && (
                     <div aria-hidden className="flex-1 min-h-9" />
                   )}
-                  {renderRightControlHeaderCell()}
                 </div>
               </SortableContext>
             ) : (
               <div role="row" className="flex">
                 {renderControlHeaderCells()}
+                {renderDeleteControlHeaderCell()}
                 {columns.map((col, i) => renderHeaderCell(col, i))}
-                {renderRightControlHeaderCell()}
               </div>
             )}
           </div>
 
           {/* Body */}
           {loading ? (
-            <div className="flex items-center justify-center min-h-64 py-8">
-              {loadingContent ??
-                (loadingMode === "skeleton" ? (
-                  <div className="w-full flex flex-col gap-2 px-3 py-2">
-                    {Array.from({ length: SKELETON_ROW_COUNT }).map((_, i) => (
-                      <div key={i} className="flex gap-3">
-                        {columns.map((col) => (
-                          <Skeleton
-                            key={col.id ?? String(col.accessorKey)}
-                            height={20}
-                            width={typeof col.width === "number" ? col.width - 24 : 100}
-                          />
-                        ))}
+            loadingContent ? (
+              // 커스텀 로딩 — 가로 스크롤 시 가시 영역 중앙에 표시
+              <div
+                className="sticky left-0 flex items-center justify-center min-h-64 py-8"
+                style={visibleWidth ? { width: visibleWidth } : undefined}
+              >
+                {loadingContent}
+              </div>
+            ) : loadingMode === "skeleton" ? (
+              // 스켈레톤 — 각 컬럼 폭에 맞춰 셀 구조로 렌더
+              <div>
+                {Array.from({ length: SKELETON_ROW_COUNT }).map((_, rowIdx) => (
+                  <div
+                    key={rowIdx}
+                    role="row"
+                    className="flex border-b border-slate-200 dark:border-slate-700 min-h-9"
+                  >
+                    {selectable && (
+                      <div
+                        role="gridcell"
+                        className="shrink-0 flex items-center justify-center"
+                        style={{ width: CHECKBOX_COL_WIDTH }}
+                      >
+                        <Skeleton width={16} height={16} />
                       </div>
-                    ))}
+                    )}
+                    {expandable && (
+                      <div
+                        role="gridcell"
+                        className="shrink-0 flex items-center justify-center"
+                        style={{ width: EXPAND_COL_WIDTH }}
+                      >
+                        <Skeleton width={16} height={16} />
+                      </div>
+                    )}
+                    {showRowDelete && (
+                      <div
+                        role="gridcell"
+                        className="shrink-0"
+                        style={{ width: ROW_ACTIONS_WIDTH }}
+                      />
+                    )}
+                    {columns.map((col) => {
+                      const width =
+                        typeof col.width === "number" ? col.width : undefined
+                      const minWidth =
+                        typeof col.minWidth === "number" ? col.minWidth : undefined
+                      return (
+                        <div
+                          key={col.id ?? String(col.accessorKey)}
+                          role="gridcell"
+                          className={cn(
+                            "flex items-center px-3 py-1.5",
+                            width === undefined ? "flex-1" : "shrink-0"
+                          )}
+                          style={{ width, minWidth }}
+                        >
+                          <Skeleton height={16} width="70%" />
+                        </div>
+                      )
+                    })}
                   </div>
-                ) : (
-                  <SplashScreen size="lg" />
                 ))}
-            </div>
+              </div>
+            ) : (
+              // 기본 splash — 가로 스크롤 시 가시 영역 중앙에 표시
+              <div
+                className="sticky left-0 flex items-center justify-center min-h-64 py-8"
+                style={visibleWidth ? { width: visibleWidth } : undefined}
+              >
+                <SplashScreen size="lg" />
+              </div>
+            )
           ) : data.length === 0 ? (
-            <div className="flex items-center justify-center min-h-32 py-8 text-sm text-slate-500 dark:text-slate-400">
+            <div
+              className="sticky left-0 flex items-center justify-center min-h-32 py-8 text-sm text-slate-500 dark:text-slate-400"
+              style={visibleWidth ? { width: visibleWidth } : undefined}
+            >
               {emptyMessage}
             </div>
           ) : (
@@ -801,25 +856,41 @@ export function DataTableV2<T extends { id: string | number }>({
                   showRowDelete={showRowDelete}
                   onRowDelete={onRowDelete}
                   rowActionsColWidth={ROW_ACTIONS_WIDTH}
+                  rowActionsColLeftOffset={rowActionsColLeftOffset}
                 />
               ))}
             </div>
           )}
 
-          {/* 행 추가 버튼 (하단 sticky right) */}
+          {/* 행 추가 버튼 (하단 새 행, 삭제 컬럼과 동일 위치) */}
           {showRowAdd && !loading && (
             <div
               role="row"
-              className="flex bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700"
+              className="flex bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800/50"
             >
-              <div role="gridcell" aria-hidden className="flex-1" />
+              {selectable && (
+                <div
+                  aria-hidden
+                  className="shrink-0 sticky z-10 min-h-9 bg-white dark:bg-slate-900"
+                  style={{ width: CHECKBOX_COL_WIDTH, left: 0 }}
+                />
+              )}
+              {expandable && (
+                <div
+                  aria-hidden
+                  className="shrink-0 sticky z-10 min-h-9 bg-white dark:bg-slate-900"
+                  style={{
+                    width: EXPAND_COL_WIDTH,
+                    left: selectable ? CHECKBOX_COL_WIDTH : 0,
+                  }}
+                />
+              )}
               <div
                 role="gridcell"
                 className={cn(
-                  "shrink-0 sticky right-0 z-10 flex items-center justify-center bg-white dark:bg-slate-900",
-                  "min-h-9"
+                  "shrink-0 sticky z-10 flex items-center justify-center bg-white dark:bg-slate-900 min-h-9"
                 )}
-                style={{ width: ROW_ACTIONS_WIDTH }}
+                style={{ width: ROW_ACTIONS_WIDTH, left: rowActionsColLeftOffset }}
               >
                 <button
                   type="button"
@@ -830,6 +901,7 @@ export function DataTableV2<T extends { id: string | number }>({
                   <RowAddIcon size={20} />
                 </button>
               </div>
+              <div role="gridcell" aria-hidden className="flex-1 min-h-9" />
             </div>
           )}
         </div>

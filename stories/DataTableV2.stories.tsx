@@ -466,11 +466,11 @@ export const Loading: Story = {
   render: () => {
     return (
       <div className="flex flex-col gap-6">
-        <div>
+        <div style={{ width: 720 }}>
           <div className="mb-2 text-sm font-medium text-slate-700 dark:text-slate-200">
             splash 모드 (기본)
           </div>
-          <DataTableV2 data={[]} columns={columns} loading />
+          <DataTableV2 data={[]} columns={wideColumns} loading />
         </div>
         <div>
           <div className="mb-2 text-sm font-medium text-slate-700 dark:text-slate-200">
