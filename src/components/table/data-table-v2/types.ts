@@ -45,6 +45,26 @@ export interface ExpandableConfig<T> {
   showExpandAll?: boolean
 }
 
+/**
+ * 로우 그룹핑 (셀 병합) 설정. Excel 스타일 rowSpan 병합.
+ *
+ * 동작:
+ * - `groupBy` 컬럼 값이 연속으로 같은 데이터 행들 = 같은 그룹
+ * - `mergeColumns` (기본: groupBy 컬럼) 에 해당하는 셀은 그룹 head row 에만 렌더되고 이후 middle rows 는 placeholder
+ * - head 셀 컨텐츠는 세로로 확장되어 그룹 전체 높이 커버
+ * - middle rows 는 border-b 생략 (병합 셀 시각 연속성)
+ *
+ * 제약:
+ * - `rowReorderable` 과 동시 사용 불가 (병합된 상태에서 개별 row 드래그는 병합 깨짐) — 활성 시 rowReorderable 자동 OFF
+ * - 가상화 (SDS-38) 조합 시: group head 가 viewport 밖이면 병합 셀 안 보임. SDS-38 에서 overscan 확장으로 대응 예정.
+ */
+export interface RowGroupConfig<T> {
+  /** 그룹 판단 키 (같은 값 연속 = 같은 그룹). 배열 가능 (여러 키 조합) */
+  groupBy: keyof T | (keyof T)[]
+  /** 병합할 컬럼 (기본: groupBy 컬럼만) */
+  mergeColumns?: (keyof T)[]
+}
+
 /** 행 추가/삭제 액션 설정 */
 export interface RowActionsConfig<T> {
   /** 행 삭제 핸들러 (각 행에 삭제 아이콘 표시) */
@@ -177,6 +197,11 @@ export interface DataTableV2Props<T extends { id: string | number }> {
   rowClassName?: (row: T) => string
   /** 확장 가능 행 설정 (지정 시 확장 컬럼 좌측에 자동 추가) */
   expandable?: ExpandableConfig<T>
+  /**
+   * 로우 그룹핑 (셀 병합). Excel 스타일 rowSpan 병합.
+   * 활성 시 `rowReorderable` 자동 OFF (병합 셀 드래그 시 레이아웃 붕괴).
+   */
+  rowGrouping?: RowGroupConfig<T>
   /** 셀 값 변경 콜백 (편집 완료 + validate 통과 시 호출) */
   onCellChange?: (rowId: string | number, columnKey: keyof T, value: T[keyof T]) => void
   /** 행 추가/삭제 액션 (지정 시 삭제 컬럼 우측 pinned + 하단 추가 행) */

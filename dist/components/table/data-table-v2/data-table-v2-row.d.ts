@@ -45,6 +45,9 @@ interface DataTableV2RowProps<T extends {
     rowActionsColLeftOffset: number;
     rowReorderable: boolean;
     dragHandleColWidth: number;
+    getRowSpan: (columnKey: keyof T) => number | undefined;
+    getRowSpanHeight: (columnKey: keyof T) => number | undefined;
+    getGroupHovered: (columnKey: keyof T) => boolean;
 }
 type DataTableV2RowComponent = <T extends {
     id: string | number;

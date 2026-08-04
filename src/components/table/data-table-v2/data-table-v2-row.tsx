@@ -55,6 +55,14 @@ interface DataTableV2RowProps<T extends { id: string | number }> {
   // 행 순서 변경 (드래그 핸들) — 가장 왼쪽 sticky left: 0
   rowReorderable: boolean
   dragHandleColWidth: number
+  // 로우 그룹핑 (셀 병합)
+  // getRowSpan(colKey): span 조회. 0=middle (placeholder), 1/undefined=normal, >1=head
+  getRowSpan: (columnKey: keyof T) => number | undefined
+  // getRowSpanHeight(colKey): head 셀 (span>1) 의 세로 확장 높이. 아니면 undefined
+  getRowSpanHeight: (columnKey: keyof T) => number | undefined
+  // getGroupHovered(colKey): 이 head 셀이 속한 그룹의 어떤 row 라도 hover 중인지.
+  // middle row hover 시에도 head 셀 hover 표시하기 위함.
+  getGroupHovered: (columnKey: keyof T) => boolean
 }
 
 const alignClass = {
@@ -103,6 +111,9 @@ function DataTableV2RowInner<T extends { id: string | number }>({
   rowReorderable,
   dragHandleColWidth,
   isLast,
+  getRowSpan,
+  getRowSpanHeight,
+  getGroupHovered,
 }: DataTableV2RowProps<T>) {
   const rowRef = React.useRef<HTMLDivElement | null>(null)
 
@@ -172,6 +183,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
         className={cn(
           // border-b 를 row 자체에 두어서 우측 empty 영역 (셀 미커버) 에도 하단 line 이 이어지게 함.
           // 마지막 row 는 외곽 컨테이너 border-bottom 과 겹쳐 2px 로 보이므로 생략.
+          // rowGrouping 병합 셀 위엔 head 셀의 absolute wrapper (opaque bg) 가 border 를 자동으로 가림 → 별도 middle row 스킵 불필요.
           "flex transition-colors",
           !isLast && "border-b border-slate-200 dark:border-slate-700",
           bgClass,
@@ -295,6 +307,33 @@ function DataTableV2RowInner<T extends { id: string | number }>({
           const isFirstRightPinned = i === firstRightPinnedIdx
           const isCellEditing =
             !!editingState && editingColumnKey === col.accessorKey
+          // rowGrouping: span 결정
+          // - undefined 또는 1 → 정상 셀
+          // - 0 → middle placeholder (flex 폭만, 컨텐츠/border 없음)
+          // - > 1 → head 셀. 컨텐츠를 세로 확장 (position:absolute + height=spanHeight)
+          const span = getRowSpan(col.accessorKey)
+          if (span === 0) {
+            return (
+              <div
+                key={colId}
+                aria-hidden
+                className={cn(
+                  width !== undefined && "shrink-0",
+                  isPinned && "sticky z-10",
+                  isFirstRightPinned && "ml-auto"
+                )}
+                style={{
+                  width,
+                  minWidth,
+                  flex: width === undefined ? "1 1 0" : undefined,
+                  left: isLeft ? leftOffsets[i] : undefined,
+                  right: isRight ? rightOffsets[i] : undefined,
+                }}
+              />
+            )
+          }
+          const spanHeight = span !== undefined && span > 1 ? getRowSpanHeight(col.accessorKey) : undefined
+          const isHead = spanHeight !== undefined
           const outerCls = cn(
             "flex min-h-9",
             width !== undefined && "shrink-0",
@@ -302,7 +341,10 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             isPinned && bgClass,
             isFirstRightPinned && "ml-auto",
             isLeftBoundary && "shadow-[2px_0_5px_-2px_rgba(0,0,0,0.15)]",
-            isRightBoundary && "shadow-[-2px_0_5px_-2px_rgba(0,0,0,0.15)]"
+            isRightBoundary && "shadow-[-2px_0_5px_-2px_rgba(0,0,0,0.15)]",
+            // head 셀: 컨텐츠를 absolute 로 세로 확장하기 위해 relative + z-index 상승
+            // (그룹 middle rows 의 bg 위에 얹혀야 함)
+            isHead && "relative z-[5]"
           )
           const contentCls = cn(
             "flex-1 flex items-center px-3 py-1.5 text-xs text-slate-900 dark:text-slate-200",
@@ -316,6 +358,23 @@ function DataTableV2RowInner<T extends { id: string | number }>({
                 if (!isCellEditing) onStartEdit(row, col)
               }
             : undefined
+          const cellBody =
+            isCellEditing && editingState ? (
+              <div className="flex-1 flex items-center px-1 py-1">
+                <EditComp
+                  value={editingState.editValue}
+                  onChange={onChangeEditValue}
+                  onComplete={() => onCompleteEdit(col, row)}
+                  onCancel={onCancelEdit}
+                  row={row}
+                  error={editingState.error}
+                />
+              </div>
+            ) : (
+              <div className={contentCls} onClick={handleEditableClick}>
+                {rendered}
+              </div>
+            )
           return (
             <div
               key={colId}
@@ -330,21 +389,33 @@ function DataTableV2RowInner<T extends { id: string | number }>({
               }}
               {...(col.editable ? { "data-no-row-click": true } : {})}
             >
-              {isCellEditing && editingState ? (
-                <div className="flex-1 flex items-center px-1 py-1">
-                  <EditComp
-                    value={editingState.editValue}
-                    onChange={onChangeEditValue}
-                    onComplete={() => onCompleteEdit(col, row)}
-                    onCancel={onCancelEdit}
-                    row={row}
-                    error={editingState.error}
-                  />
-                </div>
+              {isHead ? (
+                // Head 셀 (rowGrouping span > 1) — 컨텐츠를 absolute 로 세로 확장.
+                // outer 는 row height 유지 (다른 셀 정렬 흔들림 방지), content 만 spanHeight 만큼 뻗음.
+                // border-b 로 그룹 하단 경계 표시 + bg 로 middle rows 위에 opaque 커버.
+                // headBgClass: 그룹 내 어떤 row 라도 hover 중이면 hover bg. head row 자체 selected 면 selected bg.
+                // row 자체의 bgClass 와 분리 — head row (span 시작 row) 가 hover 안 됐어도 middle row hover 시 head 셀은 hover 표시돼야 함.
+                (() => {
+                  const isGroupHovered = getGroupHovered(col.accessorKey)
+                  const headBgClass = isGroupHovered
+                    ? "bg-slate-100 dark:bg-slate-800"
+                    : isSelected
+                      ? "bg-blue-50 dark:bg-blue-900"
+                      : "bg-white dark:bg-slate-900"
+                  return (
+                    <div
+                      className={cn(
+                        "absolute top-0 left-0 right-0 flex border-b border-slate-200 dark:border-slate-700 transition-colors",
+                        headBgClass
+                      )}
+                      style={{ height: spanHeight }}
+                    >
+                      {cellBody}
+                    </div>
+                  )
+                })()
               ) : (
-                <div className={contentCls} onClick={handleEditableClick}>
-                  {rendered}
-                </div>
+                cellBody
               )}
             </div>
           )

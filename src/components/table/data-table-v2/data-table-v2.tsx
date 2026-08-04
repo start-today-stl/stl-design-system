@@ -28,6 +28,7 @@ import { useCellEdit } from "./hooks/use-cell-edit"
 import { useColumnResize } from "./hooks/use-column-resize"
 import { useColumnReorder } from "./hooks/use-column-reorder"
 import { useRowExpansion } from "./hooks/use-row-expansion"
+import { useRowGrouping } from "./hooks/use-row-grouping"
 import { useRowSelection } from "./hooks/use-row-selection"
 import type {
   DataTableV2Column,
@@ -164,15 +165,20 @@ export function DataTableV2<T extends { id: string | number }>({
   loadingMode = "splash",
   loadingContent,
   emptyMessage = "데이터가 없습니다.",
-  rowReorderable = false,
+  rowReorderable: rowReorderableProp = false,
   onRowReorder,
   filterState,
   defaultFilterState,
   onFilterChange,
   maxHeight,
   estimateRowHeight = DEFAULT_ESTIMATE,
+  rowGrouping,
   className,
 }: DataTableV2Props<T>) {
+  // rowGrouping 활성 시 rowReorderable 자동 OFF (병합 셀 드래그 시 레이아웃 붕괴).
+  // v1 동일 정책.
+  const rowReorderable = rowGrouping ? false : rowReorderableProp
+
   // rowActions 파생 값
   const showRowDelete = rowActions?.showDelete ?? !!rowActions?.onRowDelete
   const showRowAdd = rowActions?.showAdd ?? !!rowActions?.onRowAdd
@@ -235,6 +241,9 @@ export function DataTableV2<T extends { id: string | number }>({
 
   // 행 순서 변경
   const { handleRowDragEnd } = useRowReorder<T>({ data, onRowReorder })
+
+  // 로우 그룹핑 (셀 병합)
+  const { getRowSpan } = useRowGrouping<T>({ data, rowGrouping })
 
   // 컬럼 헤더 필터
   const filter = useFilter({ filterState, defaultFilterState, onFilterChange })
@@ -329,6 +338,23 @@ export function DataTableV2<T extends { id: string | number }>({
   const totalHeight = positions[data.length]
 
   const [hoveredId, setHoveredId] = React.useState<T["id"] | null>(null)
+
+  // rowGrouping: hover 된 row 가 속한 그룹의 head 셀도 함께 hover 표시.
+  // 사용자가 middle row (예: 옵션 M) 를 hover 하면 병합된 상품정보 셀 (head, row 1 DOM 내부) 도 hover bg.
+  const hoveredRowIndex = React.useMemo(() => {
+    if (hoveredId === null) return -1
+    return data.findIndex((r) => r.id === hoveredId)
+  }, [hoveredId, data])
+
+  const getGroupHovered = React.useCallback(
+    (rowIndex: number, colKey: keyof T): boolean => {
+      if (hoveredRowIndex < 0) return false
+      const span = getRowSpan(rowIndex, colKey)
+      if (span === undefined || span <= 1) return false
+      return hoveredRowIndex >= rowIndex && hoveredRowIndex < rowIndex + span
+    },
+    [hoveredRowIndex, getRowSpan]
+  )
 
   // pinned 경계 shadow — 스크롤 시에만 표시 (MUI DataGrid 스타일)
   // visibleWidth — loading/empty 콘텐츠 가로 중앙 정렬용 (가로 스크롤 시 가시 영역 기준)
@@ -966,6 +992,13 @@ export function DataTableV2<T extends { id: string | number }>({
                     rowReorderable={rowReorderable}
                     dragHandleColWidth={DRAG_HANDLE_COL_WIDTH}
                     isLast={i === data.length - 1}
+                    getRowSpan={(colKey) => getRowSpan(i, colKey)}
+                    getRowSpanHeight={(colKey) => {
+                      const span = getRowSpan(i, colKey)
+                      if (span === undefined || span <= 1) return undefined
+                      return positions[i + span] - positions[i]
+                    }}
+                    getGroupHovered={(colKey) => getGroupHovered(i, colKey)}
                   />
                 ))}
               </SortableContext>

@@ -768,3 +768,81 @@ export const ColumnFilterWithSort: Story = {
     )
   },
 }
+
+// ============================================================================
+// rowGrouping — 셀 병합 (v1 시맨틱 이식)
+// 실무 케이스: B2B 주문 상세에서 상품ID 기준으로 상품 정보 컬럼 (코드/브랜드/상품명 등) 병합
+// ============================================================================
+
+interface GroupOrderRow {
+  id: number
+  goodsId: string
+  goodsCode: string
+  brandName: string
+  goodsName: string
+  unitPrice: number
+  optionName: string
+  qty: number
+}
+
+const groupOrderData: GroupOrderRow[] = [
+  { id: 1, goodsId: "G001", goodsCode: "SKU-001", brandName: "브랜드A", goodsName: "티셔츠 화이트", unitPrice: 19000, optionName: "S", qty: 3 },
+  { id: 2, goodsId: "G001", goodsCode: "SKU-001", brandName: "브랜드A", goodsName: "티셔츠 화이트", unitPrice: 19000, optionName: "M", qty: 5 },
+  { id: 3, goodsId: "G001", goodsCode: "SKU-001", brandName: "브랜드A", goodsName: "티셔츠 화이트", unitPrice: 19000, optionName: "L", qty: 2 },
+  { id: 4, goodsId: "G002", goodsCode: "SKU-002", brandName: "브랜드B", goodsName: "청바지 다크블루", unitPrice: 49000, optionName: "28", qty: 4 },
+  { id: 5, goodsId: "G002", goodsCode: "SKU-002", brandName: "브랜드B", goodsName: "청바지 다크블루", unitPrice: 49000, optionName: "30", qty: 6 },
+  { id: 6, goodsId: "G003", goodsCode: "SKU-003", brandName: "브랜드C", goodsName: "운동화 그레이", unitPrice: 89000, optionName: "270", qty: 1 },
+]
+
+const groupOrderColumns: DataTableV2Column<GroupOrderRow>[] = [
+  { accessorKey: "goodsCode", header: "상품코드", width: 120, align: "center" },
+  { accessorKey: "brandName", header: "브랜드", width: 100 },
+  { accessorKey: "goodsName", header: "상품명", minWidth: 160 },
+  { accessorKey: "unitPrice", header: "단가", width: 100, align: "right", cell: (v) => `${(v as number).toLocaleString()}원` },
+  { accessorKey: "optionName", header: "옵션", width: 80, align: "center" },
+  { accessorKey: "qty", header: "수량", width: 80, align: "right" },
+]
+
+export const RowGrouping: Story = {
+  render: () => (
+    <div className="flex flex-col gap-2">
+      <span className="text-xs text-slate-500 dark:text-slate-400">
+        `goodsId` 기준으로 그룹핑 — 상품 정보 컬럼 (코드/브랜드/상품명/단가) 이 rowSpan 으로 병합. 옵션/수량은 개별 렌더.
+      </span>
+      <DataTableV2
+        data={groupOrderData}
+        columns={groupOrderColumns}
+        rowGrouping={{
+          groupBy: "goodsId",
+          mergeColumns: ["goodsCode", "brandName", "goodsName", "unitPrice"],
+        }}
+      />
+    </div>
+  ),
+}
+
+export const RowGroupingWithSelection: Story = {
+  render: function Render() {
+    const [selectedIds, setSelectedIds] = useState<(string | number)[]>([])
+    return (
+      <div className="flex flex-col gap-2">
+        <span className="text-xs text-slate-500 dark:text-slate-400">
+          rowGrouping + selectable 조합. 선택은 개별 row 단위. 삭제 액션도 같이.
+        </span>
+        <DataTableV2
+          data={groupOrderData}
+          columns={groupOrderColumns}
+          rowGrouping={{
+            groupBy: "goodsId",
+            mergeColumns: ["goodsCode", "brandName", "goodsName", "unitPrice"],
+          }}
+          selectable
+          selectedIds={selectedIds}
+          onSelectionChange={setSelectedIds}
+          rowActions={{ onRowDelete: (row) => alert(`삭제: ${row.optionName} × ${row.qty}`) }}
+        />
+      </div>
+    )
+  },
+}
+
