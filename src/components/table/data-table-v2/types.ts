@@ -57,6 +57,39 @@ export interface RowActionsConfig<T> {
   showAdd?: boolean
 }
 
+/** 필터 옵션 (select / multiSelect 용). Select 컴포넌트와 동일하게 value 는 string */
+export interface FilterOption {
+  label: string
+  value: string
+}
+
+/** 커스텀 필터 컴포넌트 Props */
+export interface FilterComponentProps<T> {
+  /** 현재 필터 값. undefined 면 필터 비활성 상태 */
+  value: unknown
+  /** 값 변경 핸들러. undefined 로 넘기면 필터 해제 */
+  onChange: (value: unknown) => void
+  /** 팝오버 닫기 핸들러 (적용 버튼에서 호출) */
+  onClose: () => void
+  /** 해당 컬럼 정의 */
+  column: DataTableV2Column<T>
+}
+
+/**
+ * 컬럼 필터 설정. discriminated union — 프리셋 5종 + 커스텀 이스케이프 해치.
+ * 프리셋 타입은 v2 가 자동으로 UI 렌더. `type: "custom"` 이면 사용처의 component 를 렌더.
+ */
+export type FilterConfig<T> =
+  | { type: "text"; placeholder?: string }
+  | { type: "select"; options: FilterOption[]; placeholder?: string }
+  | { type: "multiSelect"; options: FilterOption[]; placeholder?: string }
+  | { type: "dateRange" }
+  | { type: "numberRange" }
+  | {
+      type: "custom"
+      component: (props: FilterComponentProps<T>) => React.ReactNode
+    }
+
 /** 다중 레벨 헤더의 그룹 정의 */
 export interface HeaderGroup<T> {
   /** 그룹 헤더 텍스트/노드 */
@@ -96,6 +129,8 @@ export interface DataTableV2Column<T> {
   validate?: (value: T[keyof T], row: T) => ValidationResult
   /** 고정 컬럼 위치 (좌/우 pinned) */
   pinned?: "left" | "right"
+  /** 컬럼 헤더 필터. 지정 시 헤더에 필터 아이콘 표시 → 클릭 시 팝오버 오픈 */
+  filter?: FilterConfig<T>
 }
 
 /** DataTable v2 Props */
@@ -146,6 +181,15 @@ export interface DataTableV2Props<T extends { id: string | number }> {
   onCellChange?: (rowId: string | number, columnKey: keyof T, value: T[keyof T]) => void
   /** 행 추가/삭제 액션 (지정 시 삭제 컬럼 우측 pinned + 하단 추가 행) */
   rowActions?: RowActionsConfig<T>
+  /**
+   * 필터 상태 (controlled). key = String(accessorKey), value = 필터 값 (프리셋별 타입 다름).
+   * value 가 undefined / 빈 배열 / 빈 문자열이면 해당 컬럼 필터 비활성.
+   */
+  filterState?: Record<string, unknown>
+  /** 초기 필터 상태 (uncontrolled) */
+  defaultFilterState?: Record<string, unknown>
+  /** 필터 상태 변경 콜백 */
+  onFilterChange?: (filterState: Record<string, unknown>) => void
   /** 로딩 상태 */
   loading?: boolean
   /** 로딩 표시 방식 (기본: splash) */

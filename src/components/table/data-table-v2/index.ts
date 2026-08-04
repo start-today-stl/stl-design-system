@@ -3,4 +3,7 @@ export type {
   DataTableV2Column,
   DataTableV2Props,
   EditComponentProps,
+  FilterConfig,
+  FilterOption,
+  FilterComponentProps,
 } from "./types"

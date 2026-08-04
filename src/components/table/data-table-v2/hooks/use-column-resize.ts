@@ -41,7 +41,12 @@ export function useColumnResize<T>({
       e.stopPropagation()
       setResizingKey(column.accessorKey)
       startX.current = e.clientX
-      startWidth.current = getColumnWidth(column) ?? 150
+      // 실제 렌더된 헤더 셀 폭 측정 — flex 컬럼(fixed width 없음)은 남은 공간 기준으로 그려지므로
+      // config 상 width 만으로 계산하면 실제 폭과 크게 어긋나 리사이즈 시 확 줄어드는 버그 발생.
+      // e.currentTarget = separator 컨테이너. parentElement = 헤더 셀 outer div.
+      const headerCell = (e.currentTarget as HTMLElement).parentElement
+      const measured = headerCell?.offsetWidth
+      startWidth.current = measured ?? getColumnWidth(column) ?? 150
     },
     [getColumnWidth]
   )

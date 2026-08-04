@@ -18,6 +18,8 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Skeleton } from "@/components/ui/skeleton"
 import { SplashScreen } from "@/components/ui/splash-screen"
 import { DownIcon, RightIcon, RowAddIcon } from "@/icons"
+import { DataTableV2FilterCell } from "./data-table-v2-filter-cell"
+import { useFilter } from "./hooks/use-filter"
 import { useRowReorder } from "./hooks/use-row-reorder"
 import { DataTableV2ColumnSeparator } from "./data-table-v2-column-separator"
 import { DataTableV2Row } from "./data-table-v2-row"
@@ -164,6 +166,9 @@ export function DataTableV2<T extends { id: string | number }>({
   emptyMessage = "데이터가 없습니다.",
   rowReorderable = false,
   onRowReorder,
+  filterState,
+  defaultFilterState,
+  onFilterChange,
   maxHeight,
   estimateRowHeight = DEFAULT_ESTIMATE,
   className,
@@ -230,6 +235,9 @@ export function DataTableV2<T extends { id: string | number }>({
 
   // 행 순서 변경
   const { handleRowDragEnd } = useRowReorder<T>({ data, onRowReorder })
+
+  // 컬럼 헤더 필터
+  const filter = useFilter({ filterState, defaultFilterState, onFilterChange })
 
   const normalizedSortState = React.useMemo<SortState<T>[]>(
     () => sortState ?? [],
@@ -405,11 +413,13 @@ export function DataTableV2<T extends { id: string | number }>({
     const isLastColumn = i === columns.length - 1
 
     // Outer: 순수 레이아웃/포지셔닝. text 스타일은 content container 에.
+    // 모든 셀에 bg 부여 (pinned 여부 무관) → 가로 스크롤 우측 끝에서 마지막 컬럼 bg 로 자연 커버
+    // (right pinned 없는 케이스에서 wrapper 우측 흰 gap 발생 방지)
     const outerCls = cn(
       "relative flex min-h-9",
       width !== undefined && "shrink-0",
       isPinned && "sticky z-20",
-      isPinned && headerBg,
+      headerBg,
       isLeftBoundary && "shadow-[2px_0_5px_-2px_rgba(0,0,0,0.15)]",
       isRightBoundary && "shadow-[-2px_0_5px_-2px_rgba(0,0,0,0.15)]",
       col.sortable && "select-none",
@@ -423,16 +433,13 @@ export function DataTableV2<T extends { id: string | number }>({
       right: isRight ? rightOffsets[i] : undefined,
     }
 
-    // Content container: 확장 슬롯. 미래에 checkbox / filter / menu 등 여기 내부에 형제로 추가.
-    const contentCls = cn(
-      "flex-1 flex items-center px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-300",
-      alignClass[col.align ?? "left"]
-    )
+    // Content container 는 3 슬롯 (헤더명+정렬 / 필터 / 미래 확장) 구조.
+    // alignClass 는 슬롯 1 내부에만 적용해서 필터 아이콘 위치에 영향 안 주게 함.
     const contentBody = col.sortable ? (
       <button
         type="button"
         className={cn(
-          "flex w-full items-center gap-1 cursor-pointer",
+          "flex w-full min-w-0 items-center gap-1 cursor-pointer",
           // 우측 정렬 컬럼은 sort 인디케이터를 헤더명 좌측에 두는 게 관행. flex-row-reverse 로 순서 반전.
           col.align === "right"
             ? "flex-row-reverse justify-start"
@@ -440,8 +447,8 @@ export function DataTableV2<T extends { id: string | number }>({
         )}
         onClick={() => handleSort(col.accessorKey)}
       >
-        {col.header}
-        <span className="flex items-center gap-0.5">
+        <span className="min-w-0 truncate">{col.header}</span>
+        <span className="flex shrink-0 items-center gap-0.5">
           <span className="flex flex-col gap-0.5">
             <SortArrow direction="up" active={info.direction === "asc"} />
             <SortArrow direction="down" active={info.direction === "desc"} />
@@ -454,7 +461,39 @@ export function DataTableV2<T extends { id: string | number }>({
         </span>
       </button>
     ) : (
-      col.header
+      <span className="min-w-0 truncate">{col.header}</span>
+    )
+
+    const columnKey = String(col.accessorKey)
+    const filterCell = col.filter ? (
+      <DataTableV2FilterCell
+        column={col}
+        filter={col.filter}
+        value={filter.getColumnFilter(columnKey)}
+        active={filter.hasActiveFilter(columnKey)}
+        onChange={(v) => filter.setColumnFilter(columnKey, v)}
+      />
+    ) : null
+
+    // 오른쪽 정렬 컬럼(주로 숫자)은 데이터 값이 우측 끝에 몰리므로 필터 아이콘을 좌측에 배치.
+    // 정렬 화살표의 flex-row-reverse 처리와 같은 UX 원칙 (AG Grid 등 표준).
+    const contentInner = (
+      <div
+        className={cn(
+          "flex-1 flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-300 min-w-0",
+          col.align === "right" && "flex-row-reverse"
+        )}
+      >
+        <div
+          className={cn(
+            "flex-1 flex items-center gap-1 min-w-0 overflow-hidden",
+            alignClass[col.align ?? "left"]
+          )}
+        >
+          {contentBody}
+        </div>
+        {filterCell}
+      </div>
     )
 
     const separator = !isLastColumn && (
@@ -481,7 +520,7 @@ export function DataTableV2<T extends { id: string | number }>({
           className={outerCls}
           style={style}
         >
-          <div className={contentCls}>{contentBody}</div>
+          {contentInner}
           {separator}
         </DataTableV2SortableHeaderCell>
       )
@@ -495,7 +534,7 @@ export function DataTableV2<T extends { id: string | number }>({
         style={style}
         aria-sort={ariaSort}
       >
-        <div className={contentCls}>{contentBody}</div>
+        {contentInner}
         {separator}
       </div>
     )
@@ -689,7 +728,7 @@ export function DataTableV2<T extends { id: string | number }>({
         style={{ maxHeight: typeof maxHeight === "number" ? `${maxHeight}px` : maxHeight }}
       >
         <div style={{ minWidth: totalWidth }}>
-          {/* Header (sticky top) */}
+          {/* Header 컨테이너 — 각 셀에 bg 부여로 우측 gap 방어. 여기 bg 는 fallback (sticky 위해). */}
           <div
             className={cn(
               "sticky top-0 z-30 border-b border-slate-200 dark:border-slate-700",
@@ -771,6 +810,9 @@ export function DataTableV2<T extends { id: string | number }>({
                 {renderControlHeaderCells()}
                 {renderDeleteControlHeaderCell()}
                 {columns.map((col, i) => renderHeaderCell(col, i))}
+                {firstRightPinnedIdx === -1 && !hasFlexColumn && (
+                  <div aria-hidden className="flex-1 min-h-9" />
+                )}
               </div>
             )}
           </div>

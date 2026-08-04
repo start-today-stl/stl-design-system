@@ -30,7 +30,9 @@ export function DataTableV2ColumnSeparator({
     <div
       aria-hidden
       className={cn(
-        "absolute right-0 top-0 h-full w-[6px] flex items-center justify-center",
+        // 실제 세로 선은 셀 경계 (right: 0) 에 위치시켜서 좌/우 셀의 컨텐츠와 대칭 거리 유지.
+        // (justify-center 면 셀 안쪽 3px 로 편향되어 좌우 셀의 필터 아이콘까지 거리가 비대칭)
+        "absolute right-0 top-0 h-full w-[6px] flex items-center justify-end",
         resizable && "cursor-col-resize group/resize"
       )}
       onMouseDown={resizable ? onResizeStart : undefined}

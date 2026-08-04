@@ -5,11 +5,13 @@ import {
   DataTableV2,
   type DataTableV2Column,
   type EditComponentProps,
+  type FilterComponentProps,
 } from "../src/components/table/data-table-v2"
 import type {
   HeaderGroup,
   SortState,
 } from "../src/components/table/data-table-v2/types"
+import { Button } from "../src/components/ui/button"
 import { Select } from "../src/components/ui/select"
 
 const meta = {
@@ -602,6 +604,165 @@ export const RowReorderableWithSelection: Story = {
           selectable
           selectedIds={selectedIds}
           onSelectionChange={setSelectedIds}
+        />
+      </div>
+    )
+  },
+}
+
+const filterableColumns: DataTableV2Column<Row>[] = [
+  {
+    accessorKey: "id",
+    header: "ID",
+    width: 60,
+    align: "center",
+    filter: { type: "numberRange" },
+  },
+  {
+    accessorKey: "name",
+    header: "이름",
+    minWidth: 120,
+    filter: { type: "text", placeholder: "이름 검색" },
+  },
+  {
+    accessorKey: "role",
+    header: "역할",
+    minWidth: 120,
+    filter: {
+      type: "multiSelect",
+      options: [
+        { label: "매니저", value: "매니저" },
+        { label: "엔지니어", value: "엔지니어" },
+        { label: "디자이너", value: "디자이너" },
+        { label: "PM", value: "PM" },
+      ],
+      placeholder: "역할 선택",
+    },
+  },
+  {
+    accessorKey: "score",
+    header: "점수",
+    width: 100,
+    align: "right",
+    cell: (v) => `${v}점`,
+    filter: { type: "numberRange" },
+  },
+]
+
+export const ColumnFilterPresets: Story = {
+  render: function Render() {
+    const [filterState, setFilterState] = useState<Record<string, unknown>>({})
+    return (
+      <div className="flex flex-col gap-2">
+        <span className="text-xs text-slate-500 dark:text-slate-400">
+          각 헤더의 필터 아이콘 클릭 → 팝오버 열림. text / multiSelect / numberRange 프리셋 예시.
+        </span>
+        <pre className="text-xs bg-slate-50 dark:bg-slate-800 rounded p-2 text-slate-700 dark:text-slate-200">
+          filterState: {JSON.stringify(filterState)}
+        </pre>
+        <DataTableV2
+          data={smallData}
+          columns={filterableColumns}
+          filterState={filterState}
+          onFilterChange={setFilterState}
+        />
+      </div>
+    )
+  },
+}
+
+const customFilterColumns: DataTableV2Column<Row>[] = [
+  { accessorKey: "id", header: "ID", width: 60, align: "center" },
+  { accessorKey: "name", header: "이름", minWidth: 120 },
+  {
+    accessorKey: "role",
+    header: "역할",
+    minWidth: 120,
+    filter: {
+      type: "custom",
+      component: ({ value, onChange, onClose }: FilterComponentProps<Row>) => {
+        const roleOptions = [
+          { label: "매니저", value: "매니저" },
+          { label: "엔지니어", value: "엔지니어" },
+          { label: "디자이너", value: "디자이너" },
+          { label: "PM", value: "PM" },
+        ]
+        return (
+          <div className="flex flex-col gap-2">
+            <div className="text-xs font-medium text-slate-700 dark:text-slate-200">
+              커스텀 필터 (Select + 즉시 적용)
+            </div>
+            <Select
+              options={roleOptions}
+              value={(value as string) ?? ""}
+              onValueChange={(v) => {
+                onChange(v || undefined)
+                onClose()
+              }}
+              placeholder="역할 선택"
+              clearable
+              aria-label="역할 커스텀 필터"
+            />
+            <Button variant="ghost" size="sm" onClick={() => { onChange(undefined); onClose() }}>
+              초기화
+            </Button>
+          </div>
+        )
+      },
+    },
+  },
+  {
+    accessorKey: "score",
+    header: "점수",
+    width: 100,
+    align: "right",
+    cell: (v) => `${v}점`,
+  },
+]
+
+export const ColumnFilterCustom: Story = {
+  render: function Render() {
+    const [filterState, setFilterState] = useState<Record<string, unknown>>({})
+    return (
+      <div className="flex flex-col gap-2">
+        <span className="text-xs text-slate-500 dark:text-slate-400">
+          역할 컬럼 헤더 필터에 커스텀 컴포넌트 (type: "custom") 로 Select 적용 — 값 선택 즉시 자동 닫힘.
+        </span>
+        <pre className="text-xs bg-slate-50 dark:bg-slate-800 rounded p-2 text-slate-700 dark:text-slate-200">
+          filterState: {JSON.stringify(filterState)}
+        </pre>
+        <DataTableV2
+          data={smallData}
+          columns={customFilterColumns}
+          filterState={filterState}
+          onFilterChange={setFilterState}
+        />
+      </div>
+    )
+  },
+}
+
+export const ColumnFilterWithSort: Story = {
+  render: function Render() {
+    const [sortState, setSortState] = useState<SortState<Row>[]>([])
+    const [filterState, setFilterState] = useState<Record<string, unknown>>({})
+    const columnsSortableFilterable: DataTableV2Column<Row>[] = filterableColumns.map(
+      (c) => ({ ...c, sortable: true })
+    )
+    const sortedData = useMemo(() => sortRows(smallData, sortState), [sortState])
+    return (
+      <div className="flex flex-col gap-2">
+        <span className="text-xs text-slate-500 dark:text-slate-400">
+          정렬 (헤더명 클릭) + 필터 (아이콘 클릭) + 리사이즈 (헤더 우측 경계 드래그) 모두 동시 조작.
+        </span>
+        <DataTableV2
+          data={sortedData}
+          columns={columnsSortableFilterable}
+          sortState={sortState}
+          onSortChange={setSortState}
+          filterState={filterState}
+          onFilterChange={setFilterState}
+          resizable
         />
       </div>
     )
