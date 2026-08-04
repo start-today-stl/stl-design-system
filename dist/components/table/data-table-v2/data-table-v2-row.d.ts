@@ -10,12 +10,9 @@ interface DataTableV2RowProps<T extends {
     rightOffsets: number[];
     lastLeftPinnedIdx: number;
     firstRightPinnedIdx: number;
-    showLeftShadow: boolean;
-    showRightShadow: boolean;
     totalWidth: number;
     translateY: number;
-    isHovered: boolean;
-    onHover: (id: T["id"] | null) => void;
+    onHover?: (id: T["id"] | null) => void;
     onHeightChange: (id: T["id"], height: number) => void;
     selectable: boolean;
     isSelected: boolean;
@@ -45,9 +42,12 @@ interface DataTableV2RowProps<T extends {
     rowActionsColLeftOffset: number;
     rowReorderable: boolean;
     dragHandleColWidth: number;
-    getRowSpan: (columnKey: keyof T) => number | undefined;
-    getRowSpanHeight: (columnKey: keyof T) => number | undefined;
-    getGroupHovered: (columnKey: keyof T) => boolean;
+    getRowSpan: (rowIndex: number, columnKey: keyof T) => number | undefined;
+    getRowSpanHeight: (rowIndex: number, columnKey: keyof T) => number | undefined;
+    getGroupHovered: (rowIndex: number, columnKey: keyof T) => boolean;
+    measureRef?: (el: HTMLElement | null) => void;
+    dataIndex?: number;
+    ariaRowIndex: number;
 }
 type DataTableV2RowComponent = <T extends {
     id: string | number;

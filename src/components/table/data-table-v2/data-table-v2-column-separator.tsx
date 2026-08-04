@@ -7,8 +7,13 @@ interface DataTableV2ColumnSeparatorProps {
   resizable?: boolean
   /** 리사이즈 진행 중 여부 (인디케이터를 활성 상태로 유지) */
   isResizing?: boolean
-  /** 리사이즈 시작 핸들러 */
-  onResizeStart?: (e: React.MouseEvent) => void
+  /**
+   * 리사이즈 시작 핸들러 — parent 의 stable useCallback ref 로 받음.
+   * (인라인 arrow 로 넘기면 매 렌더마다 새 ref → React.memo 실패 → 리렌더)
+   */
+  onResizeStart?: (e: React.MouseEvent, column: unknown) => void
+  /** 이 separator 가 속한 컬럼 (stable ref 기대) — 리사이즈 시 onResizeStart 에 전달 */
+  column?: unknown
 }
 
 /**
@@ -21,11 +26,21 @@ interface DataTableV2ColumnSeparatorProps {
  * 절대 배치를 쓰는 이유: 셀 폭에서 separator 폭이 차감되지 않도록 하기 위함.
  * 셀의 우측 padding 영역에 겹쳐 렌더된다 (레이아웃 폭에 영향 없음).
  */
-export function DataTableV2ColumnSeparator({
+function DataTableV2ColumnSeparatorInner({
   resizable = false,
   isResizing = false,
   onResizeStart,
+  column,
 }: DataTableV2ColumnSeparatorProps) {
+  // onResizeStart 와 column 을 useCallback 으로 wrap → parent 가 stable ref 로 넘기면
+  // handleMouseDown 도 stable → separator memo 유지 (인라인 arrow 로 넘기지 않도록 하기 위함)
+  const handleMouseDown = React.useCallback(
+    (e: React.MouseEvent) => {
+      if (onResizeStart && column !== undefined) onResizeStart(e, column)
+    },
+    [onResizeStart, column]
+  )
+
   return (
     <div
       aria-hidden
@@ -35,7 +50,7 @@ export function DataTableV2ColumnSeparator({
         "absolute right-0 top-0 h-full w-[6px] flex items-center justify-end",
         resizable && "cursor-col-resize group/resize"
       )}
-      onMouseDown={resizable ? onResizeStart : undefined}
+      onMouseDown={resizable && onResizeStart ? handleMouseDown : undefined}
     >
       <span
         className={cn(
@@ -48,3 +63,5 @@ export function DataTableV2ColumnSeparator({
     </div>
   )
 }
+
+export const DataTableV2ColumnSeparator = React.memo(DataTableV2ColumnSeparatorInner)

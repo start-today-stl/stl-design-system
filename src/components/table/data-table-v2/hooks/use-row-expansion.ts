@@ -61,20 +61,28 @@ export function useRowExpansion<T extends { id: string | number }>({
     expandableRows.length > 0 &&
     expandableRows.every((row) => expandedSet.has(row.id))
 
+  // 상태를 ref 로 흡수 — toggle 콜백 ref stable 유지 (deps 에 상태 넣으면 확장 변경마다 rebind → row 리렌더)
+  const expandedSetRef = React.useRef(expandedSet)
+  expandedSetRef.current = expandedSet
+  const allExpandedRef = React.useRef(allExpanded)
+  allExpandedRef.current = allExpanded
+  const expandableRowsRef = React.useRef(expandableRows)
+  expandableRowsRef.current = expandableRows
+
   const toggleRow = React.useCallback(
     (id: T["id"]) => {
-      const next = new Set(expandedSet)
+      const next = new Set(expandedSetRef.current)
       if (next.has(id)) next.delete(id)
       else next.add(id)
       commit(next)
     },
-    [expandedSet, commit]
+    [commit]
   )
 
   const toggleAll = React.useCallback(() => {
-    if (allExpanded) commit(new Set())
-    else commit(new Set(expandableRows.map((r) => r.id)))
-  }, [allExpanded, expandableRows, commit])
+    if (allExpandedRef.current) commit(new Set())
+    else commit(new Set(expandableRowsRef.current.map((r) => r.id)))
+  }, [commit])
 
   return { expandedSet, isExpanded, canExpand, allExpanded, toggleRow, toggleAll }
 }

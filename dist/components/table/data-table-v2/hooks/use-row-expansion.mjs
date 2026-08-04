@@ -1,36 +1,42 @@
-import * as e from "react";
-function S({
+import * as n from "react";
+function C({
   data: w,
-  expandable: t
+  expandable: e
 }) {
-  const [f, E] = e.useState(
-    () => new Set((t == null ? void 0 : t.defaultExpandedRowIds) ?? [])
-  ), o = e.useMemo(() => t ? t.expandedRowIds ? new Set(t.expandedRowIds) : f : /* @__PURE__ */ new Set(), [t, f]), n = e.useCallback(
-    (s) => {
-      t != null && t.onExpandedChange ? t.onExpandedChange(Array.from(s)) : E(s);
+  const [d, l] = n.useState(
+    () => new Set((e == null ? void 0 : e.defaultExpandedRowIds) ?? [])
+  ), s = n.useMemo(() => e ? e.expandedRowIds ? new Set(e.expandedRowIds) : d : /* @__PURE__ */ new Set(), [e, d]), r = n.useCallback(
+    (t) => {
+      e != null && e.onExpandedChange ? e.onExpandedChange(Array.from(t)) : l(t);
     },
-    [t]
-  ), u = e.useCallback(
-    (s) => t ? t.rowExpandable ? t.rowExpandable(s) : !0 : !1,
-    [t]
-  ), d = e.useCallback(
-    (s) => o.has(s),
-    [o]
-  ), r = e.useMemo(
-    () => t ? w.filter(u) : [],
-    [t, w, u]
-  ), i = r.length > 0 && r.every((s) => o.has(s.id)), l = e.useCallback(
-    (s) => {
-      const c = new Set(o);
-      c.has(s) ? c.delete(s) : c.add(s), n(c);
+    [e]
+  ), u = n.useCallback(
+    (t) => e ? e.rowExpandable ? e.rowExpandable(t) : !0 : !1,
+    [e]
+  ), S = n.useCallback(
+    (t) => s.has(t),
+    [s]
+  ), o = n.useMemo(
+    () => e ? w.filter(u) : [],
+    [e, w, u]
+  ), f = o.length > 0 && o.every((t) => s.has(t.id)), i = n.useRef(s);
+  i.current = s;
+  const R = n.useRef(f);
+  R.current = f;
+  const E = n.useRef(o);
+  E.current = o;
+  const m = n.useCallback(
+    (t) => {
+      const c = new Set(i.current);
+      c.has(t) ? c.delete(t) : c.add(t), r(c);
     },
-    [o, n]
-  ), m = e.useCallback(() => {
-    n(i ? /* @__PURE__ */ new Set() : new Set(r.map((s) => s.id)));
-  }, [i, r, n]);
-  return { expandedSet: o, isExpanded: d, canExpand: u, allExpanded: i, toggleRow: l, toggleAll: m };
+    [r]
+  ), g = n.useCallback(() => {
+    R.current ? r(/* @__PURE__ */ new Set()) : r(new Set(E.current.map((t) => t.id)));
+  }, [r]);
+  return { expandedSet: s, isExpanded: S, canExpand: u, allExpanded: f, toggleRow: m, toggleAll: g };
 }
 export {
-  S as useRowExpansion
+  C as useRowExpansion
 };
 //# sourceMappingURL=use-row-expansion.mjs.map

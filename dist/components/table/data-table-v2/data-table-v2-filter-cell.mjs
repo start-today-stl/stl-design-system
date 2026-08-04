@@ -1,32 +1,36 @@
-import { jsxs as i, jsx as a } from "react/jsx-runtime";
-import * as c from "react";
-import { cn as d } from "../../../lib/utils.mjs";
-import { Popover as h, PopoverTrigger as m, PopoverContent as b } from "../../ui/popover.mjs";
-import { FilterIcon as g } from "../../../icons/FilterIcon.mjs";
-import { DefaultNumberRangeFilter as f, DefaultDateRangeFilter as x, DefaultMultiSelectFilter as k, DefaultSelectFilter as F, DefaultTextFilter as D } from "./data-table-v2-default-filters.mjs";
-function j({
-  column: e,
-  filter: o,
-  value: n,
+import { jsxs as p, jsx as a } from "react/jsx-runtime";
+import * as s from "react";
+import { cn as m } from "../../../lib/utils.mjs";
+import { Popover as b, PopoverTrigger as g, PopoverContent as f } from "../../ui/popover.mjs";
+import { FilterIcon as x } from "../../../icons/FilterIcon.mjs";
+import { DefaultNumberRangeFilter as k, DefaultDateRangeFilter as F, DefaultMultiSelectFilter as D, DefaultSelectFilter as R, DefaultTextFilter as w } from "./data-table-v2-default-filters.mjs";
+function C({
+  column: t,
+  filter: l,
+  value: o,
   active: r,
-  onChange: l
+  onChange: n,
+  columnKey: e
 }) {
-  const [t, s] = c.useState(!1), p = c.useCallback(() => s(!1), []);
-  return /* @__PURE__ */ i(h, { open: t, onOpenChange: s, children: [
-    /* @__PURE__ */ a(m, { asChild: !0, children: /* @__PURE__ */ i(
+  const d = s.useCallback(
+    (c) => n(e, c),
+    [n, e]
+  ), [u, i] = s.useState(!1), h = s.useCallback(() => i(!1), []);
+  return /* @__PURE__ */ p(b, { open: u, onOpenChange: i, children: [
+    /* @__PURE__ */ a(g, { asChild: !0, children: /* @__PURE__ */ p(
       "button",
       {
         type: "button",
-        className: d(
+        className: m(
           "relative flex h-6 w-6 shrink-0 cursor-pointer items-center justify-center rounded transition-colors",
           "text-slate-400 hover:text-slate-700 hover:bg-slate-200/60",
           "dark:text-slate-500 dark:hover:text-slate-100 dark:hover:bg-slate-700/60",
           r && "text-blue-600 dark:text-blue-400"
         ),
-        "aria-label": `${typeof e.header == "string" ? e.header : "컬럼"} 필터`,
-        onClick: (u) => u.stopPropagation(),
+        "aria-label": `${typeof t.header == "string" ? t.header : "컬럼"} 필터`,
+        onClick: (c) => c.stopPropagation(),
         children: [
-          /* @__PURE__ */ a(g, { size: 20 }),
+          /* @__PURE__ */ a(x, { size: 20 }),
           r && /* @__PURE__ */ a(
             "span",
             {
@@ -37,71 +41,74 @@ function j({
         ]
       }
     ) }),
-    /* @__PURE__ */ a(b, { align: "end", className: "w-64 p-3", children: R(o, n, l, p, e) })
+    /* @__PURE__ */ a(f, { align: "end", className: "w-64 p-3", children: N(l, o, d, h, t) })
   ] });
 }
-function R(e, o, n, r, l) {
-  switch (e.type) {
+const v = s.memo(
+  C
+);
+function N(t, l, o, r, n) {
+  switch (t.type) {
     case "text":
       return /* @__PURE__ */ a(
-        D,
+        w,
         {
-          value: o,
-          onChange: (t) => n(t),
+          value: l,
+          onChange: (e) => o(e),
           onClose: r,
-          placeholder: e.placeholder
+          placeholder: t.placeholder
         }
       );
     case "select":
       return /* @__PURE__ */ a(
-        F,
+        R,
         {
-          value: o,
-          onChange: (t) => n(t),
+          value: l,
+          onChange: (e) => o(e),
           onClose: r,
-          options: e.options,
-          placeholder: e.placeholder
+          options: t.options,
+          placeholder: t.placeholder
         }
       );
     case "multiSelect":
       return /* @__PURE__ */ a(
-        k,
+        D,
         {
-          value: o,
-          onChange: (t) => n(t),
+          value: l,
+          onChange: (e) => o(e),
           onClose: r,
-          options: e.options,
-          placeholder: e.placeholder
+          options: t.options,
+          placeholder: t.placeholder
         }
       );
     case "dateRange":
       return /* @__PURE__ */ a(
-        x,
+        F,
         {
-          value: o,
-          onChange: (t) => n(t),
+          value: l,
+          onChange: (e) => o(e),
           onClose: r
         }
       );
     case "numberRange":
       return /* @__PURE__ */ a(
-        f,
+        k,
         {
-          value: o,
-          onChange: (t) => n(t),
+          value: l,
+          onChange: (e) => o(e),
           onClose: r
         }
       );
     case "custom":
-      return e.component({
-        value: o,
-        onChange: n,
+      return t.component({
+        value: l,
+        onChange: o,
         onClose: r,
-        column: l
+        column: n
       });
   }
 }
 export {
-  j as DataTableV2FilterCell
+  v as DataTableV2FilterCell
 };
 //# sourceMappingURL=data-table-v2-filter-cell.mjs.map

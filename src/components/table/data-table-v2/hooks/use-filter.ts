@@ -26,36 +26,42 @@ export function useFilter({
 
   const currentState = filterState ?? internalState
 
+  // currentState / filterState / onFilterChange 를 ref 로 흡수 → 콜백 ref stable 유지.
+  // 필터 변경마다 콜백이 rebind 되면 모든 header cell memo 실패 → 전 컬럼 리렌더.
+  const currentStateRef = React.useRef(currentState)
+  currentStateRef.current = currentState
+  const isControlledRef = React.useRef(!!filterState)
+  isControlledRef.current = !!filterState
+  const onFilterChangeRef = React.useRef(onFilterChange)
+  onFilterChangeRef.current = onFilterChange
+
   const setColumnFilter = React.useCallback(
     (columnKey: string, value: unknown) => {
-      const next = { ...currentState }
+      const next = { ...currentStateRef.current }
       if (value === undefined || value === "" || (Array.isArray(value) && value.length === 0)) {
         delete next[columnKey]
       } else {
         next[columnKey] = value
       }
-      if (!filterState) {
+      if (!isControlledRef.current) {
         setInternalState(next)
       }
-      onFilterChange?.(next)
+      onFilterChangeRef.current?.(next)
     },
-    [currentState, filterState, onFilterChange]
+    []
   )
 
   const getColumnFilter = React.useCallback(
-    (columnKey: string): unknown => currentState[columnKey],
-    [currentState]
+    (columnKey: string): unknown => currentStateRef.current[columnKey],
+    []
   )
 
-  const hasActiveFilter = React.useCallback(
-    (columnKey: string): boolean => {
-      const v = currentState[columnKey]
-      if (v === undefined || v === null || v === "") return false
-      if (Array.isArray(v) && v.length === 0) return false
-      return true
-    },
-    [currentState]
-  )
+  const hasActiveFilter = React.useCallback((columnKey: string): boolean => {
+    const v = currentStateRef.current[columnKey]
+    if (v === undefined || v === null || v === "") return false
+    if (Array.isArray(v) && v.length === 0) return false
+    return true
+  }, [])
 
   return {
     filterState: currentState,
