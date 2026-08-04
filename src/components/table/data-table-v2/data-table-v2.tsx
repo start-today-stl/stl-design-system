@@ -519,6 +519,7 @@ export function DataTableV2<T extends { id: string | number }>({
           id={String(col.accessorKey)}
           className={outerCls}
           style={style}
+          dataColumnKey={String(col.accessorKey)}
         >
           {contentInner}
           {separator}
@@ -530,6 +531,7 @@ export function DataTableV2<T extends { id: string | number }>({
       <div
         key={colId}
         role="columnheader"
+        data-column-key={String(col.accessorKey)}
         className={outerCls}
         style={style}
         aria-sort={ariaSort}
@@ -715,9 +717,9 @@ export function DataTableV2<T extends { id: string | number }>({
       aria-rowcount={data.length + headerRowCount}
       aria-colcount={columns.length}
       className={cn(
-        // flex-1 컬럼 있으면 컨테이너 폭 채워서 그 컬럼이 자라게. 없으면 콘텐츠 폭 (빈 공간 없음).
-        hasFlexColumn ? "w-full" : "w-fit max-w-full",
-        "overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-700",
+        // 항상 컨테이너 폭 유지. 리사이즈로 모든 컬럼 fixed 로 전환돼도 테이블 자체는 shrink 안 함.
+        // 빈 영역은 셀 bg (SDS-42 에서 모든 셀에 headerBg 적용) 로 시각 커버.
+        "w-full overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-700",
         "bg-white dark:bg-slate-900",
         className
       )}
@@ -963,6 +965,7 @@ export function DataTableV2<T extends { id: string | number }>({
                     rowActionsColLeftOffset={rowActionsColLeftOffset}
                     rowReorderable={rowReorderable}
                     dragHandleColWidth={DRAG_HANDLE_COL_WIDTH}
+                    isLast={i === data.length - 1}
                   />
                 ))}
               </SortableContext>
