@@ -1,8 +1,10 @@
 import * as React from "react"
+import { useSortable } from "@dnd-kit/sortable"
+import { CSS } from "@dnd-kit/utilities"
 
 import { cn } from "@/lib/utils"
 import { Checkbox } from "@/components/ui/checkbox"
-import { DownIcon, RightIcon, RowDeleteIcon } from "@/icons"
+import { DownIcon, DragHandleIcon, RightIcon, RowDeleteIcon } from "@/icons"
 import { DataTableV2DefaultEdit } from "./data-table-v2-default-edit"
 import type { DataTableV2Column } from "./types"
 
@@ -48,6 +50,9 @@ interface DataTableV2RowProps<T extends { id: string | number }> {
   onRowDelete?: (row: T) => void
   rowActionsColWidth: number
   rowActionsColLeftOffset: number
+  // 행 순서 변경 (드래그 핸들) — 가장 왼쪽 sticky left: 0
+  rowReorderable: boolean
+  dragHandleColWidth: number
 }
 
 const alignClass = {
@@ -93,8 +98,19 @@ function DataTableV2RowInner<T extends { id: string | number }>({
   onRowDelete,
   rowActionsColWidth,
   rowActionsColLeftOffset,
+  rowReorderable,
+  dragHandleColWidth,
 }: DataTableV2RowProps<T>) {
-  const rowRef = React.useRef<HTMLDivElement>(null)
+  const rowRef = React.useRef<HTMLDivElement | null>(null)
+
+  // 행 순서 변경 (드래그) — rowReorderable 일 때만 활성. 활성화 노드(핸들)만 드래그 트리거.
+  // useSortable 은 rowReorderable 여부와 무관하게 항상 호출 (Rules of Hooks). id 만 조건부 매칭.
+  const sortable = useSortable({ id: `row-${row.id}` })
+  const dndTransform = rowReorderable
+    ? CSS.Transform.toString(sortable.transform)
+    : undefined
+  const dndTransition = rowReorderable ? sortable.transition : undefined
+  const isDragging = rowReorderable && sortable.isDragging
 
   React.useLayoutEffect(() => {
     const el = rowRef.current
@@ -121,14 +137,32 @@ function DataTableV2RowInner<T extends { id: string | number }>({
     onRowClick?.(row)
   }
 
+  // 행 위치: `top` 으로 배치 (dnd-kit sortable 이 layout 좌표 기반으로 sibling shift/collision 을
+  // 계산하는데, transform 으로만 배치하면 모든 행의 layout 좌표가 0 이라 dnd-kit 이 실시간 shift 를
+  // 정상적으로 못 함. `top` 을 쓰면 각 행의 offsetTop 이 서로 다르게 잡혀서 dnd-kit 표준 경로대로 동작).
+  // transform 은 dnd-kit 이 드래그/시프트에 전용으로 사용.
+  const setRefs = React.useCallback(
+    (el: HTMLDivElement | null) => {
+      rowRef.current = el
+      if (rowReorderable) sortable.setNodeRef(el)
+    },
+    [rowReorderable, sortable]
+  )
+
   return (
     <div
-      ref={rowRef}
+      ref={setRefs}
       role="row"
-      className="absolute left-0 top-0 right-0 flex flex-col"
+      className={cn(
+        "absolute left-0 right-0 flex flex-col",
+        isDragging && "z-30"
+      )}
       style={{
         minWidth: totalWidth,
-        transform: `translate3d(0, ${Math.round(translateY)}px, 0)`,
+        top: Math.round(translateY),
+        transform: dndTransform,
+        transition: dndTransition,
+        opacity: isDragging ? 0.6 : undefined,
       }}
     >
       <div
@@ -142,6 +176,28 @@ function DataTableV2RowInner<T extends { id: string | number }>({
         onMouseLeave={() => onHover(null)}
         onClick={onRowClick ? handleRowClick : undefined}
       >
+        {rowReorderable && (
+          <div
+            role="gridcell"
+            data-no-row-click
+            className={cn(
+              "shrink-0 sticky z-10 flex items-center justify-center border-b border-slate-200 dark:border-slate-700 min-h-9 transition-colors",
+              bgClass
+            )}
+            style={{ width: dragHandleColWidth, left: 0 }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div
+              ref={sortable.setActivatorNodeRef}
+              className="flex h-9 w-8 items-center justify-center cursor-grab text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
+              aria-label="행 순서 변경"
+              {...sortable.listeners}
+              {...sortable.attributes}
+            >
+              <DragHandleIcon size={16} />
+            </div>
+          </div>
+        )}
         {selectable && (
           <div
             role="gridcell"
@@ -150,7 +206,10 @@ function DataTableV2RowInner<T extends { id: string | number }>({
               "shrink-0 sticky z-10 flex items-center justify-center border-b border-slate-200 dark:border-slate-700 min-h-9 transition-colors",
               bgClass
             )}
-            style={{ width: checkboxColWidth, left: 0 }}
+            style={{
+              width: checkboxColWidth,
+              left: rowReorderable ? dragHandleColWidth : 0,
+            }}
             onClick={(e) => e.stopPropagation()}
           >
             <Checkbox
@@ -176,7 +235,9 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             )}
             style={{
               width: expandColWidth,
-              left: selectable ? checkboxColWidth : 0,
+              left:
+                (rowReorderable ? dragHandleColWidth : 0) +
+                (selectable ? checkboxColWidth : 0),
             }}
             onClick={(e) => e.stopPropagation()}
           >

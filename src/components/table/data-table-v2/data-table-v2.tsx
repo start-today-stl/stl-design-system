@@ -1,5 +1,6 @@
 import * as React from "react"
 import {
+  closestCenter,
   DndContext,
   PointerSensor,
   useSensor,
@@ -9,6 +10,7 @@ import {
 import {
   SortableContext,
   horizontalListSortingStrategy,
+  verticalListSortingStrategy,
 } from "@dnd-kit/sortable"
 
 import { cn } from "@/lib/utils"
@@ -16,6 +18,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Skeleton } from "@/components/ui/skeleton"
 import { SplashScreen } from "@/components/ui/splash-screen"
 import { DownIcon, RightIcon, RowAddIcon } from "@/icons"
+import { useRowReorder } from "./hooks/use-row-reorder"
 import { DataTableV2ColumnSeparator } from "./data-table-v2-column-separator"
 import { DataTableV2Row } from "./data-table-v2-row"
 import { DataTableV2SortableHeaderCell } from "./data-table-v2-sortable-header-cell"
@@ -37,6 +40,7 @@ const DEFAULT_COL_WIDTH = 120
 const CHECKBOX_COL_WIDTH = 40
 const EXPAND_COL_WIDTH = 40
 const ROW_ACTIONS_WIDTH = 40
+const DRAG_HANDLE_COL_WIDTH = 32
 const SKELETON_ROW_COUNT = 5
 
 const alignClass = {
@@ -158,6 +162,8 @@ export function DataTableV2<T extends { id: string | number }>({
   loadingMode = "splash",
   loadingContent,
   emptyMessage = "데이터가 없습니다.",
+  rowReorderable = false,
+  onRowReorder,
   maxHeight,
   estimateRowHeight = DEFAULT_ESTIMATE,
   className,
@@ -188,9 +194,13 @@ export function DataTableV2<T extends { id: string | number }>({
     })
   }, [orderedColumns, resizable, getColumnWidth])
 
-  // 제어 컬럼 (체크박스 + 확장 + 행 삭제) 폭. sticky 헤더/셀 offset 계산에 반영.
+  // 제어 컬럼 (드래그 핸들 + 체크박스 + 확장 + 행 삭제) 폭. sticky 헤더/셀 offset 계산에 반영.
+  // 좌측 순서: [드래그 핸들] → [체크박스] → [확장] → [삭제] → [데이터 컬럼]
+  const dragHandleColsWidth = rowReorderable ? DRAG_HANDLE_COL_WIDTH : 0
   const rowActionsColLeftOffset =
-    (selectable ? CHECKBOX_COL_WIDTH : 0) + (expandable ? EXPAND_COL_WIDTH : 0)
+    dragHandleColsWidth +
+    (selectable ? CHECKBOX_COL_WIDTH : 0) +
+    (expandable ? EXPAND_COL_WIDTH : 0)
   const controlColsWidth =
     rowActionsColLeftOffset + (showRowDelete ? ROW_ACTIONS_WIDTH : 0)
 
@@ -217,6 +227,9 @@ export function DataTableV2<T extends { id: string | number }>({
 
   // 셀 편집
   const cellEdit = useCellEdit<T>({ onCellChange })
+
+  // 행 순서 변경
+  const { handleRowDragEnd } = useRowReorder<T>({ data, onRowReorder })
 
   const normalizedSortState = React.useMemo<SortState<T>[]>(
     () => sortState ?? [],
@@ -266,9 +279,22 @@ export function DataTableV2<T extends { id: string | number }>({
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
   )
 
+  // 컬럼 재정렬(id: accessorKey) 과 행 재정렬(id: `row-{id}`) 을 prefix 로 라우팅.
   const handleDragEnd = React.useCallback(
-    (e: DragEndEvent) => handleColumnDragEnd(e),
-    [handleColumnDragEnd]
+    (e: DragEndEvent) => {
+      if (String(e.active.id).startsWith("row-")) {
+        handleRowDragEnd(e)
+      } else {
+        handleColumnDragEnd(e)
+      }
+    },
+    [handleColumnDragEnd, handleRowDragEnd]
+  )
+
+  // 행 재정렬용 sortable id 목록 (row-{id} 형식)
+  const rowSortableIds = React.useMemo(
+    () => (rowReorderable ? data.map((r) => `row-${r.id}`) : []),
+    [data, rowReorderable]
   )
 
   const [heights, setHeights] = React.useState<Map<T["id"], number>>(new Map())
@@ -501,17 +527,33 @@ export function DataTableV2<T extends { id: string | number }>({
     )
   }
 
-  // Control 헤더 셀 (체크박스 / 확장) — sticky left, 항상 좌측 pinned 컬럼 앞에 위치
+  // Control 헤더 셀 (드래그 핸들 / 체크박스 / 확장) — sticky left, 항상 좌측 pinned 컬럼 앞에 위치
   const showExpandAll = expandable?.showExpandAll ?? true
   const renderControlHeaderCells = () => {
     const cells: React.ReactNode[] = []
+    if (rowReorderable) {
+      cells.push(
+        <div
+          key="ctrl-header-drag-handle"
+          role="columnheader"
+          className={cn("shrink-0 sticky z-20 min-h-9", headerBg)}
+          style={{ width: DRAG_HANDLE_COL_WIDTH, left: 0 }}
+          aria-label="행 순서 변경"
+        >
+          <span className="sr-only">행 순서 변경</span>
+        </div>
+      )
+    }
     if (selectable) {
       cells.push(
         <div
           key="ctrl-header-select"
           role="columnheader"
           className={cn("shrink-0 sticky z-20 flex items-center justify-center min-h-9", headerBg)}
-          style={{ width: CHECKBOX_COL_WIDTH, left: 0 }}
+          style={{
+            width: CHECKBOX_COL_WIDTH,
+            left: dragHandleColsWidth,
+          }}
         >
           <Checkbox
             checked={selection.allSelected}
@@ -530,7 +572,7 @@ export function DataTableV2<T extends { id: string | number }>({
           className={cn("shrink-0 sticky z-20 flex items-center justify-center min-h-9", headerBg)}
           style={{
             width: EXPAND_COL_WIDTH,
-            left: selectable ? CHECKBOX_COL_WIDTH : 0,
+            left: dragHandleColsWidth + (selectable ? CHECKBOX_COL_WIDTH : 0),
           }}
         >
           {showExpandAll && (
@@ -582,12 +624,21 @@ export function DataTableV2<T extends { id: string | number }>({
   // Control 헤더 placeholder (그룹 행에서 자리 확보용, 내용 비어있음)
   const renderControlHeaderPlaceholders = () => {
     const cells: React.ReactNode[] = []
+    if (rowReorderable) {
+      cells.push(
+        <div
+          key="ctrl-ph-drag-handle"
+          className={cn("shrink-0 sticky z-20 min-h-9", headerBg)}
+          style={{ width: DRAG_HANDLE_COL_WIDTH, left: 0 }}
+        />
+      )
+    }
     if (selectable) {
       cells.push(
         <div
           key="ctrl-ph-select"
           className={cn("shrink-0 sticky z-20 min-h-9", headerBg)}
-          style={{ width: CHECKBOX_COL_WIDTH, left: 0 }}
+          style={{ width: CHECKBOX_COL_WIDTH, left: dragHandleColsWidth }}
         />
       )
     }
@@ -598,7 +649,7 @@ export function DataTableV2<T extends { id: string | number }>({
           className={cn("shrink-0 sticky z-20 min-h-9", headerBg)}
           style={{
             width: EXPAND_COL_WIDTH,
-            left: selectable ? CHECKBOX_COL_WIDTH : 0,
+            left: dragHandleColsWidth + (selectable ? CHECKBOX_COL_WIDTH : 0),
           }}
         />
       )
@@ -743,6 +794,13 @@ export function DataTableV2<T extends { id: string | number }>({
                     role="row"
                     className="flex border-b border-slate-200 dark:border-slate-700 min-h-9"
                   >
+                    {rowReorderable && (
+                      <div
+                        role="gridcell"
+                        className="shrink-0"
+                        style={{ width: DRAG_HANDLE_COL_WIDTH }}
+                      />
+                    )}
                     {selectable && (
                       <div
                         role="gridcell"
@@ -808,57 +866,64 @@ export function DataTableV2<T extends { id: string | number }>({
             </div>
           ) : (
             <div className="relative" style={{ height: totalHeight }}>
-              {data.map((row, i) => (
-                <DataTableV2Row
-                  key={row.id}
-                  row={row}
-                  rowIndex={i}
-                  columns={columns}
-                  leftOffsets={leftOffsets}
-                  rightOffsets={rightOffsets}
-                  lastLeftPinnedIdx={lastLeftPinnedIdx}
-                  firstRightPinnedIdx={firstRightPinnedIdx}
-                  showLeftShadow={scrolledLeft}
-                  showRightShadow={scrolledRight}
-                  totalWidth={totalWidth}
-                  translateY={positions[i]}
-                  isHovered={hoveredId === row.id}
-                  onHover={setHoveredId}
-                  onHeightChange={setHeight}
-                  selectable={selectable}
-                  isSelected={selection.isSelected(row.id)}
-                  onToggleSelect={selection.toggleRow}
-                  checkboxColWidth={CHECKBOX_COL_WIDTH}
-                  expandable={!!expandable}
-                  isExpanded={expansion.isExpanded(row.id)}
-                  canExpand={expansion.canExpand(row)}
-                  onToggleExpand={expansion.toggleRow}
-                  expandedContent={
-                    expandable && expansion.isExpanded(row.id)
-                      ? expandable.expandedRowRender(row)
-                      : null
-                  }
-                  expandColWidth={EXPAND_COL_WIDTH}
-                  onRowClick={onRowClick}
-                  extraClassName={rowClassName?.(row)}
-                  editingColumnKey={
-                    cellEdit.editing?.rowId === row.id ? cellEdit.editing.columnKey : null
-                  }
-                  editingState={
-                    cellEdit.editing?.rowId === row.id
-                      ? { editValue: cellEdit.editing.editValue, error: cellEdit.editing.error }
-                      : null
-                  }
-                  onStartEdit={cellEdit.startEdit}
-                  onChangeEditValue={cellEdit.changeEditValue}
-                  onCompleteEdit={cellEdit.completeEdit}
-                  onCancelEdit={cellEdit.cancelEdit}
-                  showRowDelete={showRowDelete}
-                  onRowDelete={onRowDelete}
-                  rowActionsColWidth={ROW_ACTIONS_WIDTH}
-                  rowActionsColLeftOffset={rowActionsColLeftOffset}
-                />
-              ))}
+              <SortableContext
+                items={rowSortableIds}
+                strategy={verticalListSortingStrategy}
+              >
+                {data.map((row, i) => (
+                  <DataTableV2Row
+                    key={row.id}
+                    row={row}
+                    rowIndex={i}
+                    columns={columns}
+                    leftOffsets={leftOffsets}
+                    rightOffsets={rightOffsets}
+                    lastLeftPinnedIdx={lastLeftPinnedIdx}
+                    firstRightPinnedIdx={firstRightPinnedIdx}
+                    showLeftShadow={scrolledLeft}
+                    showRightShadow={scrolledRight}
+                    totalWidth={totalWidth}
+                    translateY={positions[i]}
+                    isHovered={hoveredId === row.id}
+                    onHover={setHoveredId}
+                    onHeightChange={setHeight}
+                    selectable={selectable}
+                    isSelected={selection.isSelected(row.id)}
+                    onToggleSelect={selection.toggleRow}
+                    checkboxColWidth={CHECKBOX_COL_WIDTH}
+                    expandable={!!expandable}
+                    isExpanded={expansion.isExpanded(row.id)}
+                    canExpand={expansion.canExpand(row)}
+                    onToggleExpand={expansion.toggleRow}
+                    expandedContent={
+                      expandable && expansion.isExpanded(row.id)
+                        ? expandable.expandedRowRender(row)
+                        : null
+                    }
+                    expandColWidth={EXPAND_COL_WIDTH}
+                    onRowClick={onRowClick}
+                    extraClassName={rowClassName?.(row)}
+                    editingColumnKey={
+                      cellEdit.editing?.rowId === row.id ? cellEdit.editing.columnKey : null
+                    }
+                    editingState={
+                      cellEdit.editing?.rowId === row.id
+                        ? { editValue: cellEdit.editing.editValue, error: cellEdit.editing.error }
+                        : null
+                    }
+                    onStartEdit={cellEdit.startEdit}
+                    onChangeEditValue={cellEdit.changeEditValue}
+                    onCompleteEdit={cellEdit.completeEdit}
+                    onCancelEdit={cellEdit.cancelEdit}
+                    showRowDelete={showRowDelete}
+                    onRowDelete={onRowDelete}
+                    rowActionsColWidth={ROW_ACTIONS_WIDTH}
+                    rowActionsColLeftOffset={rowActionsColLeftOffset}
+                    rowReorderable={rowReorderable}
+                    dragHandleColWidth={DRAG_HANDLE_COL_WIDTH}
+                  />
+                ))}
+              </SortableContext>
             </div>
           )}
 
@@ -868,11 +933,21 @@ export function DataTableV2<T extends { id: string | number }>({
               role="row"
               className="flex bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800/50"
             >
+              {rowReorderable && (
+                <div
+                  aria-hidden
+                  className="shrink-0 sticky z-10 min-h-9 bg-white dark:bg-slate-900"
+                  style={{ width: DRAG_HANDLE_COL_WIDTH, left: 0 }}
+                />
+              )}
               {selectable && (
                 <div
                   aria-hidden
                   className="shrink-0 sticky z-10 min-h-9 bg-white dark:bg-slate-900"
-                  style={{ width: CHECKBOX_COL_WIDTH, left: 0 }}
+                  style={{
+                    width: CHECKBOX_COL_WIDTH,
+                    left: dragHandleColsWidth,
+                  }}
                 />
               )}
               {expandable && (
@@ -881,7 +956,7 @@ export function DataTableV2<T extends { id: string | number }>({
                   className="shrink-0 sticky z-10 min-h-9 bg-white dark:bg-slate-900"
                   style={{
                     width: EXPAND_COL_WIDTH,
-                    left: selectable ? CHECKBOX_COL_WIDTH : 0,
+                    left: dragHandleColsWidth + (selectable ? CHECKBOX_COL_WIDTH : 0),
                   }}
                 />
               )}
@@ -909,9 +984,13 @@ export function DataTableV2<T extends { id: string | number }>({
     </div>
   )
 
-  if (columnReorderable) {
+  if (columnReorderable || rowReorderable) {
     return (
-      <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
+      >
         {gridContent}
       </DndContext>
     )

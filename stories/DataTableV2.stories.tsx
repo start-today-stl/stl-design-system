@@ -562,3 +562,48 @@ export const RowActions: Story = {
     )
   },
 }
+
+export const RowReorderable: Story = {
+  render: function Render() {
+    const [rows, setRows] = useState<Row[]>(smallData)
+    return (
+      <div className="flex flex-col gap-2">
+        <span className="text-xs text-slate-500 dark:text-slate-400">
+          왼쪽 드래그 핸들(≡)로 행 순서 변경. 순서는 로컬 state 로 반영.
+        </span>
+        <DataTableV2
+          data={rows}
+          columns={columns}
+          rowReorderable
+          onRowReorder={setRows}
+        />
+      </div>
+    )
+  },
+}
+
+export const RowReorderableWithSelection: Story = {
+  render: function Render() {
+    const [rows, setRows] = useState<Row[]>(smallData)
+    const [selectedIds, setSelectedIds] = useState<(string | number)[]>([])
+    return (
+      <div className="flex flex-col gap-2">
+        <span className="text-xs text-slate-500 dark:text-slate-400">
+          행 순서 변경 + 체크박스 선택 병행. 선택 상태는 데이터 이동 시에도 id 기준으로 유지.
+        </span>
+        <span className="text-xs text-slate-500 dark:text-slate-400">
+          선택된 ID: {selectedIds.join(", ") || "(없음)"}
+        </span>
+        <DataTableV2
+          data={rows}
+          columns={columns}
+          rowReorderable
+          onRowReorder={setRows}
+          selectable
+          selectedIds={selectedIds}
+          onSelectionChange={setSelectedIds}
+        />
+      </div>
+    )
+  },
+}

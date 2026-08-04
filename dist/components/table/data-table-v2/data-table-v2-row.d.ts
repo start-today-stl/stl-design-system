@@ -42,6 +42,8 @@ interface DataTableV2RowProps<T extends {
     onRowDelete?: (row: T) => void;
     rowActionsColWidth: number;
     rowActionsColLeftOffset: number;
+    rowReorderable: boolean;
+    dragHandleColWidth: number;
 }
 type DataTableV2RowComponent = <T extends {
     id: string | number;
