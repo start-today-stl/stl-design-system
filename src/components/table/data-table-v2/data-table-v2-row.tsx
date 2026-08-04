@@ -16,12 +16,11 @@ interface DataTableV2RowProps<T extends { id: string | number }> {
   rightOffsets: number[]
   lastLeftPinnedIdx: number
   firstRightPinnedIdx: number
-  showLeftShadow: boolean
-  showRightShadow: boolean
   totalWidth: number
   translateY: number
-  isHovered: boolean
-  onHover: (id: T["id"] | null) => void
+  // rowGrouping 활성 시에만 필요. hover 상태를 parent state 로 관리해 그룹 head 셀 하이라이트 동기화.
+  // 비활성 시엔 undefined 로 넘겨 mouseenter/leave listener 자체를 안 붙임 → hover 시 리렌더 방지.
+  onHover?: (id: T["id"] | null) => void
   onHeightChange: (id: T["id"], height: number) => void
   // 행 선택
   selectable: boolean
@@ -56,13 +55,17 @@ interface DataTableV2RowProps<T extends { id: string | number }> {
   rowReorderable: boolean
   dragHandleColWidth: number
   // 로우 그룹핑 (셀 병합)
-  // getRowSpan(colKey): span 조회. 0=middle (placeholder), 1/undefined=normal, >1=head
-  getRowSpan: (columnKey: keyof T) => number | undefined
-  // getRowSpanHeight(colKey): head 셀 (span>1) 의 세로 확장 높이. 아니면 undefined
-  getRowSpanHeight: (columnKey: keyof T) => number | undefined
-  // getGroupHovered(colKey): 이 head 셀이 속한 그룹의 어떤 row 라도 hover 중인지.
-  // middle row hover 시에도 head 셀 hover 표시하기 위함.
-  getGroupHovered: (columnKey: keyof T) => boolean
+  // 아래 3개 함수는 parent 에서 memoize 된 stable ref. row 는 자기 rowIndex 를 첫 인자로 넣어 호출.
+  // (curry 를 parent 에서 inline 으로 하면 매 렌더마다 새 fn ref → React.memo 무효화됨)
+  getRowSpan: (rowIndex: number, columnKey: keyof T) => number | undefined
+  getRowSpanHeight: (rowIndex: number, columnKey: keyof T) => number | undefined
+  getGroupHovered: (rowIndex: number, columnKey: keyof T) => boolean
+  // 가상화 (SDS-38): virtualizer.measureElement 를 ref 로 받음. 없으면 무시.
+  measureRef?: (el: HTMLElement | null) => void
+  // 가상화 (SDS-38): virtualizer 가 measurementsCache 매칭하는 인덱스. `data-index` 로 렌더.
+  dataIndex?: number
+  // ARIA (SDS-38): grid row 위치 (1-indexed, header 포함)
+  ariaRowIndex: number
 }
 
 const alignClass = {
@@ -79,11 +82,8 @@ function DataTableV2RowInner<T extends { id: string | number }>({
   rightOffsets,
   lastLeftPinnedIdx,
   firstRightPinnedIdx,
-  showLeftShadow,
-  showRightShadow,
   totalWidth,
   translateY,
-  isHovered,
   onHover,
   onHeightChange,
   selectable,
@@ -114,6 +114,9 @@ function DataTableV2RowInner<T extends { id: string | number }>({
   getRowSpan,
   getRowSpanHeight,
   getGroupHovered,
+  measureRef,
+  dataIndex,
+  ariaRowIndex,
 }: DataTableV2RowProps<T>) {
   const rowRef = React.useRef<HTMLDivElement | null>(null)
 
@@ -137,11 +140,13 @@ function DataTableV2RowInner<T extends { id: string | number }>({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [row.id, isExpanded])
 
-  const bgClass = isHovered
-    ? "bg-slate-100 dark:bg-slate-800"
-    : isSelected
-      ? "bg-blue-50 dark:bg-blue-900"
-      : "bg-white dark:bg-slate-900"
+  // Row bg — 기본 상태 + hover 는 CSS `:hover` (row inner self) + `group-hover:` (sticky 셀들) 둘 다.
+  // Row inner 는 자체 hover → `hover:`, sticky 셀은 부모 (.group) hover 반응 → `group-hover:`.
+  // 둘 다 적용하면 서로 방해 안 하고 각자 필요한 곳에서 발화.
+  // (state 기반이면 hover 마다 parent 리렌더 → 모든 row memo 무효화. CSS 는 리렌더 없음.)
+  const bgClass = isSelected
+    ? "bg-blue-50 dark:bg-blue-900 hover:bg-blue-100 dark:hover:bg-blue-950 group-hover:bg-blue-100 dark:group-hover:bg-blue-950"
+    : "bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 group-hover:bg-slate-100 dark:group-hover:bg-slate-800"
 
   const shiftKeyRef = React.useRef(false)
 
@@ -159,14 +164,17 @@ function DataTableV2RowInner<T extends { id: string | number }>({
     (el: HTMLDivElement | null) => {
       rowRef.current = el
       if (rowReorderable) sortable.setNodeRef(el)
+      if (measureRef) measureRef(el)
     },
-    [rowReorderable, sortable]
+    [rowReorderable, sortable, measureRef]
   )
 
   return (
     <div
       ref={setRefs}
       role="row"
+      data-index={dataIndex}
+      aria-rowindex={ariaRowIndex}
       className={cn(
         "absolute left-0 right-0 flex flex-col",
         isDragging && "z-30"
@@ -184,14 +192,15 @@ function DataTableV2RowInner<T extends { id: string | number }>({
           // border-b 를 row 자체에 두어서 우측 empty 영역 (셀 미커버) 에도 하단 line 이 이어지게 함.
           // 마지막 row 는 외곽 컨테이너 border-bottom 과 겹쳐 2px 로 보이므로 생략.
           // rowGrouping 병합 셀 위엔 head 셀의 absolute wrapper (opaque bg) 가 border 를 자동으로 가림 → 별도 middle row 스킵 불필요.
-          "flex transition-colors",
+          // `group` 클래스 — sticky 셀들이 `group-hover:` 로 row hover 반응 (state 없이 CSS 만)
+          "group flex transition-colors",
           !isLast && "border-b border-slate-200 dark:border-slate-700",
           bgClass,
           onRowClick && "cursor-pointer",
           extraClassName
         )}
-        onMouseEnter={() => onHover(row.id)}
-        onMouseLeave={() => onHover(null)}
+        onMouseEnter={onHover ? () => onHover(row.id) : undefined}
+        onMouseLeave={onHover ? () => onHover(null) : undefined}
         onClick={onRowClick ? handleRowClick : undefined}
       >
         {rowReorderable && (
@@ -302,8 +311,9 @@ function DataTableV2RowInner<T extends { id: string | number }>({
           const isLeft = col.pinned === "left"
           const isRight = col.pinned === "right"
           const isPinned = isLeft || isRight
-          const isLeftBoundary = i === lastLeftPinnedIdx && showLeftShadow
-          const isRightBoundary = i === firstRightPinnedIdx && showRightShadow
+          // shadow 는 CSS `group-data-[scrolled-*=true]/scroll:` 로 반응 → 여기선 column 위치만 판단.
+          const isLeftBoundary = i === lastLeftPinnedIdx
+          const isRightBoundary = i === firstRightPinnedIdx
           const isFirstRightPinned = i === firstRightPinnedIdx
           const isCellEditing =
             !!editingState && editingColumnKey === col.accessorKey
@@ -311,7 +321,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
           // - undefined 또는 1 → 정상 셀
           // - 0 → middle placeholder (flex 폭만, 컨텐츠/border 없음)
           // - > 1 → head 셀. 컨텐츠를 세로 확장 (position:absolute + height=spanHeight)
-          const span = getRowSpan(col.accessorKey)
+          const span = getRowSpan(rowIndex, col.accessorKey)
           if (span === 0) {
             return (
               <div
@@ -332,7 +342,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
               />
             )
           }
-          const spanHeight = span !== undefined && span > 1 ? getRowSpanHeight(col.accessorKey) : undefined
+          const spanHeight = span !== undefined && span > 1 ? getRowSpanHeight(rowIndex, col.accessorKey) : undefined
           const isHead = spanHeight !== undefined
           const outerCls = cn(
             "flex min-h-9",
@@ -340,8 +350,8 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             isPinned && "sticky z-10 transition-colors",
             isPinned && bgClass,
             isFirstRightPinned && "ml-auto",
-            isLeftBoundary && "shadow-[2px_0_5px_-2px_rgba(0,0,0,0.15)]",
-            isRightBoundary && "shadow-[-2px_0_5px_-2px_rgba(0,0,0,0.15)]",
+            isLeftBoundary && "group-data-[scrolled-left=true]/scroll:shadow-[2px_0_5px_-2px_rgba(0,0,0,0.15)]",
+            isRightBoundary && "group-data-[scrolled-right=true]/scroll:shadow-[-2px_0_5px_-2px_rgba(0,0,0,0.15)]",
             // head 셀: 컨텐츠를 absolute 로 세로 확장하기 위해 relative + z-index 상승
             // (그룹 middle rows 의 bg 위에 얹혀야 함)
             isHead && "relative z-[5]"
@@ -396,7 +406,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
                 // headBgClass: 그룹 내 어떤 row 라도 hover 중이면 hover bg. head row 자체 selected 면 selected bg.
                 // row 자체의 bgClass 와 분리 — head row (span 시작 row) 가 hover 안 됐어도 middle row hover 시 head 셀은 hover 표시돼야 함.
                 (() => {
-                  const isGroupHovered = getGroupHovered(col.accessorKey)
+                  const isGroupHovered = getGroupHovered(rowIndex, col.accessorKey)
                   const headBgClass = isGroupHovered
                     ? "bg-slate-100 dark:bg-slate-800"
                     : isSelected

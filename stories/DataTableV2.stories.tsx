@@ -746,8 +746,11 @@ export const ColumnFilterWithSort: Story = {
   render: function Render() {
     const [sortState, setSortState] = useState<SortState<Row>[]>([])
     const [filterState, setFilterState] = useState<Record<string, unknown>>({})
-    const columnsSortableFilterable: DataTableV2Column<Row>[] = filterableColumns.map(
-      (c) => ({ ...c, sortable: true })
+    // columns 는 useMemo 로 stable ref 유지 — 그렇지 않으면 매 렌더마다 새 배열/객체 →
+    // 라이브러리 내부의 memo/useMemo 들이 무효화되어 헤더/row/셀 리렌더 폭발.
+    const columnsSortableFilterable = useMemo<DataTableV2Column<Row>[]>(
+      () => filterableColumns.map((c) => ({ ...c, sortable: true })),
+      []
     )
     const sortedData = useMemo(() => sortRows(smallData, sortState), [sortState])
     return (
@@ -844,5 +847,89 @@ export const RowGroupingWithSelection: Story = {
       </div>
     )
   },
+}
+
+// ============================================================================
+// virtual — 행 가상화 (SDS-38)
+// 대용량 데이터에서 viewport 안의 row 만 렌더. @tanstack/react-virtual 기반.
+// ============================================================================
+
+const virtualLargeData: Row[] = Array.from({ length: 10000 }, (_, i) => ({
+  id: i + 1,
+  name: `사용자 ${i + 1}`,
+  role: ["매니저", "엔지니어", "디자이너", "PM"][i % 4],
+  score: 50 + ((i * 17) % 50),
+}))
+
+export const Virtualized: Story = {
+  render: () => (
+    <div className="flex flex-col gap-2">
+      <span className="text-xs text-slate-500 dark:text-slate-400">
+        10,000 rows. `virtual` prop 활성 → viewport 안 (+ overscan) 만 DOM 렌더. 스크롤 부드럽게 동작.
+      </span>
+      <DataTableV2
+        data={virtualLargeData}
+        columns={columns}
+        maxHeight={400}
+        virtual
+      />
+    </div>
+  ),
+}
+
+export const VirtualizedWithConfig: Story = {
+  render: () => (
+    <div className="flex flex-col gap-2">
+      <span className="text-xs text-slate-500 dark:text-slate-400">
+        virtual 옵션 커스텀: overscan 20 (스크롤 blank flash 감소), estimateSize 36 (row 예상 높이).
+      </span>
+      <DataTableV2
+        data={virtualLargeData}
+        columns={columns}
+        maxHeight={400}
+        virtual={{ overscan: 20, estimateSize: 36 }}
+      />
+    </div>
+  ),
+}
+
+// Virtualized + rowGrouping — 그룹 head 는 overscan 확장으로 강제 렌더 보장.
+// 큰 그룹 (예: 100 개 이상 span) 이 overscan 범위 넘으면 head 안 보일 가능성 있음. 대부분 케이스는 커버.
+const virtualGroupedData: GroupOrderRow[] = Array.from({ length: 100 }, (_, groupIdx) => {
+  const goodsId = `G${String(groupIdx + 1).padStart(3, "0")}`
+  const goodsCode = `SKU-${String(groupIdx + 1).padStart(3, "0")}`
+  const brandName = `브랜드${String.fromCharCode(65 + (groupIdx % 26))}`
+  const goodsName = `상품 ${groupIdx + 1}`
+  const unitPrice = 10000 + (groupIdx * 1000)
+  return Array.from({ length: 5 }, (_, subIdx) => ({
+    id: groupIdx * 5 + subIdx + 1,
+    goodsId,
+    goodsCode,
+    brandName,
+    goodsName,
+    unitPrice,
+    optionName: ["S", "M", "L", "XL", "XXL"][subIdx],
+    qty: (subIdx + 1) * 2,
+  }))
+}).flat()
+
+export const VirtualizedWithRowGrouping: Story = {
+  render: () => (
+    <div className="flex flex-col gap-2">
+      <span className="text-xs text-slate-500 dark:text-slate-400">
+        500 rows (100 그룹 × 5 옵션). virtual + rowGrouping 조합. 그룹 head 는 viewport 밖이어도 강제 렌더 (overscan 확장).
+      </span>
+      <DataTableV2
+        data={virtualGroupedData}
+        columns={groupOrderColumns}
+        maxHeight={400}
+        virtual
+        rowGrouping={{
+          groupBy: "goodsId",
+          mergeColumns: ["goodsCode", "brandName", "goodsName", "unitPrice"],
+        }}
+      />
+    </div>
+  ),
 }
 

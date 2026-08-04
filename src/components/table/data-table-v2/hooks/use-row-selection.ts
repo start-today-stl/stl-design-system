@@ -49,9 +49,18 @@ export function useRowSelection<T extends { id: string | number }>({
   const allSelected = data.length > 0 && data.every((row) => selectedSet.has(row.id))
   const someSelected = !allSelected && data.some((row) => selectedSet.has(row.id))
 
+  // selectedSet / data / allSelected 를 ref 로 흡수 — toggleRow / toggleAll 콜백 ref stable 유지.
+  // (deps 에 selectedSet 넣으면 선택 변경마다 콜백 rebind → 모든 row prop 변경 → 리렌더)
+  const selectedSetRef = React.useRef(selectedSet)
+  selectedSetRef.current = selectedSet
+  const dataRef = React.useRef(data)
+  dataRef.current = data
+  const allSelectedRef = React.useRef(allSelected)
+  allSelectedRef.current = allSelected
+
   const toggleRow = React.useCallback(
     (id: T["id"], rowIndex: number, shiftKey: boolean) => {
-      const next = new Set(selectedSet)
+      const next = new Set(selectedSetRef.current)
       const currentlySelected = next.has(id)
 
       if (shiftKey && lastClickedIndex.current !== null) {
@@ -60,7 +69,7 @@ export function useRowSelection<T extends { id: string | number }>({
             ? [lastClickedIndex.current, rowIndex]
             : [rowIndex, lastClickedIndex.current]
         for (let i = start; i <= end; i++) {
-          const row = data[i]
+          const row = dataRef.current[i]
           if (!row) continue
           if (currentlySelected) next.delete(row.id)
           else next.add(row.id)
@@ -73,17 +82,17 @@ export function useRowSelection<T extends { id: string | number }>({
       lastClickedIndex.current = rowIndex
       commit(next)
     },
-    [selectedSet, data, commit]
+    [commit]
   )
 
   const toggleAll = React.useCallback(() => {
-    if (allSelected) {
+    if (allSelectedRef.current) {
       commit(new Set())
     } else {
-      commit(new Set(data.map((row) => row.id)))
+      commit(new Set(dataRef.current.map((row) => row.id)))
     }
     lastClickedIndex.current = null
-  }, [allSelected, data, commit])
+  }, [commit])
 
   return { selectedSet, isSelected, allSelected, someSelected, toggleRow, toggleAll }
 }

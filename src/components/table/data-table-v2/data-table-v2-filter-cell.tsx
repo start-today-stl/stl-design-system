@@ -18,7 +18,14 @@ interface DataTableV2FilterCellProps<T> {
   filter: FilterConfig<T>
   value: unknown
   active: boolean
-  onChange: (value: unknown) => void
+  /**
+   * 필터 값 변경 콜백 — parent 의 stable ref (`useCallback` 결과).
+   * (인라인 arrow 로 넘기면 매 렌더마다 새 ref → React.memo 실패 → 리렌더)
+   * 내부에서 columnKey 와 함께 useCallback 으로 wrap 해 onChange 안정화.
+   */
+  onChange: (columnKey: string, value: unknown) => void
+  /** 이 셀이 담당하는 컬럼 키 — onChange 에 전달 */
+  columnKey: string
 }
 
 /**
@@ -26,13 +33,19 @@ interface DataTableV2FilterCellProps<T> {
  * filter.type 에 따라 프리셋 필터 컴포넌트 자동 선택. `type: "custom"` 이면 사용처 component 를 렌더.
  * 활성 필터(active) 있을 때 아이콘에 도트 인디케이터 표시.
  */
-export function DataTableV2FilterCell<T>({
+function DataTableV2FilterCellInner<T>({
   column,
   filter,
   value,
   active,
   onChange,
+  columnKey,
 }: DataTableV2FilterCellProps<T>) {
+  // (columnKey, value) 로 wrap → parent 는 stable onChange 만 넘기면 됨. 인라인 arrow 사용 X.
+  const handleChange = React.useCallback(
+    (v: unknown) => onChange(columnKey, v),
+    [onChange, columnKey]
+  )
   const [open, setOpen] = React.useState(false)
   const close = React.useCallback(() => setOpen(false), [])
 
@@ -60,11 +73,16 @@ export function DataTableV2FilterCell<T>({
         </button>
       </PopoverTrigger>
       <PopoverContent align="end" className="w-64 p-3">
-        {renderFilterContent(filter, value, onChange, close, column)}
+        {renderFilterContent(filter, value, handleChange, close, column)}
       </PopoverContent>
     </Popover>
   )
 }
+
+// 제네릭 컴포넌트를 memo 로 감싸며 제네릭 유지
+export const DataTableV2FilterCell = React.memo(
+  DataTableV2FilterCellInner
+) as typeof DataTableV2FilterCellInner
 
 function renderFilterContent<T>(
   filter: FilterConfig<T>,

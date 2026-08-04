@@ -30,6 +30,8 @@ import { useColumnReorder } from "./hooks/use-column-reorder"
 import { useRowExpansion } from "./hooks/use-row-expansion"
 import { useRowGrouping } from "./hooks/use-row-grouping"
 import { useRowSelection } from "./hooks/use-row-selection"
+import { useStableCallback } from "./hooks/use-stable-callback"
+import { useTableVirtualizer } from "./hooks/use-table-virtualizer"
 import type {
   DataTableV2Column,
   DataTableV2Props,
@@ -52,7 +54,13 @@ const alignClass = {
   right: "text-right justify-end",
 }
 
-function SortArrow({ direction, active }: { direction: "up" | "down"; active: boolean }) {
+const SortArrow = React.memo(function SortArrow({
+  direction,
+  active,
+}: {
+  direction: "up" | "down"
+  active: boolean
+}) {
   return (
     <svg
       width="8"
@@ -69,7 +77,7 @@ function SortArrow({ direction, active }: { direction: "up" | "down"; active: bo
       <path d="M4 0L8 5H0L4 0Z" fill="currentColor" />
     </svg>
   )
-}
+})
 
 /**
  * 헤더 클릭 시 다음 정렬 상태 계산.
@@ -173,6 +181,7 @@ export function DataTableV2<T extends { id: string | number }>({
   maxHeight,
   estimateRowHeight = DEFAULT_ESTIMATE,
   rowGrouping,
+  virtual,
   className,
 }: DataTableV2Props<T>) {
   // rowGrouping 활성 시 rowReorderable 자동 OFF (병합 셀 드래그 시 레이아웃 붕괴).
@@ -182,18 +191,33 @@ export function DataTableV2<T extends { id: string | number }>({
   // rowActions 파생 값
   const showRowDelete = rowActions?.showDelete ?? !!rowActions?.onRowDelete
   const showRowAdd = rowActions?.showAdd ?? !!rowActions?.onRowAdd
-  const onRowDelete = rowActions?.onRowDelete
-  const onRowAdd = rowActions?.onRowAdd
+
+  // 사용자 콜백은 ref 로 흡수해 stable ref 보장 (React.memo 무효화 방지).
+  // 사용처에서 inline arrow / inline object 로 넘겨도 안전.
+  // → 아래 hooks 들이 이 stable ref 를 useCallback deps 에 넣어도 콜백 rebind 안 됨.
+  const onRowDelete = useStableCallback(rowActions?.onRowDelete)
+  const onRowAdd = useStableCallback(rowActions?.onRowAdd)
+  const stableOnRowClick = useStableCallback(onRowClick)
+  const stableRowClassName = useStableCallback(rowClassName)
+  const stableOnCellChange = useStableCallback(onCellChange)
+  const stableExpandedRowRender = useStableCallback(expandable?.expandedRowRender)
+  const stableOnSelectionChange = useStableCallback(onSelectionChange)
+  const stableOnSortChange = useStableCallback(onSortChange)
+  const stableOnFilterChange = useStableCallback(onFilterChange)
+  const stableOnColumnResize = useStableCallback(onColumnResize)
+  const stableOnColumnReorder = useStableCallback(onColumnReorder)
+  const stableOnRowReorder = useStableCallback(onRowReorder)
+  const stableOnExpandedChange = useStableCallback(expandable?.onExpandedChange)
   const { orderedColumns, handleColumnDragEnd } = useColumnReorder({
     columns: rawColumns,
     columnReorderable,
     columnOrder,
-    onColumnReorder,
+    onColumnReorder: stableOnColumnReorder,
   })
   const { getColumnWidth, handleResizeStart, resizingKey } = useColumnResize({
     resizable,
     columnWidths,
-    onColumnResize,
+    onColumnResize: stableOnColumnResize,
   })
 
   // resize 적용된 컬럼 배열 (getColumnWidth 결과를 col.width 로 override)
@@ -230,23 +254,30 @@ export function DataTableV2<T extends { id: string | number }>({
     selectable,
     selectedIds,
     defaultSelectedIds,
-    onSelectionChange,
+    onSelectionChange: stableOnSelectionChange,
   })
 
-  // 행 확장
-  const expansion = useRowExpansion({ data, expandable })
+  // 행 확장 — expandable 객체 내부 onExpandedChange 는 stable 로 흡수해서 넘김
+  const stableExpandable = React.useMemo(
+    () =>
+      expandable
+        ? { ...expandable, onExpandedChange: stableOnExpandedChange }
+        : undefined,
+    [expandable, stableOnExpandedChange]
+  )
+  const expansion = useRowExpansion({ data, expandable: stableExpandable })
 
   // 셀 편집
-  const cellEdit = useCellEdit<T>({ onCellChange })
+  const cellEdit = useCellEdit<T>({ onCellChange: stableOnCellChange })
 
   // 행 순서 변경
-  const { handleRowDragEnd } = useRowReorder<T>({ data, onRowReorder })
+  const { handleRowDragEnd } = useRowReorder<T>({ data, onRowReorder: stableOnRowReorder })
 
   // 로우 그룹핑 (셀 병합)
-  const { getRowSpan } = useRowGrouping<T>({ data, rowGrouping })
+  const { rowSpanMap, getRowSpan } = useRowGrouping<T>({ data, rowGrouping })
 
   // 컬럼 헤더 필터
-  const filter = useFilter({ filterState, defaultFilterState, onFilterChange })
+  const filter = useFilter({ filterState, defaultFilterState, onFilterChange: stableOnFilterChange })
 
   const normalizedSortState = React.useMemo<SortState<T>[]>(
     () => sortState ?? [],
@@ -268,10 +299,10 @@ export function DataTableV2<T extends { id: string | number }>({
 
   const handleSort = React.useCallback(
     (column: keyof T) => {
-      if (!onSortChange) return
-      onSortChange(computeNextSort(normalizedSortState, column, multiSort))
+      if (!stableOnSortChange) return
+      stableOnSortChange(computeNextSort(normalizedSortState, column, multiSort))
     },
-    [normalizedSortState, multiSort, onSortChange]
+    [normalizedSortState, multiSort, stableOnSortChange]
   )
 
   // 어떤 컬럼도 flex-1 이 아니라면 (전부 fixed width) row 오른쪽에 spacer 필요.
@@ -346,6 +377,10 @@ export function DataTableV2<T extends { id: string | number }>({
     return data.findIndex((r) => r.id === hoveredId)
   }, [hoveredId, data])
 
+  // getGroupHovered: hoveredRowIndex 에 dep. hover 시 콜백 rebind → 모든 rendered row 리렌더.
+  // Trade-off: rowGrouping 케이스는 태생적으로 소량 데이터 (수십~수백 row) 라 all 리렌더 허용.
+  // (대용량은 rowGrouping 자체가 UX 부적합 → tree grouping 등 다른 방식 사용해야 함)
+  // Non-grouped 케이스는 onHover 미전달로 hoveredId state 업데이트 자체 X → 0 리렌더 유지.
   const getGroupHovered = React.useCallback(
     (rowIndex: number, colKey: keyof T): boolean => {
       if (hoveredRowIndex < 0) return false
@@ -356,18 +391,52 @@ export function DataTableV2<T extends { id: string | number }>({
     [hoveredRowIndex, getRowSpan]
   )
 
+  // head 셀 세로 확장 높이 계산 — positions 를 ref 로 흡수해 콜백 자체는 stable ref 유지.
+  // 이유: 가상화 스크롤 중 새 row 측정되면 heights → positions 가 자주 변경됨. 콜백을
+  // positions 에 의존시키면 매번 새 ref 로 rebind → 모든 row memo 무효 → viewport 안 row 도
+  // 스크롤마다 리렌더. ref 로 흡수하면 콜백 ref stable, rows 리렌더 없음. 값은 호출 시 최신.
+  const positionsRef = React.useRef(positions)
+  positionsRef.current = positions
+  const getRowSpanHeight = React.useCallback(
+    (rowIndex: number, colKey: keyof T): number | undefined => {
+      const span = getRowSpan(rowIndex, colKey)
+      if (span === undefined || span <= 1) return undefined
+      return positionsRef.current[rowIndex + span] - positionsRef.current[rowIndex]
+    },
+    [getRowSpan]
+  )
+
   // pinned 경계 shadow — 스크롤 시에만 표시 (MUI DataGrid 스타일)
   // visibleWidth — loading/empty 콘텐츠 가로 중앙 정렬용 (가로 스크롤 시 가시 영역 기준)
   const scrollRef = React.useRef<HTMLDivElement>(null)
-  const [scrolledLeft, setScrolledLeft] = React.useState(false)
-  const [scrolledRight, setScrolledRight] = React.useState(false)
+
+  // 가상화 (SDS-38): viewport 안 row 만 렌더. rowSpanMap 전달로 그룹 head 강제 렌더 (overscan 확장).
+  const {
+    isVirtual,
+    virtualizer,
+    renderIndices,
+    getItemStart,
+    totalSize: virtualTotalSize,
+  } = useTableVirtualizer({
+    virtual,
+    count: data.length,
+    scrollContainerRef: scrollRef,
+    rowSpanMap,
+  })
+  // 가로 스크롤 shadow: React state 대신 scrollRef DOM 에 data-attr 직접 갱신 →
+  // React 리렌더 없이 CSS 로 shadow 처리 (모든 row 리렌더 방지).
+  // pinned 경계 셀은 data-attr 상속받는 CSS 셀렉터로 shadow 표시.
+  // visibleWidth 는 loading/empty 컨텐츠 중앙 정렬용 — 값 변경 시 리렌더 필요하므로 state 유지.
   const [visibleWidth, setVisibleWidth] = React.useState(0)
   React.useEffect(() => {
     const el = scrollRef.current
     if (!el) return
     const update = () => {
-      setScrolledLeft(el.scrollLeft > 0)
-      setScrolledRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 1)
+      const left = el.scrollLeft > 0
+      const right = el.scrollLeft + el.clientWidth < el.scrollWidth - 1
+      // data-attr 직접 갱신 (state 변경 없음 → 리렌더 없음)
+      el.dataset.scrolledLeft = left ? "true" : "false"
+      el.dataset.scrolledRight = right ? "true" : "false"
       setVisibleWidth(el.clientWidth)
     }
     update()
@@ -431,8 +500,9 @@ export function DataTableV2<T extends { id: string | number }>({
     const isLeft = col.pinned === "left"
     const isRight = col.pinned === "right"
     const isPinned = isLeft || isRight
-    const isLeftBoundary = i === lastLeftPinnedIdx && scrolledLeft
-    const isRightBoundary = i === firstRightPinnedIdx && scrolledRight
+    // shadow 는 CSS `group-data-[scrolled-*=true]/scroll:` 로 반응 → 여기선 column 위치만 판단.
+    const isLeftBoundary = i === lastLeftPinnedIdx
+    const isRightBoundary = i === firstRightPinnedIdx
     const isFirstRightPinned = i === firstRightPinnedIdx
     const isDraggable = columnReorderable && !isPinned && !col.sortable
     const isResizingThis = resizingKey === col.accessorKey
@@ -446,8 +516,8 @@ export function DataTableV2<T extends { id: string | number }>({
       width !== undefined && "shrink-0",
       isPinned && "sticky z-20",
       headerBg,
-      isLeftBoundary && "shadow-[2px_0_5px_-2px_rgba(0,0,0,0.15)]",
-      isRightBoundary && "shadow-[-2px_0_5px_-2px_rgba(0,0,0,0.15)]",
+      isLeftBoundary && "group-data-[scrolled-left=true]/scroll:shadow-[2px_0_5px_-2px_rgba(0,0,0,0.15)]",
+      isRightBoundary && "group-data-[scrolled-right=true]/scroll:shadow-[-2px_0_5px_-2px_rgba(0,0,0,0.15)]",
       col.sortable && "select-none",
       isFirstRightPinned && "ml-auto"
     )
@@ -497,7 +567,8 @@ export function DataTableV2<T extends { id: string | number }>({
         filter={col.filter}
         value={filter.getColumnFilter(columnKey)}
         active={filter.hasActiveFilter(columnKey)}
-        onChange={(v) => filter.setColumnFilter(columnKey, v)}
+        onChange={filter.setColumnFilter}
+        columnKey={columnKey}
       />
     ) : null
 
@@ -526,7 +597,8 @@ export function DataTableV2<T extends { id: string | number }>({
       <DataTableV2ColumnSeparator
         resizable={resizable}
         isResizing={isResizingThis}
-        onResizeStart={(e) => handleResizeStart(e, col)}
+        onResizeStart={handleResizeStart as (e: React.MouseEvent, column: unknown) => void}
+        column={col}
       />
     )
 
@@ -572,8 +644,9 @@ export function DataTableV2<T extends { id: string | number }>({
   const renderPinnedPlaceholder = (col: DataTableV2Column<T>, i: number) => {
     const width = typeof col.width === "number" ? col.width : DEFAULT_COL_WIDTH
     const isLeft = col.pinned === "left"
-    const isLeftBoundary = i === lastLeftPinnedIdx && scrolledLeft
-    const isRightBoundary = i === firstRightPinnedIdx && scrolledRight
+    // shadow 는 CSS `group-data-[scrolled-*=true]/scroll:` 로 반응 → 여기선 column 위치만 판단.
+    const isLeftBoundary = i === lastLeftPinnedIdx
+    const isRightBoundary = i === firstRightPinnedIdx
     const isFirstRightPinned = i === firstRightPinnedIdx
     return (
       <div
@@ -582,8 +655,8 @@ export function DataTableV2<T extends { id: string | number }>({
           "shrink-0 sticky z-20",
           headerBg,
           isFirstRightPinned && "ml-auto",
-          isLeftBoundary && "shadow-[2px_0_5px_-2px_rgba(0,0,0,0.15)]",
-          isRightBoundary && "shadow-[-2px_0_5px_-2px_rgba(0,0,0,0.15)]"
+          isLeftBoundary && "group-data-[scrolled-left=true]/scroll:shadow-[2px_0_5px_-2px_rgba(0,0,0,0.15)]",
+          isRightBoundary && "group-data-[scrolled-right=true]/scroll:shadow-[-2px_0_5px_-2px_rgba(0,0,0,0.15)]"
         )}
         style={{
           width,
@@ -724,24 +797,36 @@ export function DataTableV2<T extends { id: string | number }>({
     return cells
   }
 
-  const leftPinnedCols = columns
-    .map((c, i) => ({ c, i }))
-    .filter(({ c }) => c.pinned === "left")
-  const rightPinnedCols = columns
-    .map((c, i) => ({ c, i }))
-    .filter(({ c }) => c.pinned === "right")
+  // pinned 컬럼 파생값 — useMemo 로 stable ref 유지 (헤더 useMemo deps 안정성 확보).
+  const { leftPinnedCols, rightPinnedCols, lastLeftPinnedIdx, firstRightPinnedIdx } =
+    React.useMemo(() => {
+      const left = columns
+        .map((c, i) => ({ c, i }))
+        .filter(({ c }) => c.pinned === "left")
+      const right = columns
+        .map((c, i) => ({ c, i }))
+        .filter(({ c }) => c.pinned === "right")
+      return {
+        leftPinnedCols: left,
+        rightPinnedCols: right,
+        lastLeftPinnedIdx: left.length ? left[left.length - 1].i : -1,
+        firstRightPinnedIdx: right.length ? right[0].i : -1,
+      }
+    }, [columns])
 
-  // pinned 섹션 경계 인덱스 (테두리로 시각적 구분용)
-  const lastLeftPinnedIdx = leftPinnedCols.length
-    ? leftPinnedCols[leftPinnedCols.length - 1].i
-    : -1
-  const firstRightPinnedIdx = rightPinnedCols.length ? rightPinnedCols[0].i : -1
+  // ARIA colcount 는 컨트롤 셀 (drag/checkbox/expand/delete) 도 포함해야 표준 grid 패턴 준수.
+  const ariaColCount =
+    columns.length +
+    (rowReorderable ? 1 : 0) +
+    (selectable ? 1 : 0) +
+    (expandable ? 1 : 0) +
+    (showRowDelete ? 1 : 0)
 
   const gridContent = (
     <div
       role="grid"
       aria-rowcount={data.length + headerRowCount}
-      aria-colcount={columns.length}
+      aria-colcount={ariaColCount}
       className={cn(
         // 항상 컨테이너 폭 유지. 리사이즈로 모든 컬럼 fixed 로 전환돼도 테이블 자체는 shrink 안 함.
         // 빈 영역은 셀 bg (SDS-42 에서 모든 셀에 headerBg 적용) 로 시각 커버.
@@ -752,8 +837,12 @@ export function DataTableV2<T extends { id: string | number }>({
     >
       <div
         ref={scrollRef}
-        className="overflow-auto"
+        // group/scroll — 자식 boundary 셀들이 `group-data-[scrolled-left=true]/scroll:...` 로 shadow 반응
+        // data-scrolled-left/right 는 스크롤 리스너에서 imperative 로 갱신 (React state X)
+        className="overflow-auto group/scroll"
         style={{ maxHeight: typeof maxHeight === "number" ? `${maxHeight}px` : maxHeight }}
+        data-scrolled-left="false"
+        data-scrolled-right="false"
       >
         <div style={{ minWidth: totalWidth }}>
           {/* Header 컨테이너 — 각 셀에 bg 부여로 우측 gap 방어. 여기 bg 는 fallback (sticky 위해). */}
@@ -766,6 +855,7 @@ export function DataTableV2<T extends { id: string | number }>({
             {hasGroups && headerGroupCells && (
               <div
                 role="row"
+                aria-rowindex={1}
                 className="flex border-b border-slate-200 dark:border-slate-700"
               >
                 {renderControlHeaderPlaceholders()}
@@ -824,7 +914,7 @@ export function DataTableV2<T extends { id: string | number }>({
                 items={reorderableIds}
                 strategy={horizontalListSortingStrategy}
               >
-                <div role="row" className="flex">
+                <div role="row" aria-rowindex={headerRowCount} className="flex">
                   {renderControlHeaderCells()}
                   {renderDeleteControlHeaderCell()}
                   {columns.map((col, i) => renderHeaderCell(col, i))}
@@ -834,7 +924,7 @@ export function DataTableV2<T extends { id: string | number }>({
                 </div>
               </SortableContext>
             ) : (
-              <div role="row" className="flex">
+              <div role="row" aria-rowindex={headerRowCount} className="flex">
                 {renderControlHeaderCells()}
                 {renderDeleteControlHeaderCell()}
                 {columns.map((col, i) => renderHeaderCell(col, i))}
@@ -935,12 +1025,18 @@ export function DataTableV2<T extends { id: string | number }>({
               {emptyMessage}
             </div>
           ) : (
-            <div className="relative" style={{ height: totalHeight }}>
-              <SortableContext
-                items={rowSortableIds}
-                strategy={verticalListSortingStrategy}
-              >
-                {data.map((row, i) => (
+            // 가상화 ON 시 컨테이너 높이 = virtualizer.totalSize, OFF 시 = positions 기반 totalHeight
+            <div
+              className="relative"
+              style={{ height: isVirtual ? virtualTotalSize : totalHeight }}
+            >
+              {(() => {
+                // SortableContext 는 rowReorderable 활성 시에만 감쌈.
+                // 항상 감싸면 useSortable 이 context subscribe 해서 모든 parent 리렌더마다
+                // 모든 row 리렌더 (React.memo 로 못 막음 — memo 는 props 만 비교, context 변경은 별개).
+                const rowsJsx = renderIndices.map((i) => {
+                  const row = data[i]
+                  return (
                   <DataTableV2Row
                     key={row.id}
                     row={row}
@@ -950,13 +1046,12 @@ export function DataTableV2<T extends { id: string | number }>({
                     rightOffsets={rightOffsets}
                     lastLeftPinnedIdx={lastLeftPinnedIdx}
                     firstRightPinnedIdx={firstRightPinnedIdx}
-                    showLeftShadow={scrolledLeft}
-                    showRightShadow={scrolledRight}
                     totalWidth={totalWidth}
-                    translateY={positions[i]}
-                    isHovered={hoveredId === row.id}
-                    onHover={setHoveredId}
+                    translateY={isVirtual ? getItemStart(i) : positions[i]}
+                    onHover={rowGrouping ? setHoveredId : undefined}
                     onHeightChange={setHeight}
+                    measureRef={isVirtual && virtualizer ? virtualizer.measureElement : undefined}
+                    dataIndex={isVirtual ? i : undefined}
                     selectable={selectable}
                     isSelected={selection.isSelected(row.id)}
                     onToggleSelect={selection.toggleRow}
@@ -966,13 +1061,13 @@ export function DataTableV2<T extends { id: string | number }>({
                     canExpand={expansion.canExpand(row)}
                     onToggleExpand={expansion.toggleRow}
                     expandedContent={
-                      expandable && expansion.isExpanded(row.id)
-                        ? expandable.expandedRowRender(row)
+                      expandable && expansion.isExpanded(row.id) && stableExpandedRowRender
+                        ? stableExpandedRowRender(row)
                         : null
                     }
                     expandColWidth={EXPAND_COL_WIDTH}
-                    onRowClick={onRowClick}
-                    extraClassName={rowClassName?.(row)}
+                    onRowClick={stableOnRowClick}
+                    extraClassName={stableRowClassName?.(row)}
                     editingColumnKey={
                       cellEdit.editing?.rowId === row.id ? cellEdit.editing.columnKey : null
                     }
@@ -992,16 +1087,24 @@ export function DataTableV2<T extends { id: string | number }>({
                     rowReorderable={rowReorderable}
                     dragHandleColWidth={DRAG_HANDLE_COL_WIDTH}
                     isLast={i === data.length - 1}
-                    getRowSpan={(colKey) => getRowSpan(i, colKey)}
-                    getRowSpanHeight={(colKey) => {
-                      const span = getRowSpan(i, colKey)
-                      if (span === undefined || span <= 1) return undefined
-                      return positions[i + span] - positions[i]
-                    }}
-                    getGroupHovered={(colKey) => getGroupHovered(i, colKey)}
+                    getRowSpan={getRowSpan}
+                    getRowSpanHeight={getRowSpanHeight}
+                    getGroupHovered={getGroupHovered}
+                    ariaRowIndex={headerRowCount + i + 1}
                   />
-                ))}
-              </SortableContext>
+                  )
+                })
+                return rowReorderable ? (
+                  <SortableContext
+                    items={rowSortableIds}
+                    strategy={verticalListSortingStrategy}
+                  >
+                    {rowsJsx}
+                  </SortableContext>
+                ) : (
+                  <>{rowsJsx}</>
+                )
+              })()}
             </div>
           )}
 

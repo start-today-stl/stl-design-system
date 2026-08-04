@@ -46,6 +46,23 @@ export interface ExpandableConfig<T> {
 }
 
 /**
+ * 행 가상화 설정. viewport 바깥의 row 는 렌더하지 않아 대용량 데이터에서 DOM 노드 폭발 방지.
+ * `@tanstack/react-virtual` 기반 (v1 과 동일 라이브러리).
+ *
+ * 옵션:
+ * - `overscan`: viewport 위/아래로 추가 렌더할 row 수 (기본 5). 스크롤 시 blank flash 방지
+ * - `estimateSize`: row 예상 높이 (기본 40). 실측 전 초기 배치 및 total height 계산에 사용
+ *
+ * 조합 이슈:
+ * - **rowGrouping**: 그룹 head 셀이 viewport 밖이면 병합 시각 깨짐. v2 는 head 를 overscan 확장으로 강제 렌더 → 그룹 크기가 overscan 넘게 크면 시각 잘림 가능. 대부분 케이스 커버.
+ * - **rowReorderable**: SDS-36 은 top 좌표 배치라 가상화와 함께 동작 가능. dnd-kit sortable 의 layout collision 은 렌더된 row 기준.
+ */
+export interface VirtualConfig {
+  overscan?: number
+  estimateSize?: number
+}
+
+/**
  * 로우 그룹핑 (셀 병합) 설정. Excel 스타일 rowSpan 병합.
  *
  * 동작:
@@ -202,6 +219,12 @@ export interface DataTableV2Props<T extends { id: string | number }> {
    * 활성 시 `rowReorderable` 자동 OFF (병합 셀 드래그 시 레이아웃 붕괴).
    */
   rowGrouping?: RowGroupConfig<T>
+  /**
+   * 행 가상화. viewport 안의 row 만 렌더. 대용량 데이터 (수백~수만) 에서 성능 확보.
+   * `true` = 기본 설정, 객체 = 세부 옵션 (overscan / estimateSize).
+   * 소량 데이터 (수십 이하) 는 오버헤드 없이 그대로. 명시적 활성 필요.
+   */
+  virtual?: boolean | VirtualConfig
   /** 셀 값 변경 콜백 (편집 완료 + validate 통과 시 호출) */
   onCellChange?: (rowId: string | number, columnKey: keyof T, value: T[keyof T]) => void
   /** 행 추가/삭제 액션 (지정 시 삭제 컬럼 우측 pinned + 하단 추가 행) */
