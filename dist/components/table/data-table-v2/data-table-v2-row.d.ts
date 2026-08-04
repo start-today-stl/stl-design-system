@@ -29,6 +29,7 @@ interface DataTableV2RowProps<T extends {
     expandColWidth: number;
     onRowClick?: (row: T) => void;
     extraClassName?: string;
+    isLast: boolean;
     editingColumnKey: keyof T | null;
     editingState: {
         editValue: T[keyof T];

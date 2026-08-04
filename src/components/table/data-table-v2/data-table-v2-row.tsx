@@ -38,6 +38,8 @@ interface DataTableV2RowProps<T extends { id: string | number }> {
   // 행 클릭 / className
   onRowClick?: (row: T) => void
   extraClassName?: string
+  // 마지막 row 여부 — 외곽 컨테이너 border-b 와 겹쳐 2px 보이는 것 방지 위해 border-b 생략
+  isLast: boolean
   // 셀 편집
   editingColumnKey: keyof T | null
   editingState: { editValue: T[keyof T]; error?: string } | null
@@ -100,6 +102,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
   rowActionsColLeftOffset,
   rowReorderable,
   dragHandleColWidth,
+  isLast,
 }: DataTableV2RowProps<T>) {
   const rowRef = React.useRef<HTMLDivElement | null>(null)
 
@@ -167,7 +170,10 @@ function DataTableV2RowInner<T extends { id: string | number }>({
     >
       <div
         className={cn(
+          // border-b 를 row 자체에 두어서 우측 empty 영역 (셀 미커버) 에도 하단 line 이 이어지게 함.
+          // 마지막 row 는 외곽 컨테이너 border-bottom 과 겹쳐 2px 로 보이므로 생략.
           "flex transition-colors",
+          !isLast && "border-b border-slate-200 dark:border-slate-700",
           bgClass,
           onRowClick && "cursor-pointer",
           extraClassName
@@ -181,7 +187,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             role="gridcell"
             data-no-row-click
             className={cn(
-              "shrink-0 sticky z-10 flex items-center justify-center border-b border-slate-200 dark:border-slate-700 min-h-9 transition-colors",
+              "shrink-0 sticky z-10 flex items-center justify-center min-h-9 transition-colors",
               bgClass
             )}
             style={{ width: dragHandleColWidth, left: 0 }}
@@ -203,7 +209,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             role="gridcell"
             data-no-row-click
             className={cn(
-              "shrink-0 sticky z-10 flex items-center justify-center border-b border-slate-200 dark:border-slate-700 min-h-9 transition-colors",
+              "shrink-0 sticky z-10 flex items-center justify-center min-h-9 transition-colors",
               bgClass
             )}
             style={{
@@ -230,7 +236,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             role="gridcell"
             data-no-row-click
             className={cn(
-              "shrink-0 sticky z-10 flex items-center justify-center border-b border-slate-200 dark:border-slate-700 min-h-9 transition-colors",
+              "shrink-0 sticky z-10 flex items-center justify-center min-h-9 transition-colors",
               bgClass
             )}
             style={{
@@ -259,7 +265,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             role="gridcell"
             data-no-row-click
             className={cn(
-              "shrink-0 sticky z-10 flex items-center justify-center border-b border-slate-200 dark:border-slate-700 min-h-9 transition-colors",
+              "shrink-0 sticky z-10 flex items-center justify-center min-h-9 transition-colors",
               bgClass
             )}
             style={{ width: rowActionsColWidth, left: rowActionsColLeftOffset }}
@@ -290,7 +296,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
           const isCellEditing =
             !!editingState && editingColumnKey === col.accessorKey
           const outerCls = cn(
-            "flex min-h-9 border-b border-slate-200 dark:border-slate-700",
+            "flex min-h-9",
             width !== undefined && "shrink-0",
             isPinned && "sticky z-10 transition-colors",
             isPinned && bgClass,

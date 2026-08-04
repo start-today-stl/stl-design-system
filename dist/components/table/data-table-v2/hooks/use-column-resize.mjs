@@ -1,42 +1,55 @@
-import * as n from "react";
+import * as r from "react";
+const E = 50;
 function g({
-  resizable: v,
-  columnWidths: o,
-  onColumnResize: u
+  resizable: W,
+  columnWidths: c,
+  onColumnResize: o
 }) {
-  const [c, b] = n.useState({}), [r, m] = n.useState(null), f = n.useRef(0), y = n.useRef(0), i = n.useCallback(
-    (e) => {
-      const t = String(e.accessorKey);
-      if (o && t in o) return o[t];
-      if (t in c) return c[t];
-      if (typeof e.width == "number") return e.width;
+  const [d, h] = r.useState({}), [s, p] = r.useState(null), v = r.useRef(0), b = r.useRef(0), f = r.useRef(E), l = r.useCallback(
+    (n) => {
+      const e = String(n.accessorKey);
+      if (c && e in c) return c[e];
+      if (e in d) return d[e];
+      if (typeof n.width == "number") return n.width;
     },
-    [o, c]
-  ), h = n.useCallback(
-    (e, t) => {
-      e.preventDefault(), e.stopPropagation(), m(t.accessorKey), f.current = e.clientX;
-      const s = e.currentTarget.parentElement, l = s == null ? void 0 : s.offsetWidth;
-      y.current = l ?? i(t) ?? 150;
+    [c, d]
+  ), S = r.useCallback(
+    (n, e) => {
+      n.preventDefault(), n.stopPropagation();
+      const t = n.currentTarget.parentElement, u = t == null ? void 0 : t.parentElement;
+      if (p(e.accessorKey), v.current = n.clientX, b.current = (t == null ? void 0 : t.offsetWidth) ?? l(e) ?? 150, f.current = Math.max(
+        E,
+        typeof e.minWidth == "number" ? e.minWidth : 0
+      ), !o && u) {
+        const i = {};
+        u.querySelectorAll("[data-column-key]").forEach((a) => {
+          const k = a.getAttribute("data-column-key");
+          k && (i[k] = a.offsetWidth);
+        }), h((a) => ({ ...i, ...a }));
+      }
     },
-    [i]
-  ), a = n.useCallback(
-    (e) => {
-      if (!r) return;
-      const t = e.clientX - f.current, s = Math.max(50, y.current + t), l = String(r);
-      u ? u(r, s) : b((p) => ({ ...p, [l]: s }));
+    [l, o]
+  ), y = r.useCallback(
+    (n) => {
+      if (!s) return;
+      const e = n.clientX - v.current;
+      let t = b.current + e;
+      t < f.current && (t = f.current);
+      const u = String(s);
+      o ? o(s, t) : h((i) => ({ ...i, [u]: t }));
     },
-    [r, u]
-  ), d = n.useCallback(() => m(null), []);
-  return n.useEffect(() => {
-    if (r)
-      return document.addEventListener("mousemove", a), document.addEventListener("mouseup", d), document.body.style.userSelect = "none", document.body.style.cursor = "col-resize", () => {
-        document.removeEventListener("mousemove", a), document.removeEventListener("mouseup", d), document.body.style.userSelect = "", document.body.style.cursor = "";
+    [s, o]
+  ), m = r.useCallback(() => p(null), []);
+  return r.useEffect(() => {
+    if (s)
+      return document.addEventListener("mousemove", y), document.addEventListener("mouseup", m), document.body.style.userSelect = "none", document.body.style.cursor = "col-resize", () => {
+        document.removeEventListener("mousemove", y), document.removeEventListener("mouseup", m), document.body.style.userSelect = "", document.body.style.cursor = "";
       };
-  }, [r, a, d]), {
-    resizingKey: r,
-    getColumnWidth: v ? i : () => {
+  }, [s, y, m]), {
+    resizingKey: s,
+    getColumnWidth: W ? l : () => {
     },
-    handleResizeStart: h
+    handleResizeStart: S
   };
 }
 export {

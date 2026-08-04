@@ -11,6 +11,7 @@ interface SortableHeaderCellProps {
   className?: string
   style?: React.CSSProperties
   children: React.ReactNode
+  dataColumnKey?: string
 }
 
 /**
@@ -24,6 +25,7 @@ export function DataTableV2SortableHeaderCell({
   className,
   style,
   children,
+  dataColumnKey,
 }: SortableHeaderCellProps) {
   const {
     attributes,
@@ -45,6 +47,7 @@ export function DataTableV2SortableHeaderCell({
     <div
       ref={setNodeRef}
       role="columnheader"
+      data-column-key={dataColumnKey}
       style={combinedStyle}
       className={cn("group/drag gap-0.5", className)}
     >
