@@ -1,40 +1,42 @@
 import * as n from "react";
 function g({
-  resizable: f,
-  columnWidths: s,
-  onColumnResize: o
+  resizable: v,
+  columnWidths: o,
+  onColumnResize: u
 }) {
-  const [u, v] = n.useState({}), [r, d] = n.useState(null), l = n.useRef(0), m = n.useRef(0), c = n.useCallback(
+  const [c, b] = n.useState({}), [r, m] = n.useState(null), f = n.useRef(0), y = n.useRef(0), i = n.useCallback(
     (e) => {
       const t = String(e.accessorKey);
-      if (s && t in s) return s[t];
-      if (t in u) return u[t];
+      if (o && t in o) return o[t];
+      if (t in c) return c[t];
       if (typeof e.width == "number") return e.width;
     },
-    [s, u]
-  ), b = n.useCallback(
+    [o, c]
+  ), h = n.useCallback(
     (e, t) => {
-      e.preventDefault(), e.stopPropagation(), d(t.accessorKey), l.current = e.clientX, m.current = c(t) ?? 150;
+      e.preventDefault(), e.stopPropagation(), m(t.accessorKey), f.current = e.clientX;
+      const s = e.currentTarget.parentElement, l = s == null ? void 0 : s.offsetWidth;
+      y.current = l ?? i(t) ?? 150;
     },
-    [c]
-  ), i = n.useCallback(
+    [i]
+  ), a = n.useCallback(
     (e) => {
       if (!r) return;
-      const t = e.clientX - l.current, y = Math.max(50, m.current + t), h = String(r);
-      o ? o(r, y) : v((p) => ({ ...p, [h]: y }));
+      const t = e.clientX - f.current, s = Math.max(50, y.current + t), l = String(r);
+      u ? u(r, s) : b((p) => ({ ...p, [l]: s }));
     },
-    [r, o]
-  ), a = n.useCallback(() => d(null), []);
+    [r, u]
+  ), d = n.useCallback(() => m(null), []);
   return n.useEffect(() => {
     if (r)
-      return document.addEventListener("mousemove", i), document.addEventListener("mouseup", a), document.body.style.userSelect = "none", document.body.style.cursor = "col-resize", () => {
-        document.removeEventListener("mousemove", i), document.removeEventListener("mouseup", a), document.body.style.userSelect = "", document.body.style.cursor = "";
+      return document.addEventListener("mousemove", a), document.addEventListener("mouseup", d), document.body.style.userSelect = "none", document.body.style.cursor = "col-resize", () => {
+        document.removeEventListener("mousemove", a), document.removeEventListener("mouseup", d), document.body.style.userSelect = "", document.body.style.cursor = "";
       };
-  }, [r, i, a]), {
+  }, [r, a, d]), {
     resizingKey: r,
-    getColumnWidth: f ? c : () => {
+    getColumnWidth: v ? i : () => {
     },
-    handleResizeStart: b
+    handleResizeStart: h
   };
 }
 export {
