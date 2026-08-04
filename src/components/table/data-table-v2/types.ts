@@ -124,6 +124,10 @@ export interface DataTableV2Props<T extends { id: string | number }> {
   columnOrder?: (keyof T)[]
   /** 컬럼 순서 변경 콜백 */
   onColumnReorder?: (newOrder: (keyof T)[]) => void
+  /** 행 순서 변경 활성화 (좌측 드래그 핸들 자동 추가) */
+  rowReorderable?: boolean
+  /** 행 순서 변경 콜백 (재정렬된 data 배열 전달) */
+  onRowReorder?: (newData: T[]) => void
   /** 행 선택 활성화 (체크박스 컬럼 좌측에 자동 추가) */
   selectable?: boolean
   /** 선택된 행 ID (controlled) */
