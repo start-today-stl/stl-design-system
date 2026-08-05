@@ -69,7 +69,7 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
           // 가로 패딩은 여기 두지 않는다 — 로고/메뉴/푸터가 각자 갖는다.
           // (여기에 두면 스크롤 컨테이너가 그만큼 좁아져 스크롤바가 사이드바 우측 끝에서
           //  안쪽으로 떠 보인다. 본부장님 지시 "스크롤바 경계 불분명" 건)
-          !isHidden && (collapsed && collapseMode === "mini" ? "w-[88px] px-0 items-center" : "w-[230px] px-0"),
+          !isHidden && (collapsed && collapseMode === "mini" ? "w-[88px] px-0 items-center" : "w-[210px] px-0"),
           className
         )}
         {...props}
