@@ -459,31 +459,50 @@ export function DataTableV2<T extends { id: string | number }>({
     type Cell =
       | { kind: "group"; key: string; width: number; group: HeaderGroup<T> }
       | { kind: "placeholder"; key: string; col: DataTableV2Column<T> }
+
+    // 컬럼 → 그룹 역인덱스 (한 컬럼이 여러 그룹에 적혀 있으면 먼저 정의된 그룹 채택)
+    const groupOfColumn = new Map<keyof T, HeaderGroup<T>>()
+    for (const g of headerGroups) {
+      for (const ck of g.columns) {
+        if (!groupOfColumn.has(ck)) groupOfColumn.set(ck, g)
+      }
+    }
+
+    // 그룹 스팬은 **현재 컬럼 순서에서 같은 그룹이 연속되는 구간(run)** 으로 매번 재계산한다.
+    // 그룹 정의의 columns 배열을 그대로 믿고 건너뛰면, 재정렬로 인접성이 깨졌을 때
+    // 다른 그룹이 통째로 소멸하거나 그룹 폭이 실제 컬럼 폭과 어긋난다 (SDS-39).
+    // AG Grid 와 동일하게, 그룹이 갈라지면 헤더도 갈라져 각각 그려진다.
     const cells: Cell[] = []
     let i = 0
     while (i < middleCols.length) {
       const col = middleCols[i]
-      const group = headerGroups.find((g) => g.columns[0] === col.accessorKey)
-      if (group) {
-        const w = group.columns.reduce((sum, ck) => {
-          const c = middleCols.find((mc) => mc.accessorKey === ck)
-          return sum + (c ? colMinNeeded(c) : DEFAULT_COL_WIDTH)
-        }, 0)
-        cells.push({
-          kind: "group",
-          key: `group-${String(col.accessorKey)}`,
-          width: w,
-          group,
-        })
-        i += group.columns.length
-      } else {
+      const group = groupOfColumn.get(col.accessorKey)
+      if (!group) {
         cells.push({
           kind: "placeholder",
           key: `middle-empty-${String(col.accessorKey)}`,
           col,
         })
         i += 1
+        continue
       }
+      // 같은 그룹이 이어지는 동안 폭 누적
+      let width = 0
+      const runStart = i
+      while (
+        i < middleCols.length &&
+        groupOfColumn.get(middleCols[i].accessorKey) === group
+      ) {
+        width += colMinNeeded(middleCols[i])
+        i += 1
+      }
+      cells.push({
+        // 같은 그룹이 여러 구간으로 갈라질 수 있으므로 key 는 구간 첫 컬럼 기준
+        key: `group-${String(middleCols[runStart].accessorKey)}`,
+        kind: "group",
+        width,
+        group,
+      })
     }
     return cells
   }, [middleCols, headerGroups])

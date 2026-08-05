@@ -131,7 +131,11 @@ export type FilterConfig<T> =
 export interface HeaderGroup<T> {
   /** 그룹 헤더 텍스트/노드 */
   header: React.ReactNode
-  /** 이 그룹에 포함되는 컬럼 accessorKey 배열 (인접한 컬럼이어야 함) */
+  /**
+   * 이 그룹에 포함되는 컬럼 accessorKey 배열.
+   * 그룹 헤더는 **현재 컬럼 순서에서 이 그룹이 연속되는 구간마다** 그려진다.
+   * 재정렬 등으로 구간이 갈라지면 같은 그룹 헤더가 여러 번 나타난다 (AG Grid 와 동일).
+   */
   columns: (keyof T)[]
   /** 셀 정렬 */
   align?: "left" | "center" | "right"
