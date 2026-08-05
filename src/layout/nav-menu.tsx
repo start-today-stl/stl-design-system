@@ -1,7 +1,7 @@
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
-import { MenuVerticalIcon } from "@/icons"
+import { LeftIcon, RightIcon } from "@/icons"
 
 export type NavMenuLayout = "vertical" | "horizontal"
 
@@ -65,20 +65,31 @@ const NavMenu = React.forwardRef<HTMLDivElement, NavMenuProps>(
               "w-8 h-8 rounded-[20px] border border-slate-100 dark:border-slate-700",
               "bg-white dark:bg-black hover:bg-slate-50 dark:hover:bg-slate-800",
               "transition-all duration-300 cursor-pointer",
-              collapsed ? "top-[-48px] -right-4" : "top-[-48px] -right-[40px]"
+              // 사이드바 가로 패딩이 스크롤 영역 안쪽으로 옮겨져서 nav 가 사이드바 전체 폭을
+              // 쓰므로, 접힘/펼침 모두 동일한 offset 으로 사이드바 경계에 걸친다.
+              "top-[-48px] -right-4"
             )}
             aria-label={collapsed ? "메뉴 펼치기" : "메뉴 접기"}
           >
-            <MenuVerticalIcon size={24} className="text-slate-500" />
+            {/* 방향성 있는 chevron — 접힘 상태면 "펼치기" 의미로 오른쪽, 펼침 상태면 왼쪽 */}
+            {collapsed ? (
+              <RightIcon size={24} className="text-slate-500" />
+            ) : (
+              <LeftIcon size={24} className="text-slate-500" />
+            )}
           </button>
         )}
 
-        {/* 메뉴 영역 - 스크롤은 이 내부 div에만 적용 */}
+        {/* 메뉴 영역 - 스크롤은 이 내부 div에만 적용.
+            가로 여백을 여기서 주는 이유: 스크롤바는 스크롤 컨테이너의 **테두리**에 그려지므로,
+            컨테이너가 사이드바 전체 폭을 쓰고 안쪽 padding 으로 내용을 들여쓰면 스크롤바가
+            사이드바 우측 끝에 붙는다. (바깥 껍데기에 padding 을 주면 그 폭만큼 스크롤바가
+            안쪽으로 떠서 경계가 불분명해짐) */}
         <div
           className={cn(
             "flex flex-col",
-            collapsed ? "items-center gap-0.5 w-full px-2 overflow-visible" : "gap-0.5 pb-4",
-            scrollable && !collapsed && "flex-1 min-h-0 overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+            collapsed ? "items-center gap-0.5 w-full px-2 overflow-visible" : "gap-0.5 px-6 pb-4",
+            scrollable && !collapsed && "sidebar-scroll flex-1 min-h-0 overflow-y-auto overflow-x-hidden"
           )}
         >
           {/* children에 collapsed prop 전달 (React 컴포넌트에만) */}

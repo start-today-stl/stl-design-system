@@ -19,12 +19,28 @@ const RadioGroup = React.forwardRef<
 })
 RadioGroup.displayName = RadioGroupPrimitive.Root.displayName
 
+export type RadioGroupItemSize = "sm" | "md" | "lg"
+
 export interface RadioGroupItemProps
   extends React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item> {
   /** 라벨 텍스트 */
   label?: string
   /** 색상 변형 */
   variant?: "primary" | "success" | "danger"
+  /**
+   * 크기 (기본: md)
+   * - sm: 12px — 이전 기본 크기
+   * - md: 16px — 기본
+   * - lg: 20px — Checkbox(20px) 와 동일 박스 크기
+   */
+  size?: RadioGroupItemSize
+}
+
+/** 바깥 원 / 안쪽 점 크기. 안쪽 점은 바깥의 절반. */
+const sizeStyles: Record<RadioGroupItemSize, { root: string; dot: string }> = {
+  sm: { root: "size-3", dot: "size-1.5" },
+  md: { root: "size-4", dot: "size-2" },
+  lg: { root: "size-5", dot: "size-2.5" },
 }
 
 const checkedVariantStyles = {
@@ -36,15 +52,19 @@ const checkedVariantStyles = {
 const RadioGroupItem = React.forwardRef<
   React.ElementRef<typeof RadioGroupPrimitive.Item>,
   RadioGroupItemProps
->(({ className, label, variant = "primary", ...props }, ref) => {
+>(({ className, label, variant = "primary", size = "md", ...props }, ref) => {
   const checkedStyle = checkedVariantStyles[variant]
+  const { root: rootSize, dot: dotSize } = sizeStyles[size]
 
   const radio = (
     <RadioGroupPrimitive.Item
       ref={ref}
       className={cn(
-        // 기본 스타일 (12x12, 원형) - Figma 기준
-        "peer size-3 shrink-0 rounded-md border flex items-center justify-center cursor-pointer group",
+        // 원형. rounded-full 을 쓰는 이유: 기존 rounded-md(6px) 는 12px 크기에서만 우연히
+        // 정원으로 보이고(6px = 절반), 크기를 키우면 모서리 둥근 사각형이 된다.
+        // sm 에서는 렌더 결과가 기존과 동일하다.
+        "peer shrink-0 rounded-full border flex items-center justify-center cursor-pointer group",
+        rootSize,
         // Default 상태: bg-slate-50, border-slate-200
         "bg-slate-50 border-slate-200",
         // Hover 상태: bg-slate-400, border-slate-400
@@ -59,10 +79,11 @@ const RadioGroupItem = React.forwardRef<
       )}
       {...props}
     >
-      {/* 내부 원 (6x6) - 항상 표시, 선택 시 색상 변경 */}
+      {/* 내부 원 - 항상 표시, 선택 시 색상 변경 */}
       <span
         className={cn(
-          "size-1.5 rounded-full transition-colors",
+          "rounded-full transition-colors",
+          dotSize,
           // 기본: 회색, Hover: 회색 유지
           "bg-slate-200 group-hover:bg-slate-200",
           // 선택 시: 색상 변경 (variant에 따라)
