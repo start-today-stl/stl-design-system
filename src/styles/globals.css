@@ -1,3 +1,17 @@
+/**
+ * STL Design System - Global Styles (내부용)
+ *
+ * ⚠️ 이 파일은 **DS 저장소 내부(Storybook / 개발 서버) 전용** 이다.
+ *    사용처(CMS 등)는 이 파일이 아니라 `tokens.css` 를 임포트한다.
+ *
+ *    - 이 파일: `@import "tailwindcss"` 를 자기가 하고, 폰트를 상대경로로 참조
+ *      → 사용처가 임포트하면 tailwind 가 중복 로드됨
+ *    - tokens.css: 사용처 배포용. 폰트를 base64 로 인라인 (node_modules 경로 이슈 회피)
+ *
+ * ⚠️ 전역 스타일(스크롤바 등)은 두 파일에 **중복 정의** 되어 있다.
+ *    한쪽만 고치면 Storybook 과 사용처의 동작이 갈린다. 반드시 양쪽을 함께 수정할 것.
+ *    (역할 분담 상세: docs/GETTING-STARTED.md)
+ */
 @import "tailwindcss";
 
 /* Pretendard 폰트: Storybook은 preview-head.html에서 로드 */
