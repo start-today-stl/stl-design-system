@@ -6,6 +6,7 @@ import {
   useSensor,
   useSensors,
   type DragEndEvent,
+  type DragStartEvent,
 } from "@dnd-kit/core"
 import {
   SortableContext,
@@ -327,9 +328,19 @@ export function DataTableV2<T extends { id: string | number }>({
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
   )
 
+  // 지금 끌고 있는 게 컬럼인지 행인지 — 자동 스크롤 축을 정하는 데만 사용
+  const [activeDragAxis, setActiveDragAxis] = React.useState<
+    "column" | "row" | null
+  >(null)
+
+  const handleDragStart = React.useCallback((e: DragStartEvent) => {
+    setActiveDragAxis(String(e.active.id).startsWith("row-") ? "row" : "column")
+  }, [])
+
   // 컬럼 재정렬(id: accessorKey) 과 행 재정렬(id: `row-{id}`) 을 prefix 로 라우팅.
   const handleDragEnd = React.useCallback(
     (e: DragEndEvent) => {
+      setActiveDragAxis(null)
       if (String(e.active.id).startsWith("row-")) {
         handleRowDragEnd(e)
       } else {
@@ -337,6 +348,20 @@ export function DataTableV2<T extends { id: string | number }>({
       }
     },
     [handleColumnDragEnd, handleRowDragEnd]
+  )
+
+  const handleDragCancel = React.useCallback(() => setActiveDragAxis(null), [])
+
+  // dnd-kit 기본 자동 스크롤 threshold 는 { x: 0.2, y: 0.2 } 라 **양축 모두** 스크롤된다.
+  // 그래서 컬럼을 옮기려고 살짝 위로 당기기만 해도 바디가 세로로 스크롤됐다.
+  // 컬럼 재정렬은 가로 위치만 바꾸므로 세로 스크롤이 일어날 이유가 없다 (AG Grid 도 동일).
+  // → 끌고 있는 대상에 따라 필요한 축만 남긴다.
+  const autoScroll = React.useMemo(
+    () =>
+      activeDragAxis === "row"
+        ? { threshold: { x: 0, y: 0.2 } }
+        : { threshold: { x: 0.2, y: 0 } },
+    [activeDragAxis]
   )
 
   // 행 재정렬용 sortable id 목록 (row-{id} 형식)
@@ -1195,7 +1220,10 @@ export function DataTableV2<T extends { id: string | number }>({
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}
+        autoScroll={autoScroll}
+        onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
+        onDragCancel={handleDragCancel}
       >
         {gridContent}
       </DndContext>
