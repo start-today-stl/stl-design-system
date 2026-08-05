@@ -1,3 +1,17 @@
+/**
+ * STL Design System - Global Styles (내부용)
+ *
+ * ⚠️ 이 파일은 **DS 저장소 내부(Storybook / 개발 서버) 전용** 이다.
+ *    사용처(CMS 등)는 이 파일이 아니라 `tokens.css` 를 임포트한다.
+ *
+ *    - 이 파일: `@import "tailwindcss"` 를 자기가 하고, 폰트를 상대경로로 참조
+ *      → 사용처가 임포트하면 tailwind 가 중복 로드됨
+ *    - tokens.css: 사용처 배포용. 폰트를 base64 로 인라인 (node_modules 경로 이슈 회피)
+ *
+ * ⚠️ 전역 스타일(스크롤바 등)은 두 파일에 **중복 정의** 되어 있다.
+ *    한쪽만 고치면 Storybook 과 사용처의 동작이 갈린다. 반드시 양쪽을 함께 수정할 것.
+ *    (역할 분담 상세: docs/GETTING-STARTED.md)
+ */
 @import "tailwindcss";
 
 /* Pretendard 폰트: Storybook은 preview-head.html에서 로드 */
@@ -215,6 +229,52 @@
 }
 
 .dark *:not(.scrollbar-hide)::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-slate-600);
+}
+
+/* ========================================
+   Sidebar Scrollbar (얇게 + hover 시에만 노출)
+   ========================================
+   위 전역 규칙(`*:not(.scrollbar-hide)`)과 명시도가 같으므로 **반드시 뒤에** 선언해야 이긴다.
+   컴포넌트 쪽 Tailwind 임의 유틸리티로는 전역 규칙을 못 이겨서 여기 둔다. */
+.sidebar-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+  transition: scrollbar-color 0.2s ease;
+}
+
+.sidebar-scroll:hover {
+  scrollbar-color: var(--color-slate-300) transparent;
+}
+
+.dark .sidebar-scroll:hover {
+  scrollbar-color: var(--color-slate-600) transparent;
+}
+
+.sidebar-scroll::-webkit-scrollbar {
+  width: 12px;
+}
+
+.sidebar-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* 트랙은 12px 로 두고 thumb 양옆에 4px 투명 border → 실제로 보이는 막대는 4px,
+   사이드바 가장자리에서 4px 띄워진다. 투명 border 도 thumb 요소의 일부라
+   드래그 히트 영역은 12px 그대로 유지된다. */
+.sidebar-scroll::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  border: 4px solid transparent;
+  background-clip: padding-box;
+  border-radius: 999px;
+  transition: background-color 0.2s ease;
+}
+
+.sidebar-scroll:hover::-webkit-scrollbar-thumb {
+  background-color: var(--color-slate-300);
+}
+
+.dark .sidebar-scroll:hover::-webkit-scrollbar-thumb {
   background-color: var(--color-slate-600);
 }
 

@@ -1,8 +1,8 @@
 import { jsx as e, jsxs as a, Fragment as i } from "react/jsx-runtime";
-import * as o from "react";
+import * as f from "react";
 import { cn as d } from "../../lib/utils.mjs";
 import { Skeleton as s } from "../ui/skeleton.mjs";
-function f() {
+function o() {
   return /* @__PURE__ */ a(i, { children: [
     /* @__PURE__ */ a("div", { className: "flex items-center justify-between px-[10px] pt-[10px] flex-shrink-0", children: [
       /* @__PURE__ */ a("div", { className: "flex items-center gap-1", children: [
@@ -18,7 +18,7 @@ function f() {
     ] })
   ] });
 }
-const N = o.forwardRef(
+const N = f.forwardRef(
   ({ className: n, icon: t, title: x, headerAction: l, children: c, stretch: r = !1, loading: h = !1, ...m }, p) => /* @__PURE__ */ e(
     "div",
     {
@@ -29,13 +29,13 @@ const N = o.forwardRef(
         n
       ),
       ...m,
-      children: h ? /* @__PURE__ */ e(f, {}) : /* @__PURE__ */ a(i, { children: [
-        /* @__PURE__ */ a("div", { className: "flex items-center justify-between px-[10px] pt-[10px] flex-shrink-0", children: [
-          /* @__PURE__ */ a("div", { className: "flex items-center gap-0.5", children: [
+      children: h ? /* @__PURE__ */ e(o, {}) : /* @__PURE__ */ a(i, { children: [
+        /* @__PURE__ */ a("div", { className: "flex items-center justify-between gap-2 px-[10px] pt-[10px] flex-shrink-0", children: [
+          /* @__PURE__ */ a("div", { className: "flex items-center gap-0.5 min-w-0 flex-1", children: [
             t && /* @__PURE__ */ e("span", { className: "flex-shrink-0 text-slate-700 dark:text-slate-100", children: t }),
-            /* @__PURE__ */ e("span", { className: "text-sm tracking-[-0.14px] text-slate-700 dark:text-slate-100", children: x })
+            /* @__PURE__ */ e("span", { className: "text-sm tracking-[-0.14px] text-slate-700 dark:text-slate-100 truncate", children: x })
           ] }),
-          l && /* @__PURE__ */ e("div", { className: "flex items-center", children: l })
+          l && /* @__PURE__ */ e("div", { className: "flex items-center flex-shrink-0", children: l })
         ] }),
         /* @__PURE__ */ e("div", { className: d("p-[10px]", r && "flex-1 flex flex-col"), children: c })
       ] })

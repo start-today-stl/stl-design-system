@@ -65,13 +65,18 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
           "shadow-[1px_0px_41.3px_1px_rgba(0,0,0,0.05)] transition-all duration-300",
           // hidden 모드
           isHidden && "w-0 -translate-x-full opacity-0 border-0 overflow-hidden",
-          // mini 모드 또는 펼쳐진 상태
-          !isHidden && (collapsed && collapseMode === "mini" ? "w-[88px] px-0 items-center" : "w-[260px] px-6"),
+          // mini 모드 또는 펼쳐진 상태.
+          // 가로 패딩은 여기 두지 않는다 — 로고/메뉴/푸터가 각자 갖는다.
+          // (여기에 두면 스크롤 컨테이너가 그만큼 좁아져 스크롤바가 사이드바 우측 끝에서
+          //  안쪽으로 떠 보인다. 본부장님 지시 "스크롤바 경계 불분명" 건)
+          !isHidden && (collapsed && collapseMode === "mini" ? "w-[88px] px-0 items-center" : "w-[210px] px-0"),
           className
         )}
         {...props}
       >
-        {/* 로고 영역 - crossfade 전환 효과 */}
+        {/* 로고 영역 - crossfade 전환 효과.
+            가로 여백은 이 wrapper 가 아니라 아래 자식들에 준다 — 자식이 `absolute inset-0` 이라
+            inset 이 padding box 기준으로 잡혀서 wrapper 의 padding 이 무시되기 때문. */}
         <div className="relative h-16 mb-4 flex-shrink-0 w-full">
           {/* 접힌 상태 로고 */}
           <div
@@ -85,7 +90,7 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
           {/* 펼친 상태 로고 */}
           <div
             className={cn(
-              "absolute inset-0 flex justify-start items-center transition-opacity duration-300",
+              "absolute inset-0 flex justify-start items-center px-6 transition-opacity duration-300",
               collapsed && collapseMode === "mini" ? "opacity-0 pointer-events-none" : "opacity-100"
             )}
           >
@@ -106,7 +111,7 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
 
         {/* Footer */}
         {!(collapsed && collapseMode === "mini") && footer && (
-          <div className="flex-shrink-0 mt-4 mb-8">{footer}</div>
+          <div className="flex-shrink-0 mt-4 mb-8 px-6">{footer}</div>
         )}
       </div>
     )

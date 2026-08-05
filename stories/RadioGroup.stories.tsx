@@ -115,6 +115,28 @@ export const Required: Story = {
   ),
 }
 
+/** 크기 (sm / md / lg) */
+export const Sizes: Story = {
+  render: () => (
+    <div className="flex flex-col gap-6">
+      <RadioGroup defaultValue="a" className="flex gap-6">
+        <RadioGroupItem value="a" label="옵션 A" size="sm" />
+        <RadioGroupItem value="b" label="옵션 B" size="sm" />
+      </RadioGroup>
+
+      <RadioGroup defaultValue="a" className="flex gap-6">
+        <RadioGroupItem value="a" label="옵션 A" size="md" />
+        <RadioGroupItem value="b" label="옵션 B" size="md" />
+      </RadioGroup>
+
+      <RadioGroup defaultValue="a" className="flex gap-6">
+        <RadioGroupItem value="a" label="옵션 A" size="lg" />
+        <RadioGroupItem value="b" label="옵션 B" size="lg" />
+      </RadioGroup>
+    </div>
+  ),
+}
+
 /** 모든 상태 비교 */
 export const AllStates: Story = {
   render: () => (

@@ -57,21 +57,21 @@ const DashboardCard = React.forwardRef<HTMLDivElement, DashboardCardProps>(
         ) : (
           <>
             {/* Header */}
-            <div className="flex items-center justify-between px-[10px] pt-[10px] flex-shrink-0">
-              {/* 좌측: 아이콘 + 타이틀 */}
-              <div className="flex items-center gap-0.5">
+            <div className="flex items-center justify-between gap-2 px-[10px] pt-[10px] flex-shrink-0">
+              {/* 좌측: 아이콘 + 타이틀 (긴 title 에서 truncate, headerAction 자리 보전) */}
+              <div className="flex items-center gap-0.5 min-w-0 flex-1">
                 {icon && (
                   <span className="flex-shrink-0 text-slate-700 dark:text-slate-100">
                     {icon}
                   </span>
                 )}
-                <span className="text-sm tracking-[-0.14px] text-slate-700 dark:text-slate-100">
+                <span className="text-sm tracking-[-0.14px] text-slate-700 dark:text-slate-100 truncate">
                   {title}
                 </span>
               </div>
               {/* 우측: 액션 영역 */}
               {headerAction && (
-                <div className="flex items-center">
+                <div className="flex items-center flex-shrink-0">
                   {headerAction}
                 </div>
               )}

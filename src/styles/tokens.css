@@ -1,5 +1,12 @@
 /**
- * STL Design System - Theme Tokens
+ * STL Design System - Theme Tokens (사용처 배포용)
+ *
+ * ⚠️ 사용처(CMS 등)가 임포트하는 **유일한 CSS 진입점** 이다.
+ *    `stl-design-system/styles` (globals.css) 는 DS 내부·Storybook 전용이므로
+ *    사용처가 임포트하면 안 된다 (tailwind 중복 로드).
+ *
+ * ⚠️ 전역 스타일(스크롤바 등)은 globals.css 에도 **중복 정의** 되어 있다.
+ *    한쪽만 고치면 Storybook 과 사용처의 동작이 갈린다. 반드시 양쪽을 함께 수정할 것.
  *
  * 사용법:
  *
@@ -236,6 +243,56 @@
 
 .dark ::-webkit-scrollbar-thumb:hover {
   background-color: var(--color-slate-500);
+}
+
+/* ========================================
+   Sidebar Scrollbar (얇게 + hover 시에만 노출)
+   ========================================
+   Sidebar 의 NavMenu 스크롤 컨테이너에만 적용된다 (`.sidebar-scroll`).
+   위 전역 스크롤바 규칙보다 **뒤에** 선언해야 이긴다.
+
+   ⚠️ globals.css 에도 동일한 규칙이 있다. 두 파일은 대상이 달라
+   (tokens = 사용처 배포용 / globals = DS 내부·Storybook용) 양쪽을 함께 고쳐야 한다.
+   한쪽만 고치면 Storybook 에서는 보이는데 사용처에서는 안 먹는 상황이 된다. */
+.sidebar-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+  transition: scrollbar-color 0.2s ease;
+}
+
+.sidebar-scroll:hover {
+  scrollbar-color: var(--color-slate-300) transparent;
+}
+
+.dark .sidebar-scroll:hover {
+  scrollbar-color: var(--color-slate-600) transparent;
+}
+
+.sidebar-scroll::-webkit-scrollbar {
+  width: 12px;
+}
+
+.sidebar-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* 트랙은 12px 로 두고 thumb 양옆에 4px 투명 border + background-clip: padding-box
+   → 보이는 막대는 4px, 사이드바 가장자리에서 4px 띄워진다.
+   투명 border 도 thumb 요소의 일부이므로 드래그 히트 영역은 12px 유지. */
+.sidebar-scroll::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  border: 4px solid transparent;
+  background-clip: padding-box;
+  border-radius: 999px;
+  transition: background-color 0.2s ease;
+}
+
+.sidebar-scroll:hover::-webkit-scrollbar-thumb {
+  background-color: var(--color-slate-300);
+}
+
+.dark .sidebar-scroll:hover::-webkit-scrollbar-thumb {
+  background-color: var(--color-slate-600);
 }
 
 /* ========================================
