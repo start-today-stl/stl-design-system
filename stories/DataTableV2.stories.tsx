@@ -284,15 +284,17 @@ export const Resizable: Story = {
   ),
 }
 
+// sortable 컬럼도 재정렬 대상이다 — 드래그는 좌측 전용 핸들, 정렬은 헤더 클릭으로 분리됨
 const reorderableColumns: DataTableV2Column<Row>[] = [
   { accessorKey: "id", header: "ID", width: 60, align: "center" },
-  { accessorKey: "name", header: "이름", width: 160 },
+  { accessorKey: "name", header: "이름", width: 160, sortable: true },
   { accessorKey: "role", header: "역할", width: 160 },
   {
     accessorKey: "score",
     header: "점수",
     width: 100,
     align: "right",
+    sortable: true,
     cell: (v) => `${v}점`,
   },
 ]

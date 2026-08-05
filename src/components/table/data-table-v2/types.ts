@@ -190,7 +190,7 @@ export interface DataTableV2Props<T extends { id: string | number }> {
   columnWidths?: Record<string, number>
   /** 컬럼 폭 변경 콜백 */
   onColumnResize?: (columnKey: keyof T, width: number) => void
-  /** 컬럼 순서 변경 활성화 (헤더 드래그로 재정렬. pinned/sortable 컬럼은 대상 제외) */
+  /** 컬럼 순서 변경 활성화 (헤더 드래그 핸들로 재정렬. pinned 컬럼은 대상 제외) */
   columnReorderable?: boolean
   /** 컬럼 순서 (controlled). accessorKey 배열 */
   columnOrder?: (keyof T)[]

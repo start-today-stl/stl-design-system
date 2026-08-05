@@ -12,6 +12,7 @@ interface SortableHeaderCellProps {
   style?: React.CSSProperties
   children: React.ReactNode
   dataColumnKey?: string
+  ariaSort?: "ascending" | "descending" | "none"
 }
 
 /**
@@ -26,6 +27,7 @@ export function DataTableV2SortableHeaderCell({
   style,
   children,
   dataColumnKey,
+  ariaSort,
 }: SortableHeaderCellProps) {
   const {
     attributes,
@@ -48,6 +50,7 @@ export function DataTableV2SortableHeaderCell({
       ref={setNodeRef}
       role="columnheader"
       data-column-key={dataColumnKey}
+      aria-sort={ariaSort}
       style={combinedStyle}
       className={cn("group/drag gap-0.5", className)}
     >

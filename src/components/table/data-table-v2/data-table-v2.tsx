@@ -312,13 +312,13 @@ export function DataTableV2<T extends { id: string | number }>({
     [columns]
   )
 
-  // 재정렬 대상 컬럼 ID (pinned/sortable 제외)
+  // 재정렬 대상 컬럼 ID (pinned 제외)
+  // pinned 는 sticky offset 이 컬럼 순서에 종속이라 재정렬 대상에서 뺀다.
+  // sortable 은 제외하지 않는다 — 드래그는 전용 핸들에만 걸려 있어 정렬 클릭과 충돌하지 않는다.
   const reorderableIds = React.useMemo(
     () =>
       columnReorderable
-        ? columns
-            .filter((c) => !c.pinned && !c.sortable)
-            .map((c) => String(c.accessorKey))
+        ? columns.filter((c) => !c.pinned).map((c) => String(c.accessorKey))
         : [],
     [columns, columnReorderable]
   )
@@ -504,7 +504,7 @@ export function DataTableV2<T extends { id: string | number }>({
     const isLeftBoundary = i === lastLeftPinnedIdx
     const isRightBoundary = i === firstRightPinnedIdx
     const isFirstRightPinned = i === firstRightPinnedIdx
-    const isDraggable = columnReorderable && !isPinned && !col.sortable
+    const isDraggable = columnReorderable && !isPinned
     const isResizingThis = resizingKey === col.accessorKey
     const isLastColumn = i === columns.length - 1
 
@@ -618,6 +618,7 @@ export function DataTableV2<T extends { id: string | number }>({
           className={outerCls}
           style={style}
           dataColumnKey={String(col.accessorKey)}
+          ariaSort={ariaSort}
         >
           {contentInner}
           {separator}
