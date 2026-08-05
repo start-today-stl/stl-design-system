@@ -28,14 +28,11 @@ interface DataTableV2RowProps<T extends {
     extraClassName?: string;
     isLast: boolean;
     editingColumnKey: keyof T | null;
-    editingState: {
-        editValue: T[keyof T];
-        error?: string;
-    } | null;
+    editingError?: string;
     onStartEdit: (row: T, col: DataTableV2Column<T>) => void;
-    onChangeEditValue: (value: T[keyof T]) => void;
-    onCompleteEdit: (col: DataTableV2Column<T>, row: T) => void;
+    onCompleteEdit: (col: DataTableV2Column<T>, row: T, value: T[keyof T]) => void;
     onCancelEdit: () => void;
+    onClearEditError: () => void;
     showRowDelete: boolean;
     onRowDelete?: (row: T) => void;
     rowActionsColWidth: number;

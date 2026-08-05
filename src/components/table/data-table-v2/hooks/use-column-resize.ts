@@ -95,7 +95,12 @@ export function useColumnResize<T>({
       if (onColumnResize) {
         onColumnResize(resizingKey, newWidth)
       } else {
-        setInternalWidths((prev) => ({ ...prev, [key]: newWidth }))
+        // 폭이 실제로 바뀔 때만 state 갱신. mousemove 는 같은 픽셀에서도 반복 발화하고
+        // minWidth 에 클램프된 동안엔 값이 고정인데, 매번 새 객체를 만들면 columns 배열이
+        // 새로 생성되어 **폭 변화가 없는데도 전 행이 리렌더** 된다.
+        setInternalWidths((prev) =>
+          prev[key] === newWidth ? prev : { ...prev, [key]: newWidth }
+        )
       }
     },
     [resizingKey, onColumnResize]

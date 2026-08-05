@@ -1,11 +1,12 @@
 import * as React from "react"
 import { useSortable } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
+import type { DraggableAttributes } from "@dnd-kit/core"
 
 import { cn } from "@/lib/utils"
 import { Checkbox } from "@/components/ui/checkbox"
 import { DownIcon, DragHandleIcon, RightIcon, RowDeleteIcon } from "@/icons"
-import { DataTableV2DefaultEdit } from "./data-table-v2-default-edit"
+import { DataTableV2EditCell } from "./data-table-v2-edit-cell"
 import type { DataTableV2Column } from "./types"
 
 interface DataTableV2RowProps<T extends { id: string | number }> {
@@ -40,12 +41,17 @@ interface DataTableV2RowProps<T extends { id: string | number }> {
   // 마지막 row 여부 — 외곽 컨테이너 border-b 와 겹쳐 2px 보이는 것 방지 위해 border-b 생략
   isLast: boolean
   // 셀 편집
+  // 편집 임시값은 DataTableV2EditCell 로컬 state. 여기엔 "편집 중인 컬럼" 과 에러만 내려온다.
   editingColumnKey: keyof T | null
-  editingState: { editValue: T[keyof T]; error?: string } | null
+  editingError?: string
   onStartEdit: (row: T, col: DataTableV2Column<T>) => void
-  onChangeEditValue: (value: T[keyof T]) => void
-  onCompleteEdit: (col: DataTableV2Column<T>, row: T) => void
+  onCompleteEdit: (
+    col: DataTableV2Column<T>,
+    row: T,
+    value: T[keyof T]
+  ) => void
   onCancelEdit: () => void
+  onClearEditError: () => void
   // 행 삭제 (rowActions) — checkbox/expand 뒤, 데이터 컬럼 앞에 sticky left 로 배치
   showRowDelete: boolean
   onRowDelete?: (row: T) => void
@@ -66,6 +72,20 @@ interface DataTableV2RowProps<T extends { id: string | number }> {
   dataIndex?: number
   // ARIA (SDS-38): grid row 위치 (1-indexed, header 포함)
   ariaRowIndex: number
+}
+
+/**
+ * dnd-kit `useSortable` 결과 중 Row 본문이 실제로 쓰는 것만 추린 바인딩.
+ * rowReorderable 이 아닐 때는 `NO_SORTABLE` (빈 객체) 이 주입된다.
+ */
+interface RowSortableBindings {
+  setNodeRef?: (el: HTMLElement | null) => void
+  setActivatorNodeRef?: (el: HTMLElement | null) => void
+  listeners?: Record<string, unknown>
+  attributes?: DraggableAttributes
+  transform?: string
+  transition?: string
+  isDragging: boolean
 }
 
 const alignClass = {
@@ -99,11 +119,11 @@ function DataTableV2RowInner<T extends { id: string | number }>({
   onRowClick,
   extraClassName,
   editingColumnKey,
-  editingState,
+  editingError,
   onStartEdit,
-  onChangeEditValue,
   onCompleteEdit,
   onCancelEdit,
+  onClearEditError,
   showRowDelete,
   onRowDelete,
   rowActionsColWidth,
@@ -117,17 +137,16 @@ function DataTableV2RowInner<T extends { id: string | number }>({
   measureRef,
   dataIndex,
   ariaRowIndex,
-}: DataTableV2RowProps<T>) {
+  sortable,
+}: DataTableV2RowProps<T> & { sortable: RowSortableBindings }) {
   const rowRef = React.useRef<HTMLDivElement | null>(null)
 
-  // 행 순서 변경 (드래그) — rowReorderable 일 때만 활성. 활성화 노드(핸들)만 드래그 트리거.
-  // useSortable 은 rowReorderable 여부와 무관하게 항상 호출 (Rules of Hooks). id 만 조건부 매칭.
-  const sortable = useSortable({ id: `row-${row.id}` })
-  const dndTransform = rowReorderable
-    ? CSS.Transform.toString(sortable.transform)
-    : undefined
-  const dndTransition = rowReorderable ? sortable.transition : undefined
-  const isDragging = rowReorderable && sortable.isDragging
+  // 행 순서 변경 (드래그) 바인딩은 prop 으로 주입받는다. useSortable 을 이 컴포넌트에서
+  // 직접 호출하면 rowReorderable 이 false 여도 dnd-kit context 를 구독하게 되어,
+  // **컬럼 재정렬 드래그 중에 모든 행이 리렌더** 된다 (context 변경은 React.memo 로 못 막음).
+  const dndTransform = sortable.transform
+  const dndTransition = sortable.transition
+  const isDragging = sortable.isDragging
 
   React.useLayoutEffect(() => {
     const el = rowRef.current
@@ -163,10 +182,10 @@ function DataTableV2RowInner<T extends { id: string | number }>({
   const setRefs = React.useCallback(
     (el: HTMLDivElement | null) => {
       rowRef.current = el
-      if (rowReorderable) sortable.setNodeRef(el)
+      sortable.setNodeRef?.(el)
       if (measureRef) measureRef(el)
     },
-    [rowReorderable, sortable, measureRef]
+    [sortable, measureRef]
   )
 
   return (
@@ -218,8 +237,8 @@ function DataTableV2RowInner<T extends { id: string | number }>({
               ref={sortable.setActivatorNodeRef}
               className="flex h-9 w-8 items-center justify-center cursor-grab text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
               aria-label="행 순서 변경"
-              {...sortable.listeners}
-              {...sortable.attributes}
+              {...(sortable.listeners ?? {})}
+              {...(sortable.attributes ?? {})}
             >
               <DragHandleIcon size={16} />
             </div>
@@ -315,8 +334,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
           const isLeftBoundary = i === lastLeftPinnedIdx
           const isRightBoundary = i === firstRightPinnedIdx
           const isFirstRightPinned = i === firstRightPinnedIdx
-          const isCellEditing =
-            !!editingState && editingColumnKey === col.accessorKey
+          const isCellEditing = editingColumnKey === col.accessorKey
           // rowGrouping: span 결정
           // - undefined 또는 1 → 정상 셀
           // - 0 → middle placeholder (flex 폭만, 컨텐츠/border 없음)
@@ -361,7 +379,6 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             alignClass[col.align ?? "left"],
             col.editable && !isCellEditing && "cursor-text hover:bg-blue-50 dark:hover:bg-blue-900/30"
           )
-          const EditComp = col.editComponent ?? DataTableV2DefaultEdit
           const handleEditableClick = col.editable
             ? (e: React.MouseEvent) => {
                 e.stopPropagation()
@@ -369,17 +386,15 @@ function DataTableV2RowInner<T extends { id: string | number }>({
               }
             : undefined
           const cellBody =
-            isCellEditing && editingState ? (
-              <div className="flex-1 flex items-center px-1 py-1">
-                <EditComp
-                  value={editingState.editValue}
-                  onChange={onChangeEditValue}
-                  onComplete={() => onCompleteEdit(col, row)}
-                  onCancel={onCancelEdit}
-                  row={row}
-                  error={editingState.error}
-                />
-              </div>
+            isCellEditing ? (
+              <DataTableV2EditCell
+                row={row}
+                column={col}
+                error={editingError}
+                onComplete={onCompleteEdit}
+                onCancel={onCancelEdit}
+                onClearError={onClearEditError}
+              />
             ) : (
               <div className={contentCls} onClick={handleEditableClick}>
                 {rendered}
@@ -443,8 +458,50 @@ function DataTableV2RowInner<T extends { id: string | number }>({
   )
 }
 
+/**
+ * rowReorderable 일 때만 렌더되는 래퍼. `useSortable` 호출을 여기로 격리한다.
+ *
+ * Row 본문에서 직접 호출하면 rowReorderable 이 false 여도 dnd-kit context 를 구독하게 되고,
+ * columnReorderable 로 DndContext 가 떠 있는 상태에서 **컬럼을 드래그하는 동안 모든 행이
+ * 리렌더** 된다 (context 변경은 props 비교인 React.memo 로 막을 수 없음).
+ */
+function DataTableV2SortableRow<T extends { id: string | number }>(
+  props: DataTableV2RowProps<T>
+) {
+  const { setNodeRef, setActivatorNodeRef, listeners, attributes, transform, transition, isDragging } =
+    useSortable({ id: `row-${props.row.id}` })
+
+  const sortable = React.useMemo<RowSortableBindings>(
+    () => ({
+      setNodeRef,
+      setActivatorNodeRef,
+      listeners,
+      attributes,
+      transform: CSS.Transform.toString(transform) ?? undefined,
+      transition,
+      isDragging,
+    }),
+    [setNodeRef, setActivatorNodeRef, listeners, attributes, transform, transition, isDragging]
+  )
+
+  return <DataTableV2RowInner {...props} sortable={sortable} />
+}
+
+/** rowReorderable 이 아닐 때 쓰는 빈 바인딩 (stable ref — 매번 새 객체면 memo 무효화) */
+const NO_SORTABLE: RowSortableBindings = { isDragging: false }
+
+function DataTableV2RowDispatch<T extends { id: string | number }>(
+  props: DataTableV2RowProps<T>
+) {
+  return props.rowReorderable ? (
+    <DataTableV2SortableRow {...props} />
+  ) : (
+    <DataTableV2RowInner {...props} sortable={NO_SORTABLE} />
+  )
+}
+
 type DataTableV2RowComponent = <T extends { id: string | number }>(
   props: DataTableV2RowProps<T>
 ) => React.ReactElement | null
 
-export const DataTableV2Row = React.memo(DataTableV2RowInner) as DataTableV2RowComponent
+export const DataTableV2Row = React.memo(DataTableV2RowDispatch) as DataTableV2RowComponent

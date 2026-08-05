@@ -1071,15 +1071,13 @@ export function DataTableV2<T extends { id: string | number }>({
                     editingColumnKey={
                       cellEdit.editing?.rowId === row.id ? cellEdit.editing.columnKey : null
                     }
-                    editingState={
-                      cellEdit.editing?.rowId === row.id
-                        ? { editValue: cellEdit.editing.editValue, error: cellEdit.editing.error }
-                        : null
+                    editingError={
+                      cellEdit.editing?.rowId === row.id ? cellEdit.editing.error : undefined
                     }
                     onStartEdit={cellEdit.startEdit}
-                    onChangeEditValue={cellEdit.changeEditValue}
                     onCompleteEdit={cellEdit.completeEdit}
                     onCancelEdit={cellEdit.cancelEdit}
+                    onClearEditError={cellEdit.clearError}
                     showRowDelete={showRowDelete}
                     onRowDelete={onRowDelete}
                     rowActionsColWidth={ROW_ACTIONS_WIDTH}

@@ -1,47 +1,42 @@
-import * as r from "react";
-function V({
-  onCellChange: a
+import * as i from "react";
+function E({
+  onCellChange: c
 }) {
-  const [i, s] = r.useState(null), c = r.useCallback(
-    (e, t) => {
-      t.editable && s({
-        rowId: e.id,
-        columnKey: t.accessorKey,
-        editValue: e[t.accessorKey]
-      });
+  const [d, r] = i.useState(null), o = i.useCallback(
+    (t, s) => {
+      s.editable && r({ rowId: t.id, columnKey: s.accessorKey });
     },
     []
-  ), l = r.useCallback((e) => {
-    s((t) => t && { ...t, editValue: e, error: void 0 });
-  }, []), n = r.useCallback(
-    (e, t) => {
-      s((u) => {
-        if (!u) return u;
-        if (u.editValue === t[e.accessorKey]) return null;
-        if (e.validate) {
-          const d = e.validate(u.editValue, t);
-          if (d !== !0)
-            return { ...u, error: d };
+  ), l = i.useCallback(() => {
+    r(
+      (t) => t && t.error !== void 0 ? { ...t, error: void 0 } : t
+    );
+  }, []), n = i.useCallback(
+    (t, s, e) => {
+      if (e === s[t.accessorKey]) {
+        r(null);
+        return;
+      }
+      if (t.validate) {
+        const a = t.validate(e, s);
+        if (a !== !0) {
+          r((u) => u && { ...u, error: a });
+          return;
         }
-        return a == null || a(t.id, e.accessorKey, u.editValue), null;
-      });
+      }
+      r(null), c == null || c(s.id, t.accessorKey, e);
     },
-    [a]
-  ), o = r.useCallback(() => s(null), []), E = r.useCallback(
-    (e, t) => !!i && i.rowId === e && i.columnKey === t,
-    [i]
-  );
+    [c]
+  ), f = i.useCallback(() => r(null), []);
   return {
-    editing: i,
-    isEditing: E,
-    getEditingState: (e, t) => !i || i.rowId !== e || i.columnKey !== t ? null : { editValue: i.editValue, error: i.error },
-    startEdit: c,
-    changeEditValue: l,
+    editing: d,
+    startEdit: o,
+    clearError: l,
     completeEdit: n,
-    cancelEdit: o
+    cancelEdit: f
   };
 }
 export {
-  V as useCellEdit
+  E as useCellEdit
 };
 //# sourceMappingURL=use-cell-edit.mjs.map

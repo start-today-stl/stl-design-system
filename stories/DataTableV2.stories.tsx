@@ -371,50 +371,54 @@ const roleOptions = [
   { label: "PM", value: "PM" },
 ]
 
+// columns 는 모듈 스코프 상수로 정의 — render 안에서 만들면 매 렌더마다 새 배열/객체가 되어
+// 라이브러리 내부 memo 가 전부 무효화되고 전 행이 리렌더된다 (개발 문서 Gotcha 8).
+// state 를 참조하지 않으므로 useMemo 대신 상수로 올리는 게 더 확실하다.
+const editableColumns: DataTableV2Column<Row>[] = [
+  { accessorKey: "id", header: "ID", width: 60, align: "center" },
+  {
+    accessorKey: "name",
+    header: "이름 (Input 편집)",
+    minWidth: 160,
+    editable: true,
+  },
+  {
+    accessorKey: "role",
+    header: "역할 (Select 편집)",
+    minWidth: 160,
+    editable: true,
+    editComponent: ({ value, onChange, onComplete }: EditComponentProps<Row>) => (
+      <Select
+        options={roleOptions}
+        value={String(value)}
+        onValueChange={(v) => {
+          onChange(v as Row["role"])
+          onComplete()
+        }}
+        size="full"
+        aria-label="역할 선택"
+      />
+    ),
+  },
+  {
+    accessorKey: "score",
+    header: "점수 (0~100 검증)",
+    width: 140,
+    align: "right",
+    editable: true,
+    cell: (v) => `${v}점`,
+    validate: (value) => {
+      const num = Number(value)
+      if (Number.isNaN(num)) return "숫자만 입력 가능합니다"
+      if (num < 0 || num > 100) return "0 ~ 100 사이 값이어야 합니다"
+      return true
+    },
+  },
+]
+
 export const EditableCells: Story = {
   render: function Render() {
     const [rows, setRows] = useState<Row[]>(smallData)
-    const editableColumns: DataTableV2Column<Row>[] = [
-      { accessorKey: "id", header: "ID", width: 60, align: "center" },
-      {
-        accessorKey: "name",
-        header: "이름 (Input 편집)",
-        minWidth: 160,
-        editable: true,
-      },
-      {
-        accessorKey: "role",
-        header: "역할 (Select 편집)",
-        minWidth: 160,
-        editable: true,
-        editComponent: ({ value, onChange, onComplete }: EditComponentProps<Row>) => (
-          <Select
-            options={roleOptions}
-            value={String(value)}
-            onValueChange={(v) => {
-              onChange(v as Row["role"])
-              onComplete()
-            }}
-            size="full"
-            aria-label="역할 선택"
-          />
-        ),
-      },
-      {
-        accessorKey: "score",
-        header: "점수 (0~100 검증)",
-        width: 140,
-        align: "right",
-        editable: true,
-        cell: (v) => `${v}점`,
-        validate: (value) => {
-          const num = Number(value)
-          if (Number.isNaN(num)) return "숫자만 입력 가능합니다"
-          if (num < 0 || num > 100) return "0 ~ 100 사이 값이어야 합니다"
-          return true
-        },
-      },
-    ]
     return (
       <DataTableV2
         data={rows}
