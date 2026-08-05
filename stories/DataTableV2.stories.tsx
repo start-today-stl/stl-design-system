@@ -26,6 +26,209 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+/* ============================================================================
+   Kitchen Sink — 전 기능 조합 데모
+   ============================================================================ */
+
+interface KsRow {
+  id: number
+  orderNo: string
+  customer: string
+  region: string
+  product: string
+  qty: number
+  amount: number
+  fee: number
+  orderDate: string
+  status: string
+  memo: string
+}
+
+const KS_REGIONS = ["서울", "경기", "부산", "대구", "광주"]
+const KS_STATUSES = ["대기", "처리중", "완료", "취소"]
+const KS_PRODUCTS = ["기본형", "고급형", "프리미엄", "한정판"]
+
+const ksData: KsRow[] = Array.from({ length: 5000 }, (_, i) => {
+  const amount = 10000 + ((i * 3719) % 990000)
+  return {
+    id: i + 1,
+    orderNo: `ORD-${String(i + 1).padStart(6, "0")}`,
+    customer: `고객 ${i + 1}`,
+    region: KS_REGIONS[i % KS_REGIONS.length],
+    product: KS_PRODUCTS[i % KS_PRODUCTS.length],
+    qty: (i % 20) + 1,
+    amount,
+    fee: Math.floor(amount * 0.03),
+    orderDate: `2026-${String((i % 12) + 1).padStart(2, "0")}-${String((i % 28) + 1).padStart(2, "0")}`,
+    status: KS_STATUSES[i % KS_STATUSES.length],
+    memo: i % 3 === 0 ? "특이사항 없음" : "",
+  }
+})
+
+const ksHeaderGroups: HeaderGroup<KsRow>[] = [
+  { header: "주문 정보", columns: ["orderNo", "orderDate", "status"] },
+  { header: "상품", columns: ["product", "qty"] },
+  { header: "금액", columns: ["amount", "fee"] },
+]
+
+const ksColumns: DataTableV2Column<KsRow>[] = [
+  // ── pinned left (헤더 그룹 대상 아님) ──────────────────────────────
+  { accessorKey: "id", header: "ID", width: 70, align: "center", pinned: "left" },
+  {
+    accessorKey: "customer",
+    header: "고객명",
+    width: 120,
+    pinned: "left",
+    filter: { type: "text", placeholder: "고객명 검색" },
+  },
+
+  // ── 주문 정보 그룹 ────────────────────────────────────────────────
+  {
+    accessorKey: "orderNo",
+    header: "주문번호",
+    width: 150,
+    sortable: true,
+    filter: { type: "text", placeholder: "주문번호" },
+  },
+  {
+    accessorKey: "orderDate",
+    header: "주문일",
+    width: 130,
+    filter: { type: "dateRange" },
+  },
+  {
+    accessorKey: "status",
+    header: "상태",
+    width: 110,
+    filter: {
+      type: "multiSelect",
+      options: KS_STATUSES.map((s) => ({ label: s, value: s })),
+      placeholder: "상태 선택",
+    },
+  },
+
+  // ── 상품 그룹 (편집 가능) ─────────────────────────────────────────
+  {
+    accessorKey: "product",
+    header: "상품",
+    width: 130,
+    editable: true,
+    editComponent: ({ value, onChange, onComplete }: EditComponentProps<KsRow>) => (
+      <Select
+        options={KS_PRODUCTS.map((p) => ({ label: p, value: p }))}
+        value={String(value)}
+        onValueChange={(v) => {
+          onChange(v as KsRow["product"])
+          onComplete()
+        }}
+        size="full"
+        aria-label="상품 선택"
+      />
+    ),
+    filter: {
+      type: "multiSelect",
+      options: KS_PRODUCTS.map((p) => ({ label: p, value: p })),
+      placeholder: "상품 선택",
+    },
+  },
+  {
+    accessorKey: "qty",
+    header: "수량",
+    width: 90,
+    align: "right",
+    editable: true,
+    validate: (value) => {
+      const n = Number(value)
+      if (Number.isNaN(n)) return "숫자만 입력 가능합니다"
+      if (n < 1 || n > 999) return "1 ~ 999 사이여야 합니다"
+      return true
+    },
+    filter: { type: "numberRange" },
+  },
+
+  // ── 금액 그룹 ─────────────────────────────────────────────────────
+  {
+    accessorKey: "amount",
+    header: "주문금액",
+    width: 140,
+    align: "right",
+    cell: (v) => `${Number(v).toLocaleString()}원`,
+    filter: { type: "numberRange" },
+  },
+  {
+    accessorKey: "fee",
+    header: "수수료",
+    width: 120,
+    align: "right",
+    cell: (v) => `${Number(v).toLocaleString()}원`,
+  },
+
+  // ── 그룹 없는 컬럼 ────────────────────────────────────────────────
+  {
+    accessorKey: "region",
+    header: "지역",
+    width: 100,
+    filter: {
+      type: "select",
+      options: KS_REGIONS.map((r) => ({ label: r, value: r })),
+      placeholder: "지역 선택",
+    },
+  },
+  { accessorKey: "memo", header: "메모", minWidth: 160, editable: true },
+]
+
+/**
+ * 전 기능 조합 데모. 한 테이블에서 pinned · 가상화(5,000행) · 컬럼 필터 ·
+ * 재정렬 · 리사이즈 · 헤더 그룹 · 셀 편집 · 행 선택 · 다중 정렬을 함께 확인한다.
+ * (rowGrouping 제외)
+ */
+export const KitchenSink: Story = {
+  render: function Render() {
+    const [rows, setRows] = useState<KsRow[]>(ksData)
+    const [sortState, setSortState] = useState<SortState<KsRow>[]>([])
+    const [filterState, setFilterState] = useState<Record<string, unknown>>({})
+    const [selectedIds, setSelectedIds] = useState<(string | number)[]>([])
+
+    return (
+      <div className="flex flex-col gap-2">
+        <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-500 dark:text-slate-400">
+          <span>행 {rows.length.toLocaleString()}개 (가상화)</span>
+          <span>선택 {selectedIds.length}개</span>
+          <span>정렬 {sortState.length}개</span>
+          <span>필터 {Object.keys(filterState).length}개</span>
+        </div>
+        <DataTableV2
+          data={rows}
+          columns={ksColumns}
+          headerGroups={ksHeaderGroups}
+          virtual
+          maxHeight={520}
+          resizable
+          columnReorderable
+          selectable
+          selectedIds={selectedIds}
+          onSelectionChange={setSelectedIds}
+          multiSort
+          sortState={sortState}
+          onSortChange={setSortState}
+          filterState={filterState}
+          onFilterChange={setFilterState}
+          onCellChange={(rowId, columnKey, value) => {
+            setRows((prev) =>
+              prev.map((r) =>
+                r.id === rowId
+                  ? { ...r, [columnKey]: columnKey === "qty" ? Number(value) : value }
+                  : r
+              )
+            )
+          }}
+        />
+      </div>
+    )
+  },
+}
+
+
 interface Row {
   id: number
   name: string
@@ -938,4 +1141,3 @@ export const VirtualizedWithRowGrouping: Story = {
     </div>
   ),
 }
-
