@@ -508,6 +508,11 @@ export function DataTableV2<T extends { id: string | number }>({
   }, [middleCols, headerGroups])
   const hasGroups = headerGroupCells !== null && headerGroupCells.length > 0
 
+  // 헤더 그룹 행에서 첫 그룹 셀 앞에 다른 셀(컨트롤/좌측 pinned)이 있는지.
+  // 없으면 첫 그룹의 좌측 구분선이 테이블 좌측 테두리와 겹쳐서 생략한다.
+  const hasPrecedingHeaderCells =
+    controlColsWidth > 0 || columns.some((c) => c.pinned === "left")
+
   const headerRowCount = hasGroups ? 2 : 1
   const headerBg = "bg-slate-100 dark:bg-slate-800"
 
@@ -883,15 +888,16 @@ export function DataTableV2<T extends { id: string | number }>({
                 {leftPinnedCols.map(({ c, i }) => renderPinnedPlaceholder(c, i))}
                 {headerGroupCells.map((cell, idx) => {
                   if (cell.kind === "group") {
-                    // 마지막 그룹 셀에는 우측 구분선 생략
-                    let lastGroupIdx = -1
-                    for (let k = headerGroupCells.length - 1; k >= 0; k--) {
-                      if (headerGroupCells[k].kind === "group") {
-                        lastGroupIdx = k
-                        break
-                      }
-                    }
-                    const isLastGroupCell = idx === lastGroupIdx
+                    // 그룹의 시작/끝 경계마다 구분선을 넣는다.
+                    // - 좌측: 각 그룹 셀이 직접 그림. 단 행 맨 앞(앞에 컨트롤/pinned 셀도 없음)이면
+                    //   테이블 좌측 테두리와 겹치므로 생략
+                    // - 우측: 다음이 그룹이면 그쪽 좌측 구분선과 같은 자리라 생략.
+                    //   다음이 비그룹 컬럼일 때만 그려서 그룹이 어디서 끝나는지 표시.
+                    //   행의 마지막 셀이면 우측 테두리와 겹치므로 생략
+                    const nextCell = headerGroupCells[idx + 1]
+                    const showLeft = idx > 0 || hasPrecedingHeaderCells
+                    const showRight =
+                      nextCell !== undefined && nextCell.kind !== "group"
                     return (
                       <div
                         key={cell.key}
@@ -899,6 +905,7 @@ export function DataTableV2<T extends { id: string | number }>({
                         className="relative flex min-h-9 shrink-0"
                         style={{ width: cell.width }}
                       >
+                        {showLeft && <DataTableV2ColumnSeparator side="left" />}
                         <div
                           className={cn(
                             "flex-1 flex items-center px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-300",
@@ -907,7 +914,7 @@ export function DataTableV2<T extends { id: string | number }>({
                         >
                           {cell.group.header}
                         </div>
-                        {!isLastGroupCell && <DataTableV2ColumnSeparator />}
+                        {showRight && <DataTableV2ColumnSeparator />}
                       </div>
                     )
                   }

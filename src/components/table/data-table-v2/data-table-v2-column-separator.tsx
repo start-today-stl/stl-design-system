@@ -14,6 +14,11 @@ interface DataTableV2ColumnSeparatorProps {
   onResizeStart?: (e: React.MouseEvent, column: unknown) => void
   /** 이 separator 가 속한 컬럼 (stable ref 기대) — 리사이즈 시 onResizeStart 에 전달 */
   column?: unknown
+  /**
+   * 셀의 어느 쪽 경계에 붙일지. 기본 "right".
+   * 헤더 그룹 행에서 그룹 시작 경계를 표시할 때 "left" 사용.
+   */
+  side?: "left" | "right"
 }
 
 /**
@@ -31,6 +36,7 @@ function DataTableV2ColumnSeparatorInner({
   isResizing = false,
   onResizeStart,
   column,
+  side = "right",
 }: DataTableV2ColumnSeparatorProps) {
   // onResizeStart 와 column 을 useCallback 으로 wrap → parent 가 stable ref 로 넘기면
   // handleMouseDown 도 stable → separator memo 유지 (인라인 arrow 로 넘기지 않도록 하기 위함)
@@ -45,9 +51,10 @@ function DataTableV2ColumnSeparatorInner({
     <div
       aria-hidden
       className={cn(
-        // 실제 세로 선은 셀 경계 (right: 0) 에 위치시켜서 좌/우 셀의 컨텐츠와 대칭 거리 유지.
+        // 실제 세로 선은 셀 경계 (right: 0 / left: 0) 에 위치시켜서 좌/우 셀의 컨텐츠와 대칭 거리 유지.
         // (justify-center 면 셀 안쪽 3px 로 편향되어 좌우 셀의 필터 아이콘까지 거리가 비대칭)
-        "absolute right-0 top-0 h-full w-[6px] flex items-center justify-end",
+        "absolute top-0 h-full w-[6px] flex items-center",
+        side === "right" ? "right-0 justify-end" : "left-0 justify-start",
         resizable && "cursor-col-resize group/resize"
       )}
       onMouseDown={resizable && onResizeStart ? handleMouseDown : undefined}
