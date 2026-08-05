@@ -6,6 +6,7 @@ import {
   useSensor,
   useSensors,
   type DragEndEvent,
+  type DragStartEvent,
 } from "@dnd-kit/core"
 import {
   SortableContext,
@@ -312,13 +313,13 @@ export function DataTableV2<T extends { id: string | number }>({
     [columns]
   )
 
-  // 재정렬 대상 컬럼 ID (pinned/sortable 제외)
+  // 재정렬 대상 컬럼 ID (pinned 제외)
+  // pinned 는 sticky offset 이 컬럼 순서에 종속이라 재정렬 대상에서 뺀다.
+  // sortable 은 제외하지 않는다 — 드래그는 전용 핸들에만 걸려 있어 정렬 클릭과 충돌하지 않는다.
   const reorderableIds = React.useMemo(
     () =>
       columnReorderable
-        ? columns
-            .filter((c) => !c.pinned && !c.sortable)
-            .map((c) => String(c.accessorKey))
+        ? columns.filter((c) => !c.pinned).map((c) => String(c.accessorKey))
         : [],
     [columns, columnReorderable]
   )
@@ -327,9 +328,19 @@ export function DataTableV2<T extends { id: string | number }>({
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
   )
 
+  // 지금 끌고 있는 게 컬럼인지 행인지 — 자동 스크롤 축을 정하는 데만 사용
+  const [activeDragAxis, setActiveDragAxis] = React.useState<
+    "column" | "row" | null
+  >(null)
+
+  const handleDragStart = React.useCallback((e: DragStartEvent) => {
+    setActiveDragAxis(String(e.active.id).startsWith("row-") ? "row" : "column")
+  }, [])
+
   // 컬럼 재정렬(id: accessorKey) 과 행 재정렬(id: `row-{id}`) 을 prefix 로 라우팅.
   const handleDragEnd = React.useCallback(
     (e: DragEndEvent) => {
+      setActiveDragAxis(null)
       if (String(e.active.id).startsWith("row-")) {
         handleRowDragEnd(e)
       } else {
@@ -337,6 +348,20 @@ export function DataTableV2<T extends { id: string | number }>({
       }
     },
     [handleColumnDragEnd, handleRowDragEnd]
+  )
+
+  const handleDragCancel = React.useCallback(() => setActiveDragAxis(null), [])
+
+  // dnd-kit 기본 자동 스크롤 threshold 는 { x: 0.2, y: 0.2 } 라 **양축 모두** 스크롤된다.
+  // 그래서 컬럼을 옮기려고 살짝 위로 당기기만 해도 바디가 세로로 스크롤됐다.
+  // 컬럼 재정렬은 가로 위치만 바꾸므로 세로 스크롤이 일어날 이유가 없다 (AG Grid 도 동일).
+  // → 끌고 있는 대상에 따라 필요한 축만 남긴다.
+  const autoScroll = React.useMemo(
+    () =>
+      activeDragAxis === "row"
+        ? { threshold: { x: 0, y: 0.2 } }
+        : { threshold: { x: 0.2, y: 0 } },
+    [activeDragAxis]
   )
 
   // 행 재정렬용 sortable id 목록 (row-{id} 형식)
@@ -459,35 +484,59 @@ export function DataTableV2<T extends { id: string | number }>({
     type Cell =
       | { kind: "group"; key: string; width: number; group: HeaderGroup<T> }
       | { kind: "placeholder"; key: string; col: DataTableV2Column<T> }
+
+    // 컬럼 → 그룹 역인덱스 (한 컬럼이 여러 그룹에 적혀 있으면 먼저 정의된 그룹 채택)
+    const groupOfColumn = new Map<keyof T, HeaderGroup<T>>()
+    for (const g of headerGroups) {
+      for (const ck of g.columns) {
+        if (!groupOfColumn.has(ck)) groupOfColumn.set(ck, g)
+      }
+    }
+
+    // 그룹 스팬은 **현재 컬럼 순서에서 같은 그룹이 연속되는 구간(run)** 으로 매번 재계산한다.
+    // 그룹 정의의 columns 배열을 그대로 믿고 건너뛰면, 재정렬로 인접성이 깨졌을 때
+    // 다른 그룹이 통째로 소멸하거나 그룹 폭이 실제 컬럼 폭과 어긋난다 (SDS-39).
+    // AG Grid 와 동일하게, 그룹이 갈라지면 헤더도 갈라져 각각 그려진다.
     const cells: Cell[] = []
     let i = 0
     while (i < middleCols.length) {
       const col = middleCols[i]
-      const group = headerGroups.find((g) => g.columns[0] === col.accessorKey)
-      if (group) {
-        const w = group.columns.reduce((sum, ck) => {
-          const c = middleCols.find((mc) => mc.accessorKey === ck)
-          return sum + (c ? colMinNeeded(c) : DEFAULT_COL_WIDTH)
-        }, 0)
-        cells.push({
-          kind: "group",
-          key: `group-${String(col.accessorKey)}`,
-          width: w,
-          group,
-        })
-        i += group.columns.length
-      } else {
+      const group = groupOfColumn.get(col.accessorKey)
+      if (!group) {
         cells.push({
           kind: "placeholder",
           key: `middle-empty-${String(col.accessorKey)}`,
           col,
         })
         i += 1
+        continue
       }
+      // 같은 그룹이 이어지는 동안 폭 누적
+      let width = 0
+      const runStart = i
+      while (
+        i < middleCols.length &&
+        groupOfColumn.get(middleCols[i].accessorKey) === group
+      ) {
+        width += colMinNeeded(middleCols[i])
+        i += 1
+      }
+      cells.push({
+        // 같은 그룹이 여러 구간으로 갈라질 수 있으므로 key 는 구간 첫 컬럼 기준
+        key: `group-${String(middleCols[runStart].accessorKey)}`,
+        kind: "group",
+        width,
+        group,
+      })
     }
     return cells
   }, [middleCols, headerGroups])
   const hasGroups = headerGroupCells !== null && headerGroupCells.length > 0
+
+  // 헤더 그룹 행에서 첫 그룹 셀 앞에 다른 셀(컨트롤/좌측 pinned)이 있는지.
+  // 없으면 첫 그룹의 좌측 구분선이 테이블 좌측 테두리와 겹쳐서 생략한다.
+  const hasPrecedingHeaderCells =
+    controlColsWidth > 0 || columns.some((c) => c.pinned === "left")
 
   const headerRowCount = hasGroups ? 2 : 1
   const headerBg = "bg-slate-100 dark:bg-slate-800"
@@ -504,7 +553,7 @@ export function DataTableV2<T extends { id: string | number }>({
     const isLeftBoundary = i === lastLeftPinnedIdx
     const isRightBoundary = i === firstRightPinnedIdx
     const isFirstRightPinned = i === firstRightPinnedIdx
-    const isDraggable = columnReorderable && !isPinned && !col.sortable
+    const isDraggable = columnReorderable && !isPinned
     const isResizingThis = resizingKey === col.accessorKey
     const isLastColumn = i === columns.length - 1
 
@@ -618,6 +667,7 @@ export function DataTableV2<T extends { id: string | number }>({
           className={outerCls}
           style={style}
           dataColumnKey={String(col.accessorKey)}
+          ariaSort={ariaSort}
         >
           {contentInner}
           {separator}
@@ -863,15 +913,16 @@ export function DataTableV2<T extends { id: string | number }>({
                 {leftPinnedCols.map(({ c, i }) => renderPinnedPlaceholder(c, i))}
                 {headerGroupCells.map((cell, idx) => {
                   if (cell.kind === "group") {
-                    // 마지막 그룹 셀에는 우측 구분선 생략
-                    let lastGroupIdx = -1
-                    for (let k = headerGroupCells.length - 1; k >= 0; k--) {
-                      if (headerGroupCells[k].kind === "group") {
-                        lastGroupIdx = k
-                        break
-                      }
-                    }
-                    const isLastGroupCell = idx === lastGroupIdx
+                    // 그룹의 시작/끝 경계마다 구분선을 넣는다.
+                    // - 좌측: 각 그룹 셀이 직접 그림. 단 행 맨 앞(앞에 컨트롤/pinned 셀도 없음)이면
+                    //   테이블 좌측 테두리와 겹치므로 생략
+                    // - 우측: 다음이 그룹이면 그쪽 좌측 구분선과 같은 자리라 생략.
+                    //   다음이 비그룹 컬럼일 때만 그려서 그룹이 어디서 끝나는지 표시.
+                    //   행의 마지막 셀이면 우측 테두리와 겹치므로 생략
+                    const nextCell = headerGroupCells[idx + 1]
+                    const showLeft = idx > 0 || hasPrecedingHeaderCells
+                    const showRight =
+                      nextCell !== undefined && nextCell.kind !== "group"
                     return (
                       <div
                         key={cell.key}
@@ -879,6 +930,7 @@ export function DataTableV2<T extends { id: string | number }>({
                         className="relative flex min-h-9 shrink-0"
                         style={{ width: cell.width }}
                       >
+                        {showLeft && <DataTableV2ColumnSeparator side="left" />}
                         <div
                           className={cn(
                             "flex-1 flex items-center px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-300",
@@ -887,7 +939,7 @@ export function DataTableV2<T extends { id: string | number }>({
                         >
                           {cell.group.header}
                         </div>
-                        {!isLastGroupCell && <DataTableV2ColumnSeparator />}
+                        {showRight && <DataTableV2ColumnSeparator />}
                       </div>
                     )
                   }
@@ -1071,15 +1123,13 @@ export function DataTableV2<T extends { id: string | number }>({
                     editingColumnKey={
                       cellEdit.editing?.rowId === row.id ? cellEdit.editing.columnKey : null
                     }
-                    editingState={
-                      cellEdit.editing?.rowId === row.id
-                        ? { editValue: cellEdit.editing.editValue, error: cellEdit.editing.error }
-                        : null
+                    editingError={
+                      cellEdit.editing?.rowId === row.id ? cellEdit.editing.error : undefined
                     }
                     onStartEdit={cellEdit.startEdit}
-                    onChangeEditValue={cellEdit.changeEditValue}
                     onCompleteEdit={cellEdit.completeEdit}
                     onCancelEdit={cellEdit.cancelEdit}
+                    onClearEditError={cellEdit.clearError}
                     showRowDelete={showRowDelete}
                     onRowDelete={onRowDelete}
                     rowActionsColWidth={ROW_ACTIONS_WIDTH}
@@ -1170,7 +1220,10 @@ export function DataTableV2<T extends { id: string | number }>({
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}
+        autoScroll={autoScroll}
+        onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
+        onDragCancel={handleDragCancel}
       >
         {gridContent}
       </DndContext>

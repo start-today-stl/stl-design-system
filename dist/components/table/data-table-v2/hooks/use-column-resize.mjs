@@ -2,44 +2,46 @@ import * as r from "react";
 const E = 50;
 function g({
   resizable: W,
-  columnWidths: c,
-  onColumnResize: o
+  columnWidths: i,
+  onColumnResize: c
 }) {
-  const [d, h] = r.useState({}), [s, p] = r.useState(null), v = r.useRef(0), b = r.useRef(0), f = r.useRef(E), l = r.useCallback(
+  const [d, h] = r.useState({}), [s, b] = r.useState(null), p = r.useRef(0), v = r.useRef(0), f = r.useRef(E), l = r.useCallback(
     (n) => {
-      const e = String(n.accessorKey);
-      if (c && e in c) return c[e];
-      if (e in d) return d[e];
+      const t = String(n.accessorKey);
+      if (i && t in i) return i[t];
+      if (t in d) return d[t];
       if (typeof n.width == "number") return n.width;
     },
-    [c, d]
+    [i, d]
   ), S = r.useCallback(
-    (n, e) => {
+    (n, t) => {
       n.preventDefault(), n.stopPropagation();
-      const t = n.currentTarget.parentElement, u = t == null ? void 0 : t.parentElement;
-      if (p(e.accessorKey), v.current = n.clientX, b.current = (t == null ? void 0 : t.offsetWidth) ?? l(e) ?? 150, f.current = Math.max(
+      const e = n.currentTarget.parentElement, u = e == null ? void 0 : e.parentElement;
+      if (b(t.accessorKey), p.current = n.clientX, v.current = (e == null ? void 0 : e.offsetWidth) ?? l(t) ?? 150, f.current = Math.max(
         E,
-        typeof e.minWidth == "number" ? e.minWidth : 0
-      ), !o && u) {
-        const i = {};
+        typeof t.minWidth == "number" ? t.minWidth : 0
+      ), !c && u) {
+        const o = {};
         u.querySelectorAll("[data-column-key]").forEach((a) => {
           const k = a.getAttribute("data-column-key");
-          k && (i[k] = a.offsetWidth);
-        }), h((a) => ({ ...i, ...a }));
+          k && (o[k] = a.offsetWidth);
+        }), h((a) => ({ ...o, ...a }));
       }
     },
-    [l, o]
+    [l, c]
   ), y = r.useCallback(
     (n) => {
       if (!s) return;
-      const e = n.clientX - v.current;
-      let t = b.current + e;
-      t < f.current && (t = f.current);
+      const t = n.clientX - p.current;
+      let e = v.current + t;
+      e < f.current && (e = f.current);
       const u = String(s);
-      o ? o(s, t) : h((i) => ({ ...i, [u]: t }));
+      c ? c(s, e) : h(
+        (o) => o[u] === e ? o : { ...o, [u]: e }
+      );
     },
-    [s, o]
-  ), m = r.useCallback(() => p(null), []);
+    [s, c]
+  ), m = r.useCallback(() => b(null), []);
   return r.useEffect(() => {
     if (s)
       return document.addEventListener("mousemove", y), document.addEventListener("mouseup", m), document.body.style.userSelect = "none", document.body.style.cursor = "col-resize", () => {
