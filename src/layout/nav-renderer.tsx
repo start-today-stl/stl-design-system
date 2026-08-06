@@ -23,8 +23,23 @@ export interface NavRendererProps {
   collapsed?: boolean
   /** 현재 경로 (active 상태 자동 결정) */
   currentPath?: string
-  /** 아이템 클릭 핸들러 (href가 있는 아이템 클릭 시 호출) */
-  onItemClick?: (href: string, item: NavItemConfig | TopLevelNavItem) => void
+  /**
+   * 아이템 클릭 핸들러 (href가 있는 아이템 클릭 시 호출).
+   *
+   * href 가 있는 아이템은 `<a>` 로 렌더되므로 브라우저 기본 이동이 있다.
+   * 이 핸들러가 지정되면 **평범한 좌클릭에 한해** 기본 이동을 막고 핸들러만 호출한다
+   * (SPA 라우터 이동 + 전체 페이지 리로드가 겹치는 것을 방지).
+   *
+   * Cmd / Ctrl / Shift / Alt + 클릭과 휠 클릭은 브라우저에 그대로 맡겨서
+   * 새 탭 / 새 창 열기가 동작한다. 이때 이 핸들러는 호출되지 않는다.
+   *
+   * `event` 로 기본 판단을 덮어쓸 수 있다.
+   */
+  onItemClick?: (
+    href: string,
+    item: NavItemConfig | TopLevelNavItem,
+    event: React.MouseEvent<HTMLElement>
+  ) => void
   /** 레이아웃 (vertical | horizontal) */
   layout?: NavMenuLayout
 }
@@ -91,10 +106,16 @@ export function NavRenderer({
     // currentPath가 있으면 href와 비교, 없으면 설정된 active 사용
     const isActive = currentPath ? navItem.href === currentPath : navItem.active
 
-    const handleClick = () => {
-      if (onItemClick && navItem.href) {
-        onItemClick(navItem.href, navItem)
+    const handleClick = (e: React.MouseEvent<HTMLElement>) => {
+      if (!onItemClick || !navItem.href) return
+      // 새 탭 / 새 창 요청은 브라우저에 맡긴다.
+      // (수식키 조합 + 휠 클릭. 이 경우 preventDefault 하면 새 탭이 안 열린다)
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) {
+        return
       }
+      // 앵커 기본 이동을 막지 않으면 SPA 라우터 이동과 겹쳐 전체 페이지가 리로드된다.
+      e.preventDefault()
+      onItemClick(navItem.href, navItem, e)
     }
 
     return (
@@ -111,6 +132,8 @@ export function NavRenderer({
             <STLArrowIcon size={indicatorSize} />
           ) : undefined
         }
+        href={navItem.href}
+        aria-current={isActive && navItem.href ? "page" : undefined}
         onClick={onItemClick && navItem.href ? handleClick : undefined}
       />
     )
