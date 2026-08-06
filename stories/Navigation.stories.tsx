@@ -255,3 +255,54 @@ export const SidebarWithNotice: Story = {
     )
   },
 }
+
+/**
+ * 링크 동작 — href 가 있는 메뉴는 `<a>` 로 렌더된다.
+ *
+ * 평범한 좌클릭은 `onItemClick` 만 호출되고 페이지 이동은 일어나지 않는다 (SPA 라우터용).
+ * Cmd/Ctrl + 클릭, 휠 클릭, 우클릭 → "새 탭에서 열기" 는 브라우저에 맡겨져
+ * `onItemClick` 이 호출되지 않는다.
+ */
+export const LinkBehavior: Story = {
+  render: function Render() {
+    const [log, setLog] = useState<string[]>([])
+
+    return (
+      <div className="flex gap-6">
+        <NavMenu className="w-[210px]">
+          <NavRenderer
+            items={sampleNavigation}
+            currentPath="/dashboard"
+            onItemClick={(href) => {
+              setLog((prev) => [`onItemClick("${href}")`, ...prev].slice(0, 8))
+            }}
+          />
+        </NavMenu>
+
+        <div className="flex-1 text-sm">
+          <p className="mb-2 font-medium text-slate-900 dark:text-slate-200">
+            확인 방법
+          </p>
+          <ul className="mb-4 flex flex-col gap-1 text-slate-600 dark:text-slate-400">
+            <li>· 그냥 클릭 → 아래 로그만 쌓이고 페이지는 그대로</li>
+            <li>· Cmd(⌘) 또는 Ctrl + 클릭 → 새 탭. 로그 안 쌓임</li>
+            <li>· 휠 클릭 → 새 탭. 로그 안 쌓임</li>
+            <li>· 우클릭 → "새 탭에서 열기" 메뉴가 뜸</li>
+          </ul>
+          <p className="mb-1 font-medium text-slate-900 dark:text-slate-200">로그</p>
+          <div className="rounded-md border border-slate-200 dark:border-slate-700 p-2 min-h-24">
+            {log.length === 0 ? (
+              <span className="text-slate-400">아직 없음</span>
+            ) : (
+              log.map((line, i) => (
+                <div key={i} className="font-mono text-xs text-slate-600 dark:text-slate-400">
+                  {line}
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+      </div>
+    )
+  },
+}
