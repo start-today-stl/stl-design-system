@@ -67,6 +67,9 @@ function DataTableV2FilterCellInner<T>({
           {active && (
             <span
               aria-hidden
+              // 필터 활성 여부를 테스트에서 클래스명 대신 이 속성으로 확인한다
+              // (Tailwind 클래스는 스타일 조정 시 바뀌므로 검증 기준으로 부적합)
+              data-filter-active=""
               className="absolute top-0 right-0 h-1.5 w-1.5 rounded-full bg-blue-500 dark:bg-blue-400"
             />
           )}
