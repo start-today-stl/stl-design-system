@@ -10,21 +10,24 @@ import {
 } from "@dnd-kit/core"
 import {
   SortableContext,
-  horizontalListSortingStrategy,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable"
 
 import { cn } from "@/lib/utils"
-import { Checkbox } from "@/components/ui/checkbox"
 import { Skeleton } from "@/components/ui/skeleton"
 import { SplashScreen } from "@/components/ui/splash-screen"
-import { DownIcon, RightIcon, RowAddIcon } from "@/icons"
-import { DataTableV2FilterCell } from "./data-table-v2-filter-cell"
+import { RowAddIcon } from "@/icons"
+import { DataTableV2Header, type HeaderGroupCell } from "./data-table-v2-header"
+import {
+  CHECKBOX_COL_WIDTH,
+  DEFAULT_COL_WIDTH,
+  DRAG_HANDLE_COL_WIDTH,
+  EXPAND_COL_WIDTH,
+  ROW_ACTIONS_WIDTH,
+} from "./constants"
 import { useFilter } from "./hooks/use-filter"
 import { useRowReorder } from "./hooks/use-row-reorder"
-import { DataTableV2ColumnSeparator } from "./data-table-v2-column-separator"
 import { DataTableV2Row } from "./data-table-v2-row"
-import { DataTableV2SortableHeaderCell } from "./data-table-v2-sortable-header-cell"
 import { useCellEdit } from "./hooks/use-cell-edit"
 import { useColumnResize } from "./hooks/use-column-resize"
 import { useColumnReorder } from "./hooks/use-column-reorder"
@@ -42,43 +45,8 @@ import type {
 } from "./types"
 
 const DEFAULT_ESTIMATE = 40
-const DEFAULT_COL_WIDTH = 120
-const CHECKBOX_COL_WIDTH = 40
-const EXPAND_COL_WIDTH = 40
-const ROW_ACTIONS_WIDTH = 40
-const DRAG_HANDLE_COL_WIDTH = 32
 const SKELETON_ROW_COUNT = 5
 
-const alignClass = {
-  left: "text-left justify-start",
-  center: "text-center justify-center",
-  right: "text-right justify-end",
-}
-
-const SortArrow = React.memo(function SortArrow({
-  direction,
-  active,
-}: {
-  direction: "up" | "down"
-  active: boolean
-}) {
-  return (
-    <svg
-      width="8"
-      height="5"
-      viewBox="0 0 8 5"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={cn(
-        "transition-colors",
-        active ? "text-blue-600 dark:text-blue-400" : "text-slate-300 dark:text-slate-500",
-        direction === "down" && "rotate-180"
-      )}
-    >
-      <path d="M4 0L8 5H0L4 0Z" fill="currentColor" />
-    </svg>
-  )
-})
 
 /**
  * 헤더 클릭 시 다음 정렬 상태 계산.
@@ -481,9 +449,7 @@ export function DataTableV2<T extends { id: string | number }>({
   )
   const headerGroupCells = React.useMemo(() => {
     if (!headerGroups || headerGroups.length === 0) return null
-    type Cell =
-      | { kind: "group"; key: string; width: number; group: HeaderGroup<T> }
-      | { kind: "placeholder"; key: string; col: DataTableV2Column<T> }
+    type Cell = HeaderGroupCell<T>
 
     // 컬럼 → 그룹 역인덱스 (한 컬럼이 여러 그룹에 적혀 있으면 먼저 정의된 그룹 채택)
     const groupOfColumn = new Map<keyof T, HeaderGroup<T>>()
@@ -540,312 +506,7 @@ export function DataTableV2<T extends { id: string | number }>({
 
   const headerRowCount = hasGroups ? 2 : 1
   const headerBg = "bg-slate-100 dark:bg-slate-800"
-
-  const renderHeaderCell = (col: DataTableV2Column<T>, i: number) => {
-    const colId = col.id ?? String(col.accessorKey)
-    const info = getSortInfo(col.accessorKey)
-    const width = typeof col.width === "number" ? col.width : undefined
-    const minWidth = typeof col.minWidth === "number" ? col.minWidth : undefined
-    const isLeft = col.pinned === "left"
-    const isRight = col.pinned === "right"
-    const isPinned = isLeft || isRight
-    // shadow 는 CSS `group-data-[scrolled-*=true]/scroll:` 로 반응 → 여기선 column 위치만 판단.
-    const isLeftBoundary = i === lastLeftPinnedIdx
-    const isRightBoundary = i === firstRightPinnedIdx
-    const isFirstRightPinned = i === firstRightPinnedIdx
-    const isDraggable = columnReorderable && !isPinned
-    const isResizingThis = resizingKey === col.accessorKey
-    const isLastColumn = i === columns.length - 1
-
-    // Outer: 순수 레이아웃/포지셔닝. text 스타일은 content container 에.
-    // 모든 셀에 bg 부여 (pinned 여부 무관) → 가로 스크롤 우측 끝에서 마지막 컬럼 bg 로 자연 커버
-    // (right pinned 없는 케이스에서 wrapper 우측 흰 gap 발생 방지)
-    const outerCls = cn(
-      "relative flex min-h-9",
-      width !== undefined && "shrink-0",
-      isPinned && "sticky z-20",
-      headerBg,
-      isLeftBoundary && "group-data-[scrolled-left=true]/scroll:shadow-[2px_0_5px_-2px_rgba(0,0,0,0.15)]",
-      isRightBoundary && "group-data-[scrolled-right=true]/scroll:shadow-[-2px_0_5px_-2px_rgba(0,0,0,0.15)]",
-      col.sortable && "select-none",
-      isFirstRightPinned && "ml-auto"
-    )
-    const style: React.CSSProperties = {
-      width,
-      minWidth,
-      flex: width === undefined ? "1 1 0" : undefined,
-      left: isLeft ? leftOffsets[i] : undefined,
-      right: isRight ? rightOffsets[i] : undefined,
-    }
-
-    // Content container 는 3 슬롯 (헤더명+정렬 / 필터 / 미래 확장) 구조.
-    // alignClass 는 슬롯 1 내부에만 적용해서 필터 아이콘 위치에 영향 안 주게 함.
-    const contentBody = col.sortable ? (
-      <button
-        type="button"
-        className={cn(
-          "flex w-full min-w-0 items-center gap-1 cursor-pointer",
-          // 우측 정렬 컬럼은 sort 인디케이터를 헤더명 좌측에 두는 게 관행. flex-row-reverse 로 순서 반전.
-          col.align === "right"
-            ? "flex-row-reverse justify-start"
-            : alignClass[col.align ?? "left"]
-        )}
-        onClick={() => handleSort(col.accessorKey)}
-      >
-        <span className="min-w-0 truncate">{col.header}</span>
-        <span className="flex shrink-0 items-center gap-0.5">
-          <span className="flex flex-col gap-0.5">
-            <SortArrow direction="up" active={info.direction === "asc"} />
-            <SortArrow direction="down" active={info.direction === "desc"} />
-          </span>
-          {info.priority !== undefined && (
-            <span className="text-[9px] font-medium text-blue-600 dark:text-blue-400 leading-none">
-              {info.priority}
-            </span>
-          )}
-        </span>
-      </button>
-    ) : (
-      <span className="min-w-0 truncate">{col.header}</span>
-    )
-
-    const columnKey = String(col.accessorKey)
-    const filterCell = col.filter ? (
-      <DataTableV2FilterCell
-        column={col}
-        filter={col.filter}
-        value={filter.getColumnFilter(columnKey)}
-        active={filter.hasActiveFilter(columnKey)}
-        onChange={filter.setColumnFilter}
-        columnKey={columnKey}
-      />
-    ) : null
-
-    // 오른쪽 정렬 컬럼(주로 숫자)은 데이터 값이 우측 끝에 몰리므로 필터 아이콘을 좌측에 배치.
-    // 정렬 화살표의 flex-row-reverse 처리와 같은 UX 원칙 (AG Grid 등 표준).
-    const contentInner = (
-      <div
-        className={cn(
-          "flex-1 flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-300 min-w-0",
-          col.align === "right" && "flex-row-reverse"
-        )}
-      >
-        <div
-          className={cn(
-            "flex-1 flex items-center gap-1 min-w-0 overflow-hidden",
-            alignClass[col.align ?? "left"]
-          )}
-        >
-          {contentBody}
-        </div>
-        {filterCell}
-      </div>
-    )
-
-    const separator = !isLastColumn && (
-      <DataTableV2ColumnSeparator
-        resizable={resizable}
-        isResizing={isResizingThis}
-        onResizeStart={handleResizeStart as (e: React.MouseEvent, column: unknown) => void}
-        column={col}
-      />
-    )
-
-    const ariaSort: "ascending" | "descending" | "none" | undefined = col.sortable
-      ? info.direction === "asc"
-        ? "ascending"
-        : info.direction === "desc"
-          ? "descending"
-          : "none"
-      : undefined
-
-    if (isDraggable) {
-      return (
-        <DataTableV2SortableHeaderCell
-          key={colId}
-          id={String(col.accessorKey)}
-          className={outerCls}
-          style={style}
-          dataColumnKey={String(col.accessorKey)}
-          ariaSort={ariaSort}
-        >
-          {contentInner}
-          {separator}
-        </DataTableV2SortableHeaderCell>
-      )
-    }
-
-    return (
-      <div
-        key={colId}
-        role="columnheader"
-        data-column-key={String(col.accessorKey)}
-        className={outerCls}
-        style={style}
-        aria-sort={ariaSort}
-      >
-        {contentInner}
-        {separator}
-      </div>
-    )
-  }
-
-  // 그룹 행에서 pinned 컬럼 자리를 채우기 위한 sticky placeholder 렌더
-  const renderPinnedPlaceholder = (col: DataTableV2Column<T>, i: number) => {
-    const width = typeof col.width === "number" ? col.width : DEFAULT_COL_WIDTH
-    const isLeft = col.pinned === "left"
-    // shadow 는 CSS `group-data-[scrolled-*=true]/scroll:` 로 반응 → 여기선 column 위치만 판단.
-    const isLeftBoundary = i === lastLeftPinnedIdx
-    const isRightBoundary = i === firstRightPinnedIdx
-    const isFirstRightPinned = i === firstRightPinnedIdx
-    return (
-      <div
-        key={`pinned-placeholder-${col.id ?? String(col.accessorKey)}`}
-        className={cn(
-          "shrink-0 sticky z-20",
-          headerBg,
-          isFirstRightPinned && "ml-auto",
-          isLeftBoundary && "group-data-[scrolled-left=true]/scroll:shadow-[2px_0_5px_-2px_rgba(0,0,0,0.15)]",
-          isRightBoundary && "group-data-[scrolled-right=true]/scroll:shadow-[-2px_0_5px_-2px_rgba(0,0,0,0.15)]"
-        )}
-        style={{
-          width,
-          left: isLeft ? leftOffsets[i] : undefined,
-          right: !isLeft ? rightOffsets[i] : undefined,
-        }}
-      />
-    )
-  }
-
-  // Control 헤더 셀 (드래그 핸들 / 체크박스 / 확장) — sticky left, 항상 좌측 pinned 컬럼 앞에 위치
   const showExpandAll = expandable?.showExpandAll ?? true
-  const renderControlHeaderCells = () => {
-    const cells: React.ReactNode[] = []
-    if (rowReorderable) {
-      cells.push(
-        <div
-          key="ctrl-header-drag-handle"
-          role="columnheader"
-          className={cn("shrink-0 sticky z-20 min-h-9", headerBg)}
-          style={{ width: DRAG_HANDLE_COL_WIDTH, left: 0 }}
-          aria-label="행 순서 변경"
-        >
-          <span className="sr-only">행 순서 변경</span>
-        </div>
-      )
-    }
-    if (selectable) {
-      cells.push(
-        <div
-          key="ctrl-header-select"
-          role="columnheader"
-          className={cn("shrink-0 sticky z-20 flex items-center justify-center min-h-9", headerBg)}
-          style={{
-            width: CHECKBOX_COL_WIDTH,
-            left: dragHandleColsWidth,
-          }}
-        >
-          <Checkbox
-            checked={selection.allSelected}
-            indeterminate={selection.someSelected}
-            onCheckedChange={() => selection.toggleAll()}
-            aria-label="전체 선택"
-          />
-        </div>
-      )
-    }
-    if (expandable) {
-      cells.push(
-        <div
-          key="ctrl-header-expand"
-          role="columnheader"
-          className={cn("shrink-0 sticky z-20 flex items-center justify-center min-h-9", headerBg)}
-          style={{
-            width: EXPAND_COL_WIDTH,
-            left: dragHandleColsWidth + (selectable ? CHECKBOX_COL_WIDTH : 0),
-          }}
-        >
-          {showExpandAll && (
-            <button
-              type="button"
-              onClick={expansion.toggleAll}
-              className="flex h-9 w-10 items-center justify-center text-slate-500 hover:text-slate-700 dark:hover:text-slate-200 transition-colors"
-              aria-label={expansion.allExpanded ? "모두 접기" : "모두 펼치기"}
-            >
-              {expansion.allExpanded ? <DownIcon size={24} /> : <RightIcon size={24} />}
-            </button>
-          )}
-        </div>
-      )
-    }
-    return cells
-  }
-
-  // 행 삭제 컬럼 헤더 셀 — sticky left (checkbox/expand 뒤에 배치)
-  const renderDeleteControlHeaderCell = () => {
-    if (!showRowDelete) return null
-    return (
-      <div
-        key="ctrl-header-delete"
-        role="columnheader"
-        className={cn(
-          "shrink-0 sticky z-20 flex items-center justify-center min-h-9",
-          headerBg
-        )}
-        style={{ width: ROW_ACTIONS_WIDTH, left: rowActionsColLeftOffset }}
-        aria-label="행 삭제"
-      >
-        <span className="sr-only">행 삭제</span>
-      </div>
-    )
-  }
-
-  const renderDeleteControlHeaderPlaceholder = () => {
-    if (!showRowDelete) return null
-    return (
-      <div
-        key="ctrl-ph-delete"
-        className={cn("shrink-0 sticky z-20 min-h-9", headerBg)}
-        style={{ width: ROW_ACTIONS_WIDTH, left: rowActionsColLeftOffset }}
-      />
-    )
-  }
-
-  // Control 헤더 placeholder (그룹 행에서 자리 확보용, 내용 비어있음)
-  const renderControlHeaderPlaceholders = () => {
-    const cells: React.ReactNode[] = []
-    if (rowReorderable) {
-      cells.push(
-        <div
-          key="ctrl-ph-drag-handle"
-          className={cn("shrink-0 sticky z-20 min-h-9", headerBg)}
-          style={{ width: DRAG_HANDLE_COL_WIDTH, left: 0 }}
-        />
-      )
-    }
-    if (selectable) {
-      cells.push(
-        <div
-          key="ctrl-ph-select"
-          className={cn("shrink-0 sticky z-20 min-h-9", headerBg)}
-          style={{ width: CHECKBOX_COL_WIDTH, left: dragHandleColsWidth }}
-        />
-      )
-    }
-    if (expandable) {
-      cells.push(
-        <div
-          key="ctrl-ph-expand"
-          className={cn("shrink-0 sticky z-20 min-h-9", headerBg)}
-          style={{
-            width: EXPAND_COL_WIDTH,
-            left: dragHandleColsWidth + (selectable ? CHECKBOX_COL_WIDTH : 0),
-          }}
-        />
-      )
-    }
-    return cells
-  }
 
   // pinned 컬럼 파생값 — useMemo 로 stable ref 유지 (헤더 useMemo deps 안정성 확보).
   const { leftPinnedCols, rightPinnedCols, lastLeftPinnedIdx, firstRightPinnedIdx } =
@@ -895,97 +556,44 @@ export function DataTableV2<T extends { id: string | number }>({
         data-scrolled-right="false"
       >
         <div style={{ minWidth: totalWidth }}>
-          {/* Header 컨테이너 — 각 셀에 bg 부여로 우측 gap 방어. 여기 bg 는 fallback (sticky 위해). */}
-          <div
-            className={cn(
-              "sticky top-0 z-30 border-b border-slate-200 dark:border-slate-700",
-              headerBg
-            )}
-          >
-            {hasGroups && headerGroupCells && (
-              <div
-                role="row"
-                aria-rowindex={1}
-                className="flex border-b border-slate-200 dark:border-slate-700"
-              >
-                {renderControlHeaderPlaceholders()}
-                {renderDeleteControlHeaderPlaceholder()}
-                {leftPinnedCols.map(({ c, i }) => renderPinnedPlaceholder(c, i))}
-                {headerGroupCells.map((cell, idx) => {
-                  if (cell.kind === "group") {
-                    // 그룹의 시작/끝 경계마다 구분선을 넣는다.
-                    // - 좌측: 각 그룹 셀이 직접 그림. 단 행 맨 앞(앞에 컨트롤/pinned 셀도 없음)이면
-                    //   테이블 좌측 테두리와 겹치므로 생략
-                    // - 우측: 다음이 그룹이면 그쪽 좌측 구분선과 같은 자리라 생략.
-                    //   다음이 비그룹 컬럼일 때만 그려서 그룹이 어디서 끝나는지 표시.
-                    //   행의 마지막 셀이면 우측 테두리와 겹치므로 생략
-                    const nextCell = headerGroupCells[idx + 1]
-                    const showLeft = idx > 0 || hasPrecedingHeaderCells
-                    const showRight =
-                      nextCell !== undefined && nextCell.kind !== "group"
-                    return (
-                      <div
-                        key={cell.key}
-                        role="columnheader"
-                        className="relative flex min-h-9 shrink-0"
-                        style={{ width: cell.width }}
-                      >
-                        {showLeft && <DataTableV2ColumnSeparator side="left" />}
-                        <div
-                          className={cn(
-                            "flex-1 flex items-center px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-300",
-                            alignClass[cell.group.align ?? "center"]
-                          )}
-                        >
-                          {cell.group.header}
-                        </div>
-                        {showRight && <DataTableV2ColumnSeparator />}
-                      </div>
-                    )
-                  }
-                  const col = cell.col
-                  const width = typeof col.width === "number" ? col.width : undefined
-                  const minWidth =
-                    typeof col.minWidth === "number" ? col.minWidth : undefined
-                  return (
-                    <div
-                      key={cell.key}
-                      className={cn(
-                        "min-h-9",
-                        width === undefined ? "flex-1" : "shrink-0"
-                      )}
-                      style={{ width, minWidth }}
-                    />
-                  )
-                })}
-                {rightPinnedCols.map(({ c, i }) => renderPinnedPlaceholder(c, i))}
-              </div>
-            )}
-            {columnReorderable ? (
-              <SortableContext
-                items={reorderableIds}
-                strategy={horizontalListSortingStrategy}
-              >
-                <div role="row" aria-rowindex={headerRowCount} className="flex">
-                  {renderControlHeaderCells()}
-                  {renderDeleteControlHeaderCell()}
-                  {columns.map((col, i) => renderHeaderCell(col, i))}
-                  {firstRightPinnedIdx === -1 && !hasFlexColumn && (
-                    <div aria-hidden className="flex-1 min-h-9" />
-                  )}
-                </div>
-              </SortableContext>
-            ) : (
-              <div role="row" aria-rowindex={headerRowCount} className="flex">
-                {renderControlHeaderCells()}
-                {renderDeleteControlHeaderCell()}
-                {columns.map((col, i) => renderHeaderCell(col, i))}
-                {firstRightPinnedIdx === -1 && !hasFlexColumn && (
-                  <div aria-hidden className="flex-1 min-h-9" />
-                )}
-              </div>
-            )}
-          </div>
+          <DataTableV2Header
+            columns={columns}
+            hasFlexColumn={hasFlexColumn}
+            headerGroupCells={headerGroupCells}
+            hasGroups={hasGroups}
+            headerRowCount={headerRowCount}
+            hasPrecedingHeaderCells={hasPrecedingHeaderCells}
+            leftPinnedCols={leftPinnedCols}
+            rightPinnedCols={rightPinnedCols}
+            lastLeftPinnedIdx={lastLeftPinnedIdx}
+            firstRightPinnedIdx={firstRightPinnedIdx}
+            leftOffsets={leftOffsets}
+            rightOffsets={rightOffsets}
+            getSortInfo={getSortInfo}
+            onSort={handleSort}
+            filterState={filter.filterState}
+            getColumnFilter={filter.getColumnFilter}
+            hasActiveFilter={filter.hasActiveFilter}
+            onColumnFilterChange={filter.setColumnFilter}
+            resizable={resizable}
+            resizingKey={resizingKey}
+            onResizeStart={handleResizeStart as (e: React.MouseEvent, column: unknown) => void}
+            columnReorderable={columnReorderable}
+            reorderableIds={reorderableIds}
+            rowReorderable={rowReorderable}
+            selectable={selectable}
+            allSelected={selection.allSelected}
+            someSelected={selection.someSelected}
+            onToggleAll={selection.toggleAll}
+            hasExpandable={!!expandable}
+            showExpandAll={showExpandAll}
+            allExpanded={expansion.allExpanded}
+            onToggleExpandAll={expansion.toggleAll}
+            showRowDelete={showRowDelete}
+            dragHandleColsWidth={dragHandleColsWidth}
+            rowActionsColLeftOffset={rowActionsColLeftOffset}
+            headerBg={headerBg}
+          />
 
           {/* Body */}
           {loading ? (
