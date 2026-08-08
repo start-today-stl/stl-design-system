@@ -47,6 +47,18 @@ import type {
 const DEFAULT_ESTIMATE = 40
 const SKELETON_ROW_COUNT = 5
 
+/**
+ * PointerSensor 옵션 — **반드시 모듈 상수여야 한다.**
+ *
+ * dnd-kit 의 `useSensor(sensor, options)` 는 `[sensor, options]` 로 메모한다.
+ * 인라인 객체 리터럴을 넘기면 매 렌더 새 객체 → sensors 새 배열 → activators 재계산 →
+ * DndContext 의 internal context 값이 매 렌더 바뀐다.
+ * 그러면 `useSortable` 을 구독하는 모든 헤더 셀 / 행이 부모 리렌더마다 함께 리렌더된다
+ * (context 변경은 React.memo 로 막을 수 없다).
+ *
+ * 5px: 제자리 클릭은 정렬, 5px 이상 끌면 재정렬로 갈린다.
+ */
+const POINTER_SENSOR_OPTIONS = { activationConstraint: { distance: 5 } }
 
 /**
  * 헤더 클릭 시 다음 정렬 상태 계산.
@@ -292,9 +304,7 @@ export function DataTableV2<T extends { id: string | number }>({
     [columns, columnReorderable]
   )
 
-  const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
-  )
+  const sensors = useSensors(useSensor(PointerSensor, POINTER_SENSOR_OPTIONS))
 
   // 지금 끌고 있는 게 컬럼인지 행인지 — 자동 스크롤 축을 정하는 데만 사용
   const [activeDragAxis, setActiveDragAxis] = React.useState<
