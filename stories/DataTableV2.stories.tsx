@@ -179,6 +179,53 @@ const ksColumns: DataTableV2Column<KsRow>[] = [
 ]
 
 /**
+ * 데모용 필터. v2 는 필터를 직접 실행하지 않고 filterState 변경 콜백만 발화하므로
+ * (서버 사이드 전제) 스토리에서 사용처 역할을 대신한다.
+ *
+ * 프리셋별 값 형태로 판별한다.
+ * - text / select   → string
+ * - multiSelect     → string[]
+ * - numberRange     → { from?: number; to?: number }
+ * - dateRange       → { from?: Date; to?: Date }
+ */
+function filterRows<T extends object>(
+  rows: T[],
+  filterState: Record<string, unknown>
+): T[] {
+  const entries = Object.entries(filterState).filter(
+    ([, v]) => v !== undefined && v !== null && v !== ""
+  )
+  if (entries.length === 0) return rows
+
+  return rows.filter((row) =>
+    entries.every(([key, cond]) => {
+      const raw = (row as Record<string, unknown>)[key]
+
+      if (typeof cond === "string") {
+        return String(raw).toLowerCase().includes(cond.toLowerCase())
+      }
+      if (Array.isArray(cond)) {
+        return cond.length === 0 || cond.includes(String(raw))
+      }
+      if (typeof cond === "object") {
+        const { from, to } = cond as { from?: unknown; to?: unknown }
+        if (from instanceof Date || to instanceof Date) {
+          const d = new Date(String(raw))
+          if (from instanceof Date && d < from) return false
+          if (to instanceof Date && d > to) return false
+          return true
+        }
+        const n = Number(raw)
+        if (typeof from === "number" && n < from) return false
+        if (typeof to === "number" && n > to) return false
+        return true
+      }
+      return true
+    })
+  )
+}
+
+/**
  * 전 기능 조합 데모. 한 테이블에서 pinned · 가상화(5,000행) · 컬럼 필터 ·
  * 재정렬 · 리사이즈 · 헤더 그룹 · 셀 편집 · 행 선택 · 다중 정렬을 함께 확인한다.
  * (rowGrouping 제외)
@@ -190,16 +237,25 @@ export const KitchenSink: Story = {
     const [filterState, setFilterState] = useState<Record<string, unknown>>({})
     const [selectedIds, setSelectedIds] = useState<(string | number)[]>([])
 
+    // v2 는 정렬/필터를 직접 실행하지 않고 상태 변경 콜백만 발화한다 (서버 사이드 전제).
+    // 데모에서는 실제 동작을 보여야 하므로 사용처 역할을 여기서 대신한다.
+    const viewRows = useMemo(
+      () => sortRows(filterRows(rows, filterState), sortState),
+      [rows, filterState, sortState]
+    )
+
     return (
       <div className="flex flex-col gap-2">
         <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-500 dark:text-slate-400">
-          <span>행 {rows.length.toLocaleString()}개 (가상화)</span>
+          <span>
+            행 {viewRows.length.toLocaleString()} / {rows.length.toLocaleString()}개 (가상화)
+          </span>
           <span>선택 {selectedIds.length}개</span>
           <span>정렬 {sortState.length}개</span>
           <span>필터 {Object.keys(filterState).length}개</span>
         </div>
         <DataTableV2
-          data={rows}
+          data={viewRows}
           columns={ksColumns}
           headerGroups={ksHeaderGroups}
           virtual
@@ -319,7 +375,11 @@ const sortableColumns: DataTableV2Column<Row>[] = [
   },
 ]
 
-function sortRows(rows: Row[], state: SortState<Row>[]): Row[] {
+/**
+ * 데모용 정렬. v2 는 정렬을 직접 실행하지 않고 sortState 변경 콜백만 발화하므로
+ * (서버 사이드 전제) 스토리에서 사용처 역할을 대신한다.
+ */
+function sortRows<T>(rows: T[], state: SortState<T>[]): T[] {
   if (state.length === 0) return rows
   const arr = [...rows]
   arr.sort((a, b) => {
