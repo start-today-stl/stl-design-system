@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react"
 import type { Meta, StoryObj } from "@storybook/react-vite"
+import { expect, userEvent, waitFor, within } from "storybook/test"
 
 import {
   DataTableV2,
@@ -1141,3 +1142,74 @@ export const VirtualizedWithRowGrouping: Story = {
     </div>
   ),
 }
+
+/**
+ * SDS-47 회귀 가드 — 헤더가 독립 memo 컴포넌트로 분리되면서, 헤더가 의존하는 값을
+ * prop 으로 빠뜨리면 "조작은 되는데 헤더 표시만 안 바뀌는" 형태로 조용히 틀어진다.
+ * 렌더 스냅샷 테스트로는 안 잡히므로 각 조작 후 헤더 DOM 이 실제로 갱신되는지 확인한다.
+ */
+export const HeaderStaysInSync: Story = {
+  render: function Render() {
+    const [sortState, setSortState] = useState<SortState<Row>[]>([])
+    const [selectedIds, setSelectedIds] = useState<(string | number)[]>([])
+    const sortedData = useMemo(() => sortRows(smallData, sortState), [sortState])
+    return (
+      <DataTableV2
+        data={sortedData}
+        columns={syncColumns}
+        sortState={sortState}
+        onSortChange={setSortState}
+        selectable
+        selectedIds={selectedIds}
+        onSelectionChange={setSelectedIds}
+        virtual
+        maxHeight={200}
+      />
+    )
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+
+    // 1) 정렬 — 헤더의 aria-sort 가 실제로 갱신되는지
+    const nameHeader = canvasElement.querySelector('[data-column-key="name"]')!
+    expect(nameHeader.getAttribute("aria-sort")).toBe("none")
+
+    await userEvent.click(canvas.getByRole("button", { name: /이름/ }))
+    expect(nameHeader.getAttribute("aria-sort")).toBe("ascending")
+
+    await userEvent.click(canvas.getByRole("button", { name: /이름/ }))
+    expect(nameHeader.getAttribute("aria-sort")).toBe("descending")
+
+    // 2) 전체 선택 — 헤더 체크박스 상태가 갱신되는지
+    const selectAll = canvas.getByLabelText("전체 선택")
+    expect(selectAll).not.toBeChecked()
+    await userEvent.click(selectAll)
+    expect(selectAll).toBeChecked()
+
+    // 3) 필터 — 값을 넣으면 헤더의 활성 표시(파란 도트)가 갱신되는지.
+    //    getColumnFilter / hasActiveFilter 는 ref 로 흡수된 stable 콜백이라
+    //    filterState 를 prop 으로 안 받으면 여기서 도트가 안 켜진다 (SDS-47 핵심 회귀)
+    const filterButton = canvas.getAllByRole("button", { name: /필터/ })[0]
+    expect(filterButton.querySelector("[data-filter-active]")).toBeNull()
+
+    await userEvent.click(filterButton)
+    // 팝오버는 portal 로 body 에 렌더되므로 canvasElement 밖에서 찾는다
+    const input = await within(document.body).findByPlaceholderText("역할 검색")
+    await userEvent.type(input, "매니저{Enter}")
+
+    await waitFor(() =>
+      expect(filterButton.querySelector("[data-filter-active]")).not.toBeNull()
+    )
+  },
+}
+
+const syncColumns: DataTableV2Column<Row>[] = [
+  { accessorKey: "id", header: "ID", width: 60, align: "center" },
+  { accessorKey: "name", header: "이름", width: 160, sortable: true },
+  {
+    accessorKey: "role",
+    header: "역할",
+    width: 160,
+    filter: { type: "text", placeholder: "역할 검색" },
+  },
+]
