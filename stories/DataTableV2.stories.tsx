@@ -1452,3 +1452,62 @@ export const ReorderKeepsColumnWidth: Story = {
     expect(widths()).toEqual(before)
   },
 }
+
+/**
+ * 확장 컨텐츠 리렌더 회귀 가드.
+ *
+ * 펼쳐둔 행이 있을 때 **다른 행을 체크해도** 확장 컨텐츠가 다시 그려지면 안 된다.
+ * (부모가 렌더 중에 `expandedRowRender(row)` 를 호출해 element 로 넘기면 매 렌더
+ * 새 element 가 만들어져서 확장 영역 subtree 가 통째로 재조정된다 — CMS 이관 중 발견)
+ */
+const expandRenderCounts: Record<string, number> = {}
+
+const ExpandProbe = ({ id }: { id: number }) => {
+  expandRenderCounts[id] = (expandRenderCounts[id] ?? 0) + 1
+  return (
+    <div data-testid={`probe-${id}`} data-render-count={expandRenderCounts[id]}>
+      확장 컨텐츠 {id}
+    </div>
+  )
+}
+
+export const ExpandedContentDoesNotRerender: Story = {
+  render: () => {
+    const [selectedIds, setSelectedIds] = useState<(string | number)[]>([])
+    const expandable = useMemo(
+      () => ({ expandedRowRender: (row: Row) => <ExpandProbe id={row.id} /> }),
+      []
+    )
+    return (
+      <DataTableV2
+        data={smallData}
+        columns={columns}
+        selectable
+        selectedIds={selectedIds}
+        onSelectionChange={setSelectedIds}
+        expandable={expandable}
+      />
+    )
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+
+    // 1행을 펼친다
+    const expandButtons = canvasElement.querySelectorAll<HTMLElement>(
+      '[aria-label="행 펼치기"]'
+    )
+    await userEvent.click(expandButtons[0])
+    const probe = await canvas.findByTestId("probe-1")
+    const initial = probe.dataset.renderCount!
+    expect(initial).toBeTruthy()
+
+    // 다른 행(2행)을 체크 — 펼쳐둔 1행의 확장 컨텐츠는 그대로여야 한다
+    await userEvent.click(canvas.getByLabelText("행 2 선택"))
+    await waitFor(() => expect(canvas.getByLabelText("전체 선택")).toBePartiallyChecked())
+    expect(canvas.getByTestId("probe-1").dataset.renderCount).toBe(initial)
+
+    // 펼쳐둔 행 자신을 체크해도 확장 컨텐츠는 유지된다
+    await userEvent.click(canvas.getByLabelText("행 1 선택"))
+    expect(canvas.getByTestId("probe-1").dataset.renderCount).toBe(initial)
+  },
+}

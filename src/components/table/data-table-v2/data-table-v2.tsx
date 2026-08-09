@@ -803,11 +803,7 @@ export function DataTableV2<T extends { id: string | number }>({
                     isExpanded={expansion.isExpanded(row.id)}
                     canExpand={expansion.canExpand(row)}
                     onToggleExpand={expansion.toggleRow}
-                    expandedContent={
-                      expandable && expansion.isExpanded(row.id) && stableExpandedRowRender
-                        ? stableExpandedRowRender(row)
-                        : null
-                    }
+                    expandedRowRender={expandable ? stableExpandedRowRender : undefined}
                     expandColWidth={EXPAND_COL_WIDTH}
                     visibleWidth={visibleWidth}
                     onRowClick={stableOnRowClick}

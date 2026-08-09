@@ -51,82 +51,82 @@ function Wn({
   multiSort: S = !1,
   resizable: R = !1,
   columnWidths: f,
-  onColumnResize: De,
-  columnReorderable: N = !1,
-  columnOrder: Ne,
-  onColumnReorder: Oe,
+  onColumnResize: be,
+  columnReorderable: D = !1,
+  columnOrder: De,
+  onColumnReorder: Ne,
   selectable: v = !1,
-  selectedIds: We,
-  defaultSelectedIds: Ie,
-  onSelectionChange: Te,
-  onRowClick: Me,
-  rowClassName: Le,
+  selectedIds: Oe,
+  defaultSelectedIds: We,
+  onSelectionChange: Ie,
+  onRowClick: Te,
+  rowClassName: Me,
   expandable: l,
-  onCellChange: He,
+  onCellChange: Le,
   rowActions: d,
   loading: se = !1,
-  loadingMode: _e = "splash",
+  loadingMode: He = "splash",
   loadingContent: ie,
-  emptyMessage: ze = "데이터가 없습니다.",
-  rowReorderable: Pe = !1,
-  onRowReorder: Fe,
-  filterState: Ke,
-  defaultFilterState: je,
-  onFilterChange: Ve,
+  emptyMessage: _e = "데이터가 없습니다.",
+  rowReorderable: ze = !1,
+  onRowReorder: Pe,
+  filterState: Fe,
+  defaultFilterState: Ke,
+  onFilterChange: je,
   maxHeight: $,
   estimateRowHeight: oe = rn,
   rowGrouping: T,
-  virtual: $e,
-  bordered: Ue = !0,
-  className: Ae
+  virtual: Ve,
+  bordered: $e = !0,
+  className: Ue
 }) {
-  const C = T ? !1 : Pe, O = (d == null ? void 0 : d.showDelete) ?? !!(d != null && d.onRowDelete), Be = (d == null ? void 0 : d.showAdd) ?? !!(d != null && d.onRowAdd), Ge = u(d == null ? void 0 : d.onRowDelete), U = u(d == null ? void 0 : d.onRowAdd), Xe = u(Me), A = u(Le), Je = u(He), le = u(l == null ? void 0 : l.expandedRowRender), qe = u(Te), B = u(g), Qe = u(Ve), Ye = u(De), Ze = u(Oe), et = u(Fe), de = u(l == null ? void 0 : l.onExpandedChange), { orderedColumns: G, handleColumnDragEnd: ce } = Yt({
+  const C = T ? !1 : ze, N = (d == null ? void 0 : d.showDelete) ?? !!(d != null && d.onRowDelete), Ae = (d == null ? void 0 : d.showAdd) ?? !!(d != null && d.onRowAdd), Be = u(d == null ? void 0 : d.onRowDelete), U = u(d == null ? void 0 : d.onRowAdd), Ge = u(Te), A = u(Me), Xe = u(Le), Je = u(l == null ? void 0 : l.expandedRowRender), qe = u(Ie), B = u(g), Qe = u(je), Ye = u(be), Ze = u(Ne), et = u(Pe), le = u(l == null ? void 0 : l.onExpandedChange), { orderedColumns: G, handleColumnDragEnd: de } = Yt({
     columns: h,
-    columnReorderable: N,
-    columnOrder: Ne,
+    columnReorderable: D,
+    columnOrder: De,
     onColumnReorder: Ze
-  }), { getColumnWidth: ae, handleResizeStart: tt, resizingKey: nt } = Qt({
+  }), { getColumnWidth: ce, handleResizeStart: tt, resizingKey: nt } = Qt({
     resizable: R,
     columnWidths: f,
     onColumnResize: Ye
   }), c = s.useMemo(() => R ? G.map((e) => {
-    const n = ae(e);
+    const n = ce(e);
     return n !== void 0 ? { ...e, width: n } : e;
-  }) : G, [G, R, ae]), M = C ? F : 0, L = M + (v ? I : 0) + (l ? K : 0), W = L + (O ? j : 0), { left: he, right: fe } = s.useMemo(
-    () => dn(c, W),
-    [c, W]
-  ), ue = s.useMemo(
-    () => cn(c) + W,
-    [c, W]
+  }) : G, [G, R, ce]), M = C ? F : 0, L = M + (v ? I : 0) + (l ? K : 0), O = L + (N ? j : 0), { left: ae, right: he } = s.useMemo(
+    () => dn(c, O),
+    [c, O]
+  ), fe = s.useMemo(
+    () => cn(c) + O,
+    [c, O]
   ), x = tn({
     data: r,
     selectable: v,
-    selectedIds: We,
-    defaultSelectedIds: Ie,
+    selectedIds: Oe,
+    defaultSelectedIds: We,
     onSelectionChange: qe
   }), rt = s.useMemo(
-    () => l ? { ...l, onExpandedChange: de } : void 0,
-    [l, de]
-  ), b = Zt({ data: r, expandable: rt }), y = qt({ onCellChange: Je }), { handleRowDragEnd: ge } = Xt({ data: r, onRowReorder: et }), { rowSpanMap: st, getRowSpan: w } = en({ data: r, rowGrouping: T }), H = Gt({ filterState: Ke, defaultFilterState: je, onFilterChange: Qe }), D = s.useMemo(
+    () => l ? { ...l, onExpandedChange: le } : void 0,
+    [l, le]
+  ), W = Zt({ data: r, expandable: rt }), y = qt({ onCellChange: Xe }), { handleRowDragEnd: ue } = Xt({ data: r, onRowReorder: et }), { rowSpanMap: st, getRowSpan: w } = en({ data: r, rowGrouping: T }), H = Gt({ filterState: Fe, defaultFilterState: Ke, onFilterChange: Qe }), b = s.useMemo(
     () => p ?? [],
     [p]
   ), it = s.useCallback(
     (e) => {
-      const n = D.findIndex((i) => i.column === e);
+      const n = b.findIndex((i) => i.column === e);
       return n < 0 ? { direction: null, priority: void 0 } : {
-        direction: D[n].direction,
-        priority: S && D.length > 1 ? n + 1 : void 0
+        direction: b[n].direction,
+        priority: S && b.length > 1 ? n + 1 : void 0
       };
     },
-    [D, S]
-  ), me = s.useRef(D);
-  me.current = D;
-  const pe = s.useRef(S);
-  pe.current = S;
+    [b, S]
+  ), ge = s.useRef(b);
+  ge.current = b;
+  const me = s.useRef(S);
+  me.current = S;
   const ot = s.useCallback(
     (e) => {
       B && B(
-        ln(me.current, e, pe.current)
+        ln(ge.current, e, me.current)
       );
     },
     [B]
@@ -134,22 +134,22 @@ function Wn({
     () => c.some((e) => typeof e.width != "number"),
     [c]
   ), dt = s.useMemo(
-    () => N ? c.filter((e) => !e.pinned).map((e) => String(e.accessorKey)) : [],
-    [c, N]
-  ), ct = _t(zt(Pt, on)), [Ce, X] = s.useState(null), at = s.useCallback((e) => {
+    () => D ? c.filter((e) => !e.pinned).map((e) => String(e.accessorKey)) : [],
+    [c, D]
+  ), ct = _t(zt(Pt, on)), [pe, X] = s.useState(null), at = s.useCallback((e) => {
     X(String(e.active.id).startsWith("row-") ? "row" : "column");
   }, []), ht = s.useCallback(
     (e) => {
-      X(null), String(e.active.id).startsWith("row-") ? ge(e) : ce(e);
+      X(null), String(e.active.id).startsWith("row-") ? ue(e) : de(e);
     },
-    [ce, ge]
+    [de, ue]
   ), ft = s.useCallback(() => X(null), []), ut = s.useMemo(
-    () => Ce === "row" ? { threshold: { x: 0, y: 0.2 } } : { threshold: { x: 0.2, y: 0 } },
-    [Ce]
+    () => pe === "row" ? { threshold: { x: 0, y: 0.2 } } : { threshold: { x: 0.2, y: 0 } },
+    [pe]
   ), gt = s.useMemo(
     () => C ? r.map((e) => `row-${e.id}`) : [],
     [r, C]
-  ), [ve, mt] = s.useState(/* @__PURE__ */ new Map()), pt = s.useCallback((e, n) => {
+  ), [Ce, mt] = s.useState(/* @__PURE__ */ new Map()), pt = s.useCallback((e, n) => {
     mt((t) => {
       if (t.get(e) === n) return t;
       const i = new Map(t);
@@ -159,28 +159,28 @@ function Wn({
     const e = new Array(r.length + 1);
     e[0] = 0;
     for (let n = 0; n < r.length; n++) {
-      const t = ve.get(r[n].id) ?? oe;
+      const t = Ce.get(r[n].id) ?? oe;
       e[n + 1] = e[n] + t;
     }
     return e;
-  }, [r, ve, oe]), Ct = _[r.length], [J, vt] = s.useState(null), z = s.useMemo(() => J === null ? -1 : r.findIndex((e) => e.id === J), [J, r]), yt = s.useCallback(
+  }, [r, Ce, oe]), Ct = _[r.length], [J, vt] = s.useState(null), z = s.useMemo(() => J === null ? -1 : r.findIndex((e) => e.id === J), [J, r]), yt = s.useCallback(
     (e, n) => {
       if (z < 0) return !1;
       const t = w(e, n);
       return t === void 0 || t <= 1 ? !1 : z >= e && z < e + t;
     },
     [z, w]
-  ), ye = x.selectedSet, St = s.useCallback(
+  ), ve = x.selectedSet, St = s.useCallback(
     (e, n) => {
       const t = w(e, n);
       if (t === void 0 || t <= 1) return !1;
       for (let i = e; i < e + t; i++) {
         const a = r[i];
-        if (a && ye.has(a.id)) return !0;
+        if (a && ve.has(a.id)) return !0;
       }
       return !1;
     },
-    [w, r, ye]
+    [w, r, ve]
   ), Rt = s.useCallback(() => !1, []), wt = T ? St : Rt, q = s.useRef(_);
   q.current = _;
   const Et = s.useCallback(
@@ -192,12 +192,12 @@ function Wn({
     [w]
   ), Q = s.useRef(null), {
     isVirtual: P,
-    virtualizer: Se,
-    renderIndices: Re,
+    virtualizer: ye,
+    renderIndices: Se,
     getItemStart: kt,
     totalSize: xt
   } = nn({
-    virtual: $e,
+    virtual: Ve,
     count: r.length,
     scrollContainerRef: Q,
     rowSpanMap: st
@@ -208,7 +208,7 @@ function Wn({
     []
   );
   s.useLayoutEffect(() => {
-    for (const e of Re) {
+    for (const e of Se) {
       const n = r[e];
       if (!n) continue;
       const t = Y.current.get(n.id);
@@ -252,20 +252,20 @@ function Wn({
         }), t += 1;
         continue;
       }
-      let be = 0;
+      let xe = 0;
       const Lt = t;
       for (; t < k.length && e.get(k[t].accessorKey) === a; )
-        be += V(k[t]), t += 1;
+        xe += V(k[t]), t += 1;
       n.push({
         // 같은 그룹이 여러 구간으로 갈라질 수 있으므로 key 는 구간 첫 컬럼 기준
         key: `group-${String(k[Lt].accessorKey)}`,
         kind: "group",
-        width: be,
+        width: xe,
         group: a
       });
     }
     return n;
-  }, [k, m]), we = Z !== null && Z.length > 0, Nt = W > 0 || c.some((e) => e.pinned === "left"), ee = we ? 2 : 1, Ot = "bg-slate-100 dark:bg-slate-800", Wt = (l == null ? void 0 : l.showExpandAll) ?? !0, { leftPinnedCols: It, rightPinnedCols: Tt, lastLeftPinnedIdx: Ee, firstRightPinnedIdx: ke } = s.useMemo(() => {
+  }, [k, m]), Re = Z !== null && Z.length > 0, Nt = O > 0 || c.some((e) => e.pinned === "left"), ee = Re ? 2 : 1, Ot = "bg-slate-100 dark:bg-slate-800", Wt = (l == null ? void 0 : l.showExpandAll) ?? !0, { leftPinnedCols: It, rightPinnedCols: Tt, lastLeftPinnedIdx: we, firstRightPinnedIdx: Ee } = s.useMemo(() => {
     const e = c.map((t, i) => ({ c: t, i })).filter(({ c: t }) => t.pinned === "left"), n = c.map((t, i) => ({ c: t, i })).filter(({ c: t }) => t.pinned === "right");
     return {
       leftPinnedCols: e,
@@ -273,7 +273,7 @@ function Wn({
       lastLeftPinnedIdx: e.length ? e[e.length - 1].i : -1,
       firstRightPinnedIdx: n.length ? n[0].i : -1
     };
-  }, [c]), Mt = c.length + (C ? 1 : 0) + (v ? 1 : 0) + (l ? 1 : 0) + (O ? 1 : 0), xe = /* @__PURE__ */ o(
+  }, [c]), Mt = c.length + (C ? 1 : 0) + (v ? 1 : 0) + (l ? 1 : 0) + (N ? 1 : 0), ke = /* @__PURE__ */ o(
     "div",
     {
       role: "grid",
@@ -288,8 +288,8 @@ function Wn({
         // 이게 없으면 테이블이 내용 높이만큼 늘어나고 컨테이너의 overflow-hidden 에 잘려
         // 어디에서도 세로 스크롤이 안 된다. flex 부모가 아니면 무시되므로 단독 사용에는 영향 없음.
         "flex flex-col flex-1 min-h-0",
-        Ue && "rounded-2xl border border-slate-200 dark:border-slate-700",
-        Ae
+        $e && "rounded-2xl border border-slate-200 dark:border-slate-700",
+        Ue
       ),
       children: /* @__PURE__ */ o(
         "div",
@@ -299,22 +299,22 @@ function Wn({
           style: { maxHeight: typeof $ == "number" ? `${$}px` : $ },
           "data-scrolled-left": "false",
           "data-scrolled-right": "false",
-          children: /* @__PURE__ */ te("div", { style: { minWidth: ue }, children: [
+          children: /* @__PURE__ */ te("div", { style: { minWidth: fe }, children: [
             /* @__PURE__ */ o(
               At,
               {
                 columns: c,
                 hasFlexColumn: lt,
                 headerGroupCells: Z,
-                hasGroups: we,
+                hasGroups: Re,
                 headerRowCount: ee,
                 hasPrecedingHeaderCells: Nt,
                 leftPinnedCols: It,
                 rightPinnedCols: Tt,
-                lastLeftPinnedIdx: Ee,
-                firstRightPinnedIdx: ke,
-                leftOffsets: he,
-                rightOffsets: fe,
+                lastLeftPinnedIdx: we,
+                firstRightPinnedIdx: Ee,
+                leftOffsets: ae,
+                rightOffsets: he,
                 getSortInfo: it,
                 onSort: ot,
                 filterState: H.filterState,
@@ -324,7 +324,7 @@ function Wn({
                 resizable: R,
                 resizingKey: nt,
                 onResizeStart: tt,
-                columnReorderable: N,
+                columnReorderable: D,
                 reorderableIds: dt,
                 rowReorderable: C,
                 selectable: v,
@@ -333,9 +333,9 @@ function Wn({
                 onToggleAll: x.toggleAll,
                 hasExpandable: !!l,
                 showExpandAll: Wt,
-                allExpanded: b.allExpanded,
-                onToggleExpandAll: b.toggleAll,
-                showRowDelete: O,
+                allExpanded: W.allExpanded,
+                onToggleExpandAll: W.toggleAll,
+                showRowDelete: N,
                 dragHandleColsWidth: M,
                 rowActionsColLeftOffset: L,
                 headerBg: Ot
@@ -351,7 +351,7 @@ function Wn({
                   children: ie
                 }
               )
-            ) : _e === "skeleton" ? (
+            ) : He === "skeleton" ? (
               // 스켈레톤 — 각 컬럼 폭에 맞춰 셀 구조로 렌더
               /* @__PURE__ */ o("div", { children: Array.from({ length: sn }).map((e, n) => /* @__PURE__ */ te(
                 "div",
@@ -385,7 +385,7 @@ function Wn({
                         children: /* @__PURE__ */ o(re, { width: 16, height: 16 })
                       }
                     ),
-                    O && /* @__PURE__ */ o(
+                    N && /* @__PURE__ */ o(
                       "div",
                       {
                         role: "gridcell",
@@ -428,7 +428,7 @@ function Wn({
               {
                 className: "sticky left-0 flex items-center justify-center min-h-32 py-8 text-sm text-slate-500 dark:text-slate-400",
                 style: E ? { width: E } : void 0,
-                children: ze
+                children: _e
               }
             ) : (
               // 가상화 ON 시 컨테이너 높이 = virtualizer.totalSize, OFF 시 = positions 기반 totalHeight
@@ -438,7 +438,7 @@ function Wn({
                   className: "relative",
                   style: { height: P ? xt : Ct },
                   children: (() => {
-                    const e = Re.map((n) => {
+                    const e = Se.map((n) => {
                       var i, a;
                       const t = r[n];
                       return /* @__PURE__ */ o(
@@ -447,28 +447,28 @@ function Wn({
                           row: t,
                           rowIndex: n,
                           columns: c,
-                          leftOffsets: he,
-                          rightOffsets: fe,
-                          lastLeftPinnedIdx: Ee,
-                          firstRightPinnedIdx: ke,
-                          totalWidth: ue,
+                          leftOffsets: ae,
+                          rightOffsets: he,
+                          lastLeftPinnedIdx: we,
+                          firstRightPinnedIdx: Ee,
+                          totalWidth: fe,
                           registerEl: bt,
                           onHover: T ? vt : void 0,
                           onHeightChange: pt,
-                          measureRef: P && Se ? Se.measureElement : void 0,
+                          measureRef: P && ye ? ye.measureElement : void 0,
                           dataIndex: P ? n : void 0,
                           selectable: v,
                           isSelected: x.isSelected(t.id),
                           onToggleSelect: x.toggleRow,
                           checkboxColWidth: I,
                           expandable: !!l,
-                          isExpanded: b.isExpanded(t.id),
-                          canExpand: b.canExpand(t),
-                          onToggleExpand: b.toggleRow,
-                          expandedContent: l && b.isExpanded(t.id) && le ? le(t) : null,
+                          isExpanded: W.isExpanded(t.id),
+                          canExpand: W.canExpand(t),
+                          onToggleExpand: W.toggleRow,
+                          expandedRowRender: l ? Je : void 0,
                           expandColWidth: K,
                           visibleWidth: E,
-                          onRowClick: Xe,
+                          onRowClick: Ge,
                           extraClassName: A == null ? void 0 : A(t),
                           editingColumnKey: ((i = y.editing) == null ? void 0 : i.rowId) === t.id ? y.editing.columnKey : null,
                           editingError: ((a = y.editing) == null ? void 0 : a.rowId) === t.id ? y.editing.error : void 0,
@@ -476,8 +476,8 @@ function Wn({
                           onCompleteEdit: y.completeEdit,
                           onCancelEdit: y.cancelEdit,
                           onClearEditError: y.clearError,
-                          showRowDelete: O,
-                          onRowDelete: Ge,
+                          showRowDelete: N,
+                          onRowDelete: Be,
                           rowActionsColWidth: j,
                           rowActionsColLeftOffset: L,
                           rowReorderable: C,
@@ -504,7 +504,7 @@ function Wn({
                 }
               )
             ),
-            Be && !se && /* @__PURE__ */ te(
+            Ae && !se && /* @__PURE__ */ te(
               "div",
               {
                 role: "row",
@@ -569,7 +569,7 @@ function Wn({
       )
     }
   );
-  return N || C ? /* @__PURE__ */ o(
+  return D || C ? /* @__PURE__ */ o(
     Ft,
     {
       sensors: ct,
@@ -578,9 +578,9 @@ function Wn({
       onDragStart: at,
       onDragEnd: ht,
       onDragCancel: ft,
-      children: xe
+      children: ke
     }
-  ) : xe;
+  ) : ke;
 }
 export {
   Wn as DataTableV2

@@ -43,7 +43,18 @@ interface DataTableV2RowProps<T extends { id: string | number }> {
   isExpanded: boolean
   canExpand: boolean
   onToggleExpand: (id: T["id"]) => void
-  expandedContent: React.ReactNode
+  /**
+   * 확장 컨텐츠를 **element 가 아니라 함수로** 받는다.
+   *
+   * 부모가 렌더 중에 `render(row)` 를 호출해서 element 로 넘기면, 테이블이 리렌더될
+   * 때마다 새 element 가 만들어져서 (1) 이 행의 React.memo 가 깨지고 (2) element
+   * 참조가 바뀌니 React 가 확장 영역 subtree 를 통째로 재조정한다. 그래서 다른 행
+   * 체크박스만 눌러도 펼쳐둔 확장 테이블이 다시 그려진다.
+   *
+   * 함수로 받아서 아래 useMemo 로 element 를 고정하면, 이 행이 리렌더돼도
+   * (선택/호버 등) 확장 영역은 그대로 유지된다.
+   */
+  expandedRowRender: ((row: T) => React.ReactNode) | undefined
   expandColWidth: number
   /**
    * 스크롤 컨테이너의 가시 영역 너비.
@@ -184,7 +195,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
   isExpanded,
   canExpand,
   onToggleExpand,
-  expandedContent,
+  expandedRowRender,
   expandColWidth,
   visibleWidth,
   onRowClick,
@@ -230,6 +241,12 @@ function DataTableV2RowInner<T extends { id: string | number }>({
     return () => observer.disconnect()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [row.id, isExpanded])
+
+  // 확장 element 참조 고정 — 위 expandedRowRender 주석 참고
+  const expandedContent = React.useMemo(
+    () => (isExpanded && expandedRowRender ? expandedRowRender(row) : null),
+    [isExpanded, expandedRowRender, row],
+  )
 
   // Row bg — hover 는 CSS `:hover`, 선택은 `data-state="selected"` 변이로 처리한다.
   // (state 로 클래스를 갈아끼우지 않는 이유: hover 마다 리렌더가 나면 모든 row memo 가 무효)
