@@ -400,7 +400,6 @@ function DataTableV2RowInner<T extends { id: string | number }>({
               isLeftBoundary={i === lastLeftPinnedIdx}
               isRightBoundary={i === firstRightPinnedIdx}
               isFirstRightPinned={isFirstRightPinned}
-              pinnedBgClass={isPinned ? bgClass : undefined}
               spanHeight={spanHeight}
               headBgClass={headBgClass}
               isEditing={isCellEditing}

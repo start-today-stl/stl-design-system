@@ -20,14 +20,6 @@ export interface DataTableV2CellProps<T extends { id: string | number }> {
   isRightBoundary: boolean
   isFirstRightPinned: boolean
   /**
-   * pinned 셀 배경. **pinned 일 때만 넘긴다.**
-   *
-   * 이 값은 행 선택/hover 에 따라 바뀌므로, 모든 셀에 넘기면 체크박스 한 번 누를 때
-   * 그 행의 셀이 전부 리렌더된다. pinned 셀은 sticky 라 자체 배경이 꼭 필요하지만
-   * 나머지는 행 배경을 그대로 쓰므로 받을 이유가 없다.
-   */
-  pinnedBgClass?: string
-  /**
    * rowGrouping 병합 셀(span > 1)의 세로 확장 높이. head 셀이 아니면 undefined.
    * 지정되면 컨텐츠를 absolute 로 이 높이만큼 늘려 아래 middle row 들을 덮는다.
    */
@@ -60,7 +52,6 @@ function DataTableV2CellInner<T extends { id: string | number }>({
   isLeftBoundary,
   isRightBoundary,
   isFirstRightPinned,
-  pinnedBgClass,
   spanHeight,
   headBgClass,
   isEditing,
@@ -76,8 +67,11 @@ function DataTableV2CellInner<T extends { id: string | number }>({
   const outerCls = cn(
     "flex min-h-9",
     width !== undefined && "shrink-0",
-    isPinned && "sticky z-10 transition-colors",
-    isPinned && pinnedBgClass,
+    // pinned 셀은 sticky 라 자체 배경이 필요하다. 행 배경을 **CSS 상속**으로 가져온다.
+    // 선택/hover 배경을 prop 으로 받으면 그 값이 바뀔 때마다 memo 가 깨져서
+    // 체크박스 한 번에 그 행의 pinned 셀이 전부 리렌더된다. bg-inherit 는
+    // 부모(행)의 계산된 배경을 그대로 따라가므로 클래스가 고정된다.
+    isPinned && "sticky z-10 bg-inherit",
     isFirstRightPinned && "ml-auto",
     isLeftBoundary && "group-data-[scrolled-left=true]/scroll:shadow-[2px_0_5px_-2px_rgba(0,0,0,0.15)]",
     isRightBoundary && "group-data-[scrolled-right=true]/scroll:shadow-[-2px_0_5px_-2px_rgba(0,0,0,0.15)]",
@@ -161,9 +155,12 @@ type DataTableV2CellComponent = <T extends { id: string | number }>(
  * 컬럼이 많은 테이블에서 전체 선택 같은 조작은 비용이 급격히 커진다
  * (29컬럼 × 500행 = 14,500 재조정). 셀을 분리하면 실제로 바뀐 셀만 다시 그린다.
  *
- * ⚠️ prop 하나라도 매 렌더 새 값이면 memo 가 통째로 무효가 된다. 특히
- * 행 선택/hover 에 따라 바뀌는 배경 클래스는 **그 값이 꼭 필요한 셀에만** 넘긴다
- * (`pinnedBgClass` / `headBgClass`). 나머지 셀은 행 배경을 그대로 쓰므로 필요 없다.
+ * ⚠️ prop 하나라도 매 렌더 새 값이면 memo 가 통째로 무효가 된다.
+ * 행 선택/hover 에 따라 바뀌는 값은 되도록 prop 으로 넘기지 않는다.
+ * - pinned 셀 배경: `bg-inherit` 로 행 배경을 CSS 상속 (prop 불필요)
+ * - `headBgClass`: rowGrouping head 셀만. 그룹 hover 는 행 단위가 아니라
+ *   그룹 단위라 CSS 상속으로 표현할 수 없어 어쩔 수 없이 prop 으로 받는다
+ * - `editingError`: 편집 중인 셀에만
  */
 export const DataTableV2Cell = React.memo(
   DataTableV2CellInner
