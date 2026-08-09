@@ -1229,12 +1229,26 @@ export const VirtualizedWithRowGrouping: Story = {
   ),
 }
 
+/*
+ * ─────────────────────────────────────────────────────────────
+ * 여기부터는 **회귀 검증용 스토리** 입니다.
+ *
+ * 기능 소개가 아니라 "한 번 고친 버그가 다시 들어오지 않는지" 확인하는 용도라,
+ * `tags: ["!dev", "!docs"]` 로 사이드바와 문서에서 감춥니다.
+ * (테스트 실행에서는 그대로 돌아갑니다 — `npx vitest run --project=storybook`)
+ *
+ * 새로 추가할 때도 같은 태그를 붙여 주세요. 이 문서는 비개발자도 봅니다.
+ * ─────────────────────────────────────────────────────────────
+ */
+
 /**
  * SDS-47 회귀 가드 — 헤더가 독립 memo 컴포넌트로 분리되면서, 헤더가 의존하는 값을
  * prop 으로 빠뜨리면 "조작은 되는데 헤더 표시만 안 바뀌는" 형태로 조용히 틀어진다.
  * 렌더 스냅샷 테스트로는 안 잡히므로 각 조작 후 헤더 DOM 이 실제로 갱신되는지 확인한다.
  */
 export const HeaderStaysInSync: Story = {
+  // 회귀 검증용 — 문서/사이드바에서 감춘다 (가로/세로 스크롤·정렬·필터에도 헤더가 상태를 유지하는지)
+  tags: ["!dev", "!docs"],
   render: function Render() {
     const [sortState, setSortState] = useState<SortState<Row>[]>([])
     const [selectedIds, setSelectedIds] = useState<(string | number)[]>([])
@@ -1306,6 +1320,8 @@ const syncColumns: DataTableV2Column<Row>[] = [
  * 테스트로는 잡히지 않는다 (DOM 은 정상적으로 존재하므로).
  */
 export const RowsStayPositioned: Story = {
+  // 회귀 검증용 — 문서/사이드바에서 감춘다 (모든 행에 위치가 적용되는지 (하나라도 빠지면 겹쳐 보인다))
+  tags: ["!dev", "!docs"],
   render: function Render() {
     const [expandedIds, setExpandedIds] = useState<(string | number)[]>([])
     return (
@@ -1356,6 +1372,8 @@ export const RowsStayPositioned: Story = {
  * (가상화 스크롤로 화면을 들락날락할 때 실제로 발생했던 버그)
  */
 export const RemountedRowsStayPositioned: Story = {
+  // 회귀 검증용 — 문서/사이드바에서 감춘다 (가상화로 행이 재마운트돼도 위치가 맞는지)
+  tags: ["!dev", "!docs"],
   render: function Render() {
     const [showAll, setShowAll] = useState(true)
     return (
@@ -1406,6 +1424,8 @@ export const RemountedRowsStayPositioned: Story = {
  * (v1 동작. 옮긴 자리에 있던 컬럼의 폭을 뒤집어쓰면 안 된다)
  */
 export const ReorderKeepsColumnWidth: Story = {
+  // 회귀 검증용 — 문서/사이드바에서 감춘다 (컬럼을 옮길 때 폭이 함께 따라가는지)
+  tags: ["!dev", "!docs"],
   render: () => (
     <DataTableV2 data={smallData} columns={reorderableColumns} columnReorderable />
   ),
@@ -1472,6 +1492,8 @@ const ExpandProbe = ({ id }: { id: number }) => {
 }
 
 export const ExpandedContentDoesNotRerender: Story = {
+  // 회귀 검증용 — 문서/사이드바에서 감춘다 (다른 행을 선택해도 펼쳐둔 확장 컨텐츠가 다시 그려지지 않는지)
+  tags: ["!dev", "!docs"],
   render: () => {
     const [selectedIds, setSelectedIds] = useState<(string | number)[]>([])
     const expandable = useMemo(
