@@ -34,7 +34,11 @@ coverage/
 *.local
 
 # Documentation (개발 문서)
-docs/dev
+# 개발 문서는 로컬 전용. 단 datatable-v2 폴더는 다른 환경에서도 이어서
+# 작업해야 해서 추적한다.
+# (디렉터리 자체가 아니라 '내용물'을 제외해야 하위 폴더를 ! 로 되살릴 수 있다)
+docs/dev/*
+!docs/dev/datatable-v2/
 
 # Claude
 .claude/
