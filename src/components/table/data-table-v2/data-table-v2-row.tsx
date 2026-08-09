@@ -102,6 +102,27 @@ interface RowSortableBindings {
   isDragging: boolean
 }
 
+/**
+ * sticky 컨트롤 셀(체크박스 / 확장 / 삭제 / 드래그 핸들) 하단 경계선 오버레이.
+ *
+ * 행 경계선은 행 div 의 `border-b` 로 그려지는데, rowGrouping 병합 셀의 덮개가
+ * 가로 스크롤 시 sticky 셀 밑으로 파고들면서 그 구간의 선을 가려버린다
+ * (덮개는 데이터 셀 안에 있어 셀과 함께 이동한다).
+ *
+ * 컨트롤 셀은 행마다 하나씩이므로 경계가 반드시 보여야 한다 — 안 그러면 어느
+ * 체크박스/삭제 버튼이 어느 행인지 모호해진다. 그래서 sticky 셀(z-10) 안에서
+ * 행 테두리와 **같은 자리**에 1px 선을 겹쳐 그려 덮개(z-5) 위에 남게 한다.
+ * 스크롤 0 일 때는 행 테두리와 완전히 포개져 시각적 변화가 없다.
+ */
+function StickyCellBorder() {
+  return (
+    <span
+      aria-hidden
+      className="absolute -bottom-px left-0 right-0 h-px bg-slate-200 dark:bg-slate-700"
+    />
+  )
+}
+
 function DataTableV2RowInner<T extends { id: string | number }>({
   row,
   rowIndex,
@@ -239,7 +260,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             role="gridcell"
             data-no-row-click
             className={cn(
-              "shrink-0 sticky z-10 flex items-center justify-center min-h-9 transition-colors",
+              "relative shrink-0 sticky z-10 flex items-center justify-center min-h-9 transition-colors",
               bgClass
             )}
             style={{ width: dragHandleColWidth, left: 0 }}
@@ -254,6 +275,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             >
               <DragHandleIcon size={16} />
             </div>
+            {!isLast && <StickyCellBorder />}
           </div>
         )}
         {selectable && (
@@ -261,7 +283,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             role="gridcell"
             data-no-row-click
             className={cn(
-              "shrink-0 sticky z-10 flex items-center justify-center min-h-9 transition-colors",
+              "relative shrink-0 sticky z-10 flex items-center justify-center min-h-9 transition-colors",
               bgClass
             )}
             style={{
@@ -281,6 +303,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
               }}
               aria-label={`행 ${row.id} 선택`}
             />
+            {!isLast && <StickyCellBorder />}
           </div>
         )}
         {expandable && (
@@ -288,7 +311,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             role="gridcell"
             data-no-row-click
             className={cn(
-              "shrink-0 sticky z-10 flex items-center justify-center min-h-9 transition-colors",
+              "relative shrink-0 sticky z-10 flex items-center justify-center min-h-9 transition-colors",
               bgClass
             )}
             style={{
@@ -310,6 +333,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
                 {isExpanded ? <DownIcon size={24} /> : <RightIcon size={24} />}
               </button>
             )}
+            {!isLast && <StickyCellBorder />}
           </div>
         )}
         {showRowDelete && (
@@ -317,7 +341,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             role="gridcell"
             data-no-row-click
             className={cn(
-              "shrink-0 sticky z-10 flex items-center justify-center min-h-9 transition-colors",
+              "relative shrink-0 sticky z-10 flex items-center justify-center min-h-9 transition-colors",
               bgClass
             )}
             style={{ width: rowActionsColWidth, left: rowActionsColLeftOffset }}
@@ -331,6 +355,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             >
               <RowDeleteIcon size={20} />
             </button>
+            {!isLast && <StickyCellBorder />}
           </div>
         )}
         {columns.map((col, i) => {
