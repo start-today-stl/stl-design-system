@@ -38,7 +38,16 @@ const SearchableSelect = React.forwardRef<
     const [highlightedValue, setHighlightedValue] = React.useState("");
     const listRef = React.useRef<HTMLDivElement>(null);
 
-    const currentValue = value !== undefined ? value : internalValue;
+    // controlled 여부는 "한 번이라도 value 를 받았는가" 로 판단한다.
+    //
+    // 사용처가 "선택 없음" 을 undefined 로 표현하는 경우가 많은데
+    // (예: value={code === 'ALL' ? undefined : code}), 매 렌더 value 로만 판단하면
+    // 값을 지우는 순간 uncontrolled 로 바뀌어 **낡은 내부 state 로 폴백**한다.
+    // 그러면 API 는 반영됐는데 UI 만 이전 값을 계속 보여준다
+    // (clearable 을 두 번 눌러야 지워지던 원인. 초기화 버튼에서도 같은 증상).
+    const wasControlledRef = React.useRef(value !== undefined);
+    if (value !== undefined) wasControlledRef.current = true;
+    const currentValue = wasControlledRef.current ? (value ?? "") : internalValue;
     const selectedOption = options.find((opt) => opt.value === currentValue);
 
     const filteredOptions = options.filter((option) =>
