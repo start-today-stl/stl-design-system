@@ -1511,3 +1511,69 @@ export const ExpandedContentDoesNotRerender: Story = {
     expect(canvas.getByTestId("probe-1").dataset.renderCount).toBe(initial)
   },
 }
+
+/**
+ * 종속 필터 — 다른 필터를 골라야 선택지가 생기는 경우.
+ *
+ * 선택지가 없으면 Select 를 비활성으로 두고 사유를 안내한다.
+ * (빈 목록만 열어주면 왜 비었는지 알 수 없다. CMS CS 목록의 카테고리 → CS 태그 관계)
+ */
+export const DependentFilter: Story = {
+  render: () => {
+    const [filterState, setFilterState] = useState<Record<string, unknown>>({})
+    const cols = useMemo<DataTableV2Column<Row>[]>(
+      () => [
+        { accessorKey: "id", header: "ID", width: 60 },
+        {
+          accessorKey: "role",
+          header: "역할",
+          width: 160,
+          filter: { type: "text", placeholder: "역할 검색" },
+        },
+        {
+          accessorKey: "name",
+          header: "이름",
+          width: 160,
+          filter: {
+            type: "select",
+            // 역할을 고르기 전에는 이름 선택지가 없다
+            options: filterState.role
+              ? [{ label: "김하나", value: "김하나" }]
+              : [],
+            emptyMessage: "역할을 먼저 선택하세요",
+          },
+        },
+      ],
+      [filterState.role]
+    )
+    return (
+      <DataTableV2
+        data={smallData}
+        columns={cols}
+        filterState={filterState}
+        onFilterChange={setFilterState}
+      />
+    )
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const body = within(document.body)
+
+    // 선택지가 없으면 안내 문구가 뜨고 Select 가 비활성이다
+    await userEvent.click(canvas.getByRole("button", { name: "이름 필터" }))
+    expect(await body.findByText("역할을 먼저 선택하세요")).toBeInTheDocument()
+    expect(body.getByLabelText("필터 선택")).toBeDisabled()
+    await userEvent.click(body.getByRole("button", { name: "닫기" }))
+
+    // 선행 필터에 값을 넣으면 안내가 사라지고 선택할 수 있다
+    await userEvent.click(canvas.getByRole("button", { name: "역할 필터" }))
+    const roleInput = await body.findByPlaceholderText("역할 검색")
+    await userEvent.type(roleInput, "매니저{Enter}")
+
+    await userEvent.click(canvas.getByRole("button", { name: "이름 필터" }))
+    await waitFor(() =>
+      expect(body.queryByText("역할을 먼저 선택하세요")).not.toBeInTheDocument()
+    )
+    expect(body.getByLabelText("필터 선택")).not.toBeDisabled()
+  },
+}

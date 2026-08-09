@@ -111,10 +111,21 @@ export type FilterConfig<T> = {
     type: "select";
     options: FilterOption[];
     placeholder?: string;
+    /**
+     * 선택지가 없을 때 팝오버에 보여줄 안내 문구.
+     *
+     * 다른 필터 선택에 종속돼서 아직 옵션이 없는 경우에 쓴다
+     * (예: 카테고리를 골라야 태그 선택지가 생기는 필터).
+     * 빈 목록만 보여주면 왜 비었는지 알 수 없다.
+     * 지정하지 않으면 기본 문구가 나온다.
+     */
+    emptyMessage?: string;
 } | {
     type: "multiSelect";
     options: FilterOption[];
     placeholder?: string;
+    /** 선택지가 없을 때 팝오버에 보여줄 안내 문구 (select 와 동일) */
+    emptyMessage?: string;
 } | {
     type: "dateRange";
 } | {

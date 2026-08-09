@@ -61,7 +61,15 @@ export function DefaultSelectFilter({
   onClose,
   options,
   placeholder,
-}: DefaultFilterProps<string> & { options: FilterOption[]; placeholder?: string }) {
+  emptyMessage,
+}: DefaultFilterProps<string> & {
+  options: FilterOption[]
+  placeholder?: string
+  emptyMessage?: string
+}) {
+  // 다른 필터에 종속돼서 아직 옵션이 없을 수 있다. 빈 목록을 열어주는 대신
+  // 검색폼과 같이 비활성 + 사유 안내로 처리한다.
+  const isEmpty = options.length === 0
   return (
     <div className="flex flex-col gap-2">
       <Select
@@ -70,8 +78,10 @@ export function DefaultSelectFilter({
         onValueChange={(v) => onChange(v || undefined)}
         placeholder={placeholder ?? "선택"}
         clearable
+        disabled={isEmpty}
         aria-label="필터 선택"
       />
+      {isEmpty && <FilterEmptyMessage>{emptyMessage}</FilterEmptyMessage>}
       <div className="flex justify-end gap-2">
         <Button variant="ghost" size="sm" onClick={() => { onChange(undefined); onClose() }}>
           초기화
@@ -84,6 +94,15 @@ export function DefaultSelectFilter({
   )
 }
 
+/** 선택지가 없을 때 팝오버에 띄우는 안내 문구 */
+function FilterEmptyMessage({ children }: { children?: React.ReactNode }) {
+  return (
+    <p className="text-xs text-slate-500 dark:text-slate-400">
+      {children ?? "선택할 수 있는 항목이 없습니다."}
+    </p>
+  )
+}
+
 /** 멀티셀렉트 필터 — 여러 값 선택 */
 export function DefaultMultiSelectFilter({
   value,
@@ -91,7 +110,13 @@ export function DefaultMultiSelectFilter({
   onClose,
   options,
   placeholder,
-}: DefaultFilterProps<string[]> & { options: FilterOption[]; placeholder?: string }) {
+  emptyMessage,
+}: DefaultFilterProps<string[]> & {
+  options: FilterOption[]
+  placeholder?: string
+  emptyMessage?: string
+}) {
+  const isEmpty = options.length === 0
   return (
     <div className="flex flex-col gap-2">
       <Select
@@ -100,8 +125,10 @@ export function DefaultMultiSelectFilter({
         value={value ?? []}
         onValueChange={(v) => onChange(v.length ? v : undefined)}
         placeholder={placeholder ?? "선택"}
+        disabled={isEmpty}
         aria-label="필터 다중 선택"
       />
+      {isEmpty && <FilterEmptyMessage>{emptyMessage}</FilterEmptyMessage>}
       <div className="flex justify-end gap-2">
         <Button variant="ghost" size="sm" onClick={() => { onChange(undefined); onClose() }}>
           초기화

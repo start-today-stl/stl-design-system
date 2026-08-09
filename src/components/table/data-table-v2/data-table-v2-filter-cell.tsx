@@ -49,6 +49,8 @@ function DataTableV2FilterCellInner<T>({
   const [open, setOpen] = React.useState(false)
   const close = React.useCallback(() => setOpen(false), [])
 
+  const label = `${typeof column.header === "string" ? column.header : "컬럼"} 필터`
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -60,7 +62,7 @@ function DataTableV2FilterCellInner<T>({
             "dark:text-slate-500 dark:hover:text-slate-100 dark:hover:bg-slate-700/60",
             active && "text-blue-600 dark:text-blue-400"
           )}
-          aria-label={`${typeof column.header === "string" ? column.header : "컬럼"} 필터`}
+          aria-label={label}
           onClick={(e) => e.stopPropagation()}
         >
           <FilterIcon size={20} />
@@ -75,7 +77,7 @@ function DataTableV2FilterCellInner<T>({
           )}
         </button>
       </PopoverTrigger>
-      <PopoverContent align="end" className="w-64 p-3">
+      <PopoverContent align="end" className="w-64 p-3" aria-label={label}>
         {renderFilterContent(filter, value, handleChange, close, column)}
       </PopoverContent>
     </Popover>
@@ -112,6 +114,7 @@ function renderFilterContent<T>(
           onClose={onClose}
           options={filter.options}
           placeholder={filter.placeholder}
+          emptyMessage={filter.emptyMessage}
         />
       )
     case "multiSelect":
@@ -122,6 +125,7 @@ function renderFilterContent<T>(
           onClose={onClose}
           options={filter.options}
           placeholder={filter.placeholder}
+          emptyMessage={filter.emptyMessage}
         />
       )
     case "dateRange":
