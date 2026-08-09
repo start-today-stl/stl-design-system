@@ -191,9 +191,10 @@ const viewRows = useMemo(
 
 이걸 빼먹으면 **헤더의 정렬 화살표는 바뀌는데 행은 그대로**여서 고장난 것처럼 보입니다.
 
-### columns 는 안정된 참조로 넘기세요
+### columns 는 안정된 참조로 넘기세요 — **컬럼을 만드는 입력값까지**
 
-렌더할 때마다 새 배열/새 객체를 만들면 내부 최적화가 전부 무효화됩니다.
+렌더할 때마다 새 배열/새 객체를 만들면 내부 최적화가 전부 무효화되고,
+체크박스 하나만 눌러도 모든 행이 다시 그려집니다.
 
 ```tsx
 // 컴포넌트 밖 상수로 두거나
@@ -202,6 +203,21 @@ const columns: DataTableV2Column<Row>[] = [...]
 // useMemo 로 감싸세요
 const columns = useMemo(() => [...], [handleClick])
 ```
+
+**컬럼을 `useMemo` 로 감쌌더라도 그 dep 이 불안정하면 소용없습니다.**
+컬럼 정의에 옵션 목록 같은 걸 넘긴다면 그것도 안정 참조여야 합니다.
+
+```tsx
+// ❌ 인라인 객체 → 매 렌더 새 참조 → columns useMemo 무효화 → 전체 행 리렌더
+<MyTable filterOptions={{ status: statusOptions, country: countries.filter(...) }} />
+
+// ✅
+const filterOptions = useMemo(() => ({ ... }), [countries])
+<MyTable filterOptions={filterOptions} />
+```
+
+CMS 이관 중 실제로 겪은 문제입니다. 컬럼 자체는 `useMemo` 였는데 그 입력이
+인라인 객체였습니다.
 
 콜백(`onRowClick`, `onCellChange` 등)은 인라인 화살표로 넘겨도 안전합니다.
 v2 내부에서 흡수합니다.
