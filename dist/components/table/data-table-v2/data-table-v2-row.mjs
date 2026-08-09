@@ -1,16 +1,34 @@
-import { jsx as t, jsxs as o } from "react/jsx-runtime";
-import * as c from "react";
-import { useSortable as ke } from "@dnd-kit/sortable";
-import { CSS as ye } from "@dnd-kit/utilities";
-import { cn as n } from "../../../lib/utils.mjs";
-import { Checkbox as pe } from "../../ui/checkbox.mjs";
-import { DownIcon as xe } from "../../../icons/DownIcon.mjs";
-import { DragHandleIcon as Ne } from "../../../icons/DragHandleIcon.mjs";
-import { RightIcon as ze } from "../../../icons/RightIcon.mjs";
-import { RowDeleteIcon as je } from "../../../icons/RowDeleteIcon.mjs";
-import { DataTableV2Cell as De } from "./data-table-v2-cell.mjs";
-function j() {
-  return /* @__PURE__ */ t(
+import { jsx as e, jsxs as d } from "react/jsx-runtime";
+import * as l from "react";
+import { useSortable as yt } from "@dnd-kit/sortable";
+import { CSS as Nt } from "@dnd-kit/utilities";
+import { cn as a } from "../../../lib/utils.mjs";
+import { Checkbox as xt } from "../../ui/checkbox.mjs";
+import { DownIcon as wt } from "../../../icons/DownIcon.mjs";
+import { DragHandleIcon as Tt } from "../../../icons/DragHandleIcon.mjs";
+import { RightIcon as Dt } from "../../../icons/RightIcon.mjs";
+import { RowDeleteIcon as Kt } from "../../../icons/RowDeleteIcon.mjs";
+import { DataTableV2Cell as Rt } from "./data-table-v2-cell.mjs";
+const D = a(
+  "relative shrink-0 sticky z-10 flex items-center justify-center min-h-9 transition-colors",
+  "bg-white dark:bg-slate-900",
+  "group-hover:bg-slate-100 dark:group-hover:bg-slate-800",
+  "group-data-[state=selected]:bg-blue-50 dark:group-data-[state=selected]:bg-blue-900"
+);
+function K({ className: r }) {
+  return r ? /* @__PURE__ */ e(
+    "span",
+    {
+      "aria-hidden": !0,
+      className: a(
+        "absolute inset-0 pointer-events-none group-data-[state=selected]:hidden",
+        r
+      )
+    }
+  ) : null;
+}
+function R() {
+  return /* @__PURE__ */ e(
     "span",
     {
       "aria-hidden": !0,
@@ -18,126 +36,126 @@ function j() {
     }
   );
 }
-function W({
-  row: i,
-  rowIndex: a,
-  columns: b,
-  leftOffsets: l,
-  rightOffsets: d,
-  lastLeftPinnedIdx: v,
+function q({
+  row: r,
+  rowIndex: n,
+  columns: v,
+  leftOffsets: c,
+  rightOffsets: u,
+  lastLeftPinnedIdx: k,
   firstRightPinnedIdx: f,
-  totalWidth: k,
+  totalWidth: p,
   registerEl: y,
-  onHover: p,
-  onHeightChange: _,
-  selectable: P,
-  isSelected: S,
-  onToggleSelect: q,
-  checkboxColWidth: B,
-  expandable: G,
-  isExpanded: h,
-  canExpand: J,
-  onToggleExpand: Q,
-  expandedContent: V,
-  expandColWidth: U,
-  visibleWidth: A,
-  onRowClick: u,
-  extraClassName: X,
-  editingColumnKey: Y,
-  editingError: Z,
-  onStartEdit: H,
-  onCompleteEdit: ee,
-  onCancelEdit: te,
-  onClearEditError: ie,
-  showRowDelete: re,
-  onRowDelete: D,
-  rowActionsColWidth: se,
-  rowActionsColLeftOffset: ae,
-  rowReorderable: R,
-  dragHandleColWidth: T,
-  isLast: m,
-  getRowSpan: ne,
-  getRowSpanHeight: oe,
-  getGroupHovered: ce,
-  getGroupSelected: le,
-  measureRef: w,
-  dataIndex: de,
-  ariaRowIndex: fe,
+  onHover: N,
+  onHeightChange: H,
+  selectable: V,
+  isSelected: L,
+  onToggleSelect: J,
+  checkboxColWidth: A,
+  expandable: Q,
+  isExpanded: g,
+  canExpand: U,
+  onToggleExpand: X,
+  expandedContent: M,
+  expandColWidth: Z,
+  visibleWidth: O,
+  onRowClick: h,
+  extraClassName: o,
+  editingColumnKey: tt,
+  editingError: et,
+  onStartEdit: rt,
+  onCompleteEdit: it,
+  onCancelEdit: st,
+  onClearEditError: at,
+  showRowDelete: nt,
+  onRowDelete: S,
+  rowActionsColWidth: ot,
+  rowActionsColLeftOffset: dt,
+  rowReorderable: z,
+  dragHandleColWidth: C,
+  isLast: b,
+  getRowSpan: lt,
+  getRowSpanHeight: ct,
+  getGroupHovered: ut,
+  getGroupSelected: ft,
+  measureRef: P,
+  dataIndex: gt,
+  ariaRowIndex: ht,
   sortable: s
 }) {
-  const M = c.useRef(null), he = s.transform, ue = s.transition, O = s.isDragging;
-  c.useLayoutEffect(() => {
-    const e = M.current;
-    if (!e) return;
-    const r = () => _(i.id, e.offsetHeight);
-    r();
-    const g = new ResizeObserver(r);
-    return g.observe(e), () => g.disconnect();
-  }, [i.id, h]);
-  const C = c.useRef(!1), me = (e) => {
-    e.target.closest("[data-no-row-click]") || u == null || u(i);
-  }, ge = c.useCallback(
-    (e) => {
-      var r;
-      M.current = e, (r = s.setNodeRef) == null || r.call(s, e), w && w(e), y(i.id, e);
+  const _ = l.useRef(null), bt = s.transform, mt = s.transition, E = s.isDragging;
+  l.useLayoutEffect(() => {
+    const t = _.current;
+    if (!t) return;
+    const i = () => H(r.id, t.offsetHeight);
+    i();
+    const m = new ResizeObserver(i);
+    return m.observe(t), () => m.disconnect();
+  }, [r.id, g]);
+  const j = l.useRef(!1), vt = (t) => {
+    t.target.closest("[data-no-row-click]") || h == null || h(r);
+  }, kt = l.useCallback(
+    (t) => {
+      var i;
+      _.current = t, (i = s.setNodeRef) == null || i.call(s, t), P && P(t), y(r.id, t);
     },
-    [s, w, y, i.id]
+    [s, P, y, r.id]
   );
-  return /* @__PURE__ */ o(
+  return /* @__PURE__ */ d(
     "div",
     {
-      ref: ge,
+      ref: kt,
       role: "row",
-      "data-index": de,
-      "aria-rowindex": fe,
-      className: n(
+      "data-index": gt,
+      "aria-rowindex": ht,
+      className: a(
         "absolute left-0 right-0 flex flex-col",
-        O && "z-30"
+        E && "z-30"
       ),
       style: {
-        minWidth: k,
+        minWidth: p,
         // top 은 부모가 layout effect 로 직접 쓴다 (위 registerEl 주석 참고).
         // React style 객체에 top 을 두지 않으므로 React 가 값을 덮어쓰지 않는다.
-        transform: he,
-        transition: ue,
-        opacity: O ? 0.6 : void 0
+        transform: bt,
+        transition: mt,
+        opacity: E ? 0.6 : void 0
       },
       children: [
-        /* @__PURE__ */ o(
+        /* @__PURE__ */ d(
           "div",
           {
-            "data-state": S ? "selected" : void 0,
-            className: n(
+            "data-state": L ? "selected" : void 0,
+            className: a(
               // border-b 를 row 자체에 두어서 우측 empty 영역 (셀 미커버) 에도 하단 line 이 이어지게 함.
               // 마지막 row 는 외곽 컨테이너 border-bottom 과 겹쳐 2px 로 보이므로 생략.
               // rowGrouping 병합 셀 위엔 head 셀의 absolute wrapper (opaque bg) 가 border 를 자동으로 가림 → 별도 middle row 스킵 불필요.
               // `group` 클래스 — sticky 셀들이 `group-hover:` 로 row hover 반응 (state 없이 CSS 만)
               "group flex transition-colors",
-              !m && "border-b border-slate-200 dark:border-slate-700",
+              !b && "border-b border-slate-200 dark:border-slate-700",
               "bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800",
               "data-[state=selected]:bg-blue-50 dark:data-[state=selected]:bg-blue-900",
               "data-[state=selected]:hover:bg-blue-100 dark:data-[state=selected]:hover:bg-blue-950",
-              u && "cursor-pointer",
-              X
+              h && "cursor-pointer",
+              o
             ),
-            onMouseEnter: p ? () => p(i.id) : void 0,
-            onMouseLeave: p ? () => p(null) : void 0,
-            onClick: u ? me : void 0,
+            onMouseEnter: N ? () => N(r.id) : void 0,
+            onMouseLeave: N ? () => N(null) : void 0,
+            onClick: h ? vt : void 0,
             children: [
-              R && /* @__PURE__ */ o(
+              z && /* @__PURE__ */ d(
                 "div",
                 {
                   role: "gridcell",
                   "data-no-row-click": !0,
-                  className: n(
-                    // 행 배경을 CSS 상속으로 가져온다. bgClass 를 직접 박으면 사용처의
-                    // rowClassName 배경(예: 미출고 행 강조)이 컨트롤 셀에만 반영되지 않는다.
-                    "relative shrink-0 sticky z-10 flex items-center justify-center min-h-9 bg-inherit"
+                  className: a(
+                    // sticky 라 스크롤 내용을 덮는다 → 불투명 배경 필수.
+                    // 사용처 강조색(반투명일 수 있음)은 아래 오버레이로 얹는다.
+                    D
                   ),
-                  style: { width: T, left: 0 },
-                  onClick: (e) => e.stopPropagation(),
+                  style: { width: C, left: 0 },
+                  onClick: (t) => t.stopPropagation(),
                   children: [
-                    /* @__PURE__ */ t(
+                    /* @__PURE__ */ e(
                       "div",
                       {
                         ref: s.setActivatorNodeRef,
@@ -145,171 +163,176 @@ function W({
                         "aria-label": "행 순서 변경",
                         ...s.listeners ?? {},
                         ...s.attributes ?? {},
-                        children: /* @__PURE__ */ t(Ne, { size: 16 })
+                        children: /* @__PURE__ */ e(Tt, { size: 16 })
                       }
                     ),
-                    !m && /* @__PURE__ */ t(j, {})
+                    /* @__PURE__ */ e(K, { className: o }),
+                    !b && /* @__PURE__ */ e(R, {})
                   ]
                 }
               ),
-              P && /* @__PURE__ */ o(
+              V && /* @__PURE__ */ d(
                 "div",
                 {
                   role: "gridcell",
                   "data-no-row-click": !0,
-                  className: n(
-                    // 행 배경을 CSS 상속으로 가져온다. bgClass 를 직접 박으면 사용처의
-                    // rowClassName 배경(예: 미출고 행 강조)이 컨트롤 셀에만 반영되지 않는다.
-                    "relative shrink-0 sticky z-10 flex items-center justify-center min-h-9 bg-inherit"
+                  className: a(
+                    // sticky 라 스크롤 내용을 덮는다 → 불투명 배경 필수.
+                    // 사용처 강조색(반투명일 수 있음)은 아래 오버레이로 얹는다.
+                    D
                   ),
                   style: {
-                    width: B,
-                    left: R ? T : 0
+                    width: A,
+                    left: z ? C : 0
                   },
-                  onClick: (e) => e.stopPropagation(),
+                  onClick: (t) => t.stopPropagation(),
                   children: [
-                    /* @__PURE__ */ t(
-                      pe,
+                    /* @__PURE__ */ e(
+                      xt,
                       {
-                        checked: S,
-                        onClick: (e) => {
-                          C.current = e.shiftKey;
+                        checked: L,
+                        onClick: (t) => {
+                          j.current = t.shiftKey;
                         },
                         onCheckedChange: () => {
-                          q(i.id, a, C.current), C.current = !1;
+                          J(r.id, n, j.current), j.current = !1;
                         },
-                        "aria-label": `행 ${i.id} 선택`
+                        "aria-label": `행 ${r.id} 선택`
                       }
                     ),
-                    !m && /* @__PURE__ */ t(j, {})
+                    /* @__PURE__ */ e(K, { className: o }),
+                    !b && /* @__PURE__ */ e(R, {})
                   ]
                 }
               ),
-              G && /* @__PURE__ */ o(
+              Q && /* @__PURE__ */ d(
                 "div",
                 {
                   role: "gridcell",
                   "data-no-row-click": !0,
-                  className: n(
-                    // 행 배경을 CSS 상속으로 가져온다. bgClass 를 직접 박으면 사용처의
-                    // rowClassName 배경(예: 미출고 행 강조)이 컨트롤 셀에만 반영되지 않는다.
-                    "relative shrink-0 sticky z-10 flex items-center justify-center min-h-9 bg-inherit"
+                  className: a(
+                    // sticky 라 스크롤 내용을 덮는다 → 불투명 배경 필수.
+                    // 사용처 강조색(반투명일 수 있음)은 아래 오버레이로 얹는다.
+                    D
                   ),
                   style: {
-                    width: U,
-                    left: (R ? T : 0) + (P ? B : 0)
+                    width: Z,
+                    left: (z ? C : 0) + (V ? A : 0)
                   },
-                  onClick: (e) => e.stopPropagation(),
+                  onClick: (t) => t.stopPropagation(),
                   children: [
-                    J && /* @__PURE__ */ t(
+                    U && /* @__PURE__ */ e(
                       "button",
                       {
                         type: "button",
-                        onClick: () => Q(i.id),
+                        onClick: () => X(r.id),
                         className: "flex h-9 w-10 items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors",
-                        "aria-label": h ? "행 접기" : "행 펼치기",
-                        "aria-expanded": h,
-                        children: h ? /* @__PURE__ */ t(xe, { size: 24 }) : /* @__PURE__ */ t(ze, { size: 24 })
+                        "aria-label": g ? "행 접기" : "행 펼치기",
+                        "aria-expanded": g,
+                        children: g ? /* @__PURE__ */ e(wt, { size: 24 }) : /* @__PURE__ */ e(Dt, { size: 24 })
                       }
                     ),
-                    !m && /* @__PURE__ */ t(j, {})
+                    /* @__PURE__ */ e(K, { className: o }),
+                    !b && /* @__PURE__ */ e(R, {})
                   ]
                 }
               ),
-              re && /* @__PURE__ */ o(
+              nt && /* @__PURE__ */ d(
                 "div",
                 {
                   role: "gridcell",
                   "data-no-row-click": !0,
-                  className: n(
-                    // 행 배경을 CSS 상속으로 가져온다. bgClass 를 직접 박으면 사용처의
-                    // rowClassName 배경(예: 미출고 행 강조)이 컨트롤 셀에만 반영되지 않는다.
-                    "relative shrink-0 sticky z-10 flex items-center justify-center min-h-9 bg-inherit"
+                  className: a(
+                    // sticky 라 스크롤 내용을 덮는다 → 불투명 배경 필수.
+                    // 사용처 강조색(반투명일 수 있음)은 아래 오버레이로 얹는다.
+                    D
                   ),
-                  style: { width: se, left: ae },
-                  onClick: (e) => e.stopPropagation(),
+                  style: { width: ot, left: dt },
+                  onClick: (t) => t.stopPropagation(),
                   children: [
-                    /* @__PURE__ */ t(
+                    /* @__PURE__ */ e(
                       "button",
                       {
                         type: "button",
-                        onClick: () => D == null ? void 0 : D(i),
+                        onClick: () => S == null ? void 0 : S(r),
                         className: "flex h-9 w-10 items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors",
                         "aria-label": "행 삭제",
-                        children: /* @__PURE__ */ t(je, { size: 20 })
+                        children: /* @__PURE__ */ e(Kt, { size: 20 })
                       }
                     ),
-                    !m && /* @__PURE__ */ t(j, {})
+                    /* @__PURE__ */ e(K, { className: o }),
+                    !b && /* @__PURE__ */ e(R, {})
                   ]
                 }
               ),
-              b.map((e, r) => {
-                const g = e.id ?? String(e.accessorKey), x = typeof e.width == "number" ? e.width : void 0, L = typeof e.minWidth == "number" ? e.minWidth : void 0, N = e.pinned === "left", z = e.pinned === "right", be = N || z, $ = r === f, K = ne(a, e.accessorKey);
-                if (K === 0)
-                  return /* @__PURE__ */ t(
+              v.map((t, i) => {
+                const m = t.id ?? String(t.accessorKey), x = typeof t.width == "number" ? t.width : void 0, I = typeof t.minWidth == "number" ? t.minWidth : void 0, w = t.pinned === "left", T = t.pinned === "right", $ = w || T, F = i === f, B = lt(n, t.accessorKey);
+                if (B === 0)
+                  return /* @__PURE__ */ e(
                     "div",
                     {
                       "aria-hidden": !0,
-                      className: n(
+                      className: a(
                         x !== void 0 && "shrink-0",
-                        be && "sticky z-10",
-                        $ && "ml-auto"
+                        $ && "sticky z-10",
+                        F && "ml-auto"
                       ),
                       style: {
                         width: x,
-                        minWidth: L,
+                        minWidth: I,
                         flex: x === void 0 ? "1 1 0" : void 0,
-                        left: N ? l[r] : void 0,
-                        right: z ? d[r] : void 0
+                        left: w ? c[i] : void 0,
+                        right: T ? u[i] : void 0
                       }
                     },
-                    g
+                    m
                   );
-                const E = K !== void 0 && K > 1 ? oe(a, e.accessorKey) : void 0, ve = (() => {
-                  if (E === void 0) return;
-                  const I = ce(a, e.accessorKey);
-                  return le(a, e.accessorKey) ? I ? "bg-blue-100 dark:bg-blue-950" : "bg-blue-50 dark:bg-blue-900" : I ? "bg-slate-100 dark:bg-slate-800" : "bg-white dark:bg-slate-900";
-                })(), F = Y === e.accessorKey;
-                return /* @__PURE__ */ t(
-                  De,
+                const G = B !== void 0 && B > 1 ? ct(n, t.accessorKey) : void 0, pt = (() => {
+                  if (G === void 0) return;
+                  const Y = ut(n, t.accessorKey);
+                  return ft(n, t.accessorKey) ? Y ? "bg-blue-100 dark:bg-blue-950" : "bg-blue-50 dark:bg-blue-900" : Y ? "bg-slate-100 dark:bg-slate-800" : "bg-white dark:bg-slate-900";
+                })(), W = tt === t.accessorKey;
+                return /* @__PURE__ */ e(
+                  Rt,
                   {
-                    row: i,
-                    column: e,
+                    row: r,
+                    column: t,
                     width: x,
-                    minWidth: L,
-                    leftOffset: N ? l[r] : void 0,
-                    rightOffset: z ? d[r] : void 0,
-                    isLeftPinned: N,
-                    isRightPinned: z,
-                    isLeftBoundary: r === v,
-                    isRightBoundary: r === f,
-                    isFirstRightPinned: $,
-                    spanHeight: E,
-                    headBgClass: ve,
-                    isEditing: F,
-                    editingError: F ? Z : void 0,
-                    onStartEdit: H,
-                    onCompleteEdit: ee,
-                    onCancelEdit: te,
-                    onClearEditError: ie
+                    minWidth: I,
+                    leftOffset: w ? c[i] : void 0,
+                    rightOffset: T ? u[i] : void 0,
+                    isLeftPinned: w,
+                    isRightPinned: T,
+                    isLeftBoundary: i === k,
+                    isRightBoundary: i === f,
+                    isFirstRightPinned: F,
+                    rowHighlightClass: $ ? o : void 0,
+                    spanHeight: G,
+                    headBgClass: pt,
+                    isEditing: W,
+                    editingError: W ? et : void 0,
+                    onStartEdit: rt,
+                    onCompleteEdit: it,
+                    onCancelEdit: st,
+                    onClearEditError: at
                   },
-                  g
+                  m
                 );
               })
             ]
           }
         ),
-        h && V && /* @__PURE__ */ t(
+        g && M && /* @__PURE__ */ e(
           "div",
           {
             "data-no-row-click": !0,
-            className: "bg-slate-50 dark:bg-slate-950 border-b border-slate-200 dark:border-slate-700",
-            children: /* @__PURE__ */ t(
+            className: "bg-white dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-700",
+            children: /* @__PURE__ */ e(
               "div",
               {
                 className: "sticky left-0 overflow-x-auto p-4",
-                style: A ? { width: A, maxWidth: "100%" } : void 0,
-                children: V
+                style: O ? { width: O, maxWidth: "100%" } : void 0,
+                children: M
               }
             )
           }
@@ -318,27 +341,27 @@ function W({
     }
   );
 }
-function Re(i) {
-  const { setNodeRef: a, setActivatorNodeRef: b, listeners: l, attributes: d, transform: v, transition: f, isDragging: k } = ke({ id: `row-${i.row.id}` }), y = c.useMemo(
+function St(r) {
+  const { setNodeRef: n, setActivatorNodeRef: v, listeners: c, attributes: u, transform: k, transition: f, isDragging: p } = yt({ id: `row-${r.row.id}` }), y = l.useMemo(
     () => ({
-      setNodeRef: a,
-      setActivatorNodeRef: b,
-      listeners: l,
-      attributes: d,
-      transform: ye.Transform.toString(v) ?? void 0,
+      setNodeRef: n,
+      setActivatorNodeRef: v,
+      listeners: c,
+      attributes: u,
+      transform: Nt.Transform.toString(k) ?? void 0,
       transition: f,
-      isDragging: k
+      isDragging: p
     }),
-    [a, b, l, d, v, f, k]
+    [n, v, c, u, k, f, p]
   );
-  return /* @__PURE__ */ t(W, { ...i, sortable: y });
+  return /* @__PURE__ */ e(q, { ...r, sortable: y });
 }
-const Te = { isDragging: !1 };
-function we(i) {
-  return i.rowReorderable ? /* @__PURE__ */ t(Re, { ...i }) : /* @__PURE__ */ t(W, { ...i, sortable: Te });
+const zt = { isDragging: !1 };
+function Ct(r) {
+  return r.rowReorderable ? /* @__PURE__ */ e(St, { ...r }) : /* @__PURE__ */ e(q, { ...r, sortable: zt });
 }
-const Ee = c.memo(we);
+const $t = l.memo(Ct);
 export {
-  Ee as DataTableV2Row
+  $t as DataTableV2Row
 };
 //# sourceMappingURL=data-table-v2-row.mjs.map

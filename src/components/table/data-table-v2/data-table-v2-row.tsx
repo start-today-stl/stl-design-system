@@ -114,6 +114,31 @@ interface RowSortableBindings {
  * 행 테두리와 **같은 자리**에 1px 선을 겹쳐 그려 덮개(z-5) 위에 남게 한다.
  * 스크롤 0 일 때는 행 테두리와 완전히 포개져 시각적 변화가 없다.
  */
+/**
+ * sticky 컨트롤 셀 배경 — 불투명 기본색 + 행 hover/선택을 CSS 로 따라감.
+ * (prop 으로 받으면 값이 바뀔 때마다 memo 가 깨진다)
+ */
+const STICKY_CELL_BG = cn(
+  "relative shrink-0 sticky z-10 flex items-center justify-center min-h-9 transition-colors",
+  "bg-white dark:bg-slate-900",
+  "group-hover:bg-slate-100 dark:group-hover:bg-slate-800",
+  "group-data-[state=selected]:bg-blue-50 dark:group-data-[state=selected]:bg-blue-900"
+)
+
+/** 행 강조색(rowClassName)을 sticky 셀의 불투명 배경 위에 얹는 오버레이 */
+function StickyCellHighlight({ className }: { className?: string }) {
+  if (!className) return null
+  return (
+    <span
+      aria-hidden
+      className={cn(
+        "absolute inset-0 pointer-events-none group-data-[state=selected]:hidden",
+        className
+      )}
+    />
+  )
+}
+
 function StickyCellBorder() {
   return (
     <span
@@ -266,9 +291,9 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             role="gridcell"
             data-no-row-click
             className={cn(
-              // 행 배경을 CSS 상속으로 가져온다. bgClass 를 직접 박으면 사용처의
-              // rowClassName 배경(예: 미출고 행 강조)이 컨트롤 셀에만 반영되지 않는다.
-              "relative shrink-0 sticky z-10 flex items-center justify-center min-h-9 bg-inherit"
+              // sticky 라 스크롤 내용을 덮는다 → 불투명 배경 필수.
+              // 사용처 강조색(반투명일 수 있음)은 아래 오버레이로 얹는다.
+              STICKY_CELL_BG
             )}
             style={{ width: dragHandleColWidth, left: 0 }}
             onClick={(e) => e.stopPropagation()}
@@ -282,6 +307,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             >
               <DragHandleIcon size={16} />
             </div>
+            <StickyCellHighlight className={extraClassName} />
             {!isLast && <StickyCellBorder />}
           </div>
         )}
@@ -290,9 +316,9 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             role="gridcell"
             data-no-row-click
             className={cn(
-              // 행 배경을 CSS 상속으로 가져온다. bgClass 를 직접 박으면 사용처의
-              // rowClassName 배경(예: 미출고 행 강조)이 컨트롤 셀에만 반영되지 않는다.
-              "relative shrink-0 sticky z-10 flex items-center justify-center min-h-9 bg-inherit"
+              // sticky 라 스크롤 내용을 덮는다 → 불투명 배경 필수.
+              // 사용처 강조색(반투명일 수 있음)은 아래 오버레이로 얹는다.
+              STICKY_CELL_BG
             )}
             style={{
               width: checkboxColWidth,
@@ -311,6 +337,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
               }}
               aria-label={`행 ${row.id} 선택`}
             />
+            <StickyCellHighlight className={extraClassName} />
             {!isLast && <StickyCellBorder />}
           </div>
         )}
@@ -319,9 +346,9 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             role="gridcell"
             data-no-row-click
             className={cn(
-              // 행 배경을 CSS 상속으로 가져온다. bgClass 를 직접 박으면 사용처의
-              // rowClassName 배경(예: 미출고 행 강조)이 컨트롤 셀에만 반영되지 않는다.
-              "relative shrink-0 sticky z-10 flex items-center justify-center min-h-9 bg-inherit"
+              // sticky 라 스크롤 내용을 덮는다 → 불투명 배경 필수.
+              // 사용처 강조색(반투명일 수 있음)은 아래 오버레이로 얹는다.
+              STICKY_CELL_BG
             )}
             style={{
               width: expandColWidth,
@@ -342,6 +369,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
                 {isExpanded ? <DownIcon size={24} /> : <RightIcon size={24} />}
               </button>
             )}
+            <StickyCellHighlight className={extraClassName} />
             {!isLast && <StickyCellBorder />}
           </div>
         )}
@@ -350,9 +378,9 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             role="gridcell"
             data-no-row-click
             className={cn(
-              // 행 배경을 CSS 상속으로 가져온다. bgClass 를 직접 박으면 사용처의
-              // rowClassName 배경(예: 미출고 행 강조)이 컨트롤 셀에만 반영되지 않는다.
-              "relative shrink-0 sticky z-10 flex items-center justify-center min-h-9 bg-inherit"
+              // sticky 라 스크롤 내용을 덮는다 → 불투명 배경 필수.
+              // 사용처 강조색(반투명일 수 있음)은 아래 오버레이로 얹는다.
+              STICKY_CELL_BG
             )}
             style={{ width: rowActionsColWidth, left: rowActionsColLeftOffset }}
             onClick={(e) => e.stopPropagation()}
@@ -365,6 +393,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             >
               <RowDeleteIcon size={20} />
             </button>
+            <StickyCellHighlight className={extraClassName} />
             {!isLast && <StickyCellBorder />}
           </div>
         )}
@@ -446,6 +475,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
               isLeftBoundary={i === lastLeftPinnedIdx}
               isRightBoundary={i === firstRightPinnedIdx}
               isFirstRightPinned={isFirstRightPinned}
+              rowHighlightClass={isPinned ? extraClassName : undefined}
               spanHeight={spanHeight}
               headBgClass={headBgClass}
               isEditing={isCellEditing}
@@ -461,7 +491,8 @@ function DataTableV2RowInner<T extends { id: string | number }>({
       {isExpanded && expandedContent && (
         <div
           data-no-row-click
-          className="bg-slate-50 dark:bg-slate-950 border-b border-slate-200 dark:border-slate-700"
+          // 배경은 v1 과 동일 (bg-white / dark:bg-slate-800/50)
+          className="bg-white dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-700"
         >
           {/* 가로 스크롤을 해도 펼친 내용이 가시 영역에 머물도록 sticky 고정.
               폭을 가시 영역에 맞추고, 내용이 넘치면 확장 영역이 자체 가로 스크롤을 갖는다.

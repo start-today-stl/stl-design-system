@@ -20,6 +20,18 @@ export interface DataTableV2CellProps<T extends { id: string | number }> {
   isRightBoundary: boolean
   isFirstRightPinned: boolean
   /**
+   * 사용처의 rowClassName 결과 (행 강조색). **pinned 셀에만 넘긴다.**
+   *
+   * pinned 셀은 sticky 라 스크롤되는 내용을 덮어야 하므로 불투명해야 한다.
+   * 그런데 사용처 강조색은 반투명일 수 있어서(예: `dark:bg-red-500/15`)
+   * 그 색을 셀 배경으로 그대로 쓰면 아래 컬럼이 비치고, 행 위에 두 번 칠해져
+   * 색도 진해진다.
+   *
+   * 그래서 셀은 불투명 기본 배경을 깔고, 이 클래스는 그 위에 오버레이로 얹는다.
+   * 비 pinned 영역(행 배경 위에 강조색)과 정확히 같은 합성 결과가 된다.
+   */
+  rowHighlightClass?: string
+  /**
    * rowGrouping 병합 셀(span > 1)의 세로 확장 높이. head 셀이 아니면 undefined.
    * 지정되면 컨텐츠를 absolute 로 이 높이만큼 늘려 아래 middle row 들을 덮는다.
    */
@@ -52,6 +64,7 @@ function DataTableV2CellInner<T extends { id: string | number }>({
   isLeftBoundary,
   isRightBoundary,
   isFirstRightPinned,
+  rowHighlightClass,
   spanHeight,
   headBgClass,
   isEditing,
@@ -67,11 +80,15 @@ function DataTableV2CellInner<T extends { id: string | number }>({
   const outerCls = cn(
     "flex min-h-9",
     width !== undefined && "shrink-0",
-    // pinned 셀은 sticky 라 자체 배경이 필요하다. 행 배경을 **CSS 상속**으로 가져온다.
-    // 선택/hover 배경을 prop 으로 받으면 그 값이 바뀔 때마다 memo 가 깨져서
-    // 체크박스 한 번에 그 행의 pinned 셀이 전부 리렌더된다. bg-inherit 는
-    // 부모(행)의 계산된 배경을 그대로 따라가므로 클래스가 고정된다.
-    isPinned && "sticky z-10 bg-inherit",
+    // pinned 셀은 sticky 라 스크롤되는 내용을 덮는다 → **불투명 배경 필수**.
+    // 선택/hover 는 행의 group / data-state 를 CSS 로 따라가므로 클래스가 고정이다
+    // (prop 으로 받으면 값이 바뀔 때마다 memo 가 깨져 그 행의 pinned 셀이 전부 리렌더된다).
+    isPinned && [
+      "relative sticky z-10 transition-colors",
+      "bg-white dark:bg-slate-900",
+      "group-hover:bg-slate-100 dark:group-hover:bg-slate-800",
+      "group-data-[state=selected]:bg-blue-50 dark:group-data-[state=selected]:bg-blue-900",
+    ],
     isFirstRightPinned && "ml-auto",
     isLeftBoundary && "group-data-[scrolled-left=true]/scroll:shadow-[2px_0_5px_-2px_rgba(0,0,0,0.15)]",
     isRightBoundary && "group-data-[scrolled-right=true]/scroll:shadow-[-2px_0_5px_-2px_rgba(0,0,0,0.15)]",
@@ -124,6 +141,17 @@ function DataTableV2CellInner<T extends { id: string | number }>({
       }}
       {...(column.editable ? { "data-no-row-click": true } : {})}
     >
+      {/* 행 강조색을 불투명 배경 위에 오버레이로 얹는다 (반투명 색도 정상 합성).
+          선택 시에는 행이 파란 배경으로 덮이므로 강조색도 함께 감춘다. */}
+      {isPinned && rowHighlightClass && (
+        <span
+          aria-hidden
+          className={cn(
+            "absolute inset-0 pointer-events-none group-data-[state=selected]:hidden",
+            rowHighlightClass
+          )}
+        />
+      )}
       {isHead ? (
         // Head 셀 (rowGrouping span > 1) — 컨텐츠를 absolute 로 세로 확장.
         // outer 는 row height 유지 (다른 셀 정렬 흔들림 방지), content 만 spanHeight 만큼 뻗음.

@@ -17,6 +17,18 @@ export interface DataTableV2CellProps<T extends {
     isRightBoundary: boolean;
     isFirstRightPinned: boolean;
     /**
+     * 사용처의 rowClassName 결과 (행 강조색). **pinned 셀에만 넘긴다.**
+     *
+     * pinned 셀은 sticky 라 스크롤되는 내용을 덮어야 하므로 불투명해야 한다.
+     * 그런데 사용처 강조색은 반투명일 수 있어서(예: `dark:bg-red-500/15`)
+     * 그 색을 셀 배경으로 그대로 쓰면 아래 컬럼이 비치고, 행 위에 두 번 칠해져
+     * 색도 진해진다.
+     *
+     * 그래서 셀은 불투명 기본 배경을 깔고, 이 클래스는 그 위에 오버레이로 얹는다.
+     * 비 pinned 영역(행 배경 위에 강조색)과 정확히 같은 합성 결과가 된다.
+     */
+    rowHighlightClass?: string;
+    /**
      * rowGrouping 병합 셀(span > 1)의 세로 확장 높이. head 셀이 아니면 undefined.
      * 지정되면 컨텐츠를 absolute 로 이 높이만큼 늘려 아래 middle row 들을 덮는다.
      */
