@@ -120,23 +120,37 @@ interface RowSortableBindings {
  * 스크롤 0 일 때는 행 테두리와 완전히 포개져 시각적 변화가 없다.
  */
 /**
- * sticky 컨트롤 셀 — 상태 색은 **셀 자신의 background** 로 그린다.
- * 자식 레이어로 그리면 서브픽셀에서 셀 박스와 어긋나 전환 중 경계가 스친다.
- * 불투명 보장은 뒤에 까는 StickyCellBacking 이 담당한다.
+ * sticky 컨트롤 셀 — 2겹 구조.
+ *   바깥(이 클래스): 불투명 바탕. 스크롤되는 내용을 덮는다.
+ *   안쪽(StickyCellInner): 행과 동일한 상태 색 + 사용처 강조색.
+ *
+ * 안쪽을 in-flow 자식으로 두는 게 핵심이다. 절대배치 자식은 서브픽셀에서 박스와
+ * 어긋나 전환 중 경계가 스치고, 음수 z-index 자식은 부모 배경보다 나중에 그려져
+ * 강조색을 덮어버린다.
  */
 const STICKY_CELL = cn(
-  "relative shrink-0 sticky z-10 flex items-center justify-center min-h-9 transition-colors",
-  ROW_BG_DESCENDANT
+  "relative shrink-0 sticky z-10 flex min-h-9",
+  STICKY_CELL_BASE_BG
 )
 
-/**
- * sticky 셀 뒤 불투명 바탕 — 셀 배경(사용처 강조색)이 반투명일 때
- * 스크롤되는 내용이 비치는 것을 막는다.
- * 콘텐츠보다 뒤(-z-10)에 있어야 체크박스·아이콘을 가리지 않는다.
- */
-function StickyCellBacking() {
+/** sticky 컨트롤 셀 안쪽 레이어 — 상태 색 + 강조색. 내용은 가운데 정렬 */
+function StickyCellInner({
+  highlight,
+  children,
+}: {
+  highlight?: string
+  children: React.ReactNode
+}) {
   return (
-    <span aria-hidden className={cn("absolute inset-0 -z-10", STICKY_CELL_BASE_BG)} />
+    <div
+      className={cn(
+        "flex flex-1 items-center justify-center transition-colors",
+        ROW_BG_DESCENDANT,
+        highlight
+      )}
+    >
+      {children}
+    </div>
   )
 }
 
@@ -291,24 +305,22 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             role="gridcell"
             data-no-row-click
             className={cn(
-              // sticky 라 스크롤 내용을 덮는다 → 불투명 배경 필수.
-              // 사용처 강조색(반투명일 수 있음)은 아래 오버레이로 얹는다.
-              STICKY_CELL,
-              extraClassName
+              STICKY_CELL
             )}
             style={{ width: dragHandleColWidth, left: 0 }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div
-              ref={sortable.setActivatorNodeRef}
-              className="flex h-9 w-8 items-center justify-center cursor-grab text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
-              aria-label="행 순서 변경"
-              {...(sortable.listeners ?? {})}
-              {...(sortable.attributes ?? {})}
-            >
-              <DragHandleIcon size={16} />
-            </div>
-            <StickyCellBacking />
+            <StickyCellInner highlight={extraClassName}>
+              <div
+                ref={sortable.setActivatorNodeRef}
+                className="flex h-9 w-8 items-center justify-center cursor-grab text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
+                aria-label="행 순서 변경"
+                {...(sortable.listeners ?? {})}
+                {...(sortable.attributes ?? {})}
+              >
+                <DragHandleIcon size={16} />
+              </div>
+            </StickyCellInner>
             {!isLast && <StickyCellBorder />}
           </div>
         )}
@@ -317,10 +329,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             role="gridcell"
             data-no-row-click
             className={cn(
-              // sticky 라 스크롤 내용을 덮는다 → 불투명 배경 필수.
-              // 사용처 강조색(반투명일 수 있음)은 아래 오버레이로 얹는다.
-              STICKY_CELL,
-              extraClassName
+              STICKY_CELL
             )}
             style={{
               width: checkboxColWidth,
@@ -328,18 +337,19 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            <Checkbox
-              checked={isSelected}
-              onClick={(e) => {
-                shiftKeyRef.current = (e as React.MouseEvent).shiftKey
-              }}
-              onCheckedChange={() => {
-                onToggleSelect(row.id, rowIndex, shiftKeyRef.current)
-                shiftKeyRef.current = false
-              }}
-              aria-label={`행 ${row.id} 선택`}
-            />
-            <StickyCellBacking />
+            <StickyCellInner highlight={extraClassName}>
+              <Checkbox
+                checked={isSelected}
+                onClick={(e) => {
+                  shiftKeyRef.current = (e as React.MouseEvent).shiftKey
+                }}
+                onCheckedChange={() => {
+                  onToggleSelect(row.id, rowIndex, shiftKeyRef.current)
+                  shiftKeyRef.current = false
+                }}
+                aria-label={`행 ${row.id} 선택`}
+              />
+            </StickyCellInner>
             {!isLast && <StickyCellBorder />}
           </div>
         )}
@@ -348,10 +358,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             role="gridcell"
             data-no-row-click
             className={cn(
-              // sticky 라 스크롤 내용을 덮는다 → 불투명 배경 필수.
-              // 사용처 강조색(반투명일 수 있음)은 아래 오버레이로 얹는다.
-              STICKY_CELL,
-              extraClassName
+              STICKY_CELL
             )}
             style={{
               width: expandColWidth,
@@ -361,18 +368,19 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            {canExpand && (
-              <button
-                type="button"
-                onClick={() => onToggleExpand(row.id)}
-                className="flex h-9 w-10 items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
-                aria-label={isExpanded ? "행 접기" : "행 펼치기"}
-                aria-expanded={isExpanded}
-              >
-                {isExpanded ? <DownIcon size={24} /> : <RightIcon size={24} />}
-              </button>
-            )}
-            <StickyCellBacking />
+            <StickyCellInner highlight={extraClassName}>
+              {canExpand && (
+                <button
+                  type="button"
+                  onClick={() => onToggleExpand(row.id)}
+                  className="flex h-9 w-10 items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
+                  aria-label={isExpanded ? "행 접기" : "행 펼치기"}
+                  aria-expanded={isExpanded}
+                >
+                  {isExpanded ? <DownIcon size={24} /> : <RightIcon size={24} />}
+                </button>
+              )}
+            </StickyCellInner>
             {!isLast && <StickyCellBorder />}
           </div>
         )}
@@ -381,23 +389,21 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             role="gridcell"
             data-no-row-click
             className={cn(
-              // sticky 라 스크롤 내용을 덮는다 → 불투명 배경 필수.
-              // 사용처 강조색(반투명일 수 있음)은 아래 오버레이로 얹는다.
-              STICKY_CELL,
-              extraClassName
+              STICKY_CELL
             )}
             style={{ width: rowActionsColWidth, left: rowActionsColLeftOffset }}
             onClick={(e) => e.stopPropagation()}
           >
-            <button
-              type="button"
-              onClick={() => onRowDelete?.(row)}
-              className="flex h-9 w-10 items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
-              aria-label="행 삭제"
-            >
-              <RowDeleteIcon size={20} />
-            </button>
-            <StickyCellBacking />
+            <StickyCellInner highlight={extraClassName}>
+              <button
+                type="button"
+                onClick={() => onRowDelete?.(row)}
+                className="flex h-9 w-10 items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
+                aria-label="행 삭제"
+              >
+                <RowDeleteIcon size={20} />
+              </button>
+            </StickyCellInner>
             {!isLast && <StickyCellBorder />}
           </div>
         )}
