@@ -8,12 +8,12 @@ function I({
   column: e,
   width: l,
   minWidth: g,
-  leftOffset: x,
-  rightOffset: v,
+  leftOffset: v,
+  rightOffset: x,
   isLeftPinned: s,
   isRightPinned: d,
-  isLeftBoundary: u,
-  isRightBoundary: h,
+  isLeftBoundary: h,
+  isRightBoundary: u,
   isFirstRightPinned: f,
   rowHighlightClass: i,
   spanHeight: c,
@@ -47,8 +47,8 @@ function I({
       "group-[[data-state=selected]:hover]:bg-blue-100 dark:group-[[data-state=selected]:hover]:bg-blue-950"
     ],
     f && "ml-auto",
-    u && "group-data-[scrolled-left=true]/scroll:shadow-[2px_0_5px_-2px_rgba(0,0,0,0.15)]",
-    h && "group-data-[scrolled-right=true]/scroll:shadow-[-2px_0_5px_-2px_rgba(0,0,0,0.15)]",
+    h && "group-data-[scrolled-left=true]/scroll:shadow-[2px_0_5px_-2px_rgba(0,0,0,0.15)]",
+    u && "group-data-[scrolled-right=true]/scroll:shadow-[-2px_0_5px_-2px_rgba(0,0,0,0.15)]",
     // head 셀: 컨텐츠를 absolute 로 세로 확장하기 위해 relative + z-index 상승
     // (그룹 middle rows 의 bg 위에 얹혀야 함)
     n && "relative z-[5]"
@@ -78,8 +78,8 @@ function I({
         width: l,
         minWidth: g,
         flex: l === void 0 ? "1 1 0" : void 0,
-        left: s ? x : void 0,
-        right: d ? v : void 0
+        left: s ? v : void 0,
+        right: d ? x : void 0
       },
       ...e.editable ? { "data-no-row-click": !0 } : {},
       children: [
@@ -88,7 +88,10 @@ function I({
           {
             "aria-hidden": !0,
             className: r(
-              "absolute inset-0 pointer-events-none group-[[data-state=selected]]:hidden",
+              // hover / 선택 시에는 감춘다. 행 배경이 hover·선택 색으로 바뀌면서
+              // 강조색을 대체하기 때문 (일반 셀에서 tailwind-merge 가 만드는 동작과 동일).
+              "absolute inset-0 pointer-events-none",
+              "group-hover:hidden group-[[data-state=selected]]:hidden",
               i
             )
           }

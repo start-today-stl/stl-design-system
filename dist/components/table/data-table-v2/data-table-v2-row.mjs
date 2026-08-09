@@ -23,7 +23,10 @@ function K({ className: r }) {
     {
       "aria-hidden": !0,
       className: a(
-        "absolute inset-0 pointer-events-none group-[[data-state=selected]]:hidden",
+        // hover / 선택 시에는 감춘다. 행 배경이 hover·선택 색으로 바뀌면서
+        // 강조색을 대체하기 때문 (일반 셀에서 tailwind-merge 가 만드는 동작과 동일).
+        "absolute inset-0 pointer-events-none",
+        "group-hover:hidden group-[[data-state=selected]]:hidden",
         r
       )
     }
@@ -55,13 +58,13 @@ function q({
   onToggleSelect: J,
   checkboxColWidth: A,
   expandable: Q,
-  isExpanded: f,
+  isExpanded: h,
   canExpand: U,
   onToggleExpand: X,
   expandedContent: M,
   expandColWidth: Z,
   visibleWidth: O,
-  onRowClick: h,
+  onRowClick: f,
   extraClassName: n,
   editingColumnKey: ee,
   editingError: te,
@@ -81,8 +84,8 @@ function q({
   getGroupHovered: ue,
   getGroupSelected: ge,
   measureRef: P,
-  dataIndex: fe,
-  ariaRowIndex: he,
+  dataIndex: he,
+  ariaRowIndex: fe,
   sortable: s
 }) {
   const _ = l.useRef(null), be = s.transform, me = s.transition, E = s.isDragging;
@@ -93,9 +96,9 @@ function q({
     i();
     const m = new ResizeObserver(i);
     return m.observe(e), () => m.disconnect();
-  }, [r.id, f]);
+  }, [r.id, h]);
   const j = l.useRef(!1), ve = (e) => {
-    e.target.closest("[data-no-row-click]") || h == null || h(r);
+    e.target.closest("[data-no-row-click]") || f == null || f(r);
   }, ke = l.useCallback(
     (e) => {
       var i;
@@ -108,8 +111,8 @@ function q({
     {
       ref: ke,
       role: "row",
-      "data-index": fe,
-      "aria-rowindex": he,
+      "data-index": he,
+      "aria-rowindex": fe,
       className: a(
         "absolute left-0 right-0 flex flex-col",
         E && "z-30"
@@ -137,12 +140,12 @@ function q({
               "bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800",
               "data-[state=selected]:bg-blue-50 dark:data-[state=selected]:bg-blue-900",
               "data-[state=selected]:hover:bg-blue-100 dark:data-[state=selected]:hover:bg-blue-950",
-              h && "cursor-pointer",
+              f && "cursor-pointer",
               n
             ),
             onMouseEnter: N ? () => N(r.id) : void 0,
             onMouseLeave: N ? () => N(null) : void 0,
-            onClick: h ? ve : void 0,
+            onClick: f ? ve : void 0,
             children: [
               z && /* @__PURE__ */ d(
                 "div",
@@ -229,9 +232,9 @@ function q({
                         type: "button",
                         onClick: () => X(r.id),
                         className: "flex h-9 w-10 items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors",
-                        "aria-label": f ? "행 접기" : "행 펼치기",
-                        "aria-expanded": f,
-                        children: f ? /* @__PURE__ */ t(we, { size: 24 }) : /* @__PURE__ */ t(De, { size: 24 })
+                        "aria-label": h ? "행 접기" : "행 펼치기",
+                        "aria-expanded": h,
+                        children: h ? /* @__PURE__ */ t(we, { size: 24 }) : /* @__PURE__ */ t(De, { size: 24 })
                       }
                     ),
                     /* @__PURE__ */ t(K, { className: n }),
@@ -324,7 +327,7 @@ function q({
             ]
           }
         ),
-        f && M && /* @__PURE__ */ t(
+        h && M && /* @__PURE__ */ t(
           "div",
           {
             "data-no-row-click": !0,

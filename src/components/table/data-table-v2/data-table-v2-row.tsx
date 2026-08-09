@@ -134,7 +134,10 @@ function StickyCellHighlight({ className }: { className?: string }) {
     <span
       aria-hidden
       className={cn(
-        "absolute inset-0 pointer-events-none group-[[data-state=selected]]:hidden",
+        // hover / 선택 시에는 감춘다. 행 배경이 hover·선택 색으로 바뀌면서
+            // 강조색을 대체하기 때문 (일반 셀에서 tailwind-merge 가 만드는 동작과 동일).
+            "absolute inset-0 pointer-events-none",
+            "group-hover:hidden group-[[data-state=selected]]:hidden",
         className
       )}
     />
