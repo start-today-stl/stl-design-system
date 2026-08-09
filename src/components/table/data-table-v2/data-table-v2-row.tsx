@@ -78,6 +78,8 @@ interface DataTableV2RowProps<T extends { id: string | number }> {
   getRowSpan: (rowIndex: number, columnKey: keyof T) => number | undefined
   getRowSpanHeight: (rowIndex: number, columnKey: keyof T) => number | undefined
   getGroupHovered: (rowIndex: number, columnKey: keyof T) => boolean
+  /** 병합 셀의 선택 표시 — 그룹 안 아무 행이나 선택돼 있으면 true (hover 와 동일한 그룹 단위 판단) */
+  getGroupSelected: (rowIndex: number, columnKey: keyof T) => boolean
   // 가상화 (SDS-38): virtualizer.measureElement 를 ref 로 받음. 없으면 무시.
   measureRef?: (el: HTMLElement | null) => void
   // 가상화 (SDS-38): virtualizer 가 measurementsCache 매칭하는 인덱스. `data-index` 로 렌더.
@@ -141,6 +143,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
   getRowSpan,
   getRowSpanHeight,
   getGroupHovered,
+  getGroupSelected,
   measureRef,
   dataIndex,
   ariaRowIndex,
@@ -375,14 +378,22 @@ function DataTableV2RowInner<T extends { id: string | number }>({
           // - head 셀: 그룹 hover / 선택 반영 필요.
           //   (head row 가 hover 안 됐어도 middle row hover 시 head 셀은 hover 표시돼야 하므로
           //    row 자체의 bgClass 와 분리한다)
-          const headBgClass =
-            spanHeight === undefined
-              ? undefined
-              : getGroupHovered(rowIndex, col.accessorKey)
-                ? "bg-slate-100 dark:bg-slate-800"
-                : isSelected
-                  ? "bg-blue-50 dark:bg-blue-900"
-                  : "bg-white dark:bg-slate-900"
+          // 선택 × hover 4가지 조합을 일반 행(bgClass)과 같은 색으로 맞춘다.
+          // hover 를 selected 보다 먼저 판정하면 선택된 그룹에 hover 했을 때
+          // 회색이 되어 일반 행(선택 + hover = 진한 파랑)과 어긋난다.
+          const headBgClass = (() => {
+            if (spanHeight === undefined) return undefined
+            const hovered = getGroupHovered(rowIndex, col.accessorKey)
+            const selected = getGroupSelected(rowIndex, col.accessorKey)
+            if (selected) {
+              return hovered
+                ? "bg-blue-100 dark:bg-blue-950"
+                : "bg-blue-50 dark:bg-blue-900"
+            }
+            return hovered
+              ? "bg-slate-100 dark:bg-slate-800"
+              : "bg-white dark:bg-slate-900"
+          })()
 
           const isCellEditing = editingColumnKey === col.accessorKey
 

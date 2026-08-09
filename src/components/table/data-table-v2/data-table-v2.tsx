@@ -394,6 +394,32 @@ export function DataTableV2<T extends { id: string | number }>({
     [hoveredRowIndex, getRowSpan]
   )
 
+  // 병합 셀의 선택 표시도 hover 와 같이 **그룹 단위**로 판단한다.
+  // head 행의 isSelected 만 보면, 그룹의 두 번째 이후 행을 체크했을 때 병합 셀만
+  // 흰색으로 남아 어긋난다 (병합 셀은 그룹 전체를 덮고 있으므로).
+  //
+  // 이 콜백은 선택이 바뀔 때마다 rebind 되어 rendered row 가 전부 리렌더된다.
+  // getGroupHovered 와 같은 trade-off 이며, rowGrouping 이 켜졌을 때만 감수한다
+  // (rowGrouping 은 태생적으로 소량 데이터. 대용량은 UX 상 다른 방식을 써야 함).
+  // rowGrouping 이 꺼져 있으면 stable no-op 을 넘겨 선택 시 리렌더가 늘지 않게 한다.
+  const selectedSet = selection.selectedSet
+  const getGroupSelectedActive = React.useCallback(
+    (rowIndex: number, colKey: keyof T): boolean => {
+      const span = getRowSpan(rowIndex, colKey)
+      if (span === undefined || span <= 1) return false
+      for (let i = rowIndex; i < rowIndex + span; i++) {
+        const r = data[i]
+        if (r && selectedSet.has(r.id)) return true
+      }
+      return false
+    },
+    [getRowSpan, data, selectedSet]
+  )
+  const getGroupSelectedNoop = React.useCallback(() => false, [])
+  const getGroupSelected = rowGrouping
+    ? getGroupSelectedActive
+    : getGroupSelectedNoop
+
   // head 셀 세로 확장 높이 계산 — positions 를 ref 로 흡수해 콜백 자체는 stable ref 유지.
   // 이유: 가상화 스크롤 중 새 row 측정되면 heights → positions 가 자주 변경됨. 콜백을
   // positions 에 의존시키면 매번 새 ref 로 rebind → 모든 row memo 무효 → viewport 안 row 도
@@ -790,6 +816,7 @@ export function DataTableV2<T extends { id: string | number }>({
                     getRowSpan={getRowSpan}
                     getRowSpanHeight={getRowSpanHeight}
                     getGroupHovered={getGroupHovered}
+                    getGroupSelected={getGroupSelected}
                     ariaRowIndex={headerRowCount + i + 1}
                   />
                   )
