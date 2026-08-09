@@ -17,7 +17,7 @@ import { useColumnReorder as Yt } from "./hooks/use-column-reorder.mjs";
 import { useRowExpansion as Zt } from "./hooks/use-row-expansion.mjs";
 import { useRowGrouping as en } from "./hooks/use-row-grouping.mjs";
 import { useRowSelection as tn } from "./hooks/use-row-selection.mjs";
-import { useStableCallback as f } from "./hooks/use-stable-callback.mjs";
+import { useStableCallback as u } from "./hooks/use-stable-callback.mjs";
 import { useTableVirtualizer as nn } from "./hooks/use-table-virtualizer.mjs";
 const rn = 40, sn = 5, on = { activationConstraint: { distance: 5 } };
 function ln(r, h, m) {
@@ -29,11 +29,11 @@ function ln(r, h, m) {
 function dn(r, h = 0, m = 0) {
   const p = new Array(r.length).fill(-1), g = new Array(r.length).fill(-1);
   let S = h;
-  for (let u = 0; u < r.length; u++)
-    r[u].pinned === "left" && (p[u] = S, S += V(r[u]));
+  for (let f = 0; f < r.length; f++)
+    r[f].pinned === "left" && (p[f] = S, S += V(r[f]));
   let R = m;
-  for (let u = r.length - 1; u >= 0; u--)
-    r[u].pinned === "right" && (g[u] = R, R += V(r[u]));
+  for (let f = r.length - 1; f >= 0; f--)
+    r[f].pinned === "right" && (g[f] = R, R += V(r[f]));
   return { left: p, right: g };
 }
 function V(r) {
@@ -50,7 +50,7 @@ function Wn({
   onSortChange: g,
   multiSort: S = !1,
   resizable: R = !1,
-  columnWidths: u,
+  columnWidths: f,
   onColumnResize: De,
   columnReorderable: N = !1,
   columnOrder: Ne,
@@ -80,22 +80,22 @@ function Wn({
   bordered: Ue = !0,
   className: Ae
 }) {
-  const C = T ? !1 : Pe, O = (d == null ? void 0 : d.showDelete) ?? !!(d != null && d.onRowDelete), Be = (d == null ? void 0 : d.showAdd) ?? !!(d != null && d.onRowAdd), Ge = f(d == null ? void 0 : d.onRowDelete), U = f(d == null ? void 0 : d.onRowAdd), Xe = f(Me), A = f(Le), Je = f(He), le = f(l == null ? void 0 : l.expandedRowRender), qe = f(Te), B = f(g), Qe = f(Ve), Ye = f(De), Ze = f(Oe), et = f(Fe), de = f(l == null ? void 0 : l.onExpandedChange), { orderedColumns: G, handleColumnDragEnd: ce } = Yt({
+  const C = T ? !1 : Pe, O = (d == null ? void 0 : d.showDelete) ?? !!(d != null && d.onRowDelete), Be = (d == null ? void 0 : d.showAdd) ?? !!(d != null && d.onRowAdd), Ge = u(d == null ? void 0 : d.onRowDelete), U = u(d == null ? void 0 : d.onRowAdd), Xe = u(Me), A = u(Le), Je = u(He), le = u(l == null ? void 0 : l.expandedRowRender), qe = u(Te), B = u(g), Qe = u(Ve), Ye = u(De), Ze = u(Oe), et = u(Fe), de = u(l == null ? void 0 : l.onExpandedChange), { orderedColumns: G, handleColumnDragEnd: ce } = Yt({
     columns: h,
     columnReorderable: N,
     columnOrder: Ne,
     onColumnReorder: Ze
   }), { getColumnWidth: ae, handleResizeStart: tt, resizingKey: nt } = Qt({
     resizable: R,
-    columnWidths: u,
+    columnWidths: f,
     onColumnResize: Ye
   }), c = s.useMemo(() => R ? G.map((e) => {
     const n = ae(e);
     return n !== void 0 ? { ...e, width: n } : e;
-  }) : G, [G, R, ae]), M = C ? F : 0, L = M + (v ? I : 0) + (l ? K : 0), W = L + (O ? j : 0), { left: he, right: ue } = s.useMemo(
+  }) : G, [G, R, ae]), M = C ? F : 0, L = M + (v ? I : 0) + (l ? K : 0), W = L + (O ? j : 0), { left: he, right: fe } = s.useMemo(
     () => dn(c, W),
     [c, W]
-  ), fe = s.useMemo(
+  ), ue = s.useMemo(
     () => cn(c) + W,
     [c, W]
   ), x = tn({
@@ -143,7 +143,7 @@ function Wn({
       X(null), String(e.active.id).startsWith("row-") ? ge(e) : ce(e);
     },
     [ce, ge]
-  ), ut = s.useCallback(() => X(null), []), ft = s.useMemo(
+  ), ft = s.useCallback(() => X(null), []), ut = s.useMemo(
     () => Ce === "row" ? { threshold: { x: 0, y: 0.2 } } : { threshold: { x: 0.2, y: 0 } },
     [Ce]
   ), gt = s.useMemo(
@@ -283,6 +283,11 @@ function Wn({
         // 항상 컨테이너 폭 유지. 리사이즈로 모든 컬럼 fixed 로 전환돼도 테이블 자체는 shrink 안 함.
         // 빈 영역은 셀 bg (SDS-42 에서 모든 셀에 headerBg 적용) 로 시각 커버.
         "w-full overflow-hidden bg-white dark:bg-slate-900",
+        // flex 부모(TableContainer 등) 안에서 남은 높이를 받아 내부 스크롤이 생기도록 한다.
+        // v1 은 스크롤 래퍼에 flex-1 이 있어서 TableContainer 안에서 자연히 스크롤됐다.
+        // 이게 없으면 테이블이 내용 높이만큼 늘어나고 컨테이너의 overflow-hidden 에 잘려
+        // 어디에서도 세로 스크롤이 안 된다. flex 부모가 아니면 무시되므로 단독 사용에는 영향 없음.
+        "flex flex-col flex-1 min-h-0",
         Ue && "rounded-2xl border border-slate-200 dark:border-slate-700",
         Ae
       ),
@@ -290,11 +295,11 @@ function Wn({
         "div",
         {
           ref: Q,
-          className: "overflow-auto group/scroll",
+          className: "overflow-auto group/scroll flex-1 min-h-0",
           style: { maxHeight: typeof $ == "number" ? `${$}px` : $ },
           "data-scrolled-left": "false",
           "data-scrolled-right": "false",
-          children: /* @__PURE__ */ te("div", { style: { minWidth: fe }, children: [
+          children: /* @__PURE__ */ te("div", { style: { minWidth: ue }, children: [
             /* @__PURE__ */ o(
               At,
               {
@@ -309,7 +314,7 @@ function Wn({
                 lastLeftPinnedIdx: Ee,
                 firstRightPinnedIdx: ke,
                 leftOffsets: he,
-                rightOffsets: ue,
+                rightOffsets: fe,
                 getSortInfo: it,
                 onSort: ot,
                 filterState: H.filterState,
@@ -443,10 +448,10 @@ function Wn({
                           rowIndex: n,
                           columns: c,
                           leftOffsets: he,
-                          rightOffsets: ue,
+                          rightOffsets: fe,
                           lastLeftPinnedIdx: Ee,
                           firstRightPinnedIdx: ke,
-                          totalWidth: fe,
+                          totalWidth: ue,
                           registerEl: bt,
                           onHover: T ? vt : void 0,
                           onHeightChange: pt,
@@ -569,10 +574,10 @@ function Wn({
     {
       sensors: ct,
       collisionDetection: Kt,
-      autoScroll: ft,
+      autoScroll: ut,
       onDragStart: at,
       onDragEnd: ht,
-      onDragCancel: ut,
+      onDragCancel: ft,
       children: xe
     }
   ) : xe;

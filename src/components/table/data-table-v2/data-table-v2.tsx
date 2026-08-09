@@ -620,6 +620,11 @@ export function DataTableV2<T extends { id: string | number }>({
         // 항상 컨테이너 폭 유지. 리사이즈로 모든 컬럼 fixed 로 전환돼도 테이블 자체는 shrink 안 함.
         // 빈 영역은 셀 bg (SDS-42 에서 모든 셀에 headerBg 적용) 로 시각 커버.
         "w-full overflow-hidden bg-white dark:bg-slate-900",
+        // flex 부모(TableContainer 등) 안에서 남은 높이를 받아 내부 스크롤이 생기도록 한다.
+        // v1 은 스크롤 래퍼에 flex-1 이 있어서 TableContainer 안에서 자연히 스크롤됐다.
+        // 이게 없으면 테이블이 내용 높이만큼 늘어나고 컨테이너의 overflow-hidden 에 잘려
+        // 어디에서도 세로 스크롤이 안 된다. flex 부모가 아니면 무시되므로 단독 사용에는 영향 없음.
+        "flex flex-col flex-1 min-h-0",
         bordered && "rounded-2xl border border-slate-200 dark:border-slate-700",
         className
       )}
@@ -628,7 +633,7 @@ export function DataTableV2<T extends { id: string | number }>({
         ref={scrollRef}
         // group/scroll — 자식 boundary 셀들이 `group-data-[scrolled-left=true]/scroll:...` 로 shadow 반응
         // data-scrolled-left/right 는 스크롤 리스너에서 imperative 로 갱신 (React state X)
-        className="overflow-auto group/scroll"
+        className="overflow-auto group/scroll flex-1 min-h-0"
         style={{ maxHeight: typeof maxHeight === "number" ? `${maxHeight}px` : maxHeight }}
         data-scrolled-left="false"
         data-scrolled-right="false"
