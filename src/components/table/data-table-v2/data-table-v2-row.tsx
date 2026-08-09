@@ -6,7 +6,7 @@ import type { DraggableAttributes } from "@dnd-kit/core"
 import { cn } from "@/lib/utils"
 import { Checkbox } from "@/components/ui/checkbox"
 import { DownIcon, DragHandleIcon, RightIcon, RowDeleteIcon } from "@/icons"
-import { DataTableV2EditCell } from "./data-table-v2-edit-cell"
+import { DataTableV2Cell } from "./data-table-v2-cell"
 import type { DataTableV2Column } from "./types"
 
 interface DataTableV2RowProps<T extends { id: string | number }> {
@@ -93,12 +93,6 @@ interface RowSortableBindings {
   transform?: string
   transition?: string
   isDragging: boolean
-}
-
-const alignClass = {
-  left: "text-left justify-start",
-  center: "text-center justify-center",
-  right: "text-right justify-end",
 }
 
 function DataTableV2RowInner<T extends { id: string | number }>({
@@ -331,18 +325,13 @@ function DataTableV2RowInner<T extends { id: string | number }>({
         )}
         {columns.map((col, i) => {
           const colId = col.id ?? String(col.accessorKey)
-          const value = row[col.accessorKey]
-          const rendered = col.cell ? col.cell(value, row) : (value as React.ReactNode)
           const width = typeof col.width === "number" ? col.width : undefined
           const minWidth = typeof col.minWidth === "number" ? col.minWidth : undefined
           const isLeft = col.pinned === "left"
           const isRight = col.pinned === "right"
           const isPinned = isLeft || isRight
           // shadow 는 CSS `group-data-[scrolled-*=true]/scroll:` 로 반응 → 여기선 column 위치만 판단.
-          const isLeftBoundary = i === lastLeftPinnedIdx
-          const isRightBoundary = i === firstRightPinnedIdx
           const isFirstRightPinned = i === firstRightPinnedIdx
-          const isCellEditing = editingColumnKey === col.accessorKey
           // rowGrouping: span 결정
           // - undefined 또는 1 → 정상 셀
           // - 0 → middle placeholder (flex 폭만, 컨텐츠/border 없음)
@@ -368,89 +357,52 @@ function DataTableV2RowInner<T extends { id: string | number }>({
               />
             )
           }
-          const spanHeight = span !== undefined && span > 1 ? getRowSpanHeight(rowIndex, col.accessorKey) : undefined
-          const isHead = spanHeight !== undefined
-          const outerCls = cn(
-            "flex min-h-9",
-            width !== undefined && "shrink-0",
-            isPinned && "sticky z-10 transition-colors",
-            isPinned && bgClass,
-            isFirstRightPinned && "ml-auto",
-            isLeftBoundary && "group-data-[scrolled-left=true]/scroll:shadow-[2px_0_5px_-2px_rgba(0,0,0,0.15)]",
-            isRightBoundary && "group-data-[scrolled-right=true]/scroll:shadow-[-2px_0_5px_-2px_rgba(0,0,0,0.15)]",
-            // head 셀: 컨텐츠를 absolute 로 세로 확장하기 위해 relative + z-index 상승
-            // (그룹 middle rows 의 bg 위에 얹혀야 함)
-            isHead && "relative z-[5]"
-          )
-          const contentCls = cn(
-            "flex-1 flex items-center px-3 py-1.5 text-xs text-slate-900 dark:text-slate-200",
-            alignClass[col.align ?? "left"],
-            col.editable && !isCellEditing && "cursor-text hover:bg-blue-50 dark:hover:bg-blue-900/30"
-          )
-          const handleEditableClick = col.editable
-            ? (e: React.MouseEvent) => {
-                e.stopPropagation()
-                if (!isCellEditing) onStartEdit(row, col)
-              }
-            : undefined
-          const cellBody =
-            isCellEditing ? (
-              <DataTableV2EditCell
-                row={row}
-                column={col}
-                error={editingError}
-                onComplete={onCompleteEdit}
-                onCancel={onCancelEdit}
-                onClearError={onClearEditError}
-              />
-            ) : (
-              <div className={contentCls} onClick={handleEditableClick}>
-                {rendered}
-              </div>
-            )
+          const spanHeight =
+            span !== undefined && span > 1
+              ? getRowSpanHeight(rowIndex, col.accessorKey)
+              : undefined
+
+          // 선택/hover 에 따라 바뀌는 배경은 **그 값이 꼭 필요한 셀에만** 넘긴다.
+          // 모든 셀에 넘기면 체크박스 한 번에 그 행의 셀이 전부 리렌더된다.
+          // - pinned 셀: sticky 라 자체 배경 필요
+          // - head 셀: 그룹 hover / 선택 반영 필요.
+          //   (head row 가 hover 안 됐어도 middle row hover 시 head 셀은 hover 표시돼야 하므로
+          //    row 자체의 bgClass 와 분리한다)
+          const headBgClass =
+            spanHeight === undefined
+              ? undefined
+              : getGroupHovered(rowIndex, col.accessorKey)
+                ? "bg-slate-100 dark:bg-slate-800"
+                : isSelected
+                  ? "bg-blue-50 dark:bg-blue-900"
+                  : "bg-white dark:bg-slate-900"
+
+          const isCellEditing = editingColumnKey === col.accessorKey
+
           return (
-            <div
+            <DataTableV2Cell
               key={colId}
-              role="gridcell"
-              className={outerCls}
-              style={{
-                width,
-                minWidth,
-                flex: width === undefined ? "1 1 0" : undefined,
-                left: isLeft ? leftOffsets[i] : undefined,
-                right: isRight ? rightOffsets[i] : undefined,
-              }}
-              {...(col.editable ? { "data-no-row-click": true } : {})}
-            >
-              {isHead ? (
-                // Head 셀 (rowGrouping span > 1) — 컨텐츠를 absolute 로 세로 확장.
-                // outer 는 row height 유지 (다른 셀 정렬 흔들림 방지), content 만 spanHeight 만큼 뻗음.
-                // border-b 로 그룹 하단 경계 표시 + bg 로 middle rows 위에 opaque 커버.
-                // headBgClass: 그룹 내 어떤 row 라도 hover 중이면 hover bg. head row 자체 selected 면 selected bg.
-                // row 자체의 bgClass 와 분리 — head row (span 시작 row) 가 hover 안 됐어도 middle row hover 시 head 셀은 hover 표시돼야 함.
-                (() => {
-                  const isGroupHovered = getGroupHovered(rowIndex, col.accessorKey)
-                  const headBgClass = isGroupHovered
-                    ? "bg-slate-100 dark:bg-slate-800"
-                    : isSelected
-                      ? "bg-blue-50 dark:bg-blue-900"
-                      : "bg-white dark:bg-slate-900"
-                  return (
-                    <div
-                      className={cn(
-                        "absolute top-0 left-0 right-0 flex border-b border-slate-200 dark:border-slate-700 transition-colors",
-                        headBgClass
-                      )}
-                      style={{ height: spanHeight }}
-                    >
-                      {cellBody}
-                    </div>
-                  )
-                })()
-              ) : (
-                cellBody
-              )}
-            </div>
+              row={row}
+              column={col}
+              width={width}
+              minWidth={minWidth}
+              leftOffset={isLeft ? leftOffsets[i] : undefined}
+              rightOffset={isRight ? rightOffsets[i] : undefined}
+              isLeftPinned={isLeft}
+              isRightPinned={isRight}
+              isLeftBoundary={i === lastLeftPinnedIdx}
+              isRightBoundary={i === firstRightPinnedIdx}
+              isFirstRightPinned={isFirstRightPinned}
+              pinnedBgClass={isPinned ? bgClass : undefined}
+              spanHeight={spanHeight}
+              headBgClass={headBgClass}
+              isEditing={isCellEditing}
+              editingError={isCellEditing ? editingError : undefined}
+              onStartEdit={onStartEdit}
+              onCompleteEdit={onCompleteEdit}
+              onCancelEdit={onCancelEdit}
+              onClearEditError={onClearEditError}
+            />
           )
         })}
       </div>
