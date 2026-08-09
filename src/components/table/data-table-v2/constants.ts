@@ -58,5 +58,12 @@ export const ROW_BG_DESCENDANT = [
   "group-[[data-state=selected]:hover]:bg-blue-100 dark:group-[[data-state=selected]:hover]:bg-blue-950",
 ].join(" ")
 
-/** sticky 셀 불투명 바탕 — 스크롤되는 내용을 덮어야 하므로 반드시 불투명 */
+/**
+ * sticky 셀 뒤에 까는 불투명 바탕.
+ *
+ * 사용처 강조색이 반투명일 수 있어서(예: `dark:bg-red-500/15`) 셀 배경만으로는
+ * 스크롤되는 내용이 비친다. 이 레이어가 뒤를 막는다.
+ * 상태 색은 셀 **자신의 background** 가 담당한다 — 자식 레이어로 그리면
+ * 서브픽셀에서 셀 박스와 어긋나 전환 중 경계가 스친다.
+ */
 export const STICKY_CELL_BASE_BG = "bg-white dark:bg-slate-900"

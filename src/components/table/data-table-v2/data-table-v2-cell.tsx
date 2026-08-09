@@ -87,20 +87,13 @@ function DataTableV2CellInner<T extends { id: string | number }>({
     // pinned 셀은 sticky 라 스크롤되는 내용을 덮는다 → **불투명 배경 필수**.
     // 선택/hover 는 행의 group / data-state 를 CSS 로 따라가므로 클래스가 고정이다
     // (prop 으로 받으면 값이 바뀔 때마다 memo 가 깨져 그 행의 pinned 셀이 전부 리렌더된다).
+    // 상태 색은 **셀 자신의 background** 로 그린다. 자식 레이어로 그리면 서브픽셀에서
+    // 셀 박스와 어긋나 전환 중 경계가 스친다. 행과 같은 클래스라 색·타이밍이 동일하다.
+    // 사용처 강조색은 마지막에 와서 기본색을 대체한다 (행에서 일어나는 것과 동일).
     isPinned && [
       "relative sticky z-10 transition-colors",
-      // sticky 셀 배경 — 행(.group)의 상태를 CSS 로 따라간다.
-      //
-      // 선택+hover 는 같은 그룹의 변이 두 개를 겹칠 수 없어서
-      // (group-hover:group-data-[...]: 는 조상이 둘인 잘못된 셀렉터가 나온다)
-      // arbitrary group 변이로 한 셀렉터에 담는다.
-      //   group-[[data-state=selected]:hover]:  →  .group[data-state=selected]:hover &
-      // 이 셀렉터가 hover(.group:hover &) / 선택(.group[data-state=selected] &) 보다
-      // 명시도가 높아 선언 순서와 무관하게 이긴다.
-      STICKY_CELL_BASE_BG,
-      "group-hover:bg-slate-100 dark:group-hover:bg-slate-800",
-      "group-[[data-state=selected]]:bg-blue-50 dark:group-[[data-state=selected]]:bg-blue-900",
-      "group-[[data-state=selected]:hover]:bg-blue-100 dark:group-[[data-state=selected]:hover]:bg-blue-950",
+      ROW_BG_DESCENDANT,
+      rowHighlightClass,
     ],
     isFirstRightPinned && "ml-auto",
     isLeftBoundary && "group-data-[scrolled-left=true]/scroll:shadow-[2px_0_5px_-2px_rgba(0,0,0,0.15)]",
@@ -154,22 +147,10 @@ function DataTableV2CellInner<T extends { id: string | number }>({
       }}
       {...(column.editable ? { "data-no-row-click": true } : {})}
     >
-      {/* 상태 색 레이어 — 셀의 불투명 바탕 **위**, 콘텐츠 **아래** (-z-10).
-          절대배치 요소는 in-flow 콘텐츠보다 나중에 그려지므로 z-index 를 내리지 않으면
-          불투명 강조색이 셀 텍스트를 덮어버린다.
-          행(.group)과 동일한 상태 클래스를 써서 색도 전환 타이밍도 똑같이 간다.
-          선택+hover 는 같은 그룹 변이를 겹칠 수 없어(조상이 둘인 셀렉터가 됨)
-          arbitrary group 변이로 한 셀렉터에 담는다. 명시도가 hover/선택 단독보다
-          높아 선언 순서와 무관하게 이긴다. */}
+      {/* 불투명 바탕 — 셀 배경(강조색)이 반투명일 수 있어 스크롤 내용이 비치는 것을 막는다.
+          콘텐츠보다 뒤(-z-10)에 있어야 텍스트를 가리지 않는다. */}
       {isPinned && (
-        <span
-          aria-hidden
-          className={cn(
-            "absolute inset-0 -z-10 transition-colors",
-            ROW_BG_DESCENDANT,
-            rowHighlightClass
-          )}
-        />
+        <span aria-hidden className={cn("absolute inset-0 -z-10", STICKY_CELL_BASE_BG)} />
       )}
       {isHead ? (
         // Head 셀 (rowGrouping span > 1) — 컨텐츠를 absolute 로 세로 확장.

@@ -119,28 +119,24 @@ interface RowSortableBindings {
  * 행 테두리와 **같은 자리**에 1px 선을 겹쳐 그려 덮개(z-5) 위에 남게 한다.
  * 스크롤 0 일 때는 행 테두리와 완전히 포개져 시각적 변화가 없다.
  */
-/** sticky 컨트롤 셀 — 스크롤 내용을 덮으므로 불투명 바탕만. 상태 색은 StickyCellBg 담당 */
+/**
+ * sticky 컨트롤 셀 — 상태 색은 **셀 자신의 background** 로 그린다.
+ * 자식 레이어로 그리면 서브픽셀에서 셀 박스와 어긋나 전환 중 경계가 스친다.
+ * 불투명 보장은 뒤에 까는 StickyCellBacking 이 담당한다.
+ */
 const STICKY_CELL = cn(
-  "relative shrink-0 sticky z-10 flex items-center justify-center min-h-9",
-  STICKY_CELL_BASE_BG
+  "relative shrink-0 sticky z-10 flex items-center justify-center min-h-9 transition-colors",
+  ROW_BG_DESCENDANT
 )
 
 /**
- * sticky 셀의 상태 색 레이어 — 불투명 바탕 **위**, 콘텐츠 **아래** (`-z-10`).
- *
- * 절대배치 요소는 in-flow 콘텐츠보다 나중에 그려진다. z-index 를 내리지 않으면
- * 불투명 강조색이 체크박스·아이콘·텍스트를 덮어버린다.
+ * sticky 셀 뒤 불투명 바탕 — 셀 배경(사용처 강조색)이 반투명일 때
+ * 스크롤되는 내용이 비치는 것을 막는다.
+ * 콘텐츠보다 뒤(-z-10)에 있어야 체크박스·아이콘을 가리지 않는다.
  */
-function StickyCellBg({ highlight }: { highlight?: string }) {
+function StickyCellBacking() {
   return (
-    <span
-      aria-hidden
-      className={cn(
-        "absolute inset-0 -z-10 transition-colors",
-        ROW_BG_DESCENDANT,
-        highlight
-      )}
-    />
+    <span aria-hidden className={cn("absolute inset-0 -z-10", STICKY_CELL_BASE_BG)} />
   )
 }
 
@@ -297,7 +293,8 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             className={cn(
               // sticky 라 스크롤 내용을 덮는다 → 불투명 배경 필수.
               // 사용처 강조색(반투명일 수 있음)은 아래 오버레이로 얹는다.
-              STICKY_CELL
+              STICKY_CELL,
+              extraClassName
             )}
             style={{ width: dragHandleColWidth, left: 0 }}
             onClick={(e) => e.stopPropagation()}
@@ -311,7 +308,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             >
               <DragHandleIcon size={16} />
             </div>
-            <StickyCellBg highlight={extraClassName} />
+            <StickyCellBacking />
             {!isLast && <StickyCellBorder />}
           </div>
         )}
@@ -322,7 +319,8 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             className={cn(
               // sticky 라 스크롤 내용을 덮는다 → 불투명 배경 필수.
               // 사용처 강조색(반투명일 수 있음)은 아래 오버레이로 얹는다.
-              STICKY_CELL
+              STICKY_CELL,
+              extraClassName
             )}
             style={{
               width: checkboxColWidth,
@@ -341,7 +339,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
               }}
               aria-label={`행 ${row.id} 선택`}
             />
-            <StickyCellBg highlight={extraClassName} />
+            <StickyCellBacking />
             {!isLast && <StickyCellBorder />}
           </div>
         )}
@@ -352,7 +350,8 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             className={cn(
               // sticky 라 스크롤 내용을 덮는다 → 불투명 배경 필수.
               // 사용처 강조색(반투명일 수 있음)은 아래 오버레이로 얹는다.
-              STICKY_CELL
+              STICKY_CELL,
+              extraClassName
             )}
             style={{
               width: expandColWidth,
@@ -373,7 +372,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
                 {isExpanded ? <DownIcon size={24} /> : <RightIcon size={24} />}
               </button>
             )}
-            <StickyCellBg highlight={extraClassName} />
+            <StickyCellBacking />
             {!isLast && <StickyCellBorder />}
           </div>
         )}
@@ -384,7 +383,8 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             className={cn(
               // sticky 라 스크롤 내용을 덮는다 → 불투명 배경 필수.
               // 사용처 강조색(반투명일 수 있음)은 아래 오버레이로 얹는다.
-              STICKY_CELL
+              STICKY_CELL,
+              extraClassName
             )}
             style={{ width: rowActionsColWidth, left: rowActionsColLeftOffset }}
             onClick={(e) => e.stopPropagation()}
@@ -397,7 +397,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             >
               <RowDeleteIcon size={20} />
             </button>
-            <StickyCellBg highlight={extraClassName} />
+            <StickyCellBacking />
             {!isLast && <StickyCellBorder />}
           </div>
         )}
