@@ -6,7 +6,7 @@ import type { DraggableAttributes } from "@dnd-kit/core"
 import { cn } from "@/lib/utils"
 import { Checkbox } from "@/components/ui/checkbox"
 import { DownIcon, DragHandleIcon, RightIcon, RowDeleteIcon } from "@/icons"
-import { DataTableV2EditCell } from "./data-table-v2-edit-cell"
+import { DataTableV2Cell } from "./data-table-v2-cell"
 import type { DataTableV2Column } from "./types"
 
 interface DataTableV2RowProps<T extends { id: string | number }> {
@@ -18,7 +18,12 @@ interface DataTableV2RowProps<T extends { id: string | number }> {
   lastLeftPinnedIdx: number
   firstRightPinnedIdx: number
   totalWidth: number
-  translateY: number
+  /**
+   * 행 엘리먼트 등록 콜백 (SDS-49).
+   * 세로 위치(top)는 prop 으로 받지 않고 부모가 layout effect 에서 DOM 에 직접 쓴다.
+   * 위치를 prop 으로 받으면 위쪽 행의 높이가 바뀔 때마다 이 행이 리렌더된다.
+   */
+  registerEl: (id: T["id"], el: HTMLElement | null) => void
   // rowGrouping 활성 시에만 필요. hover 상태를 parent state 로 관리해 그룹 head 셀 하이라이트 동기화.
   // 비활성 시엔 undefined 로 넘겨 mouseenter/leave listener 자체를 안 붙임 → hover 시 리렌더 방지.
   onHover?: (id: T["id"] | null) => void
@@ -35,6 +40,13 @@ interface DataTableV2RowProps<T extends { id: string | number }> {
   onToggleExpand: (id: T["id"]) => void
   expandedContent: React.ReactNode
   expandColWidth: number
+  /**
+   * 스크롤 컨테이너의 가시 영역 너비.
+   * 확장 영역을 이 폭으로 sticky 고정해서, 가로 스크롤을 해도 펼친 내용이
+   * 항상 화면 안에 보이게 한다 (v1 과 동일한 동작).
+   * 0 이면 미측정 상태 → 폭 지정 없이 렌더.
+   */
+  visibleWidth: number
   // 행 클릭 / className
   onRowClick?: (row: T) => void
   extraClassName?: string
@@ -66,6 +78,8 @@ interface DataTableV2RowProps<T extends { id: string | number }> {
   getRowSpan: (rowIndex: number, columnKey: keyof T) => number | undefined
   getRowSpanHeight: (rowIndex: number, columnKey: keyof T) => number | undefined
   getGroupHovered: (rowIndex: number, columnKey: keyof T) => boolean
+  /** 병합 셀의 선택 표시 — 그룹 안 아무 행이나 선택돼 있으면 true (hover 와 동일한 그룹 단위 판단) */
+  getGroupSelected: (rowIndex: number, columnKey: keyof T) => boolean
   // 가상화 (SDS-38): virtualizer.measureElement 를 ref 로 받음. 없으면 무시.
   measureRef?: (el: HTMLElement | null) => void
   // 가상화 (SDS-38): virtualizer 가 measurementsCache 매칭하는 인덱스. `data-index` 로 렌더.
@@ -88,10 +102,25 @@ interface RowSortableBindings {
   isDragging: boolean
 }
 
-const alignClass = {
-  left: "text-left justify-start",
-  center: "text-center justify-center",
-  right: "text-right justify-end",
+/**
+ * sticky 컨트롤 셀(체크박스 / 확장 / 삭제 / 드래그 핸들) 하단 경계선 오버레이.
+ *
+ * 행 경계선은 행 div 의 `border-b` 로 그려지는데, rowGrouping 병합 셀의 덮개가
+ * 가로 스크롤 시 sticky 셀 밑으로 파고들면서 그 구간의 선을 가려버린다
+ * (덮개는 데이터 셀 안에 있어 셀과 함께 이동한다).
+ *
+ * 컨트롤 셀은 행마다 하나씩이므로 경계가 반드시 보여야 한다 — 안 그러면 어느
+ * 체크박스/삭제 버튼이 어느 행인지 모호해진다. 그래서 sticky 셀(z-10) 안에서
+ * 행 테두리와 **같은 자리**에 1px 선을 겹쳐 그려 덮개(z-5) 위에 남게 한다.
+ * 스크롤 0 일 때는 행 테두리와 완전히 포개져 시각적 변화가 없다.
+ */
+function StickyCellBorder() {
+  return (
+    <span
+      aria-hidden
+      className="absolute -bottom-px left-0 right-0 h-px bg-slate-200 dark:bg-slate-700"
+    />
+  )
 }
 
 function DataTableV2RowInner<T extends { id: string | number }>({
@@ -103,7 +132,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
   lastLeftPinnedIdx,
   firstRightPinnedIdx,
   totalWidth,
-  translateY,
+  registerEl,
   onHover,
   onHeightChange,
   selectable,
@@ -116,6 +145,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
   onToggleExpand,
   expandedContent,
   expandColWidth,
+  visibleWidth,
   onRowClick,
   extraClassName,
   editingColumnKey,
@@ -134,6 +164,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
   getRowSpan,
   getRowSpanHeight,
   getGroupHovered,
+  getGroupSelected,
   measureRef,
   dataIndex,
   ariaRowIndex,
@@ -184,8 +215,9 @@ function DataTableV2RowInner<T extends { id: string | number }>({
       rowRef.current = el
       sortable.setNodeRef?.(el)
       if (measureRef) measureRef(el)
+      registerEl(row.id, el)
     },
-    [sortable, measureRef]
+    [sortable, measureRef, registerEl, row.id]
   )
 
   return (
@@ -200,7 +232,8 @@ function DataTableV2RowInner<T extends { id: string | number }>({
       )}
       style={{
         minWidth: totalWidth,
-        top: Math.round(translateY),
+        // top 은 부모가 layout effect 로 직접 쓴다 (위 registerEl 주석 참고).
+        // React style 객체에 top 을 두지 않으므로 React 가 값을 덮어쓰지 않는다.
         transform: dndTransform,
         transition: dndTransition,
         opacity: isDragging ? 0.6 : undefined,
@@ -227,7 +260,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             role="gridcell"
             data-no-row-click
             className={cn(
-              "shrink-0 sticky z-10 flex items-center justify-center min-h-9 transition-colors",
+              "relative shrink-0 sticky z-10 flex items-center justify-center min-h-9 transition-colors",
               bgClass
             )}
             style={{ width: dragHandleColWidth, left: 0 }}
@@ -242,6 +275,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             >
               <DragHandleIcon size={16} />
             </div>
+            {!isLast && <StickyCellBorder />}
           </div>
         )}
         {selectable && (
@@ -249,7 +283,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             role="gridcell"
             data-no-row-click
             className={cn(
-              "shrink-0 sticky z-10 flex items-center justify-center min-h-9 transition-colors",
+              "relative shrink-0 sticky z-10 flex items-center justify-center min-h-9 transition-colors",
               bgClass
             )}
             style={{
@@ -269,6 +303,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
               }}
               aria-label={`행 ${row.id} 선택`}
             />
+            {!isLast && <StickyCellBorder />}
           </div>
         )}
         {expandable && (
@@ -276,7 +311,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             role="gridcell"
             data-no-row-click
             className={cn(
-              "shrink-0 sticky z-10 flex items-center justify-center min-h-9 transition-colors",
+              "relative shrink-0 sticky z-10 flex items-center justify-center min-h-9 transition-colors",
               bgClass
             )}
             style={{
@@ -298,6 +333,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
                 {isExpanded ? <DownIcon size={24} /> : <RightIcon size={24} />}
               </button>
             )}
+            {!isLast && <StickyCellBorder />}
           </div>
         )}
         {showRowDelete && (
@@ -305,7 +341,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             role="gridcell"
             data-no-row-click
             className={cn(
-              "shrink-0 sticky z-10 flex items-center justify-center min-h-9 transition-colors",
+              "relative shrink-0 sticky z-10 flex items-center justify-center min-h-9 transition-colors",
               bgClass
             )}
             style={{ width: rowActionsColWidth, left: rowActionsColLeftOffset }}
@@ -319,22 +355,18 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             >
               <RowDeleteIcon size={20} />
             </button>
+            {!isLast && <StickyCellBorder />}
           </div>
         )}
         {columns.map((col, i) => {
           const colId = col.id ?? String(col.accessorKey)
-          const value = row[col.accessorKey]
-          const rendered = col.cell ? col.cell(value, row) : (value as React.ReactNode)
           const width = typeof col.width === "number" ? col.width : undefined
           const minWidth = typeof col.minWidth === "number" ? col.minWidth : undefined
           const isLeft = col.pinned === "left"
           const isRight = col.pinned === "right"
           const isPinned = isLeft || isRight
           // shadow 는 CSS `group-data-[scrolled-*=true]/scroll:` 로 반응 → 여기선 column 위치만 판단.
-          const isLeftBoundary = i === lastLeftPinnedIdx
-          const isRightBoundary = i === firstRightPinnedIdx
           const isFirstRightPinned = i === firstRightPinnedIdx
-          const isCellEditing = editingColumnKey === col.accessorKey
           // rowGrouping: span 결정
           // - undefined 또는 1 → 정상 셀
           // - 0 → middle placeholder (flex 폭만, 컨텐츠/border 없음)
@@ -360,89 +392,59 @@ function DataTableV2RowInner<T extends { id: string | number }>({
               />
             )
           }
-          const spanHeight = span !== undefined && span > 1 ? getRowSpanHeight(rowIndex, col.accessorKey) : undefined
-          const isHead = spanHeight !== undefined
-          const outerCls = cn(
-            "flex min-h-9",
-            width !== undefined && "shrink-0",
-            isPinned && "sticky z-10 transition-colors",
-            isPinned && bgClass,
-            isFirstRightPinned && "ml-auto",
-            isLeftBoundary && "group-data-[scrolled-left=true]/scroll:shadow-[2px_0_5px_-2px_rgba(0,0,0,0.15)]",
-            isRightBoundary && "group-data-[scrolled-right=true]/scroll:shadow-[-2px_0_5px_-2px_rgba(0,0,0,0.15)]",
-            // head 셀: 컨텐츠를 absolute 로 세로 확장하기 위해 relative + z-index 상승
-            // (그룹 middle rows 의 bg 위에 얹혀야 함)
-            isHead && "relative z-[5]"
-          )
-          const contentCls = cn(
-            "flex-1 flex items-center px-3 py-1.5 text-xs text-slate-900 dark:text-slate-200",
-            alignClass[col.align ?? "left"],
-            col.editable && !isCellEditing && "cursor-text hover:bg-blue-50 dark:hover:bg-blue-900/30"
-          )
-          const handleEditableClick = col.editable
-            ? (e: React.MouseEvent) => {
-                e.stopPropagation()
-                if (!isCellEditing) onStartEdit(row, col)
-              }
-            : undefined
-          const cellBody =
-            isCellEditing ? (
-              <DataTableV2EditCell
-                row={row}
-                column={col}
-                error={editingError}
-                onComplete={onCompleteEdit}
-                onCancel={onCancelEdit}
-                onClearError={onClearEditError}
-              />
-            ) : (
-              <div className={contentCls} onClick={handleEditableClick}>
-                {rendered}
-              </div>
-            )
+          const spanHeight =
+            span !== undefined && span > 1
+              ? getRowSpanHeight(rowIndex, col.accessorKey)
+              : undefined
+
+          // 선택/hover 에 따라 바뀌는 배경은 **그 값이 꼭 필요한 셀에만** 넘긴다.
+          // 모든 셀에 넘기면 체크박스 한 번에 그 행의 셀이 전부 리렌더된다.
+          // - pinned 셀: sticky 라 자체 배경 필요
+          // - head 셀: 그룹 hover / 선택 반영 필요.
+          //   (head row 가 hover 안 됐어도 middle row hover 시 head 셀은 hover 표시돼야 하므로
+          //    row 자체의 bgClass 와 분리한다)
+          // 선택 × hover 4가지 조합을 일반 행(bgClass)과 같은 색으로 맞춘다.
+          // hover 를 selected 보다 먼저 판정하면 선택된 그룹에 hover 했을 때
+          // 회색이 되어 일반 행(선택 + hover = 진한 파랑)과 어긋난다.
+          const headBgClass = (() => {
+            if (spanHeight === undefined) return undefined
+            const hovered = getGroupHovered(rowIndex, col.accessorKey)
+            const selected = getGroupSelected(rowIndex, col.accessorKey)
+            if (selected) {
+              return hovered
+                ? "bg-blue-100 dark:bg-blue-950"
+                : "bg-blue-50 dark:bg-blue-900"
+            }
+            return hovered
+              ? "bg-slate-100 dark:bg-slate-800"
+              : "bg-white dark:bg-slate-900"
+          })()
+
+          const isCellEditing = editingColumnKey === col.accessorKey
+
           return (
-            <div
+            <DataTableV2Cell
               key={colId}
-              role="gridcell"
-              className={outerCls}
-              style={{
-                width,
-                minWidth,
-                flex: width === undefined ? "1 1 0" : undefined,
-                left: isLeft ? leftOffsets[i] : undefined,
-                right: isRight ? rightOffsets[i] : undefined,
-              }}
-              {...(col.editable ? { "data-no-row-click": true } : {})}
-            >
-              {isHead ? (
-                // Head 셀 (rowGrouping span > 1) — 컨텐츠를 absolute 로 세로 확장.
-                // outer 는 row height 유지 (다른 셀 정렬 흔들림 방지), content 만 spanHeight 만큼 뻗음.
-                // border-b 로 그룹 하단 경계 표시 + bg 로 middle rows 위에 opaque 커버.
-                // headBgClass: 그룹 내 어떤 row 라도 hover 중이면 hover bg. head row 자체 selected 면 selected bg.
-                // row 자체의 bgClass 와 분리 — head row (span 시작 row) 가 hover 안 됐어도 middle row hover 시 head 셀은 hover 표시돼야 함.
-                (() => {
-                  const isGroupHovered = getGroupHovered(rowIndex, col.accessorKey)
-                  const headBgClass = isGroupHovered
-                    ? "bg-slate-100 dark:bg-slate-800"
-                    : isSelected
-                      ? "bg-blue-50 dark:bg-blue-900"
-                      : "bg-white dark:bg-slate-900"
-                  return (
-                    <div
-                      className={cn(
-                        "absolute top-0 left-0 right-0 flex border-b border-slate-200 dark:border-slate-700 transition-colors",
-                        headBgClass
-                      )}
-                      style={{ height: spanHeight }}
-                    >
-                      {cellBody}
-                    </div>
-                  )
-                })()
-              ) : (
-                cellBody
-              )}
-            </div>
+              row={row}
+              column={col}
+              width={width}
+              minWidth={minWidth}
+              leftOffset={isLeft ? leftOffsets[i] : undefined}
+              rightOffset={isRight ? rightOffsets[i] : undefined}
+              isLeftPinned={isLeft}
+              isRightPinned={isRight}
+              isLeftBoundary={i === lastLeftPinnedIdx}
+              isRightBoundary={i === firstRightPinnedIdx}
+              isFirstRightPinned={isFirstRightPinned}
+              spanHeight={spanHeight}
+              headBgClass={headBgClass}
+              isEditing={isCellEditing}
+              editingError={isCellEditing ? editingError : undefined}
+              onStartEdit={onStartEdit}
+              onCompleteEdit={onCompleteEdit}
+              onCancelEdit={onCancelEdit}
+              onClearEditError={onClearEditError}
+            />
           )
         })}
       </div>
@@ -451,7 +453,15 @@ function DataTableV2RowInner<T extends { id: string | number }>({
           data-no-row-click
           className="bg-slate-50 dark:bg-slate-950 border-b border-slate-200 dark:border-slate-700"
         >
-          {expandedContent}
+          {/* 가로 스크롤을 해도 펼친 내용이 가시 영역에 머물도록 sticky 고정.
+              폭을 가시 영역에 맞추고, 내용이 넘치면 확장 영역이 자체 가로 스크롤을 갖는다.
+              (없으면 테이블 전체 폭을 따라가서 펼친 내용이 화면 밖으로 밀려난다) */}
+          <div
+            className="sticky left-0 overflow-x-auto"
+            style={visibleWidth ? { width: visibleWidth, maxWidth: "100%" } : undefined}
+          >
+            {expandedContent}
+          </div>
         </div>
       )}
     </div>

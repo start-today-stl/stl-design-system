@@ -278,12 +278,22 @@ export function DataTableV2<T extends { id: string | number }>({
     [normalizedSortState, multiSort]
   )
 
+  // 정렬 상태를 ref 로 흡수해 handleSort 를 stable ref 로 유지한다.
+  // deps 에 두면 정렬할 때마다 새 함수가 되고, 이 콜백을 prop 으로 받는
+  // **모든 헤더 셀의 memo 가 무효**가 되어 관계없는 컬럼까지 전부 리렌더된다.
+  const sortRef = React.useRef(normalizedSortState)
+  sortRef.current = normalizedSortState
+  const multiSortRef = React.useRef(multiSort)
+  multiSortRef.current = multiSort
+
   const handleSort = React.useCallback(
     (column: keyof T) => {
       if (!stableOnSortChange) return
-      stableOnSortChange(computeNextSort(normalizedSortState, column, multiSort))
+      stableOnSortChange(
+        computeNextSort(sortRef.current, column, multiSortRef.current)
+      )
     },
-    [normalizedSortState, multiSort, stableOnSortChange]
+    [stableOnSortChange]
   )
 
   // 어떤 컬럼도 flex-1 이 아니라면 (전부 fixed width) row 오른쪽에 spacer 필요.
@@ -394,6 +404,32 @@ export function DataTableV2<T extends { id: string | number }>({
     [hoveredRowIndex, getRowSpan]
   )
 
+  // 병합 셀의 선택 표시도 hover 와 같이 **그룹 단위**로 판단한다.
+  // head 행의 isSelected 만 보면, 그룹의 두 번째 이후 행을 체크했을 때 병합 셀만
+  // 흰색으로 남아 어긋난다 (병합 셀은 그룹 전체를 덮고 있으므로).
+  //
+  // 이 콜백은 선택이 바뀔 때마다 rebind 되어 rendered row 가 전부 리렌더된다.
+  // getGroupHovered 와 같은 trade-off 이며, rowGrouping 이 켜졌을 때만 감수한다
+  // (rowGrouping 은 태생적으로 소량 데이터. 대용량은 UX 상 다른 방식을 써야 함).
+  // rowGrouping 이 꺼져 있으면 stable no-op 을 넘겨 선택 시 리렌더가 늘지 않게 한다.
+  const selectedSet = selection.selectedSet
+  const getGroupSelectedActive = React.useCallback(
+    (rowIndex: number, colKey: keyof T): boolean => {
+      const span = getRowSpan(rowIndex, colKey)
+      if (span === undefined || span <= 1) return false
+      for (let i = rowIndex; i < rowIndex + span; i++) {
+        const r = data[i]
+        if (r && selectedSet.has(r.id)) return true
+      }
+      return false
+    },
+    [getRowSpan, data, selectedSet]
+  )
+  const getGroupSelectedNoop = React.useCallback(() => false, [])
+  const getGroupSelected = rowGrouping
+    ? getGroupSelectedActive
+    : getGroupSelectedNoop
+
   // head 셀 세로 확장 높이 계산 — positions 를 ref 로 흡수해 콜백 자체는 stable ref 유지.
   // 이유: 가상화 스크롤 중 새 row 측정되면 heights → positions 가 자주 변경됨. 콜백을
   // positions 에 의존시키면 매번 새 ref 로 rebind → 모든 row memo 무효 → viewport 안 row 도
@@ -426,6 +462,37 @@ export function DataTableV2<T extends { id: string | number }>({
     scrollContainerRef: scrollRef,
     rowSpanMap,
   })
+  // ── 행 위치는 prop 이 아니라 DOM 에 직접 쓴다 (SDS-49) ──────────────────
+  // positions 는 행 높이의 누적합이라, 한 행의 높이가 바뀌면 (확장 / 편집 에러 등)
+  // 그 아래 모든 행의 값이 밀린다. 위치를 prop 으로 넘기면 그 행들이 전부 리렌더된다.
+  // v1 은 <table> 문서 흐름이라 브라우저가 알아서 밀어내고 React 가 개입하지 않았다.
+  // 여기서는 layout effect 로 style.top 을 직접 써서 같은 결과를 만든다.
+  //
+  // 행 id 로 보관하는 이유: 인덱스로 보관하면 행 순서가 바뀔 때 ref 정리(null)와
+  // 등록(el) 순서가 엘리먼트 간에 보장되지 않아 서로의 등록을 지울 수 있다.
+  const rowElsRef = React.useRef(new Map<T["id"], HTMLElement>())
+  const registerRowEl = React.useCallback(
+    (id: T["id"], el: HTMLElement | null) => {
+      if (el) rowElsRef.current.set(id, el)
+      else rowElsRef.current.delete(id)
+    },
+    []
+  )
+  React.useLayoutEffect(() => {
+    for (const i of renderIndices) {
+      const row = data[i]
+      if (!row) continue
+      const el = rowElsRef.current.get(row.id)
+      if (!el) continue
+      const top = `${Math.round(isVirtual ? getItemStart(i) : positions[i])}px`
+      // 중복 쓰기 방지는 **엘리먼트의 인라인 스타일**과 비교해서 판단한다.
+      // 별도 Map 에 캐시하면 가상화로 행이 사라졌다 다시 나타났을 때 틀린다.
+      // (엘리먼트는 새것이라 top 이 비어 있는데 캐시에는 예전 값이 남아 있어
+      //  "이미 적용됨" 으로 건너뛰고, 그 행이 0 위치에 겹쳐 그려진다)
+      if (el.style.top !== top) el.style.top = top
+    }
+  })
+
   // 가로 스크롤 shadow: React state 대신 scrollRef DOM 에 data-attr 직접 갱신 →
   // React 리렌더 없이 CSS 로 shadow 처리 (모든 row 리렌더 방지).
   // pinned 경계 셀은 data-attr 상속받는 CSS 셀렉터로 shadow 표시.
@@ -717,7 +784,7 @@ export function DataTableV2<T extends { id: string | number }>({
                     lastLeftPinnedIdx={lastLeftPinnedIdx}
                     firstRightPinnedIdx={firstRightPinnedIdx}
                     totalWidth={totalWidth}
-                    translateY={isVirtual ? getItemStart(i) : positions[i]}
+                    registerEl={registerRowEl}
                     onHover={rowGrouping ? setHoveredId : undefined}
                     onHeightChange={setHeight}
                     measureRef={isVirtual && virtualizer ? virtualizer.measureElement : undefined}
@@ -736,6 +803,7 @@ export function DataTableV2<T extends { id: string | number }>({
                         : null
                     }
                     expandColWidth={EXPAND_COL_WIDTH}
+                    visibleWidth={visibleWidth}
                     onRowClick={stableOnRowClick}
                     extraClassName={stableRowClassName?.(row)}
                     editingColumnKey={
@@ -758,6 +826,7 @@ export function DataTableV2<T extends { id: string | number }>({
                     getRowSpan={getRowSpan}
                     getRowSpanHeight={getRowSpanHeight}
                     getGroupHovered={getGroupHovered}
+                    getGroupSelected={getGroupSelected}
                     ariaRowIndex={headerRowCount + i + 1}
                   />
                   )

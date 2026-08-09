@@ -225,10 +225,35 @@ function filterRows<T extends object>(
   )
 }
 
+/** 확장행 — 주문 상세를 펼쳐서 보여주는 형태 (CMS b2c-order 와 같은 사용례) */
+const ksExpandable = {
+  expandedRowRender: (row: KsRow) => (
+    <div className="flex flex-col gap-2 bg-slate-50 dark:bg-slate-800/50 px-4 py-3">
+      <span className="text-xs font-medium text-slate-700 dark:text-slate-300">
+        {row.orderNo} 상세
+      </span>
+      <div className="grid grid-cols-4 gap-x-6 gap-y-1 text-xs text-slate-600 dark:text-slate-400">
+        <span>고객: {row.customer}</span>
+        <span>지역: {row.region}</span>
+        <span>상품: {row.product}</span>
+        <span>수량: {row.qty}</span>
+        <span>주문일: {row.orderDate}</span>
+        <span>상태: {row.status}</span>
+        <span>금액: {row.amount.toLocaleString()}원</span>
+        <span>수수료: {row.fee.toLocaleString()}원</span>
+      </div>
+      {row.memo && (
+        <span className="text-xs text-slate-500 dark:text-slate-400">메모: {row.memo}</span>
+      )}
+    </div>
+  ),
+  showExpandAll: false,
+}
+
 /**
  * 전 기능 조합 데모. 한 테이블에서 pinned · 가상화(5,000행) · 컬럼 필터 ·
- * 재정렬 · 리사이즈 · 헤더 그룹 · 셀 편집 · 행 선택 · 다중 정렬을 함께 확인한다.
- * (rowGrouping 제외)
+ * 재정렬 · 리사이즈 · 헤더 그룹 · 셀 편집 · 행 선택 · 확장행 · 다중 정렬을
+ * 함께 확인한다. (rowGrouping 제외)
  */
 export const KitchenSink: Story = {
   render: function Render() {
@@ -265,6 +290,7 @@ export const KitchenSink: Story = {
           selectable
           selectedIds={selectedIds}
           onSelectionChange={setSelectedIds}
+          expandable={ksExpandable}
           multiSort
           sortState={sortState}
           onSortChange={setSortState}
@@ -1273,3 +1299,104 @@ const syncColumns: DataTableV2Column<Row>[] = [
     filter: { type: "text", placeholder: "역할 검색" },
   },
 ]
+
+/**
+ * SDS-49 회귀 가드 — 행의 세로 위치(top)는 React prop 이 아니라 부모가 layout effect 로
+ * DOM 에 직접 쓴다. 배선이 끊기면 모든 행이 같은 자리에 겹쳐 쌓이는데, 렌더 스냅샷
+ * 테스트로는 잡히지 않는다 (DOM 은 정상적으로 존재하므로).
+ */
+export const RowsStayPositioned: Story = {
+  render: function Render() {
+    const [expandedIds, setExpandedIds] = useState<(string | number)[]>([])
+    return (
+      <DataTableV2
+        data={smallData}
+        columns={columns}
+        expandable={{
+          expandedRowRender: (row) => (
+            <div style={{ height: 80 }} className="p-4 text-xs">
+              {row.name} 상세
+            </div>
+          ),
+          expandedRowIds: expandedIds,
+          onExpandedChange: setExpandedIds,
+        }}
+      />
+    )
+  },
+  play: async ({ canvasElement }) => {
+    const tops = () =>
+      Array.from(
+        canvasElement.querySelectorAll<HTMLElement>('[role="row"][style*="top"]')
+      ).map((el) => parseFloat(el.style.top))
+
+    // 1) 위치가 적용됐는지 — 행 수만큼 있고, 아래로 갈수록 증가해야 한다
+    const initial = tops()
+    expect(initial).toHaveLength(smallData.length)
+    expect(initial[0]).toBe(0)
+    for (let i = 1; i < initial.length; i++) {
+      expect(initial[i]).toBeGreaterThan(initial[i - 1])
+    }
+
+    // 2) 행을 펼치면 아래 행들이 그만큼 밀려야 한다
+    const canvas = within(canvasElement)
+    await userEvent.click(canvas.getAllByRole("button", { name: "행 펼치기" })[0])
+    await waitFor(() => {
+      const after = tops()
+      expect(after[1]).toBeGreaterThan(initial[1])
+      expect(after[after.length - 1]).toBeGreaterThan(initial[initial.length - 1])
+    })
+  },
+}
+
+/**
+ * SDS-49 회귀 가드 (재마운트) — 행이 사라졌다 다시 나타나면 DOM 엘리먼트가 새로
+ * 만들어진다. 위치 적용 여부를 엘리먼트 바깥(Map 등)에 캐시해두면 "이미 적용했다"고
+ * 판단해 건너뛰고, 그 행이 top 없이 0 위치에 겹쳐 그려진다.
+ * (가상화 스크롤로 화면을 들락날락할 때 실제로 발생했던 버그)
+ */
+export const RemountedRowsStayPositioned: Story = {
+  render: function Render() {
+    const [showAll, setShowAll] = useState(true)
+    return (
+      <div className="flex flex-col gap-2">
+        <Button size="sm" onClick={() => setShowAll((v) => !v)}>
+          마지막 행 토글
+        </Button>
+        <DataTableV2
+          data={showAll ? smallData : smallData.slice(0, -1)}
+          columns={columns}
+        />
+      </div>
+    )
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const bodyRows = () =>
+      Array.from(
+        canvasElement.querySelectorAll<HTMLElement>('[role="row"][aria-rowindex]')
+      ).filter((el) => el.className.includes("absolute"))
+
+    const assertAllPositioned = () => {
+      const tops = bodyRows().map((el) => el.style.top)
+      expect(tops.length).toBeGreaterThan(0)
+      // 렌더된 모든 행에 위치가 적용돼 있어야 한다
+      expect(tops.every((t) => t !== "")).toBe(true)
+      // 같은 위치에 두 행이 겹치면 안 된다
+      expect(new Set(tops).size).toBe(tops.length)
+    }
+
+    assertAllPositioned()
+    const before = bodyRows().length
+
+    // 마지막 행 제거 → 언마운트
+    await userEvent.click(canvas.getByRole("button", { name: "마지막 행 토글" }))
+    await waitFor(() => expect(bodyRows().length).toBe(before - 1))
+    assertAllPositioned()
+
+    // 되돌리면 같은 위치로 다시 마운트된다 (엘리먼트는 새것)
+    await userEvent.click(canvas.getByRole("button", { name: "마지막 행 토글" }))
+    await waitFor(() => expect(bodyRows().length).toBe(before))
+    assertAllPositioned()
+  },
+}
