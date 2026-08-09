@@ -8,8 +8,7 @@ import { cn } from "@/lib/utils"
 import { Checkbox } from "@/components/ui/checkbox"
 import { DownIcon, RightIcon } from "@/icons"
 import { DataTableV2ColumnSeparator } from "./data-table-v2-column-separator"
-import { DataTableV2FilterCell } from "./data-table-v2-filter-cell"
-import { DataTableV2SortableHeaderCell } from "./data-table-v2-sortable-header-cell"
+import { DataTableV2HeaderCell } from "./data-table-v2-header-cell"
 import {
   CHECKBOX_COL_WIDTH,
   DEFAULT_COL_WIDTH,
@@ -34,32 +33,6 @@ export interface PinnedColumnRef<T> {
   c: DataTableV2Column<T>
   i: number
 }
-
-/** 정렬 인디케이터 — 정렬 상태가 바뀐 컬럼만 다시 그리도록 memo */
-const SortArrow = React.memo(function SortArrow({
-  direction,
-  active,
-}: {
-  direction: "up" | "down"
-  active: boolean
-}) {
-  return (
-    <svg
-      width="8"
-      height="5"
-      viewBox="0 0 8 5"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={cn(
-        "transition-colors",
-        active ? "text-blue-600 dark:text-blue-400" : "text-slate-300 dark:text-slate-500",
-        direction === "down" && "rotate-180"
-      )}
-    >
-      <path d="M4 0L8 5H0L4 0Z" fill="currentColor" />
-    </svg>
-  )
-})
 
 export interface DataTableV2HeaderProps<T> {
   // ── 컬럼 ──────────────────────────────────────────────────────────
@@ -171,150 +144,37 @@ function DataTableV2HeaderInner<T extends { id: string | number }>({
 
   const renderHeaderCell = (col: DataTableV2Column<T>, i: number) => {
     const colId = col.id ?? String(col.accessorKey)
-    const info = getSortInfo(col.accessorKey)
-    const width = typeof col.width === "number" ? col.width : undefined
-    const minWidth = typeof col.minWidth === "number" ? col.minWidth : undefined
+    const columnKey = String(col.accessorKey)
     const isLeft = col.pinned === "left"
     const isRight = col.pinned === "right"
-    const isPinned = isLeft || isRight
-    // shadow 는 CSS `group-data-[scrolled-*=true]/scroll:` 로 반응 → 여기선 column 위치만 판단.
-    const isLeftBoundary = i === lastLeftPinnedIdx
-    const isRightBoundary = i === firstRightPinnedIdx
-    const isFirstRightPinned = i === firstRightPinnedIdx
-    const isDraggable = columnReorderable && !isPinned
-    const isResizingThis = resizingKey === col.accessorKey
-    const isLastColumn = i === columns.length - 1
-
-    // Outer: 순수 레이아웃/포지셔닝. text 스타일은 content container 에.
-    // 모든 셀에 bg 부여 (pinned 여부 무관) → 가로 스크롤 우측 끝에서 마지막 컬럼 bg 로 자연 커버
-    // (right pinned 없는 케이스에서 wrapper 우측 흰 gap 발생 방지)
-    const outerCls = cn(
-      "relative flex min-h-9",
-      width !== undefined && "shrink-0",
-      isPinned && "sticky z-20",
-      headerBg,
-      isLeftBoundary && "group-data-[scrolled-left=true]/scroll:shadow-[2px_0_5px_-2px_rgba(0,0,0,0.15)]",
-      isRightBoundary && "group-data-[scrolled-right=true]/scroll:shadow-[-2px_0_5px_-2px_rgba(0,0,0,0.15)]",
-      col.sortable && "select-none",
-      isFirstRightPinned && "ml-auto"
-    )
-    const style: React.CSSProperties = {
-      width,
-      minWidth,
-      flex: width === undefined ? "1 1 0" : undefined,
-      left: isLeft ? leftOffsets[i] : undefined,
-      right: isRight ? rightOffsets[i] : undefined,
-    }
-
-    // Content container 는 3 슬롯 (헤더명+정렬 / 필터 / 미래 확장) 구조.
-    // alignClass 는 슬롯 1 내부에만 적용해서 필터 아이콘 위치에 영향 안 주게 함.
-    const contentBody = col.sortable ? (
-      <button
-        type="button"
-        className={cn(
-          "flex w-full min-w-0 items-center gap-1 cursor-pointer",
-          // 우측 정렬 컬럼은 sort 인디케이터를 헤더명 좌측에 두는 게 관행. flex-row-reverse 로 순서 반전.
-          col.align === "right"
-            ? "flex-row-reverse justify-start"
-            : alignClass[col.align ?? "left"]
-        )}
-        onClick={() => onSort(col.accessorKey)}
-      >
-        <span className="min-w-0 truncate">{col.header}</span>
-        <span className="flex shrink-0 items-center gap-0.5">
-          <span className="flex flex-col gap-0.5">
-            <SortArrow direction="up" active={info.direction === "asc"} />
-            <SortArrow direction="down" active={info.direction === "desc"} />
-          </span>
-          {info.priority !== undefined && (
-            <span className="text-[9px] font-medium text-blue-600 dark:text-blue-400 leading-none">
-              {info.priority}
-            </span>
-          )}
-        </span>
-      </button>
-    ) : (
-      <span className="min-w-0 truncate">{col.header}</span>
-    )
-
-    const columnKey = String(col.accessorKey)
-    const filterCell = col.filter ? (
-      <DataTableV2FilterCell
-        column={col}
-        filter={col.filter}
-        value={getColumnFilter(columnKey)}
-        active={hasActiveFilter(columnKey)}
-        onChange={onColumnFilterChange}
-        columnKey={columnKey}
-      />
-    ) : null
-
-    // 오른쪽 정렬 컬럼(주로 숫자)은 데이터 값이 우측 끝에 몰리므로 필터 아이콘을 좌측에 배치.
-    // 정렬 화살표의 flex-row-reverse 처리와 같은 UX 원칙 (AG Grid 등 표준).
-    const contentInner = (
-      <div
-        className={cn(
-          "flex-1 flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-300 min-w-0",
-          col.align === "right" && "flex-row-reverse"
-        )}
-      >
-        <div
-          className={cn(
-            "flex-1 flex items-center gap-1 min-w-0 overflow-hidden",
-            alignClass[col.align ?? "left"]
-          )}
-        >
-          {contentBody}
-        </div>
-        {filterCell}
-      </div>
-    )
-
-    const separator = !isLastColumn && (
-      <DataTableV2ColumnSeparator
-        resizable={resizable}
-        isResizing={isResizingThis}
-        onResizeStart={onResizeStart}
-        column={col}
-      />
-    )
-
-    const ariaSort: "ascending" | "descending" | "none" | undefined = col.sortable
-      ? info.direction === "asc"
-        ? "ascending"
-        : info.direction === "desc"
-          ? "descending"
-          : "none"
-      : undefined
-
-    if (isDraggable) {
-      return (
-        <DataTableV2SortableHeaderCell
-          key={colId}
-          id={String(col.accessorKey)}
-          className={outerCls}
-          style={style}
-          dataColumnKey={String(col.accessorKey)}
-          ariaSort={ariaSort}
-        >
-          {contentInner}
-          {separator}
-        </DataTableV2SortableHeaderCell>
-      )
-    }
-
+    // 정렬 상태는 원시값으로 쪼개서 넘긴다 (객체를 그대로 넘기면 memo 무효).
+    const info = getSortInfo(col.accessorKey)
     return (
-      <div
+      <DataTableV2HeaderCell
         key={colId}
-        role="columnheader"
-        data-column-key={String(col.accessorKey)}
-        className={outerCls}
-        style={style}
-        aria-sort={ariaSort}
-      >
-        {contentInner}
-        {separator}
-      </div>
+        column={col}
+        width={typeof col.width === "number" ? col.width : undefined}
+        minWidth={typeof col.minWidth === "number" ? col.minWidth : undefined}
+        leftOffset={isLeft ? leftOffsets[i] : undefined}
+        rightOffset={isRight ? rightOffsets[i] : undefined}
+        isLeftPinned={isLeft}
+        isRightPinned={isRight}
+        isLeftBoundary={i === lastLeftPinnedIdx}
+        isRightBoundary={i === firstRightPinnedIdx}
+        isFirstRightPinned={i === firstRightPinnedIdx}
+        isDraggable={columnReorderable && !isLeft && !isRight}
+        isLastColumn={i === columns.length - 1}
+        sortDirection={info.direction}
+        sortPriority={info.priority}
+        onSort={onSort}
+        filterValue={col.filter ? getColumnFilter(columnKey) : undefined}
+        filterActive={col.filter ? hasActiveFilter(columnKey) : false}
+        onColumnFilterChange={onColumnFilterChange}
+        resizable={resizable}
+        isResizing={resizingKey === col.accessorKey}
+        onResizeStart={onResizeStart}
+        headerBg={headerBg}
+      />
     )
   }
 

@@ -278,12 +278,22 @@ export function DataTableV2<T extends { id: string | number }>({
     [normalizedSortState, multiSort]
   )
 
+  // 정렬 상태를 ref 로 흡수해 handleSort 를 stable ref 로 유지한다.
+  // deps 에 두면 정렬할 때마다 새 함수가 되고, 이 콜백을 prop 으로 받는
+  // **모든 헤더 셀의 memo 가 무효**가 되어 관계없는 컬럼까지 전부 리렌더된다.
+  const sortRef = React.useRef(normalizedSortState)
+  sortRef.current = normalizedSortState
+  const multiSortRef = React.useRef(multiSort)
+  multiSortRef.current = multiSort
+
   const handleSort = React.useCallback(
     (column: keyof T) => {
       if (!stableOnSortChange) return
-      stableOnSortChange(computeNextSort(normalizedSortState, column, multiSort))
+      stableOnSortChange(
+        computeNextSort(sortRef.current, column, multiSortRef.current)
+      )
     },
-    [normalizedSortState, multiSort, stableOnSortChange]
+    [stableOnSortChange]
   )
 
   // 어떤 컬럼도 flex-1 이 아니라면 (전부 fixed width) row 오른쪽에 spacer 필요.
