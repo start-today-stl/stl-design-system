@@ -426,6 +426,37 @@ export function DataTableV2<T extends { id: string | number }>({
     scrollContainerRef: scrollRef,
     rowSpanMap,
   })
+  // ── 행 위치는 prop 이 아니라 DOM 에 직접 쓴다 (SDS-49) ──────────────────
+  // positions 는 행 높이의 누적합이라, 한 행의 높이가 바뀌면 (확장 / 편집 에러 등)
+  // 그 아래 모든 행의 값이 밀린다. 위치를 prop 으로 넘기면 그 행들이 전부 리렌더된다.
+  // v1 은 <table> 문서 흐름이라 브라우저가 알아서 밀어내고 React 가 개입하지 않았다.
+  // 여기서는 layout effect 로 style.top 을 직접 써서 같은 결과를 만든다.
+  //
+  // 행 id 로 보관하는 이유: 인덱스로 보관하면 행 순서가 바뀔 때 ref 정리(null)와
+  // 등록(el) 순서가 엘리먼트 간에 보장되지 않아 서로의 등록을 지울 수 있다.
+  const rowElsRef = React.useRef(new Map<T["id"], HTMLElement>())
+  const registerRowEl = React.useCallback(
+    (id: T["id"], el: HTMLElement | null) => {
+      if (el) rowElsRef.current.set(id, el)
+      else rowElsRef.current.delete(id)
+    },
+    []
+  )
+  // 같은 값을 다시 쓰지 않도록 직전 값 보관 (불필요한 스타일 무효화 방지)
+  const appliedTopsRef = React.useRef(new Map<T["id"], number>())
+  React.useLayoutEffect(() => {
+    for (const i of renderIndices) {
+      const row = data[i]
+      if (!row) continue
+      const el = rowElsRef.current.get(row.id)
+      if (!el) continue
+      const top = Math.round(isVirtual ? getItemStart(i) : positions[i])
+      if (appliedTopsRef.current.get(row.id) === top) continue
+      el.style.top = `${top}px`
+      appliedTopsRef.current.set(row.id, top)
+    }
+  })
+
   // 가로 스크롤 shadow: React state 대신 scrollRef DOM 에 data-attr 직접 갱신 →
   // React 리렌더 없이 CSS 로 shadow 처리 (모든 row 리렌더 방지).
   // pinned 경계 셀은 data-attr 상속받는 CSS 셀렉터로 shadow 표시.
@@ -717,7 +748,7 @@ export function DataTableV2<T extends { id: string | number }>({
                     lastLeftPinnedIdx={lastLeftPinnedIdx}
                     firstRightPinnedIdx={firstRightPinnedIdx}
                     totalWidth={totalWidth}
-                    translateY={isVirtual ? getItemStart(i) : positions[i]}
+                    registerEl={registerRowEl}
                     onHover={rowGrouping ? setHoveredId : undefined}
                     onHeightChange={setHeight}
                     measureRef={isVirtual && virtualizer ? virtualizer.measureElement : undefined}

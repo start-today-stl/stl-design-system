@@ -1299,3 +1299,52 @@ const syncColumns: DataTableV2Column<Row>[] = [
     filter: { type: "text", placeholder: "역할 검색" },
   },
 ]
+
+/**
+ * SDS-49 회귀 가드 — 행의 세로 위치(top)는 React prop 이 아니라 부모가 layout effect 로
+ * DOM 에 직접 쓴다. 배선이 끊기면 모든 행이 같은 자리에 겹쳐 쌓이는데, 렌더 스냅샷
+ * 테스트로는 잡히지 않는다 (DOM 은 정상적으로 존재하므로).
+ */
+export const RowsStayPositioned: Story = {
+  render: function Render() {
+    const [expandedIds, setExpandedIds] = useState<(string | number)[]>([])
+    return (
+      <DataTableV2
+        data={smallData}
+        columns={columns}
+        expandable={{
+          expandedRowRender: (row) => (
+            <div style={{ height: 80 }} className="p-4 text-xs">
+              {row.name} 상세
+            </div>
+          ),
+          expandedRowIds: expandedIds,
+          onExpandedChange: setExpandedIds,
+        }}
+      />
+    )
+  },
+  play: async ({ canvasElement }) => {
+    const tops = () =>
+      Array.from(
+        canvasElement.querySelectorAll<HTMLElement>('[role="row"][style*="top"]')
+      ).map((el) => parseFloat(el.style.top))
+
+    // 1) 위치가 적용됐는지 — 행 수만큼 있고, 아래로 갈수록 증가해야 한다
+    const initial = tops()
+    expect(initial).toHaveLength(smallData.length)
+    expect(initial[0]).toBe(0)
+    for (let i = 1; i < initial.length; i++) {
+      expect(initial[i]).toBeGreaterThan(initial[i - 1])
+    }
+
+    // 2) 행을 펼치면 아래 행들이 그만큼 밀려야 한다
+    const canvas = within(canvasElement)
+    await userEvent.click(canvas.getAllByRole("button", { name: "행 펼치기" })[0])
+    await waitFor(() => {
+      const after = tops()
+      expect(after[1]).toBeGreaterThan(initial[1])
+      expect(after[after.length - 1]).toBeGreaterThan(initial[initial.length - 1])
+    })
+  },
+}

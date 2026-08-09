@@ -18,7 +18,12 @@ interface DataTableV2RowProps<T extends { id: string | number }> {
   lastLeftPinnedIdx: number
   firstRightPinnedIdx: number
   totalWidth: number
-  translateY: number
+  /**
+   * 행 엘리먼트 등록 콜백 (SDS-49).
+   * 세로 위치(top)는 prop 으로 받지 않고 부모가 layout effect 에서 DOM 에 직접 쓴다.
+   * 위치를 prop 으로 받으면 위쪽 행의 높이가 바뀔 때마다 이 행이 리렌더된다.
+   */
+  registerEl: (id: T["id"], el: HTMLElement | null) => void
   // rowGrouping 활성 시에만 필요. hover 상태를 parent state 로 관리해 그룹 head 셀 하이라이트 동기화.
   // 비활성 시엔 undefined 로 넘겨 mouseenter/leave listener 자체를 안 붙임 → hover 시 리렌더 방지.
   onHover?: (id: T["id"] | null) => void
@@ -104,7 +109,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
   lastLeftPinnedIdx,
   firstRightPinnedIdx,
   totalWidth,
-  translateY,
+  registerEl,
   onHover,
   onHeightChange,
   selectable,
@@ -186,8 +191,9 @@ function DataTableV2RowInner<T extends { id: string | number }>({
       rowRef.current = el
       sortable.setNodeRef?.(el)
       if (measureRef) measureRef(el)
+      registerEl(row.id, el)
     },
-    [sortable, measureRef]
+    [sortable, measureRef, registerEl, row.id]
   )
 
   return (
@@ -202,7 +208,8 @@ function DataTableV2RowInner<T extends { id: string | number }>({
       )}
       style={{
         minWidth: totalWidth,
-        top: Math.round(translateY),
+        // top 은 부모가 layout effect 로 직접 쓴다 (위 registerEl 주석 참고).
+        // React style 객체에 top 을 두지 않으므로 React 가 값을 덮어쓰지 않는다.
         transform: dndTransform,
         transition: dndTransition,
         opacity: isDragging ? 0.6 : undefined,
