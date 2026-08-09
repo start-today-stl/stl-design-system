@@ -1,0 +1,2 @@
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const t=120,_=32,e=40,D=40,s=40,C={left:"text-left justify-start",center:"text-center justify-center",right:"text-right justify-end"};exports.CHECKBOX_COL_WIDTH=e;exports.DEFAULT_COL_WIDTH=t;exports.DRAG_HANDLE_COL_WIDTH=_;exports.EXPAND_COL_WIDTH=D;exports.ROW_ACTIONS_WIDTH=s;exports.alignClass=C;
+//# sourceMappingURL=constants.cjs.map

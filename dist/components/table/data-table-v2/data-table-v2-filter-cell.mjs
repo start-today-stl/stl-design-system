@@ -13,10 +13,10 @@ function C({
   columnKey: e
 }) {
   const d = s.useCallback(
-    (c) => n(e, c),
+    (i) => n(e, i),
     [n, e]
-  ), [u, i] = s.useState(!1), h = s.useCallback(() => i(!1), []);
-  return /* @__PURE__ */ p(b, { open: u, onOpenChange: i, children: [
+  ), [u, c] = s.useState(!1), h = s.useCallback(() => c(!1), []);
+  return /* @__PURE__ */ p(b, { open: u, onOpenChange: c, children: [
     /* @__PURE__ */ a(g, { asChild: !0, children: /* @__PURE__ */ p(
       "button",
       {
@@ -28,13 +28,14 @@ function C({
           r && "text-blue-600 dark:text-blue-400"
         ),
         "aria-label": `${typeof t.header == "string" ? t.header : "컬럼"} 필터`,
-        onClick: (c) => c.stopPropagation(),
+        onClick: (i) => i.stopPropagation(),
         children: [
           /* @__PURE__ */ a(x, { size: 20 }),
           r && /* @__PURE__ */ a(
             "span",
             {
               "aria-hidden": !0,
+              "data-filter-active": "",
               className: "absolute top-0 right-0 h-1.5 w-1.5 rounded-full bg-blue-500 dark:bg-blue-400"
             }
           )
@@ -44,7 +45,7 @@ function C({
     /* @__PURE__ */ a(f, { align: "end", className: "w-64 p-3", children: N(l, o, d, h, t) })
   ] });
 }
-const v = s.memo(
+const y = s.memo(
   C
 );
 function N(t, l, o, r, n) {
@@ -109,6 +110,6 @@ function N(t, l, o, r, n) {
   }
 }
 export {
-  v as DataTableV2FilterCell
+  y as DataTableV2FilterCell
 };
 //# sourceMappingURL=data-table-v2-filter-cell.mjs.map

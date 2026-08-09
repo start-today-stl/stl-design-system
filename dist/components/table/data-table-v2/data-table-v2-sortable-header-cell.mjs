@@ -1,46 +1,48 @@
-import { jsxs as f, jsx as r } from "react/jsx-runtime";
-import { useSortable as u } from "@dnd-kit/sortable";
-import { CSS as b } from "@dnd-kit/utilities";
-import { cn as y } from "../../../lib/utils.mjs";
-import { DragHandleIcon as S } from "../../../icons/DragHandleIcon.mjs";
-function j({
-  id: e,
-  disabled: t,
-  className: a,
+import { jsxs as u, jsx as r } from "react/jsx-runtime";
+import { useSortable as b } from "@dnd-kit/sortable";
+import { CSS as y } from "@dnd-kit/utilities";
+import { cn as S } from "../../../lib/utils.mjs";
+import { DragHandleIcon as h } from "../../../icons/DragHandleIcon.mjs";
+function k({
+  id: a,
+  disabled: e,
+  className: t,
   style: o,
   children: i,
-  dataColumnKey: n
+  dataColumnKey: s,
+  ariaSort: n
 }) {
   const {
-    attributes: s,
-    listeners: l,
-    setNodeRef: c,
-    transform: m,
-    transition: g,
-    isDragging: p
-  } = u({ id: e, disabled: t }), d = {
+    attributes: l,
+    listeners: c,
+    setNodeRef: m,
+    transform: g,
+    transition: p,
+    isDragging: d
+  } = b({ id: a, disabled: e }), f = {
     ...o,
-    transform: b.Translate.toString(m),
-    transition: g,
-    opacity: p ? 0.4 : 1
+    transform: y.Translate.toString(g),
+    transition: p,
+    opacity: d ? 0.4 : 1
   };
-  return /* @__PURE__ */ f(
+  return /* @__PURE__ */ u(
     "div",
     {
-      ref: c,
+      ref: m,
       role: "columnheader",
-      "data-column-key": n,
-      style: d,
-      className: y("group/drag gap-0.5", a),
+      "data-column-key": s,
+      "aria-sort": n,
+      style: f,
+      className: S("group/drag gap-0.5", t),
       children: [
         /* @__PURE__ */ r(
           "div",
           {
             "aria-label": "컬럼 순서 변경",
             className: "flex-shrink-0 flex items-center cursor-grab active:cursor-grabbing opacity-30 group-hover/drag:opacity-70 transition-opacity",
-            ...s,
             ...l,
-            children: /* @__PURE__ */ r(S, { size: 16 })
+            ...c,
+            children: /* @__PURE__ */ r(h, { size: 16 })
           }
         ),
         i
@@ -49,6 +51,6 @@ function j({
   );
 }
 export {
-  j as DataTableV2SortableHeaderCell
+  k as DataTableV2SortableHeaderCell
 };
 //# sourceMappingURL=data-table-v2-sortable-header-cell.mjs.map

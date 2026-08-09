@@ -11,6 +11,11 @@ interface DataTableV2ColumnSeparatorProps {
     onResizeStart?: (e: React.MouseEvent, column: unknown) => void;
     /** 이 separator 가 속한 컬럼 (stable ref 기대) — 리사이즈 시 onResizeStart 에 전달 */
     column?: unknown;
+    /**
+     * 셀의 어느 쪽 경계에 붙일지. 기본 "right".
+     * 헤더 그룹 행에서 그룹 시작 경계를 표시할 때 "left" 사용.
+     */
+    side?: "left" | "right";
 }
 /**
  * 컬럼 헤더 우측에 절대 배치되는 세로 구분선 겸 리사이즈 핸들.
@@ -22,6 +27,6 @@ interface DataTableV2ColumnSeparatorProps {
  * 절대 배치를 쓰는 이유: 셀 폭에서 separator 폭이 차감되지 않도록 하기 위함.
  * 셀의 우측 padding 영역에 겹쳐 렌더된다 (레이아웃 폭에 영향 없음).
  */
-declare function DataTableV2ColumnSeparatorInner({ resizable, isResizing, onResizeStart, column, }: DataTableV2ColumnSeparatorProps): import("react/jsx-runtime").JSX.Element;
+declare function DataTableV2ColumnSeparatorInner({ resizable, isResizing, onResizeStart, column, side, }: DataTableV2ColumnSeparatorProps): import("react/jsx-runtime").JSX.Element;
 export declare const DataTableV2ColumnSeparator: React.MemoExoticComponent<typeof DataTableV2ColumnSeparatorInner>;
 export {};

@@ -1,102 +1,109 @@
-import { jsx as e, jsxs as H } from "react/jsx-runtime";
+import { jsx as e, jsxs as a } from "react/jsx-runtime";
 import * as c from "react";
-import { useSortable as jt } from "@dnd-kit/sortable";
-import { CSS as wt } from "@dnd-kit/utilities";
+import { useSortable as yt } from "@dnd-kit/sortable";
+import { CSS as pt } from "@dnd-kit/utilities";
 import { cn as o } from "../../../lib/utils.mjs";
-import { Checkbox as Dt } from "../../ui/checkbox.mjs";
-import { DownIcon as Tt } from "../../../icons/DownIcon.mjs";
-import { DragHandleIcon as _t } from "../../../icons/DragHandleIcon.mjs";
-import { RightIcon as Kt } from "../../../icons/RightIcon.mjs";
-import { RowDeleteIcon as Rt } from "../../../icons/RowDeleteIcon.mjs";
-import { DataTableV2EditCell as Pt } from "./data-table-v2-edit-cell.mjs";
-const Bt = {
-  left: "text-left justify-start",
-  center: "text-center justify-center",
-  right: "text-right justify-end"
-};
-function O({
+import { Checkbox as xt } from "../../ui/checkbox.mjs";
+import { DownIcon as Nt } from "../../../icons/DownIcon.mjs";
+import { DragHandleIcon as zt } from "../../../icons/DragHandleIcon.mjs";
+import { RightIcon as jt } from "../../../icons/RightIcon.mjs";
+import { RowDeleteIcon as Ct } from "../../../icons/RowDeleteIcon.mjs";
+import { DataTableV2Cell as Dt } from "./data-table-v2-cell.mjs";
+function C() {
+  return /* @__PURE__ */ e(
+    "span",
+    {
+      "aria-hidden": !0,
+      className: "absolute -bottom-px left-0 right-0 h-px bg-slate-200 dark:bg-slate-700"
+    }
+  );
+}
+function _({
   row: r,
-  rowIndex: a,
-  columns: b,
-  leftOffsets: d,
-  rightOffsets: u,
-  lastLeftPinnedIdx: v,
+  rowIndex: n,
+  columns: v,
+  leftOffsets: l,
+  rightOffsets: d,
+  lastLeftPinnedIdx: k,
   firstRightPinnedIdx: f,
-  totalWidth: k,
-  translateY: y,
-  onHover: p,
-  onHeightChange: W,
-  selectable: P,
-  isSelected: x,
-  onToggleSelect: q,
-  checkboxColWidth: B,
+  totalWidth: y,
+  registerEl: p,
+  onHover: x,
+  onHeightChange: q,
+  selectable: S,
+  isSelected: B,
+  onToggleSelect: G,
+  checkboxColWidth: V,
   expandable: J,
-  isExpanded: h,
+  isExpanded: u,
   canExpand: Q,
   onToggleExpand: U,
-  expandedContent: L,
+  expandedContent: A,
   expandColWidth: X,
-  onRowClick: g,
+  visibleWidth: M,
+  onRowClick: h,
   extraClassName: Y,
   editingColumnKey: Z,
-  editingError: tt,
-  onStartEdit: et,
-  onCompleteEdit: rt,
-  onCancelEdit: it,
-  onClearEditError: st,
-  showRowDelete: ot,
-  onRowDelete: N,
-  rowActionsColWidth: at,
-  rowActionsColLeftOffset: nt,
-  rowReorderable: C,
-  dragHandleColWidth: z,
-  isLast: lt,
-  getRowSpan: ct,
-  getRowSpanHeight: dt,
-  getGroupHovered: ut,
-  measureRef: j,
+  editingError: H,
+  onStartEdit: tt,
+  onCompleteEdit: et,
+  onCancelEdit: rt,
+  onClearEditError: it,
+  showRowDelete: st,
+  onRowDelete: D,
+  rowActionsColWidth: nt,
+  rowActionsColLeftOffset: ot,
+  rowReorderable: R,
+  dragHandleColWidth: T,
+  isLast: g,
+  getRowSpan: at,
+  getRowSpanHeight: ct,
+  getGroupHovered: lt,
+  getGroupSelected: dt,
+  measureRef: w,
   dataIndex: ft,
-  ariaRowIndex: ht,
+  ariaRowIndex: ut,
   sortable: s
 }) {
-  const S = c.useRef(null), gt = s.transform, mt = s.transition, V = s.isDragging;
+  const O = c.useRef(null), ht = s.transform, gt = s.transition, L = s.isDragging;
   c.useLayoutEffect(() => {
-    const t = S.current;
+    const t = O.current;
     if (!t) return;
-    const i = () => W(r.id, t.offsetHeight);
+    const i = () => q(r.id, t.offsetHeight);
     i();
-    const m = new ResizeObserver(i);
-    return m.observe(t), () => m.disconnect();
-  }, [r.id, h]);
-  const n = x ? "bg-blue-50 dark:bg-blue-900 hover:bg-blue-100 dark:hover:bg-blue-950 group-hover:bg-blue-100 dark:group-hover:bg-blue-950" : "bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 group-hover:bg-slate-100 dark:group-hover:bg-slate-800", w = c.useRef(!1), bt = (t) => {
-    t.target.closest("[data-no-row-click]") || g == null || g(r);
-  }, vt = c.useCallback(
+    const b = new ResizeObserver(i);
+    return b.observe(t), () => b.disconnect();
+  }, [r.id, u]);
+  const m = B ? "bg-blue-50 dark:bg-blue-900 hover:bg-blue-100 dark:hover:bg-blue-950 group-hover:bg-blue-100 dark:group-hover:bg-blue-950" : "bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 group-hover:bg-slate-100 dark:group-hover:bg-slate-800", K = c.useRef(!1), mt = (t) => {
+    t.target.closest("[data-no-row-click]") || h == null || h(r);
+  }, bt = c.useCallback(
     (t) => {
       var i;
-      S.current = t, (i = s.setNodeRef) == null || i.call(s, t), j && j(t);
+      O.current = t, (i = s.setNodeRef) == null || i.call(s, t), w && w(t), p(r.id, t);
     },
-    [s, j]
+    [s, w, p, r.id]
   );
-  return /* @__PURE__ */ H(
+  return /* @__PURE__ */ a(
     "div",
     {
-      ref: vt,
+      ref: bt,
       role: "row",
       "data-index": ft,
-      "aria-rowindex": ht,
+      "aria-rowindex": ut,
       className: o(
         "absolute left-0 right-0 flex flex-col",
-        V && "z-30"
+        L && "z-30"
       ),
       style: {
-        minWidth: k,
-        top: Math.round(y),
-        transform: gt,
-        transition: mt,
-        opacity: V ? 0.6 : void 0
+        minWidth: y,
+        // top 은 부모가 layout effect 로 직접 쓴다 (위 registerEl 주석 참고).
+        // React style 객체에 top 을 두지 않으므로 React 가 값을 덮어쓰지 않는다.
+        transform: ht,
+        transition: gt,
+        opacity: L ? 0.6 : void 0
       },
       children: [
-        /* @__PURE__ */ H(
+        /* @__PURE__ */ a(
           "div",
           {
             className: o(
@@ -105,242 +112,226 @@ function O({
               // rowGrouping 병합 셀 위엔 head 셀의 absolute wrapper (opaque bg) 가 border 를 자동으로 가림 → 별도 middle row 스킵 불필요.
               // `group` 클래스 — sticky 셀들이 `group-hover:` 로 row hover 반응 (state 없이 CSS 만)
               "group flex transition-colors",
-              !lt && "border-b border-slate-200 dark:border-slate-700",
-              n,
-              g && "cursor-pointer",
+              !g && "border-b border-slate-200 dark:border-slate-700",
+              m,
+              h && "cursor-pointer",
               Y
             ),
-            onMouseEnter: p ? () => p(r.id) : void 0,
-            onMouseLeave: p ? () => p(null) : void 0,
-            onClick: g ? bt : void 0,
+            onMouseEnter: x ? () => x(r.id) : void 0,
+            onMouseLeave: x ? () => x(null) : void 0,
+            onClick: h ? mt : void 0,
             children: [
-              C && /* @__PURE__ */ e(
+              R && /* @__PURE__ */ a(
                 "div",
                 {
                   role: "gridcell",
                   "data-no-row-click": !0,
                   className: o(
-                    "shrink-0 sticky z-10 flex items-center justify-center min-h-9 transition-colors",
-                    n
+                    "relative shrink-0 sticky z-10 flex items-center justify-center min-h-9 transition-colors",
+                    m
                   ),
-                  style: { width: z, left: 0 },
+                  style: { width: T, left: 0 },
                   onClick: (t) => t.stopPropagation(),
-                  children: /* @__PURE__ */ e(
-                    "div",
-                    {
-                      ref: s.setActivatorNodeRef,
-                      className: "flex h-9 w-8 items-center justify-center cursor-grab text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors",
-                      "aria-label": "행 순서 변경",
-                      ...s.listeners ?? {},
-                      ...s.attributes ?? {},
-                      children: /* @__PURE__ */ e(_t, { size: 16 })
-                    }
-                  )
+                  children: [
+                    /* @__PURE__ */ e(
+                      "div",
+                      {
+                        ref: s.setActivatorNodeRef,
+                        className: "flex h-9 w-8 items-center justify-center cursor-grab text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors",
+                        "aria-label": "행 순서 변경",
+                        ...s.listeners ?? {},
+                        ...s.attributes ?? {},
+                        children: /* @__PURE__ */ e(zt, { size: 16 })
+                      }
+                    ),
+                    !g && /* @__PURE__ */ e(C, {})
+                  ]
                 }
               ),
-              P && /* @__PURE__ */ e(
+              S && /* @__PURE__ */ a(
                 "div",
                 {
                   role: "gridcell",
                   "data-no-row-click": !0,
                   className: o(
-                    "shrink-0 sticky z-10 flex items-center justify-center min-h-9 transition-colors",
-                    n
+                    "relative shrink-0 sticky z-10 flex items-center justify-center min-h-9 transition-colors",
+                    m
                   ),
                   style: {
-                    width: B,
-                    left: C ? z : 0
+                    width: V,
+                    left: R ? T : 0
                   },
                   onClick: (t) => t.stopPropagation(),
-                  children: /* @__PURE__ */ e(
-                    Dt,
-                    {
-                      checked: x,
-                      onClick: (t) => {
-                        w.current = t.shiftKey;
-                      },
-                      onCheckedChange: () => {
-                        q(r.id, a, w.current), w.current = !1;
-                      },
-                      "aria-label": `행 ${r.id} 선택`
-                    }
-                  )
+                  children: [
+                    /* @__PURE__ */ e(
+                      xt,
+                      {
+                        checked: B,
+                        onClick: (t) => {
+                          K.current = t.shiftKey;
+                        },
+                        onCheckedChange: () => {
+                          G(r.id, n, K.current), K.current = !1;
+                        },
+                        "aria-label": `행 ${r.id} 선택`
+                      }
+                    ),
+                    !g && /* @__PURE__ */ e(C, {})
+                  ]
                 }
               ),
-              J && /* @__PURE__ */ e(
+              J && /* @__PURE__ */ a(
                 "div",
                 {
                   role: "gridcell",
                   "data-no-row-click": !0,
                   className: o(
-                    "shrink-0 sticky z-10 flex items-center justify-center min-h-9 transition-colors",
-                    n
+                    "relative shrink-0 sticky z-10 flex items-center justify-center min-h-9 transition-colors",
+                    m
                   ),
                   style: {
                     width: X,
-                    left: (C ? z : 0) + (P ? B : 0)
+                    left: (R ? T : 0) + (S ? V : 0)
                   },
                   onClick: (t) => t.stopPropagation(),
-                  children: Q && /* @__PURE__ */ e(
-                    "button",
-                    {
-                      type: "button",
-                      onClick: () => U(r.id),
-                      className: "flex h-9 w-10 items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors",
-                      "aria-label": h ? "행 접기" : "행 펼치기",
-                      "aria-expanded": h,
-                      children: h ? /* @__PURE__ */ e(Tt, { size: 24 }) : /* @__PURE__ */ e(Kt, { size: 24 })
-                    }
-                  )
+                  children: [
+                    Q && /* @__PURE__ */ e(
+                      "button",
+                      {
+                        type: "button",
+                        onClick: () => U(r.id),
+                        className: "flex h-9 w-10 items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors",
+                        "aria-label": u ? "행 접기" : "행 펼치기",
+                        "aria-expanded": u,
+                        children: u ? /* @__PURE__ */ e(Nt, { size: 24 }) : /* @__PURE__ */ e(jt, { size: 24 })
+                      }
+                    ),
+                    !g && /* @__PURE__ */ e(C, {})
+                  ]
                 }
               ),
-              ot && /* @__PURE__ */ e(
+              st && /* @__PURE__ */ a(
                 "div",
                 {
                   role: "gridcell",
                   "data-no-row-click": !0,
                   className: o(
-                    "shrink-0 sticky z-10 flex items-center justify-center min-h-9 transition-colors",
-                    n
+                    "relative shrink-0 sticky z-10 flex items-center justify-center min-h-9 transition-colors",
+                    m
                   ),
-                  style: { width: at, left: nt },
+                  style: { width: nt, left: ot },
                   onClick: (t) => t.stopPropagation(),
-                  children: /* @__PURE__ */ e(
-                    "button",
-                    {
-                      type: "button",
-                      onClick: () => N == null ? void 0 : N(r),
-                      className: "flex h-9 w-10 items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors",
-                      "aria-label": "행 삭제",
-                      children: /* @__PURE__ */ e(Rt, { size: 20 })
-                    }
-                  )
+                  children: [
+                    /* @__PURE__ */ e(
+                      "button",
+                      {
+                        type: "button",
+                        onClick: () => D == null ? void 0 : D(r),
+                        className: "flex h-9 w-10 items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors",
+                        "aria-label": "행 삭제",
+                        children: /* @__PURE__ */ e(Ct, { size: 20 })
+                      }
+                    ),
+                    !g && /* @__PURE__ */ e(C, {})
+                  ]
                 }
               ),
-              b.map((t, i) => {
-                const m = t.id ?? String(t.accessorKey), M = r[t.accessorKey], kt = t.cell ? t.cell(M, r) : M, l = typeof t.width == "number" ? t.width : void 0, A = typeof t.minWidth == "number" ? t.minWidth : void 0, D = t.pinned === "left", T = t.pinned === "right", _ = D || T, pt = i === v, yt = i === f, E = i === f, K = Z === t.accessorKey, R = ct(a, t.accessorKey);
-                if (R === 0)
+              v.map((t, i) => {
+                const b = t.id ?? String(t.accessorKey), N = typeof t.width == "number" ? t.width : void 0, $ = typeof t.minWidth == "number" ? t.minWidth : void 0, z = t.pinned === "left", j = t.pinned === "right", vt = z || j, E = i === f, P = at(n, t.accessorKey);
+                if (P === 0)
                   return /* @__PURE__ */ e(
                     "div",
                     {
                       "aria-hidden": !0,
                       className: o(
-                        l !== void 0 && "shrink-0",
-                        _ && "sticky z-10",
+                        N !== void 0 && "shrink-0",
+                        vt && "sticky z-10",
                         E && "ml-auto"
                       ),
                       style: {
-                        width: l,
-                        minWidth: A,
-                        flex: l === void 0 ? "1 1 0" : void 0,
-                        left: D ? d[i] : void 0,
-                        right: T ? u[i] : void 0
+                        width: N,
+                        minWidth: $,
+                        flex: N === void 0 ? "1 1 0" : void 0,
+                        left: z ? l[i] : void 0,
+                        right: j ? d[i] : void 0
                       }
                     },
-                    m
+                    b
                   );
-                const G = R !== void 0 && R > 1 ? dt(a, t.accessorKey) : void 0, I = G !== void 0, xt = o(
-                  "flex min-h-9",
-                  l !== void 0 && "shrink-0",
-                  _ && "sticky z-10 transition-colors",
-                  _ && n,
-                  E && "ml-auto",
-                  pt && "group-data-[scrolled-left=true]/scroll:shadow-[2px_0_5px_-2px_rgba(0,0,0,0.15)]",
-                  yt && "group-data-[scrolled-right=true]/scroll:shadow-[-2px_0_5px_-2px_rgba(0,0,0,0.15)]",
-                  // head 셀: 컨텐츠를 absolute 로 세로 확장하기 위해 relative + z-index 상승
-                  // (그룹 middle rows 의 bg 위에 얹혀야 함)
-                  I && "relative z-[5]"
-                ), Nt = o(
-                  "flex-1 flex items-center px-3 py-1.5 text-xs text-slate-900 dark:text-slate-200",
-                  Bt[t.align ?? "left"],
-                  t.editable && !K && "cursor-text hover:bg-blue-50 dark:hover:bg-blue-900/30"
-                ), Ct = t.editable ? (F) => {
-                  F.stopPropagation(), K || et(r, t);
-                } : void 0, $ = K ? /* @__PURE__ */ e(
-                  Pt,
+                const F = P !== void 0 && P > 1 ? ct(n, t.accessorKey) : void 0, kt = (() => {
+                  if (F === void 0) return;
+                  const W = lt(n, t.accessorKey);
+                  return dt(n, t.accessorKey) ? W ? "bg-blue-100 dark:bg-blue-950" : "bg-blue-50 dark:bg-blue-900" : W ? "bg-slate-100 dark:bg-slate-800" : "bg-white dark:bg-slate-900";
+                })(), I = Z === t.accessorKey;
+                return /* @__PURE__ */ e(
+                  Dt,
                   {
                     row: r,
                     column: t,
-                    error: tt,
-                    onComplete: rt,
-                    onCancel: it,
-                    onClearError: st
-                  }
-                ) : /* @__PURE__ */ e("div", { className: Nt, onClick: Ct, children: kt });
-                return /* @__PURE__ */ e(
-                  "div",
-                  {
-                    role: "gridcell",
-                    className: xt,
-                    style: {
-                      width: l,
-                      minWidth: A,
-                      flex: l === void 0 ? "1 1 0" : void 0,
-                      left: D ? d[i] : void 0,
-                      right: T ? u[i] : void 0
-                    },
-                    ...t.editable ? { "data-no-row-click": !0 } : {},
-                    children: I ? (
-                      // Head 셀 (rowGrouping span > 1) — 컨텐츠를 absolute 로 세로 확장.
-                      // outer 는 row height 유지 (다른 셀 정렬 흔들림 방지), content 만 spanHeight 만큼 뻗음.
-                      // border-b 로 그룹 하단 경계 표시 + bg 로 middle rows 위에 opaque 커버.
-                      // headBgClass: 그룹 내 어떤 row 라도 hover 중이면 hover bg. head row 자체 selected 면 selected bg.
-                      // row 자체의 bgClass 와 분리 — head row (span 시작 row) 가 hover 안 됐어도 middle row hover 시 head 셀은 hover 표시돼야 함.
-                      (() => {
-                        const zt = ut(a, t.accessorKey) ? "bg-slate-100 dark:bg-slate-800" : x ? "bg-blue-50 dark:bg-blue-900" : "bg-white dark:bg-slate-900";
-                        return /* @__PURE__ */ e(
-                          "div",
-                          {
-                            className: o(
-                              "absolute top-0 left-0 right-0 flex border-b border-slate-200 dark:border-slate-700 transition-colors",
-                              zt
-                            ),
-                            style: { height: G },
-                            children: $
-                          }
-                        );
-                      })()
-                    ) : $
+                    width: N,
+                    minWidth: $,
+                    leftOffset: z ? l[i] : void 0,
+                    rightOffset: j ? d[i] : void 0,
+                    isLeftPinned: z,
+                    isRightPinned: j,
+                    isLeftBoundary: i === k,
+                    isRightBoundary: i === f,
+                    isFirstRightPinned: E,
+                    spanHeight: F,
+                    headBgClass: kt,
+                    isEditing: I,
+                    editingError: I ? H : void 0,
+                    onStartEdit: tt,
+                    onCompleteEdit: et,
+                    onCancelEdit: rt,
+                    onClearEditError: it
                   },
-                  m
+                  b
                 );
               })
             ]
           }
         ),
-        h && L && /* @__PURE__ */ e(
+        u && A && /* @__PURE__ */ e(
           "div",
           {
             "data-no-row-click": !0,
             className: "bg-slate-50 dark:bg-slate-950 border-b border-slate-200 dark:border-slate-700",
-            children: L
+            children: /* @__PURE__ */ e(
+              "div",
+              {
+                className: "sticky left-0 overflow-x-auto",
+                style: M ? { width: M, maxWidth: "100%" } : void 0,
+                children: A
+              }
+            )
           }
         )
       ]
     }
   );
 }
-function Lt(r) {
-  const { setNodeRef: a, setActivatorNodeRef: b, listeners: d, attributes: u, transform: v, transition: f, isDragging: k } = jt({ id: `row-${r.row.id}` }), y = c.useMemo(
+function Rt(r) {
+  const { setNodeRef: n, setActivatorNodeRef: v, listeners: l, attributes: d, transform: k, transition: f, isDragging: y } = yt({ id: `row-${r.row.id}` }), p = c.useMemo(
     () => ({
-      setNodeRef: a,
-      setActivatorNodeRef: b,
-      listeners: d,
-      attributes: u,
-      transform: wt.Transform.toString(v) ?? void 0,
+      setNodeRef: n,
+      setActivatorNodeRef: v,
+      listeners: l,
+      attributes: d,
+      transform: pt.Transform.toString(k) ?? void 0,
       transition: f,
-      isDragging: k
+      isDragging: y
     }),
-    [a, b, d, u, v, f, k]
+    [n, v, l, d, k, f, y]
   );
-  return /* @__PURE__ */ e(O, { ...r, sortable: y });
+  return /* @__PURE__ */ e(_, { ...r, sortable: p });
 }
-const St = { isDragging: !1 };
-function Vt(r) {
-  return r.rowReorderable ? /* @__PURE__ */ e(Lt, { ...r }) : /* @__PURE__ */ e(O, { ...r, sortable: St });
+const Tt = { isDragging: !1 };
+function wt(r) {
+  return r.rowReorderable ? /* @__PURE__ */ e(Rt, { ...r }) : /* @__PURE__ */ e(_, { ...r, sortable: Tt });
 }
-const qt = c.memo(Vt);
+const Ft = c.memo(wt);
 export {
-  qt as DataTableV2Row
+  Ft as DataTableV2Row
 };
 //# sourceMappingURL=data-table-v2-row.mjs.map

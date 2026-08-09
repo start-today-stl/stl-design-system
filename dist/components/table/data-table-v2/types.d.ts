@@ -127,7 +127,11 @@ export type FilterConfig<T> = {
 export interface HeaderGroup<T> {
     /** 그룹 헤더 텍스트/노드 */
     header: React.ReactNode;
-    /** 이 그룹에 포함되는 컬럼 accessorKey 배열 (인접한 컬럼이어야 함) */
+    /**
+     * 이 그룹에 포함되는 컬럼 accessorKey 배열.
+     * 그룹 헤더는 **현재 컬럼 순서에서 이 그룹이 연속되는 구간마다** 그려진다.
+     * 재정렬 등으로 구간이 갈라지면 같은 그룹 헤더가 여러 번 나타난다 (AG Grid 와 동일).
+     */
     columns: (keyof T)[];
     /** 셀 정렬 */
     align?: "left" | "center" | "right";
@@ -186,7 +190,7 @@ export interface DataTableV2Props<T extends {
     columnWidths?: Record<string, number>;
     /** 컬럼 폭 변경 콜백 */
     onColumnResize?: (columnKey: keyof T, width: number) => void;
-    /** 컬럼 순서 변경 활성화 (헤더 드래그로 재정렬. pinned/sortable 컬럼은 대상 제외) */
+    /** 컬럼 순서 변경 활성화 (헤더 드래그 핸들로 재정렬. pinned 컬럼은 대상 제외) */
     columnReorderable?: boolean;
     /** 컬럼 순서 (controlled). accessorKey 배열 */
     columnOrder?: (keyof T)[];
