@@ -1400,3 +1400,55 @@ export const RemountedRowsStayPositioned: Story = {
     assertAllPositioned()
   },
 }
+
+/**
+ * 컬럼 재정렬 회귀 가드 — 컬럼을 옮기면 **폭도 함께 따라가야** 한다.
+ * (v1 동작. 옮긴 자리에 있던 컬럼의 폭을 뒤집어쓰면 안 된다)
+ */
+export const ReorderKeepsColumnWidth: Story = {
+  render: () => (
+    <DataTableV2 data={smallData} columns={reorderableColumns} columnReorderable />
+  ),
+  play: async ({ canvasElement }) => {
+    const widths = () => {
+      const out: Record<string, number> = {}
+      canvasElement
+        .querySelectorAll<HTMLElement>('[role="columnheader"][data-column-key]')
+        .forEach((el) => {
+          out[el.dataset.columnKey!] = Math.round(el.getBoundingClientRect().width)
+        })
+      return out
+    }
+
+    const before = widths()
+    expect(before).toEqual({ id: 60, name: 160, role: 160, score: 100 })
+
+    // ID(60px) 핸들을 잡아 역할(160px) 자리까지 끌어다 놓는다
+    const handles = canvasElement.querySelectorAll<HTMLElement>(
+      '[aria-label="컬럼 순서 변경"]'
+    )
+    const from = handles[0].getBoundingClientRect()
+    const roleHeader = canvasElement.querySelector<HTMLElement>(
+      '[data-column-key="role"]'
+    )!
+    const to = roleHeader.getBoundingClientRect()
+
+    await userEvent.pointer([
+      { keys: "[MouseLeft>]", target: handles[0], coords: { clientX: from.x + 8, clientY: from.y + 8 } },
+      { coords: { clientX: from.x + 20, clientY: from.y + 8 } },
+      { coords: { clientX: to.x + to.width / 2, clientY: from.y + 8 } },
+      { keys: "[/MouseLeft]" },
+    ])
+
+    // 순서는 바뀌고 폭은 그대로여야 한다
+    await waitFor(() => {
+      const keys = Array.from(
+        canvasElement.querySelectorAll<HTMLElement>(
+          '[role="columnheader"][data-column-key]'
+        )
+      ).map((el) => el.dataset.columnKey)
+      expect(keys[0]).not.toBe("id")
+    })
+    expect(widths()).toEqual(before)
+  },
+}
