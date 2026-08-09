@@ -1348,3 +1348,55 @@ export const RowsStayPositioned: Story = {
     })
   },
 }
+
+/**
+ * SDS-49 회귀 가드 (재마운트) — 행이 사라졌다 다시 나타나면 DOM 엘리먼트가 새로
+ * 만들어진다. 위치 적용 여부를 엘리먼트 바깥(Map 등)에 캐시해두면 "이미 적용했다"고
+ * 판단해 건너뛰고, 그 행이 top 없이 0 위치에 겹쳐 그려진다.
+ * (가상화 스크롤로 화면을 들락날락할 때 실제로 발생했던 버그)
+ */
+export const RemountedRowsStayPositioned: Story = {
+  render: function Render() {
+    const [showAll, setShowAll] = useState(true)
+    return (
+      <div className="flex flex-col gap-2">
+        <Button size="sm" onClick={() => setShowAll((v) => !v)}>
+          마지막 행 토글
+        </Button>
+        <DataTableV2
+          data={showAll ? smallData : smallData.slice(0, -1)}
+          columns={columns}
+        />
+      </div>
+    )
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const bodyRows = () =>
+      Array.from(
+        canvasElement.querySelectorAll<HTMLElement>('[role="row"][aria-rowindex]')
+      ).filter((el) => el.className.includes("absolute"))
+
+    const assertAllPositioned = () => {
+      const tops = bodyRows().map((el) => el.style.top)
+      expect(tops.length).toBeGreaterThan(0)
+      // 렌더된 모든 행에 위치가 적용돼 있어야 한다
+      expect(tops.every((t) => t !== "")).toBe(true)
+      // 같은 위치에 두 행이 겹치면 안 된다
+      expect(new Set(tops).size).toBe(tops.length)
+    }
+
+    assertAllPositioned()
+    const before = bodyRows().length
+
+    // 마지막 행 제거 → 언마운트
+    await userEvent.click(canvas.getByRole("button", { name: "마지막 행 토글" }))
+    await waitFor(() => expect(bodyRows().length).toBe(before - 1))
+    assertAllPositioned()
+
+    // 되돌리면 같은 위치로 다시 마운트된다 (엘리먼트는 새것)
+    await userEvent.click(canvas.getByRole("button", { name: "마지막 행 토글" }))
+    await waitFor(() => expect(bodyRows().length).toBe(before))
+    assertAllPositioned()
+  },
+}

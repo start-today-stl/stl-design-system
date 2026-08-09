@@ -442,18 +442,18 @@ export function DataTableV2<T extends { id: string | number }>({
     },
     []
   )
-  // 같은 값을 다시 쓰지 않도록 직전 값 보관 (불필요한 스타일 무효화 방지)
-  const appliedTopsRef = React.useRef(new Map<T["id"], number>())
   React.useLayoutEffect(() => {
     for (const i of renderIndices) {
       const row = data[i]
       if (!row) continue
       const el = rowElsRef.current.get(row.id)
       if (!el) continue
-      const top = Math.round(isVirtual ? getItemStart(i) : positions[i])
-      if (appliedTopsRef.current.get(row.id) === top) continue
-      el.style.top = `${top}px`
-      appliedTopsRef.current.set(row.id, top)
+      const top = `${Math.round(isVirtual ? getItemStart(i) : positions[i])}px`
+      // 중복 쓰기 방지는 **엘리먼트의 인라인 스타일**과 비교해서 판단한다.
+      // 별도 Map 에 캐시하면 가상화로 행이 사라졌다 다시 나타났을 때 틀린다.
+      // (엘리먼트는 새것이라 top 이 비어 있는데 캐시에는 예전 값이 남아 있어
+      //  "이미 적용됨" 으로 건너뛰고, 그 행이 0 위치에 겹쳐 그려진다)
+      if (el.style.top !== top) el.style.top = top
     }
   })
 
