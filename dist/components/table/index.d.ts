@@ -3,6 +3,7 @@ export * from './pagination';
 export * from './data-table';
 export { DataTableV2 } from './data-table-v2';
 export type { DataTableV2Column, DataTableV2Props } from './data-table-v2';
+export type { SortState as DataTableV2SortState, SortDirection as DataTableV2SortDirection, HeaderGroup as DataTableV2HeaderGroup, EditComponentProps as DataTableV2EditComponentProps, ValidationResult as DataTableV2ValidationResult, ExpandableConfig as DataTableV2ExpandableConfig, RowActionsConfig as DataTableV2RowActionsConfig, RowGroupConfig as DataTableV2RowGroupConfig, VirtualConfig as DataTableV2VirtualConfig, FilterConfig as DataTableV2FilterConfig, FilterOption as DataTableV2FilterOption, FilterComponentProps as DataTableV2FilterComponentProps, } from './data-table-v2/types';
 export * from './table-container';
 export * from './table-toolbar';
 export * from './pagination-footer';

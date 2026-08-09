@@ -206,15 +206,40 @@ const columns = useMemo(() => [...], [handleClick])
 콜백(`onRowClick`, `onCellChange` 등)은 인라인 화살표로 넘겨도 안전합니다.
 v2 내부에서 흡수합니다.
 
-### 타입 이름이 v1 과 겹칩니다
+### 타입 이름이 v1 과 겹치는 것들은 `DataTableV2` 접두사가 붙습니다
 
-`HeaderGroup` / `SortState` / `ValidationResult` / `RowActionsConfig` /
-`EditComponentProps` 는 v1 과 v2 양쪽에 있습니다. 충돌을 피하려고 v2 는 이 타입들을
-최상위에서 내보내지 않습니다. 필요하면 하위 경로에서 직접 가져오세요.
+`SortState` / `HeaderGroup` / `EditComponentProps` 처럼 v1 과 이름이 같은 타입은
+접두사를 붙여 내보냅니다.
 
-```tsx
-import type { HeaderGroup, SortState } from "stl-design-system/dist/components/table/data-table-v2/types"
+```diff
+- import { type SortState } from "stl-design-system/components"
++ import { type DataTableV2SortState } from "stl-design-system/components"
+
+- const [sortState, setSortState] = useState<SortState<Row>[]>([])
++ const [sortState, setSortState] = useState<DataTableV2SortState<Row>[]>([])
 ```
+
+**이건 그냥 이름만 바뀐 게 아닙니다.** `SortState` 는 v1 과 v2 의 정의가 다릅니다.
+
+| | v1 | v2 |
+|---|---|---|
+| `column` | `keyof T \| null` | `keyof T` |
+
+v1 은 "정렬 없음"을 `column: null` 로 표현했지만, v2 는 정렬이 해제되면 배열에서
+항목을 빼기 때문에 `null` 이 될 일이 없습니다. 그래서 **v1 타입을 그대로 두면
+빌드가 깨집니다.** `tsc --noEmit` 은 통과하고 빌드에서만 잡히는 경우가 있으니
+반드시 빌드까지 돌려보세요.
+
+전체 목록:
+
+`DataTableV2SortState` / `DataTableV2SortDirection` / `DataTableV2HeaderGroup` /
+`DataTableV2EditComponentProps` / `DataTableV2ValidationResult` /
+`DataTableV2ExpandableConfig` / `DataTableV2RowActionsConfig` /
+`DataTableV2RowGroupConfig` / `DataTableV2VirtualConfig` /
+`DataTableV2FilterConfig` / `DataTableV2FilterOption` /
+`DataTableV2FilterComponentProps`
+
+이름이 안 겹치는 `DataTableV2Column` / `DataTableV2Props` 는 그대로입니다.
 
 ### 셀 병합 + 가상화 조합의 한계
 
