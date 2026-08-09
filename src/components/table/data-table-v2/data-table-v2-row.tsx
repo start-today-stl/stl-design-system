@@ -190,13 +190,16 @@ function DataTableV2RowInner<T extends { id: string | number }>({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [row.id, isExpanded])
 
-  // Row bg — 기본 상태 + hover 는 CSS `:hover` (row inner self) + `group-hover:` (sticky 셀들) 둘 다.
-  // Row inner 는 자체 hover → `hover:`, sticky 셀은 부모 (.group) hover 반응 → `group-hover:`.
-  // 둘 다 적용하면 서로 방해 안 하고 각자 필요한 곳에서 발화.
-  // (state 기반이면 hover 마다 parent 리렌더 → 모든 row memo 무효화. CSS 는 리렌더 없음.)
-  const bgClass = isSelected
-    ? "bg-blue-50 dark:bg-blue-900 hover:bg-blue-100 dark:hover:bg-blue-950 group-hover:bg-blue-100 dark:group-hover:bg-blue-950"
-    : "bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 group-hover:bg-slate-100 dark:group-hover:bg-slate-800"
+  // Row bg — hover 는 CSS `:hover`, 선택은 `data-state="selected"` 변이로 처리한다.
+  // (state 로 클래스를 갈아끼우지 않는 이유: hover 마다 리렌더가 나면 모든 row memo 가 무효)
+  //
+  // 선택 배경을 **변이로** 두는 게 중요하다. 사용처의 rowClassName 은 cn() 에서 뒤에 오므로
+  // `bg-white` 같은 기본 배경은 덮어쓰지만, `data-[state=selected]:bg-blue-50` 은 modifier 가
+  // 달라서 tailwind-merge 가 지우지 않는다. 덕분에
+  //   - 선택 안 됨 → rowClassName 배경 (예: 미출고 행 빨강)
+  //   - 선택됨    → 파란 선택 배경이 그 위를 덮음
+  // 이 v1 과 동일하게 동작한다. 클래스 문자열을 통째로 갈아끼우면 rowClassName 이 항상 이겨서
+  // 강조된 행은 체크해도 파래지지 않는다.
 
   const shiftKeyRef = React.useRef(false)
 
@@ -240,6 +243,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
       }}
     >
       <div
+        data-state={isSelected ? "selected" : undefined}
         className={cn(
           // border-b 를 row 자체에 두어서 우측 empty 영역 (셀 미커버) 에도 하단 line 이 이어지게 함.
           // 마지막 row 는 외곽 컨테이너 border-bottom 과 겹쳐 2px 로 보이므로 생략.
@@ -247,7 +251,9 @@ function DataTableV2RowInner<T extends { id: string | number }>({
           // `group` 클래스 — sticky 셀들이 `group-hover:` 로 row hover 반응 (state 없이 CSS 만)
           "group flex transition-colors",
           !isLast && "border-b border-slate-200 dark:border-slate-700",
-          bgClass,
+          "bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800",
+          "data-[state=selected]:bg-blue-50 dark:data-[state=selected]:bg-blue-900",
+          "data-[state=selected]:hover:bg-blue-100 dark:data-[state=selected]:hover:bg-blue-950",
           onRowClick && "cursor-pointer",
           extraClassName
         )}
@@ -260,8 +266,9 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             role="gridcell"
             data-no-row-click
             className={cn(
-              "relative shrink-0 sticky z-10 flex items-center justify-center min-h-9 transition-colors",
-              bgClass
+              // 행 배경을 CSS 상속으로 가져온다. bgClass 를 직접 박으면 사용처의
+              // rowClassName 배경(예: 미출고 행 강조)이 컨트롤 셀에만 반영되지 않는다.
+              "relative shrink-0 sticky z-10 flex items-center justify-center min-h-9 bg-inherit"
             )}
             style={{ width: dragHandleColWidth, left: 0 }}
             onClick={(e) => e.stopPropagation()}
@@ -283,8 +290,9 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             role="gridcell"
             data-no-row-click
             className={cn(
-              "relative shrink-0 sticky z-10 flex items-center justify-center min-h-9 transition-colors",
-              bgClass
+              // 행 배경을 CSS 상속으로 가져온다. bgClass 를 직접 박으면 사용처의
+              // rowClassName 배경(예: 미출고 행 강조)이 컨트롤 셀에만 반영되지 않는다.
+              "relative shrink-0 sticky z-10 flex items-center justify-center min-h-9 bg-inherit"
             )}
             style={{
               width: checkboxColWidth,
@@ -311,8 +319,9 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             role="gridcell"
             data-no-row-click
             className={cn(
-              "relative shrink-0 sticky z-10 flex items-center justify-center min-h-9 transition-colors",
-              bgClass
+              // 행 배경을 CSS 상속으로 가져온다. bgClass 를 직접 박으면 사용처의
+              // rowClassName 배경(예: 미출고 행 강조)이 컨트롤 셀에만 반영되지 않는다.
+              "relative shrink-0 sticky z-10 flex items-center justify-center min-h-9 bg-inherit"
             )}
             style={{
               width: expandColWidth,
@@ -341,8 +350,9 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             role="gridcell"
             data-no-row-click
             className={cn(
-              "relative shrink-0 sticky z-10 flex items-center justify-center min-h-9 transition-colors",
-              bgClass
+              // 행 배경을 CSS 상속으로 가져온다. bgClass 를 직접 박으면 사용처의
+              // rowClassName 배경(예: 미출고 행 강조)이 컨트롤 셀에만 반영되지 않는다.
+              "relative shrink-0 sticky z-10 flex items-center justify-center min-h-9 bg-inherit"
             )}
             style={{ width: rowActionsColWidth, left: rowActionsColLeftOffset }}
             onClick={(e) => e.stopPropagation()}
@@ -457,7 +467,8 @@ function DataTableV2RowInner<T extends { id: string | number }>({
               폭을 가시 영역에 맞추고, 내용이 넘치면 확장 영역이 자체 가로 스크롤을 갖는다.
               (없으면 테이블 전체 폭을 따라가서 펼친 내용이 화면 밖으로 밀려난다) */}
           <div
-            className="sticky left-0 overflow-x-auto"
+            // p-4 는 v1 과 동일. 사용처 컨텐츠가 여백 없이 꽉 차지 않도록 DS 가 준다.
+            className="sticky left-0 overflow-x-auto p-4"
             style={visibleWidth ? { width: visibleWidth, maxWidth: "100%" } : undefined}
           >
             {expandedContent}

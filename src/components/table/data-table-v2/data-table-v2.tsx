@@ -163,6 +163,7 @@ export function DataTableV2<T extends { id: string | number }>({
   estimateRowHeight = DEFAULT_ESTIMATE,
   rowGrouping,
   virtual,
+  bordered = true,
   className,
 }: DataTableV2Props<T>) {
   // rowGrouping 활성 시 rowReorderable 자동 OFF (병합 셀 드래그 시 레이아웃 붕괴).
@@ -618,8 +619,8 @@ export function DataTableV2<T extends { id: string | number }>({
       className={cn(
         // 항상 컨테이너 폭 유지. 리사이즈로 모든 컬럼 fixed 로 전환돼도 테이블 자체는 shrink 안 함.
         // 빈 영역은 셀 bg (SDS-42 에서 모든 셀에 headerBg 적용) 로 시각 커버.
-        "w-full overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-700",
-        "bg-white dark:bg-slate-900",
+        "w-full overflow-hidden bg-white dark:bg-slate-900",
+        bordered && "rounded-2xl border border-slate-200 dark:border-slate-700",
         className
       )}
     >

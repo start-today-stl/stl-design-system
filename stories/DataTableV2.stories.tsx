@@ -228,7 +228,7 @@ function filterRows<T extends object>(
 /** 확장행 — 주문 상세를 펼쳐서 보여주는 형태 (CMS b2c-order 와 같은 사용례) */
 const ksExpandable = {
   expandedRowRender: (row: KsRow) => (
-    <div className="flex flex-col gap-2 bg-slate-50 dark:bg-slate-800/50 px-4 py-3">
+    <div className="flex flex-col gap-2">
       <span className="text-xs font-medium text-slate-700 dark:text-slate-300">
         {row.orderNo} 상세
       </span>
