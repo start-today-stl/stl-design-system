@@ -44,10 +44,15 @@ export const ROW_BG_SELF = [
 ].join(" ")
 
 /**
- * 위와 같은 색을 자손에서 표현한 것. 기본 배경(`bg-white`)은 빠져 있는데,
- * sticky 셀 자신이 불투명 바탕을 갖고 이 레이어는 그 위에 얹히기 때문이다.
+ * 위와 같은 색을 자손에서 표현한 것.
+ *
+ * 기본색을 반드시 포함해야 한다. 빼면 레이어가 `transparent`(= rgba(0,0,0,0), 검정)
+ * 에서 전환을 시작해서 중간 프레임이 어두워지고, 행 배경과의 경계가 보인다.
+ * 사용처 강조색이 있으면 tailwind-merge 가 이 기본색을 대체하며, 그때는 셀 자신의
+ * 불투명 바탕(`STICKY_CELL_BASE_BG`)이 뒤를 받쳐준다.
  */
 export const ROW_BG_DESCENDANT = [
+  "bg-white dark:bg-slate-900",
   "group-hover:bg-slate-100 dark:group-hover:bg-slate-800",
   "group-[[data-state=selected]]:bg-blue-50 dark:group-[[data-state=selected]]:bg-blue-900",
   "group-[[data-state=selected]:hover]:bg-blue-100 dark:group-[[data-state=selected]:hover]:bg-blue-950",
