@@ -120,9 +120,11 @@ interface RowSortableBindings {
  */
 const STICKY_CELL_BG = cn(
   "relative shrink-0 sticky z-10 flex items-center justify-center min-h-9 transition-colors",
+  // 선택+hover 는 arbitrary group 변이로 한 셀렉터에 담는다 (data cell 주석 참고)
   "bg-white dark:bg-slate-900",
   "group-hover:bg-slate-100 dark:group-hover:bg-slate-800",
-  "group-data-[state=selected]:bg-blue-50 dark:group-data-[state=selected]:bg-blue-900"
+  "group-[[data-state=selected]]:bg-blue-50 dark:group-[[data-state=selected]]:bg-blue-900",
+  "group-[[data-state=selected]:hover]:bg-blue-100 dark:group-[[data-state=selected]:hover]:bg-blue-950"
 )
 
 /** 행 강조색(rowClassName)을 sticky 셀의 불투명 배경 위에 얹는 오버레이 */
@@ -132,7 +134,7 @@ function StickyCellHighlight({ className }: { className?: string }) {
     <span
       aria-hidden
       className={cn(
-        "absolute inset-0 pointer-events-none group-data-[state=selected]:hidden",
+        "absolute inset-0 pointer-events-none group-[[data-state=selected]]:hidden",
         className
       )}
     />

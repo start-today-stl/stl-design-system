@@ -85,9 +85,18 @@ function DataTableV2CellInner<T extends { id: string | number }>({
     // (prop 으로 받으면 값이 바뀔 때마다 memo 가 깨져 그 행의 pinned 셀이 전부 리렌더된다).
     isPinned && [
       "relative sticky z-10 transition-colors",
+      // sticky 셀 배경 — 행(.group)의 상태를 CSS 로 따라간다.
+      //
+      // 선택+hover 는 같은 그룹의 변이 두 개를 겹칠 수 없어서
+      // (group-hover:group-data-[...]: 는 조상이 둘인 잘못된 셀렉터가 나온다)
+      // arbitrary group 변이로 한 셀렉터에 담는다.
+      //   group-[[data-state=selected]:hover]:  →  .group[data-state=selected]:hover &
+      // 이 셀렉터가 hover(.group:hover &) / 선택(.group[data-state=selected] &) 보다
+      // 명시도가 높아 선언 순서와 무관하게 이긴다.
       "bg-white dark:bg-slate-900",
       "group-hover:bg-slate-100 dark:group-hover:bg-slate-800",
-      "group-data-[state=selected]:bg-blue-50 dark:group-data-[state=selected]:bg-blue-900",
+      "group-[[data-state=selected]]:bg-blue-50 dark:group-[[data-state=selected]]:bg-blue-900",
+      "group-[[data-state=selected]:hover]:bg-blue-100 dark:group-[[data-state=selected]:hover]:bg-blue-950",
     ],
     isFirstRightPinned && "ml-auto",
     isLeftBoundary && "group-data-[scrolled-left=true]/scroll:shadow-[2px_0_5px_-2px_rgba(0,0,0,0.15)]",
@@ -147,7 +156,7 @@ function DataTableV2CellInner<T extends { id: string | number }>({
         <span
           aria-hidden
           className={cn(
-            "absolute inset-0 pointer-events-none group-data-[state=selected]:hidden",
+            "absolute inset-0 pointer-events-none group-[[data-state=selected]]:hidden",
             rowHighlightClass
           )}
         />

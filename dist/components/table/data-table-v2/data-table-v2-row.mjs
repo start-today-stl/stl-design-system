@@ -1,34 +1,36 @@
-import { jsx as e, jsxs as d } from "react/jsx-runtime";
+import { jsx as t, jsxs as d } from "react/jsx-runtime";
 import * as l from "react";
-import { useSortable as yt } from "@dnd-kit/sortable";
-import { CSS as Nt } from "@dnd-kit/utilities";
+import { useSortable as ye } from "@dnd-kit/sortable";
+import { CSS as Ne } from "@dnd-kit/utilities";
 import { cn as a } from "../../../lib/utils.mjs";
-import { Checkbox as xt } from "../../ui/checkbox.mjs";
-import { DownIcon as wt } from "../../../icons/DownIcon.mjs";
-import { DragHandleIcon as Tt } from "../../../icons/DragHandleIcon.mjs";
-import { RightIcon as Dt } from "../../../icons/RightIcon.mjs";
-import { RowDeleteIcon as Kt } from "../../../icons/RowDeleteIcon.mjs";
-import { DataTableV2Cell as Rt } from "./data-table-v2-cell.mjs";
+import { Checkbox as xe } from "../../ui/checkbox.mjs";
+import { DownIcon as we } from "../../../icons/DownIcon.mjs";
+import { DragHandleIcon as Te } from "../../../icons/DragHandleIcon.mjs";
+import { RightIcon as De } from "../../../icons/RightIcon.mjs";
+import { RowDeleteIcon as Ke } from "../../../icons/RowDeleteIcon.mjs";
+import { DataTableV2Cell as Re } from "./data-table-v2-cell.mjs";
 const D = a(
   "relative shrink-0 sticky z-10 flex items-center justify-center min-h-9 transition-colors",
+  // 선택+hover 는 arbitrary group 변이로 한 셀렉터에 담는다 (data cell 주석 참고)
   "bg-white dark:bg-slate-900",
   "group-hover:bg-slate-100 dark:group-hover:bg-slate-800",
-  "group-data-[state=selected]:bg-blue-50 dark:group-data-[state=selected]:bg-blue-900"
+  "group-[[data-state=selected]]:bg-blue-50 dark:group-[[data-state=selected]]:bg-blue-900",
+  "group-[[data-state=selected]:hover]:bg-blue-100 dark:group-[[data-state=selected]:hover]:bg-blue-950"
 );
 function K({ className: r }) {
-  return r ? /* @__PURE__ */ e(
+  return r ? /* @__PURE__ */ t(
     "span",
     {
       "aria-hidden": !0,
       className: a(
-        "absolute inset-0 pointer-events-none group-data-[state=selected]:hidden",
+        "absolute inset-0 pointer-events-none group-[[data-state=selected]]:hidden",
         r
       )
     }
   ) : null;
 }
 function R() {
-  return /* @__PURE__ */ e(
+  return /* @__PURE__ */ t(
     "span",
     {
       "aria-hidden": !0,
@@ -38,12 +40,12 @@ function R() {
 }
 function q({
   row: r,
-  rowIndex: n,
+  rowIndex: o,
   columns: v,
   leftOffsets: c,
   rightOffsets: u,
   lastLeftPinnedIdx: k,
-  firstRightPinnedIdx: f,
+  firstRightPinnedIdx: g,
   totalWidth: p,
   registerEl: y,
   onHover: N,
@@ -53,61 +55,61 @@ function q({
   onToggleSelect: J,
   checkboxColWidth: A,
   expandable: Q,
-  isExpanded: g,
+  isExpanded: f,
   canExpand: U,
   onToggleExpand: X,
   expandedContent: M,
   expandColWidth: Z,
   visibleWidth: O,
   onRowClick: h,
-  extraClassName: o,
-  editingColumnKey: tt,
-  editingError: et,
-  onStartEdit: rt,
-  onCompleteEdit: it,
-  onCancelEdit: st,
-  onClearEditError: at,
-  showRowDelete: nt,
+  extraClassName: n,
+  editingColumnKey: ee,
+  editingError: te,
+  onStartEdit: re,
+  onCompleteEdit: ie,
+  onCancelEdit: se,
+  onClearEditError: ae,
+  showRowDelete: oe,
   onRowDelete: S,
-  rowActionsColWidth: ot,
-  rowActionsColLeftOffset: dt,
+  rowActionsColWidth: ne,
+  rowActionsColLeftOffset: de,
   rowReorderable: z,
   dragHandleColWidth: C,
   isLast: b,
-  getRowSpan: lt,
-  getRowSpanHeight: ct,
-  getGroupHovered: ut,
-  getGroupSelected: ft,
+  getRowSpan: le,
+  getRowSpanHeight: ce,
+  getGroupHovered: ue,
+  getGroupSelected: ge,
   measureRef: P,
-  dataIndex: gt,
-  ariaRowIndex: ht,
+  dataIndex: fe,
+  ariaRowIndex: he,
   sortable: s
 }) {
-  const _ = l.useRef(null), bt = s.transform, mt = s.transition, E = s.isDragging;
+  const _ = l.useRef(null), be = s.transform, me = s.transition, E = s.isDragging;
   l.useLayoutEffect(() => {
-    const t = _.current;
-    if (!t) return;
-    const i = () => H(r.id, t.offsetHeight);
+    const e = _.current;
+    if (!e) return;
+    const i = () => H(r.id, e.offsetHeight);
     i();
     const m = new ResizeObserver(i);
-    return m.observe(t), () => m.disconnect();
-  }, [r.id, g]);
-  const j = l.useRef(!1), vt = (t) => {
-    t.target.closest("[data-no-row-click]") || h == null || h(r);
-  }, kt = l.useCallback(
-    (t) => {
+    return m.observe(e), () => m.disconnect();
+  }, [r.id, f]);
+  const j = l.useRef(!1), ve = (e) => {
+    e.target.closest("[data-no-row-click]") || h == null || h(r);
+  }, ke = l.useCallback(
+    (e) => {
       var i;
-      _.current = t, (i = s.setNodeRef) == null || i.call(s, t), P && P(t), y(r.id, t);
+      _.current = e, (i = s.setNodeRef) == null || i.call(s, e), P && P(e), y(r.id, e);
     },
     [s, P, y, r.id]
   );
   return /* @__PURE__ */ d(
     "div",
     {
-      ref: kt,
+      ref: ke,
       role: "row",
-      "data-index": gt,
-      "aria-rowindex": ht,
+      "data-index": fe,
+      "aria-rowindex": he,
       className: a(
         "absolute left-0 right-0 flex flex-col",
         E && "z-30"
@@ -116,8 +118,8 @@ function q({
         minWidth: p,
         // top 은 부모가 layout effect 로 직접 쓴다 (위 registerEl 주석 참고).
         // React style 객체에 top 을 두지 않으므로 React 가 값을 덮어쓰지 않는다.
-        transform: bt,
-        transition: mt,
+        transform: be,
+        transition: me,
         opacity: E ? 0.6 : void 0
       },
       children: [
@@ -136,11 +138,11 @@ function q({
               "data-[state=selected]:bg-blue-50 dark:data-[state=selected]:bg-blue-900",
               "data-[state=selected]:hover:bg-blue-100 dark:data-[state=selected]:hover:bg-blue-950",
               h && "cursor-pointer",
-              o
+              n
             ),
             onMouseEnter: N ? () => N(r.id) : void 0,
             onMouseLeave: N ? () => N(null) : void 0,
-            onClick: h ? vt : void 0,
+            onClick: h ? ve : void 0,
             children: [
               z && /* @__PURE__ */ d(
                 "div",
@@ -153,9 +155,9 @@ function q({
                     D
                   ),
                   style: { width: C, left: 0 },
-                  onClick: (t) => t.stopPropagation(),
+                  onClick: (e) => e.stopPropagation(),
                   children: [
-                    /* @__PURE__ */ e(
+                    /* @__PURE__ */ t(
                       "div",
                       {
                         ref: s.setActivatorNodeRef,
@@ -163,11 +165,11 @@ function q({
                         "aria-label": "행 순서 변경",
                         ...s.listeners ?? {},
                         ...s.attributes ?? {},
-                        children: /* @__PURE__ */ e(Tt, { size: 16 })
+                        children: /* @__PURE__ */ t(Te, { size: 16 })
                       }
                     ),
-                    /* @__PURE__ */ e(K, { className: o }),
-                    !b && /* @__PURE__ */ e(R, {})
+                    /* @__PURE__ */ t(K, { className: n }),
+                    !b && /* @__PURE__ */ t(R, {})
                   ]
                 }
               ),
@@ -185,23 +187,23 @@ function q({
                     width: A,
                     left: z ? C : 0
                   },
-                  onClick: (t) => t.stopPropagation(),
+                  onClick: (e) => e.stopPropagation(),
                   children: [
-                    /* @__PURE__ */ e(
-                      xt,
+                    /* @__PURE__ */ t(
+                      xe,
                       {
                         checked: L,
-                        onClick: (t) => {
-                          j.current = t.shiftKey;
+                        onClick: (e) => {
+                          j.current = e.shiftKey;
                         },
                         onCheckedChange: () => {
-                          J(r.id, n, j.current), j.current = !1;
+                          J(r.id, o, j.current), j.current = !1;
                         },
                         "aria-label": `행 ${r.id} 선택`
                       }
                     ),
-                    /* @__PURE__ */ e(K, { className: o }),
-                    !b && /* @__PURE__ */ e(R, {})
+                    /* @__PURE__ */ t(K, { className: n }),
+                    !b && /* @__PURE__ */ t(R, {})
                   ]
                 }
               ),
@@ -219,25 +221,25 @@ function q({
                     width: Z,
                     left: (z ? C : 0) + (V ? A : 0)
                   },
-                  onClick: (t) => t.stopPropagation(),
+                  onClick: (e) => e.stopPropagation(),
                   children: [
-                    U && /* @__PURE__ */ e(
+                    U && /* @__PURE__ */ t(
                       "button",
                       {
                         type: "button",
                         onClick: () => X(r.id),
                         className: "flex h-9 w-10 items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors",
-                        "aria-label": g ? "행 접기" : "행 펼치기",
-                        "aria-expanded": g,
-                        children: g ? /* @__PURE__ */ e(wt, { size: 24 }) : /* @__PURE__ */ e(Dt, { size: 24 })
+                        "aria-label": f ? "행 접기" : "행 펼치기",
+                        "aria-expanded": f,
+                        children: f ? /* @__PURE__ */ t(we, { size: 24 }) : /* @__PURE__ */ t(De, { size: 24 })
                       }
                     ),
-                    /* @__PURE__ */ e(K, { className: o }),
-                    !b && /* @__PURE__ */ e(R, {})
+                    /* @__PURE__ */ t(K, { className: n }),
+                    !b && /* @__PURE__ */ t(R, {})
                   ]
                 }
               ),
-              nt && /* @__PURE__ */ d(
+              oe && /* @__PURE__ */ d(
                 "div",
                 {
                   role: "gridcell",
@@ -247,28 +249,28 @@ function q({
                     // 사용처 강조색(반투명일 수 있음)은 아래 오버레이로 얹는다.
                     D
                   ),
-                  style: { width: ot, left: dt },
-                  onClick: (t) => t.stopPropagation(),
+                  style: { width: ne, left: de },
+                  onClick: (e) => e.stopPropagation(),
                   children: [
-                    /* @__PURE__ */ e(
+                    /* @__PURE__ */ t(
                       "button",
                       {
                         type: "button",
                         onClick: () => S == null ? void 0 : S(r),
                         className: "flex h-9 w-10 items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors",
                         "aria-label": "행 삭제",
-                        children: /* @__PURE__ */ e(Kt, { size: 20 })
+                        children: /* @__PURE__ */ t(Ke, { size: 20 })
                       }
                     ),
-                    /* @__PURE__ */ e(K, { className: o }),
-                    !b && /* @__PURE__ */ e(R, {})
+                    /* @__PURE__ */ t(K, { className: n }),
+                    !b && /* @__PURE__ */ t(R, {})
                   ]
                 }
               ),
-              v.map((t, i) => {
-                const m = t.id ?? String(t.accessorKey), x = typeof t.width == "number" ? t.width : void 0, I = typeof t.minWidth == "number" ? t.minWidth : void 0, w = t.pinned === "left", T = t.pinned === "right", $ = w || T, F = i === f, B = lt(n, t.accessorKey);
+              v.map((e, i) => {
+                const m = e.id ?? String(e.accessorKey), x = typeof e.width == "number" ? e.width : void 0, I = typeof e.minWidth == "number" ? e.minWidth : void 0, w = e.pinned === "left", T = e.pinned === "right", $ = w || T, F = i === g, B = le(o, e.accessorKey);
                 if (B === 0)
-                  return /* @__PURE__ */ e(
+                  return /* @__PURE__ */ t(
                     "div",
                     {
                       "aria-hidden": !0,
@@ -287,16 +289,16 @@ function q({
                     },
                     m
                   );
-                const G = B !== void 0 && B > 1 ? ct(n, t.accessorKey) : void 0, pt = (() => {
+                const G = B !== void 0 && B > 1 ? ce(o, e.accessorKey) : void 0, pe = (() => {
                   if (G === void 0) return;
-                  const Y = ut(n, t.accessorKey);
-                  return ft(n, t.accessorKey) ? Y ? "bg-blue-100 dark:bg-blue-950" : "bg-blue-50 dark:bg-blue-900" : Y ? "bg-slate-100 dark:bg-slate-800" : "bg-white dark:bg-slate-900";
-                })(), W = tt === t.accessorKey;
-                return /* @__PURE__ */ e(
-                  Rt,
+                  const Y = ue(o, e.accessorKey);
+                  return ge(o, e.accessorKey) ? Y ? "bg-blue-100 dark:bg-blue-950" : "bg-blue-50 dark:bg-blue-900" : Y ? "bg-slate-100 dark:bg-slate-800" : "bg-white dark:bg-slate-900";
+                })(), W = ee === e.accessorKey;
+                return /* @__PURE__ */ t(
+                  Re,
                   {
                     row: r,
-                    column: t,
+                    column: e,
                     width: x,
                     minWidth: I,
                     leftOffset: w ? c[i] : void 0,
@@ -304,17 +306,17 @@ function q({
                     isLeftPinned: w,
                     isRightPinned: T,
                     isLeftBoundary: i === k,
-                    isRightBoundary: i === f,
+                    isRightBoundary: i === g,
                     isFirstRightPinned: F,
-                    rowHighlightClass: $ ? o : void 0,
+                    rowHighlightClass: $ ? n : void 0,
                     spanHeight: G,
-                    headBgClass: pt,
+                    headBgClass: pe,
                     isEditing: W,
-                    editingError: W ? et : void 0,
-                    onStartEdit: rt,
-                    onCompleteEdit: it,
-                    onCancelEdit: st,
-                    onClearEditError: at
+                    editingError: W ? te : void 0,
+                    onStartEdit: re,
+                    onCompleteEdit: ie,
+                    onCancelEdit: se,
+                    onClearEditError: ae
                   },
                   m
                 );
@@ -322,12 +324,12 @@ function q({
             ]
           }
         ),
-        g && M && /* @__PURE__ */ e(
+        f && M && /* @__PURE__ */ t(
           "div",
           {
             "data-no-row-click": !0,
             className: "bg-white dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-700",
-            children: /* @__PURE__ */ e(
+            children: /* @__PURE__ */ t(
               "div",
               {
                 className: "sticky left-0 overflow-x-auto p-4",
@@ -341,27 +343,27 @@ function q({
     }
   );
 }
-function St(r) {
-  const { setNodeRef: n, setActivatorNodeRef: v, listeners: c, attributes: u, transform: k, transition: f, isDragging: p } = yt({ id: `row-${r.row.id}` }), y = l.useMemo(
+function Se(r) {
+  const { setNodeRef: o, setActivatorNodeRef: v, listeners: c, attributes: u, transform: k, transition: g, isDragging: p } = ye({ id: `row-${r.row.id}` }), y = l.useMemo(
     () => ({
-      setNodeRef: n,
+      setNodeRef: o,
       setActivatorNodeRef: v,
       listeners: c,
       attributes: u,
-      transform: Nt.Transform.toString(k) ?? void 0,
-      transition: f,
+      transform: Ne.Transform.toString(k) ?? void 0,
+      transition: g,
       isDragging: p
     }),
-    [n, v, c, u, k, f, p]
+    [o, v, c, u, k, g, p]
   );
-  return /* @__PURE__ */ e(q, { ...r, sortable: y });
+  return /* @__PURE__ */ t(q, { ...r, sortable: y });
 }
-const zt = { isDragging: !1 };
-function Ct(r) {
-  return r.rowReorderable ? /* @__PURE__ */ e(St, { ...r }) : /* @__PURE__ */ e(q, { ...r, sortable: zt });
+const ze = { isDragging: !1 };
+function Ce(r) {
+  return r.rowReorderable ? /* @__PURE__ */ t(Se, { ...r }) : /* @__PURE__ */ t(q, { ...r, sortable: ze });
 }
-const $t = l.memo(Ct);
+const $e = l.memo(Ce);
 export {
-  $t as DataTableV2Row
+  $e as DataTableV2Row
 };
 //# sourceMappingURL=data-table-v2-row.mjs.map
