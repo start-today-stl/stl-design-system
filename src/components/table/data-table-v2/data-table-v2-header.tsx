@@ -392,7 +392,7 @@ function DataTableV2HeaderInner<T extends { id: string | number }>({
             left: dragHandleColsWidth + (selectable ? CHECKBOX_COL_WIDTH : 0),
           }}
         >
-          {showExpandAll && (
+          {showExpandAll ? (
             <button
               type="button"
               onClick={onToggleExpandAll}
@@ -401,6 +401,10 @@ function DataTableV2HeaderInner<T extends { id: string | number }>({
             >
               {allExpanded ? <DownIcon size={24} /> : <RightIcon size={24} />}
             </button>
+          ) : (
+            // 전체 펼치기 버튼을 숨겨도 columnheader 는 남으므로 읽을 텍스트가 있어야 한다.
+            // (비어 있으면 axe 의 empty-table-header 위반)
+            <span className="sr-only">행 펼치기</span>
           )}
         </div>
       )

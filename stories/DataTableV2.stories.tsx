@@ -225,10 +225,35 @@ function filterRows<T extends object>(
   )
 }
 
+/** 확장행 — 주문 상세를 펼쳐서 보여주는 형태 (CMS b2c-order 와 같은 사용례) */
+const ksExpandable = {
+  expandedRowRender: (row: KsRow) => (
+    <div className="flex flex-col gap-2 bg-slate-50 dark:bg-slate-800/50 px-4 py-3">
+      <span className="text-xs font-medium text-slate-700 dark:text-slate-300">
+        {row.orderNo} 상세
+      </span>
+      <div className="grid grid-cols-4 gap-x-6 gap-y-1 text-xs text-slate-600 dark:text-slate-400">
+        <span>고객: {row.customer}</span>
+        <span>지역: {row.region}</span>
+        <span>상품: {row.product}</span>
+        <span>수량: {row.qty}</span>
+        <span>주문일: {row.orderDate}</span>
+        <span>상태: {row.status}</span>
+        <span>금액: {row.amount.toLocaleString()}원</span>
+        <span>수수료: {row.fee.toLocaleString()}원</span>
+      </div>
+      {row.memo && (
+        <span className="text-xs text-slate-500 dark:text-slate-400">메모: {row.memo}</span>
+      )}
+    </div>
+  ),
+  showExpandAll: false,
+}
+
 /**
  * 전 기능 조합 데모. 한 테이블에서 pinned · 가상화(5,000행) · 컬럼 필터 ·
- * 재정렬 · 리사이즈 · 헤더 그룹 · 셀 편집 · 행 선택 · 다중 정렬을 함께 확인한다.
- * (rowGrouping 제외)
+ * 재정렬 · 리사이즈 · 헤더 그룹 · 셀 편집 · 행 선택 · 확장행 · 다중 정렬을
+ * 함께 확인한다. (rowGrouping 제외)
  */
 export const KitchenSink: Story = {
   render: function Render() {
@@ -265,6 +290,7 @@ export const KitchenSink: Story = {
           selectable
           selectedIds={selectedIds}
           onSelectionChange={setSelectedIds}
+          expandable={ksExpandable}
           multiSort
           sortState={sortState}
           onSortChange={setSortState}

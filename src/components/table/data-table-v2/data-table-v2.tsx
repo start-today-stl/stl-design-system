@@ -736,6 +736,7 @@ export function DataTableV2<T extends { id: string | number }>({
                         : null
                     }
                     expandColWidth={EXPAND_COL_WIDTH}
+                    visibleWidth={visibleWidth}
                     onRowClick={stableOnRowClick}
                     extraClassName={stableRowClassName?.(row)}
                     editingColumnKey={

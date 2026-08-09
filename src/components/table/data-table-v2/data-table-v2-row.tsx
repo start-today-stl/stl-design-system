@@ -35,6 +35,13 @@ interface DataTableV2RowProps<T extends { id: string | number }> {
   onToggleExpand: (id: T["id"]) => void
   expandedContent: React.ReactNode
   expandColWidth: number
+  /**
+   * 스크롤 컨테이너의 가시 영역 너비.
+   * 확장 영역을 이 폭으로 sticky 고정해서, 가로 스크롤을 해도 펼친 내용이
+   * 항상 화면 안에 보이게 한다 (v1 과 동일한 동작).
+   * 0 이면 미측정 상태 → 폭 지정 없이 렌더.
+   */
+  visibleWidth: number
   // 행 클릭 / className
   onRowClick?: (row: T) => void
   extraClassName?: string
@@ -116,6 +123,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
   onToggleExpand,
   expandedContent,
   expandColWidth,
+  visibleWidth,
   onRowClick,
   extraClassName,
   editingColumnKey,
@@ -451,7 +459,15 @@ function DataTableV2RowInner<T extends { id: string | number }>({
           data-no-row-click
           className="bg-slate-50 dark:bg-slate-950 border-b border-slate-200 dark:border-slate-700"
         >
-          {expandedContent}
+          {/* 가로 스크롤을 해도 펼친 내용이 가시 영역에 머물도록 sticky 고정.
+              폭을 가시 영역에 맞추고, 내용이 넘치면 확장 영역이 자체 가로 스크롤을 갖는다.
+              (없으면 테이블 전체 폭을 따라가서 펼친 내용이 화면 밖으로 밀려난다) */}
+          <div
+            className="sticky left-0 overflow-x-auto"
+            style={visibleWidth ? { width: visibleWidth, maxWidth: "100%" } : undefined}
+          >
+            {expandedContent}
+          </div>
         </div>
       )}
     </div>
