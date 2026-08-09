@@ -1,39 +1,34 @@
-import { jsx as t, jsxs as d } from "react/jsx-runtime";
+import { jsx as e, jsxs as c } from "react/jsx-runtime";
 import * as l from "react";
-import { useSortable as ye } from "@dnd-kit/sortable";
-import { CSS as Ne } from "@dnd-kit/utilities";
-import { cn as a } from "../../../lib/utils.mjs";
-import { Checkbox as xe } from "../../ui/checkbox.mjs";
-import { DownIcon as we } from "../../../icons/DownIcon.mjs";
-import { DragHandleIcon as Te } from "../../../icons/DragHandleIcon.mjs";
-import { RightIcon as De } from "../../../icons/RightIcon.mjs";
-import { RowDeleteIcon as Ke } from "../../../icons/RowDeleteIcon.mjs";
-import { DataTableV2Cell as Re } from "./data-table-v2-cell.mjs";
-const D = a(
-  "relative shrink-0 sticky z-10 flex items-center justify-center min-h-9 transition-colors",
-  // 선택+hover 는 arbitrary group 변이로 한 셀렉터에 담는다 (data cell 주석 참고)
-  "bg-white dark:bg-slate-900",
-  "group-hover:bg-slate-100 dark:group-hover:bg-slate-800",
-  "group-[[data-state=selected]]:bg-blue-50 dark:group-[[data-state=selected]]:bg-blue-900",
-  "group-[[data-state=selected]:hover]:bg-blue-100 dark:group-[[data-state=selected]:hover]:bg-blue-950"
+import { useSortable as pt } from "@dnd-kit/sortable";
+import { CSS as Nt } from "@dnd-kit/utilities";
+import { cn as n } from "../../../lib/utils.mjs";
+import { Checkbox as St } from "../../ui/checkbox.mjs";
+import { DownIcon as xt } from "../../../icons/DownIcon.mjs";
+import { DragHandleIcon as Tt } from "../../../icons/DragHandleIcon.mjs";
+import { RightIcon as Dt } from "../../../icons/RightIcon.mjs";
+import { RowDeleteIcon as Rt } from "../../../icons/RowDeleteIcon.mjs";
+import { DataTableV2Cell as Bt } from "./data-table-v2-cell.mjs";
+import { ROW_BG_SELF as Ct, ROW_BG_DESCENDANT as Kt, STICKY_CELL_BASE_BG as wt } from "./constants.mjs";
+const D = n(
+  "relative shrink-0 sticky z-10 flex items-center justify-center min-h-9",
+  wt
 );
-function K({ className: r }) {
-  return r ? /* @__PURE__ */ t(
+function R({ highlight: i }) {
+  return /* @__PURE__ */ e(
     "span",
     {
       "aria-hidden": !0,
-      className: a(
-        // hover / 선택 시에는 감춘다. 행 배경이 hover·선택 색으로 바뀌면서
-        // 강조색을 대체하기 때문 (일반 셀에서 tailwind-merge 가 만드는 동작과 동일).
-        "absolute inset-0 pointer-events-none",
-        "group-hover:hidden group-[[data-state=selected]]:hidden",
-        r
+      className: n(
+        "absolute inset-0 -z-10 transition-colors",
+        Kt,
+        i
       )
     }
-  ) : null;
+  );
 }
-function R() {
-  return /* @__PURE__ */ t(
+function B() {
+  return /* @__PURE__ */ e(
     "span",
     {
       "aria-hidden": !0,
@@ -42,125 +37,123 @@ function R() {
   );
 }
 function q({
-  row: r,
+  row: i,
   rowIndex: o,
-  columns: v,
-  leftOffsets: c,
-  rightOffsets: u,
-  lastLeftPinnedIdx: k,
-  firstRightPinnedIdx: g,
-  totalWidth: p,
-  registerEl: y,
+  columns: b,
+  leftOffsets: d,
+  rightOffsets: f,
+  lastLeftPinnedIdx: y,
+  firstRightPinnedIdx: h,
+  totalWidth: k,
+  registerEl: p,
   onHover: N,
-  onHeightChange: H,
-  selectable: V,
-  isSelected: L,
-  onToggleSelect: J,
-  checkboxColWidth: A,
-  expandable: Q,
-  isExpanded: h,
-  canExpand: U,
-  onToggleExpand: X,
-  expandedContent: M,
-  expandColWidth: Z,
+  onHeightChange: J,
+  selectable: L,
+  isSelected: P,
+  onToggleSelect: Q,
+  checkboxColWidth: j,
+  expandable: U,
+  isExpanded: u,
+  canExpand: X,
+  onToggleExpand: Z,
+  expandedContent: A,
+  expandColWidth: H,
   visibleWidth: O,
-  onRowClick: f,
-  extraClassName: n,
-  editingColumnKey: ee,
-  editingError: te,
-  onStartEdit: re,
-  onCompleteEdit: ie,
-  onCancelEdit: se,
-  onClearEditError: ae,
-  showRowDelete: oe,
-  onRowDelete: S,
-  rowActionsColWidth: ne,
-  rowActionsColLeftOffset: de,
-  rowReorderable: z,
-  dragHandleColWidth: C,
-  isLast: b,
-  getRowSpan: le,
-  getRowSpanHeight: ce,
-  getGroupHovered: ue,
-  getGroupSelected: ge,
-  measureRef: P,
-  dataIndex: he,
-  ariaRowIndex: fe,
+  onRowClick: g,
+  extraClassName: a,
+  editingColumnKey: tt,
+  editingError: et,
+  onStartEdit: it,
+  onCompleteEdit: rt,
+  onCancelEdit: st,
+  onClearEditError: nt,
+  showRowDelete: ot,
+  onRowDelete: C,
+  rowActionsColWidth: at,
+  rowActionsColLeftOffset: ct,
+  rowReorderable: K,
+  dragHandleColWidth: w,
+  isLast: m,
+  getRowSpan: lt,
+  getRowSpanHeight: dt,
+  getGroupHovered: ft,
+  getGroupSelected: ht,
+  measureRef: z,
+  dataIndex: ut,
+  ariaRowIndex: gt,
   sortable: s
 }) {
-  const _ = l.useRef(null), be = s.transform, me = s.transition, E = s.isDragging;
+  const V = l.useRef(null), mt = s.transform, vt = s.transition, G = s.isDragging;
   l.useLayoutEffect(() => {
-    const e = _.current;
-    if (!e) return;
-    const i = () => H(r.id, e.offsetHeight);
-    i();
-    const m = new ResizeObserver(i);
-    return m.observe(e), () => m.disconnect();
-  }, [r.id, h]);
-  const j = l.useRef(!1), ve = (e) => {
-    e.target.closest("[data-no-row-click]") || f == null || f(r);
-  }, ke = l.useCallback(
-    (e) => {
-      var i;
-      _.current = e, (i = s.setNodeRef) == null || i.call(s, e), P && P(e), y(r.id, e);
+    const t = V.current;
+    if (!t) return;
+    const r = () => J(i.id, t.offsetHeight);
+    r();
+    const v = new ResizeObserver(r);
+    return v.observe(t), () => v.disconnect();
+  }, [i.id, u]);
+  const _ = l.useRef(!1), bt = (t) => {
+    t.target.closest("[data-no-row-click]") || g == null || g(i);
+  }, yt = l.useCallback(
+    (t) => {
+      var r;
+      V.current = t, (r = s.setNodeRef) == null || r.call(s, t), z && z(t), p(i.id, t);
     },
-    [s, P, y, r.id]
+    [s, z, p, i.id]
   );
-  return /* @__PURE__ */ d(
+  return /* @__PURE__ */ c(
     "div",
     {
-      ref: ke,
+      ref: yt,
       role: "row",
-      "data-index": he,
-      "aria-rowindex": fe,
-      className: a(
+      "data-index": ut,
+      "aria-rowindex": gt,
+      className: n(
         "absolute left-0 right-0 flex flex-col",
-        E && "z-30"
+        G && "z-30"
       ),
       style: {
-        minWidth: p,
+        minWidth: k,
         // top 은 부모가 layout effect 로 직접 쓴다 (위 registerEl 주석 참고).
         // React style 객체에 top 을 두지 않으므로 React 가 값을 덮어쓰지 않는다.
-        transform: be,
-        transition: me,
-        opacity: E ? 0.6 : void 0
+        transform: mt,
+        transition: vt,
+        opacity: G ? 0.6 : void 0
       },
       children: [
-        /* @__PURE__ */ d(
+        /* @__PURE__ */ c(
           "div",
           {
-            "data-state": L ? "selected" : void 0,
-            className: a(
+            "data-state": P ? "selected" : void 0,
+            className: n(
               // border-b 를 row 자체에 두어서 우측 empty 영역 (셀 미커버) 에도 하단 line 이 이어지게 함.
               // 마지막 row 는 외곽 컨테이너 border-bottom 과 겹쳐 2px 로 보이므로 생략.
               // rowGrouping 병합 셀 위엔 head 셀의 absolute wrapper (opaque bg) 가 border 를 자동으로 가림 → 별도 middle row 스킵 불필요.
               // `group` 클래스 — sticky 셀들이 `group-hover:` 로 row hover 반응 (state 없이 CSS 만)
               "group flex transition-colors",
-              !b && "border-b border-slate-200 dark:border-slate-700",
-              "bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800",
-              "data-[state=selected]:bg-blue-50 dark:data-[state=selected]:bg-blue-900",
-              "data-[state=selected]:hover:bg-blue-100 dark:data-[state=selected]:hover:bg-blue-950",
-              f && "cursor-pointer",
-              n
+              !m && "border-b border-slate-200 dark:border-slate-700",
+              Ct,
+              g && "cursor-pointer",
+              a
             ),
-            onMouseEnter: N ? () => N(r.id) : void 0,
+            onMouseEnter: N ? () => N(i.id) : void 0,
             onMouseLeave: N ? () => N(null) : void 0,
-            onClick: f ? ve : void 0,
+            onClick: g ? bt : void 0,
             children: [
-              z && /* @__PURE__ */ d(
+              K && /* @__PURE__ */ c(
                 "div",
                 {
                   role: "gridcell",
                   "data-no-row-click": !0,
-                  className: a(
+                  className: n(
                     // sticky 라 스크롤 내용을 덮는다 → 불투명 배경 필수.
                     // 사용처 강조색(반투명일 수 있음)은 아래 오버레이로 얹는다.
                     D
                   ),
-                  style: { width: C, left: 0 },
-                  onClick: (e) => e.stopPropagation(),
+                  style: { width: w, left: 0 },
+                  onClick: (t) => t.stopPropagation(),
                   children: [
-                    /* @__PURE__ */ t(
+                    /* @__PURE__ */ e(
                       "div",
                       {
                         ref: s.setActivatorNodeRef,
@@ -168,176 +161,176 @@ function q({
                         "aria-label": "행 순서 변경",
                         ...s.listeners ?? {},
                         ...s.attributes ?? {},
-                        children: /* @__PURE__ */ t(Te, { size: 16 })
+                        children: /* @__PURE__ */ e(Tt, { size: 16 })
                       }
                     ),
-                    /* @__PURE__ */ t(K, { className: n }),
-                    !b && /* @__PURE__ */ t(R, {})
+                    /* @__PURE__ */ e(R, { highlight: a }),
+                    !m && /* @__PURE__ */ e(B, {})
                   ]
                 }
               ),
-              V && /* @__PURE__ */ d(
+              L && /* @__PURE__ */ c(
                 "div",
                 {
                   role: "gridcell",
                   "data-no-row-click": !0,
-                  className: a(
+                  className: n(
                     // sticky 라 스크롤 내용을 덮는다 → 불투명 배경 필수.
                     // 사용처 강조색(반투명일 수 있음)은 아래 오버레이로 얹는다.
                     D
                   ),
                   style: {
-                    width: A,
-                    left: z ? C : 0
+                    width: j,
+                    left: K ? w : 0
                   },
-                  onClick: (e) => e.stopPropagation(),
+                  onClick: (t) => t.stopPropagation(),
                   children: [
-                    /* @__PURE__ */ t(
-                      xe,
+                    /* @__PURE__ */ e(
+                      St,
                       {
-                        checked: L,
-                        onClick: (e) => {
-                          j.current = e.shiftKey;
+                        checked: P,
+                        onClick: (t) => {
+                          _.current = t.shiftKey;
                         },
                         onCheckedChange: () => {
-                          J(r.id, o, j.current), j.current = !1;
+                          Q(i.id, o, _.current), _.current = !1;
                         },
-                        "aria-label": `행 ${r.id} 선택`
+                        "aria-label": `행 ${i.id} 선택`
                       }
                     ),
-                    /* @__PURE__ */ t(K, { className: n }),
-                    !b && /* @__PURE__ */ t(R, {})
+                    /* @__PURE__ */ e(R, { highlight: a }),
+                    !m && /* @__PURE__ */ e(B, {})
                   ]
                 }
               ),
-              Q && /* @__PURE__ */ d(
+              U && /* @__PURE__ */ c(
                 "div",
                 {
                   role: "gridcell",
                   "data-no-row-click": !0,
-                  className: a(
+                  className: n(
                     // sticky 라 스크롤 내용을 덮는다 → 불투명 배경 필수.
                     // 사용처 강조색(반투명일 수 있음)은 아래 오버레이로 얹는다.
                     D
                   ),
                   style: {
-                    width: Z,
-                    left: (z ? C : 0) + (V ? A : 0)
+                    width: H,
+                    left: (K ? w : 0) + (L ? j : 0)
                   },
-                  onClick: (e) => e.stopPropagation(),
+                  onClick: (t) => t.stopPropagation(),
                   children: [
-                    U && /* @__PURE__ */ t(
+                    X && /* @__PURE__ */ e(
                       "button",
                       {
                         type: "button",
-                        onClick: () => X(r.id),
+                        onClick: () => Z(i.id),
                         className: "flex h-9 w-10 items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors",
-                        "aria-label": h ? "행 접기" : "행 펼치기",
-                        "aria-expanded": h,
-                        children: h ? /* @__PURE__ */ t(we, { size: 24 }) : /* @__PURE__ */ t(De, { size: 24 })
+                        "aria-label": u ? "행 접기" : "행 펼치기",
+                        "aria-expanded": u,
+                        children: u ? /* @__PURE__ */ e(xt, { size: 24 }) : /* @__PURE__ */ e(Dt, { size: 24 })
                       }
                     ),
-                    /* @__PURE__ */ t(K, { className: n }),
-                    !b && /* @__PURE__ */ t(R, {})
+                    /* @__PURE__ */ e(R, { highlight: a }),
+                    !m && /* @__PURE__ */ e(B, {})
                   ]
                 }
               ),
-              oe && /* @__PURE__ */ d(
+              ot && /* @__PURE__ */ c(
                 "div",
                 {
                   role: "gridcell",
                   "data-no-row-click": !0,
-                  className: a(
+                  className: n(
                     // sticky 라 스크롤 내용을 덮는다 → 불투명 배경 필수.
                     // 사용처 강조색(반투명일 수 있음)은 아래 오버레이로 얹는다.
                     D
                   ),
-                  style: { width: ne, left: de },
-                  onClick: (e) => e.stopPropagation(),
+                  style: { width: at, left: ct },
+                  onClick: (t) => t.stopPropagation(),
                   children: [
-                    /* @__PURE__ */ t(
+                    /* @__PURE__ */ e(
                       "button",
                       {
                         type: "button",
-                        onClick: () => S == null ? void 0 : S(r),
+                        onClick: () => C == null ? void 0 : C(i),
                         className: "flex h-9 w-10 items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors",
                         "aria-label": "행 삭제",
-                        children: /* @__PURE__ */ t(Ke, { size: 20 })
+                        children: /* @__PURE__ */ e(Rt, { size: 20 })
                       }
                     ),
-                    /* @__PURE__ */ t(K, { className: n }),
-                    !b && /* @__PURE__ */ t(R, {})
+                    /* @__PURE__ */ e(R, { highlight: a }),
+                    !m && /* @__PURE__ */ e(B, {})
                   ]
                 }
               ),
-              v.map((e, i) => {
-                const m = e.id ?? String(e.accessorKey), x = typeof e.width == "number" ? e.width : void 0, I = typeof e.minWidth == "number" ? e.minWidth : void 0, w = e.pinned === "left", T = e.pinned === "right", $ = w || T, F = i === g, B = le(o, e.accessorKey);
-                if (B === 0)
-                  return /* @__PURE__ */ t(
+              b.map((t, r) => {
+                const v = t.id ?? String(t.accessorKey), S = typeof t.width == "number" ? t.width : void 0, I = typeof t.minWidth == "number" ? t.minWidth : void 0, x = t.pinned === "left", T = t.pinned === "right", M = x || T, W = r === h, E = lt(o, t.accessorKey);
+                if (E === 0)
+                  return /* @__PURE__ */ e(
                     "div",
                     {
                       "aria-hidden": !0,
-                      className: a(
-                        x !== void 0 && "shrink-0",
-                        $ && "sticky z-10",
-                        F && "ml-auto"
+                      className: n(
+                        S !== void 0 && "shrink-0",
+                        M && "sticky z-10",
+                        W && "ml-auto"
                       ),
                       style: {
-                        width: x,
+                        width: S,
                         minWidth: I,
-                        flex: x === void 0 ? "1 1 0" : void 0,
-                        left: w ? c[i] : void 0,
-                        right: T ? u[i] : void 0
+                        flex: S === void 0 ? "1 1 0" : void 0,
+                        left: x ? d[r] : void 0,
+                        right: T ? f[r] : void 0
                       }
                     },
-                    m
+                    v
                   );
-                const G = B !== void 0 && B > 1 ? ce(o, e.accessorKey) : void 0, pe = (() => {
-                  if (G === void 0) return;
-                  const Y = ue(o, e.accessorKey);
-                  return ge(o, e.accessorKey) ? Y ? "bg-blue-100 dark:bg-blue-950" : "bg-blue-50 dark:bg-blue-900" : Y ? "bg-slate-100 dark:bg-slate-800" : "bg-white dark:bg-slate-900";
-                })(), W = ee === e.accessorKey;
-                return /* @__PURE__ */ t(
-                  Re,
+                const F = E !== void 0 && E > 1 ? dt(o, t.accessorKey) : void 0, kt = (() => {
+                  if (F === void 0) return;
+                  const $ = ft(o, t.accessorKey);
+                  return ht(o, t.accessorKey) ? $ ? "bg-blue-100 dark:bg-blue-950" : "bg-blue-50 dark:bg-blue-900" : $ ? "bg-slate-100 dark:bg-slate-800" : "bg-white dark:bg-slate-900";
+                })(), Y = tt === t.accessorKey;
+                return /* @__PURE__ */ e(
+                  Bt,
                   {
-                    row: r,
-                    column: e,
-                    width: x,
+                    row: i,
+                    column: t,
+                    width: S,
                     minWidth: I,
-                    leftOffset: w ? c[i] : void 0,
-                    rightOffset: T ? u[i] : void 0,
-                    isLeftPinned: w,
+                    leftOffset: x ? d[r] : void 0,
+                    rightOffset: T ? f[r] : void 0,
+                    isLeftPinned: x,
                     isRightPinned: T,
-                    isLeftBoundary: i === k,
-                    isRightBoundary: i === g,
-                    isFirstRightPinned: F,
-                    rowHighlightClass: $ ? n : void 0,
-                    spanHeight: G,
-                    headBgClass: pe,
-                    isEditing: W,
-                    editingError: W ? te : void 0,
-                    onStartEdit: re,
-                    onCompleteEdit: ie,
-                    onCancelEdit: se,
-                    onClearEditError: ae
+                    isLeftBoundary: r === y,
+                    isRightBoundary: r === h,
+                    isFirstRightPinned: W,
+                    rowHighlightClass: M ? a : void 0,
+                    spanHeight: F,
+                    headBgClass: kt,
+                    isEditing: Y,
+                    editingError: Y ? et : void 0,
+                    onStartEdit: it,
+                    onCompleteEdit: rt,
+                    onCancelEdit: st,
+                    onClearEditError: nt
                   },
-                  m
+                  v
                 );
               })
             ]
           }
         ),
-        h && M && /* @__PURE__ */ t(
+        u && A && /* @__PURE__ */ e(
           "div",
           {
             "data-no-row-click": !0,
             className: "bg-white dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-700",
-            children: /* @__PURE__ */ t(
+            children: /* @__PURE__ */ e(
               "div",
               {
                 className: "sticky left-0 overflow-x-auto p-4",
                 style: O ? { width: O, maxWidth: "100%" } : void 0,
-                children: M
+                children: A
               }
             )
           }
@@ -346,27 +339,27 @@ function q({
     }
   );
 }
-function Se(r) {
-  const { setNodeRef: o, setActivatorNodeRef: v, listeners: c, attributes: u, transform: k, transition: g, isDragging: p } = ye({ id: `row-${r.row.id}` }), y = l.useMemo(
+function zt(i) {
+  const { setNodeRef: o, setActivatorNodeRef: b, listeners: d, attributes: f, transform: y, transition: h, isDragging: k } = pt({ id: `row-${i.row.id}` }), p = l.useMemo(
     () => ({
       setNodeRef: o,
-      setActivatorNodeRef: v,
-      listeners: c,
-      attributes: u,
-      transform: Ne.Transform.toString(k) ?? void 0,
-      transition: g,
-      isDragging: p
+      setActivatorNodeRef: b,
+      listeners: d,
+      attributes: f,
+      transform: Nt.Transform.toString(y) ?? void 0,
+      transition: h,
+      isDragging: k
     }),
-    [o, v, c, u, k, g, p]
+    [o, b, d, f, y, h, k]
   );
-  return /* @__PURE__ */ t(q, { ...r, sortable: y });
+  return /* @__PURE__ */ e(q, { ...i, sortable: p });
 }
-const ze = { isDragging: !1 };
-function Ce(r) {
-  return r.rowReorderable ? /* @__PURE__ */ t(Se, { ...r }) : /* @__PURE__ */ t(q, { ...r, sortable: ze });
+const _t = { isDragging: !1 };
+function Et(i) {
+  return i.rowReorderable ? /* @__PURE__ */ e(zt, { ...i }) : /* @__PURE__ */ e(q, { ...i, sortable: _t });
 }
-const $e = l.memo(Ce);
+const $t = l.memo(Et);
 export {
-  $e as DataTableV2Row
+  $t as DataTableV2Row
 };
 //# sourceMappingURL=data-table-v2-row.mjs.map

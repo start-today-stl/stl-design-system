@@ -7,6 +7,11 @@ import { cn } from "@/lib/utils"
 import { Checkbox } from "@/components/ui/checkbox"
 import { DownIcon, DragHandleIcon, RightIcon, RowDeleteIcon } from "@/icons"
 import { DataTableV2Cell } from "./data-table-v2-cell"
+import {
+  ROW_BG_DESCENDANT,
+  ROW_BG_SELF,
+  STICKY_CELL_BASE_BG,
+} from "./constants"
 import type { DataTableV2Column } from "./types"
 
 interface DataTableV2RowProps<T extends { id: string | number }> {
@@ -114,35 +119,31 @@ interface RowSortableBindings {
  * 행 테두리와 **같은 자리**에 1px 선을 겹쳐 그려 덮개(z-5) 위에 남게 한다.
  * 스크롤 0 일 때는 행 테두리와 완전히 포개져 시각적 변화가 없다.
  */
-/**
- * sticky 컨트롤 셀 배경 — 불투명 기본색 + 행 hover/선택을 CSS 로 따라감.
- * (prop 으로 받으면 값이 바뀔 때마다 memo 가 깨진다)
- */
-const STICKY_CELL_BG = cn(
-  "relative shrink-0 sticky z-10 flex items-center justify-center min-h-9 transition-colors",
-  // 선택+hover 는 arbitrary group 변이로 한 셀렉터에 담는다 (data cell 주석 참고)
-  "bg-white dark:bg-slate-900",
-  "group-hover:bg-slate-100 dark:group-hover:bg-slate-800",
-  "group-[[data-state=selected]]:bg-blue-50 dark:group-[[data-state=selected]]:bg-blue-900",
-  "group-[[data-state=selected]:hover]:bg-blue-100 dark:group-[[data-state=selected]:hover]:bg-blue-950"
+/** sticky 컨트롤 셀 — 스크롤 내용을 덮으므로 불투명 바탕만. 상태 색은 StickyCellBg 담당 */
+const STICKY_CELL = cn(
+  "relative shrink-0 sticky z-10 flex items-center justify-center min-h-9",
+  STICKY_CELL_BASE_BG
 )
 
-/** 행 강조색(rowClassName)을 sticky 셀의 불투명 배경 위에 얹는 오버레이 */
-function StickyCellHighlight({ className }: { className?: string }) {
-  if (!className) return null
+/**
+ * sticky 셀의 상태 색 레이어 — 불투명 바탕 **위**, 콘텐츠 **아래** (`-z-10`).
+ *
+ * 절대배치 요소는 in-flow 콘텐츠보다 나중에 그려진다. z-index 를 내리지 않으면
+ * 불투명 강조색이 체크박스·아이콘·텍스트를 덮어버린다.
+ */
+function StickyCellBg({ highlight }: { highlight?: string }) {
   return (
     <span
       aria-hidden
       className={cn(
-        // hover / 선택 시에는 감춘다. 행 배경이 hover·선택 색으로 바뀌면서
-            // 강조색을 대체하기 때문 (일반 셀에서 tailwind-merge 가 만드는 동작과 동일).
-            "absolute inset-0 pointer-events-none",
-            "group-hover:hidden group-[[data-state=selected]]:hidden",
-        className
+        "absolute inset-0 -z-10 transition-colors",
+        ROW_BG_DESCENDANT,
+        highlight
       )}
     />
   )
 }
+
 
 function StickyCellBorder() {
   return (
@@ -281,9 +282,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
           // `group` 클래스 — sticky 셀들이 `group-hover:` 로 row hover 반응 (state 없이 CSS 만)
           "group flex transition-colors",
           !isLast && "border-b border-slate-200 dark:border-slate-700",
-          "bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800",
-          "data-[state=selected]:bg-blue-50 dark:data-[state=selected]:bg-blue-900",
-          "data-[state=selected]:hover:bg-blue-100 dark:data-[state=selected]:hover:bg-blue-950",
+          ROW_BG_SELF,
           onRowClick && "cursor-pointer",
           extraClassName
         )}
@@ -298,7 +297,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             className={cn(
               // sticky 라 스크롤 내용을 덮는다 → 불투명 배경 필수.
               // 사용처 강조색(반투명일 수 있음)은 아래 오버레이로 얹는다.
-              STICKY_CELL_BG
+              STICKY_CELL
             )}
             style={{ width: dragHandleColWidth, left: 0 }}
             onClick={(e) => e.stopPropagation()}
@@ -312,7 +311,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             >
               <DragHandleIcon size={16} />
             </div>
-            <StickyCellHighlight className={extraClassName} />
+            <StickyCellBg highlight={extraClassName} />
             {!isLast && <StickyCellBorder />}
           </div>
         )}
@@ -323,7 +322,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             className={cn(
               // sticky 라 스크롤 내용을 덮는다 → 불투명 배경 필수.
               // 사용처 강조색(반투명일 수 있음)은 아래 오버레이로 얹는다.
-              STICKY_CELL_BG
+              STICKY_CELL
             )}
             style={{
               width: checkboxColWidth,
@@ -342,7 +341,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
               }}
               aria-label={`행 ${row.id} 선택`}
             />
-            <StickyCellHighlight className={extraClassName} />
+            <StickyCellBg highlight={extraClassName} />
             {!isLast && <StickyCellBorder />}
           </div>
         )}
@@ -353,7 +352,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             className={cn(
               // sticky 라 스크롤 내용을 덮는다 → 불투명 배경 필수.
               // 사용처 강조색(반투명일 수 있음)은 아래 오버레이로 얹는다.
-              STICKY_CELL_BG
+              STICKY_CELL
             )}
             style={{
               width: expandColWidth,
@@ -374,7 +373,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
                 {isExpanded ? <DownIcon size={24} /> : <RightIcon size={24} />}
               </button>
             )}
-            <StickyCellHighlight className={extraClassName} />
+            <StickyCellBg highlight={extraClassName} />
             {!isLast && <StickyCellBorder />}
           </div>
         )}
@@ -385,7 +384,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             className={cn(
               // sticky 라 스크롤 내용을 덮는다 → 불투명 배경 필수.
               // 사용처 강조색(반투명일 수 있음)은 아래 오버레이로 얹는다.
-              STICKY_CELL_BG
+              STICKY_CELL
             )}
             style={{ width: rowActionsColWidth, left: rowActionsColLeftOffset }}
             onClick={(e) => e.stopPropagation()}
@@ -398,7 +397,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
             >
               <RowDeleteIcon size={20} />
             </button>
-            <StickyCellHighlight className={extraClassName} />
+            <StickyCellBg highlight={extraClassName} />
             {!isLast && <StickyCellBorder />}
           </div>
         )}

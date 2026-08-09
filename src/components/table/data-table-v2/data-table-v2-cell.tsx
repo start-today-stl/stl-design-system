@@ -2,7 +2,11 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 import { DataTableV2EditCell } from "./data-table-v2-edit-cell"
-import { alignClass } from "./constants"
+import {
+  ROW_BG_DESCENDANT,
+  STICKY_CELL_BASE_BG,
+  alignClass,
+} from "./constants"
 import type { DataTableV2Column } from "./types"
 
 export interface DataTableV2CellProps<T extends { id: string | number }> {
@@ -93,7 +97,7 @@ function DataTableV2CellInner<T extends { id: string | number }>({
       //   group-[[data-state=selected]:hover]:  →  .group[data-state=selected]:hover &
       // 이 셀렉터가 hover(.group:hover &) / 선택(.group[data-state=selected] &) 보다
       // 명시도가 높아 선언 순서와 무관하게 이긴다.
-      "bg-white dark:bg-slate-900",
+      STICKY_CELL_BASE_BG,
       "group-hover:bg-slate-100 dark:group-hover:bg-slate-800",
       "group-[[data-state=selected]]:bg-blue-50 dark:group-[[data-state=selected]]:bg-blue-900",
       "group-[[data-state=selected]:hover]:bg-blue-100 dark:group-[[data-state=selected]:hover]:bg-blue-950",
@@ -150,16 +154,19 @@ function DataTableV2CellInner<T extends { id: string | number }>({
       }}
       {...(column.editable ? { "data-no-row-click": true } : {})}
     >
-      {/* 행 강조색을 불투명 배경 위에 오버레이로 얹는다 (반투명 색도 정상 합성).
-          선택 시에는 행이 파란 배경으로 덮이므로 강조색도 함께 감춘다. */}
-      {isPinned && rowHighlightClass && (
+      {/* 상태 색 레이어 — 셀의 불투명 바탕 **위**, 콘텐츠 **아래** (-z-10).
+          절대배치 요소는 in-flow 콘텐츠보다 나중에 그려지므로 z-index 를 내리지 않으면
+          불투명 강조색이 셀 텍스트를 덮어버린다.
+          행(.group)과 동일한 상태 클래스를 써서 색도 전환 타이밍도 똑같이 간다.
+          선택+hover 는 같은 그룹 변이를 겹칠 수 없어(조상이 둘인 셀렉터가 됨)
+          arbitrary group 변이로 한 셀렉터에 담는다. 명시도가 hover/선택 단독보다
+          높아 선언 순서와 무관하게 이긴다. */}
+      {isPinned && (
         <span
           aria-hidden
           className={cn(
-            // hover / 선택 시에는 감춘다. 행 배경이 hover·선택 색으로 바뀌면서
-            // 강조색을 대체하기 때문 (일반 셀에서 tailwind-merge 가 만드는 동작과 동일).
-            "absolute inset-0 pointer-events-none",
-            "group-hover:hidden group-[[data-state=selected]]:hidden",
+            "absolute inset-0 -z-10 transition-colors",
+            ROW_BG_DESCENDANT,
             rowHighlightClass
           )}
         />
