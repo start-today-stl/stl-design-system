@@ -157,7 +157,10 @@ function DataTableV2CellInner<T extends { id: string | number }>({
   const body = isPinned ? (
     <div
       className={cn(
-        "flex flex-1 min-w-0 transition-colors",
+        // self-stretch — 바깥 셀이 items-center 라 이 레이어가 내용 높이만큼만 잡히면
+        // 배경이 셀을 다 못 덮어 아래에 빈 띠가 남는다. 늘려서 채우고, 내용의 세로
+        // 가운데 정렬은 이 레이어가 맡는다.
+        "flex flex-1 min-w-0 self-stretch items-center transition-colors",
         ROW_BG_DESCENDANT,
         rowHighlightClass
       )}

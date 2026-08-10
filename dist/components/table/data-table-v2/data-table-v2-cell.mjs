@@ -1,10 +1,10 @@
-import { jsx as r } from "react/jsx-runtime";
+import { jsx as l } from "react/jsx-runtime";
 import * as K from "react";
 import { cn as t } from "../../../lib/utils.mjs";
 import { DataTableV2EditCell as S } from "./data-table-v2-edit-cell.mjs";
 import { STICKY_CELL_BASE_BG as V, alignClass as z, ROW_BG_DESCENDANT as A } from "./constants.mjs";
 function G({
-  row: l,
+  row: r,
   column: e,
   width: o,
   minWidth: x,
@@ -12,9 +12,9 @@ function G({
   rightOffset: v,
   isLeftPinned: s,
   isRightPinned: i,
-  isLeftBoundary: C,
-  isRightBoundary: h,
-  isFirstRightPinned: m,
+  isLeftBoundary: h,
+  isRightBoundary: m,
+  isFirstRightPinned: C,
   rowHighlightClass: _,
   spanHeight: d,
   headBgClass: g,
@@ -41,9 +41,9 @@ function G({
     // 어긋나 전환 중 경계가 스치고, 음수 z-index 자식은 부모 배경보다 나중에 그려져
     // 강조색을 덮어버린다.
     c && ["sticky z-10", V],
-    m && "ml-auto",
-    C && "group-data-[scrolled-left=true]/scroll:shadow-[2px_0_5px_-2px_rgba(0,0,0,0.15)]",
-    h && "group-data-[scrolled-right=true]/scroll:shadow-[-2px_0_5px_-2px_rgba(0,0,0,0.15)]",
+    C && "ml-auto",
+    h && "group-data-[scrolled-left=true]/scroll:shadow-[2px_0_5px_-2px_rgba(0,0,0,0.15)]",
+    m && "group-data-[scrolled-right=true]/scroll:shadow-[-2px_0_5px_-2px_rgba(0,0,0,0.15)]",
     // head 셀: 컨텐츠를 absolute 로 세로 확장하기 위해 relative + z-index 상승
     // (그룹 middle rows 의 bg 위에 얹혀야 함)
     n && "relative z-[5]"
@@ -68,29 +68,32 @@ function G({
     z[e.align ?? "left"],
     e.editable && !a && "cursor-text hover:bg-blue-50 dark:hover:bg-blue-900/30"
   ), B = e.editable ? (w) => {
-    w.stopPropagation(), a || y(l, e);
-  } : void 0, b = a ? /* @__PURE__ */ r(
+    w.stopPropagation(), a || y(r, e);
+  } : void 0, b = a ? /* @__PURE__ */ l(
     S,
     {
-      row: l,
+      row: r,
       column: e,
       error: k,
       onComplete: N,
       onCancel: D,
       onClearError: E
     }
-  ) : /* @__PURE__ */ r("div", { className: u, onClick: B, children: e.cell ? e.cell(l[e.accessorKey], l) : l[e.accessorKey] }), p = c ? /* @__PURE__ */ r(
+  ) : /* @__PURE__ */ l("div", { className: u, onClick: B, children: e.cell ? e.cell(r[e.accessorKey], r) : r[e.accessorKey] }), p = c ? /* @__PURE__ */ l(
     "div",
     {
       className: t(
-        "flex flex-1 min-w-0 transition-colors",
+        // self-stretch — 바깥 셀이 items-center 라 이 레이어가 내용 높이만큼만 잡히면
+        // 배경이 셀을 다 못 덮어 아래에 빈 띠가 남는다. 늘려서 채우고, 내용의 세로
+        // 가운데 정렬은 이 레이어가 맡는다.
+        "flex flex-1 min-w-0 self-stretch items-center transition-colors",
         A,
         _
       ),
       children: b
     }
   ) : b;
-  return /* @__PURE__ */ r(
+  return /* @__PURE__ */ l(
     "div",
     {
       role: "gridcell",
@@ -107,7 +110,7 @@ function G({
         // Head 셀 (rowGrouping span > 1) — 컨텐츠를 absolute 로 세로 확장.
         // outer 는 row height 유지 (다른 셀 정렬 흔들림 방지), content 만 spanHeight 만큼 뻗음.
         // border-b 로 그룹 하단 경계 표시 + bg 로 middle rows 위에 opaque 커버.
-        /* @__PURE__ */ r(
+        /* @__PURE__ */ l(
           "div",
           {
             className: t(
