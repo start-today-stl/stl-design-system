@@ -60,6 +60,26 @@ function DataTableV2FilterCellInner<T>({
     gridRef.current = el?.closest('[role="grid"]') ?? null
   }, [])
 
+  // 스크롤하면 닫는다.
+  //
+  // 팝오버는 트리거(필터 아이콘)에 붙어 있어서, 열어둔 채 가로 스크롤하면
+  // 트리거를 따라 움직이다 테이블 밖으로 나간다. 어느 컬럼의 필터였는지도
+  // 알 수 없게 되므로 닫는 편이 낫다 (AG Grid 등도 동일).
+  //
+  // scroll 은 버블링하지 않아 capture 로 듣는다. 팝오버 안쪽 스크롤
+  // (긴 다중선택 목록 등) 은 무시해야 한다.
+  const contentRef = React.useRef<HTMLDivElement>(null)
+  React.useEffect(() => {
+    if (!open) return
+    const onScroll = (e: Event) => {
+      const target = e.target as Node | null
+      if (target && contentRef.current?.contains(target)) return
+      setOpen(false)
+    }
+    document.addEventListener("scroll", onScroll, true)
+    return () => document.removeEventListener("scroll", onScroll, true)
+  }, [open])
+
   const label = `${typeof column.header === "string" ? column.header : "컬럼"} 필터`
 
   return (
@@ -90,6 +110,7 @@ function DataTableV2FilterCellInner<T>({
         </button>
       </PopoverTrigger>
       <PopoverContent
+        ref={contentRef}
         align="end"
         className="w-64 p-3"
         aria-label={label}
