@@ -57,24 +57,36 @@ function DataTableV2FilterCellInner<T>({
   // 뷰포트 기준으로 그려졌다가 다시 배치돼서 위치가 깜빡인다.
   const gridRef = React.useRef<Element | null>(null)
   const setTriggerRef = React.useCallback((el: HTMLButtonElement | null) => {
+    triggerElRef.current = el
     gridRef.current = el?.closest('[role="grid"]') ?? null
   }, [])
 
-  // 스크롤하면 닫는다.
+  // 트리거가 움직이면 닫는다.
   //
   // 팝오버는 트리거(필터 아이콘)에 붙어 있어서, 열어둔 채 가로 스크롤하면
   // 트리거를 따라 움직이다 테이블 밖으로 나간다. 어느 컬럼의 필터였는지도
   // 알 수 없게 되므로 닫는 편이 낫다 (AG Grid 등도 동일).
   //
+  // 단 헤더는 sticky 라 **세로 스크롤에는 트리거가 제자리**다. 이때는 팝오버가
+  // 어긋나지 않으므로 닫으면 안 된다. 그래서 축을 가정하지 않고 트리거가 실제로
+  // 움직였는지를 본다.
+  //
   // scroll 은 버블링하지 않아 capture 로 듣는다. 팝오버 안쪽 스크롤
   // (긴 다중선택 목록 등) 은 무시해야 한다.
   const contentRef = React.useRef<HTMLDivElement>(null)
+  const triggerElRef = React.useRef<HTMLButtonElement | null>(null)
   React.useEffect(() => {
     if (!open) return
+    const start = triggerElRef.current?.getBoundingClientRect()
+    if (!start) return
     const onScroll = (e: Event) => {
       const target = e.target as Node | null
       if (target && contentRef.current?.contains(target)) return
-      setOpen(false)
+      const now = triggerElRef.current?.getBoundingClientRect()
+      if (!now) return
+      if (Math.abs(now.left - start.left) > 1 || Math.abs(now.top - start.top) > 1) {
+        setOpen(false)
+      }
     }
     document.addEventListener("scroll", onScroll, true)
     return () => document.removeEventListener("scroll", onScroll, true)

@@ -1,50 +1,55 @@
-import { jsxs as f, jsx as n } from "react/jsx-runtime";
-import * as l from "react";
-import { cn as F } from "../../../lib/utils.mjs";
-import { Popover as y, PopoverTrigger as D, PopoverContent as v } from "../../ui/popover.mjs";
-import { FilterIcon as C } from "../../../icons/FilterIcon.mjs";
-import { DefaultNumberRangeFilter as M, DefaultDateRangeFilter as P, DefaultMultiSelectFilter as S, DefaultSelectFilter as T, DefaultTextFilter as w } from "./data-table-v2-default-filters.mjs";
-function N({
+import { jsxs as F, jsx as o } from "react/jsx-runtime";
+import * as a from "react";
+import { cn as M } from "../../../lib/utils.mjs";
+import { Popover as w, PopoverTrigger as P, PopoverContent as S } from "../../ui/popover.mjs";
+import { FilterIcon as T } from "../../../icons/FilterIcon.mjs";
+import { DefaultNumberRangeFilter as E, DefaultDateRangeFilter as N, DefaultMultiSelectFilter as j, DefaultSelectFilter as B, DefaultTextFilter as I } from "./data-table-v2-default-filters.mjs";
+function L({
   column: e,
-  filter: o,
-  value: s,
-  active: a,
+  filter: s,
+  value: l,
+  active: n,
   onChange: c,
   columnKey: t
 }) {
-  const b = l.useCallback(
+  const y = a.useCallback(
     (r) => c(t, r),
     [c, t]
-  ), [i, u] = l.useState(!1), x = l.useCallback(() => u(!1), []), d = l.useRef(null), k = l.useCallback((r) => {
-    d.current = (r == null ? void 0 : r.closest('[role="grid"]')) ?? null;
-  }, []), p = l.useRef(null);
-  l.useEffect(() => {
+  ), [i, u] = a.useState(!1), D = a.useCallback(() => u(!1), []), g = a.useRef(null), v = a.useCallback((r) => {
+    d.current = r, g.current = (r == null ? void 0 : r.closest('[role="grid"]')) ?? null;
+  }, []), f = a.useRef(null), d = a.useRef(null);
+  a.useEffect(() => {
+    var b;
     if (!i) return;
-    const r = (R) => {
-      var h;
-      const g = R.target;
-      g && ((h = p.current) != null && h.contains(g)) || u(!1);
+    const r = (b = d.current) == null ? void 0 : b.getBoundingClientRect();
+    if (!r) return;
+    const m = (C) => {
+      var x, k;
+      const R = C.target;
+      if (R && ((x = f.current) != null && x.contains(R))) return;
+      const p = (k = d.current) == null ? void 0 : k.getBoundingClientRect();
+      p && (Math.abs(p.left - r.left) > 1 || Math.abs(p.top - r.top) > 1) && u(!1);
     };
-    return document.addEventListener("scroll", r, !0), () => document.removeEventListener("scroll", r, !0);
+    return document.addEventListener("scroll", m, !0), () => document.removeEventListener("scroll", m, !0);
   }, [i]);
-  const m = `${typeof e.header == "string" ? e.header : "컬럼"} 필터`;
-  return /* @__PURE__ */ f(y, { open: i, onOpenChange: u, children: [
-    /* @__PURE__ */ n(D, { asChild: !0, children: /* @__PURE__ */ f(
+  const h = `${typeof e.header == "string" ? e.header : "컬럼"} 필터`;
+  return /* @__PURE__ */ F(w, { open: i, onOpenChange: u, children: [
+    /* @__PURE__ */ o(P, { asChild: !0, children: /* @__PURE__ */ F(
       "button",
       {
-        ref: k,
+        ref: v,
         type: "button",
-        className: F(
+        className: M(
           "relative flex h-6 w-6 shrink-0 cursor-pointer items-center justify-center rounded transition-colors",
           "text-slate-400 hover:text-slate-700 hover:bg-slate-200/60",
           "dark:text-slate-500 dark:hover:text-slate-100 dark:hover:bg-slate-700/60",
-          a && "text-blue-600 dark:text-blue-400"
+          n && "text-blue-600 dark:text-blue-400"
         ),
-        "aria-label": m,
+        "aria-label": h,
         onClick: (r) => r.stopPropagation(),
         children: [
-          /* @__PURE__ */ n(C, { size: 20 }),
-          a && /* @__PURE__ */ n(
+          /* @__PURE__ */ o(T, { size: 20 }),
+          n && /* @__PURE__ */ o(
             "span",
             {
               "aria-hidden": !0,
@@ -55,87 +60,87 @@ function N({
         ]
       }
     ) }),
-    /* @__PURE__ */ n(
-      v,
+    /* @__PURE__ */ o(
+      S,
       {
-        ref: p,
+        ref: f,
         align: "end",
         className: "w-64 p-3",
-        "aria-label": m,
-        collisionBoundary: d.current ?? void 0,
+        "aria-label": h,
+        collisionBoundary: g.current ?? void 0,
         collisionPadding: 8,
-        children: j(o, s, b, x, e)
+        children: O(s, l, y, D, e)
       }
     )
   ] });
 }
-const z = l.memo(
-  N
+const G = a.memo(
+  L
 );
-function j(e, o, s, a, c) {
+function O(e, s, l, n, c) {
   switch (e.type) {
     case "text":
-      return /* @__PURE__ */ n(
-        w,
+      return /* @__PURE__ */ o(
+        I,
         {
-          value: o,
-          onChange: (t) => s(t),
-          onClose: a,
+          value: s,
+          onChange: (t) => l(t),
+          onClose: n,
           placeholder: e.placeholder
         }
       );
     case "select":
-      return /* @__PURE__ */ n(
-        T,
+      return /* @__PURE__ */ o(
+        B,
         {
-          value: o,
-          onChange: (t) => s(t),
-          onClose: a,
+          value: s,
+          onChange: (t) => l(t),
+          onClose: n,
           options: e.options,
           placeholder: e.placeholder,
           emptyMessage: e.emptyMessage
         }
       );
     case "multiSelect":
-      return /* @__PURE__ */ n(
-        S,
+      return /* @__PURE__ */ o(
+        j,
         {
-          value: o,
-          onChange: (t) => s(t),
-          onClose: a,
+          value: s,
+          onChange: (t) => l(t),
+          onClose: n,
           options: e.options,
           placeholder: e.placeholder,
           emptyMessage: e.emptyMessage
         }
       );
     case "dateRange":
-      return /* @__PURE__ */ n(
-        P,
+      return /* @__PURE__ */ o(
+        N,
         {
-          value: o,
-          onChange: (t) => s(t),
-          onClose: a
+          value: s,
+          onChange: (t) => l(t),
+          onClose: n
         }
       );
     case "numberRange":
-      return /* @__PURE__ */ n(
-        M,
+      return /* @__PURE__ */ o(
+        E,
         {
-          value: o,
-          onChange: (t) => s(t),
-          onClose: a
+          value: s,
+          onChange: (t) => l(t),
+          onClose: n
         }
       );
     case "custom":
       return e.component({
-        value: o,
-        onChange: s,
-        onClose: a,
+        value: s,
+        onChange: l,
+        onClose: n,
         column: c
       });
   }
 }
 export {
-  z as DataTableV2FilterCell
+  G as DataTableV2FilterCell
 };
 //# sourceMappingURL=data-table-v2-filter-cell.mjs.map

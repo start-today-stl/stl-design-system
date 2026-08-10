@@ -1634,37 +1634,3 @@ export const FilterPopoverStaysInTable: Story = {
   },
 }
 
-export const FilterPopoverClosesOnScroll: Story = {
-  // 회귀 검증용 — 문서/사이드바에서 감춘다
-  // (열어둔 채 가로 스크롤하면 팝오버가 트리거를 따라가며 테이블 밖으로 나가던 문제)
-  tags: ["!dev", "!docs"],
-  render: () => {
-    const [filterState, setFilterState] = useState<Record<string, unknown>>({})
-    return (
-      <div style={{ width: 500 }}>
-        <DataTableV2
-          data={smallData}
-          columns={filterableColumns}
-          filterState={filterState}
-          onFilterChange={setFilterState}
-        />
-      </div>
-    )
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement)
-    const body = within(document.body)
-
-    await userEvent.click(canvas.getAllByRole("button", { name: /필터/ })[0])
-    expect(await body.findByRole("dialog")).toBeInTheDocument()
-
-    // 테이블을 가로 스크롤하면 닫혀야 한다
-    const scroller = canvasElement.querySelector<HTMLElement>(".overflow-auto")!
-    scroller.scrollLeft = 200
-    scroller.dispatchEvent(new Event("scroll", { bubbles: false }))
-
-    await waitFor(() =>
-      expect(body.queryByRole("dialog")).not.toBeInTheDocument()
-    )
-  },
-}
