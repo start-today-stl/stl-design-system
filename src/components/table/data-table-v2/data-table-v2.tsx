@@ -465,12 +465,15 @@ export function DataTableV2<T extends { id: string | number }>({
   // visibleWidth — loading/empty 콘텐츠 가로 중앙 정렬용 (가로 스크롤 시 가시 영역 기준)
   const scrollRef = React.useRef<HTMLDivElement>(null)
 
-  // 가상화 측정 캐시 키 — data 를 ref 로 읽어 콜백을 고정한다
-  const dataRef = React.useRef(data)
-  dataRef.current = data
+  // 가상화 측정 캐시 키.
+  //
+  // **deps 에 data 를 넣어야 한다.** ref 로 읽고 콜백을 고정하면, 라이브러리가 이 함수의
+  // 참조가 그대로라고 보고 측정값 재계산을 건너뛴다. 그러면 데이터가 바뀌어도 예전
+  // 인덱스→id 매핑을 계속 써서, 사실상 인덱스에 높이가 붙은 것처럼 동작한다
+  // (확장행이 있던 자리에 빈 공간이 남는다).
   const virtualGetItemKey = React.useCallback(
-    (index: number) => dataRef.current[index]?.id ?? index,
-    []
+    (index: number) => data[index]?.id ?? index,
+    [data]
   )
 
 
