@@ -20,6 +20,11 @@ interface UseTableVirtualizerOptions {
      * 이전 행의 높이가 남는다. 확장행처럼 높이가 큰 행이 있던 자리에 빈 공간이 생긴다.
      */
     getItemKey?: (index: number) => string | number;
+    /**
+     * 데이터가 바뀐 것을 알리는 값 (보통 data 배열 참조).
+     * 바뀌면 측정한 행 높이 캐시를 비운다.
+     */
+    dataVersion?: unknown;
 }
 /**
  * 행 가상화 훅 — `@tanstack/react-virtual` 래핑 + v2 rowGrouping 조합 지원.
@@ -42,7 +47,7 @@ interface UseTableVirtualizerOptions {
  * - `getItemSize(idx)`: idx 의 높이
  * - `totalSize`: 전체 스크롤 높이
  */
-export declare function useTableVirtualizer({ virtual, count, scrollContainerRef, rowSpanMap, getItemKey, }: UseTableVirtualizerOptions): {
+export declare function useTableVirtualizer({ virtual, count, scrollContainerRef, rowSpanMap, getItemKey, dataVersion, }: UseTableVirtualizerOptions): {
     isVirtual: boolean;
     virtualizer: import('@tanstack/virtual-core').Virtualizer<HTMLElement, Element> | null;
     virtualItems: VirtualItem[];
