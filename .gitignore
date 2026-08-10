@@ -36,6 +36,7 @@ coverage/
 # Documentation (개발 문서)
 docs/dev/*
 !docs/dev/datatable-v2/
+docs/dev/datatable-v2/ENGINEERING-CASES.md
 
 # Claude
 .claude/
