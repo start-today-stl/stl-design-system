@@ -105,8 +105,15 @@ function DataTableV2CellInner<T extends { id: string | number }>({
     isHead && "relative z-[5]"
   )
   const contentCls = cn(
-    // min-w-0 — flex 자식이 내용 크기 밑으로 줄어들 수 있게 (truncate 동작 조건)
-    "flex-1 flex items-center min-w-0 px-3 py-1.5 text-xs text-slate-900 dark:text-slate-200",
+    // 셀은 컬럼 폭을 벗어나지 않는다. v1(<td>)이 쓰던 규칙을 그대로 가져왔다:
+    //   break-all + overflow-wrap  — 긴 텍스트를 컬럼 폭에서 줄바꿈 (행 높이가 늘어남)
+    //   overflow-hidden            — 그래도 넘치는 내용은 자름 (옆 칸 침범 방지)
+    // v2 에 이 둘이 없어서 사용처 코드가 같은데도 텍스트가 옆 컬럼으로 흘렀다.
+    //
+    // min-w-0 / [&>*]:min-w-0 — flex 자식(사용처가 감싼 요소 포함)이 내용보다 작아질 수
+    // 있게 한다. 없으면 말줄임(truncate) 지점이 컬럼 밖으로 밀려 잘린 채 보인다.
+    "flex-1 flex items-center min-w-0 [&>*]:min-w-0 px-3 py-1.5 text-xs text-slate-900 dark:text-slate-200",
+    "overflow-hidden break-all [overflow-wrap:break-word]",
     alignClass[column.align ?? "left"],
     column.editable && !isEditing && "cursor-text hover:bg-blue-50 dark:hover:bg-blue-900/30"
   )
