@@ -214,7 +214,8 @@ function Kn({
     rowSpanMap: ht,
     // 측정한 행 높이를 행 id 기준으로 기억한다. 인덱스 기준이면 필터/정렬로 데이터가
     // 바뀔 때 그 자리에 이전 행 높이가 남아, 확장행이 있던 자리에 빈 공간이 생긴다.
-    getItemKey: It
+    getItemKey: It,
+    dataVersion: r
   }), ne = s.useRef(/* @__PURE__ */ new Map()), Lt = s.useCallback(
     (e, n) => {
       n ? ne.current.set(e, n) : ne.current.delete(e);

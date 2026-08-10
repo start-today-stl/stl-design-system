@@ -22,6 +22,11 @@ interface UseTableVirtualizerOptions {
    * 이전 행의 높이가 남는다. 확장행처럼 높이가 큰 행이 있던 자리에 빈 공간이 생긴다.
    */
   getItemKey?: (index: number) => string | number
+  /**
+   * 데이터가 바뀐 것을 알리는 값 (보통 data 배열 참조).
+   * 바뀌면 측정한 행 높이 캐시를 비운다.
+   */
+  dataVersion?: unknown
 }
 
 const DEFAULT_OVERSCAN = 5
@@ -54,6 +59,7 @@ export function useTableVirtualizer({
   scrollContainerRef,
   rowSpanMap,
   getItemKey,
+  dataVersion,
 }: UseTableVirtualizerOptions) {
   const config = React.useMemo<VirtualConfig | null>(() => {
     if (virtual === true) return {}
@@ -140,6 +146,20 @@ export function useTableVirtualizer({
     },
     [isVirtual, virtualizer, estimateSize]
   )
+
+  // 데이터가 바뀌면 측정치를 비운다.
+  //
+  // 행 높이 캐시는 한 번 들어가면 스스로 사라지지 않는다. 필터/정렬로 목록이 바뀌면
+  // 확장행처럼 높이가 큰 행의 값이 남아 빈 공간으로 보일 수 있고, 그 행이 화면 밖이면
+  // 다시 측정될 기회도 없다. 비우면 보이는 행부터 다시 재므로 항상 실제와 맞는다.
+  const prevDataKeyRef = React.useRef<unknown>(null)
+  React.useLayoutEffect(() => {
+    if (!isVirtual) return
+    const key = dataVersion ?? count
+    if (prevDataKeyRef.current === key) return
+    prevDataKeyRef.current = key
+    virtualizer.measure()
+  })
 
   return {
     isVirtual,
