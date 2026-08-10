@@ -1,33 +1,30 @@
-import { jsxs as h, jsx as a } from "react/jsx-runtime";
+import { jsxs as u, jsx as a } from "react/jsx-runtime";
 import * as n from "react";
-import { cn as x } from "../../../lib/utils.mjs";
-import { Popover as y, PopoverTrigger as k, PopoverContent as F } from "../../ui/popover.mjs";
-import { FilterIcon as D } from "../../../icons/FilterIcon.mjs";
-import { DefaultNumberRangeFilter as R, DefaultDateRangeFilter as M, DefaultMultiSelectFilter as P, DefaultSelectFilter as S, DefaultTextFilter as v } from "./data-table-v2-default-filters.mjs";
-function w({
+import { cn as f } from "../../../lib/utils.mjs";
+import { Popover as x, PopoverTrigger as k, PopoverContent as F } from "../../ui/popover.mjs";
+import { FilterIcon as y } from "../../../icons/FilterIcon.mjs";
+import { DefaultNumberRangeFilter as D, DefaultDateRangeFilter as R, DefaultMultiSelectFilter as C, DefaultSelectFilter as M, DefaultTextFilter as P } from "./data-table-v2-default-filters.mjs";
+function T({
   column: e,
   filter: l,
   value: o,
   active: r,
-  onChange: i,
+  onChange: c,
   columnKey: t
 }) {
-  const m = n.useCallback(
-    (s) => i(t, s),
-    [i, t]
-  ), [c, u] = n.useState(!1), g = n.useCallback(() => u(!1), []), p = n.useRef(null), [b, f] = n.useState(null);
-  n.useEffect(() => {
-    var s;
-    c && f(((s = p.current) == null ? void 0 : s.closest('[role="grid"]')) ?? null);
-  }, [c]);
-  const d = `${typeof e.header == "string" ? e.header : "컬럼"} 필터`;
-  return /* @__PURE__ */ h(y, { open: c, onOpenChange: u, children: [
-    /* @__PURE__ */ a(k, { asChild: !0, children: /* @__PURE__ */ h(
+  const h = n.useCallback(
+    (s) => c(t, s),
+    [c, t]
+  ), [g, i] = n.useState(!1), m = n.useCallback(() => i(!1), []), p = n.useRef(null), b = n.useCallback((s) => {
+    p.current = (s == null ? void 0 : s.closest('[role="grid"]')) ?? null;
+  }, []), d = `${typeof e.header == "string" ? e.header : "컬럼"} 필터`;
+  return /* @__PURE__ */ u(x, { open: g, onOpenChange: i, children: [
+    /* @__PURE__ */ a(k, { asChild: !0, children: /* @__PURE__ */ u(
       "button",
       {
-        ref: p,
+        ref: b,
         type: "button",
-        className: x(
+        className: f(
           "relative flex h-6 w-6 shrink-0 cursor-pointer items-center justify-center rounded transition-colors",
           "text-slate-400 hover:text-slate-700 hover:bg-slate-200/60",
           "dark:text-slate-500 dark:hover:text-slate-100 dark:hover:bg-slate-700/60",
@@ -36,7 +33,7 @@ function w({
         "aria-label": d,
         onClick: (s) => s.stopPropagation(),
         children: [
-          /* @__PURE__ */ a(D, { size: 20 }),
+          /* @__PURE__ */ a(y, { size: 20 }),
           r && /* @__PURE__ */ a(
             "span",
             {
@@ -54,21 +51,21 @@ function w({
         align: "end",
         className: "w-64 p-3",
         "aria-label": d,
-        collisionBoundary: b ?? void 0,
+        collisionBoundary: p.current ?? void 0,
         collisionPadding: 8,
-        children: C(l, o, m, g, e)
+        children: v(l, o, h, m, e)
       }
     )
   ] });
 }
 const O = n.memo(
-  w
+  T
 );
-function C(e, l, o, r, i) {
+function v(e, l, o, r, c) {
   switch (e.type) {
     case "text":
       return /* @__PURE__ */ a(
-        v,
+        P,
         {
           value: l,
           onChange: (t) => o(t),
@@ -78,7 +75,7 @@ function C(e, l, o, r, i) {
       );
     case "select":
       return /* @__PURE__ */ a(
-        S,
+        M,
         {
           value: l,
           onChange: (t) => o(t),
@@ -90,7 +87,7 @@ function C(e, l, o, r, i) {
       );
     case "multiSelect":
       return /* @__PURE__ */ a(
-        P,
+        C,
         {
           value: l,
           onChange: (t) => o(t),
@@ -102,7 +99,7 @@ function C(e, l, o, r, i) {
       );
     case "dateRange":
       return /* @__PURE__ */ a(
-        M,
+        R,
         {
           value: l,
           onChange: (t) => o(t),
@@ -111,7 +108,7 @@ function C(e, l, o, r, i) {
       );
     case "numberRange":
       return /* @__PURE__ */ a(
-        R,
+        D,
         {
           value: l,
           onChange: (t) => o(t),
@@ -123,7 +120,7 @@ function C(e, l, o, r, i) {
         value: l,
         onChange: o,
         onClose: r,
-        column: i
+        column: c
       });
   }
 }

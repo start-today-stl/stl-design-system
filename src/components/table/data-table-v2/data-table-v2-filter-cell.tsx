@@ -52,11 +52,13 @@ function DataTableV2FilterCellInner<T>({
   // 팝오버가 테이블 밖으로 튀어나가지 않도록 충돌 경계를 테이블로 잡는다.
   // Radix 기본 경계는 뷰포트라, 첫 컬럼 필터가 왼쪽 바깥(사이드바 위)으로 펼쳐져도
   // 화면 안이면 충돌로 보지 않는다.
-  const triggerRef = React.useRef<HTMLButtonElement>(null)
-  const [boundary, setBoundary] = React.useState<Element | null>(null)
-  React.useEffect(() => {
-    if (open) setBoundary(triggerRef.current?.closest('[role="grid"]') ?? null)
-  }, [open])
+  //
+  // 경계는 **마운트 시점에** ref 로 잡는다. 열린 뒤에 state 로 잡으면 첫 프레임이
+  // 뷰포트 기준으로 그려졌다가 다시 배치돼서 위치가 깜빡인다.
+  const gridRef = React.useRef<Element | null>(null)
+  const setTriggerRef = React.useCallback((el: HTMLButtonElement | null) => {
+    gridRef.current = el?.closest('[role="grid"]') ?? null
+  }, [])
 
   const label = `${typeof column.header === "string" ? column.header : "컬럼"} 필터`
 
@@ -64,7 +66,7 @@ function DataTableV2FilterCellInner<T>({
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <button
-          ref={triggerRef}
+          ref={setTriggerRef}
           type="button"
           className={cn(
             "relative flex h-6 w-6 shrink-0 cursor-pointer items-center justify-center rounded transition-colors",
@@ -91,7 +93,7 @@ function DataTableV2FilterCellInner<T>({
         align="end"
         className="w-64 p-3"
         aria-label={label}
-        collisionBoundary={boundary ?? undefined}
+        collisionBoundary={gridRef.current ?? undefined}
         collisionPadding={8}
       >
         {renderFilterContent(filter, value, handleChange, close, column)}
