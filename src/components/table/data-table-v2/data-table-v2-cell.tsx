@@ -82,11 +82,10 @@ function DataTableV2CellInner<T extends { id: string | number }>({
   const isHead = spanHeight !== undefined
 
   const outerCls = cn(
-    // overflow-hidden — 셀 내용이 옆 칸을 침범하지 못하게 한다.
-    // 사용처가 고정 폭(max-width 등)으로 자르는 컴포넌트를 쓰는데 그 값이 실제 컬럼보다
-    // 넓으면 텍스트가 구분선을 넘어 다음 셀 위에 그려진다. 세로는 행 높이가 내용에 맞춰
-    // 늘어나므로 잘리지 않는다.
-    "flex min-h-9 overflow-hidden",
+    // overflow 는 자르지 않는다. DS Tooltip 이 Portal 을 안 써서 셀 안에 그려지는데,
+    // 여기서 overflow-hidden 을 걸면 툴팁까지 잘린다.
+    // 옆 칸 침범은 아래 contentCls 의 min-w-0 로 막는다 (자식이 셀 폭에 맞춰 줄어듦).
+    "flex min-h-9",
     width !== undefined && "shrink-0",
     // pinned 셀은 sticky 라 스크롤되는 내용을 덮는다 → **불투명 배경 필수**.
     // 선택/hover 는 행의 group / data-state 를 CSS 로 따라가므로 클래스가 고정이다
