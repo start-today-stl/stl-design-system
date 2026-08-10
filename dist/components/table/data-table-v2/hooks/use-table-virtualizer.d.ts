@@ -13,6 +13,13 @@ interface UseTableVirtualizerOptions {
      * 없으면 null.
      */
     rowSpanMap: Map<number, Map<PropertyKey, number>> | null;
+    /**
+     * 인덱스 → 행 식별자. 측정한 행 높이를 **인덱스가 아니라 행 기준**으로 기억하기 위해 쓴다.
+     *
+     * 없으면 라이브러리 기본값(인덱스)이 쓰이는데, 필터/정렬로 데이터가 바뀌면 그 자리에
+     * 이전 행의 높이가 남는다. 확장행처럼 높이가 큰 행이 있던 자리에 빈 공간이 생긴다.
+     */
+    getItemKey?: (index: number) => string | number;
 }
 /**
  * 행 가상화 훅 — `@tanstack/react-virtual` 래핑 + v2 rowGrouping 조합 지원.
@@ -35,7 +42,7 @@ interface UseTableVirtualizerOptions {
  * - `getItemSize(idx)`: idx 의 높이
  * - `totalSize`: 전체 스크롤 높이
  */
-export declare function useTableVirtualizer({ virtual, count, scrollContainerRef, rowSpanMap, }: UseTableVirtualizerOptions): {
+export declare function useTableVirtualizer({ virtual, count, scrollContainerRef, rowSpanMap, getItemKey, }: UseTableVirtualizerOptions): {
     isVirtual: boolean;
     virtualizer: import('@tanstack/virtual-core').Virtualizer<HTMLElement, Element> | null;
     virtualItems: VirtualItem[];

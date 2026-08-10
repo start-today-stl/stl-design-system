@@ -15,6 +15,13 @@ interface UseTableVirtualizerOptions {
    * 없으면 null.
    */
   rowSpanMap: Map<number, Map<PropertyKey, number>> | null
+  /**
+   * 인덱스 → 행 식별자. 측정한 행 높이를 **인덱스가 아니라 행 기준**으로 기억하기 위해 쓴다.
+   *
+   * 없으면 라이브러리 기본값(인덱스)이 쓰이는데, 필터/정렬로 데이터가 바뀌면 그 자리에
+   * 이전 행의 높이가 남는다. 확장행처럼 높이가 큰 행이 있던 자리에 빈 공간이 생긴다.
+   */
+  getItemKey?: (index: number) => string | number
 }
 
 const DEFAULT_OVERSCAN = 5
@@ -46,6 +53,7 @@ export function useTableVirtualizer({
   count,
   scrollContainerRef,
   rowSpanMap,
+  getItemKey,
 }: UseTableVirtualizerOptions) {
   const config = React.useMemo<VirtualConfig | null>(() => {
     if (virtual === true) return {}
@@ -65,6 +73,8 @@ export function useTableVirtualizer({
     getScrollElement: () => (isVirtual ? scrollContainerRef.current : null),
     estimateSize: () => estimateSize,
     overscan,
+    // 측정 캐시를 행 기준으로 (위 getItemKey 주석 참고)
+    ...(getItemKey ? { getItemKey } : {}),
     // 행 높이를 정수 픽셀로 라운딩 — sub-pixel 누적 오차 감소
     measureElement: (element) => {
       const rect = element.getBoundingClientRect()

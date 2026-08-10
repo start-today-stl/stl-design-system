@@ -465,6 +465,14 @@ export function DataTableV2<T extends { id: string | number }>({
   // visibleWidth — loading/empty 콘텐츠 가로 중앙 정렬용 (가로 스크롤 시 가시 영역 기준)
   const scrollRef = React.useRef<HTMLDivElement>(null)
 
+  // 가상화 측정 캐시 키 — data 를 ref 로 읽어 콜백을 고정한다
+  const dataRef = React.useRef(data)
+  dataRef.current = data
+  const virtualGetItemKey = React.useCallback(
+    (index: number) => dataRef.current[index]?.id ?? index,
+    []
+  )
+
 
   // 가상화 (SDS-38): viewport 안 row 만 렌더. rowSpanMap 전달로 그룹 head 강제 렌더 (overscan 확장).
   const {
@@ -478,6 +486,9 @@ export function DataTableV2<T extends { id: string | number }>({
     count: data.length,
     scrollContainerRef: scrollRef,
     rowSpanMap,
+    // 측정한 행 높이를 행 id 기준으로 기억한다. 인덱스 기준이면 필터/정렬로 데이터가
+    // 바뀔 때 그 자리에 이전 행 높이가 남아, 확장행이 있던 자리에 빈 공간이 생긴다.
+    getItemKey: virtualGetItemKey,
   })
   // ── 행 위치는 prop 이 아니라 DOM 에 직접 쓴다 (SDS-49) ──────────────────
   // positions 는 행 높이의 누적합이라, 한 행의 높이가 바뀌면 (확장 / 편집 에러 등)
