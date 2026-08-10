@@ -1599,3 +1599,37 @@ export const DependentFilter: Story = {
     expect(body.getByLabelText("필터 선택")).not.toBeDisabled()
   },
 }
+
+export const FilterPopoverStaysInTable: Story = {
+  // 회귀 검증용 — 문서/사이드바에서 감춘다
+  // (첫 컬럼 필터 팝오버가 테이블 왼쪽 바깥으로 튀어나가 사이드바를 덮던 문제)
+  tags: ["!dev", "!docs"],
+  render: () => {
+    const [filterState, setFilterState] = useState<Record<string, unknown>>({})
+    return (
+      // 테이블 왼쪽에 여백을 크게 둬서, 뷰포트 기준이면 밖으로 나갈 수 있는 상황을 만든다
+      <div style={{ paddingLeft: 320 }}>
+        <DataTableV2
+          data={smallData}
+          columns={filterableColumns}
+          filterState={filterState}
+          onFilterChange={setFilterState}
+        />
+      </div>
+    )
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const grid = canvasElement.querySelector('[role="grid"]')!
+
+    // 첫 번째 컬럼의 필터를 연다
+    await userEvent.click(canvas.getAllByRole("button", { name: /필터/ })[0])
+
+    const popover = await within(document.body).findByRole("dialog")
+    const p = popover.getBoundingClientRect()
+    const g = grid.getBoundingClientRect()
+
+    // 팝오버 왼쪽 끝이 테이블 왼쪽 끝보다 안쪽에 있어야 한다
+    expect(Math.round(p.left)).toBeGreaterThanOrEqual(Math.round(g.left) - 1)
+  },
+}

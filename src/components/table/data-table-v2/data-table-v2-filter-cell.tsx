@@ -49,12 +49,22 @@ function DataTableV2FilterCellInner<T>({
   const [open, setOpen] = React.useState(false)
   const close = React.useCallback(() => setOpen(false), [])
 
+  // 팝오버가 테이블 밖으로 튀어나가지 않도록 충돌 경계를 테이블로 잡는다.
+  // Radix 기본 경계는 뷰포트라, 첫 컬럼 필터가 왼쪽 바깥(사이드바 위)으로 펼쳐져도
+  // 화면 안이면 충돌로 보지 않는다.
+  const triggerRef = React.useRef<HTMLButtonElement>(null)
+  const [boundary, setBoundary] = React.useState<Element | null>(null)
+  React.useEffect(() => {
+    if (open) setBoundary(triggerRef.current?.closest('[role="grid"]') ?? null)
+  }, [open])
+
   const label = `${typeof column.header === "string" ? column.header : "컬럼"} 필터`
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <button
+          ref={triggerRef}
           type="button"
           className={cn(
             "relative flex h-6 w-6 shrink-0 cursor-pointer items-center justify-center rounded transition-colors",
@@ -77,7 +87,13 @@ function DataTableV2FilterCellInner<T>({
           )}
         </button>
       </PopoverTrigger>
-      <PopoverContent align="end" className="w-64 p-3" aria-label={label}>
+      <PopoverContent
+        align="end"
+        className="w-64 p-3"
+        aria-label={label}
+        collisionBoundary={boundary ?? undefined}
+        collisionPadding={8}
+      >
         {renderFilterContent(filter, value, handleChange, close, column)}
       </PopoverContent>
     </Popover>

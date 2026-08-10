@@ -1,36 +1,42 @@
-import { jsxs as d, jsx as a } from "react/jsx-runtime";
+import { jsxs as h, jsx as a } from "react/jsx-runtime";
 import * as n from "react";
-import { cn as b } from "../../../lib/utils.mjs";
-import { Popover as g, PopoverTrigger as f, PopoverContent as x } from "../../ui/popover.mjs";
-import { FilterIcon as k } from "../../../icons/FilterIcon.mjs";
-import { DefaultNumberRangeFilter as F, DefaultDateRangeFilter as D, DefaultMultiSelectFilter as y, DefaultSelectFilter as M, DefaultTextFilter as R } from "./data-table-v2-default-filters.mjs";
+import { cn as x } from "../../../lib/utils.mjs";
+import { Popover as y, PopoverTrigger as k, PopoverContent as F } from "../../ui/popover.mjs";
+import { FilterIcon as D } from "../../../icons/FilterIcon.mjs";
+import { DefaultNumberRangeFilter as R, DefaultDateRangeFilter as M, DefaultMultiSelectFilter as P, DefaultSelectFilter as S, DefaultTextFilter as v } from "./data-table-v2-default-filters.mjs";
 function w({
   column: e,
   filter: l,
   value: o,
   active: r,
-  onChange: s,
+  onChange: i,
   columnKey: t
 }) {
-  const u = n.useCallback(
-    (c) => s(t, c),
-    [s, t]
-  ), [h, i] = n.useState(!1), m = n.useCallback(() => i(!1), []), p = `${typeof e.header == "string" ? e.header : "컬럼"} 필터`;
-  return /* @__PURE__ */ d(g, { open: h, onOpenChange: i, children: [
-    /* @__PURE__ */ a(f, { asChild: !0, children: /* @__PURE__ */ d(
+  const m = n.useCallback(
+    (s) => i(t, s),
+    [i, t]
+  ), [c, u] = n.useState(!1), g = n.useCallback(() => u(!1), []), p = n.useRef(null), [b, f] = n.useState(null);
+  n.useEffect(() => {
+    var s;
+    c && f(((s = p.current) == null ? void 0 : s.closest('[role="grid"]')) ?? null);
+  }, [c]);
+  const d = `${typeof e.header == "string" ? e.header : "컬럼"} 필터`;
+  return /* @__PURE__ */ h(y, { open: c, onOpenChange: u, children: [
+    /* @__PURE__ */ a(k, { asChild: !0, children: /* @__PURE__ */ h(
       "button",
       {
+        ref: p,
         type: "button",
-        className: b(
+        className: x(
           "relative flex h-6 w-6 shrink-0 cursor-pointer items-center justify-center rounded transition-colors",
           "text-slate-400 hover:text-slate-700 hover:bg-slate-200/60",
           "dark:text-slate-500 dark:hover:text-slate-100 dark:hover:bg-slate-700/60",
           r && "text-blue-600 dark:text-blue-400"
         ),
-        "aria-label": p,
-        onClick: (c) => c.stopPropagation(),
+        "aria-label": d,
+        onClick: (s) => s.stopPropagation(),
         children: [
-          /* @__PURE__ */ a(k, { size: 20 }),
+          /* @__PURE__ */ a(D, { size: 20 }),
           r && /* @__PURE__ */ a(
             "span",
             {
@@ -42,17 +48,27 @@ function w({
         ]
       }
     ) }),
-    /* @__PURE__ */ a(x, { align: "end", className: "w-64 p-3", "aria-label": p, children: C(l, o, u, m, e) })
+    /* @__PURE__ */ a(
+      F,
+      {
+        align: "end",
+        className: "w-64 p-3",
+        "aria-label": d,
+        collisionBoundary: b ?? void 0,
+        collisionPadding: 8,
+        children: C(l, o, m, g, e)
+      }
+    )
   ] });
 }
-const v = n.memo(
+const O = n.memo(
   w
 );
-function C(e, l, o, r, s) {
+function C(e, l, o, r, i) {
   switch (e.type) {
     case "text":
       return /* @__PURE__ */ a(
-        R,
+        v,
         {
           value: l,
           onChange: (t) => o(t),
@@ -62,7 +78,7 @@ function C(e, l, o, r, s) {
       );
     case "select":
       return /* @__PURE__ */ a(
-        M,
+        S,
         {
           value: l,
           onChange: (t) => o(t),
@@ -74,7 +90,7 @@ function C(e, l, o, r, s) {
       );
     case "multiSelect":
       return /* @__PURE__ */ a(
-        y,
+        P,
         {
           value: l,
           onChange: (t) => o(t),
@@ -86,7 +102,7 @@ function C(e, l, o, r, s) {
       );
     case "dateRange":
       return /* @__PURE__ */ a(
-        D,
+        M,
         {
           value: l,
           onChange: (t) => o(t),
@@ -95,7 +111,7 @@ function C(e, l, o, r, s) {
       );
     case "numberRange":
       return /* @__PURE__ */ a(
-        F,
+        R,
         {
           value: l,
           onChange: (t) => o(t),
@@ -107,11 +123,11 @@ function C(e, l, o, r, s) {
         value: l,
         onChange: o,
         onClose: r,
-        column: s
+        column: i
       });
   }
 }
 export {
-  v as DataTableV2FilterCell
+  O as DataTableV2FilterCell
 };
 //# sourceMappingURL=data-table-v2-filter-cell.mjs.map
