@@ -82,7 +82,11 @@ function DataTableV2CellInner<T extends { id: string | number }>({
   const isHead = spanHeight !== undefined
 
   const outerCls = cn(
-    "flex min-h-9",
+    // overflow-hidden — 셀 내용이 옆 칸을 침범하지 못하게 한다.
+    // 사용처가 고정 폭(max-width 등)으로 자르는 컴포넌트를 쓰는데 그 값이 실제 컬럼보다
+    // 넓으면 텍스트가 구분선을 넘어 다음 셀 위에 그려진다. 세로는 행 높이가 내용에 맞춰
+    // 늘어나므로 잘리지 않는다.
+    "flex min-h-9 overflow-hidden",
     width !== undefined && "shrink-0",
     // pinned 셀은 sticky 라 스크롤되는 내용을 덮는다 → **불투명 배경 필수**.
     // 선택/hover 는 행의 group / data-state 를 CSS 로 따라가므로 클래스가 고정이다
@@ -102,7 +106,8 @@ function DataTableV2CellInner<T extends { id: string | number }>({
     isHead && "relative z-[5]"
   )
   const contentCls = cn(
-    "flex-1 flex items-center px-3 py-1.5 text-xs text-slate-900 dark:text-slate-200",
+    // min-w-0 — flex 자식이 내용 크기 밑으로 줄어들 수 있게 (truncate 동작 조건)
+    "flex-1 flex items-center min-w-0 px-3 py-1.5 text-xs text-slate-900 dark:text-slate-200",
     alignClass[column.align ?? "left"],
     column.editable && !isEditing && "cursor-text hover:bg-blue-50 dark:hover:bg-blue-900/30"
   )
