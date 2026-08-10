@@ -4,7 +4,12 @@ import * as React from "react";
 export type HeaderGroupCell<T> = {
     kind: "group";
     key: string;
-    width: number;
+    /** 하위가 전부 고정폭일 때의 합. flex 컬럼이 섞이면 undefined */
+    width: number | undefined;
+    /** 하위 flex 컬럼 개수 = grow 지분 */
+    flexGrow: number;
+    /** 고정폭 합 + flex 컬럼들의 minWidth 합 */
+    minWidth: number;
     group: HeaderGroup<T>;
 } | {
     kind: "placeholder";

@@ -11,7 +11,6 @@ import { DataTableV2ColumnSeparator } from "./data-table-v2-column-separator"
 import { DataTableV2HeaderCell } from "./data-table-v2-header-cell"
 import {
   CHECKBOX_COL_WIDTH,
-  DEFAULT_COL_WIDTH,
   DRAG_HANDLE_COL_WIDTH,
   EXPAND_COL_WIDTH,
   ROW_ACTIONS_WIDTH,
@@ -25,7 +24,17 @@ import type {
 
 /** 헤더 그룹 행의 셀 하나. group = 그룹 헤더, placeholder = 그룹 없는 컬럼 자리 */
 export type HeaderGroupCell<T> =
-  | { kind: "group"; key: string; width: number; group: HeaderGroup<T> }
+  | {
+      kind: "group"
+      key: string
+      /** 하위가 전부 고정폭일 때의 합. flex 컬럼이 섞이면 undefined */
+      width: number | undefined
+      /** 하위 flex 컬럼 개수 = grow 지분 */
+      flexGrow: number
+      /** 고정폭 합 + flex 컬럼들의 minWidth 합 */
+      minWidth: number
+      group: HeaderGroup<T>
+    }
   | { kind: "placeholder"; key: string; col: DataTableV2Column<T> }
 
 /** 컬럼 인덱스를 함께 들고 다니는 pinned 컬럼 (offset 조회에 원본 인덱스 필요) */
@@ -180,7 +189,11 @@ function DataTableV2HeaderInner<T extends { id: string | number }>({
 
   // 그룹 행에서 pinned 컬럼 자리를 채우기 위한 sticky placeholder 렌더
   const renderPinnedPlaceholder = (col: DataTableV2Column<T>, i: number) => {
-    const width = typeof col.width === "number" ? col.width : DEFAULT_COL_WIDTH
+    // 리프 헤더 셀과 **같은 sizing** 을 써야 폭이 일치한다.
+    // 예전엔 width 없으면 DEFAULT_COL_WIDTH 로 고정해서, minWidth 만 준 컬럼에서
+    // 그룹 행 덮개가 실제 컬럼보다 좁아지고 그 틈으로 아래 컬럼이 비쳤다.
+    const width = typeof col.width === "number" ? col.width : undefined
+    const minWidth = typeof col.minWidth === "number" ? col.minWidth : undefined
     const isLeft = col.pinned === "left"
     // shadow 는 CSS `group-data-[scrolled-*=true]/scroll:` 로 반응 → 여기선 column 위치만 판단.
     const isLeftBoundary = i === lastLeftPinnedIdx
@@ -190,7 +203,8 @@ function DataTableV2HeaderInner<T extends { id: string | number }>({
       <div
         key={`pinned-placeholder-${col.id ?? String(col.accessorKey)}`}
         className={cn(
-          "shrink-0 sticky z-20",
+          "sticky z-20",
+          width !== undefined && "shrink-0",
           headerBg,
           isFirstRightPinned && "ml-auto",
           isLeftBoundary && "group-data-[scrolled-left=true]/scroll:shadow-[2px_0_5px_-2px_rgba(0,0,0,0.15)]",
@@ -198,6 +212,8 @@ function DataTableV2HeaderInner<T extends { id: string | number }>({
         )}
         style={{
           width,
+          minWidth,
+          flex: width === undefined ? "1 1 0" : undefined,
           left: isLeft ? leftOffsets[i] : undefined,
           right: !isLeft ? rightOffsets[i] : undefined,
         }}
@@ -381,8 +397,19 @@ function DataTableV2HeaderInner<T extends { id: string | number }>({
                 <div
                   key={cell.key}
                   role="columnheader"
-                  className="relative flex min-h-9 shrink-0"
-                  style={{ width: cell.width }}
+                  className={cn(
+                    "relative flex min-h-9",
+                    cell.flexGrow === 0 && "shrink-0"
+                  )}
+                  style={{
+                    width: cell.width,
+                    minWidth: cell.minWidth,
+                    // 하위 컬럼들과 같은 지분으로 분배받아야 폭이 일치한다
+                    flex:
+                      cell.flexGrow === 0
+                        ? undefined
+                        : `${cell.flexGrow} 1 0`,
+                  }}
                 >
                   {showLeft && <DataTableV2ColumnSeparator side="left" />}
                   <div

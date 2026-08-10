@@ -95,7 +95,10 @@ function computeNextSort<T>(
 function computePinnedOffsets<T>(
   columns: DataTableV2Column<T>[],
   leftBaseOffset: number = 0,
-  rightBaseOffset: number = 0
+  rightBaseOffset: number = 0,
+  // 실제 렌더 폭 해석기. 선언된 폭(colMinNeeded)은 `minWidth` 만 준 컬럼에서
+  // 실제 폭과 어긋나므로, 측정값이 있으면 그것을 쓴다.
+  widthOf: (col: DataTableV2Column<T>) => number = colMinNeeded
 ) {
   const left = new Array(columns.length).fill(-1)
   const right = new Array(columns.length).fill(-1)
@@ -103,14 +106,14 @@ function computePinnedOffsets<T>(
   for (let i = 0; i < columns.length; i++) {
     if (columns[i].pinned === "left") {
       left[i] = leftAcc
-      leftAcc += colMinNeeded(columns[i])
+      leftAcc += widthOf(columns[i])
     }
   }
   let rightAcc = rightBaseOffset
   for (let i = columns.length - 1; i >= 0; i--) {
     if (columns[i].pinned === "right") {
       right[i] = rightAcc
-      rightAcc += colMinNeeded(columns[i])
+      rightAcc += widthOf(columns[i])
     }
   }
   return { left, right }
@@ -221,9 +224,21 @@ export function DataTableV2<T extends { id: string | number }>({
   const controlColsWidth =
     rowActionsColLeftOffset + (showRowDelete ? ROW_ACTIONS_WIDTH : 0)
 
+  // 컬럼의 **실제 렌더 폭**. `minWidth` 만 준 컬럼은 flex 로 늘어나므로 선언값과 다르다.
+  // 이 값이 없으면 (1) 헤더 그룹 셀 폭이 하위 컬럼과 어긋나고 (2) pinned sticky offset 이
+  // 실제보다 작아 스크롤 시 고정 컬럼끼리 겹친다.
+  const [measuredColWidths, setMeasuredColWidths] = React.useState<
+    Record<string, number>
+  >({})
+  const colWidth = React.useCallback(
+    (col: DataTableV2Column<T>) =>
+      measuredColWidths[String(col.accessorKey)] ?? colMinNeeded(col),
+    [measuredColWidths]
+  )
+
   const { left: leftOffsets, right: rightOffsets } = React.useMemo(
-    () => computePinnedOffsets(columns, controlColsWidth),
-    [columns, controlColsWidth]
+    () => computePinnedOffsets(columns, controlColsWidth, 0, colWidth),
+    [columns, controlColsWidth, colWidth]
   )
   const totalWidth = React.useMemo(
     () => sumColumnWidths(columns) + controlColsWidth,
@@ -450,6 +465,7 @@ export function DataTableV2<T extends { id: string | number }>({
   // visibleWidth — loading/empty 콘텐츠 가로 중앙 정렬용 (가로 스크롤 시 가시 영역 기준)
   const scrollRef = React.useRef<HTMLDivElement>(null)
 
+
   // 가상화 (SDS-38): viewport 안 row 만 렌더. rowSpanMap 전달로 그룹 head 강제 렌더 (overscan 확장).
   const {
     isVirtual,
@@ -499,6 +515,30 @@ export function DataTableV2<T extends { id: string | number }>({
   // pinned 경계 셀은 data-attr 상속받는 CSS 셀렉터로 shadow 표시.
   // visibleWidth 는 loading/empty 컨텐츠 중앙 정렬용 — 값 변경 시 리렌더 필요하므로 state 유지.
   const [visibleWidth, setVisibleWidth] = React.useState(0)
+
+  // 헤더 리프 셀의 실제 폭을 재서 위 measuredColWidths 에 반영한다.
+  // 매 렌더가 아니라 폭이 달라질 수 있는 입력이 바뀔 때만 측정한다
+  // (컬럼 정의 / 사용자 리사이즈 / 컨테이너 폭). 스크롤마다 재면 레이아웃 스래싱이 난다.
+  React.useLayoutEffect(() => {
+    const root = scrollRef.current
+    if (!root) return
+    const els = root.querySelectorAll<HTMLElement>(
+      '[role="columnheader"][data-column-key]'
+    )
+    if (els.length === 0) return
+    const next: Record<string, number> = {}
+    els.forEach((el) => {
+      const key = el.dataset.columnKey
+      if (key) next[key] = el.getBoundingClientRect().width
+    })
+    setMeasuredColWidths((prev) => {
+      const keys = Object.keys(next)
+      const same =
+        keys.length === Object.keys(prev).length &&
+        keys.every((k) => Math.abs((prev[k] ?? -1) - next[k]) < 0.5)
+      return same ? prev : next
+    })
+  }, [columns, columnWidths, visibleWidth])
   React.useEffect(() => {
     const el = scrollRef.current
     if (!el) return
@@ -555,21 +595,41 @@ export function DataTableV2<T extends { id: string | number }>({
         i += 1
         continue
       }
-      // 같은 그룹이 이어지는 동안 폭 누적
-      let width = 0
+      // 그룹 셀은 하위 컬럼들과 **같은 flex 규칙**으로 크기를 잡는다.
+      //
+      // 폭의 합을 계산해 고정폭으로 주면 `minWidth` 만 지정한 컬럼(= flex 로 늘어남)과
+      // 어긋난다. 실제 렌더 폭을 재서 넣는 방법도 있지만, 그룹 행이 넓어지면 컨테이너가
+      // 넓어지고 그만큼 하위 컬럼도 다시 늘어나는 되먹임이 생긴다.
+      //
+      // 대신 하위 컬럼의 flex 설정을 그대로 합산한다.
+      //   - 고정폭(width) 컬럼: 폭을 그대로 더한다
+      //   - flex 컬럼(width 없음): grow 지분 1씩 더하고 minWidth 를 더한다
+      // 같은 컨테이너 안에서 같은 지분으로 분배되므로 하위 컬럼 합과 폭이 일치한다.
+      let fixedWidth = 0
+      let flexGrow = 0
+      let minWidth = 0
       const runStart = i
       while (
         i < middleCols.length &&
         groupOfColumn.get(middleCols[i].accessorKey) === group
       ) {
-        width += colMinNeeded(middleCols[i])
+        const c = middleCols[i]
+        if (typeof c.width === "number") {
+          fixedWidth += c.width
+          minWidth += c.width
+        } else {
+          flexGrow += 1
+          minWidth += colMinNeeded(c)
+        }
         i += 1
       }
       cells.push({
         // 같은 그룹이 여러 구간으로 갈라질 수 있으므로 key 는 구간 첫 컬럼 기준
         key: `group-${String(middleCols[runStart].accessorKey)}`,
         kind: "group",
-        width,
+        width: flexGrow === 0 ? fixedWidth : undefined,
+        flexGrow,
+        minWidth,
         group,
       })
     }

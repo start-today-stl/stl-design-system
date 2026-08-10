@@ -1634,3 +1634,55 @@ export const FilterPopoverStaysInTable: Story = {
   },
 }
 
+
+// minWidth 만 지정해 flex 로 늘어나는 컬럼들 (고정 컬럼 포함)
+const flexGroupColumns: DataTableV2Column<Row>[] = [
+  { accessorKey: "id", header: "ID", minWidth: 140, pinned: "left" },
+  { accessorKey: "name", header: "이름", minWidth: 160 },
+  { accessorKey: "role", header: "역할", minWidth: 160 },
+  { accessorKey: "score", header: "점수", minWidth: 160 },
+]
+
+const flexHeaderGroups: HeaderGroup<Row>[] = [
+  { header: "인적사항", columns: ["name", "role"] },
+  { header: "평가", columns: ["score"] },
+]
+
+export const HeaderGroupMatchesFlexColumns: Story = {
+  // 회귀 검증용 — 문서/사이드바에서 감춘다
+  // (minWidth 만 준 컬럼은 flex 로 늘어나는데, 그룹 셀 폭은 선언값 합이라 어긋나던 문제)
+  tags: ["!dev", "!docs"],
+  render: () => (
+    <div style={{ width: 900 }}>
+      <DataTableV2
+        data={smallData}
+        columns={flexGroupColumns}
+        headerGroups={flexHeaderGroups}
+      />
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const rect = (sel: string) =>
+      canvasElement.querySelector<HTMLElement>(sel)!.getBoundingClientRect()
+
+    await waitFor(() => expect(rect('[data-column-key="name"]').width).toBeGreaterThan(160))
+
+    const name = rect('[data-column-key="name"]')
+    const role = rect('[data-column-key="role"]')
+    const score = rect('[data-column-key="score"]')
+
+    const groupCells = canvasElement.querySelectorAll<HTMLElement>(
+      '[role="row"][aria-rowindex="1"] [role="columnheader"]'
+    )
+    const person = groupCells[0].getBoundingClientRect()
+    const evaluation = groupCells[1].getBoundingClientRect()
+
+    // '인적사항' 그룹은 이름+역할 두 컬럼을 정확히 덮어야 한다
+    expect(Math.round(person.left)).toBe(Math.round(name.left))
+    expect(Math.round(person.right)).toBe(Math.round(role.right))
+
+    // '평가' 그룹은 점수 컬럼과 일치해야 한다
+    expect(Math.round(evaluation.left)).toBe(Math.round(score.left))
+    expect(Math.round(evaluation.right)).toBe(Math.round(score.right))
+  },
+}
