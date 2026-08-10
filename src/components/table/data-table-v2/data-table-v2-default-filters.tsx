@@ -62,10 +62,12 @@ export function DefaultSelectFilter({
   options,
   placeholder,
   emptyMessage,
+  searchable,
 }: DefaultFilterProps<string> & {
   options: FilterOption[]
   placeholder?: string
   emptyMessage?: string
+  searchable?: boolean
 }) {
   // 다른 필터에 종속돼서 아직 옵션이 없을 수 있다. 빈 목록을 열어주는 대신
   // 검색폼과 같이 비활성 + 사유 안내로 처리한다.
@@ -73,6 +75,7 @@ export function DefaultSelectFilter({
   return (
     <div className="flex flex-col gap-2">
       <Select
+        searchable={searchable}
         options={options}
         value={value}
         onValueChange={(v) => onChange(v || undefined)}
@@ -111,16 +114,19 @@ export function DefaultMultiSelectFilter({
   options,
   placeholder,
   emptyMessage,
+  searchable,
 }: DefaultFilterProps<string[]> & {
   options: FilterOption[]
   placeholder?: string
   emptyMessage?: string
+  searchable?: boolean
 }) {
   const isEmpty = options.length === 0
   return (
     <div className="flex flex-col gap-2">
       <Select
         multiple
+        searchable={searchable}
         options={options}
         value={value ?? []}
         onValueChange={(v) => onChange(v.length ? v : undefined)}

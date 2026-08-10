@@ -120,12 +120,21 @@ export type FilterConfig<T> = {
      * 지정하지 않으면 기본 문구가 나온다.
      */
     emptyMessage?: string;
+    /**
+     * 팝오버 안에 옵션 검색 입력을 띄운다 (Select 의 searchable 과 동일).
+     *
+     * 브랜드·판매 사이트처럼 선택지가 수십 개 이상인 필터에 쓴다.
+     * 옵션이 몇 개뿐이면 오히려 번잡하므로 기본은 꺼져 있다.
+     */
+    searchable?: boolean;
 } | {
     type: "multiSelect";
     options: FilterOption[];
     placeholder?: string;
     /** 선택지가 없을 때 팝오버에 보여줄 안내 문구 (select 와 동일) */
     emptyMessage?: string;
+    /** 팝오버 안에 옵션 검색 입력을 띄운다 (select 와 동일) */
+    searchable?: boolean;
 } | {
     type: "dateRange";
 } | {
