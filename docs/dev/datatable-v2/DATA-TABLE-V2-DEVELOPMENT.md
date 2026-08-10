@@ -236,11 +236,17 @@ v1 은 `<table>` 이라 아래 근본 문제가 있었음:
 
 ### 왜 절대좌표 배치인가
 
-행 각각을 `position: absolute; transform: translate3d(0, translateY, 0)` 로 배치. `top` 이 아니라 `transform` 사용 이유:
+행 각각을 `position: absolute` + `top` 으로 배치한다.
 
-- transform 은 compositor layer 로 처리되어 스크롤 중 리페인트 최소화
-- 대용량 데이터에서 성능 좋음
-- 가상화 (viewport 만 렌더) 로 확장 가능
+**초기에는 `transform: translate3d` 였다가 두 번 바뀌었다.**
+
+| 시점 | 방식 | 바꾼 이유 |
+|---|---|---|
+| SDS-29 | `transform` | compositor layer 처리로 스크롤 중 리페인트 최소화 |
+| SDS-36 | `top` (prop) | dnd-kit 이 드래그 요소에 자기 transform 을 적용 → 충돌 |
+| SDS-49 | `top` (DOM 직접) | top 을 prop 으로 넘기면 한 행의 높이 변화가 아래 행 전부를 리렌더 |
+
+현재는 `useLayoutEffect` 에서 DOM 에 직접 쓴다.
 
 각 행 높이는 `useLayoutEffect + ResizeObserver` 로 실측 → `heights` Map 에 저장 → `positions` 배열 재계산 (누적 합계). 초기 높이는 `estimateRowHeight` (기본 40px) 사용.
 
@@ -332,8 +338,14 @@ Git URL 직접 설치 방식이라 `dist/` 도 저장소에 커밋됨 (`.gitigno
 ### 7. loading + 데이터 없음 조합
 `loading=true` 이면 emptyMessage 대신 로딩 UI 표시. 데이터가 있어도 로딩 중이면 데이터 안 보임 (스켈레톤 or splash).
 
-### 8. columns 는 안정 참조 권장
-매 render 마다 새 배열/새 컬럼 객체를 넘기면 memoization 이 무의미해짐. 사용처에서 `useMemo` 또는 상수 정의 권장.
+### 8. columns 는 안정 참조 — **컬럼을 만드는 입력값까지**
+매 render 마다 새 배열/새 컬럼 객체를 넘기면 memoization 이 무의미해짐. 사용처에서 `useMemo` 또는 상수 정의.
+
+컬럼을 `useMemo` 로 감쌌어도 **그 dep 이 불안정하면 소용없다.** 필터 옵션 같은 걸 인라인
+객체로 넘기면 체크박스 하나에 모든 행이 리렌더된다 (CMS 이관 중 실제 발생).
+
+### 9. `TableContainer` 안에 넣을 때는 `bordered={false}`
+`bordered` 기본값이 `true` 라 테두리가 두 겹으로 그려진다.
 
 ## ~~알려진 제약~~ 해결됨 — 가상화 시 헤더 리렌더 (SDS-47)
 
