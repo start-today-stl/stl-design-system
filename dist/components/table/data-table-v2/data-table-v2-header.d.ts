@@ -8,6 +8,8 @@ export type HeaderGroupCell<T> = {
     width: number | undefined;
     /** 하위 flex 컬럼 개수 = grow 지분 */
     flexGrow: number;
+    /** 하위 고정폭 컬럼들의 폭 합 = flex-basis */
+    flexBasis: number;
     /** 고정폭 합 + flex 컬럼들의 minWidth 합 */
     minWidth: number;
     group: HeaderGroup<T>;

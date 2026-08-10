@@ -1,13 +1,13 @@
 import { jsx as i, jsxs as ie, Fragment as jt } from "react/jsx-runtime";
 import * as s from "react";
-import { useSensors as Vt, useSensor as $t, PointerSensor as At, DndContext as Bt, closestCenter as Gt } from "@dnd-kit/core";
+import { useSensors as Vt, useSensor as $t, PointerSensor as Bt, DndContext as At, closestCenter as Gt } from "@dnd-kit/core";
 import { SortableContext as Ut, verticalListSortingStrategy as Xt } from "@dnd-kit/sortable";
 import { cn as le } from "../../../lib/utils.mjs";
 import { Skeleton as ce } from "../../ui/skeleton.mjs";
 import { SplashScreen as qt } from "../../ui/splash-screen.mjs";
 import { RowAddIcon as Jt } from "../../../icons/RowAddIcon.mjs";
 import { DataTableV2Header as Qt } from "./data-table-v2-header.mjs";
-import { DRAG_HANDLE_COL_WIDTH as $, CHECKBOX_COL_WIDTH as T, EXPAND_COL_WIDTH as A, ROW_ACTIONS_WIDTH as B, DEFAULT_COL_WIDTH as Yt } from "./constants.mjs";
+import { DRAG_HANDLE_COL_WIDTH as B, CHECKBOX_COL_WIDTH as T, EXPAND_COL_WIDTH as A, ROW_ACTIONS_WIDTH as G, DEFAULT_COL_WIDTH as Yt } from "./constants.mjs";
 import { useFilter as Zt } from "./hooks/use-filter.mjs";
 import { useRowReorder as en } from "./hooks/use-row-reorder.mjs";
 import { DataTableV2Row as tn } from "./data-table-v2-row.mjs";
@@ -26,7 +26,7 @@ function fn(r, h, m) {
     (g) => g.column === h ? { column: h, direction: "desc" } : g
   ) : r.filter((g) => g.column !== h) : [...r, { column: h, direction: "asc" }] : C ? C.direction === "asc" ? [{ column: h, direction: "desc" }] : [] : [{ column: h, direction: "asc" }];
 }
-function gn(r, h = 0, m = 0, C = G) {
+function gn(r, h = 0, m = 0, C = U) {
   const g = new Array(r.length).fill(-1), w = new Array(r.length).fill(-1);
   let R = h;
   for (let u = 0; u < r.length; u++)
@@ -36,11 +36,11 @@ function gn(r, h = 0, m = 0, C = G) {
     r[u].pinned === "right" && (w[u] = D, D += C(r[u]));
   return { left: g, right: w };
 }
-function G(r) {
+function U(r) {
   return typeof r.width == "number" ? r.width : typeof r.minWidth == "number" ? r.minWidth : Yt;
 }
 function mn(r) {
-  return r.reduce((h, m) => h + G(m), 0);
+  return r.reduce((h, m) => h + U(m), 0);
 }
 function _n({
   data: r,
@@ -70,17 +70,17 @@ function _n({
   emptyMessage: je = "데이터가 없습니다.",
   rowReorderable: Ve = !1,
   onRowReorder: $e,
-  filterState: Ae,
-  defaultFilterState: Be,
+  filterState: Be,
+  defaultFilterState: Ae,
   onFilterChange: Ge,
-  maxHeight: U,
+  maxHeight: X,
   estimateRowHeight: he = an,
   rowGrouping: L,
   virtual: Ue,
   bordered: Xe = !0,
   className: qe
 }) {
-  const p = L ? !1 : Ve, O = (a == null ? void 0 : a.showDelete) ?? !!(a != null && a.onRowDelete), Je = (a == null ? void 0 : a.showAdd) ?? !!(a != null && a.onRowAdd), Qe = f(a == null ? void 0 : a.onRowDelete), X = f(a == null ? void 0 : a.onRowAdd), Ye = f(ze), q = f(Pe), Ze = f(Fe), et = f(c == null ? void 0 : c.expandedRowRender), tt = f(_e), J = f(g), nt = f(Ge), rt = f(u), st = f(Te), ot = f($e), ue = f(c == null ? void 0 : c.onExpandedChange), { orderedColumns: Q, handleColumnDragEnd: fe } = sn({
+  const p = L ? !1 : Ve, O = (a == null ? void 0 : a.showDelete) ?? !!(a != null && a.onRowDelete), Je = (a == null ? void 0 : a.showAdd) ?? !!(a != null && a.onRowAdd), Qe = f(a == null ? void 0 : a.onRowDelete), q = f(a == null ? void 0 : a.onRowAdd), Ye = f(ze), J = f(Pe), Ze = f(Fe), et = f(c == null ? void 0 : c.expandedRowRender), tt = f(_e), Q = f(g), nt = f(Ge), rt = f(u), st = f(Te), ot = f($e), ue = f(c == null ? void 0 : c.onExpandedChange), { orderedColumns: Y, handleColumnDragEnd: fe } = sn({
     columns: h,
     columnReorderable: N,
     columnOrder: Ie,
@@ -89,11 +89,11 @@ function _n({
     resizable: R,
     columnWidths: D,
     onColumnResize: rt
-  }), d = s.useMemo(() => R ? Q.map((e) => {
+  }), d = s.useMemo(() => R ? Y.map((e) => {
     const n = ge(e);
     return n !== void 0 ? { ...e, width: n } : e;
-  }) : Q, [Q, R, ge]), H = p ? $ : 0, _ = H + (y ? T : 0) + (c ? A : 0), M = _ + (O ? B : 0), [me, ct] = s.useState({}), Ce = s.useCallback(
-    (e) => me[String(e.accessorKey)] ?? G(e),
+  }) : Y, [Y, R, ge]), H = p ? B : 0, _ = H + (y ? T : 0) + (c ? A : 0), M = _ + (O ? G : 0), [me, ct] = s.useState({}), Ce = s.useCallback(
+    (e) => me[String(e.accessorKey)] ?? U(e),
     [me]
   ), { left: pe, right: ye } = s.useMemo(
     () => gn(d, M, 0, Ce),
@@ -110,7 +110,7 @@ function _n({
   }), dt = s.useMemo(
     () => c ? { ...c, onExpandedChange: ue } : void 0,
     [c, ue]
-  ), I = on({ data: r, expandable: dt }), v = nn({ onCellChange: Ze }), { handleRowDragEnd: Se } = en({ data: r, onRowReorder: ot }), { rowSpanMap: at, getRowSpan: k } = ln({ data: r, rowGrouping: L }), z = Zt({ filterState: Ae, defaultFilterState: Be, onFilterChange: nt }), b = s.useMemo(
+  ), I = on({ data: r, expandable: dt }), v = nn({ onCellChange: Ze }), { handleRowDragEnd: Se } = en({ data: r, onRowReorder: ot }), { rowSpanMap: at, getRowSpan: k } = ln({ data: r, rowGrouping: L }), z = Zt({ filterState: Be, defaultFilterState: Ae, onFilterChange: nt }), b = s.useMemo(
     () => C ?? [],
     [C]
   ), ht = s.useCallback(
@@ -128,25 +128,25 @@ function _n({
   Re.current = w;
   const ut = s.useCallback(
     (e) => {
-      J && J(
+      Q && Q(
         fn(we.current, e, Re.current)
       );
     },
-    [J]
+    [Q]
   ), ft = s.useMemo(
     () => d.some((e) => typeof e.width != "number"),
     [d]
   ), gt = s.useMemo(
     () => N ? d.filter((e) => !e.pinned).map((e) => String(e.accessorKey)) : [],
     [d, N]
-  ), mt = Vt($t(At, un)), [ke, Y] = s.useState(null), Ct = s.useCallback((e) => {
-    Y(String(e.active.id).startsWith("row-") ? "row" : "column");
+  ), mt = Vt($t(Bt, un)), [ke, Z] = s.useState(null), Ct = s.useCallback((e) => {
+    Z(String(e.active.id).startsWith("row-") ? "row" : "column");
   }, []), pt = s.useCallback(
     (e) => {
-      Y(null), String(e.active.id).startsWith("row-") ? Se(e) : fe(e);
+      Z(null), String(e.active.id).startsWith("row-") ? Se(e) : fe(e);
     },
     [fe, Se]
-  ), yt = s.useCallback(() => Y(null), []), vt = s.useMemo(
+  ), yt = s.useCallback(() => Z(null), []), vt = s.useMemo(
     () => ke === "row" ? { threshold: { x: 0, y: 0.2 } } : { threshold: { x: 0.2, y: 0 } },
     [ke]
   ), St = s.useMemo(
@@ -166,7 +166,7 @@ function _n({
       e[n + 1] = e[n] + t;
     }
     return e;
-  }, [r, Ee, he]), kt = P[r.length], [Z, Et] = s.useState(null), F = s.useMemo(() => Z === null ? -1 : r.findIndex((e) => e.id === Z), [Z, r]), xt = s.useCallback(
+  }, [r, Ee, he]), kt = P[r.length], [ee, Et] = s.useState(null), F = s.useMemo(() => ee === null ? -1 : r.findIndex((e) => e.id === ee), [ee, r]), xt = s.useCallback(
     (e, n) => {
       if (F < 0) return !1;
       const t = k(e, n);
@@ -184,13 +184,13 @@ function _n({
       return !1;
     },
     [k, r, xe]
-  ), Wt = s.useCallback(() => !1, []), Dt = L ? bt : Wt, ee = s.useRef(P);
-  ee.current = P;
+  ), Wt = s.useCallback(() => !1, []), Dt = L ? bt : Wt, te = s.useRef(P);
+  te.current = P;
   const Nt = s.useCallback(
     (e, n) => {
       const t = k(e, n);
       if (!(t === void 0 || t <= 1))
-        return ee.current[e + t] - ee.current[e];
+        return te.current[e + t] - te.current[e];
     },
     [k]
   ), K = s.useRef(null), {
@@ -204,9 +204,9 @@ function _n({
     count: r.length,
     scrollContainerRef: K,
     rowSpanMap: at
-  }), te = s.useRef(/* @__PURE__ */ new Map()), It = s.useCallback(
+  }), ne = s.useRef(/* @__PURE__ */ new Map()), It = s.useCallback(
     (e, n) => {
-      n ? te.current.set(e, n) : te.current.delete(e);
+      n ? ne.current.set(e, n) : ne.current.delete(e);
     },
     []
   );
@@ -214,7 +214,7 @@ function _n({
     for (const e of We) {
       const n = r[e];
       if (!n) continue;
-      const t = te.current.get(n.id);
+      const t = ne.current.get(n.id);
       if (!t) continue;
       const o = `${Math.round(j ? Ot(e) : P[e])}px`;
       t.style.top !== o && (t.style.top = o);
@@ -252,7 +252,7 @@ function _n({
   const E = s.useMemo(
     () => d.filter((e) => !e.pinned),
     [d]
-  ), ne = s.useMemo(() => {
+  ), re = s.useMemo(() => {
     if (!m || m.length === 0) return null;
     const e = /* @__PURE__ */ new Map();
     for (const o of m)
@@ -270,24 +270,27 @@ function _n({
         }), t += 1;
         continue;
       }
-      let se = 0, W = 0, oe = 0;
+      let V = 0, W = 0, oe = 0;
       const Kt = t;
       for (; t < E.length && e.get(E[t].accessorKey) === l; ) {
-        const V = E[t];
-        typeof V.width == "number" ? (se += V.width, oe += V.width) : (W += 1, oe += G(V)), t += 1;
+        const $ = E[t];
+        typeof $.width == "number" ? (V += $.width, oe += $.width) : (W += 1, oe += U($)), t += 1;
       }
       n.push({
         // 같은 그룹이 여러 구간으로 갈라질 수 있으므로 key 는 구간 첫 컬럼 기준
         key: `group-${String(E[Kt].accessorKey)}`,
         kind: "group",
-        width: W === 0 ? se : void 0,
+        width: W === 0 ? V : void 0,
         flexGrow: W,
+        // 고정폭 컬럼이 섞인 그룹은 그만큼을 flex-basis 로 깔아야 한다.
+        // basis 0 으로 두면 고정폭 몫이 빠져서 그룹 행이 그만큼 짧아진다.
+        flexBasis: V,
         minWidth: oe,
         group: l
       });
     }
     return n;
-  }, [E, m]), De = ne !== null && ne.length > 0, Lt = M > 0 || d.some((e) => e.pinned === "left"), re = De ? 2 : 1, Ht = "bg-slate-100 dark:bg-slate-800", _t = (c == null ? void 0 : c.showExpandAll) ?? !0, { leftPinnedCols: zt, rightPinnedCols: Pt, lastLeftPinnedIdx: Ne, firstRightPinnedIdx: Oe } = s.useMemo(() => {
+  }, [E, m]), De = re !== null && re.length > 0, Lt = M > 0 || d.some((e) => e.pinned === "left"), se = De ? 2 : 1, Ht = "bg-slate-100 dark:bg-slate-800", _t = (c == null ? void 0 : c.showExpandAll) ?? !0, { leftPinnedCols: zt, rightPinnedCols: Pt, lastLeftPinnedIdx: Ne, firstRightPinnedIdx: Oe } = s.useMemo(() => {
     const e = d.map((t, o) => ({ c: t, i: o })).filter(({ c: t }) => t.pinned === "left"), n = d.map((t, o) => ({ c: t, i: o })).filter(({ c: t }) => t.pinned === "right");
     return {
       leftPinnedCols: e,
@@ -299,7 +302,7 @@ function _n({
     "div",
     {
       role: "grid",
-      "aria-rowcount": r.length + re,
+      "aria-rowcount": r.length + se,
       "aria-colcount": Ft,
       className: le(
         // 항상 컨테이너 폭 유지. 리사이즈로 모든 컬럼 fixed 로 전환돼도 테이블 자체는 shrink 안 함.
@@ -318,7 +321,7 @@ function _n({
         {
           ref: K,
           className: "overflow-auto group/scroll flex-1 min-h-0",
-          style: { maxHeight: typeof U == "number" ? `${U}px` : U },
+          style: { maxHeight: typeof X == "number" ? `${X}px` : X },
           "data-scrolled-left": "false",
           "data-scrolled-right": "false",
           children: /* @__PURE__ */ ie("div", { style: { minWidth: ve }, children: [
@@ -327,9 +330,9 @@ function _n({
               {
                 columns: d,
                 hasFlexColumn: ft,
-                headerGroupCells: ne,
+                headerGroupCells: re,
                 hasGroups: De,
-                headerRowCount: re,
+                headerRowCount: se,
                 hasPrecedingHeaderCells: Lt,
                 leftPinnedCols: zt,
                 rightPinnedCols: Pt,
@@ -386,7 +389,7 @@ function _n({
                       {
                         role: "gridcell",
                         className: "shrink-0",
-                        style: { width: $ }
+                        style: { width: B }
                       }
                     ),
                     y && /* @__PURE__ */ i(
@@ -412,7 +415,7 @@ function _n({
                       {
                         role: "gridcell",
                         className: "shrink-0",
-                        style: { width: B }
+                        style: { width: G }
                       }
                     ),
                     d.map((t) => {
@@ -491,7 +494,7 @@ function _n({
                           expandColWidth: A,
                           visibleWidth: S,
                           onRowClick: Ye,
-                          extraClassName: q == null ? void 0 : q(t),
+                          extraClassName: J == null ? void 0 : J(t),
                           editingColumnKey: ((o = v.editing) == null ? void 0 : o.rowId) === t.id ? v.editing.columnKey : null,
                           editingError: ((l = v.editing) == null ? void 0 : l.rowId) === t.id ? v.editing.error : void 0,
                           onStartEdit: v.startEdit,
@@ -500,16 +503,16 @@ function _n({
                           onClearEditError: v.clearError,
                           showRowDelete: O,
                           onRowDelete: Qe,
-                          rowActionsColWidth: B,
+                          rowActionsColWidth: G,
                           rowActionsColLeftOffset: _,
                           rowReorderable: p,
-                          dragHandleColWidth: $,
+                          dragHandleColWidth: B,
                           isLast: n === r.length - 1,
                           getRowSpan: k,
                           getRowSpanHeight: Nt,
                           getGroupHovered: xt,
                           getGroupSelected: Dt,
-                          ariaRowIndex: re + n + 1
+                          ariaRowIndex: se + n + 1
                         },
                         t.id
                       );
@@ -537,7 +540,7 @@ function _n({
                     {
                       "aria-hidden": !0,
                       className: "shrink-0 sticky z-10 min-h-9 bg-white dark:bg-slate-900",
-                      style: { width: $, left: 0 }
+                      style: { width: B, left: 0 }
                     }
                   ),
                   y && /* @__PURE__ */ i(
@@ -569,12 +572,12 @@ function _n({
                       className: le(
                         "shrink-0 sticky z-10 flex items-center justify-center bg-white dark:bg-slate-900 min-h-9"
                       ),
-                      style: { width: B, left: _ },
+                      style: { width: G, left: _ },
                       children: /* @__PURE__ */ i(
                         "button",
                         {
                           type: "button",
-                          onClick: () => X == null ? void 0 : X(),
+                          onClick: () => q == null ? void 0 : q(),
                           className: "flex h-9 w-10 items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors",
                           "aria-label": "행 추가",
                           children: /* @__PURE__ */ i(Jt, { size: 20 })
@@ -592,7 +595,7 @@ function _n({
     }
   );
   return N || p ? /* @__PURE__ */ i(
-    Bt,
+    At,
     {
       sensors: mt,
       collisionDetection: Gt,

@@ -629,6 +629,9 @@ export function DataTableV2<T extends { id: string | number }>({
         kind: "group",
         width: flexGrow === 0 ? fixedWidth : undefined,
         flexGrow,
+        // 고정폭 컬럼이 섞인 그룹은 그만큼을 flex-basis 로 깔아야 한다.
+        // basis 0 으로 두면 고정폭 몫이 빠져서 그룹 행이 그만큼 짧아진다.
+        flexBasis: fixedWidth,
         minWidth,
         group,
       })

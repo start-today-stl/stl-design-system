@@ -1665,23 +1665,22 @@ export const HeaderGroupMatchesFlexColumns: Story = {
     const rect = (sel: string) =>
       canvasElement.querySelector<HTMLElement>(sel)!.getBoundingClientRect()
 
-    await waitFor(() => expect(rect('[data-column-key="name"]').width).toBeGreaterThan(160))
+    await waitFor(() =>
+      expect(rect('[data-column-key="name"]').width).toBeGreaterThan(160)
+    )
 
     const name = rect('[data-column-key="name"]')
     const role = rect('[data-column-key="role"]')
     const score = rect('[data-column-key="score"]')
-
     const groupCells = canvasElement.querySelectorAll<HTMLElement>(
       '[role="row"][aria-rowindex="1"] [role="columnheader"]'
     )
     const person = groupCells[0].getBoundingClientRect()
     const evaluation = groupCells[1].getBoundingClientRect()
 
-    // '인적사항' 그룹은 이름+역할 두 컬럼을 정확히 덮어야 한다
+    // 그룹 셀이 하위 컬럼(들)을 정확히 덮어야 한다
     expect(Math.round(person.left)).toBe(Math.round(name.left))
     expect(Math.round(person.right)).toBe(Math.round(role.right))
-
-    // '평가' 그룹은 점수 컬럼과 일치해야 한다
     expect(Math.round(evaluation.left)).toBe(Math.round(score.left))
     expect(Math.round(evaluation.right)).toBe(Math.round(score.right))
   },

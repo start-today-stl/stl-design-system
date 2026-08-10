@@ -3,31 +3,31 @@ import * as ne from "react";
 import { SortableContext as se, horizontalListSortingStrategy as oe } from "@dnd-kit/sortable";
 import { cn as r } from "../../../lib/utils.mjs";
 import { Checkbox as ae } from "../../ui/checkbox.mjs";
-import { DownIcon as le } from "../../../icons/DownIcon.mjs";
-import { RightIcon as de } from "../../../icons/RightIcon.mjs";
+import { DownIcon as de } from "../../../icons/DownIcon.mjs";
+import { RightIcon as le } from "../../../icons/RightIcon.mjs";
 import { DataTableV2ColumnSeparator as H } from "./data-table-v2-column-separator.mjs";
 import { DataTableV2HeaderCell as ce } from "./data-table-v2-header-cell.mjs";
-import { alignClass as he, DRAG_HANDLE_COL_WIDTH as L, CHECKBOX_COL_WIDTH as u, EXPAND_COL_WIDTH as S, ROW_ACTIONS_WIDTH as T } from "./constants.mjs";
+import { alignClass as he, DRAG_HANDLE_COL_WIDTH as L, CHECKBOX_COL_WIDTH as p, EXPAND_COL_WIDTH as S, ROW_ACTIONS_WIDTH as T } from "./constants.mjs";
 function me({
   columns: y,
   hasFlexColumn: R,
-  headerGroupCells: p,
+  headerGroupCells: u,
   hasGroups: K,
   headerRowCount: j,
   hasPrecedingHeaderCells: P,
   leftPinnedCols: O,
   rightPinnedCols: V,
   lastLeftPinnedIdx: v,
-  firstRightPinnedIdx: d,
-  leftOffsets: k,
-  rightOffsets: x,
+  firstRightPinnedIdx: l,
+  leftOffsets: x,
+  rightOffsets: k,
   getSortInfo: A,
   onSort: I,
   filterState: fe,
   getColumnFilter: F,
-  hasActiveFilter: G,
-  onColumnFilterChange: X,
-  resizable: $,
+  hasActiveFilter: $,
+  onColumnFilterChange: G,
+  resizable: X,
   resizingKey: E,
   onResizeStart: q,
   columnReorderable: w,
@@ -47,29 +47,29 @@ function me({
   headerBg: n
 }) {
   const B = (e, i) => {
-    const s = e.id ?? String(e.accessorKey), a = String(e.accessorKey), o = e.pinned === "left", l = e.pinned === "right", c = A(e.accessorKey);
+    const s = e.id ?? String(e.accessorKey), a = String(e.accessorKey), o = e.pinned === "left", d = e.pinned === "right", c = A(e.accessorKey);
     return /* @__PURE__ */ t(
       ce,
       {
         column: e,
         width: typeof e.width == "number" ? e.width : void 0,
         minWidth: typeof e.minWidth == "number" ? e.minWidth : void 0,
-        leftOffset: o ? k[i] : void 0,
-        rightOffset: l ? x[i] : void 0,
+        leftOffset: o ? x[i] : void 0,
+        rightOffset: d ? k[i] : void 0,
         isLeftPinned: o,
-        isRightPinned: l,
+        isRightPinned: d,
         isLeftBoundary: i === v,
-        isRightBoundary: i === d,
-        isFirstRightPinned: i === d,
-        isDraggable: w && !o && !l,
+        isRightBoundary: i === l,
+        isFirstRightPinned: i === l,
+        isDraggable: w && !o && !d,
         isLastColumn: i === y.length - 1,
         sortDirection: c.direction,
         sortPriority: c.priority,
         onSort: I,
         filterValue: e.filter ? F(a) : void 0,
-        filterActive: e.filter ? G(a) : !1,
-        onColumnFilterChange: X,
-        resizable: $,
+        filterActive: e.filter ? $(a) : !1,
+        onColumnFilterChange: G,
+        resizable: X,
         isResizing: E === e.accessorKey,
         onResizeStart: q,
         headerBg: n
@@ -85,16 +85,16 @@ function me({
           "sticky z-20",
           s !== void 0 && "shrink-0",
           n,
-          i === d && "ml-auto",
+          i === l && "ml-auto",
           i === v && "group-data-[scrolled-left=true]/scroll:shadow-[2px_0_5px_-2px_rgba(0,0,0,0.15)]",
-          i === d && "group-data-[scrolled-right=true]/scroll:shadow-[-2px_0_5px_-2px_rgba(0,0,0,0.15)]"
+          i === l && "group-data-[scrolled-right=true]/scroll:shadow-[-2px_0_5px_-2px_rgba(0,0,0,0.15)]"
         ),
         style: {
           width: s,
           minWidth: a,
           flex: s === void 0 ? "1 1 0" : void 0,
-          left: o ? k[i] : void 0,
-          right: o ? void 0 : x[i]
+          left: o ? x[i] : void 0,
+          right: o ? void 0 : k[i]
         }
       },
       `pinned-placeholder-${e.id ?? String(e.accessorKey)}`
@@ -120,7 +120,7 @@ function me({
           role: "columnheader",
           className: r("shrink-0 sticky z-20 flex items-center justify-center min-h-9", n),
           style: {
-            width: u,
+            width: p,
             left: m
           },
           children: /* @__PURE__ */ t(
@@ -143,7 +143,7 @@ function me({
           className: r("shrink-0 sticky z-20 flex items-center justify-center min-h-9", n),
           style: {
             width: S,
-            left: m + (h ? u : 0)
+            left: m + (h ? p : 0)
           },
           children: Y ? /* @__PURE__ */ t(
             "button",
@@ -152,7 +152,7 @@ function me({
               onClick: Z,
               className: "flex h-9 w-10 items-center justify-center text-slate-500 hover:text-slate-700 dark:hover:text-slate-200 transition-colors",
               "aria-label": g ? "모두 접기" : "모두 펼치기",
-              children: g ? /* @__PURE__ */ t(le, { size: 24 }) : /* @__PURE__ */ t(de, { size: 24 })
+              children: g ? /* @__PURE__ */ t(de, { size: 24 }) : /* @__PURE__ */ t(le, { size: 24 })
             }
           ) : (
             // 전체 펼치기 버튼을 숨겨도 columnheader 는 남으므로 읽을 텍스트가 있어야 한다.
@@ -199,7 +199,7 @@ function me({
         "div",
         {
           className: r("shrink-0 sticky z-20 min-h-9", n),
-          style: { width: u, left: m }
+          style: { width: p, left: m }
         },
         "ctrl-ph-select"
       )
@@ -210,7 +210,7 @@ function me({
           className: r("shrink-0 sticky z-20 min-h-9", n),
           style: {
             width: S,
-            left: m + (h ? u : 0)
+            left: m + (h ? p : 0)
           }
         },
         "ctrl-ph-expand"
@@ -220,7 +220,7 @@ function me({
     ee(),
     te(),
     y.map((e, i) => B(e, i)),
-    d === -1 && !R && /* @__PURE__ */ t("div", { "aria-hidden": !0, className: "flex-1 min-h-9" })
+    l === -1 && !R && /* @__PURE__ */ t("div", { "aria-hidden": !0, className: "flex-1 min-h-9" })
   ] });
   return /* @__PURE__ */ f(
     "div",
@@ -230,7 +230,7 @@ function me({
         n
       ),
       children: [
-        K && p && /* @__PURE__ */ f(
+        K && u && /* @__PURE__ */ f(
           "div",
           {
             role: "row",
@@ -240,9 +240,9 @@ function me({
               re(),
               ie(),
               O.map(({ c: e, i }) => D(e, i)),
-              p.map((e, i) => {
+              u.map((e, i) => {
                 if (e.kind === "group") {
-                  const l = p[i + 1], c = i > 0 || P, W = l !== void 0 && l.kind !== "group";
+                  const d = u[i + 1], c = i > 0 || P, W = d !== void 0 && d.kind !== "group";
                   return /* @__PURE__ */ f(
                     "div",
                     {
@@ -255,7 +255,7 @@ function me({
                         width: e.width,
                         minWidth: e.minWidth,
                         // 하위 컬럼들과 같은 지분으로 분배받아야 폭이 일치한다
-                        flex: e.flexGrow === 0 ? void 0 : `${e.flexGrow} 1 0`
+                        flex: e.flexGrow === 0 ? void 0 : `${e.flexGrow} 1 ${e.flexBasis}px`
                       },
                       children: [
                         c && /* @__PURE__ */ t(H, { side: "left" }),

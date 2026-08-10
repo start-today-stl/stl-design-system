@@ -31,6 +31,8 @@ export type HeaderGroupCell<T> =
       width: number | undefined
       /** 하위 flex 컬럼 개수 = grow 지분 */
       flexGrow: number
+      /** 하위 고정폭 컬럼들의 폭 합 = flex-basis */
+      flexBasis: number
       /** 고정폭 합 + flex 컬럼들의 minWidth 합 */
       minWidth: number
       group: HeaderGroup<T>
@@ -408,7 +410,7 @@ function DataTableV2HeaderInner<T extends { id: string | number }>({
                     flex:
                       cell.flexGrow === 0
                         ? undefined
-                        : `${cell.flexGrow} 1 0`,
+                        : `${cell.flexGrow} 1 ${cell.flexBasis}px`,
                   }}
                 >
                   {showLeft && <DataTableV2ColumnSeparator side="left" />}
