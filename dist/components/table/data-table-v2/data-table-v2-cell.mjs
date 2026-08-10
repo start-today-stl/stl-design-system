@@ -26,9 +26,8 @@ function G({
   onClearEditError: E
 }) {
   const c = s || i, n = d !== void 0, T = t(
-    // overflow 는 자르지 않는다. DS Tooltip 이 Portal 을 안 써서 셀 안에 그려지는데,
-    // 여기서 overflow-hidden 을 걸면 툴팁까지 잘린다.
-    // 옆 칸 침범은 아래 contentCls 의 min-w-0 로 막는다 (자식이 셀 폭에 맞춰 줄어듦).
+    // items-center — 세로 가운데 정렬은 여기서 맡는다.
+    // 셀 내부(contentCls)는 v1 <td> 처럼 블록 흐름이라 가로 배치에 관여하지 않는다.
     "flex items-center min-h-9",
     o !== void 0 && "shrink-0",
     // pinned 셀은 sticky 라 스크롤되는 내용을 덮는다 → **불투명 배경 필수**.
@@ -48,21 +47,14 @@ function G({
     // (그룹 middle rows 의 bg 위에 얹혀야 함)
     n && "relative z-[5]"
   ), u = t(
-    // 셀은 컬럼 폭을 벗어나지 않는다. v1(<td>)이 쓰던 규칙을 그대로 가져왔다:
+    // 셀 내부는 **블록 흐름**이다 (v1 <td> 와 동일). flex 로 두면 사용처가 넣은 <div> 가
+    // flex 아이템이 되어 내용 크기만큼만 차지하고, 그 안의 text-right 가 셀 오른쪽이 아니라
+    // 제 박스 기준이 되어 행마다 정렬이 어긋난다. 블록이면 <div> 는 폭을 채우고
+    // <Badge> 같은 인라인 요소는 제 크기를 유지한다.
+    //
+    // 아래 두 규칙도 v1 <td> 에서 그대로 가져왔다. 없으면 텍스트가 옆 컬럼으로 흐른다.
     //   break-all + overflow-wrap  — 긴 텍스트를 컬럼 폭에서 줄바꿈 (행 높이가 늘어남)
-    //   overflow-hidden            — 그래도 넘치는 내용은 자름 (옆 칸 침범 방지)
-    // v2 에 이 둘이 없어서 사용처 코드가 같은데도 텍스트가 옆 컬럼으로 흘렀다.
-    //
-    // min-w-0 / [&>*]:min-w-0 — flex 자식(사용처가 감싼 요소 포함)이 내용보다 작아질 수
-    // 있게 한다. 없으면 말줄임(truncate) 지점이 컬럼 밖으로 밀려 잘린 채 보인다.
-    // 셀 내부는 **블록 흐름**이다 (v1 <td> 와 동일).
-    //
-    // flex 로 두면 사용처가 넣은 <div> 가 flex 아이템이 되어 내용 크기만큼만 차지한다.
-    // 그러면 그 안의 text-right 가 셀 오른쪽이 아니라 제 박스 기준이 되어, 글자 길이에
-    // 따라 행마다 정렬이 어긋난다. 블록 흐름이면 <div> 는 폭을 채우고
-    // <Badge> 같은 인라인 요소는 제 크기를 유지한다 — v1 과 같은 동작.
-    //
-    // 세로 가운데 정렬은 바깥 셀(flex items-center)이 담당한다.
+    //   overflow-hidden            — 그래도 넘치는 내용은 자름
     "flex-1 min-w-0 px-3 py-1.5 text-xs text-slate-900 dark:text-slate-200",
     "overflow-hidden break-all [overflow-wrap:break-word]",
     z[e.align ?? "left"],
