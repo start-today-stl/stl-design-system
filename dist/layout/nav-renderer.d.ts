@@ -29,4 +29,4 @@ export interface NavRendererProps {
     layout?: NavMenuLayout;
 }
 /** 네비게이션 설정 데이터를 컴포넌트로 렌더링 */
-export declare function NavRenderer({ items, iconSize, indicatorSize, collapsed, currentPath, onItemClick, layout, }: NavRendererProps): React.JSX.Element;
+export declare function NavRenderer({ items, iconSize, indicatorSize, collapsed, currentPath, onItemClick, layout, }: NavRendererProps): import("react/jsx-runtime").JSX.Element;
