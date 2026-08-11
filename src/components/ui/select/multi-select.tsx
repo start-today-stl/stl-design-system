@@ -28,7 +28,7 @@ const MultiSelect = React.forwardRef<
       ariaLabel,
       tableMode,
       overflowMode = "truncate",
-      maxDisplayCount = 2,
+      maxDisplayCount = "auto",
       clearable = true,
       loading,
     },
@@ -44,9 +44,11 @@ const MultiSelect = React.forwardRef<
     const listRef = React.useRef<HTMLDivElement>(null);
 
     const currentValue = value !== undefined ? value : internalValue;
-    const selectedOptions = options.filter((opt) =>
-      currentValue.includes(opt.value),
-    );
+    // 선택 순서 유지 — currentValue 배열 순서대로 chip 렌더 (MUI Select 방식).
+    // options.filter 로 하면 옵션 정의 순서로 정렬돼서, 늦게 선택한 옵션이 앞에 나타나는 시각적 흔들림 발생.
+    const selectedOptions = currentValue
+      .map((v) => options.find((opt) => opt.value === v))
+      .filter((opt): opt is (typeof options)[number] => opt !== undefined);
 
     const filteredOptions = options.filter((option) =>
       option.label.toLowerCase().includes(search.toLowerCase()),
@@ -132,6 +134,62 @@ const MultiSelect = React.forwardRef<
     // X 버튼 표시 여부 (hover 시에만)
     const showClearButton = clearable && currentValue.length > 0 && isHovered && !disabled && !loading;
 
+    // maxDisplayCount="auto" 지원 — 인풋 폭 안에 들어가는 칩만 표시하고 나머지는 `+N` 배지.
+    // 별도 측정 컨테이너 (absolute, invisible) 에 모든 칩을 렌더 → useLayoutEffect 로
+    // 각 chip 의 실제 offsetWidth 측정 → 배지 자리 (~40px) 예약 후 몇 개 들어가는지 계산 →
+    // visibleCount state 반영 → 표시 컨테이너는 slice 로 잘라서 렌더 + `+N` 배지.
+    // 측정 컨테이너는 opacity 0 + pointer-events none 이라 시각/인터랙션 영향 없음.
+    // useLayoutEffect 로 paint 전 계산 → 깜빡임 없음.
+    const isAuto = maxDisplayCount === "auto";
+    const measureContainerRef = React.useRef<HTMLDivElement>(null);
+    const displayContainerRef = React.useRef<HTMLDivElement>(null);
+    const [autoVisibleCount, setAutoVisibleCount] = React.useState<number>(
+      selectedOptions.length,
+    );
+    const BADGE_RESERVE_PX = 40;
+    const CHIP_GAP_PX = 4;
+
+    React.useLayoutEffect(() => {
+      if (!isAuto || overflowMode !== "truncate") return;
+      const displayContainer = displayContainerRef.current;
+      const measureContainer = measureContainerRef.current;
+      if (!displayContainer || !measureContainer) return;
+
+      const measure = () => {
+        const containerWidth = displayContainer.clientWidth;
+        const chips = Array.from(
+          measureContainer.querySelectorAll<HTMLElement>("[data-measure-chip]"),
+        );
+        if (chips.length === 0) {
+          setAutoVisibleCount(0);
+          return;
+        }
+        let usedWidth = 0;
+        let count = 0;
+        for (let i = 0; i < chips.length; i++) {
+          const chipWidth = chips[i].offsetWidth;
+          const isLast = i === chips.length - 1;
+          // 마지막이 아니면 뒤에 +N 배지 자리 예약 필요
+          const reserve = isLast ? 0 : BADGE_RESERVE_PX + CHIP_GAP_PX;
+          const nextWidth = usedWidth + chipWidth + (i > 0 ? CHIP_GAP_PX : 0);
+          if (nextWidth + reserve > containerWidth) break;
+          usedWidth = nextWidth;
+          count = i + 1;
+        }
+        setAutoVisibleCount(count);
+      };
+
+      measure();
+      const observer = new ResizeObserver(measure);
+      observer.observe(displayContainer);
+      return () => observer.disconnect();
+    }, [isAuto, overflowMode, selectedOptions.length]);
+
+    // 실제 표시할 개수 결정. number 면 그대로, "auto" 면 실측값.
+    const effectiveDisplayCount = isAuto
+      ? autoVisibleCount
+      : (maxDisplayCount as number);
+
     return (
       <PopoverPrimitive.Root open={open} onOpenChange={setOpen}>
         <PopoverPrimitive.Trigger
@@ -153,22 +211,46 @@ const MultiSelect = React.forwardRef<
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
-          <div className={cn(
-            "flex flex-1 gap-1",
-            overflowMode === "wrap" ? "flex-wrap" : "flex-nowrap overflow-hidden"
-          )}>
+          <div
+            ref={displayContainerRef}
+            className={cn(
+              "flex flex-1 gap-1 relative",
+              overflowMode === "wrap" ? "flex-wrap" : "flex-nowrap overflow-hidden"
+            )}
+          >
+            {/* 측정 컨테이너 — "auto" 모드일 때만 렌더. 모든 chip 을 invisible 로 배치해서 offsetWidth 측정 */}
+            {isAuto && overflowMode === "truncate" && selectedOptions.length > 0 && (
+              <div
+                ref={measureContainerRef}
+                aria-hidden
+                className="absolute inset-y-0 left-0 flex flex-nowrap gap-1 opacity-0 pointer-events-none"
+              >
+                {selectedOptions.map((option) => (
+                  <span
+                    key={option.value}
+                    data-measure-chip
+                    className="inline-flex items-center gap-1 rounded bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 text-xs flex-shrink-0"
+                  >
+                    <span>{option.label}</span>
+                    <span className="flex-shrink-0">
+                      <XIcon size={18} />
+                    </span>
+                  </span>
+                ))}
+              </div>
+            )}
             {selectedOptions.length === 0 ? (
               <span className="text-slate-500 dark:text-slate-50">
                 {placeholder}
               </span>
             ) : overflowMode === "truncate" ? (
               <>
-                {selectedOptions.slice(0, maxDisplayCount).map((option) => (
+                {selectedOptions.slice(0, effectiveDisplayCount).map((option) => (
                   <span
                     key={option.value}
                     className="inline-flex items-center gap-1 rounded bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 text-xs flex-shrink-0"
                   >
-                    <span className="truncate max-w-[80px]">{option.label}</span>
+                    <span>{option.label}</span>
                     <span
                       role="img"
                       aria-label={`${option.label} 삭제`}
@@ -179,9 +261,9 @@ const MultiSelect = React.forwardRef<
                     </span>
                   </span>
                 ))}
-                {selectedOptions.length > maxDisplayCount && (
+                {selectedOptions.length > effectiveDisplayCount && (
                   <span className="inline-flex items-center rounded bg-slate-200 dark:bg-slate-600 px-1.5 py-0.5 text-xs flex-shrink-0">
-                    +{selectedOptions.length - maxDisplayCount}
+                    +{selectedOptions.length - effectiveDisplayCount}
                   </span>
                 )}
               </>
