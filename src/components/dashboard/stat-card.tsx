@@ -8,7 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 const gradientStyles = {
   main: "bg-gradient-to-b from-blue-50 to-white hover:from-slate-100 hover:to-slate-100 active:from-blue-200 active:to-blue-200 dark:from-blue-950 dark:to-slate-800 dark:hover:from-slate-700 dark:hover:to-slate-700 dark:active:from-blue-800 dark:active:to-blue-800",
   sub: "bg-gradient-to-b from-blue-50 to-white hover:from-slate-100 hover:to-slate-100 active:from-blue-200 active:to-blue-200 dark:from-blue-950 dark:to-slate-800 dark:hover:from-slate-700 dark:hover:to-slate-700 dark:active:from-blue-800 dark:active:to-blue-800",
-  small: "bg-blue-50 hover:bg-slate-100 active:bg-blue-200 dark:bg-slate-800 dark:hover:bg-slate-700 dark:active:bg-blue-800",
+  small: "bg-blue-50 hover:bg-slate-100 active:bg-blue-200 dark:bg-blue-900 dark:hover:bg-slate-700 dark:active:bg-blue-800",
 }
 
 // 테두리 스타일 (흰색 배경 + 테두리)
