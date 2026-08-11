@@ -74,8 +74,12 @@ export interface MultipleSelectProps extends SelectBaseProps {
   onValueChange?: (value: string[]) => void;
   /** 칩 오버플로우 처리 방식 (기본: truncate) */
   overflowMode?: ChipOverflowMode;
-  /** truncate 모드에서 최대 표시할 칩 개수 (기본: 2) */
-  maxDisplayCount?: number;
+  /**
+   * truncate 모드에서 최대 표시할 칩 개수.
+   * - `number` (기본 2): 고정 개수까지 표시. 초과 시 `+N` 배지
+   * - `"auto"`: 인풋 폭에 들어가는 만큼만 표시. `+N` 배지가 항상 잘리지 않도록 공간 확보 후 계산
+   */
+  maxDisplayCount?: number | "auto";
 }
 
 export type SelectProps = SingleSelectProps | MultipleSelectProps;

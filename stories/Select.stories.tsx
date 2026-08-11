@@ -259,6 +259,95 @@ export const MultipleMaxDisplayCount: Story = {
   },
 }
 
+/** 다중 선택 - maxDisplayCount="auto" (SDS-50)
+ *
+ * 인풋 폭 안에 실제로 들어가는 chip 개수만 표시. 나머지는 `+N` 배지.
+ * 사이즈/폭 변경 시 자동 재계산. `+N` 배지가 잘리지 않도록 공간 확보 후 계산.
+ *
+ * 아래 예시는 label 이 긴 옵션과 짧은 옵션 섞어서 auto 모드 동작 확인.
+ */
+export const MultipleAutoDisplayCount: Story = {
+  render: function Render() {
+    const longLabelOptions = [
+      { label: "매우 긴 옵션 이름 하나입니다", value: "very-long-1" },
+      { label: "또다른 매우 긴 옵션 이름입니다", value: "very-long-2" },
+      { label: "짧은 옵션", value: "short-1" },
+      { label: "중간 길이의 옵션 이름", value: "medium-1" },
+      { label: "옵션 A", value: "short-2" },
+      { label: "긴 이름의 옵션 항목입니다", value: "long-3" },
+      { label: "옵션 B", value: "short-3" },
+    ]
+    const [value, setValue] = useState<string[]>([
+      "very-long-1",
+      "very-long-2",
+      "short-1",
+      "medium-1",
+      "short-2",
+    ])
+    return (
+      <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-2">
+          <span className="text-sm text-slate-500">
+            size=sm — 좁아서 첫 chip 도 안 들어감 → `+N` 만 표시
+          </span>
+          <Select
+            placeholder="선택하세요"
+            options={longLabelOptions}
+            multiple
+            value={value}
+            onValueChange={setValue}
+            maxDisplayCount="auto"
+            size="sm"
+          />
+        </div>
+        <div className="flex flex-col gap-2">
+          <span className="text-sm text-slate-500">
+            size=md — 실제 폭에 맞춰 몇 개만 표시 + `+N`
+          </span>
+          <Select
+            placeholder="선택하세요"
+            options={longLabelOptions}
+            multiple
+            value={value}
+            onValueChange={setValue}
+            maxDisplayCount="auto"
+            size="md"
+          />
+        </div>
+        <div className="flex flex-col gap-2">
+          <span className="text-sm text-slate-500">
+            size=lg — 폭 넓어서 대부분 (또는 전부) 표시
+          </span>
+          <Select
+            placeholder="선택하세요"
+            options={longLabelOptions}
+            multiple
+            value={value}
+            onValueChange={setValue}
+            maxDisplayCount="auto"
+            size="lg"
+          />
+        </div>
+        <div className="flex flex-col gap-2">
+          <span className="text-sm text-slate-500">
+            좁은 컨테이너 (200px) — 리사이즈 관찰용
+          </span>
+          <div style={{ width: 200 }}>
+            <Select
+              placeholder="선택하세요"
+              options={longLabelOptions}
+              multiple
+              value={value}
+              onValueChange={setValue}
+              maxDisplayCount="auto"
+            />
+          </div>
+        </div>
+      </div>
+    )
+  },
+}
+
 /** 다중 선택 - 오버플로우 모드 비교 */
 export const MultipleOverflowModes: Story = {
   render: function Render() {

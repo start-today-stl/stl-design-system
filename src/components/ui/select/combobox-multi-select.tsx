@@ -32,6 +32,9 @@ const ComboboxMultiSelect = React.forwardRef<
     },
     ref,
   ) => {
+    // combobox 는 아직 "auto" 실측 로직 미지원 — number 로 fallback (기본 2). SDS-50 은 MultiSelect 만.
+    const effectiveMaxDisplayCount =
+      typeof maxDisplayCount === "number" ? maxDisplayCount : 2;
     const [open, setOpen] = React.useState(false);
     const [inputText, setInputText] = React.useState("");
     const [isHovered, setIsHovered] = React.useState(false);
@@ -219,7 +222,7 @@ const ComboboxMultiSelect = React.forwardRef<
             )}>
               {overflowMode === "truncate" ? (
                 <>
-                  {allDisplayItems.slice(0, maxDisplayCount).map((item) => (
+                  {allDisplayItems.slice(0, effectiveMaxDisplayCount).map((item) => (
                     <span
                       key={item.value}
                       className="inline-flex items-center gap-1 rounded bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 text-xs flex-shrink-0"
@@ -236,9 +239,9 @@ const ComboboxMultiSelect = React.forwardRef<
                       </span>
                     </span>
                   ))}
-                  {allDisplayItems.length > maxDisplayCount && (
+                  {allDisplayItems.length > effectiveMaxDisplayCount && (
                     <span className="inline-flex items-center rounded bg-slate-200 dark:bg-slate-600 px-1.5 py-0.5 text-xs flex-shrink-0">
-                      +{allDisplayItems.length - maxDisplayCount}
+                      +{allDisplayItems.length - effectiveMaxDisplayCount}
                     </span>
                   )}
                 </>
