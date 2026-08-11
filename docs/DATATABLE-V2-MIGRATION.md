@@ -13,7 +13,8 @@ v1 은 HTML `<table>` 기반이라 아래가 **구조적으로 불가능**했습
 
 | v1 에서 안 되던 것 | 이유 |
 |---|---|
-| 고정 컬럼 + 가상화 | sticky + 가상 스크롤에서 sub-pixel 렌더링으로 테두리가 깜빡임 |
+| 고정 컬럼 스크롤 시 셀 테두리 깜빡임 | `<table>` + sticky 조합의 렌더링 이슈 |
+| 고정 컬럼 + 가상화 | 위 이슈가 겹쳐 임시 대응도 안 먹음 |
 | 행 드래그 + 가상화 | 자동 비활성화됨 |
 | 셀 병합 + 가상화 | 자동 비활성화됨 |
 
@@ -127,7 +128,6 @@ const columns: DataTableV2Column<Order>[] = [
   {
     accessorKey: "brandName",
     header: "브랜드",
-    // 선택지가 많으면 searchable 로 팝오버 안에 검색 입력을 띄웁니다
     filter: { type: "select", options: brandOptions, searchable: true },
   },
   { accessorKey: "orderedAt", header: "주문일", filter: { type: "dateRange" } },
@@ -152,20 +152,6 @@ filter: {
   ),
 }
 ```
-
-#### 옵션이 많은 필터
-
-`select` 는 기본적으로 검색 없이 목록만 보여줍니다. 브랜드·판매 사이트처럼 선택지가
-수십 개 이상이면 `searchable: true` 를 주세요.
-
-```tsx
-filter: { type: "select", options: brandOptions, searchable: true }
-```
-
-**`multiSelect` 는 지정하지 않아도 검색 입력이 항상 있습니다.** 내부적으로 쓰는
-`Select multiple` 이 검색을 내장하고 있어서, `searchable` 을 넘겨도 동작이 같습니다.
-
-옵션이 2~5개뿐인 필터(상태값 등)에는 켜지 마세요. 검색창이 오히려 번잡합니다.
 
 `filterState` 값 형태:
 
@@ -211,89 +197,14 @@ const viewRows = useMemo(
 
 이걸 빼먹으면 **헤더의 정렬 화살표는 바뀌는데 행은 그대로**여서 고장난 것처럼 보입니다.
 
-### columns 는 안정된 참조로 넘기세요 — **컬럼을 만드는 입력값까지**
+### 콜백은 인라인으로 넘겨도 됩니다
 
-렌더할 때마다 새 배열/새 객체를 만들면 내부 최적화가 전부 무효화되고,
-체크박스 하나만 눌러도 모든 행이 다시 그려집니다.
+`onRowClick` / `onCellChange` / `onSortChange` / `onFilterChange` /
+`onSelectionChange` 등 v2 가 받는 콜백은 내부에서 안정 참조로 흡수합니다.
+매 렌더 새 화살표 함수로 넘겨도 행 리렌더로 이어지지 않습니다.
 
-```tsx
-// 컴포넌트 밖 상수로 두거나
-const columns: DataTableV2Column<Row>[] = [...]
-
-// useMemo 로 감싸세요
-const columns = useMemo(() => [...], [handleClick])
-```
-
-**컬럼을 `useMemo` 로 감쌌더라도 그 dep 이 불안정하면 소용없습니다.**
-컬럼 정의에 옵션 목록 같은 걸 넘긴다면 그것도 안정 참조여야 합니다.
-
-```tsx
-// ❌ 인라인 객체 → 매 렌더 새 참조 → columns useMemo 무효화 → 전체 행 리렌더
-<MyTable filterOptions={{ status: statusOptions, country: countries.filter(...) }} />
-
-// ✅
-const filterOptions = useMemo(() => ({ ... }), [countries])
-<MyTable filterOptions={filterOptions} />
-```
-
-CMS 이관 중 실제로 겪은 문제입니다. 컬럼 자체는 `useMemo` 였는데 그 입력이
-인라인 객체였습니다.
-
-콜백(`onRowClick`, `onCellChange` 등)은 인라인 화살표로 넘겨도 안전합니다.
-v2 내부에서 흡수합니다.
-
-**테이블에 넘기는 값 중 매 렌더 새로 만들어지는 게 없는지 확인하세요.**
-v1 에서는 티가 안 났지만 v2 에서는 전부 전체 행 리렌더로 이어집니다.
-
-- [ ] `data` — API 응답을 `?? []` 로 감싼 것도 포함
-- [ ] `tableData` — id 를 붙이며 `map` 한 결과
-- [ ] `columns` — 그리고 **컬럼을 만드는 입력값**
-- [ ] `rowClassName` / `expandable` / 그 외 넘기는 객체·함수
-
-### 테이블 주변 UI 까지 다시 그려지는지 확인하세요
-
-행 확장이나 체크박스처럼 **테이블만 바뀌면 되는 동작**에서 툴바·페이지네이션·검색폼까지
-다시 그려지는 경우가 많습니다. v1 에서도 그랬지만 티가 안 났고, v2 로 오면서 눈에 띕니다.
-
-| 어디서 오나 | 대응 |
-|---|---|
-| 확장/선택 상태가 테이블 컴포넌트의 로컬 state → 툴바·페이지네이션 JSX 재생성 | 두 블록을 `useMemo` 로 element 째 고정 |
-| `selectedIds` 가 페이지 훅에 있음 → 페이지 리렌더 → 검색폼 동반 | 검색폼 `React.memo` + 핸들러 `useCallback` |
-
-```tsx
-// 선택이 바뀌어도 subtree 는 건너뛴다
-const pagination = useMemo(
-  () => <PaginationFooter currentPage={page} ... />,
-  [page, totalPages, pageSize, onPageChange, onPageSizeChange]
-)
-```
-
-**memo 를 걸었으면 그 dep 도 안정 참조인지 반드시 확인하세요.** 페이지네이션을 `useMemo`
-로 감싸놓고 dep 인 `onPageChange` 를 훅에서 일반 함수로 둬서 매 렌더 무효화되던 사례가
-있었습니다. **memo 를 건 것과 실제로 효과가 있는 것은 다릅니다.**
-
-**선택 건수를 표시하는 툴바가 체크할 때 다시 그려지는 건 정상입니다.** 표시 내용이
-바뀌므로 고칠 대상이 아닙니다. dep 을 `selectedIds` 배열이 아니라 `selectedIds.length`
-로 두면 개수가 같을 때는 건너뜁니다.
-
-### 컬럼 정의는 옵션을 받는 함수로 두는 편이 낫습니다
-
-컬럼 헤더 필터를 쓰면 필터 옵션(브랜드 목록 등)이 컬럼 정의에 필요합니다.
-컬럼이 모듈 상수면 옵션을 받을 수 없어 컴포넌트에서 `map` 으로 덧씌우게 되는데,
-그러면 필터·너비 설정이 컬럼 정의와 다른 곳으로 흩어지고, `accessorKey` 문자열로
-매칭하므로 키를 바꾸면 조용히 안 걸립니다.
-
-```tsx
-const getColumns = (
-  filterOptions: MyFilterOptions,
-  onLinkClick: (id: number) => void
-): DataTableV2Column<Row>[] => [ ... ]
-
-const columns = useMemo(
-  () => getColumns(filterOptions, onLinkClick),
-  [filterOptions, onLinkClick]
-)
-```
+`data`, `columns`, `filterState` 처럼 값 자체가 반영되는 prop 은 흡수하지
+않습니다. 매 렌더 새로 만들면 리렌더가 발생하니 안정된 참조로 넘겨 주세요.
 
 ### `TableContainer` 안에서는 `bordered={false}`
 
@@ -345,7 +256,7 @@ v1 은 "정렬 없음"을 `column: null` 로 표현했지만, v2 는 정렬이 �
 ## 이관 순서 제안
 
 1. **작고 단순한 테이블 하나**부터 옮겨서 눈으로 확인
-2. 문제 없으면 **넓은 테이블 / 행 많은 테이블** — 여기서 가상화 효과가 큼
+2. 문제 없으면 나머지 일반 테이블
 3. 셀 편집이나 셀 병합을 쓰는 테이블은 마지막
 
 각 단계에서 확인할 것:
@@ -359,5 +270,5 @@ v1 은 "정렬 없음"을 `column: null` 로 표현했지만, v2 는 정렬이 �
 
 ## 참고
 
-- Storybook `Table/DataTableV2` — 스토리 30개. `KitchenSink` 가 전 기능 조합 데모
+- Storybook `Table/DataTableV2` — 전 기능 조합 데모는 `KitchenSink`
 - 문제가 생기면 v1 을 그대로 두고 해당 페이지만 되돌리면 됩니다
