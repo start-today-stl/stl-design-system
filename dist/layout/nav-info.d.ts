@@ -11,6 +11,6 @@ export interface NavInfoProps extends React.HTMLAttributes<HTMLDivElement> {
     /** 정보 항목 목록 */
     items?: NavInfoItemProps[];
 }
-declare const NavInfoItem: ({ icon, text, href }: NavInfoItemProps) => import("react/jsx-runtime").JSX.Element;
+declare const NavInfoItem: ({ icon, text, href }: NavInfoItemProps) => React.JSX.Element;
 declare const NavInfo: React.ForwardRefExoticComponent<NavInfoProps & React.RefAttributes<HTMLDivElement>>;
 export { NavInfo, NavInfoItem };
