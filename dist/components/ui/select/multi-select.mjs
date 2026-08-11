@@ -1,4 +1,4 @@
-import { jsxs as s, jsx as r, Fragment as ce } from "react/jsx-runtime";
+import { jsxs as s, jsx as a, Fragment as ce } from "react/jsx-runtime";
 import * as l from "react";
 import { Command as b } from "cmdk";
 import * as w from "@radix-ui/react-popover";
@@ -22,7 +22,7 @@ const be = l.forwardRef(
     ariaLabel: U,
     tableMode: F,
     overflowMode: x = "truncate",
-    maxDisplayCount: A = 2,
+    maxDisplayCount: A = "auto",
     clearable: J = !0,
     loading: N
   }, M) => {
@@ -44,34 +44,34 @@ const be = l.forwardRef(
       u === void 0 && _(t), i == null || i(t);
     }, C = (e, t) => {
       t.stopPropagation();
-      const n = c.filter((a) => a !== e);
+      const n = c.filter((r) => r !== e);
       u === void 0 && _(n), i == null || i(n);
     }, te = (e) => {
       e.stopPropagation(), u === void 0 && _([]), i == null || i([]);
-    }, re = (e) => {
-      const t = m.filter((a) => !a.disabled);
+    }, ae = (e) => {
+      const t = m.filter((r) => !r.disabled);
       if (t.length === 0) return;
-      const n = t.findIndex((a) => a.label === D);
+      const n = t.findIndex((r) => r.label === D);
       if (e.key === "Home") {
         e.preventDefault();
-        const a = t[0].label;
-        d(a), g(a);
+        const r = t[0].label;
+        d(r), g(r);
       } else if (e.key === "End") {
         e.preventDefault();
-        const a = t[t.length - 1].label;
-        d(a), g(a);
+        const r = t[t.length - 1].label;
+        d(r), g(r);
       } else if (e.key === "ArrowDown") {
         if (n === t.length - 1) {
           e.preventDefault();
-          const a = t[0].label;
-          d(a), g(a);
+          const r = t[0].label;
+          d(r), g(r);
         }
       } else if (e.key === "ArrowUp" && n === 0) {
         e.preventDefault();
-        const a = t[t.length - 1].label;
-        d(a), g(a);
+        const r = t[t.length - 1].label;
+        d(r), g(r);
       }
-    }, ae = J && c.length > 0 && Z && !z && !N, v = A === "auto", O = l.useRef(null), W = l.useRef(null), [se, H] = l.useState(
+    }, re = J && c.length > 0 && Z && !z && !N, v = A === "auto", O = l.useRef(null), W = l.useRef(null), [se, H] = l.useState(
       o.length
     ), le = 40, j = 4;
     l.useLayoutEffect(() => {
@@ -95,8 +95,8 @@ const be = l.forwardRef(
         H(X);
       };
       n();
-      const a = new ResizeObserver(n);
-      return a.observe(e), () => a.disconnect();
+      const r = new ResizeObserver(n);
+      return r.observe(e), () => r.disconnect();
     }, [v, x, o.length]);
     const R = v ? se : A;
     return /* @__PURE__ */ s(w.Root, { open: h, onOpenChange: Q, children: [
@@ -126,7 +126,7 @@ const be = l.forwardRef(
                   x === "wrap" ? "flex-wrap" : "flex-nowrap overflow-hidden"
                 ),
                 children: [
-                  v && x === "truncate" && o.length > 0 && /* @__PURE__ */ r(
+                  v && x === "truncate" && o.length > 0 && /* @__PURE__ */ a(
                     "div",
                     {
                       ref: O,
@@ -138,29 +138,29 @@ const be = l.forwardRef(
                           "data-measure-chip": !0,
                           className: "inline-flex items-center gap-1 rounded bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 text-xs flex-shrink-0",
                           children: [
-                            /* @__PURE__ */ r("span", { children: e.label }),
-                            /* @__PURE__ */ r("span", { className: "flex-shrink-0", children: /* @__PURE__ */ r(y, { size: 18 }) })
+                            /* @__PURE__ */ a("span", { children: e.label }),
+                            /* @__PURE__ */ a("span", { className: "flex-shrink-0", children: /* @__PURE__ */ a(y, { size: 18 }) })
                           ]
                         },
                         e.value
                       ))
                     }
                   ),
-                  o.length === 0 ? /* @__PURE__ */ r("span", { className: "text-slate-500 dark:text-slate-50", children: B }) : x === "truncate" ? /* @__PURE__ */ s(ce, { children: [
+                  o.length === 0 ? /* @__PURE__ */ a("span", { className: "text-slate-500 dark:text-slate-50", children: B }) : x === "truncate" ? /* @__PURE__ */ s(ce, { children: [
                     o.slice(0, R).map((e) => /* @__PURE__ */ s(
                       "span",
                       {
                         className: "inline-flex items-center gap-1 rounded bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 text-xs flex-shrink-0",
                         children: [
-                          /* @__PURE__ */ r("span", { children: e.label }),
-                          /* @__PURE__ */ r(
+                          /* @__PURE__ */ a("span", { children: e.label }),
+                          /* @__PURE__ */ a(
                             "span",
                             {
                               role: "img",
                               "aria-label": `${e.label} 삭제`,
                               onClick: (t) => C(e.value, t),
                               className: "cursor-pointer flex-shrink-0",
-                              children: /* @__PURE__ */ r(y, { size: 18 })
+                              children: /* @__PURE__ */ a(y, { size: 18 })
                             }
                           )
                         ]
@@ -177,14 +177,14 @@ const be = l.forwardRef(
                       className: "inline-flex items-center gap-1 rounded bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 text-xs",
                       children: [
                         e.label,
-                        /* @__PURE__ */ r(
+                        /* @__PURE__ */ a(
                           "span",
                           {
                             role: "img",
                             "aria-label": `${e.label} 삭제`,
                             onClick: (t) => C(e.value, t),
                             className: "cursor-pointer",
-                            children: /* @__PURE__ */ r(y, { size: 18 })
+                            children: /* @__PURE__ */ a(y, { size: 18 })
                           }
                         )
                       ]
@@ -195,17 +195,17 @@ const be = l.forwardRef(
               }
             ),
             /* @__PURE__ */ s("div", { className: "flex items-center gap-1 flex-shrink-0", children: [
-              ae && /* @__PURE__ */ r(
+              re && /* @__PURE__ */ a(
                 "span",
                 {
                   role: "button",
                   "aria-label": "전체 선택 초기화",
                   onClick: te,
                   className: "flex items-center",
-                  children: /* @__PURE__ */ r("span", { className: "p-0.5 rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-100 dark:hover:text-slate-300 dark:hover:bg-slate-700 cursor-pointer transition-colors", children: /* @__PURE__ */ r(y, { size: 20 }) })
+                  children: /* @__PURE__ */ a("span", { className: "p-0.5 rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-100 dark:hover:text-slate-300 dark:hover:bg-slate-700 cursor-pointer transition-colors", children: /* @__PURE__ */ a(y, { size: 20 }) })
                 }
               ),
-              N ? /* @__PURE__ */ r(xe, { size: "sm" }) : /* @__PURE__ */ r(
+              N ? /* @__PURE__ */ a(xe, { size: "sm" }) : /* @__PURE__ */ a(
                 pe,
                 {
                   size: 24,
@@ -219,7 +219,7 @@ const be = l.forwardRef(
           ]
         }
       ),
-      /* @__PURE__ */ r(w.Portal, { children: /* @__PURE__ */ r(
+      /* @__PURE__ */ a(w.Portal, { children: /* @__PURE__ */ a(
         w.Content,
         {
           className: f(
@@ -239,20 +239,20 @@ const be = l.forwardRef(
               onValueChange: d,
               children: [
                 /* @__PURE__ */ s("div", { className: "flex items-center gap-2 px-2 pb-2 border-b border-slate-200 dark:border-slate-600", children: [
-                  /* @__PURE__ */ r(de, { size: 20, className: "text-slate-400" }),
-                  /* @__PURE__ */ r(
+                  /* @__PURE__ */ a(de, { size: 20, className: "text-slate-400" }),
+                  /* @__PURE__ */ a(
                     b.Input,
                     {
                       value: E,
                       onValueChange: Y,
                       placeholder: G,
                       className: "flex-1 bg-transparent text-xs outline-none placeholder:text-slate-400",
-                      onKeyDown: re
+                      onKeyDown: ae
                     }
                   )
                 ] }),
                 /* @__PURE__ */ s(b.List, { ref: S, className: "flex flex-col gap-[5px] max-h-[240px] overflow-y-auto pt-2", children: [
-                  /* @__PURE__ */ r(b.Empty, { className: "py-2 text-center text-xs text-slate-500", children: "검색 결과가 없습니다." }),
+                  /* @__PURE__ */ a(b.Empty, { className: "py-2 text-center text-xs text-slate-500", children: "검색 결과가 없습니다." }),
                   m.map((e) => {
                     const t = c.includes(e.value);
                     return /* @__PURE__ */ s(
@@ -269,7 +269,7 @@ const be = l.forwardRef(
                           "data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50"
                         ),
                         children: [
-                          /* @__PURE__ */ r(
+                          /* @__PURE__ */ a(
                             ue,
                             {
                               checked: t,

@@ -28,7 +28,7 @@ const MultiSelect = React.forwardRef<
       ariaLabel,
       tableMode,
       overflowMode = "truncate",
-      maxDisplayCount = 2,
+      maxDisplayCount = "auto",
       clearable = true,
       loading,
     },

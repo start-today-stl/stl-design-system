@@ -67,8 +67,8 @@ export interface MultipleSelectProps extends SelectBaseProps {
     overflowMode?: ChipOverflowMode;
     /**
      * truncate 모드에서 최대 표시할 칩 개수.
-     * - `number` (기본 2): 고정 개수까지 표시. 초과 시 `+N` 배지
-     * - `"auto"`: 인풋 폭에 들어가는 만큼만 표시. `+N` 배지가 항상 잘리지 않도록 공간 확보 후 계산
+     * - `"auto"` (기본): 인풋 폭에 들어가는 만큼만 표시. `+N` 배지가 항상 잘리지 않도록 공간 확보 후 계산
+     * - `number`: 고정 개수까지 표시. 초과 시 `+N` 배지
      */
     maxDisplayCount?: number | "auto";
 }
