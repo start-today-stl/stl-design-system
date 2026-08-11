@@ -101,8 +101,7 @@ const AppShellRoot = React.forwardRef<HTMLDivElement, AppShellProps>(
             {header && <header className="flex-shrink-0 relative z-30">{header}</header>}
 
             {/* 콘텐츠 (스크롤 컨테이너) */}
-            {/* pb-4: 스크롤 오버플로우 페이지에서도 최하단에 여백 유지 (Content 대신 여기 위치) */}
-            <main className="flex-1 overflow-auto pb-4">{content}</main>
+            <main className="flex-1 overflow-auto">{content}</main>
           </div>
         </div>
       </AppShellContext.Provider>

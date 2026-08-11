@@ -13,10 +13,10 @@ const Content = React.forwardRef<HTMLDivElement, ContentProps>(
       <div
         ref={ref}
         className={cn(
-          "h-full flex flex-col",
-          // 하단 여백은 AppShell main(스크롤 컨테이너)에 위치시켜
-          // 스크롤 오버플로우 페이지에서도 스크롤 최하단에 여백이 유지되도록 함
-          padded && "px-4 pt-2.5",
+          // min-h-full: 컨텐츠가 짧으면 스크롤 컨테이너(main) 만큼 채우고,
+          //             길면 자식 크기에 따라 자연스레 늘어남 → 오버플로우 스크롤 시 pb-4 가 실제 자리를 차지해 최하단 여백 보존
+          "min-h-full flex flex-col",
+          padded && "px-4 pt-2.5 pb-4",
           className
         )}
         {...props}

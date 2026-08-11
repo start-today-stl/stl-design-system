@@ -1,16 +1,16 @@
-import { jsx as m } from "react/jsx-runtime";
-import * as a from "react";
-import { cn as l } from "../lib/utils.mjs";
-const n = a.forwardRef(
-  ({ className: t, padded: o = !0, children: r, ...e }, f) => /* @__PURE__ */ m(
+import { jsx as f } from "react/jsx-runtime";
+import * as n from "react";
+import { cn as p } from "../lib/utils.mjs";
+const a = n.forwardRef(
+  ({ className: t, padded: o = !0, children: r, ...e }, m) => /* @__PURE__ */ f(
     "div",
     {
-      ref: f,
-      className: l(
-        "h-full flex flex-col",
-        // 하단 여백은 AppShell main(스크롤 컨테이너)에 위치시켜
-        // 스크롤 오버플로우 페이지에서도 스크롤 최하단에 여백이 유지되도록 함
-        o && "px-4 pt-2.5",
+      ref: m,
+      className: p(
+        // min-h-full: 컨텐츠가 짧으면 스크롤 컨테이너(main) 만큼 채우고,
+        //             길면 자식 크기에 따라 자연스레 늘어남 → 오버플로우 스크롤 시 pb-4 가 실제 자리를 차지해 최하단 여백 보존
+        "min-h-full flex flex-col",
+        o && "px-4 pt-2.5 pb-4",
         t
       ),
       ...e,
@@ -18,8 +18,8 @@ const n = a.forwardRef(
     }
   )
 );
-n.displayName = "Content";
+a.displayName = "Content";
 export {
-  n as Content
+  a as Content
 };
 //# sourceMappingURL=content.mjs.map
