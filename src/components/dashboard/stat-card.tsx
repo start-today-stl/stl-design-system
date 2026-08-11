@@ -104,8 +104,9 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
                   </div>
                 )}
               </div>
-              {/* 하단: 큰 숫자 (STL Gothic R 폰트) */}
-              <span className={cn("font-heading text-[86px] font-normal tracking-[-2.58px] leading-none", textColorClass)}>
+              {/* 하단: 큰 숫자 (STL Gothic R 폰트)
+                  카드 폭보다 긴 숫자면 잘리는 대신 말줄임(…) 표시 */}
+              <span className={cn("font-heading text-[86px] font-normal tracking-[-2.58px] leading-none block max-w-full truncate", textColorClass)}>
                 {count}
               </span>
             </div>
@@ -142,8 +143,8 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
                     {label}
                   </span>
                 </div>
-                {/* 하단: 숫자 */}
-                <span className={cn("text-[48px] font-normal tracking-[-1.44px] leading-none", textColorClass)}>
+                {/* 하단: 숫자 (긴 숫자면 잘리는 대신 말줄임) */}
+                <span className={cn("text-[48px] font-normal tracking-[-1.44px] leading-none block max-w-full truncate", textColorClass)}>
                   {count}
                 </span>
               </div>
@@ -184,8 +185,8 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
                 {label}
               </span>
             </div>
-            {/* 우측: 숫자 */}
-            <span className={cn("text-sm tracking-[-0.14px]", textColorClass)}>
+            {/* 우측: 숫자 (긴 숫자면 잘리는 대신 말줄임) */}
+            <span className={cn("text-sm tracking-[-0.14px] min-w-0 truncate", textColorClass)}>
               {count}
             </span>
           </div>

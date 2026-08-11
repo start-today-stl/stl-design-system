@@ -1,5 +1,5 @@
 import { jsx as e, jsxs as t } from "react/jsx-runtime";
-import * as u from "react";
+import * as p from "react";
 import { cva as k } from "class-variance-authority";
 import { cn as a } from "../../lib/utils.mjs";
 import { Skeleton as i } from "../ui/skeleton.mjs";
@@ -34,16 +34,16 @@ const N = {
       stretch: !1
     }
   }
-), y = u.forwardRef(
-  ({ className: d, variant: r = "main", icon: s, label: n, count: c, badge: v, bordered: p = !1, headerAction: g, stretch: o = !1, loading: h = !1, ...m }, b) => {
-    const l = "text-slate-700 dark:text-slate-100", f = p ? w[r || "main"] : N[r || "main"];
+), y = p.forwardRef(
+  ({ className: d, variant: r = "main", icon: s, label: n, count: c, badge: u, bordered: g = !1, headerAction: v, stretch: o = !1, loading: m = !1, ...h }, b) => {
+    const l = "text-slate-700 dark:text-slate-100", f = g ? w[r || "main"] : N[r || "main"];
     return r === "main" ? /* @__PURE__ */ e(
       "div",
       {
         ref: b,
         className: a(x({ variant: r, stretch: o }), f, d),
-        ...m,
-        children: h ? /* @__PURE__ */ t("div", { className: "flex flex-col flex-1 justify-between", children: [
+        ...h,
+        children: m ? /* @__PURE__ */ t("div", { className: "flex flex-col flex-1 justify-between", children: [
           /* @__PURE__ */ e(i, { width: 60, height: 14 }),
           /* @__PURE__ */ e(i, { width: "70%", height: 64 })
         ] }) : /* @__PURE__ */ t("div", { className: "flex flex-col flex-1 justify-between", children: [
@@ -52,9 +52,9 @@ const N = {
               s && /* @__PURE__ */ e("span", { className: a("flex-shrink-0", l), children: s }),
               /* @__PURE__ */ e("span", { className: a("text-sm tracking-[-0.14px]", l), children: n })
             ] }),
-            g && /* @__PURE__ */ e("div", { className: "flex items-center", children: g })
+            v && /* @__PURE__ */ e("div", { className: "flex items-center", children: v })
           ] }),
-          /* @__PURE__ */ e("span", { className: a("font-heading text-[86px] font-normal tracking-[-2.58px] leading-none", l), children: c })
+          /* @__PURE__ */ e("span", { className: a("font-heading text-[86px] font-normal tracking-[-2.58px] leading-none block max-w-full truncate", l), children: c })
         ] })
       }
     ) : r === "sub" ? /* @__PURE__ */ e(
@@ -62,8 +62,8 @@ const N = {
       {
         ref: b,
         className: a(x({ variant: r, stretch: o }), f, d),
-        ...m,
-        children: h ? /* @__PURE__ */ t("div", { className: "flex flex-col flex-1 justify-between", children: [
+        ...h,
+        children: m ? /* @__PURE__ */ t("div", { className: "flex flex-col flex-1 justify-between", children: [
           /* @__PURE__ */ e(i, { width: 50, height: 14 }),
           /* @__PURE__ */ e(i, { width: "50%", height: 36 })
         ] }) : /* @__PURE__ */ t("div", { className: "flex gap-0.5 flex-1", children: [
@@ -72,9 +72,9 @@ const N = {
               s && /* @__PURE__ */ e("span", { className: a("flex-shrink-0", l), children: s }),
               /* @__PURE__ */ e("span", { className: a("text-sm tracking-[-0.14px]", l), children: n })
             ] }),
-            /* @__PURE__ */ e("span", { className: a("text-[48px] font-normal tracking-[-1.44px] leading-none", l), children: c })
+            /* @__PURE__ */ e("span", { className: a("text-[48px] font-normal tracking-[-1.44px] leading-none block max-w-full truncate", l), children: c })
           ] }),
-          v && /* @__PURE__ */ e("div", { className: "flex flex-col justify-end flex-shrink-0", children: v })
+          u && /* @__PURE__ */ e("div", { className: "flex flex-col justify-end flex-shrink-0", children: u })
         ] })
       }
     ) : /* @__PURE__ */ e(
@@ -82,8 +82,8 @@ const N = {
       {
         ref: b,
         className: a(x({ variant: r, stretch: o }), f, d),
-        ...m,
-        children: h ? /* @__PURE__ */ t("div", { className: "flex items-center justify-between", children: [
+        ...h,
+        children: m ? /* @__PURE__ */ t("div", { className: "flex items-center justify-between", children: [
           /* @__PURE__ */ e(i, { width: 60, height: 14 }),
           /* @__PURE__ */ e(i, { width: 30, height: 14 })
         ] }) : /* @__PURE__ */ t("div", { className: "flex items-center justify-between", children: [
@@ -91,7 +91,7 @@ const N = {
             s && /* @__PURE__ */ e("span", { className: a("flex-shrink-0", l), children: s }),
             /* @__PURE__ */ e("span", { className: a("text-sm tracking-[-0.14px]", l), children: n })
           ] }),
-          /* @__PURE__ */ e("span", { className: a("text-sm tracking-[-0.14px]", l), children: c })
+          /* @__PURE__ */ e("span", { className: a("text-sm tracking-[-0.14px] min-w-0 truncate", l), children: c })
         ] })
       }
     );
