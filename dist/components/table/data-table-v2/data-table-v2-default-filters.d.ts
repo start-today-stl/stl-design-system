@@ -15,14 +15,14 @@ export declare function DefaultTextFilter({ value, onChange, onClose, placeholde
     placeholder?: string;
 }): import("react/jsx-runtime").JSX.Element;
 /** 셀렉트 필터 — 단일 값 선택 */
-export declare function DefaultSelectFilter({ value, onChange, onClose, options, placeholder, emptyMessage, searchable, }: DefaultFilterProps<string> & {
+export declare function DefaultSelectFilter({ value, onChange, onClose, options, emptyMessage, searchable, }: DefaultFilterProps<string> & {
     options: FilterOption[];
     placeholder?: string;
     emptyMessage?: string;
     searchable?: boolean;
 }): import("react/jsx-runtime").JSX.Element;
 /** 멀티셀렉트 필터 — 여러 값 선택 */
-export declare function DefaultMultiSelectFilter({ value, onChange, onClose, options, placeholder, emptyMessage, searchable, }: DefaultFilterProps<string[]> & {
+export declare function DefaultMultiSelectFilter({ value, onChange, onClose, options, emptyMessage, searchable, }: DefaultFilterProps<string[]> & {
     options: FilterOption[];
     placeholder?: string;
     emptyMessage?: string;

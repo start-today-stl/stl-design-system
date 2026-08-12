@@ -2,8 +2,9 @@ import * as React from "react"
 import type { DateRange } from "react-day-picker"
 
 import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
-import { Select } from "@/components/ui/select"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { DateRangePicker } from "@/components/ui/date-range-picker"
 import type { FilterOption } from "./types"
 
@@ -54,13 +55,74 @@ export function DefaultTextFilter({
   )
 }
 
+/**
+ * 옵션 목록 공용 셸 — 검색 + 스크롤 영역 + 하단 버튼
+ *
+ * 컬럼 헤더가 이미 "무엇을 거르는지" 를 말해주므로 팝오버 안에 Select 를 한 번 더
+ * 두지 않는다. Select 를 쓰면 팝오버 위에 드롭다운이 겹쳐 뜨는 이중 구조가 된다.
+ */
+function FilterOptionShell({
+  searchable,
+  keyword,
+  onKeywordChange,
+  isEmpty,
+  emptyMessage,
+  onReset,
+  onClose,
+  children,
+}: {
+  searchable?: boolean
+  keyword: string
+  onKeywordChange: (v: string) => void
+  isEmpty: boolean
+  emptyMessage?: React.ReactNode
+  onReset: () => void
+  onClose: () => void
+  children: React.ReactNode
+}) {
+  return (
+    <div className="flex flex-col gap-2">
+      {searchable && (
+        <Input
+          value={keyword}
+          onChange={(e) => onKeywordChange(e.target.value)}
+          placeholder="검색"
+          aria-label="필터 옵션 검색"
+        />
+      )}
+      {isEmpty ? (
+        <FilterEmptyMessage>{emptyMessage}</FilterEmptyMessage>
+      ) : (
+        // 옵션이 많아도 팝오버가 늘어나지 않도록 목록만 스크롤한다
+        <div className="max-h-60 overflow-y-auto pr-1">{children}</div>
+      )}
+      <div className="flex justify-end gap-2">
+        <Button variant="ghost" size="sm" onClick={onReset}>
+          초기화
+        </Button>
+        <Button size="sm" onClick={onClose}>
+          닫기
+        </Button>
+      </div>
+    </div>
+  )
+}
+
+/** 키워드로 옵션 필터링 (대소문자 무시) */
+function useFilteredOptions(options: FilterOption[], keyword: string) {
+  return React.useMemo(() => {
+    const q = keyword.trim().toLowerCase()
+    if (!q) return options
+    return options.filter((o) => o.label.toLowerCase().includes(q))
+  }, [options, keyword])
+}
+
 /** 셀렉트 필터 — 단일 값 선택 */
 export function DefaultSelectFilter({
   value,
   onChange,
   onClose,
   options,
-  placeholder,
   emptyMessage,
   searchable,
 }: DefaultFilterProps<string> & {
@@ -69,31 +131,38 @@ export function DefaultSelectFilter({
   emptyMessage?: string
   searchable?: boolean
 }) {
-  // 다른 필터에 종속돼서 아직 옵션이 없을 수 있다. 빈 목록을 열어주는 대신
-  // 검색폼과 같이 비활성 + 사유 안내로 처리한다.
-  const isEmpty = options.length === 0
+  const [keyword, setKeyword] = React.useState("")
+  const visible = useFilteredOptions(options, keyword)
+
   return (
-    <div className="flex flex-col gap-2">
-      <Select
-        searchable={searchable}
-        options={options}
-        value={value}
+    <FilterOptionShell
+      searchable={searchable}
+      keyword={keyword}
+      onKeywordChange={setKeyword}
+      // 다른 필터에 종속돼서 아직 옵션이 없을 수 있다. 검색 결과가 없는 경우와 구분한다.
+      isEmpty={visible.length === 0}
+      emptyMessage={options.length === 0 ? emptyMessage : "검색 결과가 없습니다."}
+      onReset={() => {
+        onChange(undefined)
+        onClose()
+      }}
+      onClose={onClose}
+    >
+      <RadioGroup
+        value={value ?? ""}
         onValueChange={(v) => onChange(v || undefined)}
-        placeholder={placeholder ?? "선택"}
-        clearable
-        disabled={isEmpty}
+        className="flex flex-col gap-1.5"
         aria-label="필터 선택"
-      />
-      {isEmpty && <FilterEmptyMessage>{emptyMessage}</FilterEmptyMessage>}
-      <div className="flex justify-end gap-2">
-        <Button variant="ghost" size="sm" onClick={() => { onChange(undefined); onClose() }}>
-          초기화
-        </Button>
-        <Button size="sm" onClick={onClose}>
-          닫기
-        </Button>
-      </div>
-    </div>
+      >
+        {visible.map((option) => (
+          <RadioGroupItem
+            key={option.value}
+            value={option.value}
+            label={option.label}
+          />
+        ))}
+      </RadioGroup>
+    </FilterOptionShell>
   )
 }
 
@@ -112,7 +181,6 @@ export function DefaultMultiSelectFilter({
   onChange,
   onClose,
   options,
-  placeholder,
   emptyMessage,
   searchable,
 }: DefaultFilterProps<string[]> & {
@@ -121,29 +189,41 @@ export function DefaultMultiSelectFilter({
   emptyMessage?: string
   searchable?: boolean
 }) {
-  const isEmpty = options.length === 0
+  const [keyword, setKeyword] = React.useState("")
+  const visible = useFilteredOptions(options, keyword)
+  const selected = value ?? []
+
+  const toggle = (optionValue: string, checked: boolean) => {
+    const next = checked
+      ? [...selected, optionValue]
+      : selected.filter((v) => v !== optionValue)
+    onChange(next.length ? next : undefined)
+  }
+
   return (
-    <div className="flex flex-col gap-2">
-      <Select
-        multiple
-        searchable={searchable}
-        options={options}
-        value={value ?? []}
-        onValueChange={(v) => onChange(v.length ? v : undefined)}
-        placeholder={placeholder ?? "선택"}
-        disabled={isEmpty}
-        aria-label="필터 다중 선택"
-      />
-      {isEmpty && <FilterEmptyMessage>{emptyMessage}</FilterEmptyMessage>}
-      <div className="flex justify-end gap-2">
-        <Button variant="ghost" size="sm" onClick={() => { onChange(undefined); onClose() }}>
-          초기화
-        </Button>
-        <Button size="sm" onClick={onClose}>
-          닫기
-        </Button>
+    <FilterOptionShell
+      searchable={searchable}
+      keyword={keyword}
+      onKeywordChange={setKeyword}
+      isEmpty={visible.length === 0}
+      emptyMessage={options.length === 0 ? emptyMessage : "검색 결과가 없습니다."}
+      onReset={() => {
+        onChange(undefined)
+        onClose()
+      }}
+      onClose={onClose}
+    >
+      <div className="flex flex-col gap-1.5" role="group" aria-label="필터 다중 선택">
+        {visible.map((option) => (
+          <Checkbox
+            key={option.value}
+            label={option.label}
+            checked={selected.includes(option.value)}
+            onCheckedChange={(checked) => toggle(option.value, checked === true)}
+          />
+        ))}
       </div>
-    </div>
+    </FilterOptionShell>
   )
 }
 

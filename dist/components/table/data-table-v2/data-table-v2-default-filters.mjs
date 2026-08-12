@@ -1,179 +1,227 @@
-import { jsxs as s, jsx as l } from "react/jsx-runtime";
-import * as m from "react";
-import { Button as n } from "../../ui/button.mjs";
-import { Input as u } from "../../ui/input.mjs";
-import { Select as h } from "../../ui/select/index.mjs";
-import { DateRangePicker as p } from "../../ui/date-range-picker.mjs";
-function y({
-  value: i,
-  onChange: a,
-  onClose: r,
+import { jsxs as d, jsx as l } from "react/jsx-runtime";
+import * as v from "react";
+import { Button as u } from "../../ui/button.mjs";
+import { Checkbox as k } from "../../ui/checkbox.mjs";
+import { Input as h } from "../../ui/input.mjs";
+import { RadioGroup as D, RadioGroupItem as w } from "../../ui/radio-group.mjs";
+import { DateRangePicker as C } from "../../ui/date-range-picker.mjs";
+function M({
+  value: a,
+  onChange: r,
+  onClose: i,
   placeholder: e
 }) {
-  const [c, o] = m.useState(i ?? "");
-  return m.useEffect(() => o(i ?? ""), [i]), /* @__PURE__ */ s("div", { className: "flex flex-col gap-2", children: [
+  const [s, c] = v.useState(a ?? "");
+  return v.useEffect(() => c(a ?? ""), [a]), /* @__PURE__ */ d("div", { className: "flex flex-col gap-2", children: [
     /* @__PURE__ */ l(
-      u,
+      h,
       {
-        value: c,
-        onChange: (t) => o(t.target.value),
+        value: s,
+        onChange: (t) => c(t.target.value),
         placeholder: e ?? "검색",
         onKeyDown: (t) => {
-          t.key === "Enter" && (a(c || void 0), r());
+          t.key === "Enter" && (r(s || void 0), i());
         },
         "aria-label": "필터 검색"
       }
     ),
-    /* @__PURE__ */ s("div", { className: "flex justify-end gap-2", children: [
-      /* @__PURE__ */ l(n, { variant: "ghost", size: "sm", onClick: () => {
-        a(void 0), r();
+    /* @__PURE__ */ d("div", { className: "flex justify-end gap-2", children: [
+      /* @__PURE__ */ l(u, { variant: "ghost", size: "sm", onClick: () => {
+        r(void 0), i();
       }, children: "초기화" }),
-      /* @__PURE__ */ l(n, { size: "sm", onClick: () => {
-        a(c || void 0), r();
+      /* @__PURE__ */ l(u, { size: "sm", onClick: () => {
+        r(s || void 0), i();
       }, children: "적용" })
     ] })
   ] });
 }
-function z({
-  value: i,
-  onChange: a,
-  onClose: r,
-  options: e,
-  placeholder: c,
-  emptyMessage: o,
-  searchable: t
+function x({
+  searchable: a,
+  keyword: r,
+  onKeywordChange: i,
+  isEmpty: e,
+  emptyMessage: s,
+  onReset: c,
+  onClose: t,
+  children: n
 }) {
-  const d = e.length === 0;
-  return /* @__PURE__ */ s("div", { className: "flex flex-col gap-2", children: [
-    /* @__PURE__ */ l(
+  return /* @__PURE__ */ d("div", { className: "flex flex-col gap-2", children: [
+    a && /* @__PURE__ */ l(
       h,
       {
-        searchable: t,
-        options: e,
-        value: i,
-        onValueChange: (f) => a(f || void 0),
-        placeholder: c ?? "선택",
-        clearable: !0,
-        disabled: d,
-        "aria-label": "필터 선택"
+        value: r,
+        onChange: (f) => i(f.target.value),
+        placeholder: "검색",
+        "aria-label": "필터 옵션 검색"
       }
     ),
-    d && /* @__PURE__ */ l(v, { children: o }),
-    /* @__PURE__ */ s("div", { className: "flex justify-end gap-2", children: [
-      /* @__PURE__ */ l(n, { variant: "ghost", size: "sm", onClick: () => {
-        a(void 0), r();
-      }, children: "초기화" }),
-      /* @__PURE__ */ l(n, { size: "sm", onClick: r, children: "닫기" })
+    e ? /* @__PURE__ */ l(z, { children: s }) : (
+      // 옵션이 많아도 팝오버가 늘어나지 않도록 목록만 스크롤한다
+      /* @__PURE__ */ l("div", { className: "max-h-60 overflow-y-auto pr-1", children: n })
+    ),
+    /* @__PURE__ */ d("div", { className: "flex justify-end gap-2", children: [
+      /* @__PURE__ */ l(u, { variant: "ghost", size: "sm", onClick: c, children: "초기화" }),
+      /* @__PURE__ */ l(u, { size: "sm", onClick: t, children: "닫기" })
     ] })
   ] });
 }
-function v({ children: i }) {
-  return /* @__PURE__ */ l("p", { className: "text-xs text-slate-500 dark:text-slate-400", children: i ?? "선택할 수 있는 항목이 없습니다." });
+function N(a, r) {
+  return v.useMemo(() => {
+    const i = r.trim().toLowerCase();
+    return i ? a.filter((e) => e.label.toLowerCase().includes(i)) : a;
+  }, [a, r]);
 }
-function D({
-  value: i,
-  onChange: a,
-  onClose: r,
+function G({
+  value: a,
+  onChange: r,
+  onClose: i,
   options: e,
-  placeholder: c,
-  emptyMessage: o,
-  searchable: t
+  emptyMessage: s,
+  searchable: c
 }) {
-  const d = e.length === 0;
-  return /* @__PURE__ */ s("div", { className: "flex flex-col gap-2", children: [
-    /* @__PURE__ */ l(
-      h,
-      {
-        multiple: !0,
-        searchable: t,
-        options: e,
-        value: i ?? [],
-        onValueChange: (f) => a(f.length ? f : void 0),
-        placeholder: c ?? "선택",
-        disabled: d,
-        "aria-label": "필터 다중 선택"
-      }
-    ),
-    d && /* @__PURE__ */ l(v, { children: o }),
-    /* @__PURE__ */ s("div", { className: "flex justify-end gap-2", children: [
-      /* @__PURE__ */ l(n, { variant: "ghost", size: "sm", onClick: () => {
-        a(void 0), r();
-      }, children: "초기화" }),
-      /* @__PURE__ */ l(n, { size: "sm", onClick: r, children: "닫기" })
-    ] })
-  ] });
-}
-function j({
-  value: i,
-  onChange: a,
-  onClose: r
-}) {
-  return /* @__PURE__ */ s("div", { className: "flex flex-col gap-2", children: [
-    /* @__PURE__ */ l(
-      p,
-      {
-        value: i,
-        onChange: (e) => a(e && (e.from || e.to) ? e : void 0)
-      }
-    ),
-    /* @__PURE__ */ s("div", { className: "flex justify-end gap-2", children: [
-      /* @__PURE__ */ l(n, { variant: "ghost", size: "sm", onClick: () => {
-        a(void 0), r();
-      }, children: "초기화" }),
-      /* @__PURE__ */ l(n, { size: "sm", onClick: r, children: "닫기" })
-    ] })
-  ] });
-}
-function E({
-  value: i,
-  onChange: a,
-  onClose: r
-}) {
-  const [e, c] = m.useState(
-    i ?? {}
+  const [t, n] = v.useState(""), f = N(e, t);
+  return /* @__PURE__ */ l(
+    x,
+    {
+      searchable: c,
+      keyword: t,
+      onKeywordChange: n,
+      isEmpty: f.length === 0,
+      emptyMessage: e.length === 0 ? s : "검색 결과가 없습니다.",
+      onReset: () => {
+        r(void 0), i();
+      },
+      onClose: i,
+      children: /* @__PURE__ */ l(
+        D,
+        {
+          value: a ?? "",
+          onValueChange: (o) => r(o || void 0),
+          className: "flex flex-col gap-1.5",
+          "aria-label": "필터 선택",
+          children: f.map((o) => /* @__PURE__ */ l(
+            w,
+            {
+              value: o.value,
+              label: o.label
+            },
+            o.value
+          ))
+        }
+      )
+    }
   );
-  m.useEffect(() => c(i ?? {}), [i]);
-  const o = () => {
-    const t = {};
-    e.from !== void 0 && !Number.isNaN(e.from) && (t.from = e.from), e.to !== void 0 && !Number.isNaN(e.to) && (t.to = e.to), a(t.from !== void 0 || t.to !== void 0 ? t : void 0), r();
+}
+function z({ children: a }) {
+  return /* @__PURE__ */ l("p", { className: "text-xs text-slate-500 dark:text-slate-400", children: a ?? "선택할 수 있는 항목이 없습니다." });
+}
+function I({
+  value: a,
+  onChange: r,
+  onClose: i,
+  options: e,
+  emptyMessage: s,
+  searchable: c
+}) {
+  const [t, n] = v.useState(""), f = N(e, t), o = a ?? [], b = (m, g) => {
+    const p = g ? [...o, m] : o.filter((y) => y !== m);
+    r(p.length ? p : void 0);
   };
-  return /* @__PURE__ */ s("div", { className: "flex flex-col gap-2", children: [
-    /* @__PURE__ */ s("div", { className: "flex items-center gap-2", children: [
+  return /* @__PURE__ */ l(
+    x,
+    {
+      searchable: c,
+      keyword: t,
+      onKeywordChange: n,
+      isEmpty: f.length === 0,
+      emptyMessage: e.length === 0 ? s : "검색 결과가 없습니다.",
+      onReset: () => {
+        r(void 0), i();
+      },
+      onClose: i,
+      children: /* @__PURE__ */ l("div", { className: "flex flex-col gap-1.5", role: "group", "aria-label": "필터 다중 선택", children: f.map((m) => /* @__PURE__ */ l(
+        k,
+        {
+          label: m.label,
+          checked: o.includes(m.value),
+          onCheckedChange: (g) => b(m.value, g === !0)
+        },
+        m.value
+      )) })
+    }
+  );
+}
+function L({
+  value: a,
+  onChange: r,
+  onClose: i
+}) {
+  return /* @__PURE__ */ d("div", { className: "flex flex-col gap-2", children: [
+    /* @__PURE__ */ l(
+      C,
+      {
+        value: a,
+        onChange: (e) => r(e && (e.from || e.to) ? e : void 0)
+      }
+    ),
+    /* @__PURE__ */ d("div", { className: "flex justify-end gap-2", children: [
+      /* @__PURE__ */ l(u, { variant: "ghost", size: "sm", onClick: () => {
+        r(void 0), i();
+      }, children: "초기화" }),
+      /* @__PURE__ */ l(u, { size: "sm", onClick: i, children: "닫기" })
+    ] })
+  ] });
+}
+function O({
+  value: a,
+  onChange: r,
+  onClose: i
+}) {
+  const [e, s] = v.useState(
+    a ?? {}
+  );
+  v.useEffect(() => s(a ?? {}), [a]);
+  const c = () => {
+    const t = {};
+    e.from !== void 0 && !Number.isNaN(e.from) && (t.from = e.from), e.to !== void 0 && !Number.isNaN(e.to) && (t.to = e.to), r(t.from !== void 0 || t.to !== void 0 ? t : void 0), i();
+  };
+  return /* @__PURE__ */ d("div", { className: "flex flex-col gap-2", children: [
+    /* @__PURE__ */ d("div", { className: "flex items-center gap-2", children: [
       /* @__PURE__ */ l(
-        u,
+        h,
         {
           type: "number",
           value: e.from ?? "",
-          onChange: (t) => c((d) => ({ ...d, from: t.target.value === "" ? void 0 : Number(t.target.value) })),
+          onChange: (t) => s((n) => ({ ...n, from: t.target.value === "" ? void 0 : Number(t.target.value) })),
           placeholder: "최소",
           "aria-label": "최소값"
         }
       ),
       /* @__PURE__ */ l("span", { className: "text-xs text-slate-500 dark:text-slate-400", children: "~" }),
       /* @__PURE__ */ l(
-        u,
+        h,
         {
           type: "number",
           value: e.to ?? "",
-          onChange: (t) => c((d) => ({ ...d, to: t.target.value === "" ? void 0 : Number(t.target.value) })),
+          onChange: (t) => s((n) => ({ ...n, to: t.target.value === "" ? void 0 : Number(t.target.value) })),
           placeholder: "최대",
           "aria-label": "최대값"
         }
       )
     ] }),
-    /* @__PURE__ */ s("div", { className: "flex justify-end gap-2", children: [
-      /* @__PURE__ */ l(n, { variant: "ghost", size: "sm", onClick: () => {
-        a(void 0), r();
+    /* @__PURE__ */ d("div", { className: "flex justify-end gap-2", children: [
+      /* @__PURE__ */ l(u, { variant: "ghost", size: "sm", onClick: () => {
+        r(void 0), i();
       }, children: "초기화" }),
-      /* @__PURE__ */ l(n, { size: "sm", onClick: o, children: "적용" })
+      /* @__PURE__ */ l(u, { size: "sm", onClick: c, children: "적용" })
     ] })
   ] });
 }
 export {
-  j as DefaultDateRangeFilter,
-  D as DefaultMultiSelectFilter,
-  E as DefaultNumberRangeFilter,
-  z as DefaultSelectFilter,
-  y as DefaultTextFilter
+  L as DefaultDateRangeFilter,
+  I as DefaultMultiSelectFilter,
+  O as DefaultNumberRangeFilter,
+  G as DefaultSelectFilter,
+  M as DefaultTextFilter
 };
 //# sourceMappingURL=data-table-v2-default-filters.mjs.map
