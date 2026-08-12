@@ -192,6 +192,8 @@ export function DefaultMultiSelectFilter({
   const [keyword, setKeyword] = React.useState("")
   const visible = useFilteredOptions(options, keyword)
   const selected = value ?? []
+  // 기존 MultiSelect 는 searchable 여부와 무관하게 검색을 제공했다. 그 동작을 유지한다.
+  const showSearch = searchable ?? true
 
   const toggle = (optionValue: string, checked: boolean) => {
     const next = checked
@@ -202,7 +204,7 @@ export function DefaultMultiSelectFilter({
 
   return (
     <FilterOptionShell
-      searchable={searchable}
+      searchable={showSearch}
       keyword={keyword}
       onKeywordChange={setKeyword}
       isEmpty={visible.length === 0}

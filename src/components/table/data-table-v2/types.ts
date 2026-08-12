@@ -145,7 +145,10 @@ export type FilterConfig<T> =
       placeholder?: string
       /** 선택지가 없을 때 팝오버에 보여줄 안내 문구 (select 와 동일) */
       emptyMessage?: string
-      /** 팝오버 안에 옵션 검색 입력을 띄운다 (select 와 동일) */
+      /**
+       * 팝오버 안에 옵션 검색 입력을 띄운다.
+       * 다중 선택은 원래 항상 검색이 있었으므로 기본값이 true 다. 끄려면 false 를 넘긴다.
+       */
       searchable?: boolean
     }
   | { type: "dateRange" }
