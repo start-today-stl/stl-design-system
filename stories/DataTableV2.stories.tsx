@@ -1581,10 +1581,10 @@ export const DependentFilter: Story = {
     const canvas = within(canvasElement)
     const body = within(document.body)
 
-    // 선택지가 없으면 안내 문구가 뜨고 Select 가 비활성이다
+    // 선택지가 없으면 안내 문구만 뜨고 고를 항목이 없다
     await userEvent.click(canvas.getByRole("button", { name: "이름 필터" }))
     expect(await body.findByText("역할을 먼저 선택하세요")).toBeInTheDocument()
-    expect(body.getByLabelText("필터 선택")).toBeDisabled()
+    expect(body.queryByRole("radio")).not.toBeInTheDocument()
     await userEvent.click(body.getByRole("button", { name: "닫기" }))
 
     // 선행 필터에 값을 넣으면 안내가 사라지고 선택할 수 있다
@@ -1596,7 +1596,7 @@ export const DependentFilter: Story = {
     await waitFor(() =>
       expect(body.queryByText("역할을 먼저 선택하세요")).not.toBeInTheDocument()
     )
-    expect(body.getByLabelText("필터 선택")).not.toBeDisabled()
+    expect(body.getByRole("radio", { name: "김하나" })).toBeInTheDocument()
   },
 }
 

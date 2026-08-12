@@ -64,7 +64,7 @@ function L({
       S,
       {
         ref: h,
-        align: "end",
+        align: "start",
         className: "w-64 p-3",
         "aria-label": f,
         collisionBoundary: g.current ?? void 0,

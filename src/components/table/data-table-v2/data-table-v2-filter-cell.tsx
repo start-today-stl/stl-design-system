@@ -123,7 +123,7 @@ function DataTableV2FilterCellInner<T>({
       </PopoverTrigger>
       <PopoverContent
         ref={contentRef}
-        align="end"
+        align="start"
         className="w-64 p-3"
         aria-label={label}
         collisionBoundary={gridRef.current ?? undefined}
