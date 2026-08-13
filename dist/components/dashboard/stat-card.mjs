@@ -1,17 +1,17 @@
 import { jsx as e, jsxs as t } from "react/jsx-runtime";
-import * as p from "react";
-import { cva as k } from "class-variance-authority";
+import * as k from "react";
+import { cva as w } from "class-variance-authority";
 import { cn as a } from "../../lib/utils.mjs";
 import { Skeleton as i } from "../ui/skeleton.mjs";
-const N = {
+const N = "has-[[data-card-action]:hover]:from-blue-50 has-[[data-card-action]:hover]:to-white dark:has-[[data-card-action]:hover]:from-blue-950 dark:has-[[data-card-action]:hover]:to-slate-800", y = {
   main: "bg-gradient-to-b from-blue-50 to-white hover:from-slate-100 hover:to-slate-100 active:from-blue-200 active:to-blue-200 dark:from-blue-950 dark:to-slate-800 dark:hover:from-slate-700 dark:hover:to-slate-700 dark:active:from-blue-800 dark:active:to-blue-800",
   sub: "bg-gradient-to-b from-blue-50 to-white hover:from-slate-100 hover:to-slate-100 active:from-blue-200 active:to-blue-200 dark:from-blue-950 dark:to-slate-800 dark:hover:from-slate-700 dark:hover:to-slate-700 dark:active:from-blue-800 dark:active:to-blue-800",
   small: "bg-blue-50 hover:bg-slate-100 active:bg-blue-200 dark:bg-blue-900 dark:hover:bg-slate-700 dark:active:bg-blue-800"
-}, w = {
+}, j = {
   main: "bg-white border border-slate-100 hover:bg-slate-100 active:bg-blue-200 dark:bg-slate-700 dark:border-slate-600 dark:hover:bg-slate-600 dark:active:bg-blue-800",
   sub: "bg-white border border-slate-100 hover:bg-slate-100 active:bg-blue-200 dark:bg-slate-700 dark:border-slate-600 dark:hover:bg-slate-600 dark:active:bg-blue-800",
   small: "bg-white border border-slate-100 hover:bg-slate-100 active:bg-blue-200 dark:bg-slate-700 dark:border-slate-600 dark:hover:bg-slate-600 dark:active:bg-blue-800"
-}, x = k(
+}, v = w(
   // overflow-hidden: 긴 count/label 이 카드 경계 밖으로 튀어나오지 않도록 (rounded 와 함께 clip)
   "relative overflow-hidden cursor-pointer transition-colors group flex flex-col",
   {
@@ -34,45 +34,60 @@ const N = {
       stretch: !1
     }
   }
-), y = p.forwardRef(
-  ({ className: d, variant: r = "main", icon: s, label: n, count: c, badge: u, bordered: g = !1, headerAction: v, stretch: o = !1, loading: m = !1, ...h }, b) => {
-    const l = "text-slate-700 dark:text-slate-100", f = g ? w[r || "main"] : N[r || "main"];
-    return r === "main" ? /* @__PURE__ */ e(
+), C = k.forwardRef(
+  ({ className: d, variant: l = "main", icon: s, label: o, count: n, badge: u, bordered: g = !1, headerAction: c, stretch: h = !1, loading: m = !1, ...b }, f) => {
+    const r = "text-slate-700 dark:text-slate-100", x = g ? j[l || "main"] : y[l || "main"];
+    return l === "main" ? /* @__PURE__ */ e(
       "div",
       {
-        ref: b,
-        className: a(x({ variant: r, stretch: o }), f, d),
-        ...h,
+        ref: f,
+        className: a(
+          v({ variant: l, stretch: h }),
+          x,
+          c && N,
+          d
+        ),
+        ...b,
         children: m ? /* @__PURE__ */ t("div", { className: "flex flex-col flex-1 justify-between", children: [
           /* @__PURE__ */ e(i, { width: 60, height: 14 }),
           /* @__PURE__ */ e(i, { width: "70%", height: 64 })
         ] }) : /* @__PURE__ */ t("div", { className: "flex flex-col flex-1 justify-between", children: [
           /* @__PURE__ */ t("div", { className: "flex items-center justify-between", children: [
             /* @__PURE__ */ t("div", { className: "flex items-center gap-0.5", children: [
-              s && /* @__PURE__ */ e("span", { className: a("flex-shrink-0", l), children: s }),
-              /* @__PURE__ */ e("span", { className: a("text-sm tracking-[-0.14px]", l), children: n })
+              s && /* @__PURE__ */ e("span", { className: a("flex-shrink-0", r), children: s }),
+              /* @__PURE__ */ e("span", { className: a("text-sm tracking-[-0.14px]", r), children: o })
             ] }),
-            v && /* @__PURE__ */ e("div", { className: "flex items-center", children: v })
+            c && // 카드 전체가 클릭 영역이라, 액션 클릭이 카드 onClick 으로
+            // 번지지 않게 슬롯에서 막는다 (쓰는 쪽에서 매번 감싸지 않도록)
+            /* @__PURE__ */ e(
+              "div",
+              {
+                "data-card-action": "",
+                className: "flex items-center",
+                onClick: (p) => p.stopPropagation(),
+                children: c
+              }
+            )
           ] }),
-          /* @__PURE__ */ e("span", { className: a("font-heading text-[86px] font-normal tracking-[-2.58px] leading-none block max-w-full truncate", l), children: c })
+          /* @__PURE__ */ e("span", { className: a("font-heading text-[86px] font-normal tracking-[-2.58px] leading-none block max-w-full truncate", r), children: n })
         ] })
       }
-    ) : r === "sub" ? /* @__PURE__ */ e(
+    ) : l === "sub" ? /* @__PURE__ */ e(
       "div",
       {
-        ref: b,
-        className: a(x({ variant: r, stretch: o }), f, d),
-        ...h,
+        ref: f,
+        className: a(v({ variant: l, stretch: h }), x, d),
+        ...b,
         children: m ? /* @__PURE__ */ t("div", { className: "flex flex-col flex-1 justify-between", children: [
           /* @__PURE__ */ e(i, { width: 50, height: 14 }),
           /* @__PURE__ */ e(i, { width: "50%", height: 36 })
         ] }) : /* @__PURE__ */ t("div", { className: "flex gap-0.5 flex-1", children: [
           /* @__PURE__ */ t("div", { className: "flex-1 flex flex-col justify-between", children: [
             /* @__PURE__ */ t("div", { className: "flex items-center gap-0.5", children: [
-              s && /* @__PURE__ */ e("span", { className: a("flex-shrink-0", l), children: s }),
-              /* @__PURE__ */ e("span", { className: a("text-sm tracking-[-0.14px]", l), children: n })
+              s && /* @__PURE__ */ e("span", { className: a("flex-shrink-0", r), children: s }),
+              /* @__PURE__ */ e("span", { className: a("text-sm tracking-[-0.14px]", r), children: o })
             ] }),
-            /* @__PURE__ */ e("span", { className: a("text-[48px] font-normal tracking-[-1.44px] leading-none block max-w-full truncate", l), children: c })
+            /* @__PURE__ */ e("span", { className: a("text-[48px] font-normal tracking-[-1.44px] leading-none block max-w-full truncate", r), children: n })
           ] }),
           u && /* @__PURE__ */ e("div", { className: "flex flex-col justify-end flex-shrink-0", children: u })
         ] })
@@ -80,26 +95,26 @@ const N = {
     ) : /* @__PURE__ */ e(
       "div",
       {
-        ref: b,
-        className: a(x({ variant: r, stretch: o }), f, d),
-        ...h,
+        ref: f,
+        className: a(v({ variant: l, stretch: h }), x, d),
+        ...b,
         children: m ? /* @__PURE__ */ t("div", { className: "flex items-center justify-between", children: [
           /* @__PURE__ */ e(i, { width: 60, height: 14 }),
           /* @__PURE__ */ e(i, { width: 30, height: 14 })
         ] }) : /* @__PURE__ */ t("div", { className: "flex items-center justify-between", children: [
           /* @__PURE__ */ t("div", { className: "flex items-center gap-0.5", children: [
-            s && /* @__PURE__ */ e("span", { className: a("flex-shrink-0", l), children: s }),
-            /* @__PURE__ */ e("span", { className: a("text-sm tracking-[-0.14px]", l), children: n })
+            s && /* @__PURE__ */ e("span", { className: a("flex-shrink-0", r), children: s }),
+            /* @__PURE__ */ e("span", { className: a("text-sm tracking-[-0.14px]", r), children: o })
           ] }),
-          /* @__PURE__ */ e("span", { className: a("text-sm tracking-[-0.14px] min-w-0 truncate", l), children: c })
+          /* @__PURE__ */ e("span", { className: a("text-sm tracking-[-0.14px] min-w-0 truncate", r), children: n })
         ] })
       }
     );
   }
 );
-y.displayName = "StatCard";
+C.displayName = "StatCard";
 export {
-  y as StatCard,
-  x as statCardVariants
+  C as StatCard,
+  v as statCardVariants
 };
 //# sourceMappingURL=stat-card.mjs.map

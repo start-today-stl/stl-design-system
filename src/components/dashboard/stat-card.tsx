@@ -5,6 +5,11 @@ import { cn } from "@/lib/utils"
 import { Skeleton } from "@/components/ui/skeleton"
 
 // 기본 스타일 (그라데이션)
+// 헤더 액션에 마우스가 올라가 있으면 카드 호버 배경을 원래 색으로 되돌린다.
+// (액션도 자체 호버 색을 갖는데 카드까지 같이 반응하면 액션이 배경에 묻힌다)
+const actionHoverReset =
+  "has-[[data-card-action]:hover]:from-blue-50 has-[[data-card-action]:hover]:to-white dark:has-[[data-card-action]:hover]:from-blue-950 dark:has-[[data-card-action]:hover]:to-slate-800"
+
 const gradientStyles = {
   main: "bg-gradient-to-b from-blue-50 to-white hover:from-slate-100 hover:to-slate-100 active:from-blue-200 active:to-blue-200 dark:from-blue-950 dark:to-slate-800 dark:hover:from-slate-700 dark:hover:to-slate-700 dark:active:from-blue-800 dark:active:to-blue-800",
   sub: "bg-gradient-to-b from-blue-50 to-white hover:from-slate-100 hover:to-slate-100 active:from-blue-200 active:to-blue-200 dark:from-blue-950 dark:to-slate-800 dark:hover:from-slate-700 dark:hover:to-slate-700 dark:active:from-blue-800 dark:active:to-blue-800",
@@ -76,7 +81,12 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
       return (
         <div
           ref={ref}
-          className={cn(statCardVariants({ variant, stretch }), bgStyle, className)}
+          className={cn(
+            statCardVariants({ variant, stretch }),
+            bgStyle,
+            headerAction && actionHoverReset,
+            className,
+          )}
           {...props}
         >
           {loading ? (
@@ -99,7 +109,13 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
                   </span>
                 </div>
                 {headerAction && (
-                  <div className="flex items-center">
+                  // 카드 전체가 클릭 영역이라, 액션 클릭이 카드 onClick 으로
+                  // 번지지 않게 슬롯에서 막는다 (쓰는 쪽에서 매번 감싸지 않도록)
+                  <div
+                    data-card-action=""
+                    className="flex items-center"
+                    onClick={(e) => e.stopPropagation()}
+                  >
                     {headerAction}
                   </div>
                 )}
