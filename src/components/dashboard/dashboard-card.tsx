@@ -46,7 +46,7 @@ const DashboardCard = React.forwardRef<HTMLDivElement, DashboardCardProps>(
       <div
         ref={ref}
         className={cn(
-          "bg-white border border-slate-100 rounded-[10px] dark:bg-slate-700 dark:border-slate-600 flex flex-col",
+          "bg-white border border-slate-100 rounded-[10px] dark:bg-slate-800 dark:border-slate-600 flex flex-col",
           stretch && "h-full",
           className
         )}

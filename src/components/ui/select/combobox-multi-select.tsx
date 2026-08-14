@@ -3,6 +3,9 @@
 import * as React from "react";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 
+/** "선택 없음" 을 나타내는 고정 배열 — 매 렌더 새 배열을 만들면 하위 memo 가 깨진다 */
+const EMPTY_VALUES: string[] = []
+
 import { cn } from "@/lib/utils";
 import { UpIcon, XIcon } from "@/icons";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -45,7 +48,16 @@ const ComboboxMultiSelect = React.forwardRef<
     const isSelectingRef = React.useRef(false);
     const isComposingRef = React.useRef(false);
 
-    const currentValue = value !== undefined ? value : internalValue;
+    // controlled 여부는 "한 번이라도 value 를 받았는가" 로 판단한다.
+    //
+    // 사용처가 "선택 없음" 을 undefined 로 표현하는 경우가 많은데
+    // (예: value={code === 'ALL' ? undefined : code}), 매 렌더 value 로만 판단하면
+    // 값을 지우는 순간 uncontrolled 로 바뀌어 **낡은 내부 state 로 폴백**한다.
+    // 그러면 API 는 반영됐는데 UI 만 이전 값을 계속 보여준다
+    // (clearable 을 두 번 눌러야 지워지던 원인. 초기화 버튼에서도 같은 증상).
+    const wasControlledRef = React.useRef(value !== undefined);
+    if (value !== undefined) wasControlledRef.current = true;
+    const currentValue = wasControlledRef.current ? (value ?? EMPTY_VALUES) : internalValue;
 
     const filteredOptions = options.filter((option) =>
       !inputText || option.label.toLowerCase().includes(inputText.toLowerCase()),
