@@ -24,7 +24,7 @@ const N = f.forwardRef(
     {
       ref: p,
       className: d(
-        "bg-white border border-slate-100 rounded-[10px] dark:bg-slate-700 dark:border-slate-600 flex flex-col",
+        "bg-white border border-slate-100 rounded-[10px] dark:bg-slate-800 dark:border-slate-600 flex flex-col",
         r && "h-full",
         n
       ),
