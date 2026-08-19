@@ -167,6 +167,7 @@ function renderFilterContent<T>(
           placeholder={filter.placeholder}
           emptyMessage={filter.emptyMessage}
           searchable={filter.searchable}
+          description={filter.description}
         />
       )
     case "multiSelect":
@@ -179,6 +180,7 @@ function renderFilterContent<T>(
           placeholder={filter.placeholder}
           emptyMessage={filter.emptyMessage}
           searchable={filter.searchable}
+          description={filter.description}
         />
       )
     case "dateRange":
