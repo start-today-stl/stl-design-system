@@ -85,7 +85,9 @@ function FilterOptionShell({
   return (
     <div className="flex flex-col gap-2">
       {description && (
-        <p className="text-xs text-muted-foreground">{description}</p>
+        <p className="text-xs text-muted-foreground whitespace-pre-line">
+          {description}
+        </p>
       )}
       {searchable && (
         <Input

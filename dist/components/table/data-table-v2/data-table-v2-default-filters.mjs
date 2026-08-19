@@ -47,7 +47,7 @@ function N({
   children: v
 }) {
   return /* @__PURE__ */ d("div", { className: "flex flex-col gap-2", children: [
-    l && /* @__PURE__ */ t("p", { className: "text-xs text-muted-foreground", children: l }),
+    l && /* @__PURE__ */ t("p", { className: "text-xs text-muted-foreground whitespace-pre-line", children: l }),
     r && /* @__PURE__ */ t(
       g,
       {
@@ -128,9 +128,9 @@ function O({
   searchable: n,
   description: a
 }) {
-  const [c, v] = h.useState(""), f = b(e, c), o = l ?? [], y = n ?? !0, k = (m, x) => {
-    const p = x ? [...o, m] : o.filter((w) => w !== m);
-    r(p.length ? p : void 0);
+  const [c, v] = h.useState(""), f = b(e, c), o = l ?? [], y = n ?? !0, k = (m, p) => {
+    const x = p ? [...o, m] : o.filter((w) => w !== m);
+    r(x.length ? x : void 0);
   };
   return /* @__PURE__ */ t(
     N,
@@ -150,7 +150,7 @@ function O({
         {
           label: m.label,
           checked: o.includes(m.value),
-          onCheckedChange: (x) => k(m.value, x === !0)
+          onCheckedChange: (p) => k(m.value, p === !0)
         },
         m.value
       )) })
