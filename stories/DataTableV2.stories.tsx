@@ -1600,6 +1600,56 @@ export const DependentFilter: Story = {
   },
 }
 
+/**
+ * 옵션 라벨만으로는 필터 동작을 설명하기 어려운 경우 description 을 넘겨
+ * 팝오버 상단에 안내 문구를 노출한다.
+ * (예: 옵션이 여러 세부 상태를 묶은 그룹이라 컬럼 값과 옵션 라벨이 일치하지 않는 필터)
+ */
+export const FilterWithDescription: Story = {
+  render: () => {
+    const [filterState, setFilterState] = useState<Record<string, unknown>>({})
+    const cols = useMemo<DataTableV2Column<Row>[]>(
+      () => [
+        { accessorKey: "id", header: "ID", width: 60 },
+        {
+          accessorKey: "role",
+          header: "역할",
+          width: 160,
+          filter: {
+            type: "multiSelect",
+            options: [
+              { label: "관리자 그룹", value: "admin" },
+              { label: "일반 사용자 그룹", value: "user" },
+            ],
+            description:
+              "옵션은 여러 세부 역할을 그룹으로 묶어 조회합니다. 실제 세부 역할은 컬럼 값에서 확인해주세요.",
+          },
+        },
+      ],
+      []
+    )
+    return (
+      <DataTableV2
+        data={smallData}
+        columns={cols}
+        filterState={filterState}
+        onFilterChange={setFilterState}
+      />
+    )
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const body = within(document.body)
+
+    await userEvent.click(canvas.getByRole("button", { name: "역할 필터" }))
+    expect(
+      await body.findByText(
+        "옵션은 여러 세부 역할을 그룹으로 묶어 조회합니다. 실제 세부 역할은 컬럼 값에서 확인해주세요.",
+      ),
+    ).toBeInTheDocument()
+  },
+}
+
 export const FilterPopoverStaysInTable: Story = {
   // 회귀 검증용 — 문서/사이드바에서 감춘다
   // (첫 컬럼 필터 팝오버가 테이블 왼쪽 바깥으로 튀어나가 사이드바를 덮던 문제)

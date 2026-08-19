@@ -1,5 +1,5 @@
 import { jsxs as F, jsx as s } from "react/jsx-runtime";
-import * as n from "react";
+import * as a from "react";
 import { cn as M } from "../../../lib/utils.mjs";
 import { Popover as w, PopoverTrigger as P, PopoverContent as S } from "../../ui/popover.mjs";
 import { FilterIcon as T } from "../../../icons/FilterIcon.mjs";
@@ -8,31 +8,31 @@ function L({
   column: e,
   filter: o,
   value: l,
-  active: a,
+  active: n,
   onChange: c,
   columnKey: t
 }) {
-  const y = n.useCallback(
+  const y = a.useCallback(
     (r) => c(t, r),
     [c, t]
-  ), [i, u] = n.useState(!1), D = n.useCallback(() => u(!1), []), g = n.useRef(null), v = n.useCallback((r) => {
+  ), [i, u] = a.useState(!1), D = a.useCallback(() => u(!1), []), g = a.useRef(null), v = a.useCallback((r) => {
     d.current = r, g.current = (r == null ? void 0 : r.closest('[role="grid"]')) ?? null;
-  }, []), h = n.useRef(null), d = n.useRef(null);
-  n.useEffect(() => {
+  }, []), h = a.useRef(null), d = a.useRef(null);
+  a.useEffect(() => {
     var m;
     if (!i) return;
     const r = (m = d.current) == null ? void 0 : m.getBoundingClientRect();
     if (!r) return;
-    const b = (C) => {
+    const f = (C) => {
       var x, k;
       const R = C.target;
       if (R && ((x = h.current) != null && x.contains(R))) return;
       const p = (k = d.current) == null ? void 0 : k.getBoundingClientRect();
       p && (Math.abs(p.left - r.left) > 1 || Math.abs(p.top - r.top) > 1) && u(!1);
     };
-    return document.addEventListener("scroll", b, !0), () => document.removeEventListener("scroll", b, !0);
+    return document.addEventListener("scroll", f, !0), () => document.removeEventListener("scroll", f, !0);
   }, [i]);
-  const f = `${typeof e.header == "string" ? e.header : "컬럼"} 필터`;
+  const b = `${typeof e.header == "string" ? e.header : "컬럼"} 필터`;
   return /* @__PURE__ */ F(w, { open: i, onOpenChange: u, children: [
     /* @__PURE__ */ s(P, { asChild: !0, children: /* @__PURE__ */ F(
       "button",
@@ -43,13 +43,13 @@ function L({
           "relative flex h-6 w-6 shrink-0 cursor-pointer items-center justify-center rounded transition-colors",
           "text-slate-400 hover:text-slate-700 hover:bg-slate-200/60",
           "dark:text-slate-500 dark:hover:text-slate-100 dark:hover:bg-slate-700/60",
-          a && "text-blue-600 dark:text-blue-400"
+          n && "text-blue-600 dark:text-blue-400"
         ),
-        "aria-label": f,
+        "aria-label": b,
         onClick: (r) => r.stopPropagation(),
         children: [
           /* @__PURE__ */ s(T, { size: 20 }),
-          a && /* @__PURE__ */ s(
+          n && /* @__PURE__ */ s(
             "span",
             {
               "aria-hidden": !0,
@@ -66,7 +66,7 @@ function L({
         ref: h,
         align: "start",
         className: "w-64 p-3",
-        "aria-label": f,
+        "aria-label": b,
         collisionBoundary: g.current ?? void 0,
         collisionPadding: 8,
         children: O(o, l, y, D, e)
@@ -74,10 +74,10 @@ function L({
     )
   ] });
 }
-const G = n.memo(
+const G = a.memo(
   L
 );
-function O(e, o, l, a, c) {
+function O(e, o, l, n, c) {
   switch (e.type) {
     case "text":
       return /* @__PURE__ */ s(
@@ -85,7 +85,7 @@ function O(e, o, l, a, c) {
         {
           value: o,
           onChange: (t) => l(t),
-          onClose: a,
+          onClose: n,
           placeholder: e.placeholder
         }
       );
@@ -95,11 +95,12 @@ function O(e, o, l, a, c) {
         {
           value: o,
           onChange: (t) => l(t),
-          onClose: a,
+          onClose: n,
           options: e.options,
           placeholder: e.placeholder,
           emptyMessage: e.emptyMessage,
-          searchable: e.searchable
+          searchable: e.searchable,
+          description: e.description
         }
       );
     case "multiSelect":
@@ -108,11 +109,12 @@ function O(e, o, l, a, c) {
         {
           value: o,
           onChange: (t) => l(t),
-          onClose: a,
+          onClose: n,
           options: e.options,
           placeholder: e.placeholder,
           emptyMessage: e.emptyMessage,
-          searchable: e.searchable
+          searchable: e.searchable,
+          description: e.description
         }
       );
     case "dateRange":
@@ -121,7 +123,7 @@ function O(e, o, l, a, c) {
         {
           value: o,
           onChange: (t) => l(t),
-          onClose: a
+          onClose: n
         }
       );
     case "numberRange":
@@ -130,14 +132,14 @@ function O(e, o, l, a, c) {
         {
           value: o,
           onChange: (t) => l(t),
-          onClose: a
+          onClose: n
         }
       );
     case "custom":
       return e.component({
         value: o,
         onChange: l,
-        onClose: a,
+        onClose: n,
         column: c
       });
   }

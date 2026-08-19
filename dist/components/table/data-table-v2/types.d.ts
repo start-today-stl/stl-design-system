@@ -127,6 +127,14 @@ export type FilterConfig<T> = {
      * 옵션이 몇 개뿐이면 오히려 번잡하므로 기본은 꺼져 있다.
      */
     searchable?: boolean;
+    /**
+     * 팝오버 상단에 회색 헬퍼 텍스트로 노출되는 안내 문구.
+     *
+     * 옵션 라벨만으로는 필터 동작을 충분히 설명하기 어려운 경우에 쓴다
+     * (예: 옵션이 여러 세부 상태를 묶은 그룹이라 컬럼 값과 라벨이 일치하지 않는 필터).
+     * 헤더 자체에 아이콘·툴팁을 붙이지 않고 필터를 열었을 때만 노출된다.
+     */
+    description?: string;
 } | {
     type: "multiSelect";
     options: FilterOption[];
@@ -138,6 +146,8 @@ export type FilterConfig<T> = {
      * 다중 선택은 원래 항상 검색이 있었으므로 기본값이 true 다. 끄려면 false 를 넘긴다.
      */
     searchable?: boolean;
+    /** 팝오버 상단에 회색 헬퍼 텍스트로 노출되는 안내 문구 (select 와 동일) */
+    description?: string;
 } | {
     type: "dateRange";
 } | {

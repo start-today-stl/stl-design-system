@@ -62,6 +62,7 @@ export function DefaultTextFilter({
  * 두지 않는다. Select 를 쓰면 팝오버 위에 드롭다운이 겹쳐 뜨는 이중 구조가 된다.
  */
 function FilterOptionShell({
+  description,
   searchable,
   keyword,
   onKeywordChange,
@@ -71,6 +72,7 @@ function FilterOptionShell({
   onClose,
   children,
 }: {
+  description?: string
   searchable?: boolean
   keyword: string
   onKeywordChange: (v: string) => void
@@ -82,6 +84,9 @@ function FilterOptionShell({
 }) {
   return (
     <div className="flex flex-col gap-2">
+      {description && (
+        <p className="text-xs text-muted-foreground">{description}</p>
+      )}
       {searchable && (
         <Input
           value={keyword}
@@ -125,17 +130,20 @@ export function DefaultSelectFilter({
   options,
   emptyMessage,
   searchable,
+  description,
 }: DefaultFilterProps<string> & {
   options: FilterOption[]
   placeholder?: string
   emptyMessage?: string
   searchable?: boolean
+  description?: string
 }) {
   const [keyword, setKeyword] = React.useState("")
   const visible = useFilteredOptions(options, keyword)
 
   return (
     <FilterOptionShell
+      description={description}
       searchable={searchable}
       keyword={keyword}
       onKeywordChange={setKeyword}
@@ -183,11 +191,13 @@ export function DefaultMultiSelectFilter({
   options,
   emptyMessage,
   searchable,
+  description,
 }: DefaultFilterProps<string[]> & {
   options: FilterOption[]
   placeholder?: string
   emptyMessage?: string
   searchable?: boolean
+  description?: string
 }) {
   const [keyword, setKeyword] = React.useState("")
   const visible = useFilteredOptions(options, keyword)
@@ -204,6 +214,7 @@ export function DefaultMultiSelectFilter({
 
   return (
     <FilterOptionShell
+      description={description}
       searchable={showSearch}
       keyword={keyword}
       onKeywordChange={setKeyword}

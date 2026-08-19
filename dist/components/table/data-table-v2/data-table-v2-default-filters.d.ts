@@ -15,18 +15,20 @@ export declare function DefaultTextFilter({ value, onChange, onClose, placeholde
     placeholder?: string;
 }): import("react/jsx-runtime").JSX.Element;
 /** 셀렉트 필터 — 단일 값 선택 */
-export declare function DefaultSelectFilter({ value, onChange, onClose, options, emptyMessage, searchable, }: DefaultFilterProps<string> & {
+export declare function DefaultSelectFilter({ value, onChange, onClose, options, emptyMessage, searchable, description, }: DefaultFilterProps<string> & {
     options: FilterOption[];
     placeholder?: string;
     emptyMessage?: string;
     searchable?: boolean;
+    description?: string;
 }): import("react/jsx-runtime").JSX.Element;
 /** 멀티셀렉트 필터 — 여러 값 선택 */
-export declare function DefaultMultiSelectFilter({ value, onChange, onClose, options, emptyMessage, searchable, }: DefaultFilterProps<string[]> & {
+export declare function DefaultMultiSelectFilter({ value, onChange, onClose, options, emptyMessage, searchable, description, }: DefaultFilterProps<string[]> & {
     options: FilterOption[];
     placeholder?: string;
     emptyMessage?: string;
     searchable?: boolean;
+    description?: string;
 }): import("react/jsx-runtime").JSX.Element;
 /** 날짜 범위 필터 */
 export declare function DefaultDateRangeFilter({ value, onChange, onClose, }: DefaultFilterProps<DateRange>): import("react/jsx-runtime").JSX.Element;
