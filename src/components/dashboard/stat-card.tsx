@@ -120,9 +120,9 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
                   </div>
                 )}
               </div>
-              {/* 하단: 큰 숫자 (STL Gothic R 폰트)
+              {/* 하단: 큰 숫자 (STL Gothic R 폰트) — 우측정렬.
                   카드 폭보다 긴 숫자면 잘리는 대신 말줄임(…) 표시 */}
-              <span className={cn("font-heading text-[86px] font-normal tracking-[-2.58px] leading-none block max-w-full truncate", textColorClass)}>
+              <span className={cn("font-heading text-[86px] font-normal tracking-[-2.58px] leading-none block max-w-full truncate text-right", textColorClass)}>
                 {count}
               </span>
             </div>
@@ -145,31 +145,31 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
               <Skeleton width="50%" height={36} />
             </div>
           ) : (
-            <div className="flex gap-0.5 flex-1">
-              {/* 좌측: 라벨 + 숫자 */}
-              <div className="flex-1 flex flex-col justify-between">
-                {/* 상단: 아이콘 + 라벨 */}
-                <div className="flex items-center gap-0.5">
-                  {icon && (
-                    <span className={cn("flex-shrink-0", textColorClass)}>
-                      {icon}
-                    </span>
-                  )}
-                  <span className={cn("text-sm tracking-[-0.14px]", textColorClass)}>
-                    {label}
+            <div className="flex flex-col flex-1 justify-between">
+              {/* 상단: 아이콘 + 라벨 */}
+              <div className="flex items-center gap-0.5">
+                {icon && (
+                  <span className={cn("flex-shrink-0", textColorClass)}>
+                    {icon}
                   </span>
-                </div>
-                {/* 하단: 숫자 (긴 숫자면 잘리는 대신 말줄임) */}
-                <span className={cn("text-[48px] font-normal tracking-[-1.44px] leading-none block max-w-full truncate", textColorClass)}>
+                )}
+                <span className={cn("text-sm tracking-[-0.14px]", textColorClass)}>
+                  {label}
+                </span>
+              </div>
+              {/* 하단: 좌측 뱃지 + 우측 숫자 (우측정렬).
+                  뱃지 폭이 유동적이라도 숫자가 우측 끝에 붙도록 flex row 로 배치.
+                  긴 숫자면 잘리는 대신 말줄임. */}
+              <div className="flex items-end gap-2 min-w-0">
+                {badge && (
+                  <div className="flex-shrink-0">
+                    {badge}
+                  </div>
+                )}
+                <span className={cn("flex-1 text-[48px] font-normal tracking-[-1.44px] leading-none block min-w-0 truncate text-right", textColorClass)}>
                   {count}
                 </span>
               </div>
-              {/* 우측: 뱃지 (하단 정렬, 뱃지 폭에 맞춰 자동 사이즈) */}
-              {badge && (
-                <div className="flex flex-col justify-end flex-shrink-0">
-                  {badge}
-                </div>
-              )}
             </div>
           )}
         </div>
