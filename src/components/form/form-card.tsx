@@ -61,12 +61,19 @@ FormHeader.displayName = "FormHeader"
    ============================================================================= */
 
 interface FormContentProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** 대열 수 (1 또는 2) */
-  columns?: 1 | 2
+  /** 대열 수 (1, 2, 또는 3). FormColumn 을 자식으로 두면 컬럼 사이에 세로 구분선이 자동 표시됨 */
+  columns?: 1 | 2 | 3
   /** FormHeader 존재 여부 (border-radius 조정) */
   hasHeader?: boolean
   /** FormFooter 존재 여부 (border-radius 조정) */
   hasFooter?: boolean
+}
+
+// columns 값별 컨테이너 클래스. 1 은 flex (컬럼 사용 안 함), 2/3 은 grid (col-span 지원)
+const formContentLayoutStyles: Record<1 | 2 | 3, string> = {
+  1: "flex gap-3",
+  2: "grid grid-cols-2 gap-3",
+  3: "grid grid-cols-3 gap-3",
 }
 
 const FormContent = React.forwardRef<HTMLDivElement, FormContentProps>(
@@ -76,8 +83,7 @@ const FormContent = React.forwardRef<HTMLDivElement, FormContentProps>(
         ref={ref}
         className={cn(
           "border border-border bg-card p-4",
-          // columns=2일 때 grid 레이아웃 사용 (col-span 지원)
-          columns === 2 ? "grid grid-cols-2 gap-3" : "flex gap-3",
+          formContentLayoutStyles[columns],
           !hasHeader && "rounded-t-2xl",
           !hasFooter && "rounded-b-2xl",
           className
