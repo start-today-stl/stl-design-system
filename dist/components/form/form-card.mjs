@@ -1,7 +1,7 @@
-import { jsx as t, jsxs as f } from "react/jsx-runtime";
+import { jsx as t, jsxs as i } from "react/jsx-runtime";
 import * as a from "react";
 import { cn as l } from "../../lib/utils.mjs";
-const i = a.forwardRef(
+const f = a.forwardRef(
   ({ className: e, children: r, ...o }, d) => /* @__PURE__ */ t(
     "div",
     {
@@ -12,9 +12,9 @@ const i = a.forwardRef(
     }
   )
 );
-i.displayName = "FormCard";
+f.displayName = "FormCard";
 const c = a.forwardRef(
-  ({ className: e, title: r, children: o, ...d }, s) => /* @__PURE__ */ f(
+  ({ className: e, title: r, children: o, ...d }, s) => /* @__PURE__ */ i(
     "div",
     {
       ref: s,
@@ -33,26 +33,29 @@ const c = a.forwardRef(
   )
 );
 c.displayName = "FormHeader";
-const b = a.forwardRef(
-  ({ className: e, columns: r = 1, hasHeader: o = !1, hasFooter: d = !0, children: s, ...m }, n) => /* @__PURE__ */ t(
+const b = {
+  1: "flex gap-3",
+  2: "grid grid-cols-2 gap-3",
+  3: "grid grid-cols-3 gap-3"
+}, p = a.forwardRef(
+  ({ className: e, columns: r = 1, hasHeader: o = !1, hasFooter: d = !0, children: s, ...n }, m) => /* @__PURE__ */ t(
     "div",
     {
-      ref: n,
+      ref: m,
       className: l(
         "border border-border bg-card p-4",
-        // columns=2일 때 grid 레이아웃 사용 (col-span 지원)
-        r === 2 ? "grid grid-cols-2 gap-3" : "flex gap-3",
+        b[r],
         !o && "rounded-t-2xl",
         !d && "rounded-b-2xl",
         e
       ),
-      ...m,
+      ...n,
       children: s
     }
   )
 );
-b.displayName = "FormContent";
-const p = a.forwardRef(
+p.displayName = "FormContent";
+const x = a.forwardRef(
   ({ className: e, children: r, ...o }, d) => /* @__PURE__ */ t(
     "div",
     {
@@ -68,8 +71,8 @@ const p = a.forwardRef(
     }
   )
 );
-p.displayName = "FormColumn";
-const x = a.forwardRef(
+x.displayName = "FormColumn";
+const u = a.forwardRef(
   ({ className: e, children: r, ...o }, d) => /* @__PURE__ */ t(
     "div",
     {
@@ -84,12 +87,12 @@ const x = a.forwardRef(
     }
   )
 );
-x.displayName = "FormFooter";
+u.displayName = "FormFooter";
 export {
-  i as FormCard,
-  p as FormColumn,
-  b as FormContent,
-  x as FormFooter,
+  f as FormCard,
+  x as FormColumn,
+  p as FormContent,
+  u as FormFooter,
   c as FormHeader
 };
 //# sourceMappingURL=form-card.mjs.map
