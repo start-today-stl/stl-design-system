@@ -8,8 +8,8 @@ interface FormHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 declare const FormHeader: React.ForwardRefExoticComponent<FormHeaderProps & React.RefAttributes<HTMLDivElement>>;
 interface FormContentProps extends React.HTMLAttributes<HTMLDivElement> {
-    /** 대열 수 (1 또는 2) */
-    columns?: 1 | 2;
+    /** 대열 수 (1, 2, 또는 3). FormColumn 을 자식으로 두면 컬럼 사이에 세로 구분선이 자동 표시됨 */
+    columns?: 1 | 2 | 3;
     /** FormHeader 존재 여부 (border-radius 조정) */
     hasHeader?: boolean;
     /** FormFooter 존재 여부 (border-radius 조정) */
