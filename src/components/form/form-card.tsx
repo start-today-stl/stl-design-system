@@ -10,11 +10,16 @@ import { cn } from "@/lib/utils"
 interface FormCardProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const FormCard = React.forwardRef<HTMLDivElement, FormCardProps>(
-  ({ className, children, ...props }, ref) => {
+  ({ className, style, children, ...props }, ref) => {
     return (
       <div
         ref={ref}
-        className={cn("flex flex-col", className)}
+        // 넓은 모니터에서 폼 필드가 무한히 늘어나는 걸 막는다.
+        // - min(90vw, 1800px): 좁은 화면(<2000px)에선 90vw 로 자연 스트레치,
+        //   광폭 모니터(≥2000px)에선 1800px 로 캡되어 필드가 과하게 커지지 않는다
+        // - mx-auto 로 남는 좌우 공간은 배경 여백으로 흡수
+        className={cn('mx-auto flex w-full flex-col', className)}
+        style={{ maxWidth: 'min(90vw, 1800px)', ...style }}
         {...props}
       >
         {children}
