@@ -1,67 +1,76 @@
 import { jsx as e, jsxs as n } from "react/jsx-runtime";
 import * as c from "react";
-import { cn as t } from "../../lib/utils.mjs";
-import { UpIcon as N } from "../../icons/UpIcon.mjs";
+import { cn as o } from "../../lib/utils.mjs";
+import { UpIcon as g } from "../../icons/UpIcon.mjs";
 const y = c.forwardRef(
   ({
     className: i,
     title: s,
-    headerRight: r,
+    headerRight: t,
     collapsible: a = !1,
     defaultCollapsed: l = !1,
-    divider: d = !1,
-    fullWidth: m = !1,
-    children: f,
-    ...p
-  }, x) => {
-    const [o, g] = c.useState(l), u = () => {
-      a && g(!o);
+    divider: m = !1,
+    fullWidth: f = !1,
+    children: p,
+    ...x
+  }, u) => {
+    const [r, N] = c.useState(l), d = () => {
+      a && N(!r);
     };
     return /* @__PURE__ */ n(
       "div",
       {
-        ref: x,
-        className: t(
+        ref: u,
+        className: o(
           "flex flex-col gap-2",
-          m && "col-span-full",
+          f && "col-span-full",
           i
         ),
-        ...p,
+        ...x,
         children: [
-          d && /* @__PURE__ */ e("div", { className: "py-3", children: /* @__PURE__ */ e("div", { className: "h-px bg-border" }) }),
-          (s || r) && /* @__PURE__ */ n("div", { className: "flex h-6 items-center justify-between", children: [
-            a ? /* @__PURE__ */ n(
+          m && /* @__PURE__ */ e("div", { className: "py-3", children: /* @__PURE__ */ e("div", { className: "h-px bg-border" }) }),
+          (s || t) && /* @__PURE__ */ n("div", { className: "flex h-6 items-center justify-between", children: [
+            a ? /* @__PURE__ */ e(
               "button",
               {
                 type: "button",
-                className: "flex items-center gap-2 cursor-pointer select-none",
-                onClick: u,
-                "aria-expanded": !o,
-                children: [
-                  /* @__PURE__ */ e("span", { className: "text-base font-medium text-text-primary", children: s }),
-                  /* @__PURE__ */ e(
-                    N,
+                className: "cursor-pointer select-none text-left",
+                onClick: d,
+                "aria-expanded": !r,
+                children: /* @__PURE__ */ e("span", { className: "text-base font-medium text-text-primary", children: s })
+              }
+            ) : /* @__PURE__ */ e("span", { className: "text-base font-medium text-text-primary", children: s }),
+            /* @__PURE__ */ n("div", { className: "flex items-center gap-2", children: [
+              t,
+              a && /* @__PURE__ */ e(
+                "button",
+                {
+                  type: "button",
+                  onClick: d,
+                  "aria-label": r ? "펼치기" : "접기",
+                  className: "cursor-pointer",
+                  children: /* @__PURE__ */ e(
+                    g,
                     {
                       size: 24,
-                      className: t(
+                      className: o(
                         "text-text-secondary transition-transform duration-200",
-                        o && "rotate-180"
+                        r && "rotate-180"
                       )
                     }
                   )
-                ]
-              }
-            ) : /* @__PURE__ */ e("span", { className: "text-base font-medium text-text-primary", children: s }),
-            r && /* @__PURE__ */ e("div", { children: r })
+                }
+              )
+            ] })
           ] }),
           /* @__PURE__ */ e(
             "div",
             {
-              className: t(
+              className: o(
                 "grid transition-[grid-template-rows,opacity] duration-200 ease-in-out",
-                o ? "grid-rows-[0fr] opacity-0" : "grid-rows-[1fr] opacity-100"
+                r ? "grid-rows-[0fr] opacity-0" : "grid-rows-[1fr] opacity-100"
               ),
-              children: /* @__PURE__ */ e("div", { className: "overflow-hidden", children: /* @__PURE__ */ e("div", { className: "flex flex-col gap-2", children: f }) })
+              children: /* @__PURE__ */ e("div", { className: "overflow-hidden", children: /* @__PURE__ */ e("div", { className: "flex flex-col gap-2", children: p }) })
             }
           )
         ]
@@ -70,29 +79,29 @@ const y = c.forwardRef(
   }
 );
 y.displayName = "FormSection";
-const v = {
+const h = {
   1: "grid-cols-1",
   2: "grid-cols-2",
   3: "grid-cols-3",
   4: "grid-cols-4"
-}, w = c.forwardRef(
-  ({ className: i, columns: s = 1, children: r, ...a }, l) => /* @__PURE__ */ e(
+}, v = c.forwardRef(
+  ({ className: i, columns: s = 1, children: t, ...a }, l) => /* @__PURE__ */ e(
     "div",
     {
       ref: l,
-      className: t(
+      className: o(
         "grid gap-2",
-        v[s],
+        h[s],
         i
       ),
       ...a,
-      children: r
+      children: t
     }
   )
 );
-w.displayName = "FormRow";
+v.displayName = "FormRow";
 export {
-  w as FormRow,
+  v as FormRow,
   y as FormSection
 };
 //# sourceMappingURL=form-section.mjs.map
