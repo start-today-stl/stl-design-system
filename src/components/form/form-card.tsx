@@ -7,19 +7,31 @@ import { cn } from "@/lib/utils"
    FormCard - 폼 전체 래퍼
    ============================================================================= */
 
-interface FormCardProps extends React.HTMLAttributes<HTMLDivElement> {}
+/** FormCard 폭 프리셋 */
+export type FormCardSize = "sm" | "md" | "lg" | "xl"
+
+// 사이즈별 최대 폭. 좁은 화면(<max)에선 90vw 로 자연 스트레치, 광폭에선 max 캡.
+const formCardMaxWidth: Record<FormCardSize, string> = {
+  sm: "min(90vw, 600px)",
+  md: "min(90vw, 900px)",
+  lg: "min(90vw, 1400px)",
+  xl: "min(90vw, 1800px)",
+}
+
+interface FormCardProps extends React.HTMLAttributes<HTMLDivElement> {
+  /** 카드 최대 폭. 기본 xl(1800px) — 폼 성격에 맞춰 좁게 지정 */
+  size?: FormCardSize
+}
 
 const FormCard = React.forwardRef<HTMLDivElement, FormCardProps>(
-  ({ className, style, children, ...props }, ref) => {
+  ({ className, style, size = "xl", children, ...props }, ref) => {
     return (
       <div
         ref={ref}
-        // 넓은 모니터에서 폼 필드가 무한히 늘어나는 걸 막는다.
-        // - min(90vw, 1800px): 좁은 화면(<2000px)에선 90vw 로 자연 스트레치,
-        //   광폭 모니터(≥2000px)에선 1800px 로 캡되어 필드가 과하게 커지지 않는다
-        // - mx-auto 로 남는 좌우 공간은 배경 여백으로 흡수
-        className={cn('mx-auto flex w-full flex-col', className)}
-        style={{ maxWidth: 'min(90vw, 1800px)', ...style }}
+        // 사이드바 기반 어드민 툴 관례에 맞춰 좌측 정렬 (mr-auto).
+        // 카드가 사이드바 바로 옆에 붙어 시선 흐름이 자연스럽다.
+        className={cn("mr-auto flex w-full flex-col", className)}
+        style={{ maxWidth: formCardMaxWidth[size], ...style }}
         {...props}
       >
         {children}

@@ -1,5 +1,9 @@
 import * as React from "react";
+/** FormCard 폭 프리셋 */
+export type FormCardSize = "sm" | "md" | "lg" | "xl";
 interface FormCardProps extends React.HTMLAttributes<HTMLDivElement> {
+    /** 카드 최대 폭. 기본 xl(1800px) — 폼 성격에 맞춰 좁게 지정 */
+    size?: FormCardSize;
 }
 declare const FormCard: React.ForwardRefExoticComponent<FormCardProps & React.RefAttributes<HTMLDivElement>>;
 interface FormHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
