@@ -63,33 +63,45 @@ const FormSection = React.forwardRef<HTMLDivElement, FormSectionProps>(
           </div>
         )}
 
-        {/* 섹션 헤더 */}
+        {/* 섹션 헤더 — 타이틀 좌측, 접기 아이콘은 우측 끝.
+            headerRight 는 아이콘 바로 왼쪽에 배치 (아이콘이 항상 최우측). */}
         {(title || headerRight) && (
           <div className="flex h-6 items-center justify-between">
             {collapsible ? (
               <button
                 type="button"
-                className="flex items-center gap-2 cursor-pointer select-none"
+                className="cursor-pointer select-none text-left"
                 onClick={handleToggle}
                 aria-expanded={!isCollapsed}
               >
                 <span className="text-base font-medium text-text-primary">
                   {title}
                 </span>
-                <UpIcon
-                  size={24}
-                  className={cn(
-                    "text-text-secondary transition-transform duration-200",
-                    isCollapsed && "rotate-180"
-                  )}
-                />
               </button>
             ) : (
               <span className="text-base font-medium text-text-primary">
                 {title}
               </span>
             )}
-            {headerRight && <div>{headerRight}</div>}
+            <div className="flex items-center gap-2">
+              {headerRight}
+              {collapsible && (
+                <button
+                  type="button"
+                  onClick={handleToggle}
+                  aria-label={isCollapsed ? "펼치기" : "접기"}
+                  className="cursor-pointer"
+                >
+                  <UpIcon
+                    size={24}
+                    className={cn(
+                      "text-text-secondary transition-transform duration-200",
+                      isCollapsed && "rotate-180"
+                    )}
+                  />
+                </button>
+              )}
+            </div>
           </div>
         )}
 
