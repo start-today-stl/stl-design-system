@@ -1,23 +1,27 @@
-import { jsx as m } from "react/jsx-runtime";
-import * as p from "react";
-import { cn as a } from "../lib/utils.mjs";
-const l = p.forwardRef(
-  ({ className: t, padded: o = !0, children: r, ...e }, f) => /* @__PURE__ */ m(
+import { jsx as a } from "react/jsx-runtime";
+import * as n from "react";
+import { cn as l } from "../lib/utils.mjs";
+const m = n.forwardRef(
+  ({ className: r, padded: t = !0, children: e, ...o }, f) => /* @__PURE__ */ a(
     "div",
     {
       ref: f,
-      className: a(
+      className: l(
         "h-full flex flex-col",
-        o && "px-4 pt-2.5 pb-4",
-        t
+        t && "px-4 pt-2.5",
+        // 스크롤 컨테이너의 padding-bottom 은 오버플로우 시 최하단에 안 나타난다.
+        // flex-col 마지막에 shrink-0 ::after spacer 를 두면 실제 아이템으로
+        // 계산돼 스크롤 최하단에도 여백이 보장된다.
+        t && "after:content-[''] after:block after:h-4 after:shrink-0",
+        r
       ),
-      ...e,
-      children: r
+      ...o,
+      children: e
     }
   )
 );
-l.displayName = "Content";
+m.displayName = "Content";
 export {
-  l as Content
+  m as Content
 };
 //# sourceMappingURL=content.mjs.map
