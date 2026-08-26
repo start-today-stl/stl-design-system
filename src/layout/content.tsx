@@ -14,7 +14,11 @@ const Content = React.forwardRef<HTMLDivElement, ContentProps>(
         ref={ref}
         className={cn(
           "h-full flex flex-col",
-          padded && "px-4 pt-2.5 pb-4",
+          padded && "px-4 pt-2.5",
+          // 스크롤 컨테이너의 padding-bottom 은 오버플로우 시 최하단에 안 나타난다.
+          // flex-col 마지막에 shrink-0 ::after spacer 를 두면 실제 아이템으로
+          // 계산돼 스크롤 최하단에도 여백이 보장된다.
+          padded && "after:content-[''] after:block after:h-4 after:shrink-0",
           className
         )}
         {...props}
