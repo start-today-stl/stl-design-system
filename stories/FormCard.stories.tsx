@@ -268,7 +268,7 @@ export const TwoColumnsWithFullWidthSection: Story = {
 /** 헤더 포함 */
 export const WithHeader: Story = {
   render: () => (
-    <FormCard className="max-w-[600px]">
+    <FormCard size="sm">
       <FormHeader title="상품 등록" />
       <FormContent hasHeader>
         <FormColumn>
@@ -294,7 +294,7 @@ export const WithHeader: Story = {
 /** 접기/펼치기 섹션 */
 export const CollapsibleSections: Story = {
   render: () => (
-    <FormCard className="max-w-[600px]">
+    <FormCard size="sm">
       <FormContent>
         <FormColumn>
           <FormSection title="필수 정보" collapsible>
@@ -327,7 +327,7 @@ export const CollapsibleSections: Story = {
 /** 섹션 헤더 우측 영역 (headerRight) */
 export const SectionWithHeaderRight: Story = {
   render: () => (
-    <FormCard className="max-w-[600px]">
+    <FormCard size="sm">
       <FormContent>
         <FormColumn>
           <FormSection
@@ -370,7 +370,7 @@ export const SectionWithHeaderRight: Story = {
 /** 푸터 없음 */
 export const WithoutFooter: Story = {
   render: () => (
-    <FormCard className="max-w-[600px]">
+    <FormCard size="sm">
       <FormContent hasFooter={false}>
         <FormColumn>
           <FormSection title="읽기 전용 정보">
@@ -384,5 +384,93 @@ export const WithoutFooter: Story = {
         </FormColumn>
       </FormContent>
     </FormCard>
+  ),
+}
+
+/** 3열 레이아웃 (필드 그룹이 명확히 나뉘는 폼 — 예: 주문 등록/수정) */
+export const ThreeColumns: Story = {
+  render: () => (
+    <FormCard size="lg">
+      <FormHeader title="주문 정보 수정" />
+      <FormContent columns={3} hasHeader>
+        {/* 첫 번째 열 */}
+        <FormColumn>
+          <FormSection title="주문 정보">
+            <FormRow>
+              <InputField label="판매 사이트" placeholder="선택" />
+            </FormRow>
+            <FormRow columns={2}>
+              <InputField label="주문 번호1" placeholder="주문 번호" />
+              <InputField label="주문 번호2" placeholder="주문 번호" />
+            </FormRow>
+            <FormRow>
+              <InputField label="배송 국가" placeholder="선택" />
+            </FormRow>
+          </FormSection>
+        </FormColumn>
+
+        {/* 두 번째 열 */}
+        <FormColumn>
+          <FormSection title="수취인 정보">
+            <FormRow columns={2}>
+              <InputField label="수취인 명" placeholder="이름" />
+              <InputField label="수취인 연락처" placeholder="000-0000-0000" />
+            </FormRow>
+            <FormRow>
+              <InputField label="수취인 주소" placeholder="주소" />
+            </FormRow>
+          </FormSection>
+        </FormColumn>
+
+        {/* 세 번째 열 */}
+        <FormColumn>
+          <FormSection title="발송인 정보">
+            <FormRow>
+              <InputField label="발송인" placeholder="이름" />
+            </FormRow>
+            <FormRow>
+              <InputField label="발송인 연락처" placeholder="000-0000-0000" />
+            </FormRow>
+          </FormSection>
+        </FormColumn>
+      </FormContent>
+      <FormFooter>
+        <Button variant="ghost" className="w-[160px]">
+          취소
+        </Button>
+        <Button variant="primary" className="w-[160px]">
+          저장
+        </Button>
+      </FormFooter>
+    </FormCard>
+  ),
+}
+
+/** size 프리셋 (sm/md/lg/xl) — 폼 성격에 맞춰 최대 폭 캡 */
+export const SizeVariants: Story = {
+  render: () => (
+    <div className="flex flex-col gap-6">
+      {(["sm", "md", "lg", "xl"] as const).map((size) => (
+        <FormCard key={size} size={size}>
+          <FormHeader title={`size="${size}"`} />
+          <FormContent hasHeader hasFooter={false} columns={2}>
+            <FormColumn>
+              <FormSection title="좌측 섹션">
+                <FormRow>
+                  <InputField label="필드 A" placeholder="입력" />
+                </FormRow>
+              </FormSection>
+            </FormColumn>
+            <FormColumn>
+              <FormSection title="우측 섹션">
+                <FormRow>
+                  <InputField label="필드 B" placeholder="입력" />
+                </FormRow>
+              </FormSection>
+            </FormColumn>
+          </FormContent>
+        </FormCard>
+      ))}
+    </div>
   ),
 }
