@@ -211,8 +211,16 @@ export const DisplayField = React.forwardRef<HTMLDivElement, DisplayFieldProps>(
 
         {/* 값 영역 — flex 컨테이너로 span 을 flex item 화. 이래야 truncate/ellipsis
            의 overflow: hidden 이 실제로 동작한다. inline span 은 overflow 제어가
-           무효라서 긴 값이 인접 컬럼을 침범하는 버그가 있었음. */}
-        <div className="flex-1 min-w-0 min-h-[36px] py-[8px] flex items-center gap-1">
+           무효라서 긴 값이 인접 컬럼을 침범하는 버그가 있었음.
+           flex-1 은 horizontal 모드에서만 필요 (남는 가로 폭 확보). vertical
+           모드에서는 부모 grid 셀 높이가 커지면 값 영역이 세로로 늘어나면서
+           label↔value 간격이 벌어져 이웃 필드와 정렬이 어긋난다. */}
+        <div
+          className={cn(
+            "min-w-0 min-h-[36px] py-[8px] flex items-center gap-1",
+            isHorizontal && "flex-1"
+          )}
+        >
           <span
             className={cn(
               "text-sm text-slate-900 dark:text-slate-100 min-w-0",
