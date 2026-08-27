@@ -4,9 +4,10 @@ import { cn as l } from "../../lib/utils.mjs";
 const m = [
   "flex w-full rounded-[5px] border bg-slate-50/50 dark:bg-slate-800",
   // 높이는 `rows` prop 이 결정. 기본값은 컴포넌트 레벨에서 rows=3.
-  // min-h-9 = 36px (Input 과 동일 높이) — rows=1 도 Input 과 시각적으로 매칭.
+  // min-h 는 !important 로 지정 — resize-y 로 유저가 드래그해 min-h 이하로 축소하는
+  // 브라우저 동작(일부 브라우저에서 min-h 무시)을 원천 차단.
   // 이전엔 min-h-[80px] 로 강제해 rows 프롭이 무력화되던 문제 있어 조정.
-  "min-h-9 px-3 py-2 text-xs text-slate-900 dark:text-slate-100",
+  "!min-h-9 px-3 py-2 text-xs text-slate-900 dark:text-slate-100",
   "outline-none transition-colors resize-y",
   "disabled:cursor-not-allowed disabled:opacity-50"
 ].join(" "), y = [
