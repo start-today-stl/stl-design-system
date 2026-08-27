@@ -24,6 +24,9 @@ const meta = {
         "danger-light",
         "danger-solid",
         "danger-outline",
+        "neutral-light",
+        "neutral-solid",
+        "neutral-outline",
       ],
       description: "뱃지 스타일 변형",
     },
@@ -133,6 +136,30 @@ export const DangerOutline: Story = {
   },
 }
 
+// Neutral Light — 대기 / 진행 전 상태에 사용
+export const NeutralLight: Story = {
+  args: {
+    children: "입고 대기",
+    variant: "neutral-light",
+  },
+}
+
+// Neutral Solid
+export const NeutralSolid: Story = {
+  args: {
+    children: "미배정",
+    variant: "neutral-solid",
+  },
+}
+
+// Neutral Outline
+export const NeutralOutline: Story = {
+  args: {
+    children: "접수 전",
+    variant: "neutral-outline",
+  },
+}
+
 // 모든 상태 뱃지
 export const AllVariants: Story = {
   render: () => (
@@ -160,6 +187,12 @@ export const AllVariants: Story = {
         <Badge variant="danger-light">주의</Badge>
         <Badge variant="danger-solid">긴급</Badge>
         <Badge variant="danger-outline">긴급</Badge>
+      </div>
+      <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+        <span style={{ width: "80px", fontSize: "12px", color: "#666" }}>Neutral</span>
+        <Badge variant="neutral-light">입고 대기</Badge>
+        <Badge variant="neutral-solid">미배정</Badge>
+        <Badge variant="neutral-outline">접수 전</Badge>
       </div>
     </div>
   ),
