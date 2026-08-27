@@ -6,7 +6,9 @@ import { cn } from "@/lib/utils"
 
 const textareaBaseStyles = [
   "flex w-full rounded-[5px] border bg-slate-50/50 dark:bg-slate-800",
-  "min-h-[80px] px-3 py-2 text-xs text-slate-900 dark:text-slate-100",
+  // 높이는 `rows` prop 이 결정. 기본값은 컴포넌트 레벨에서 rows=3.
+  // 이전엔 min-h-[80px] 로 강제해 rows 프롭이 무력화되던 문제 있어 제거.
+  "px-3 py-2 text-xs text-slate-900 dark:text-slate-100",
   "outline-none transition-colors resize-y",
   "disabled:cursor-not-allowed disabled:opacity-50",
 ].join(" ")
@@ -47,7 +49,7 @@ export interface TextareaProps
 }
 
 const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
-  ({ className, label, error, errorMessage, id, reserveLabelSpace, required, tableMode, ...props }, ref) => {
+  ({ className, label, error, errorMessage, id, reserveLabelSpace, required, tableMode, rows = 3, ...props }, ref) => {
     const textareaId = id || React.useId()
 
     // 스타일 결정
@@ -68,6 +70,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           required={required}
           className={cn(textareaBaseStyles, getStyleVariant(), className)}
           aria-invalid={error}
+          rows={rows}
           {...props}
         />
       )
@@ -95,6 +98,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           required={required}
           className={cn(textareaBaseStyles, getStyleVariant(), className)}
           aria-invalid={error}
+          rows={rows}
           {...props}
         />
         {error && errorMessage && (
