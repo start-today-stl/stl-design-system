@@ -81,7 +81,7 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
           {/* 접힌 상태 로고 */}
           <div
             className={cn(
-              "absolute inset-0 flex justify-center items-center transition-opacity duration-300",
+              "absolute inset-0 flex justify-center items-center transition-opacity duration-150",
               collapsed && collapseMode === "mini" ? "opacity-100" : "opacity-0 pointer-events-none"
             )}
           >
@@ -90,7 +90,7 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
           {/* 펼친 상태 로고 */}
           <div
             className={cn(
-              "absolute inset-0 flex justify-start items-center px-6 transition-opacity duration-300",
+              "absolute inset-0 flex justify-start items-center px-6 transition-opacity duration-150",
               collapsed && collapseMode === "mini" ? "opacity-0 pointer-events-none" : "opacity-100"
             )}
           >

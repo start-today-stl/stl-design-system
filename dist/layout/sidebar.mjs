@@ -44,7 +44,7 @@ const _ = N.forwardRef(
               "div",
               {
                 className: s(
-                  "absolute inset-0 flex justify-center items-center transition-opacity duration-300",
+                  "absolute inset-0 flex justify-center items-center transition-opacity duration-150",
                   e && i === "mini" ? "opacity-100" : "opacity-0 pointer-events-none"
                 ),
                 children: t == null ? void 0 : t(!0)
@@ -54,7 +54,7 @@ const _ = N.forwardRef(
               "div",
               {
                 className: s(
-                  "absolute inset-0 flex justify-start items-center px-6 transition-opacity duration-300",
+                  "absolute inset-0 flex justify-start items-center px-6 transition-opacity duration-150",
                   e && i === "mini" ? "opacity-0 pointer-events-none" : "opacity-100"
                 ),
                 children: t == null ? void 0 : t(!1)
