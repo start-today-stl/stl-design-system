@@ -140,7 +140,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
     return (
       <div
         ref={ref}
-        className={cn("flex flex-col gap-2", inputSizeStyles[size], className)}
+        className={cn("flex flex-col gap-1", inputSizeStyles[size], className)}
       >
         {/* 라벨 */}
         {label && (

@@ -54,7 +54,7 @@ const z = (r) => {
       "div",
       {
         ref: w,
-        className: f("flex flex-col gap-2", F[b], $),
+        className: f("flex flex-col gap-1", F[b], $),
         children: [
           r && /* @__PURE__ */ a("label", { className: "flex items-center gap-1 text-xs text-slate-800 dark:text-slate-400", children: [
             B && /* @__PURE__ */ l("span", { className: "size-2 rounded-full bg-red-400", "aria-hidden": "true" }),
