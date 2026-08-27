@@ -1,5 +1,5 @@
 import * as React from "react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import { cn } from "@/lib/utils"
 import { NavMenu } from "./nav-menu"
@@ -56,6 +56,20 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
     // hidden 모드에서 collapsed일 때는 완전히 숨김
     const isHidden = collapseMode === "hidden" && collapsed
 
+    // 펼침 애니메이션 (사이드바 width 300ms) 이 진행되는 동안 footer 를 렌더하면,
+    // 좁은 폭에 눌려 Notice 등이 세로로 늘어났다 폭이 커지며 재배치되는 시각효과 발생.
+    // 접힘/펼침 상태 변경 후 트랜지션이 끝난 뒤에 footer 를 노출한다.
+    const isExpanded = !(collapsed && collapseMode === "mini")
+    const [showFooter, setShowFooter] = useState(isExpanded)
+    useEffect(() => {
+      if (!isExpanded) {
+        setShowFooter(false)
+        return
+      }
+      const timer = setTimeout(() => setShowFooter(true), 300)
+      return () => clearTimeout(timer)
+    }, [isExpanded])
+
     return (
       <div
         ref={ref}
@@ -97,8 +111,8 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
           {children}
         </NavMenu>
 
-        {/* Footer */}
-        {!(collapsed && collapseMode === "mini") && footer && (
+        {/* Footer — 펼침 트랜지션 완료 후에 노출 (좁은 폭에 눌려 세로 늘어남 방지) */}
+        {showFooter && footer && (
           <div className="flex-shrink-0 mt-4 mb-8 px-6">{footer}</div>
         )}
       </div>

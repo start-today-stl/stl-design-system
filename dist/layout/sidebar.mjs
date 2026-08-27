@@ -1,73 +1,80 @@
-import { jsxs as N, jsx as n } from "react/jsx-runtime";
-import * as k from "react";
-import { useState as j } from "react";
-import { cn as f } from "../lib/utils.mjs";
-import { NavMenu as y } from "./nav-menu.mjs";
-const _ = k.forwardRef(
+import { jsxs as y, jsx as a } from "react/jsx-runtime";
+import * as S from "react";
+import { useState as c, useEffect as _ } from "react";
+import { cn as x } from "../lib/utils.mjs";
+import { NavMenu as E } from "./nav-menu.mjs";
+const F = S.forwardRef(
   ({
-    className: x,
-    logo: e,
-    collapsed: s,
-    defaultCollapsed: c = !1,
-    onCollapsedChange: t,
-    collapseMode: i = "mini",
-    showToggle: p = !0,
-    footer: a,
-    children: b,
-    ...o
-  }, u) => {
-    const [h, w] = j(c), m = s !== void 0, r = m ? s : h, v = () => {
-      const d = !r;
-      m || w(d), t == null || t(d);
-    }, l = i === "hidden" && r;
-    return /* @__PURE__ */ N(
+    className: u,
+    logo: i,
+    collapsed: m,
+    defaultCollapsed: p = !1,
+    onCollapsedChange: s,
+    collapseMode: e = "mini",
+    showToggle: b = !0,
+    footer: l,
+    children: h,
+    ...w
+  }, v) => {
+    const [N, k] = c(p), d = m !== void 0, r = d ? m : N, T = () => {
+      const t = !r;
+      d || k(t), s == null || s(t);
+    }, f = e === "hidden" && r, n = !(r && e === "mini"), [j, o] = c(n);
+    return _(() => {
+      if (!n) {
+        o(!1);
+        return;
+      }
+      const t = setTimeout(() => o(!0), 300);
+      return () => clearTimeout(t);
+    }, [n]), /* @__PURE__ */ y(
       "div",
       {
-        ref: u,
-        className: f(
+        ref: v,
+        className: x(
           "relative flex flex-col h-full pt-4 pb-8 bg-white dark:bg-black",
           "rounded-r-[40px] border border-slate-100 dark:border-slate-700",
           "shadow-[1px_0px_41.3px_1px_rgba(0,0,0,0.05)] transition-all duration-300",
           // hidden 모드
-          l && "w-0 -translate-x-full opacity-0 border-0 overflow-hidden",
+          f && "w-0 -translate-x-full opacity-0 border-0 overflow-hidden",
           // mini 모드 또는 펼쳐진 상태.
           // 가로 패딩은 여기 두지 않는다 — 로고/메뉴/푸터가 각자 갖는다.
           // (여기에 두면 스크롤 컨테이너가 그만큼 좁아져 스크롤바가 사이드바 우측 끝에서
           //  안쪽으로 떠 보인다. 본부장님 지시 "스크롤바 경계 불분명" 건)
-          !l && (r && i === "mini" ? "w-[88px] px-0 items-center" : "w-[210px] px-0"),
-          x
+          !f && (r && e === "mini" ? "w-[88px] px-0 items-center" : "w-[210px] px-0"),
+          u
         ),
-        ...o,
+        ...w,
         children: [
-          /* @__PURE__ */ n(
+          /* @__PURE__ */ a(
             "div",
             {
-              className: f(
+              className: x(
                 "h-16 mb-4 flex-shrink-0 w-full flex items-center overflow-hidden",
-                r && i === "mini" ? "justify-center" : "justify-start px-6"
+                r && e === "mini" ? "justify-center" : "justify-start px-6"
               ),
-              children: e == null ? void 0 : e(r && i === "mini")
+              children: i == null ? void 0 : i(r && e === "mini")
             }
           ),
-          /* @__PURE__ */ n(
-            y,
+          /* @__PURE__ */ a(
+            E,
             {
               className: "flex-1 min-h-0",
-              collapsed: r && i === "mini",
-              showToggle: p && i === "mini",
+              collapsed: r && e === "mini",
+              showToggle: b && e === "mini",
               scrollable: !0,
-              onToggle: v,
-              children: b
+              onToggle: T,
+              children: h
             }
           ),
-          !(r && i === "mini") && a && /* @__PURE__ */ n("div", { className: "flex-shrink-0 mt-4 mb-8 px-6", children: a })
+          j && l && /* @__PURE__ */ a("div", { className: "flex-shrink-0 mt-4 mb-8 px-6", children: l })
         ]
       }
     );
   }
 );
-_.displayName = "Sidebar";
+F.displayName = "Sidebar";
 export {
-  _ as Sidebar
+  F as Sidebar
 };
 //# sourceMappingURL=sidebar.mjs.map
