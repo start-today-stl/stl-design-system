@@ -74,28 +74,16 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
         )}
         {...props}
       >
-        {/* 로고 영역 - crossfade 전환 효과.
-            가로 여백은 이 wrapper 가 아니라 아래 자식들에 준다 — 자식이 `absolute inset-0` 이라
-            inset 이 padding box 기준으로 잡혀서 wrapper 의 padding 이 무시되기 때문. */}
-        <div className="relative h-16 mb-4 flex-shrink-0 w-full">
-          {/* 접힌 상태 로고 */}
-          <div
-            className={cn(
-              "absolute inset-0 flex justify-center items-center transition-opacity duration-300",
-              collapsed && collapseMode === "mini" ? "opacity-100" : "opacity-0 pointer-events-none"
-            )}
-          >
-            {logo?.(true)}
-          </div>
-          {/* 펼친 상태 로고 */}
-          <div
-            className={cn(
-              "absolute inset-0 flex justify-start items-center px-6 transition-opacity duration-300",
-              collapsed && collapseMode === "mini" ? "opacity-0 pointer-events-none" : "opacity-100"
-            )}
-          >
-            {logo?.(false)}
-          </div>
+        {/* 로고 영역 — collapsed 상태에 따라 하나만 렌더 (crossfade X, 잔상 방지) */}
+        <div
+          className={cn(
+            "h-16 mb-4 flex-shrink-0 w-full flex items-center overflow-hidden",
+            collapsed && collapseMode === "mini"
+              ? "justify-center"
+              : "justify-start px-6"
+          )}
+        >
+          {logo?.(collapsed && collapseMode === "mini")}
         </div>
 
         {/* 네비게이션 메뉴 */}
