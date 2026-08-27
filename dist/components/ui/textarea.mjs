@@ -4,8 +4,9 @@ import { cn as l } from "../../lib/utils.mjs";
 const m = [
   "flex w-full rounded-[5px] border bg-slate-50/50 dark:bg-slate-800",
   // 높이는 `rows` prop 이 결정. 기본값은 컴포넌트 레벨에서 rows=3.
-  // 이전엔 min-h-[80px] 로 강제해 rows 프롭이 무력화되던 문제 있어 제거.
-  "px-3 py-2 text-xs text-slate-900 dark:text-slate-100",
+  // min-h-9 = 36px (Input 과 동일 높이) — rows=1 도 Input 과 시각적으로 매칭.
+  // 이전엔 min-h-[80px] 로 강제해 rows 프롭이 무력화되던 문제 있어 조정.
+  "min-h-9 px-3 py-2 text-xs text-slate-900 dark:text-slate-100",
   "outline-none transition-colors resize-y",
   "disabled:cursor-not-allowed disabled:opacity-50"
 ].join(" "), y = [
@@ -21,7 +22,7 @@ const m = [
   "placeholder:text-slate-300 dark:placeholder:text-slate-500",
   "focus:border-slate-500 focus:border-[1.5px] focus:shadow-none dark:focus:border-slate-300"
 ].join(" "), h = b.forwardRef(
-  ({ className: o, label: e, error: t, errorMessage: r, id: k, reserveLabelSpace: i, required: s, tableMode: x, rows: c = 3, ...n }, u) => {
+  ({ className: o, label: e, error: t, errorMessage: r, id: k, reserveLabelSpace: i, required: s, tableMode: x, rows: n = 3, ...c }, u) => {
     const d = k || b.useId(), p = () => t ? _ : x ? v : y;
     return x && !e && !i && !r ? /* @__PURE__ */ a(
       "textarea",
@@ -31,8 +32,8 @@ const m = [
         required: s,
         className: l(m, p(), o),
         "aria-invalid": t,
-        rows: c,
-        ...n
+        rows: n,
+        ...c
       }
     ) : /* @__PURE__ */ f("div", { className: "flex flex-col gap-1 w-full", children: [
       (e || i) && /* @__PURE__ */ f(
@@ -57,8 +58,8 @@ const m = [
           required: s,
           className: l(m, p(), o),
           "aria-invalid": t,
-          rows: c,
-          ...n
+          rows: n,
+          ...c
         }
       ),
       t && r && /* @__PURE__ */ a("span", { className: "text-xs text-destructive dark:text-red-400", children: r })
