@@ -166,7 +166,6 @@ export function DataTableV2<T extends { id: string | number }>({
   estimateRowHeight = DEFAULT_ESTIMATE,
   rowGrouping,
   virtual,
-  bordered = true,
   className,
 }: DataTableV2Props<T>) {
   // rowGrouping 활성 시 rowReorderable 자동 OFF (병합 셀 드래그 시 레이아웃 붕괴).
@@ -702,7 +701,6 @@ export function DataTableV2<T extends { id: string | number }>({
         // 이게 없으면 테이블이 내용 높이만큼 늘어나고 컨테이너의 overflow-hidden 에 잘려
         // 어디에서도 세로 스크롤이 안 된다. flex 부모가 아니면 무시되므로 단독 사용에는 영향 없음.
         "flex flex-col flex-1 min-h-0",
-        bordered && "rounded-2xl border border-slate-200 dark:border-slate-700",
         className
       )}
     >

@@ -286,16 +286,6 @@ export interface DataTableV2Props<T extends {
      * 기본 40
      */
     estimateRowHeight?: number;
-    /**
-     * 외곽 테두리 + 라운드 표시 (기본 true).
-     *
-     * `TableContainer` 안에 넣을 때는 `false` 로 끈다. 컨테이너가 이미 테두리를
-     * 그리고 있어서 이중으로 보인다.
-     *
-     * v1 `DataTable` 은 테두리를 그리지 않고 `TableContainer` 에 맡겼으므로,
-     * v1 에서 이관하면서 `TableContainer` 를 그대로 쓴다면 이 값을 꺼야 v1 과 같아진다.
-     */
-    bordered?: boolean;
     /** 추가 className (Outer wrapper 에 적용) */
     className?: string;
 }
