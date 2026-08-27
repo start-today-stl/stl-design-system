@@ -1,6 +1,7 @@
 import * as React from "react"
 
 import { DataTableV2DefaultEdit } from "./data-table-v2-default-edit"
+import { DataTableV2NumberEdit } from "./data-table-v2-number-edit"
 import type { DataTableV2Column } from "./types"
 
 interface DataTableV2EditCellProps<T extends { id: string | number }> {
@@ -86,7 +87,13 @@ export function DataTableV2EditCell<T extends { id: string | number }>({
     return () => document.removeEventListener("mousedown", handleMouseDown)
   }, [])
 
-  const EditComp = column.editComponent ?? DataTableV2DefaultEdit
+  // 편집 컴포넌트 우선순위:
+  //   1. editComponent 직접 지정 (커스텀 escape hatch)
+  //   2. editType 프리셋 ('number' → NumberEdit)
+  //   3. 기본 (문자열 Input)
+  const EditComp =
+    column.editComponent ??
+    (column.editType === "number" ? DataTableV2NumberEdit : DataTableV2DefaultEdit)
 
   // 세로 패딩 없음 — 편집기 높이(Input / Select 모두 h-9 = 36px)가 셀의 min-h-9 와 정확히
   // 일치해야 한다. 1px 이라도 커지면 행 높이가 변하고, 행은 `top: positions[i]` (높이 누적합)

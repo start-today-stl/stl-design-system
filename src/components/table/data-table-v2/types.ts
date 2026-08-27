@@ -205,7 +205,19 @@ export interface DataTableV2Column<T> {
   cell?: (value: T[keyof T], row: T) => React.ReactNode
   /** 편집 가능 여부 (셀 클릭 시 편집 모드 진입) */
   editable?: boolean
-  /** 커스텀 편집 컴포넌트 (기본: Input) */
+  /**
+   * 편집 인풋 타입 (미지정 = 'text').
+   * - 'text'   : 문자열 편집 (기본)
+   * - 'number' : 숫자 편집 (콤마 자동 포맷 + 숫자 외 문자 차단 + 우측 정렬)
+   *
+   * 특수한 편집 UI (Select, Date, 다중 필드 등) 가 필요하면 `editComponent` 사용.
+   * 둘 다 지정하면 `editComponent` 가 우선.
+   */
+  editType?: "text" | "number"
+  /**
+   * 커스텀 편집 컴포넌트 (escape hatch).
+   * 대부분은 `editType` 프리셋으로 충분하고, 커스텀 UI (Select 등) 가 필요할 때만 사용.
+   */
   editComponent?: (props: EditComponentProps<T>) => React.ReactNode
   /** 값 검증 함수 — true 통과, string 에러 메시지 */
   validate?: (value: T[keyof T], row: T) => ValidationResult

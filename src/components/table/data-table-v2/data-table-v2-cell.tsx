@@ -1,6 +1,7 @@
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
+import { PenIcon } from "@/icons"
 import { DataTableV2EditCell } from "./data-table-v2-edit-cell"
 import {
   ROW_BG_DESCENDANT,
@@ -115,7 +116,12 @@ function DataTableV2CellInner<T extends { id: string | number }>({
     "flex-1 min-w-0 px-3 py-1.5 text-xs text-slate-900 dark:text-slate-200",
     "overflow-hidden break-all [overflow-wrap:break-word]",
     alignClass[column.align ?? "left"],
-    column.editable && !isEditing && "cursor-text hover:bg-blue-50 dark:hover:bg-blue-900/30"
+    // editable 셀: hover 시 파란 배경 + 펜 아이콘. self-stretch flex 로 셀 높이 전체를
+    // 덮어 outer(items-center) 로 인해 위·아래에 회색 여백이 남는 문제를 없앤다.
+    // dark 는 opaque blue-900 사용 — 반투명이면 아래 row hover(slate-800) 와 블렌드돼
+    // 파랑·회색이 섞여 보인다. 라이트도 opaque bg-blue-50 이라 통일.
+    column.editable && !isEditing &&
+      "self-stretch flex items-center gap-1 cursor-text hover:bg-blue-50 dark:hover:bg-blue-900 group/edit"
   )
 
   const handleEditableClick = column.editable
@@ -125,8 +131,18 @@ function DataTableV2CellInner<T extends { id: string | number }>({
       }
     : undefined
 
+  // 렌더된 컨텐츠 (사용처 cell 함수 결과 또는 raw 값)
+  const contentNode = column.cell
+    ? column.cell(row[column.accessorKey], row)
+    : (row[column.accessorKey] as React.ReactNode)
+
   // 사용처의 cell 렌더러는 여기서 호출한다. 이 컴포넌트가 memo 라서,
   // 행이 리렌더돼도 이 셀의 prop 이 그대로면 렌더러가 다시 실행되지 않는다.
+  //
+  // editable 셀: contentCls 가 self-stretch flex 로 셀 높이 전체를 덮고,
+  //   hover 시 파란 배경 + 펜 아이콘 표시. 정렬에 따라 아이콘 위치가 다르다
+  //   (sort 아이콘 관례와 동일: left → 텍스트 오른쪽, right → 텍스트 왼쪽).
+  // non-editable 셀: 기존 block 흐름 유지 (사용처 wrapping 동작 보존).
   const cellBody = isEditing ? (
     <DataTableV2EditCell
       row={row}
@@ -136,12 +152,32 @@ function DataTableV2CellInner<T extends { id: string | number }>({
       onCancel={onCancelEdit}
       onClearError={onClearEditError}
     />
-  ) : (
+  ) : column.editable ? (
+    // editable 셀: text 는 flex-1 로 남은 공간을 채우고 (내부에서 text-align 으로 정렬),
+    // 펜 아이콘은 셀 끝(정렬 반대편)에 고정 배치 — 헤더의 sort/filter 아이콘 관례와 동일.
+    //   align="left"   → 텍스트 좌측 정렬, 펜 우측 끝
+    //   align="right"  → 텍스트 우측 정렬, 펜 좌측 끝
+    //   align="center" → 텍스트 중앙 정렬, 펜 우측 끝
     <div className={contentCls} onClick={handleEditableClick}>
-      {column.cell
-        ? column.cell(row[column.accessorKey], row)
-        : (row[column.accessorKey] as React.ReactNode)}
+      <span
+        className={cn(
+          "min-w-0 flex-1 truncate",
+          column.align === "right" && "text-right",
+          column.align === "center" && "text-center"
+        )}
+      >
+        {contentNode}
+      </span>
+      <PenIcon
+        size={20}
+        className={cn(
+          "shrink-0 opacity-0 group-hover/edit:opacity-60 text-slate-600 dark:text-slate-400 transition-opacity",
+          column.align === "right" ? "order-first" : "order-last"
+        )}
+      />
     </div>
+  ) : (
+    <div className={contentCls}>{contentNode}</div>
   )
 
   // pinned 셀의 안쪽 레이어 — 행과 동일한 상태 색 + 강조색.

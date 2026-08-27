@@ -694,11 +694,13 @@ const editableColumns: DataTableV2Column<Row>[] = [
   },
   {
     accessorKey: "score",
-    header: "점수 (0~100 검증)",
-    width: 140,
+    header: "점수 (editType='number')",
+    minWidth: 160,
     align: "right",
     editable: true,
-    cell: (v) => `${v}점`,
+    // 콤마 포맷 + 숫자만 허용 + 우측 정렬 — 프리셋 자동 적용
+    editType: "number",
+    cell: (v) => `${(v as number).toLocaleString()}점`,
     validate: (value) => {
       const num = Number(value)
       if (Number.isNaN(num)) return "숫자만 입력 가능합니다"
@@ -708,6 +710,19 @@ const editableColumns: DataTableV2Column<Row>[] = [
   },
 ]
 
+/**
+ * 편집 가능한 셀 데모.
+ *
+ * - **호버 시 펜 아이콘**: editable 셀 위에 마우스를 올리면 파란 배경 + 펜 아이콘이 표시된다.
+ *   아이콘 위치는 정렬에 따라 다르다 (sort 아이콘 관례와 동일).
+ *   `align="left"` → 텍스트 오른쪽, `align="right"` → 텍스트 왼쪽 (숫자 컬럼용).
+ * - **편집 인풋 종류 (`editType` 프리셋)**:
+ *   1. 미지정 or `editType="text"` → 문자열 Input (기본)
+ *   2. `editType="number"` → 숫자 편집 (콤마 포맷·숫자 검증·우측 정렬)
+ * - **커스텀 UI**: `editComponent` prop 에 컴포넌트 지정 (Select, DatePicker 등)
+ *   두 프롭 동시 지정 시 `editComponent` 우선.
+ * - **키보드**: Enter 저장 / Escape 취소 / blur 시 저장.
+ */
 export const EditableCells: Story = {
   render: function Render() {
     const [rows, setRows] = useState<Row[]>(smallData)
