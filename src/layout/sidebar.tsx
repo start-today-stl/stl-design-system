@@ -77,7 +77,7 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
         {/* 로고 영역 - crossfade 전환 효과.
             가로 여백은 이 wrapper 가 아니라 아래 자식들에 준다 — 자식이 `absolute inset-0` 이라
             inset 이 padding box 기준으로 잡혀서 wrapper 의 padding 이 무시되기 때문. */}
-        <div className="relative h-16 mb-4 flex-shrink-0 w-full">
+        <div className="relative h-16 mb-4 flex-shrink-0 w-full overflow-hidden">
           {/* 접힌 상태 로고 */}
           <div
             className={cn(
