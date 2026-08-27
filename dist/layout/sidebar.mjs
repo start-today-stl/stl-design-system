@@ -1,11 +1,11 @@
-import { jsxs as p, jsx as r } from "react/jsx-runtime";
+import { jsxs as f, jsx as r } from "react/jsx-runtime";
 import * as N from "react";
 import { useState as k } from "react";
 import { cn as s } from "../lib/utils.mjs";
 import { NavMenu as j } from "./nav-menu.mjs";
 const _ = N.forwardRef(
   ({
-    className: f,
+    className: p,
     logo: t,
     collapsed: a,
     defaultCollapsed: x = !1,
@@ -20,7 +20,7 @@ const _ = N.forwardRef(
       const l = !e;
       c || w(l), n == null || n(l);
     }, d = i === "hidden" && e;
-    return /* @__PURE__ */ p(
+    return /* @__PURE__ */ f(
       "div",
       {
         ref: h,
@@ -35,11 +35,11 @@ const _ = N.forwardRef(
           // (여기에 두면 스크롤 컨테이너가 그만큼 좁아져 스크롤바가 사이드바 우측 끝에서
           //  안쪽으로 떠 보인다. 본부장님 지시 "스크롤바 경계 불분명" 건)
           !d && (e && i === "mini" ? "w-[88px] px-0 items-center" : "w-[210px] px-0"),
-          f
+          p
         ),
         ...b,
         children: [
-          /* @__PURE__ */ p("div", { className: "relative h-16 mb-4 flex-shrink-0 w-full", children: [
+          /* @__PURE__ */ f("div", { className: "relative h-16 mb-4 flex-shrink-0 w-full overflow-hidden", children: [
             /* @__PURE__ */ r(
               "div",
               {
