@@ -209,11 +209,13 @@ export const DisplayField = React.forwardRef<HTMLDivElement, DisplayFieldProps>(
           </span>
         )}
 
-        {/* 값 영역 */}
-        <div className="flex-1 min-w-0 min-h-[36px] py-[8px]">
+        {/* 값 영역 — flex 컨테이너로 span 을 flex item 화. 이래야 truncate/ellipsis
+           의 overflow: hidden 이 실제로 동작한다. inline span 은 overflow 제어가
+           무효라서 긴 값이 인접 컬럼을 침범하는 버그가 있었음. */}
+        <div className="flex-1 min-w-0 min-h-[36px] py-[8px] flex items-center gap-1">
           <span
             className={cn(
-              "text-sm text-slate-900 dark:text-slate-100 inline",
+              "text-sm text-slate-900 dark:text-slate-100 min-w-0",
               isEmpty && "text-slate-400 dark:text-slate-500",
               textOverflowStyles[textOverflow],
               className
@@ -227,7 +229,7 @@ export const DisplayField = React.forwardRef<HTMLDivElement, DisplayFieldProps>(
               type="button"
               onClick={handleCopy}
               className={cn(
-                "inline-flex align-middle ml-1 p-1 rounded transition-colors cursor-pointer",
+                "inline-flex p-1 rounded transition-colors cursor-pointer shrink-0",
                 "text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300",
                 copied && "text-green-500 dark:text-green-400"
               )}
