@@ -100,6 +100,18 @@ export const WithValue: Story = {
   },
 }
 
+/** 자동 확장 (auto-grow) — 내용에 따라 세로가 늘어남 */
+export const AutoGrow: Story = {
+  args: {
+    label: "메모",
+    placeholder: "여러 줄 입력해보세요.",
+    autoGrow: true,
+    rows: 1,
+    maxHeight: 200,
+    className: "w-[360px]",
+  },
+}
+
 /** 테이블 모드 */
 export const TableMode: Story = {
   args: {

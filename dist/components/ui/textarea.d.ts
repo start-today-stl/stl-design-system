@@ -13,6 +13,15 @@ export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextArea
     required?: boolean;
     /** 테이블 모드 (파란 glow 대신 border 강조, wrapper 최소화) */
     tableMode?: boolean;
+    /**
+     * 내용에 따라 세로가 자동 확장.
+     * - 켜면 유저 드래그 리사이즈는 꺼짐 (`resize-none`)
+     * - `maxHeight` 지정 시 그 이상은 내부 스크롤
+     * - `rows` 로 초기(=최소) 높이 조절 (기본 3)
+     */
+    autoGrow?: boolean;
+    /** autoGrow 최대 높이(px). 없으면 무제한 (뷰포트까지 늘어남) */
+    maxHeight?: number;
 }
 declare const Textarea: React.ForwardRefExoticComponent<TextareaProps & React.RefAttributes<HTMLTextAreaElement>>;
 /**
