@@ -48,11 +48,70 @@ export interface TextareaProps
   required?: boolean
   /** 테이블 모드 (파란 glow 대신 border 강조, wrapper 최소화) */
   tableMode?: boolean
+  /**
+   * 내용에 따라 세로가 자동 확장.
+   * - 켜면 유저 드래그 리사이즈는 꺼짐 (`resize-none`)
+   * - `maxHeight` 지정 시 그 이상은 내부 스크롤
+   * - `rows` 로 초기(=최소) 높이 조절 (기본 3)
+   */
+  autoGrow?: boolean
+  /** autoGrow 최대 높이(px). 없으면 무제한 (뷰포트까지 늘어남) */
+  maxHeight?: number
 }
 
 const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
-  ({ className, label, error, errorMessage, id, reserveLabelSpace, required, tableMode, rows = 3, ...props }, ref) => {
+  (
+    {
+      className,
+      label,
+      error,
+      errorMessage,
+      id,
+      reserveLabelSpace,
+      required,
+      tableMode,
+      rows = 3,
+      autoGrow,
+      maxHeight,
+      value,
+      defaultValue,
+      onInput,
+      ...props
+    },
+    ref
+  ) => {
     const textareaId = id || React.useId()
+
+    // auto-grow 용 내부 ref. 외부 ref 와 병합해서 소비자도 계속 ref 접근 가능.
+    const innerRef = React.useRef<HTMLTextAreaElement | null>(null)
+    const setRefs = React.useCallback(
+      (el: HTMLTextAreaElement | null) => {
+        innerRef.current = el
+        if (typeof ref === "function") ref(el)
+        else if (ref) (ref as React.MutableRefObject<HTMLTextAreaElement | null>).current = el
+      },
+      [ref]
+    )
+
+    // auto-grow: value 변경/입력마다 scrollHeight 로 높이 재계산.
+    // controlled 는 value effect 로, uncontrolled 는 onInput 이벤트로 커버.
+    const recalcHeight = React.useCallback(() => {
+      if (!autoGrow) return
+      const el = innerRef.current
+      if (!el) return
+      el.style.height = "auto"
+      const next = maxHeight ? Math.min(el.scrollHeight, maxHeight) : el.scrollHeight
+      el.style.height = `${next}px`
+    }, [autoGrow, maxHeight])
+
+    React.useLayoutEffect(() => {
+      recalcHeight()
+    }, [recalcHeight, value, defaultValue])
+
+    const handleInput = (e: React.FormEvent<HTMLTextAreaElement>) => {
+      if (autoGrow) recalcHeight()
+      onInput?.(e)
+    }
 
     // 스타일 결정
     const getStyleVariant = () => {
@@ -61,6 +120,9 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
       return textareaDefaultStyles
     }
 
+    // autoGrow 시 유저 드래그 리사이즈 무효화, maxHeight 도달 시 내부 스크롤 허용
+    const autoGrowClass = autoGrow ? "!resize-none overflow-y-auto" : ""
+
     // tableMode이고 label/errorMessage가 없으면 textarea만 렌더링 (wrapper 없음)
     const isMinimalMode = tableMode && !label && !reserveLabelSpace && !errorMessage
 
@@ -68,11 +130,14 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
       return (
         <textarea
           id={textareaId}
-          ref={ref}
+          ref={setRefs}
           required={required}
-          className={cn(textareaBaseStyles, getStyleVariant(), className)}
+          className={cn(textareaBaseStyles, getStyleVariant(), autoGrowClass, className)}
           aria-invalid={error}
           rows={rows}
+          value={value}
+          defaultValue={defaultValue}
+          onInput={handleInput}
           {...props}
         />
       )
@@ -91,16 +156,19 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
             {required && (
               <span className="size-2 rounded-full bg-red-400" aria-hidden="true" />
             )}
-            {label || "\u00A0"}
+            {label || " "}
           </label>
         )}
         <textarea
           id={textareaId}
-          ref={ref}
+          ref={setRefs}
           required={required}
-          className={cn(textareaBaseStyles, getStyleVariant(), className)}
+          className={cn(textareaBaseStyles, getStyleVariant(), autoGrowClass, className)}
           aria-invalid={error}
           rows={rows}
+          value={value}
+          defaultValue={defaultValue}
+          onInput={handleInput}
           {...props}
         />
         {error && errorMessage && (
