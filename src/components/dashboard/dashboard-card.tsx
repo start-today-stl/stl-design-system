@@ -65,7 +65,7 @@ const DashboardCard = React.forwardRef<HTMLDivElement, DashboardCardProps>(
                     {icon}
                   </span>
                 )}
-                <span className="text-sm tracking-[-0.14px] text-slate-700 dark:text-slate-100 truncate">
+                <span className="text-base tracking-[-0.16px] text-slate-700 dark:text-slate-100 truncate">
                   {title}
                 </span>
               </div>

@@ -104,7 +104,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
                       {icon}
                     </span>
                   )}
-                  <span className={cn("text-base tracking-[-0.16px] font-medium", textColorClass)}>
+                  <span className={cn("text-base tracking-[-0.16px]", textColorClass)}>
                     {label}
                   </span>
                 </div>
@@ -155,7 +155,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
                     {icon}
                   </span>
                 )}
-                <span className={cn("text-base tracking-[-0.16px] font-medium", textColorClass)}>
+                <span className={cn("text-base tracking-[-0.16px]", textColorClass)}>
                   {label}
                 </span>
               </div>
