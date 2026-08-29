@@ -33,7 +33,7 @@ const N = f.forwardRef(
         /* @__PURE__ */ a("div", { className: "flex items-center justify-between gap-2 px-[10px] pt-[10px] flex-shrink-0", children: [
           /* @__PURE__ */ a("div", { className: "flex items-center gap-0.5 min-w-0 flex-1", children: [
             t && /* @__PURE__ */ e("span", { className: "flex-shrink-0 text-slate-700 dark:text-slate-100", children: t }),
-            /* @__PURE__ */ e("span", { className: "text-sm tracking-[-0.14px] text-slate-700 dark:text-slate-100 truncate", children: x })
+            /* @__PURE__ */ e("span", { className: "text-base tracking-[-0.16px] text-slate-700 dark:text-slate-100 truncate", children: x })
           ] }),
           l && /* @__PURE__ */ e("div", { className: "flex items-center flex-shrink-0", children: l })
         ] }),
