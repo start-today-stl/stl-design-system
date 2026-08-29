@@ -104,7 +104,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
                       {icon}
                     </span>
                   )}
-                  <span className={cn("text-sm tracking-[-0.14px]", textColorClass)}>
+                  <span className={cn("text-base tracking-[-0.16px] font-medium", textColorClass)}>
                     {label}
                   </span>
                 </div>
@@ -120,9 +120,11 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
                   </div>
                 )}
               </div>
-              {/* 하단: 큰 숫자 (STL Gothic R 폰트) — 우측정렬.
+              {/* 하단: 큰 숫자 — 우측정렬.
+                  폰트는 기본(라벨 등 다른 텍스트와 동일 계열) 유지 — 이전엔 font-heading 로
+                  숫자만 STL Gothic R 을 썼으나 다른 요소와 톤 안 맞아 통일.
                   카드 폭보다 긴 숫자면 잘리는 대신 말줄임(…) 표시 */}
-              <span className={cn("font-heading text-[86px] font-normal tracking-[-2.58px] leading-none block max-w-full truncate text-right", textColorClass)}>
+              <span className={cn("text-[86px] font-normal tracking-[-2.58px] leading-none block max-w-full truncate text-right", textColorClass)}>
                 {count}
               </span>
             </div>
@@ -153,7 +155,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
                     {icon}
                   </span>
                 )}
-                <span className={cn("text-sm tracking-[-0.14px]", textColorClass)}>
+                <span className={cn("text-base tracking-[-0.16px] font-medium", textColorClass)}>
                   {label}
                 </span>
               </div>
