@@ -104,7 +104,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
                       {icon}
                     </span>
                   )}
-                  <span className={cn("text-base tracking-[-0.16px]", textColorClass)}>
+                  <span className={cn("text-xl tracking-[-0.2px]", textColorClass)}>
                     {label}
                   </span>
                 </div>
@@ -120,11 +120,9 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
                   </div>
                 )}
               </div>
-              {/* 하단: 큰 숫자 — 우측정렬.
-                  폰트는 기본(라벨 등 다른 텍스트와 동일 계열) 유지 — 이전엔 font-heading 로
-                  숫자만 STL Gothic R 을 썼으나 다른 요소와 톤 안 맞아 통일.
+              {/* 하단: 큰 숫자 — 우측정렬. font-heading (STL Gothic R) 로 브랜드 톤 적용.
                   카드 폭보다 긴 숫자면 잘리는 대신 말줄임(…) 표시 */}
-              <span className={cn("text-[86px] font-normal tracking-[-2.58px] leading-none block max-w-full truncate text-right", textColorClass)}>
+              <span className={cn("text-[86px] font-heading font-normal tracking-[-2.58px] leading-none block max-w-full truncate text-right", textColorClass)}>
                 {count}
               </span>
             </div>
@@ -155,7 +153,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
                     {icon}
                   </span>
                 )}
-                <span className={cn("text-base tracking-[-0.16px]", textColorClass)}>
+                <span className={cn("text-xl tracking-[-0.2px]", textColorClass)}>
                   {label}
                 </span>
               </div>
@@ -168,7 +166,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
                     {badge}
                   </div>
                 )}
-                <span className={cn("flex-1 text-[48px] font-normal tracking-[-1.44px] leading-none block min-w-0 truncate text-right", textColorClass)}>
+                <span className={cn("flex-1 text-[48px] font-heading font-normal tracking-[-1.44px] leading-none block min-w-0 truncate text-right", textColorClass)}>
                   {count}
                 </span>
               </div>
@@ -199,12 +197,12 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
                   {icon}
                 </span>
               )}
-              <span className={cn("text-sm tracking-[-0.14px]", textColorClass)}>
+              <span className={cn("text-base tracking-[-0.16px]", textColorClass)}>
                 {label}
               </span>
             </div>
-            {/* 우측: 숫자 (긴 숫자면 잘리는 대신 말줄임) */}
-            <span className={cn("text-sm tracking-[-0.14px] min-w-0 truncate", textColorClass)}>
+            {/* 우측: 숫자 (긴 숫자면 잘리는 대신 말줄임) — main/sub 와 동일하게 font-heading */}
+            <span className={cn("text-base font-heading tracking-[-0.16px] min-w-0 truncate", textColorClass)}>
               {count}
             </span>
           </div>
