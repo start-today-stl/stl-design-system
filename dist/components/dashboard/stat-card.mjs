@@ -35,7 +35,7 @@ const N = "has-[[data-card-action]:hover]:from-blue-50 has-[[data-card-action]:h
     }
   }
 ), C = k.forwardRef(
-  ({ className: d, variant: l = "main", icon: s, label: n, count: o, badge: g, bordered: u = !1, headerAction: c, stretch: h = !1, loading: m = !1, ...b }, f) => {
+  ({ className: d, variant: l = "main", icon: s, label: n, count: o, badge: g, bordered: u = !1, headerAction: c, stretch: h = !1, loading: b = !1, ...m }, f) => {
     const r = "text-slate-700 dark:text-slate-100", x = u ? j[l || "main"] : y[l || "main"];
     return l === "main" ? /* @__PURE__ */ e(
       "div",
@@ -47,15 +47,15 @@ const N = "has-[[data-card-action]:hover]:from-blue-50 has-[[data-card-action]:h
           c && N,
           d
         ),
-        ...b,
-        children: m ? /* @__PURE__ */ t("div", { className: "flex flex-col flex-1 justify-between", children: [
+        ...m,
+        children: b ? /* @__PURE__ */ t("div", { className: "flex flex-col flex-1 justify-between", children: [
           /* @__PURE__ */ e(i, { width: 60, height: 14 }),
           /* @__PURE__ */ e(i, { width: "70%", height: 64 })
         ] }) : /* @__PURE__ */ t("div", { className: "flex flex-col flex-1 justify-between", children: [
           /* @__PURE__ */ t("div", { className: "flex items-center justify-between", children: [
             /* @__PURE__ */ t("div", { className: "flex items-center gap-0.5", children: [
               s && /* @__PURE__ */ e("span", { className: a("flex-shrink-0", r), children: s }),
-              /* @__PURE__ */ e("span", { className: a("text-base tracking-[-0.16px]", r), children: n })
+              /* @__PURE__ */ e("span", { className: a("text-xl tracking-[-0.2px]", r), children: n })
             ] }),
             c && // 카드 전체가 클릭 영역이라, 액션 클릭이 카드 onClick 으로
             // 번지지 않게 슬롯에서 막는다 (쓰는 쪽에서 매번 감싸지 않도록)
@@ -69,7 +69,7 @@ const N = "has-[[data-card-action]:hover]:from-blue-50 has-[[data-card-action]:h
               }
             )
           ] }),
-          /* @__PURE__ */ e("span", { className: a("text-[86px] font-normal tracking-[-2.58px] leading-none block max-w-full truncate text-right", r), children: o })
+          /* @__PURE__ */ e("span", { className: a("text-[86px] font-heading font-normal tracking-[-2.58px] leading-none block max-w-full truncate text-right", r), children: o })
         ] })
       }
     ) : l === "sub" ? /* @__PURE__ */ e(
@@ -77,18 +77,18 @@ const N = "has-[[data-card-action]:hover]:from-blue-50 has-[[data-card-action]:h
       {
         ref: f,
         className: a(v({ variant: l, stretch: h }), x, d),
-        ...b,
-        children: m ? /* @__PURE__ */ t("div", { className: "flex flex-col flex-1 justify-between", children: [
+        ...m,
+        children: b ? /* @__PURE__ */ t("div", { className: "flex flex-col flex-1 justify-between", children: [
           /* @__PURE__ */ e(i, { width: 50, height: 14 }),
           /* @__PURE__ */ e(i, { width: "50%", height: 36 })
         ] }) : /* @__PURE__ */ t("div", { className: "flex flex-col flex-1 justify-between", children: [
           /* @__PURE__ */ t("div", { className: "flex items-center gap-0.5", children: [
             s && /* @__PURE__ */ e("span", { className: a("flex-shrink-0", r), children: s }),
-            /* @__PURE__ */ e("span", { className: a("text-base tracking-[-0.16px]", r), children: n })
+            /* @__PURE__ */ e("span", { className: a("text-xl tracking-[-0.2px]", r), children: n })
           ] }),
           /* @__PURE__ */ t("div", { className: "flex items-end gap-2 min-w-0", children: [
             g && /* @__PURE__ */ e("div", { className: "flex-shrink-0", children: g }),
-            /* @__PURE__ */ e("span", { className: a("flex-1 text-[48px] font-normal tracking-[-1.44px] leading-none block min-w-0 truncate text-right", r), children: o })
+            /* @__PURE__ */ e("span", { className: a("flex-1 text-[48px] font-heading font-normal tracking-[-1.44px] leading-none block min-w-0 truncate text-right", r), children: o })
           ] })
         ] })
       }
@@ -97,16 +97,16 @@ const N = "has-[[data-card-action]:hover]:from-blue-50 has-[[data-card-action]:h
       {
         ref: f,
         className: a(v({ variant: l, stretch: h }), x, d),
-        ...b,
-        children: m ? /* @__PURE__ */ t("div", { className: "flex items-center justify-between", children: [
+        ...m,
+        children: b ? /* @__PURE__ */ t("div", { className: "flex items-center justify-between", children: [
           /* @__PURE__ */ e(i, { width: 60, height: 14 }),
           /* @__PURE__ */ e(i, { width: 30, height: 14 })
         ] }) : /* @__PURE__ */ t("div", { className: "flex items-center justify-between", children: [
           /* @__PURE__ */ t("div", { className: "flex items-center gap-0.5", children: [
             s && /* @__PURE__ */ e("span", { className: a("flex-shrink-0", r), children: s }),
-            /* @__PURE__ */ e("span", { className: a("text-sm tracking-[-0.14px]", r), children: n })
+            /* @__PURE__ */ e("span", { className: a("text-base tracking-[-0.16px]", r), children: n })
           ] }),
-          /* @__PURE__ */ e("span", { className: a("text-sm tracking-[-0.14px] min-w-0 truncate", r), children: o })
+          /* @__PURE__ */ e("span", { className: a("text-base font-heading tracking-[-0.16px] min-w-0 truncate", r), children: o })
         ] })
       }
     );
