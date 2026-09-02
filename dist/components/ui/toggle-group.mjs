@@ -44,9 +44,9 @@ const w = v.forwardRef(
                 className: l(
                   "inline-flex h-7 items-center justify-center px-3 cursor-pointer",
                   "rounded-[4px]",
-                  "text-xs text-slate-500 dark:text-slate-400",
+                  "text-xs text-slate-700 dark:text-slate-300",
                   "transition-all",
-                  "hover:text-slate-700 dark:hover:text-slate-200",
+                  "hover:text-slate-900 dark:hover:text-slate-100",
                   "focus:outline-none",
                   "disabled:cursor-not-allowed disabled:opacity-50",
                   // 활성: 흰 배경으로 떠오름
