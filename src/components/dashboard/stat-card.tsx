@@ -63,6 +63,12 @@ export interface StatCardProps
   bordered?: boolean
   /** 헤더 우측 액션 영역 (CardActionGroup 등, main variant에서 사용) */
   headerAction?: React.ReactNode
+  /**
+   * 푸터 좌측 액션 영역 (main variant 에서 사용).
+   * 숫자 영역과 폭을 나눠 쓰므로 아이콘 버튼 정도로 좁게 유지할 것 —
+   * 넓어지면 우측 숫자 표시 폭이 줄어 truncate 된다.
+   */
+  footerAction?: React.ReactNode
   /** 컨테이너 높이에 맞춤 (h-full) */
   stretch?: boolean
   /** 로딩 상태 (스켈레톤 표시) */
@@ -70,7 +76,7 @@ export interface StatCardProps
 }
 
 const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
-  ({ className, variant = "main", icon, label, count, badge, bordered = false, headerAction, stretch = false, loading = false, ...props }, ref) => {
+  ({ className, variant = "main", icon, label, count, badge, bordered = false, headerAction, footerAction, stretch = false, loading = false, ...props }, ref) => {
     const textColorClass = "text-slate-700 dark:text-slate-100"
     const bgStyle = bordered
       ? borderedStyles[variant || "main"]
@@ -84,7 +90,7 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
           className={cn(
             statCardVariants({ variant, stretch }),
             bgStyle,
-            headerAction && actionHoverReset,
+            (headerAction || footerAction) && actionHoverReset,
             className,
           )}
           {...props}
@@ -120,11 +126,23 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
                   </div>
                 )}
               </div>
-              {/* 하단: 큰 숫자 — 우측정렬. font-heading (STL Gothic R) 로 브랜드 톤 적용.
-                  카드 폭보다 긴 숫자면 잘리는 대신 말줄임(…) 표시 */}
-              <span className={cn("text-[86px] font-heading font-normal tracking-[-2.58px] leading-none block max-w-full truncate text-right", textColorClass)}>
-                {count}
-              </span>
+              {/* 하단: 좌측 푸터 액션 + 우측 큰 숫자.
+                  숫자는 flex-1 로 남은 폭을 먹고, 카드 폭보다 길면 우측 정렬 truncate.
+                  푸터 액션은 flex-shrink-0 이라 넓어지면 숫자 표시 폭이 줄어드니 좁게 유지할 것. */}
+              <div className="flex items-end gap-2 min-w-0">
+                {footerAction && (
+                  <div
+                    data-card-action=""
+                    className="flex-shrink-0 flex items-center"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    {footerAction}
+                  </div>
+                )}
+                <span className={cn("flex-1 text-[86px] font-heading font-normal tracking-[-2.58px] leading-none block min-w-0 truncate text-right", textColorClass)}>
+                  {count}
+                </span>
+              </div>
             </div>
           )}
         </div>

@@ -17,6 +17,12 @@ export interface StatCardProps extends React.HTMLAttributes<HTMLDivElement>, Var
     bordered?: boolean;
     /** 헤더 우측 액션 영역 (CardActionGroup 등, main variant에서 사용) */
     headerAction?: React.ReactNode;
+    /**
+     * 푸터 좌측 액션 영역 (main variant 에서 사용).
+     * 숫자 영역과 폭을 나눠 쓰므로 아이콘 버튼 정도로 좁게 유지할 것 —
+     * 넓어지면 우측 숫자 표시 폭이 줄어 truncate 된다.
+     */
+    footerAction?: React.ReactNode;
     /** 컨테이너 높이에 맞춤 (h-full) */
     stretch?: boolean;
     /** 로딩 상태 (스켈레톤 표시) */
