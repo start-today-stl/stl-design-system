@@ -165,7 +165,7 @@ export const Stretch: Story = {
 export const MainActionSlots: Story = {
   render: () => (
     <div style={{ display: 'flex', gap: '20px' }}>
-      <div style={{ width: '260px' }}>
+      <div style={{ width: '360px' }}>
         <span style={{ fontSize: '12px', color: '#666', marginBottom: '8px', display: 'block' }}>headerAction 만</span>
         <StatCard
           variant="main"
@@ -181,7 +181,7 @@ export const MainActionSlots: Story = {
           }
         />
       </div>
-      <div style={{ width: '260px' }}>
+      <div style={{ width: '360px' }}>
         <span style={{ fontSize: '12px', color: '#666', marginBottom: '8px', display: 'block' }}>footerAction 만</span>
         <StatCard
           variant="main"
@@ -195,7 +195,7 @@ export const MainActionSlots: Story = {
           }
         />
       </div>
-      <div style={{ width: '260px' }}>
+      <div style={{ width: '360px' }}>
         <span style={{ fontSize: '12px', color: '#666', marginBottom: '8px', display: 'block' }}>둘 다</span>
         <StatCard
           variant="main"
