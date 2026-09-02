@@ -2,8 +2,10 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { fn, expect, userEvent, within } from 'storybook/test'
 
 import { StatCard } from '../src/components/dashboard/stat-card'
+import { CardActionGroup } from '../src/components/dashboard/card-action-group'
 import { Badge } from '../src/components/ui/badge'
-import { InformationIcon } from '../src/icons'
+import { Button } from '../src/components/ui/button'
+import { InformationIcon, RefreshIcon } from '../src/icons'
 
 const meta = {
   title: 'Dashboard/StatCard',
@@ -152,6 +154,67 @@ export const Stretch: Story = {
         <div style={{ height: '250px', width: '200px', border: '1px dashed #ccc', padding: '10px' }}>
           <StatCard variant="sub" icon={<InformationIcon size={24} />} count="42" label="입고" badge={<Badge variant="success-outline">양호</Badge>} stretch />
         </div>
+      </div>
+    </div>
+  ),
+}
+
+// Main variant 액션 슬롯 (headerAction / footerAction)
+// - headerAction: 상단 우측. 필터/토글 성격 (CardActionGroup 등)
+// - footerAction: 하단 좌측. 아이콘 버튼 정도의 좁은 유틸 액션 (숫자 영역과 폭을 나눠 씀)
+export const MainActionSlots: Story = {
+  render: () => (
+    <div style={{ display: 'flex', gap: '20px' }}>
+      <div style={{ width: '260px' }}>
+        <span style={{ fontSize: '12px', color: '#666', marginBottom: '8px', display: 'block' }}>headerAction 만</span>
+        <StatCard
+          variant="main"
+          icon={<InformationIcon size={24} />}
+          count="1,024"
+          label="전체"
+          headerAction={
+            <CardActionGroup
+              options={['전체', '일반', '기타']}
+              value="전체"
+              aria-label="구분"
+            />
+          }
+        />
+      </div>
+      <div style={{ width: '260px' }}>
+        <span style={{ fontSize: '12px', color: '#666', marginBottom: '8px', display: 'block' }}>footerAction 만</span>
+        <StatCard
+          variant="main"
+          icon={<InformationIcon size={24} />}
+          count="1,024"
+          label="전체"
+          footerAction={
+            <Button variant="text" size="icon-sm" aria-label="새로고침">
+              <RefreshIcon size={20} />
+            </Button>
+          }
+        />
+      </div>
+      <div style={{ width: '260px' }}>
+        <span style={{ fontSize: '12px', color: '#666', marginBottom: '8px', display: 'block' }}>둘 다</span>
+        <StatCard
+          variant="main"
+          icon={<InformationIcon size={24} />}
+          count="1,024"
+          label="전체"
+          headerAction={
+            <CardActionGroup
+              options={['전체', '일반', '기타']}
+              value="전체"
+              aria-label="구분"
+            />
+          }
+          footerAction={
+            <Button variant="text" size="icon-sm" aria-label="새로고침">
+              <RefreshIcon size={20} />
+            </Button>
+          }
+        />
       </div>
     </div>
   ),
