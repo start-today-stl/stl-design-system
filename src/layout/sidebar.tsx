@@ -75,7 +75,8 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
         ref={ref}
         className={cn(
           "relative flex flex-col h-full pb-8 bg-white dark:bg-black",
-          "border border-slate-100 dark:border-slate-700",
+          // top 보더 제거: 로고 하단 구분선이 헤더 border-b 와 픽셀 정확히 정렬되도록
+          "border-r border-b border-l border-slate-100 dark:border-slate-700",
           "shadow-[1px_0px_41.3px_1px_rgba(0,0,0,0.05)] transition-all duration-300",
           // hidden 모드
           isHidden && "w-0 -translate-x-full opacity-0 border-0 overflow-hidden",
