@@ -1,10 +1,10 @@
 import { jsx as a, jsxs as u } from "react/jsx-runtime";
 import * as r from "react";
 import { cn as n } from "../lib/utils.mjs";
-import { LeftIcon as p } from "../icons/LeftIcon.mjs";
+import { LeftIcon as x } from "../icons/LeftIcon.mjs";
 import { RightIcon as b } from "../icons/RightIcon.mjs";
 const d = r.forwardRef(
-  ({ className: l, layout: i = "vertical", collapsed: t, showToggle: f = !1, scrollable: x = !1, onToggle: c, children: o, ...s }, m) => i === "horizontal" ? /* @__PURE__ */ a(
+  ({ className: l, layout: i = "vertical", collapsed: t, showToggle: f = !1, scrollable: c = !1, onToggle: p, children: o, ...s }, m) => i === "horizontal" ? /* @__PURE__ */ a(
     "nav",
     {
       ref: m,
@@ -32,7 +32,7 @@ const d = r.forwardRef(
           "button",
           {
             type: "button",
-            onClick: c,
+            onClick: p,
             className: n(
               "absolute flex items-center justify-center z-20",
               "w-8 h-8 rounded-[20px] border border-slate-100 dark:border-slate-700",
@@ -44,7 +44,7 @@ const d = r.forwardRef(
               "top-[-32px] -right-4"
             ),
             "aria-label": t ? "메뉴 펼치기" : "메뉴 접기",
-            children: t ? /* @__PURE__ */ a(b, { size: 24, className: "text-slate-500" }) : /* @__PURE__ */ a(p, { size: 24, className: "text-slate-500" })
+            children: t ? /* @__PURE__ */ a(b, { size: 24, className: "text-slate-500" }) : /* @__PURE__ */ a(x, { size: 24, className: "text-slate-500" })
           }
         ),
         /* @__PURE__ */ a(
@@ -52,8 +52,10 @@ const d = r.forwardRef(
           {
             className: n(
               "flex flex-col",
-              t ? "items-center gap-0.5 w-full px-2 overflow-visible" : "gap-0.5 px-6 pb-4",
-              x && !t && "sidebar-scroll flex-1 min-h-0 overflow-y-auto overflow-x-hidden"
+              // 확장 상태 padding-right 는 12px (스크롤바 gutter 12px 와 합쳐 좌측 24 와 시각적 대칭).
+              // scrollbar-gutter: stable 이 스크롤 유무 상관없이 12px 를 항상 예약함
+              t ? "items-center gap-0.5 w-full px-2 overflow-visible" : "gap-0.5 pl-6 pr-3 pb-4",
+              c && !t && "sidebar-scroll flex-1 min-h-0 overflow-y-auto overflow-x-hidden"
             ),
             children: r.Children.map(o, (e) => r.isValidElement(e) && typeof e.type != "string" ? r.cloneElement(e, {
               collapsed: t,

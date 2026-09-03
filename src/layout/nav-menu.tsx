@@ -89,7 +89,9 @@ const NavMenu = React.forwardRef<HTMLDivElement, NavMenuProps>(
         <div
           className={cn(
             "flex flex-col",
-            collapsed ? "items-center gap-0.5 w-full px-2 overflow-visible" : "gap-0.5 px-6 pb-4",
+            // 확장 상태 padding-right 는 12px (스크롤바 gutter 12px 와 합쳐 좌측 24 와 시각적 대칭).
+            // scrollbar-gutter: stable 이 스크롤 유무 상관없이 12px 를 항상 예약함
+            collapsed ? "items-center gap-0.5 w-full px-2 overflow-visible" : "gap-0.5 pl-6 pr-3 pb-4",
             scrollable && !collapsed && "sidebar-scroll flex-1 min-h-0 overflow-y-auto overflow-x-hidden"
           )}
         >
