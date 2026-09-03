@@ -74,7 +74,7 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
       <div
         ref={ref}
         className={cn(
-          "relative flex flex-col h-full pt-4 pb-8 bg-white dark:bg-black",
+          "relative flex flex-col h-full pb-8 bg-white dark:bg-black",
           "border border-slate-100 dark:border-slate-700",
           "shadow-[1px_0px_41.3px_1px_rgba(0,0,0,0.05)] transition-all duration-300",
           // hidden 모드
@@ -88,10 +88,12 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
         )}
         {...props}
       >
-        {/* 로고 영역 — collapsed 상태에 따라 하나만 렌더 (crossfade X, 잔상 방지) */}
+        {/* 로고 영역 — collapsed 상태에 따라 하나만 렌더 (crossfade X, 잔상 방지).
+            하단 보더는 Header 의 border-b 와 시각적으로 정렬시키기 위해 추가 (h-16 동일 높이) */}
         <div
           className={cn(
             "h-16 mb-4 flex-shrink-0 w-full flex items-center overflow-hidden",
+            "border-b border-slate-200 dark:border-slate-700",
             collapsed && collapseMode === "mini"
               ? "justify-center"
               : "justify-start px-6"
