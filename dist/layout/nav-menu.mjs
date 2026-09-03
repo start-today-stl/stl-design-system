@@ -40,7 +40,8 @@ const d = r.forwardRef(
               "transition-all duration-300 cursor-pointer",
               // 사이드바 가로 패딩이 스크롤 영역 안쪽으로 옮겨져서 nav 가 사이드바 전체 폭을
               // 쓰므로, 접힘/펼침 모두 동일한 offset 으로 사이드바 경계에 걸친다.
-              "top-[-48px] -right-4"
+              // top: 버튼 중심을 로고/헤더 하단 보더(y=64px) 위에 정렬 (nav-menu 시작 y=80 기준 -32).
+              "top-[-32px] -right-4"
             ),
             "aria-label": t ? "메뉴 펼치기" : "메뉴 접기",
             children: t ? /* @__PURE__ */ a(b, { size: 24, className: "text-slate-500" }) : /* @__PURE__ */ a(p, { size: 24, className: "text-slate-500" })
