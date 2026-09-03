@@ -282,7 +282,7 @@ function J({
                 const Y = j !== void 0 && j > 1 ? ft(n, t.accessorKey) : void 0, pt = (() => {
                   if (Y === void 0) return;
                   const q = ht(n, t.accessorKey);
-                  return ut(n, t.accessorKey) ? q ? "bg-blue-100 dark:bg-blue-950" : "bg-blue-50 dark:bg-blue-900" : q ? "bg-slate-100 dark:bg-slate-800" : "bg-white dark:bg-slate-900";
+                  return ut(n, t.accessorKey) ? q ? "bg-blue-100 dark:bg-blue-950" : "bg-blue-50 dark:bg-blue-900" : q ? "bg-slate-50 dark:bg-slate-800" : "bg-white dark:bg-slate-900";
                 })(), $ = et === t.accessorKey;
                 return /* @__PURE__ */ e(
                   Bt,

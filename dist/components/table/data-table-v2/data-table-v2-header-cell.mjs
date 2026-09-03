@@ -100,7 +100,7 @@ function M({
     "div",
     {
       className: l(
-        "flex-1 flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-300 min-w-0",
+        "flex-1 flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-slate-800 dark:text-slate-300 min-w-0",
         e.align === "right" && "flex-row-reverse"
       ),
       children: [

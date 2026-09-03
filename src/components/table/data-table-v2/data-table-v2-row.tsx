@@ -482,7 +482,7 @@ function DataTableV2RowInner<T extends { id: string | number }>({
                 : "bg-blue-50 dark:bg-blue-900"
             }
             return hovered
-              ? "bg-slate-100 dark:bg-slate-800"
+              ? "bg-slate-50 dark:bg-slate-800"
               : "bg-white dark:bg-slate-900"
           })()
 

@@ -298,7 +298,7 @@ function _n({
       });
     }
     return n;
-  }, [E, m]), De = re !== null && re.length > 0, Lt = I > 0 || d.some((e) => e.pinned === "left"), se = De ? 2 : 1, Ht = "bg-slate-100 dark:bg-slate-800", _t = (c == null ? void 0 : c.showExpandAll) ?? !0, { leftPinnedCols: zt, rightPinnedCols: Kt, lastLeftPinnedIdx: Ne, firstRightPinnedIdx: Oe } = s.useMemo(() => {
+  }, [E, m]), De = re !== null && re.length > 0, Lt = I > 0 || d.some((e) => e.pinned === "left"), se = De ? 2 : 1, Ht = "bg-slate-50 dark:bg-slate-800", _t = (c == null ? void 0 : c.showExpandAll) ?? !0, { leftPinnedCols: zt, rightPinnedCols: Kt, lastLeftPinnedIdx: Ne, firstRightPinnedIdx: Oe } = s.useMemo(() => {
     const e = d.map((t, i) => ({ c: t, i })).filter(({ c: t }) => t.pinned === "left"), n = d.map((t, i) => ({ c: t, i })).filter(({ c: t }) => t.pinned === "right");
     return {
       leftPinnedCols: e,
@@ -540,7 +540,7 @@ function _n({
               "div",
               {
                 role: "row",
-                className: "flex bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800/50",
+                className: "flex bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800",
                 children: [
                   p && /* @__PURE__ */ o(
                     "div",

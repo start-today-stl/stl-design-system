@@ -159,7 +159,7 @@ function DataTableV2HeaderCellInner<T>({
   const contentInner = (
     <div
       className={cn(
-        "flex-1 flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-300 min-w-0",
+        "flex-1 flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-slate-800 dark:text-slate-300 min-w-0",
         column.align === "right" && "flex-row-reverse"
       )}
     >

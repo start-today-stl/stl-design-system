@@ -38,7 +38,8 @@ export const alignClass = {
  */
 export const ROW_BG_SELF = [
   "bg-white dark:bg-slate-900",
-  "hover:bg-slate-100 dark:hover:bg-slate-800",
+  // hover 배경은 헤더 배경(slate-50 / slate-900) 과 동일 톤으로 맞춘다
+  "hover:bg-slate-50 dark:hover:bg-slate-800",
   "data-[state=selected]:bg-blue-50 dark:data-[state=selected]:bg-blue-900",
   "data-[state=selected]:hover:bg-blue-100 dark:data-[state=selected]:hover:bg-blue-950",
 ].join(" ")
@@ -53,7 +54,8 @@ export const ROW_BG_SELF = [
  */
 export const ROW_BG_DESCENDANT = [
   "bg-white dark:bg-slate-900",
-  "group-hover:bg-slate-100 dark:group-hover:bg-slate-800",
+  // hover 배경은 헤더와 동일 톤 (ROW_BG_SELF 와 대칭)
+  "group-hover:bg-slate-50 dark:group-hover:bg-slate-800",
   "group-[[data-state=selected]]:bg-blue-50 dark:group-[[data-state=selected]]:bg-blue-900",
   "group-[[data-state=selected]:hover]:bg-blue-100 dark:group-[[data-state=selected]:hover]:bg-blue-950",
 ].join(" ")

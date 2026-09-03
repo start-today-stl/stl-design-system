@@ -659,7 +659,7 @@ export function DataTableV2<T extends { id: string | number }>({
     controlColsWidth > 0 || columns.some((c) => c.pinned === "left")
 
   const headerRowCount = hasGroups ? 2 : 1
-  const headerBg = "bg-slate-100 dark:bg-slate-800"
+  const headerBg = "bg-slate-50 dark:bg-slate-800"
   const showExpandAll = expandable?.showExpandAll ?? true
 
   // pinned 컬럼 파생값 — useMemo 로 stable ref 유지 (헤더 useMemo deps 안정성 확보).
@@ -926,7 +926,7 @@ export function DataTableV2<T extends { id: string | number }>({
           {showRowAdd && !loading && (
             <div
               role="row"
-              className="flex bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800/50"
+              className="flex bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800"
             >
               {rowReorderable && (
                 <div
