@@ -258,6 +258,9 @@
   scrollbar-width: thin;
   scrollbar-color: transparent transparent;
   transition: scrollbar-color 0.2s ease;
+  /* 스크롤 유무와 관계없이 스크롤바 자리를 항상 예약해 컨텐츠 폭·화살표 위치 흔들림 방지.
+     대응해서 nav-menu 의 padding-right 를 스크롤바 폭만큼 축소 → 좌우 총 공간 시각적 대칭 유지 */
+  scrollbar-gutter: stable;
 }
 
 .sidebar-scroll:hover {

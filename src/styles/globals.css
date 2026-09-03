@@ -241,6 +241,8 @@
   scrollbar-width: thin;
   scrollbar-color: transparent transparent;
   transition: scrollbar-color 0.2s ease;
+  /* 스크롤 유무와 관계없이 스크롤바 자리를 항상 예약해 컨텐츠 폭 흔들림 방지 */
+  scrollbar-gutter: stable;
 }
 
 .sidebar-scroll:hover {
