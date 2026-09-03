@@ -77,7 +77,8 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
           "relative flex flex-col h-full pb-8 bg-white dark:bg-black",
           // top 보더 제거: 로고 하단 구분선이 헤더 border-b 와 픽셀 정확히 정렬되도록
           "border-r border-b border-l border-slate-100 dark:border-slate-700",
-          "shadow-[1px_0px_41.3px_1px_rgba(0,0,0,0.05)] transition-all duration-300",
+          // 그림자 값 (Figma 시안): 10px 0 10px slate-100. 다크모드는 좀 더 짙게.
+          "shadow-[10px_0px_10px_0px_var(--color-slate-100)] dark:shadow-[10px_0px_10px_0px_rgba(0,0,0,0.3)] transition-all duration-300",
           // hidden 모드
           isHidden && "w-0 -translate-x-full opacity-0 border-0 overflow-hidden",
           // mini 모드 또는 펼쳐진 상태.
